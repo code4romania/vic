@@ -123,6 +123,7 @@ const RsvpTable = ({ eventId, eventName, query, setQuery }: RsvpTableProps) => {
     data: rsvps,
     isLoading: isRsvpsLoading,
     error: rsvpsError,
+    refetch: refetchRsvps,
   } = useRsvpsQuery(
     eventId,
     query.limit,
@@ -150,13 +151,14 @@ const RsvpTable = ({ eventId, eventName, query, setQuery }: RsvpTableProps) => {
           direction.toLocaleUpperCase() === OrderDirection.ASC
             ? OrderDirection.ASC
             : OrderDirection.DESC,
+        page: 1,
       },
       'replaceIn',
     );
   };
 
   const onResponseChange = (response: SelectItem<string> | undefined) => {
-    setQuery({ going: response?.key as RSVPGoingEnum }, 'replaceIn');
+    setQuery({ going: response?.key as RSVPGoingEnum, page: 1 }, 'replaceIn');
   };
 
   const onResetFilters = () => {
@@ -196,6 +198,7 @@ const RsvpTable = ({ eventId, eventName, query, setQuery }: RsvpTableProps) => {
     setQuery(
       {
         branch: branch?.value,
+        page: 1,
       },
       'replaceIn',
     );
@@ -206,6 +209,7 @@ const RsvpTable = ({ eventId, eventName, query, setQuery }: RsvpTableProps) => {
     setQuery(
       {
         department: department?.value,
+        page: 1,
       },
       'replaceIn',
     );
@@ -216,6 +220,7 @@ const RsvpTable = ({ eventId, eventName, query, setQuery }: RsvpTableProps) => {
     setQuery(
       {
         role: role?.value,
+        page: 1,
       },
       'replaceIn',
     );
@@ -245,6 +250,7 @@ const RsvpTable = ({ eventId, eventName, query, setQuery }: RsvpTableProps) => {
     setQuery(
       {
         search,
+        page: 1,
       },
       'replaceIn',
     );
@@ -262,12 +268,6 @@ const RsvpTable = ({ eventId, eventName, query, setQuery }: RsvpTableProps) => {
             <span>
               {i18n.t('events:detail.responses_found', { count: rsvps?.meta?.totalItems ?? 0 })}
             </span>
-            <Button
-              label={i18n.t('general:download_table')}
-              icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
-              className="btn-text-primary px-2"
-              onClick={onExportRSVPs}
-            />
           </>
         }
       >
@@ -310,7 +310,7 @@ const RsvpTable = ({ eventId, eventName, query, setQuery }: RsvpTableProps) => {
             {i18n.t('events:detail.responses_title', { count: rsvps?.meta?.totalItems ?? 0 })}
           </h2>
           <Button
-            label={i18n.t('events:export_registrations.button')}
+            label={i18n.t('events:export_registrations.export')}
             icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
             className="btn-outline-secondary ml-auto"
             onClick={() => setShowExport(true)}
@@ -321,6 +321,8 @@ const RsvpTable = ({ eventId, eventName, query, setQuery }: RsvpTableProps) => {
             columns={TableHeader}
             data={rsvps?.items}
             loading={isRsvpsLoading}
+            error={rsvpsError}
+            onRetry={refetchRsvps}
             pagination
             paginationPerPage={query.limit}
             paginationTotalRows={rsvps?.meta?.totalItems}
@@ -336,6 +338,7 @@ const RsvpTable = ({ eventId, eventName, query, setQuery }: RsvpTableProps) => {
           eventId={eventId}
           eventName={eventName}
           onClose={() => setShowExport(false)}
+          onExportAnswers={onExportRSVPs}
         />
       )}
     </>

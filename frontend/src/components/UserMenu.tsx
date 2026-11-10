@@ -69,7 +69,7 @@ const UserMenu = ({ isNarrow, placement = 'up' }: UserMenuProps) => {
             {({ active }) => (
               <button
                 id="logout__menu-item"
-                aria-label="logout"
+                aria-label={t('menu.options.logout')}
                 type="button"
                 className={classNames(
                   active ? 'bg-cool-gray-100' : '',

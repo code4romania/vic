@@ -7,6 +7,7 @@ import { useDashboardAnnouncementResponsesQuery } from '../services/dashboard/da
 import Button from './Button';
 import CardBody from './CardBody';
 import CardHeader from './CardHeader';
+import LoadErrorContent from './LoadErrorContent';
 
 const t = (key: string, options?: Record<string, unknown>): string =>
   `${i18n.t(`dashboard:announcement_responses.${key}`, options)}`;
@@ -14,7 +15,7 @@ const t = (key: string, options?: Record<string, unknown>): string =>
 // VIC 2.0, #467: the latest 3 responses volunteers left on the organization's announcements.
 const DashboardAnnouncementResponses = () => {
   const navigate = useNavigate();
-  const { data, isLoading } = useDashboardAnnouncementResponsesQuery();
+  const { data, isLoading, error, refetch } = useDashboardAnnouncementResponsesQuery();
 
   return (
     <Card>
@@ -22,7 +23,10 @@ const DashboardAnnouncementResponses = () => {
         <h2>{t('title')}</h2>
       </CardHeader>
       <CardBody>
-        {!isLoading && !data?.length && <p className="text-cool-gray-500">{t('empty')}</p>}
+        {!!error && <LoadErrorContent onRetry={refetch} />}
+        {!isLoading && !error && !data?.length && (
+          <p className="text-cool-gray-500">{t('empty')}</p>
+        )}
         <ul className="flex flex-col gap-2">
           {data?.map((response) => (
             <li

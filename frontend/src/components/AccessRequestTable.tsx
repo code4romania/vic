@@ -28,6 +28,7 @@ import LocationSelect from '../containers/LocationSelect';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import { downloadAccessRequests } from '../services/access-requests/access-requests.api';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
+import { useValidationGate } from '../hooks/useValidationGate';
 import Card from '../layouts/CardLayout';
 import {
   useApproveAccessRequestMutation,
@@ -152,6 +153,9 @@ const AccessRequestTable = ({
     query?.rejectedOnEnd,
   );
 
+  // approving brings a member in: only for a validated organization (decision 1)
+  const { gate } = useValidationGate();
+
   // actions
   const { mutate: approveAccessRequest, isLoading: isApprovingRequest } =
     useApproveAccessRequestMutation();
@@ -183,6 +187,7 @@ const AccessRequestTable = ({
         label: i18n.t('access_requests:popover.approve'),
         icon: <CheckIcon className="menu-icon" />,
         onClick: onApprove,
+        ...gate,
       },
       {
         label: i18n.t('access_requests:popover.reject'),
@@ -250,6 +255,7 @@ const AccessRequestTable = ({
         label: i18n.t('access_requests:popover.change_to_approved'),
         icon: <CheckIcon className="menu-icon" />,
         onClick: onApprove,
+        ...gate,
       },
       {
         label: i18n.t('access_requests:popover.delete'),
@@ -307,6 +313,7 @@ const AccessRequestTable = ({
           direction.toLocaleUpperCase() === OrderDirection.ASC
             ? OrderDirection.ASC
             : OrderDirection.DESC,
+        page: 1,
       },
       'replaceIn',
     );
@@ -383,7 +390,7 @@ const AccessRequestTable = ({
 
   const onResetFilters = () => {
     setLocation(undefined);
-    setQuery({ requestStatus: query.requestStatus }, 'push');
+    setQuery({ requestStatus: query.requestStatus }, 'replace');
   };
 
   const onLocationChange = (location: ListItem) => {
@@ -391,6 +398,7 @@ const AccessRequestTable = ({
     setQuery(
       {
         location: location.label.split(', '),
+        page: 1,
       },
       'replaceIn',
     );
@@ -400,6 +408,7 @@ const AccessRequestTable = ({
     setQuery(
       {
         search,
+        page: 1,
       },
       'replaceIn',
     );
@@ -410,6 +419,7 @@ const AccessRequestTable = ({
       {
         createdOnStart,
         createdOnEnd,
+        page: 1,
       },
       'replaceIn',
     );
@@ -420,6 +430,7 @@ const AccessRequestTable = ({
       {
         rejectedOnStart,
         rejectedOnEnd,
+        page: 1,
       },
       'replaceIn',
     );
@@ -512,6 +523,8 @@ const AccessRequestTable = ({
               isRejectingAccessRequest ||
               isDeletingAccessRequest
             }
+            error={accessCodeRequestError}
+            onRetry={refetch}
             pagination
             paginationPerPage={query.limit}
             paginationTotalRows={accessRequests?.meta?.totalItems}

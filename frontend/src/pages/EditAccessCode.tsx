@@ -14,6 +14,7 @@ import {
   useUpdateAccessCodeMutation,
 } from '../services/organization/organization.service';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
+import { useValidationGate } from '../hooks/useValidationGate';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import LoadingContent from '../components/LoadingContent';
 import PageHeader from '../components/PageHeader';
@@ -22,6 +23,7 @@ import { AddAccessCodeValidationSchema } from './AddAccessCode';
 
 const EditAccessCode = () => {
   const navigate = useNavigate();
+  const { gate } = useValidationGate();
   const { id } = useParams();
 
   const { data: accessCode, error: accessCodeError } = useAccessCodeQuery(id as string);
@@ -94,6 +96,7 @@ const EditAccessCode = () => {
               className="btn-primary"
               icon={<CloudArrowUpIcon className="h-5 w-5 md:hidden" />}
               onClick={handleSubmit(onSubmit)}
+              {...gate}
             />
           </CardHeader>
           <CardBody>

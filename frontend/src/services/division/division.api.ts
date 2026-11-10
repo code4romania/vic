@@ -16,10 +16,27 @@ export const getDivisions = async (
   }).then((res) => res.data);
 };
 
-export const getDivisionsListItems = async (
-  type: DivisionType,
-): Promise<IPaginatedEntity<Pick<IDivisionListItem, 'id' | 'name' | 'numberOfMembers'>>> => {
-  return API.get(`/listing/structures/${type}`).then((res) => res.data);
+type DivisionListPage = IPaginatedEntity<
+  Pick<IDivisionListItem, 'id' | 'name' | 'numberOfMembers'>
+>;
+
+// The API lists at most 50 per page: the dropdowns need every department / role / branch, so the
+// other pages are fetched too and merged into one list.
+export const getDivisionsListItems = async (type: DivisionType): Promise<DivisionListPage> => {
+  const get = (page: number): Promise<DivisionListPage> =>
+    API.get(`/listing/structures/${type}`, { params: { page } }).then((res) => res.data);
+
+  const first = await get(1);
+  const totalPages = first.meta?.totalPages ?? 1;
+  if (totalPages <= 1) return first;
+
+  const rest = await Promise.all(
+    Array.from({ length: totalPages - 1 }, (_, index) => get(index + 2)),
+  );
+  return {
+    ...first,
+    items: [first, ...rest].flatMap((page) => page.items),
+  };
 };
 
 export const deleteDivision = async (id: string): Promise<void> => {

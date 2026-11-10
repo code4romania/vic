@@ -17,6 +17,7 @@ import { downloadExcel } from '../common/utils/utils';
 import { IImportVolunteersResult } from '../common/interfaces/volunteer.interface';
 import { useImportVolunteersMutation } from '../services/volunteer/volunteer.service';
 import { useErrorToast } from '../hooks/useToast';
+import { useValidationGate } from '../hooks/useValidationGate';
 
 export const IMPORT_MAX_BYTES = 1024 * 1024;
 
@@ -34,6 +35,7 @@ export const IMPORT_TEMPLATE = [
 // sent and only people who already have a VIC account have one.
 const ImportVolunteers = () => {
   const navigate = useNavigate();
+  const { blocked, gate } = useValidationGate();
   const [file, setFile] = useState<File | null>(null);
   const [result, setResult] = useState<IImportVolunteersResult | null>(null);
   const { mutate: importVolunteers, isLoading } = useImportVolunteersMutation();
@@ -89,7 +91,8 @@ const ImportVolunteers = () => {
                 label={t('submit')}
                 className="btn-primary self-start"
                 onClick={onImport}
-                disabled={!file || isLoading}
+                {...gate}
+                disabled={!file || isLoading || blocked}
               />
 
               {result && (

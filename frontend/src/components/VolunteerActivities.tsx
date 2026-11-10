@@ -19,6 +19,7 @@ import DataTableComponent from './DataTableComponent';
 import { ICON_MAPPER, ImageOption } from './ImagePicker';
 import StatusWithMarker from './StatusWithMarker';
 import Popover from './Popover';
+import { useValidationGate } from '../hooks/useValidationGate';
 
 const PAGE_SIZE = 10;
 
@@ -97,10 +98,12 @@ export const VolunteerLogsTable = ({
   canAdd,
   onAdd,
 }: VolunteerLogsTableProps) => {
+  // logging hours needs a validated organization (decision 1)
+  const { gate } = useValidationGate();
   const [page, setPage] = useState<number>(1);
   const [selected, setSelected] = useState<string>();
 
-  const { data, isLoading, refetch } = useActivityLogsQuery({
+  const { data, isLoading, error, refetch } = useActivityLogsQuery({
     limit: PAGE_SIZE,
     page,
     volunteerId,
@@ -124,6 +127,7 @@ export const VolunteerLogsTable = ({
               icon={<PlusIcon className="h-5 w-5" />}
               onClick={onAdd}
               type="button"
+              {...gate}
             />
           )}
         </CardHeader>
@@ -151,6 +155,8 @@ export const VolunteerLogsTable = ({
             ]}
             data={data?.items}
             loading={isLoading}
+            error={error}
+            onRetry={refetch}
             pagination
             paginationPerPage={PAGE_SIZE}
             paginationTotalRows={data?.meta?.totalItems}

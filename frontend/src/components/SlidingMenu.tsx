@@ -6,6 +6,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import { classNames } from '../common/utils/utils';
 import { findParentRoute, useVisibleRoutes } from '../hooks/useVisibleRoutes';
 import MenuItem from './MenuItem';
+import i18n from '../common/config/i18n';
 
 interface SlidingMenuProps {
   isOpen: boolean;
@@ -86,13 +87,12 @@ export default function SlidingMenu({ isOpen, setSlidingMenuOpen }: SlidingMenuP
                     <div className="absolute top-0 -right-8 flex pt-4">
                       <button
                         id="close_panel__btn"
-                        aria-label="Close panel"
+                        aria-label={`${i18n.t('general:close')}`}
                         type="button"
                         className="rounded-md text-white hover:text-cool-gray-200 focus:outline-none focus:ring-2 focus:ring-white"
                         onClick={setSlidingMenuOpen.bind(null, false)}
                       >
-                        <XMarkIcon className="w-6 h-6" />
-                        <span className="sr-only">Close panel</span>
+                        <XMarkIcon className="w-6 h-6" aria-hidden="true" />
                       </button>
                     </div>
                   </Transition.Child>
@@ -103,7 +103,7 @@ export default function SlidingMenu({ isOpen, setSlidingMenuOpen }: SlidingMenuP
                           'w-full',
                           'p-3 pt-6 space-y-0.5 bg-white cursor-pointer select-none',
                         )}
-                        aria-label="Sidebar"
+                        aria-label={`${i18n.t('side_menu:aria')}`}
                       >
                         {routes.map((item) => (
                           <MenuItem

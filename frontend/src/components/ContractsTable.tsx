@@ -373,6 +373,8 @@ const ContractsTable = ({
             columns={columns}
             data={contracts?.items}
             loading={isLoading || isDeleting}
+            error={error}
+            onRetry={refetchList}
             pagination
             paginationPerPage={query?.limit}
             paginationTotalRows={contracts?.meta?.totalItems}

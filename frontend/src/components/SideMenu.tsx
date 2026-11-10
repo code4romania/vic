@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ChevronDoubleLeftIcon, ChevronDoubleRightIcon } from '@heroicons/react/24/outline';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { findParentRoute, useVisibleRoutes } from '../hooks/useVisibleRoutes';
 import { classNames } from '../common/utils/utils';
@@ -50,17 +50,17 @@ const SideMenu = () => {
         isNarrow ? 'w-[4.75rem]' : 'w-64',
         'transition-width duration-300 ease-out h-screen sticky top-0 flex flex-col bg-white select-none',
       )}
-      aria-label="Sidebar"
+      aria-label={t('aria')}
     >
-      <div
+      <Link
+        to="/"
         className={classNames(
           isNarrow ? 'justify-center px-2' : 'px-5',
           'h-[4.5rem] flex items-center border-b border-cool-gray-200 cursor-pointer',
         )}
-        onClick={() => navigate('/')}
       >
         <img src={logo} alt="VIC" className={isNarrow ? 'h-7' : 'h-9'} />
-      </div>
+      </Link>
       <div className="flex-1 overflow-y-auto no-scrollbar px-3 py-4 space-y-0.5 cursor-pointer">
         {routes.map((item) => (
           <MenuItem

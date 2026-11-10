@@ -105,19 +105,21 @@ export const getEventRSVPsForDownload = async (
   orderBy?: string,
   orderDirection?: OrderDirection,
   search?: string,
-  branchId?: string,
-  departmentId?: string,
-  roleId?: string,
+  branch?: string,
+  department?: string,
+  role?: string,
   going?: string,
 ): Promise<{ data: unknown; headers: AxiosResponseHeaders }> => {
+  // the same filter names as the list (GetPaginatedEventRSVPsDto): the API strips unknown ones,
+  // so other names would export every answer instead of what is on screen
   return API.get(`event/${id}/rsvp/download`, {
     params: {
       orderBy,
       orderDirection,
       search,
-      branchId,
-      departmentId,
-      roleId,
+      branch,
+      department,
+      role,
       going,
     },
     responseType: 'arraybuffer',

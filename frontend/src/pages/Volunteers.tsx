@@ -16,7 +16,7 @@ import {
   PlusIcon,
   ArrowUpTrayIcon,
 } from '@heroicons/react/24/outline';
-import { SortOrder, TableColumn } from 'react-data-table-component';
+import { SortOrder, TableColumn, Media } from 'react-data-table-component';
 import Popover from '../components/Popover';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { SelectItem } from '../components/Select';
@@ -47,6 +47,7 @@ import { useActivityTypeListItemsQuery } from '../services/activity-type/activit
 import { ActivityTypeStatus } from '../common/enums/activity-type-status.enum';
 import { VolunteersProps } from '../containers/query/VolunteersWithQueryParams';
 import SelectFilter from '../containers/SelectFilter';
+import { useValidationGate } from '../hooks/useValidationGate';
 
 const STATUS_OPTIONS: SelectItem<string>[] = [
   VolunteerStatus.ACTIVE,
@@ -89,6 +90,7 @@ const VolunteersTableHeader = [
   },
   {
     id: 'volunteerProfile.email',
+    hide: Media.SM,
     name: i18n.t('general:contact'),
     sortable: true,
     grow: 2,
@@ -104,6 +106,7 @@ const VolunteersTableHeader = [
   },
   {
     id: 'department.name',
+    hide: Media.SM,
     name: i18n.t('volunteers:department_and_role'),
     sortable: true,
     grow: 1,
@@ -122,6 +125,7 @@ const VolunteersTableHeader = [
   // Hours is not sortable: it is computed per page (#475).
   {
     id: 'totalHours',
+    hide: Media.SM,
     name: i18n.t('volunteers:hours'),
     sortable: false,
     grow: 0,
@@ -150,6 +154,7 @@ const VolunteersTableHeader = [
   },
   {
     id: 'source',
+    hide: Media.SM,
     name: i18n.t('volunteers:source'),
     sortable: true,
     grow: 1,
@@ -161,6 +166,7 @@ const VolunteersTableHeader = [
 
 const Volunteers = ({ query, setQuery }: VolunteersProps) => {
   const navigate = useNavigate();
+  const { gate } = useValidationGate();
   // Modal
   const [blockVolunteerCandidate, setBlockVolunteerCandidate] = useState<null | IVolunteer>();
   // filters
@@ -370,6 +376,7 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
           direction.toLocaleUpperCase() === OrderDirection.ASC
             ? OrderDirection.ASC
             : OrderDirection.DESC,
+        page: 1,
       },
       'replaceIn',
     );
@@ -379,6 +386,7 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
     setQuery(
       {
         search,
+        page: 1,
       },
       'replaceIn',
     );
@@ -389,6 +397,7 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
     setQuery(
       {
         branch: branch?.value,
+        page: 1,
       },
       'replaceIn',
     );
@@ -399,6 +408,7 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
     setQuery(
       {
         department: department?.value,
+        page: 1,
       },
       'replaceIn',
     );
@@ -409,6 +419,7 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
     setQuery(
       {
         role: role?.value,
+        page: 1,
       },
       'replaceIn',
     );
@@ -433,6 +444,7 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
         branch: undefined,
         department: undefined,
         role: undefined,
+        page: 1,
       },
       'replaceIn',
     );
@@ -470,12 +482,14 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
               icon={<ArrowUpTrayIcon className="h-5 w-5 text-cool-gray-600" />}
               className="btn-outline-secondary"
               onClick={() => navigate('import')}
+              {...gate}
             />
             <Button
               label={i18n.t('volunteers:add.button')}
               icon={<PlusIcon className="h-5 w-5" />}
               className="btn-primary"
               onClick={() => navigate('add')}
+              {...gate}
             />
           </>
         }
@@ -551,6 +565,8 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
               isActivatingVolunteer ||
               isBlockingVolunteer
             }
+            error={volunteersError}
+            onRetry={refetch}
             pagination
             paginationPerPage={query.limit as number}
             paginationTotalRows={volunteers?.meta?.totalItems}

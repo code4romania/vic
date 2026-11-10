@@ -11,6 +11,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
+import { useValidationGate } from '../hooks/useValidationGate';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import LoadingContent from '../components/LoadingContent';
 import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
@@ -54,6 +55,7 @@ export const activityLogValidationSchema = yup
 
 const AddActivityLog = ({ query }: AddActivityLogProps) => {
   const navigate = useNavigate();
+  const { gate } = useValidationGate();
 
   const { mutateAsync: addActivityLog, isLoading: isAddingActivityLog } =
     useAddActivityLogMutation();
@@ -134,6 +136,7 @@ const AddActivityLog = ({ query }: AddActivityLogProps) => {
               className="btn-primary"
               icon={<CloudArrowUpIcon className="h-5 w-5 md:hidden" />}
               onClick={handleSubmit(onSubmit)}
+              {...gate}
             />
           </CardHeader>
           <CardBody>

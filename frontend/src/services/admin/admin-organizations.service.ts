@@ -5,6 +5,7 @@ import { IBusinessException } from '../../common/interfaces/business-exception.i
 import {
   getPendingValidation,
   suspendOrganization,
+  unsuspendOrganization,
   validateOrganization,
 } from './admin-organizations.api';
 
@@ -21,6 +22,8 @@ const usePendingMutation = (fn: (id: string) => Promise<unknown>) => {
   return useMutation(fn, {
     onSuccess: () => {
       queryClient.invalidateQueries(['pending-validation']);
+      // the "Toate organizațiile" list and the counters on the validation page
+      queryClient.invalidateQueries(['admin-organizations']);
       // The super admin's own organization may be the one validated (the banner reads it).
       queryClient.invalidateQueries(['organization']);
     },
@@ -30,3 +33,4 @@ const usePendingMutation = (fn: (id: string) => Promise<unknown>) => {
 
 export const useValidateOrganizationMutation = () => usePendingMutation(validateOrganization);
 export const useSuspendOrganizationMutation = () => usePendingMutation(suspendOrganization);
+export const useUnsuspendOrganizationMutation = () => usePendingMutation(unsuspendOrganization);

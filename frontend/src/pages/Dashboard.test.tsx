@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { Route, useLocation } from 'react-router-dom';
@@ -103,5 +103,35 @@ describe('Dashboard (#466, #467)', () => {
 
     await userEvent.click(screen.getByText('Curățenie în parc'));
     expect(await screen.findByText('at /events/e1')).toBeInTheDocument();
+  });
+
+  it('a failed request shows an error with retry, not zero counters (audit major 8)', async () => {
+    let calls = 0;
+    server.use(
+      http.get(api('/dashboard/overview'), () => {
+        calls++;
+        return calls === 1
+          ? HttpResponse.json({ message: 'down' }, { status: 500 })
+          : HttpResponse.json({
+              activeVolunteers: 12,
+              pendingAccessRequests: 0,
+              upcomingEvents: 4,
+              pendingContracts: 2,
+              approvedHours: 340,
+              pendingHours: 0,
+            });
+      }),
+      http.get(api('/dashboard/upcoming-events'), () =>
+        HttpResponse.json({ message: 'down' }, { status: 500 }),
+      ),
+    );
+    renderPage(<Dashboard />);
+
+    await waitFor(() =>
+      expect(screen.getAllByText(t('general:error.load_entries'))).toHaveLength(2),
+    );
+    expect(screen.queryByText(t('dashboard:upcoming_events.empty'))).not.toBeInTheDocument();
+    await userEvent.click(screen.getAllByRole('button', { name: t('states:retry') })[0]);
+    expect(await screen.findByText('12')).toBeInTheDocument();
   });
 });

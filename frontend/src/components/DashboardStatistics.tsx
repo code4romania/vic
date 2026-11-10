@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router';
 import i18n from '../common/config/i18n';
 import { useDashboardOverviewQuery } from '../services/dashboard/dashboard.service';
 import StatisticsCard from './StatisticsCard';
+import Card from '../layouts/CardLayout';
+import LoadErrorContent from './LoadErrorContent';
 import { CalendarIcon, ClockIcon, DocumentTextIcon, UsersIcon } from '@heroicons/react/24/outline';
 
 const icon = (Icon: typeof UsersIcon, color: string) => (
@@ -15,8 +17,16 @@ const t = (key: string, options?: Record<string, unknown>): string =>
 // VIC 2.0, #466: Voluntari activi, Evenimente viitoare, Contracte în așteptare and Ore voluntariat.
 const DashboardStatistics = () => {
   const navigate = useNavigate();
-  const { data, isLoading } = useDashboardOverviewQuery();
+  const { data, isLoading, error, refetch } = useDashboardOverviewQuery();
   const value = (n?: number): string => (isLoading ? '' : `${n ?? 0}`);
+
+  // a failed request is not "0 volunteers"
+  if (error)
+    return (
+      <Card>
+        <LoadErrorContent onRetry={refetch} />
+      </Card>
+    );
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 xl:gap-6">

@@ -72,7 +72,7 @@ const Team = () => {
   const [action, setAction] = useState<PendingAction | null>(null);
   const [showAdd, setShowAdd] = useState<boolean>(false);
 
-  const { data: team, isLoading, error } = useTeamQuery();
+  const { data: team, isLoading, error, refetch: refetchTeam } = useTeamQuery();
   const sendInvite = useSendInviteMutation();
   const setStatus = useSetAdminStatusMutation();
   const addAdmin = useAddAdminMutation();
@@ -247,6 +247,8 @@ const Team = () => {
             columns={columns}
             data={team}
             loading={isLoading || sendInvite.isLoading || setStatus.isLoading}
+            error={error}
+            onRetry={refetchTeam}
           />
         </CardBody>
       </Card>

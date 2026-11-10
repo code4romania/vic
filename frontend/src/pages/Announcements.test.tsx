@@ -46,19 +46,18 @@ const useApi = (onList?: (url: URL) => void) =>
   );
 
 describe('Announcements (#502)', () => {
-  it('shows active, inactive, archived and total responses from the API', async () => {
+  it('counts active, inactive and archived on the tabs only, and the total responses (audit major 11)', async () => {
     useApi();
     renderPage(<Announcements query={{ limit: 10, page: 1 }} setQuery={vi.fn()} />);
 
     expect(await screen.findByText('42')).toBeInTheDocument();
     expect(screen.getByText(t('announcement:counters.responses'))).toBeInTheDocument();
-    const counter = (key: string) =>
-      screen
-        .getAllByText(t(`announcement:counters.${key}`))
-        .find((element) => element.tagName === 'P')?.nextSibling;
-    expect(counter('active')).toHaveTextContent('3');
-    expect(counter('inactive')).toHaveTextContent('1');
-    expect(counter('archived')).toHaveTextContent('5');
+    const tab = (status: string) =>
+      screen.getByRole('tab', { name: new RegExp(t(`announcement:tabs.${status}`)) });
+    await waitFor(() => expect(tab('active')).toHaveTextContent('3'));
+    expect(tab('inactive')).toHaveTextContent('1');
+    expect(tab('archived')).toHaveTextContent('5');
+    expect(screen.queryByText(t('announcement:counters.info.active'))).not.toBeInTheDocument();
   });
 
   it('lists the active announcements as cards with volunteers needed and responses', async () => {

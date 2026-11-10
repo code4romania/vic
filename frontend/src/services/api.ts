@@ -24,10 +24,12 @@ const NO_REFRESH_ROUTES = [
 const isPublicAuthRoute = (url = ''): boolean =>
   NO_REFRESH_ROUTES.some((pattern) => pattern.test(url.replace(/^\/+/, '')));
 
-// Listeners: the AuthContext logs out on a failed refresh; the maintenance screen listens for 503.
+// Listeners: the AuthContext logs out on a failed refresh; the maintenance screen listens for 503;
+// a 403 AUTH_004 (organization suspended, account disabled) ends the session on a dedicated screen.
 type Listener = () => void;
 const sessionEndedListeners = new Set<Listener>();
 const maintenanceListeners = new Set<Listener>();
+const accessBlockedListeners = new Set<Listener>();
 
 export const apiEvents = {
   onSessionEnded: (listener: Listener): (() => void) => {
@@ -37,6 +39,10 @@ export const apiEvents = {
   onMaintenance: (listener: Listener): (() => void) => {
     maintenanceListeners.add(listener);
     return () => maintenanceListeners.delete(listener);
+  },
+  onAccessBlocked: (listener: Listener): (() => void) => {
+    accessBlockedListeners.add(listener);
+    return () => accessBlockedListeners.delete(listener);
   },
 };
 
@@ -80,6 +86,20 @@ API.interceptors.response.use(
     // The cutover window: the API answers 503 MAINTENANCE to everyone outside the allow-list (R2).
     if (status === 503 && error.response?.data?.code_error === 'MAINTENANCE') {
       maintenanceListeners.forEach((listener) => listener());
+      throw error;
+    }
+
+    // The organization was suspended (or the admin disabled) mid-session: every request would fail
+    // the same way, so the session ends once instead of a toast on every page. On the public auth
+    // routes and the login forms (no bearer yet) AUTH_004 is an answer the page shows itself.
+    if (
+      status === 403 &&
+      error.response?.data?.code_error === 'AUTH_004' &&
+      !!original?.headers?.Authorization &&
+      !isPublicAuthRoute(original?.url)
+    ) {
+      tokenStore.clear();
+      accessBlockedListeners.forEach((listener) => listener());
       throw error;
     }
 

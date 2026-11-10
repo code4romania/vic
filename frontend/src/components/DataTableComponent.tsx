@@ -1,16 +1,36 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import DataTable, { SortOrder, TableColumn } from 'react-data-table-component';
 import { classNames } from '../common/utils/utils';
 import i18n from '../common/config/i18n';
 import EmptyContent from './EmptyContent';
 import LoadingContent from './LoadingContent';
+import LoadErrorContent from './LoadErrorContent';
 import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import { PaginationConfig } from '../common/constants/pagination';
+
+// Phones (the table library's "sm" breakpoint): the columns marked hide: Media.SM are gone, and
+// the rest drop their desktop minimum widths so status and the "⋮" menu stay on screen.
+const NARROW = '(max-width: 599px)';
+
+const useNarrowScreen = (): boolean => {
+  const query = typeof window !== 'undefined' && window.matchMedia?.(NARROW);
+  const [narrow, setNarrow] = useState<boolean>(!!query && query.matches);
+  useEffect(() => {
+    if (!query) return;
+    const onChange = (event: MediaQueryListEvent) => setNarrow(event.matches);
+    query.addEventListener?.('change', onChange);
+    return () => query.removeEventListener?.('change', onChange);
+  }, []);
+  return narrow;
+};
 
 interface DataTableProps<T> {
   columns: TableColumn<T>[];
   data?: T[];
   loading?: boolean;
+  // The request failed: show the error and a retry button instead of "no data"
+  error?: unknown;
+  onRetry?: () => void;
   pagination?: boolean;
   sortServer?: boolean;
   paginationPerPage?: number;
@@ -27,6 +47,8 @@ const DataTableComponent = <T extends object>({
   columns,
   data,
   loading,
+  error,
+  onRetry,
   pagination,
   sortServer,
   paginationPerPage,
@@ -38,15 +60,21 @@ const DataTableComponent = <T extends object>({
   defaultSortFieldId,
   defaultSortAsc,
 }: DataTableProps<T>) => {
+  const narrow = useNarrowScreen();
+  const responsiveColumns = useMemo(
+    () => (narrow ? columns.map((column) => ({ ...column, minWidth: undefined })) : columns),
+    [narrow, columns],
+  );
+
   return (
     <DataTable
       className={classNames(
-        !loading && data?.length ? 'border-cool-gray-200' : '',
+        !loading && !error && data?.length ? 'border-cool-gray-200' : '',
         `rdt_TableWrapper`,
       )}
       noHeader
-      columns={columns}
-      data={data || []}
+      columns={responsiveColumns}
+      data={error ? [] : data || []}
       progressPending={loading}
       pagination={pagination}
       paginationServer={pagination}
@@ -64,7 +92,13 @@ const DataTableComponent = <T extends object>({
       paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
       onChangePage={onChangePage}
       onChangeRowsPerPage={onChangeRowsPerPage}
-      noDataComponent={<EmptyContent description={i18n.t('general:empty_table')} />}
+      noDataComponent={
+        error ? (
+          <LoadErrorContent onRetry={onRetry} />
+        ) : (
+          <EmptyContent description={i18n.t('general:empty_table')} />
+        )
+      }
       progressComponent={<LoadingContent />}
       defaultSortFieldId={defaultSortFieldId}
       defaultSortAsc={defaultSortAsc}

@@ -18,6 +18,7 @@ import LoadingContent from './LoadingContent';
 import RejectTextareaModal from './RejectTextareaModal';
 import SidePanel from './SidePanel';
 import EditActivityLog from './EditActivityLog';
+import { useValidationGate } from '../hooks/useValidationGate';
 
 interface ActivityLogSidePanelProps {
   isOpen: boolean;
@@ -35,6 +36,7 @@ const ActivityLogSidePanel = ({ isOpen, onClose, activityLogId }: ActivityLogSid
   // reject modal state
   const [isRejectModalOpen, setIsRejectModalOpen] = useState<boolean>(false);
 
+  const { gate } = useValidationGate();
   // mutations
   const { mutateAsync: approveActivityLog, isLoading: isApproveLoading } =
     useApproveActivityLogMutation();
@@ -139,7 +141,7 @@ const ActivityLogSidePanel = ({ isOpen, onClose, activityLogId }: ActivityLogSid
             <button
               className="bg-white rounded-md text-cool-gray-900 hover:text-cool-gray-500 focus:outline-none focus:shadow-blue"
               onClick={onEdit}
-              aria-label="edit-activity-log"
+              aria-label={`${i18n.t('general:edit', { item: '' })}`}
               type="button"
             >
               <PencilIcon className="h-5 w-5" />
@@ -148,7 +150,7 @@ const ActivityLogSidePanel = ({ isOpen, onClose, activityLogId }: ActivityLogSid
           <button
             className="bg-white rounded-md text-cool-gray-900 hover:text-cool-gray-500 focus:outline-none focus:shadow-blue"
             onClick={onCloseSidePanel}
-            aria-label="close-modal"
+            aria-label={`${i18n.t('general:close')}`}
             type="button"
           >
             <XMarkIcon className="h-6 w-6" />
@@ -242,6 +244,7 @@ const ActivityLogSidePanel = ({ isOpen, onClose, activityLogId }: ActivityLogSid
                   label={i18n.t('general:approve')}
                   className="btn-primary"
                   onClick={onApprove.bind(null, activityLog.id)}
+                  {...gate}
                   aria-label={`${i18n.t('general:approve')}`}
                   icon={<CheckIcon className="h-5 w-5" />}
                   type="button"
@@ -261,7 +264,6 @@ const ActivityLogSidePanel = ({ isOpen, onClose, activityLogId }: ActivityLogSid
                 label={i18n.t('activity_log:side_panel.reject')}
                 className="btn-text-danger"
                 onClick={setIsRejectModalOpen.bind(null, true)}
-                aria-label={`${i18n.t('general:reject')}`}
                 icon={<XMarkIcon className="h-5 w-5" />}
                 type="button"
               />
@@ -271,7 +273,7 @@ const ActivityLogSidePanel = ({ isOpen, onClose, activityLogId }: ActivityLogSid
                 label={i18n.t('activity_log:side_panel.approve')}
                 className="btn-primary"
                 onClick={onApprove.bind(null, activityLog.id)}
-                aria-label={`${i18n.t('general:reject')}`}
+                {...gate}
                 icon={<CheckIcon className="h-5 w-5" />}
                 type="button"
               />

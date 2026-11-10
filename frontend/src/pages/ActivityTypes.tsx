@@ -7,6 +7,7 @@ import CardHeader from '../components/CardHeader';
 import CardBody from '../components/CardBody';
 import EmptyContent from '../components/EmptyContent';
 import LoadingContent from '../components/LoadingContent';
+import LoadErrorContent from '../components/LoadErrorContent';
 import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useActivityTypesQuery } from '../services/activity-type/activity-type.service';
@@ -36,7 +37,10 @@ const ActivityTypes = ({ query, setQuery }: ActivityTypesProps) => {
     data: activityTypes,
     error: activityTypesError,
     isLoading: isFetchingActivityTypes,
+    refetch,
   } = useActivityTypesQuery(query?.search as string, query?.branch, query?.department, query?.role);
+  // the counters describe the whole organization: they do not change with the search or filters
+  const { data: allActivityTypes } = useActivityTypesQuery();
 
   // error handling
   useEffect(() => {
@@ -58,38 +62,30 @@ const ActivityTypes = ({ query, setQuery }: ActivityTypesProps) => {
     setBranch(undefined);
     setDepartment(undefined);
     setRole(undefined);
-    setQuery({}, 'push');
+    setQuery({}, 'replace');
   };
 
   const onSearch = (search: string) => {
-    setQuery({
-      search,
-    });
+    setQuery({ search: search || undefined }, 'replaceIn');
   };
 
   const onSetBranchFilter = (branch: SelectItem<string> | undefined) => {
     setBranch(branch);
-    setQuery({
-      branch: branch?.value,
-    });
+    setQuery({ branch: branch?.value }, 'replaceIn');
   };
 
   const onSetDepartmentFilter = (department: SelectItem<string> | undefined) => {
     setDepartment(department);
-    setQuery({
-      department: department?.value,
-    });
+    setQuery({ department: department?.value }, 'replaceIn');
   };
 
   const onSetRoleFilter = (role: SelectItem<string> | undefined) => {
     setRole(role);
-    setQuery({
-      role: role?.value,
-    });
+    setQuery({ role: role?.value }, 'replaceIn');
   };
 
   const countOf = (status: ActivityTypeStatus) =>
-    activityTypes ? `${activityTypes.filter((type) => type.status === status).length}` : '-';
+    allActivityTypes ? `${allActivityTypes.filter((type) => type.status === status).length}` : '-';
 
   const counters = [
     { status: ActivityTypeStatus.ACTIVE, Icon: CheckCircleIcon, color: 'text-figure-green' },
@@ -131,7 +127,11 @@ const ActivityTypes = ({ query, setQuery }: ActivityTypesProps) => {
         searchValue={query?.search}
         onResetFilters={onResetFilters}
         searchPlaceholder={`${i18n.t('activity_types:page.search')}`}
-        results={i18n.t('activity_types:page.found', { count: activityTypes?.length ?? 0 })}
+        results={
+          activityTypesError
+            ? undefined
+            : i18n.t('activity_types:page.found', { count: activityTypes?.length ?? 0 })
+        }
       >
         <OrganizationStructureSelect
           label={`${i18n.t('division:entity.branch')}`}
@@ -159,6 +159,11 @@ const ActivityTypes = ({ query, setQuery }: ActivityTypesProps) => {
         />
       </DataTableFilters>
       {isFetchingActivityTypes && <LoadingContent />}
+      {!!activityTypesError && !isFetchingActivityTypes && (
+        <Card>
+          <LoadErrorContent onRetry={refetch} />
+        </Card>
+      )}
       {activityTypes && !isFetchingActivityTypes && (
         <Card>
           <CardHeader>

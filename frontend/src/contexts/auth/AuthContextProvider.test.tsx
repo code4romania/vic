@@ -5,8 +5,9 @@ import { http, HttpResponse } from 'msw';
 import { QueryClientProvider } from 'react-query';
 import AuthContextProvider from './AuthContextProvider';
 import { useAuth } from '../../hooks/useAuth';
-import { ADMIN, api, server } from '../../test/server';
-import { newQueryClient } from '../../test/render';
+import { ADMIN, api, businessError, server } from '../../test/server';
+import { newQueryClient, t } from '../../test/render';
+import API from '../../services/api';
 import { tokenStore } from '../../services/auth/token.store';
 
 const Probe = () => {
@@ -78,5 +79,31 @@ describe('AuthContextProvider', () => {
     await waitFor(() => expect(screen.getByText('out')).toBeInTheDocument());
     expect(tokenStore.get()).toBeNull();
     expect(queryClient.getQueryData(['organization'])).toBeUndefined();
+  });
+
+  it('403 AUTH_004 mid-session (organization suspended) logs out once and shows why (major 10)', async () => {
+    const logouts = vi.fn();
+    server.use(
+      http.post(api('/auth/web/refresh'), () =>
+        HttpResponse.json({ accessToken: 'boot', expiresIn: 900 }),
+      ),
+      http.get(api('/volunteer'), () => businessError(403, 'AUTH_004')),
+      http.post(api('/auth/web/logout'), () => {
+        logouts();
+        return new HttpResponse(null, { status: 204 });
+      }),
+    );
+    const queryClient = renderProvider();
+    await screen.findByText('in');
+
+    await Promise.allSettled([API.get('/volunteer'), API.get('/volunteer')]);
+
+    expect(
+      await screen.findByRole('heading', { name: t('auth:access_blocked.title') }),
+    ).toBeInTheDocument();
+    expect(screen.queryByText('in')).not.toBeInTheDocument();
+    expect(tokenStore.get()).toBeNull();
+    expect(queryClient.getQueryData(['organization'])).toBeUndefined();
+    await waitFor(() => expect(logouts).toHaveBeenCalledTimes(1));
   });
 });

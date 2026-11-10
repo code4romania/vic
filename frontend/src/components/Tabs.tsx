@@ -45,7 +45,9 @@ const Tabs = <T extends React.Key>({
 
   return (
     <div className="flex flex-col gap-5">
-      <nav
+      {/* real tab buttons: Tab reaches them, Enter/Space selects, screen readers hear the state */}
+      <div
+        role="tablist"
         className={classNames(
           segmented ? 'p-1 rounded-xl bg-cool-gray-200/70' : 'flex-wrap',
           'hidden lg:flex gap-1',
@@ -54,11 +56,13 @@ const Tabs = <T extends React.Key>({
         {tabs.map((tab) => {
           const active = activeTab?.key === tab.key;
           return (
-            <a
+            <button
+              type="button"
+              role="tab"
               id={`${tab.value.split(' ').join('-')}__tab`}
               key={tab.key}
               aria-label={labelOf(tab)}
-              aria-current={active ? 'page' : undefined}
+              aria-selected={active}
               onClick={onTabClick.bind(null, tab)}
               className={classNames(
                 segmented
@@ -68,7 +72,7 @@ const Tabs = <T extends React.Key>({
                   : active
                     ? 'bg-navy text-white hover:text-white'
                     : 'bg-white text-cool-gray-700 ring-1 ring-inset ring-cool-gray-300 hover:bg-cool-gray-50 hover:text-cool-gray-900',
-                'min-w-fit flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-robotoMedium cursor-pointer select-none',
+                'min-w-fit flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-robotoMedium cursor-pointer select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-navy',
               )}
             >
               {tab.value}
@@ -86,10 +90,10 @@ const Tabs = <T extends React.Key>({
                   {tab.count}
                 </span>
               )}
-            </a>
+            </button>
           );
         })}
-      </nav>
+      </div>
       <div className="lg:hidden">
         <Select
           options={tabs.map((tab) => ({ key: tab.key, value: labelOf(tab) }))}

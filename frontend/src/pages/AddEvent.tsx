@@ -14,6 +14,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAddEventMutation } from '../services/event/event.service';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
+import { useValidationGate } from '../hooks/useValidationGate';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { EventStatus } from '../common/enums/event-status';
 
@@ -64,6 +65,7 @@ export const eventValidationSchema = yup.object({
 
 const AddEvent = () => {
   const navigate = useNavigate();
+  const { gate } = useValidationGate();
   const { mutateAsync: addEvent, isLoading: isAddEventLoading } = useAddEventMutation();
 
   const {
@@ -130,12 +132,14 @@ const AddEvent = () => {
               label={i18n.t('general:save_draft')}
               icon={<BookmarkIcon className="h-5 w-5 text-cool-gray-500" />}
               onClick={handleSubmit(onSaveAsDraft)}
+              {...gate}
             />
             <Button
               className="btn-primary"
               label={i18n.t('general:publish')}
               icon={<CloudArrowUpIcon className="h-5 w-5" />}
               onClick={handleSubmit(onPublish)}
+              {...gate}
             />
           </div>
         </Card>

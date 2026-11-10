@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
 import PageLayout from '../layouts/PageLayout';
@@ -15,8 +15,10 @@ import InitialsAvatar from '../components/InitialsAvatar';
 import Button from '../components/Button';
 import { SelectItem } from '../components/Select';
 import SelectFilter from '../containers/SelectFilter';
+import ConfirmationModal from '../components/ConfirmationModal';
 import Forbidden from './Forbidden';
 import { useAuth } from '../hooks/useAuth';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { formatDate } from '../common/utils/utils';
 import {
   AdminOrganizationStatus,
@@ -27,10 +29,22 @@ import {
   useAdminOrganizationsQuery,
   useAdminVolunteersQuery,
 } from '../services/admin/admin-lists.service';
+import {
+  useSuspendOrganizationMutation,
+  useUnsuspendOrganizationMutation,
+} from '../services/admin/admin-organizations.service';
 
 type AdminList = 'organizations' | 'volunteers';
 const LISTS: AdminList[] = ['organizations', 'volunteers'];
 const STATUSES: AdminOrganizationStatus[] = ['pending', 'active', 'suspended'];
+const DEFAULT_LIMIT = 10;
+
+type RowAction = { kind: 'suspend' | 'unsuspend'; organization: IAdminOrganizationListItem };
+
+const positive = (value: string | null, fallback: number): number => {
+  const number = Number(value);
+  return Number.isInteger(number) && number > 0 ? number : fallback;
+};
 
 const STATUS_TONES: Record<AdminOrganizationStatus, BadgeTone> = {
   pending: 'amber',
@@ -53,12 +67,34 @@ const SuperAdminLists = () => {
   const params = useParams<{ list: AdminList }>();
   const list: AdminList = params.list === 'volunteers' ? 'volunteers' : 'organizations';
 
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const [search, setSearch] = useState<string>();
-  const [status, setStatus] = useState<AdminOrganizationStatus>();
+  // The filters live in the URL (replace, not push): a link such as "Vezi toate" can open the list
+  // already filtered, and a reload or the back button keeps them.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = positive(searchParams.get('page'), 1);
+  const limit = positive(searchParams.get('limit'), DEFAULT_LIMIT);
+  const search = searchParams.get('search') || undefined;
+  const statusParam = searchParams.get('status') as AdminOrganizationStatus | null;
+  const status = statusParam && STATUSES.includes(statusParam) ? statusParam : undefined;
 
-  const query = { page, limit, search: search || undefined };
+  const updateParams = (updates: Record<string, string | number | undefined>) =>
+    setSearchParams(
+      (previous) => {
+        const next = new URLSearchParams(previous);
+        Object.entries(updates).forEach(([key, value]) =>
+          value === undefined || value === '' ? next.delete(key) : next.set(key, String(value)),
+        );
+        if (next.get('page') === '1') next.delete('page');
+        if (next.get('limit') === String(DEFAULT_LIMIT)) next.delete('limit');
+        return next;
+      },
+      { replace: true },
+    );
+
+  const [action, setAction] = useState<RowAction | null>(null);
+  const suspend = useSuspendOrganizationMutation();
+  const unsuspend = useUnsuspendOrganizationMutation();
+
+  const query = { page, limit, search };
   const organizations = useAdminOrganizationsQuery(
     { ...query, status },
     isSuperAdmin && list === 'organizations',
@@ -73,11 +109,18 @@ const SuperAdminLists = () => {
     value: t(`status.${key}`),
   }));
 
-  const reset = () => {
-    setPage(1);
-    setSearch(undefined);
-    setStatus(undefined);
+  const reset = () => updateParams({ page: undefined, search: undefined, status: undefined });
+
+  const confirm = () => {
+    if (!action) return;
+    const { kind, organization } = action;
+    setAction(null);
+    (kind === 'suspend' ? suspend : unsuspend).mutate(organization.id, {
+      onSuccess: () => useSuccessToast(t(`toast.${kind}`, { name: organization.name })),
+      onError: () => useErrorToast(t('errors.generic')),
+    });
   };
+  const busy = suspend.isLoading || unsuspend.isLoading;
 
   const organizationColumns: TableColumn<IAdminOrganizationListItem>[] = [
     {
@@ -132,15 +175,29 @@ const SuperAdminLists = () => {
       name: '',
       minWidth: '9rem',
       right: true,
-      cell: (row) =>
-        row.status === 'pending' ? (
+      cell: (row) => {
+        if (row.status === 'pending')
+          return (
+            <Button
+              type="button"
+              className="btn-text-primary px-2"
+              label={t('review')}
+              aria-label={`${t('review')} ${row.name}`}
+              onClick={() => navigate('/admin/validation')}
+            />
+          );
+        const kind = row.status === 'suspended' ? 'unsuspend' : 'suspend';
+        return (
           <Button
             type="button"
-            className="btn-text-primary px-2"
-            label={t('review')}
-            onClick={() => navigate('/admin/validation')}
+            className={kind === 'suspend' ? 'btn-text-danger px-2' : 'btn-text-primary px-2'}
+            label={t(`actions.${kind}`)}
+            aria-label={`${t(`actions.${kind}`)} ${row.name}`}
+            disabled={busy}
+            onClick={() => setAction({ kind, organization: row })}
           />
-        ) : null,
+        );
+      },
     },
   ];
 
@@ -195,11 +252,8 @@ const SuperAdminLists = () => {
     paginationPerPage: limit,
     paginationTotalRows: total,
     paginationDefaultPage: page,
-    onChangePage: setPage,
-    onChangeRowsPerPage: (rows: number) => {
-      setLimit(rows);
-      setPage(1);
-    },
+    onChangePage: (next: number) => updateParams({ page: next }),
+    onChangeRowsPerPage: (rows: number) => updateParams({ limit: rows, page: undefined }),
   });
 
   const current = list === 'organizations' ? organizations : volunteers;
@@ -211,19 +265,13 @@ const SuperAdminLists = () => {
       <Tabs<AdminList>
         tabs={tabs}
         defaultTab={tabs.find((tab) => tab.key === list)}
-        onClick={(key) => {
-          reset();
-          navigate(`/admin/${key}`);
-        }}
+        onClick={(key) => navigate(`/admin/${key}`)}
       >
         <DataTableFilters
           key={list}
           searchPlaceholder={t(`search.${list}`)}
           searchValue={search}
-          onSearch={(value) => {
-            setSearch(value);
-            setPage(1);
-          }}
+          onSearch={(value) => updateParams({ search: value, page: undefined })}
           onResetFilters={reset}
           results={found !== undefined && <span>{t(`found.${list}`, { count: found })}</span>}
         >
@@ -233,10 +281,7 @@ const SuperAdminLists = () => {
               options={statusOptions}
               defaultValue={status}
               placeholder={t('status.all')}
-              onChange={(item) => {
-                setStatus(item?.key as AdminOrganizationStatus | undefined);
-                setPage(1);
-              }}
+              onChange={(item) => updateParams({ status: item?.key, page: undefined })}
               allowDeselect
             />
           )}
@@ -248,6 +293,8 @@ const SuperAdminLists = () => {
                 columns={organizationColumns}
                 data={organizations.data?.items}
                 loading={organizations.isLoading}
+                error={organizations.error}
+                onRetry={organizations.refetch}
                 {...pagination(organizations.data?.meta.totalItems)}
               />
             ) : (
@@ -255,12 +302,24 @@ const SuperAdminLists = () => {
                 columns={volunteerColumns}
                 data={volunteers.data?.items}
                 loading={volunteers.isLoading}
+                error={volunteers.error}
+                onRetry={volunteers.refetch}
                 {...pagination(volunteers.data?.meta.totalItems)}
               />
             )}
           </CardBody>
         </Card>
       </Tabs>
+      {action && (
+        <ConfirmationModal
+          title={t(`confirm.${action.kind}.title`)}
+          description={t(`confirm.${action.kind}.description`, { name: action.organization.name })}
+          confirmBtnLabel={t(`actions.${action.kind}`)}
+          confirmBtnClassName={action.kind === 'suspend' ? 'btn-danger' : 'btn-primary'}
+          onClose={() => setAction(null)}
+          onConfirm={confirm}
+        />
+      )}
     </PageLayout>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useQueryClient } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -8,6 +8,7 @@ import * as authApi from '../../services/auth/auth.api';
 import { apiEvents, refreshAccessToken } from '../../services/api';
 import { tokenStore } from '../../services/auth/token.store';
 import Maintenance from '../../pages/Maintenance';
+import AccessBlocked from '../../pages/AccessBlocked';
 
 // The web session: the access token in memory, the refresh token in the httpOnly vic_refresh cookie.
 // On load: refresh, then /auth/web/me; any failure means logged out.
@@ -15,6 +16,9 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [profile, setProfile] = useState<IAdminProfile>();
   const [maintenance, setMaintenance] = useState<boolean>(false);
+  const [accessBlocked, setAccessBlocked] = useState<boolean>(false);
+  // parallel requests all get AUTH_004: end the session only once
+  const blockedRef = useRef<boolean>(false);
   const queryClient = useQueryClient();
   const { t } = useTranslation('auth');
 
@@ -34,9 +38,21 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       });
       queryClient.clear();
     });
+    // 403 AUTH_004 mid-session (organization suspended, admin disabled): log out, drop the cached
+    // data and show one screen that says why, instead of an error toast on every page.
+    const offAccessBlocked = apiEvents.onAccessBlocked(() => {
+      if (blockedRef.current) return;
+      blockedRef.current = true;
+      setAccessBlocked(true);
+      setProfile(undefined);
+      queryClient.clear();
+      // best effort: the API already revoked the sessions on suspension
+      authApi.logout().catch(() => undefined);
+    });
     return () => {
       offMaintenance();
       offSessionEnded();
+      offAccessBlocked();
     };
   }, [queryClient, t]);
 
@@ -78,6 +94,10 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     return <Maintenance onRetry={() => window.location.reload()} />;
   }
 
+  if (accessBlocked) {
+    return <AccessBlocked onBackToLogin={() => window.location.assign('/login')} />;
+  }
+
   return (
     <AuthContext.Provider
       value={{ isAuthenticated, profile, isSuperAdmin, logout, startSession, refreshProfile }}
@@ -102,7 +122,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
               fill="currentFill"
             />
           </svg>
-          <span className="sr-only">Loading...</span>
+          <span className="sr-only">{t('states:loading')}</span>
         </div>
       )}
     </AuthContext.Provider>

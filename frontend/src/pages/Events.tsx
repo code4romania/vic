@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useQueryClient } from 'react-query';
 import {
   ArrowDownTrayIcon,
-  CalendarIcon,
-  ClockIcon,
   CloudArrowUpIcon,
   DocumentMinusIcon,
   EyeIcon,
@@ -12,7 +10,7 @@ import {
   TrashIcon,
   UsersIcon,
 } from '@heroicons/react/24/outline';
-import { SortOrder, TableColumn } from 'react-data-table-component';
+import { SortOrder, TableColumn, Media } from 'react-data-table-component';
 import i18n from '../common/config/i18n';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
@@ -24,6 +22,7 @@ import Popover from '../components/Popover';
 import { SelectItem } from '../components/Select';
 import Tabs from '../components/Tabs';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
+import { useValidationGate } from '../hooks/useValidationGate';
 import Card from '../layouts/CardLayout';
 import PageLayout from '../layouts/PageLayout';
 import { EventState } from '../common/enums/event-state.enum';
@@ -79,6 +78,7 @@ const nameColumn: TableColumn<IEvent> = {
 const periodColumn: TableColumn<IEvent> = {
   id: 'startDate',
   name: i18n.t('events:table.period'),
+  hide: Media.SM,
   minWidth: '13rem',
   grow: 1,
   sortable: true,
@@ -88,6 +88,8 @@ const periodColumn: TableColumn<IEvent> = {
 const locationColumn: TableColumn<IEvent> = {
   id: 'location',
   name: i18n.t('events:table.location'),
+  // tablets and phones: name, status and the actions stay visible
+  hide: Media.MD,
   minWidth: '10rem',
   grow: 1,
   cell: (row: IEvent) => <EventLocation location={row.location} />,
@@ -96,6 +98,7 @@ const locationColumn: TableColumn<IEvent> = {
 const departmentsColumn: TableColumn<IEvent> = {
   id: 'target',
   name: i18n.t('events:table.departments'),
+  hide: Media.MD,
   minWidth: '9rem',
   grow: 1,
   cell: (row: IEvent) => <EventTargets event={row} />,
@@ -104,6 +107,7 @@ const departmentsColumn: TableColumn<IEvent> = {
 const participantsColumn: TableColumn<IEvent> = {
   id: 'going',
   name: i18n.t('events:table.participants'),
+  hide: Media.MD,
   minWidth: '8rem',
   grow: 1,
   cell: (row: IEvent) => (
@@ -115,6 +119,7 @@ const participantsColumn: TableColumn<IEvent> = {
 const hoursColumn: TableColumn<IEvent> = {
   id: 'hours',
   name: i18n.t('events:table.hours'),
+  hide: Media.MD,
   minWidth: '7rem',
   grow: 0,
   cell: (row: IEvent) => (
@@ -144,6 +149,7 @@ const statusColumn: TableColumn<IEvent> = {
 };
 
 const Events = ({ query, setQuery }: EventsProps) => {
+  const { gate } = useValidationGate();
   const [showDeleteEvent, setShowDeleteEvent] = useState<null | IEvent>();
 
   const navigate = useNavigate();
@@ -410,11 +416,9 @@ const Events = ({ query, setQuery }: EventsProps) => {
     );
   };
 
-  const COUNTERS = [
-    { key: 'upcoming', Icon: CalendarIcon, color: 'text-figure-green' },
-    { key: 'ongoing', Icon: ClockIcon, color: 'text-navy' },
-    { key: 'participants', Icon: UsersIcon, color: 'text-figure-teal' },
-  ] as const;
+  // audit, major 11: one number per thing. Upcoming / ongoing / past are counted on the tabs (with
+  // the filters applied), so the cards that repeated them and the "N evenimente găsite" line are gone.
+  const COUNTERS = [{ key: 'participants', Icon: UsersIcon, color: 'text-figure-teal' }] as const;
 
   return (
     <PageLayout>
@@ -426,6 +430,7 @@ const Events = ({ query, setQuery }: EventsProps) => {
             icon={<PlusIcon className="h-5 w-5" />}
             className="btn-primary"
             onClick={onAddEvent}
+            {...gate}
           />
         }
       >
@@ -453,7 +458,6 @@ const Events = ({ query, setQuery }: EventsProps) => {
         onResetFilters={onResetFilters}
         results={
           <>
-            <span>{i18n.t('events:page.found', { count: events?.meta?.totalItems ?? 0 })}</span>
             <Button
               label={i18n.t('general:download_table')}
               icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
@@ -478,7 +482,7 @@ const Events = ({ query, setQuery }: EventsProps) => {
       <Tabs<EventState> tabs={tabs} onClick={onTabClick} defaultTab={currentTab(query?.eventState)}>
         <Card>
           <CardBody>
-            {!isEventsLoading && !events?.items?.length ? (
+            {!isEventsLoading && !eventsError && !events?.items?.length ? (
               <p className="py-12 text-center text-cool-gray-500">{i18n.t('events:page.empty')}</p>
             ) : (
               <DataTableComponent
@@ -496,6 +500,8 @@ const Events = ({ query, setQuery }: EventsProps) => {
                 loading={
                   isEventsLoading || isArchivingEvent || isDeletingEvent || isPublishingEvent
                 }
+                error={eventsError}
+                onRetry={refetch}
                 pagination
                 paginationPerPage={query.limit}
                 paginationTotalRows={events?.meta?.totalItems}

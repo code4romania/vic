@@ -19,6 +19,7 @@ import RejectRegistrationModal from '../components/RejectRegistrationModal';
 import { SelectItem } from '../components/Select';
 import Tabs from '../components/Tabs';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
+import { useValidationGate } from '../hooks/useValidationGate';
 import Card from '../layouts/CardLayout';
 import CellLayout from '../layouts/CellLayout';
 import PageLayout from '../layouts/PageLayout';
@@ -27,7 +28,7 @@ import {
   useEventRegistrationsQuery,
 } from '../services/event/event.service';
 
-const PAGE_SIZE = 10;
+const DEFAULT_PAGE_SIZE = 10;
 
 const tabs: SelectItem<EventRegistrationStatus>[] = [
   {
@@ -135,13 +136,15 @@ const EventRegistrations = ({ embedded }: { embedded?: boolean } = {}) => {
   });
   const status = isStatus(query.status) ? query.status : EventRegistrationStatus.PENDING;
   const [page, setPage] = useState<number>(1);
+  const [limit, setLimit] = useState<number>(DEFAULT_PAGE_SIZE);
+  const { gate } = useValidationGate();
   const [rejecting, setRejecting] = useState<IEventRegistration>();
 
   const queryClient = useQueryClient();
-  const { data, isLoading } = useEventRegistrationsQuery({
+  const { data, isLoading, error, refetch } = useEventRegistrationsQuery({
     status,
     page,
-    limit: PAGE_SIZE,
+    limit,
     search: query.search || undefined,
   });
   const { mutate: decide, isLoading: isDeciding } = useDecideEventRegistrationMutation();
@@ -175,6 +178,7 @@ const EventRegistrations = ({ embedded }: { embedded?: boolean } = {}) => {
             label: i18n.t('events:registrations.approve'),
             icon: <CheckIcon className="menu-icon" />,
             onClick: () => onDecide(row),
+            ...gate,
           },
         ]
       : []),
@@ -209,7 +213,10 @@ const EventRegistrations = ({ embedded }: { embedded?: boolean } = {}) => {
             setPage(1);
             setQuery({ search: search || undefined }, 'replaceIn');
           }}
-          onResetFilters={() => setQuery({ search: undefined }, 'replaceIn')}
+          onResetFilters={() => {
+            setPage(1);
+            setQuery({ search: undefined }, 'replaceIn');
+          }}
         />
         <Card>
           <CardHeader>
@@ -230,11 +237,17 @@ const EventRegistrations = ({ embedded }: { embedded?: boolean } = {}) => {
               ]}
               data={data?.items}
               loading={isLoading || isDeciding}
+              error={error}
+              onRetry={refetch}
               pagination
-              paginationPerPage={PAGE_SIZE}
+              paginationPerPage={limit}
               paginationTotalRows={data?.meta?.totalItems}
               paginationDefaultPage={page}
               onChangePage={setPage}
+              onChangeRowsPerPage={(rows) => {
+                setLimit(rows);
+                setPage(1);
+              }}
             />
           </CardBody>
         </Card>
