@@ -36,7 +36,6 @@ export const DocumentRow = ({ contract, onPress, busy, divider = true }: Documen
   const status = contract.expiringSoon
     ? { tone: 'wait' as StatusTone, label: 'expiring_soon' }
     : STATUS[contract.status];
-  const tone = colors.status[status?.tone ?? 'neutral'];
   // #490: a certificate is issued on a day and never expires
   const isCertificate = contract.type === DocumentType.CERTIFICATE;
   const period = isCertificate
@@ -55,20 +54,24 @@ export const DocumentRow = ({ contract, onPress, busy, divider = true }: Documen
       accessibilityLabel={`${title}, ${period}, ${t('download')}`}
       testID={`document-row-${contract.id}`}
     >
-      <View style={[styles.tile, { backgroundColor: tone.bg }]}>
-        <VText style={[styles.tileText, { color: tone.fg }]}>
+      {/* the status lives in the badge; the file tile stays neutral (no pastel blocks) */}
+      <View style={styles.tile}>
+        <VText style={styles.tileText}>
           {(contract.contractFileName?.split('.').pop() || 'pdf').toUpperCase()}
         </VText>
       </View>
       <View style={styles.text}>
-        <VText variant="h3" style={styles.title} numberOfLines={1}>
+        {/* number and period get the full width; the badge sits on its own line (SE, 375pt) */}
+        <VText variant="h3" style={styles.title} numberOfLines={2}>
           {title}
         </VText>
-        <VText variant="cap" numberOfLines={1}>
-          {period}
-        </VText>
+        <VText variant="cap">{period}</VText>
+        {status && (
+          <View style={styles.badge}>
+            <Badge label={`${t(status.label)}`} tone={status.tone} />
+          </View>
+        )}
       </View>
-      {status && <Badge label={`${t(status.label)}`} tone={status.tone} />}
       {busy && <ActivityIndicator color={colors.navy} />}
     </PressableScale>
   );
@@ -85,8 +88,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: colors.soft,
   },
-  tileText: { fontFamily: fonts.bold, fontSize: 11, letterSpacing: 0.4 },
+  tileText: { fontFamily: fonts.bold, fontSize: 11, letterSpacing: 0.4, color: colors.navy },
+  badge: { flexDirection: 'row', marginTop: 4 },
   text: { flex: 1, gap: 3, minWidth: 0 },
   title: { fontSize: 15 },
 });

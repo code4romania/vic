@@ -36,7 +36,7 @@ export const LogRow = ({ log, status, onPress }: LogRowProps) => {
         <VText style={styles.tileText}>{`${log.hours}h`}</VText>
       </View>
       <View style={styles.text}>
-        <VText variant="h3" style={styles.title} numberOfLines={1}>
+        <VText variant="h3" style={styles.title} numberOfLines={2}>
           {title}
         </VText>
         <VText variant="cap" numberOfLines={1}>
