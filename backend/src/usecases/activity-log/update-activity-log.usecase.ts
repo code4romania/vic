@@ -52,7 +52,7 @@ export class UpdateActivityLogUsecase
     if (updates.eventId && log.event?.id !== updates.eventId) {
       await this.getOneEventUsecase.execute({
         id: updates.eventId,
-        organizationId: log.event.organization.id,
+        organizationId: log.organization?.id ?? log.event?.organization?.id,
       });
     }
     // 4. Check if the task exists in the organization
@@ -68,9 +68,12 @@ export class UpdateActivityLogUsecase
       }
     }
 
+    // a field left out stays as it is; null clears the event or the type
     const updated = await this.activityLogFacade.update(id, {
       ...updates,
-      activityTypeId: (updates.activityTypeId || null) as never,
+      ...(updates.activityTypeId !== undefined
+        ? { activityTypeId: (updates.activityTypeId || null) as never }
+        : {}),
     });
 
     // #593: edits are in the actions history, also when the volunteer is the author
