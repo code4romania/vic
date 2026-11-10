@@ -5,7 +5,6 @@ import * as yup from 'yup';
 import PageHeader from '../components/PageHeader';
 import PageLayout from '../layouts/PageLayout';
 import Card from '../layouts/CardLayout';
-import CardHeader from '../components/CardHeader';
 import Button from '../components/Button';
 import { BookmarkIcon, CloudArrowUpIcon } from '@heroicons/react/24/outline';
 import CardBody from '../components/CardBody';
@@ -108,32 +107,37 @@ const AddEvent = () => {
 
   return (
     <PageLayout>
-      <PageHeader onBackButtonPress={navigateBack}>
-        {i18n.t('general:add', { item: '' })}
+      <PageHeader onBackButtonPress={navigateBack} subtitle={i18n.t('events:form_page.subtitle')}>
+        {i18n.t('events:form_page.add_title')}
       </PageHeader>
-      {isAddEventLoading && <LoadingContent />}
-      {!isAddEventLoading && (
+      {isAddEventLoading ? (
+        <LoadingContent />
+      ) : (
         <Card>
-          <CardHeader>
-            <h2>{i18n.t('general:event')}</h2>
-            <div className="flex flex-row gap-2 sm:gap-4">
-              <Button
-                className="btn-outline-secondary"
-                label={i18n.t('general:save_draft')}
-                icon={<BookmarkIcon className="h-5 w-5 text-cool-gray-500 md:hidden" />}
-                onClick={handleSubmit(onSaveAsDraft)}
-              />
-              <Button
-                className="btn-primary"
-                label={i18n.t('general:publish')}
-                icon={<CloudArrowUpIcon className="h-5 w-5 md:hidden" />}
-                onClick={handleSubmit(onPublish)}
-              />
-            </div>
-          </CardHeader>
           <CardBody>
-            <EventForm control={control} errors={errors} watch={watch} resetField={resetField} />
+            <div className="max-w-[37rem]">
+              <EventForm control={control} errors={errors} watch={watch} resetField={resetField} />
+            </div>
           </CardBody>
+          <div className="flex flex-wrap justify-end gap-3 sm:px-6 px-4 py-4">
+            <Button
+              className="btn-outline-secondary"
+              label={i18n.t('general:cancel')}
+              onClick={navigateBack}
+            />
+            <Button
+              className="btn-outline-secondary"
+              label={i18n.t('general:save_draft')}
+              icon={<BookmarkIcon className="h-5 w-5 text-cool-gray-500" />}
+              onClick={handleSubmit(onSaveAsDraft)}
+            />
+            <Button
+              className="btn-primary"
+              label={i18n.t('general:publish')}
+              icon={<CloudArrowUpIcon className="h-5 w-5" />}
+              onClick={handleSubmit(onPublish)}
+            />
+          </div>
         </Card>
       )}
     </PageLayout>

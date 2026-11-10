@@ -776,8 +776,8 @@
     },
     "counters": {
       "upcoming": "Evenimente viitoare",
-      "ongoing": "Evenimente în desfășurare",
-      "participants": "Participanți"
+      "ongoing": "În desfășurare",
+      "participants": "Total participanți"
     },
     "add_volunteers": {
       "button": "Adaugă voluntari",
@@ -849,6 +849,86 @@
         "confirm": "Respinge înscrierea",
         "required": "Motivul este obligatoriu",
         "max": "Motivul poate avea cel mult {{value}} de caractere"
+      }
+    },
+    "counters_info": {
+      "upcoming": "planificate",
+      "ongoing": "active acum",
+      "participants": "voluntari înscriși"
+    },
+    "page": {
+      "subtitle": "Gestionează evenimentele și înscrierile voluntarilor",
+      "add": "Creează eveniment",
+      "search": "Caută după denumirea evenimentului",
+      "found_one": "{{count}} eveniment găsit",
+      "found_few": "{{count}} evenimente găsite",
+      "found_other": "{{count}} de evenimente găsite",
+      "empty": "Nu există evenimente în această categorie"
+    },
+    "table": {
+      "event": "Eveniment",
+      "period": "Perioada",
+      "location": "Locație",
+      "departments": "Departamente",
+      "participants": "Participanți",
+      "status": "Status",
+      "actions": "Acțiuni",
+      "view": "Vezi",
+      "view_label": "Vezi evenimentul {{name}}",
+      "until": "până la {{date}}",
+      "public": "Eveniment public",
+      "all": "Toată organizația",
+      "not_going_one": "{{count}} nu participă",
+      "not_going_few": "{{count}} nu participă",
+      "not_going_other": "{{count}} nu participă",
+      "pending_one": "{{count}} în așteptare",
+      "pending_few": "{{count}} în așteptare",
+      "pending_other": "{{count}} în așteptare",
+      "hours": "Ore raportate",
+      "hours_value": "{{hours}} h",
+      "hours_people_one": "{{count}} voluntar",
+      "hours_people_few": "{{count}} voluntari",
+      "hours_people_other": "{{count}} de voluntari"
+    },
+    "detail": {
+      "period": "Perioadă",
+      "location": "Locație",
+      "departments": "Departamente",
+      "capacity": "Capacitate",
+      "capacity_value": "{{going}} / {{capacity}} înscriși",
+      "capacity_unlimited": "{{going}} înscriși, fără limită",
+      "description": "Descriere",
+      "pending_title": "Înscrieri în așteptare ({{count}})",
+      "pending_hint": "Persoane din afara departamentelor evenimentului. Aprobă sau respinge înscrierea; voluntarul este anunțat.",
+      "pending_empty": "Nicio înscriere în așteptare.",
+      "registered_on": "Înscris: {{date}}",
+      "all_registrations": "Toate înscrierile",
+      "responses_title": "Voluntari înscriși și răspunsuri ({{count}})",
+      "responses_found_one": "{{count}} răspuns găsit",
+      "responses_found_few": "{{count}} răspunsuri găsite",
+      "responses_found_other": "{{count}} de răspunsuri găsite",
+      "search": "Caută după nume"
+    },
+    "rsvp_status": {
+      "approved": "Participă",
+      "pending": "În așteptare",
+      "rejected": "Respinsă",
+      "not_going": "Nu participă"
+    },
+    "form_page": {
+      "add_title": "Creează eveniment nou",
+      "edit_title": "Editează evenimentul",
+      "subtitle": "Completează detaliile evenimentului pentru voluntari",
+      "details": "Detalii",
+      "when_where": "Când și unde",
+      "audience": "Cine participă",
+      "placeholders": {
+        "name": "Ex: Workshop de leadership",
+        "description": "Descrie evenimentul...",
+        "location": "Ex: Centrul de training, București",
+        "capacity": "Ex: 30",
+        "start_date": "zz.ll.aa oo:mm",
+        "end_date": "zz.ll.aa oo:mm"
       }
     }
   },

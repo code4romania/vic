@@ -5,11 +5,13 @@ export interface InputProps extends ComponentPropsWithoutRef<'input'> {
   helper?: ReactNode;
 }
 
-const Input = ({ label, helper, ...props }: InputProps) => {
+const Input = ({ label, helper, id, ...props }: InputProps) => {
+  // the label must point at the input, also when the caller passes its own id
+  const inputId = id ?? (label ? `${label}__input` : undefined);
   return (
     <div className="flex gap-1 flex-col">
-      {label && <label htmlFor={`${label}__input`}>{label}</label>}
-      <input id={`${label}__input`} {...props} />
+      {label && <label htmlFor={inputId}>{label}</label>}
+      <input id={inputId} {...props} />
       {helper}
     </div>
   );

@@ -1,30 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { StringParam, QueryParams, withDefault } from 'use-query-params';
-import { IHOCQueryProps } from '../../common/interfaces/hoc-query-props.interface';
-import Event, { EventTab } from '../../pages/Event';
+import Event from '../../pages/Event';
 
-export interface EventQueryProps {
-  activeTab?: EventTab;
-}
-
-export type EventProps = IHOCQueryProps<EventQueryProps>;
-
-const EventWithQueryParams = () => {
-  // set active tab default
-  const ActiveTabParam = withDefault(StringParam, EventTab.EVENT);
-  // set query config
-  const queryConfig = {
-    activeTab: ActiveTabParam,
-  };
-
-  return (
-    <QueryParams config={queryConfig}>
-      {(props: any) => {
-        return <Event {...props} />;
-      }}
-    </QueryParams>
-  );
-};
+// The event page has no tabs since the VIC 2.0 redesign; the answers table keeps its own query
+// params (search, filters, page).
+const EventWithQueryParams = () => <Event />;
 
 export default EventWithQueryParams;

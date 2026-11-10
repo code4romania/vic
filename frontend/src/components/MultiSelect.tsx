@@ -5,6 +5,8 @@ export interface MultiSelectProps extends Omit<SelectProps<string>, 'onChange' |
   onChange: (items: SelectItem<string>[]) => void;
   selected?: SelectItem<string>[];
   isDisabled?: boolean;
+  // ties the label to the field
+  inputId?: string;
   /** Indicate if the value entered in the field is invalid **/
   'aria-invalid'?: AriaAttributes['aria-invalid'];
 }
@@ -17,12 +19,14 @@ const MultiSelect = ({
   onChange,
   helper,
   isDisabled,
+  inputId,
   ...props
 }: MultiSelectProps) => {
   return (
     <div className="flex flex-col gap-1">
-      <label>{label}</label>
+      <label htmlFor={inputId}>{label}</label>
       <Select
+        inputId={inputId}
         placeholder={placeholder}
         closeMenuOnSelect={false}
         classNamePrefix="reactselect"

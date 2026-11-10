@@ -10,7 +10,6 @@ import { RSVPGoingEnum } from '../../common/enums/rsvp.enum';
 import RsvpTable from '../../components/RsvpTable';
 
 export interface RsvpTableQueryProps extends IPaginationQueryParams {
-  activeTab?: string;
   search?: string;
   branch?: string;
   department?: string;
@@ -33,7 +32,6 @@ const RsvpTableWithQueryParams = ({
 }) => {
   const queryConfig = {
     ...DEFAULT_QUERY_PARAMS,
-    activeTab: StringParam,
     search: StringParam,
     branch: StringParam,
     department: StringParam,

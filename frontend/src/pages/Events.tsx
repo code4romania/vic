@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { useQueryClient } from 'react-query';
 import {
   ArrowDownTrayIcon,
+  CalendarIcon,
+  ClockIcon,
   CloudArrowUpIcon,
   DocumentMinusIcon,
   EyeIcon,
   PencilIcon,
+  PlusIcon,
   TrashIcon,
+  UsersIcon,
 } from '@heroicons/react/24/outline';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import i18n from '../common/config/i18n';
@@ -14,7 +19,6 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import { IEvent } from '../common/interfaces/event.interface';
 import Button from '../components/Button';
 import CardBody from '../components/CardBody';
-import CardHeader from '../components/CardHeader';
 import DataTableComponent from '../components/DataTableComponent';
 import Popover from '../components/Popover';
 import { SelectItem } from '../components/Select';
@@ -30,16 +34,20 @@ import {
   useEventCountersQuery,
   usePublishEventMutation,
 } from '../services/event/event.service';
-import { downloadExcel, formatEventDate } from '../common/utils/utils';
-import { EventStatusMarkerColorMapper } from '../common/utils/utils';
-import MediaCell from '../components/MediaCell';
-import PageHeaderAdd from '../components/PageHeaderAdd';
-import CellLayout from '../layouts/CellLayout';
+import { downloadExcel } from '../common/utils/utils';
+import PageHeader from '../components/PageHeader';
+import DataTableFilters from '../components/DataTableFilters';
+import {
+  EventLocation,
+  EventParticipants,
+  EventPendingBadge,
+  EventPeriod,
+  EventStatusBadge,
+  EventTargets,
+} from '../components/EventCells';
 import { useNavigate } from 'react-router-dom';
 import { EventStatus } from '../common/enums/event-status';
 import ConfirmationModal from '../components/ConfirmationModal';
-import StatusWithMarker from '../components/StatusWithMarker';
-import Targets from '../components/Targets';
 import { getEventsForDownload } from '../services/event/event.api';
 import { EventsProps } from '../containers/query/EventsWithQueryParams';
 import SelectFilter from '../containers/SelectFilter';
@@ -57,138 +65,95 @@ const EventsTabsOptions: SelectItem<EventState>[] = [
 const currentTab = (state?: string): SelectItem<EventState> =>
   EventsTabsOptions.find((tab) => tab.key === state) ?? EventsTabsOptions[0];
 
-const OpenEventsTableHeader = [
-  {
-    id: 'name',
-    name: i18n.t('general:event'),
-    sortable: true,
-    minWidth: '10rem',
-    grow: 2,
-    cell: (row: IEvent) => <MediaCell title={row.name} />,
-  },
-  {
-    id: 'startDate',
-    name: i18n.t('general:date'),
-    minWidth: '11rem',
-    grow: 1,
-    sortable: true,
-    cell: (row: IEvent) => <CellLayout>{formatEventDate(row.startDate, row.endDate)}</CellLayout>,
-  },
-  {
-    id: 'target',
-    name: i18n.t('general:target'),
-    minWidth: '10rem',
-    grow: 1,
-    cell: (row: IEvent) => (
-      <CellLayout>
-        <Targets targets={row.targets} isPublic={row.isPublic} />
-      </CellLayout>
-    ),
-  },
-  {
-    id: 'going',
-    name: i18n.t('general:answers'),
-    minWidth: '9rem',
-    grow: 1,
-    selector: (row: IEvent) =>
-      `${row.going || 0} ${i18n.t('events:participate').toLowerCase()}\n${row.notGoing || 0} ${i18n
-        .t('events:not_participate')
-        .toLowerCase()}`,
-  },
-  {
-    id: 'status',
-    name: i18n.t('events:status'),
-    minWidth: '5rem',
-    grow: 1,
-    sortable: true,
-    cell: (row: IEvent) => (
-      <CellLayout>
-        <StatusWithMarker
-          markerColor={EventStatusMarkerColorMapper[row.displayStatus || row.status]}
-        >
-          {i18n.t(`events:display_status.${row.displayStatus || row.status}`)}
-        </StatusWithMarker>
-      </CellLayout>
-    ),
-  },
-];
+const nameColumn: TableColumn<IEvent> = {
+  id: 'name',
+  name: i18n.t('events:table.event'),
+  sortable: true,
+  minWidth: '10rem',
+  grow: 2,
+  cell: (row: IEvent) => (
+    <span className="text-sm font-robotoMedium text-cool-gray-900">{row.name}</span>
+  ),
+};
 
-const PastEventsTableHeader = [
-  {
-    id: 'name',
-    name: i18n.t('general:event'),
-    minWidth: '10rem',
-    grow: 2,
-    sortable: true,
-    cell: (row: IEvent) => <MediaCell title={row.name} />,
-  },
-  {
-    id: 'startDate',
-    name: i18n.t('general:date'),
-    minWidth: '11rem',
-    grow: 1,
-    sortable: true,
-    cell: (row: IEvent) => <CellLayout>{formatEventDate(row.startDate, row.endDate)}</CellLayout>,
-  },
-  {
-    id: 'target',
-    name: i18n.t('general:target'),
-    minWidth: '10rem',
-    grow: 1,
-    cell: (row: IEvent) => (
-      <CellLayout>
-        <Targets targets={row.targets} isPublic={row.isPublic} />
-      </CellLayout>
-    ),
-  },
-  {
-    id: 'going',
-    name: i18n.t('general:answers'),
-    minWidth: '9rem',
-    grow: 1,
-    selector: (row: IEvent) =>
-      `${row.going || 0} ${i18n.t('events:participate').toLowerCase()}\n${row.notGoing || 0} ${i18n
-        .t('events:not_participate')
-        .toLowerCase()}`,
-  },
-  {
-    id: 'hours',
-    name: i18n.t('events:hours'),
-    minWidth: '5rem',
-    grow: 1,
-    cell: (row: IEvent) => (
-      <CellLayout>{`${row.activityLogged?.volunteers} ${i18n.t('general:people').toLowerCase()}\n${
-        row.activityLogged?.totalHours
-      } ${i18n.t('general:hours').toLowerCase()}`}</CellLayout>
-    ),
-  },
-  {
-    id: 'status',
-    name: i18n.t('events:status'),
-    sortable: true,
-    cell: (row: IEvent) => (
-      <CellLayout>
-        <StatusWithMarker
-          markerColor={EventStatusMarkerColorMapper[row.displayStatus || row.status]}
-        >
-          {i18n.t(`events:display_status.${row.displayStatus || row.status}`)}
-        </StatusWithMarker>
-      </CellLayout>
-    ),
-  },
-];
+const periodColumn: TableColumn<IEvent> = {
+  id: 'startDate',
+  name: i18n.t('events:table.period'),
+  minWidth: '13rem',
+  grow: 1,
+  sortable: true,
+  cell: (row: IEvent) => <EventPeriod event={row} />,
+};
+
+const locationColumn: TableColumn<IEvent> = {
+  id: 'location',
+  name: i18n.t('events:table.location'),
+  minWidth: '10rem',
+  grow: 1,
+  cell: (row: IEvent) => <EventLocation location={row.location} />,
+};
+
+const departmentsColumn: TableColumn<IEvent> = {
+  id: 'target',
+  name: i18n.t('events:table.departments'),
+  minWidth: '9rem',
+  grow: 1,
+  cell: (row: IEvent) => <EventTargets event={row} />,
+};
+
+const participantsColumn: TableColumn<IEvent> = {
+  id: 'going',
+  name: i18n.t('events:table.participants'),
+  minWidth: '8rem',
+  grow: 1,
+  cell: (row: IEvent) => (
+    <EventParticipants going={row.going} capacity={row.capacity} notGoing={row.notGoing} />
+  ),
+};
+
+// finished events: the hours the volunteers logged for them
+const hoursColumn: TableColumn<IEvent> = {
+  id: 'hours',
+  name: i18n.t('events:table.hours'),
+  minWidth: '7rem',
+  grow: 0,
+  cell: (row: IEvent) => (
+    <div className="flex flex-col">
+      <span className="text-sm font-robotoMedium text-navy">
+        {i18n.t('events:table.hours_value', { hours: row.activityLogged?.totalHours ?? 0 })}
+      </span>
+      <span className="text-xs text-cool-gray-500">
+        {i18n.t('events:table.hours_people', { count: row.activityLogged?.volunteers ?? 0 })}
+      </span>
+    </div>
+  ),
+};
+
+const statusColumn: TableColumn<IEvent> = {
+  id: 'status',
+  name: i18n.t('events:table.status'),
+  minWidth: '8rem',
+  grow: 0,
+  sortable: true,
+  cell: (row: IEvent) => (
+    <div className="flex flex-col items-start gap-1">
+      <EventStatusBadge event={row} />
+      <EventPendingBadge eventId={row.id} />
+    </div>
+  ),
+};
 
 const Events = ({ query, setQuery }: EventsProps) => {
   const [showDeleteEvent, setShowDeleteEvent] = useState<null | IEvent>();
 
   const navigate = useNavigate();
 
-  // access requests query
+  const queryClient = useQueryClient();
+  const search = query.search || undefined;
   const {
     data: events,
     isLoading: isEventsLoading,
     error: eventsError,
-    refetch,
   } = useEventsQuery(
     query.limit as number,
     query.page as number,
@@ -196,7 +161,47 @@ const Events = ({ query, setQuery }: EventsProps) => {
     query.orderBy,
     query.orderDirection as OrderDirection,
     query.departmentId,
+    search,
   );
+  // the count on each tab, with the same filters (one row is enough to get the total)
+  const tabTotals = {
+    [EventState.UPCOMING]: useEventsQuery(
+      1,
+      1,
+      EventState.UPCOMING,
+      undefined,
+      undefined,
+      query.departmentId,
+      search,
+    ).data?.meta?.totalItems,
+    [EventState.ONGOING]: useEventsQuery(
+      1,
+      1,
+      EventState.ONGOING,
+      undefined,
+      undefined,
+      query.departmentId,
+      search,
+    ).data?.meta?.totalItems,
+    [EventState.PAST]: useEventsQuery(
+      1,
+      1,
+      EventState.PAST,
+      undefined,
+      undefined,
+      query.departmentId,
+      search,
+    ).data?.meta?.totalItems,
+  } as Partial<Record<EventState, number>>;
+  // as in the design: "Viitoare (3)"; the shared count badge is red, meant for things to approve
+  const tabs: SelectItem<EventState>[] = EventsTabsOptions.map((tab) => ({
+    ...tab,
+    value: tabTotals[tab.key] === undefined ? tab.value : `${tab.value} (${tabTotals[tab.key]})`,
+  }));
+  const refetch = () => {
+    queryClient.invalidateQueries(['events']);
+    queryClient.invalidateQueries(['event-counters']);
+  };
   const { data: departments } = useDivisionsListItems(DivisionType.DEPARTMENT);
   const { data: counters } = useEventCountersQuery(query.departmentId);
   // actions
@@ -217,6 +222,14 @@ const Events = ({ query, setQuery }: EventsProps) => {
   // #494: "all departments" clears the filter
   const onDepartmentChange = (item?: SelectItem<string>) => {
     setQuery({ departmentId: item?.key, page: 1 }, 'replaceIn');
+  };
+
+  const onSearch = (value: string) => {
+    setQuery({ search: value || undefined, page: 1 }, 'replaceIn');
+  };
+
+  const onResetFilters = () => {
+    setQuery({ departmentId: undefined, search: undefined, page: 1 }, 'replaceIn');
   };
 
   // row actions
@@ -249,7 +262,7 @@ const Events = ({ query, setQuery }: EventsProps) => {
   };
 
   const onEdit = (row: IEvent) => {
-    navigate(`${row.id}/edit`, { replace: true });
+    navigate(`${row.id}/edit`);
   };
 
   const onDelete = (row: IEvent) => {
@@ -323,18 +336,28 @@ const Events = ({ query, setQuery }: EventsProps) => {
     ];
 
     return {
-      name: '',
+      name: i18n.t('events:table.actions'),
       cell: (row: IEvent) => (
-        <Popover<IEvent>
-          row={row}
-          items={
-            row.status === EventStatus.PUBLISHED
-              ? EventsArchiveActionColumns
-              : EventsPublishActionColumns
-          }
-        />
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            className="btn-outline-secondary py-1.5"
+            aria-label={`${i18n.t('events:table.view_label', { name: row.name })}`}
+            onClick={() => onView(row)}
+          >
+            {i18n.t('events:table.view')}
+          </button>
+          <Popover<IEvent>
+            row={row}
+            items={
+              row.status === EventStatus.PUBLISHED
+                ? EventsArchiveActionColumns
+                : EventsPublishActionColumns
+            }
+          />
+        </div>
       ),
-      width: '50px',
+      width: '120px',
       allowOverflow: true,
     };
   };
@@ -345,6 +368,7 @@ const Events = ({ query, setQuery }: EventsProps) => {
       query.orderBy,
       query.orderDirection as OrderDirection,
       query.departmentId,
+      search,
     );
 
     downloadExcel(eventsData as BlobPart, i18n.t('events:download', { context: query.eventState }));
@@ -386,15 +410,59 @@ const Events = ({ query, setQuery }: EventsProps) => {
     );
   };
 
+  const COUNTERS = [
+    { key: 'upcoming', Icon: CalendarIcon, color: 'text-figure-green' },
+    { key: 'ongoing', Icon: ClockIcon, color: 'text-navy' },
+    { key: 'participants', Icon: UsersIcon, color: 'text-figure-teal' },
+  ] as const;
+
   return (
     <PageLayout>
-      <PageHeaderAdd
-        label={`${i18n.t('general:add', { item: i18n.t('general:event').toLowerCase() })}`}
-        onAddButtonPress={onAddEvent}
+      <PageHeader
+        subtitle={`${i18n.t('events:page.subtitle')}`}
+        actions={
+          <Button
+            label={i18n.t('events:page.add')}
+            icon={<PlusIcon className="h-5 w-5" />}
+            className="btn-primary"
+            onClick={onAddEvent}
+          />
+        }
       >
         {i18n.t('side_menu:options.events')}
-      </PageHeaderAdd>
-      <div className="flex flex-wrap gap-4">
+      </PageHeader>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 xl:gap-6">
+        {COUNTERS.map(({ key, Icon, color }) => (
+          <StatisticsCard
+            key={key}
+            label={`${i18n.t(`events:counters.${key}`)}`}
+            value={`${counters?.[key] ?? '-'}`}
+            icon={<Icon className={`w-5 h-5 ${color}`} aria-hidden="true" />}
+            info={
+              <span className="text-cool-gray-500 font-roboto">
+                {i18n.t(`events:counters_info.${key}`)}
+              </span>
+            }
+          />
+        ))}
+      </div>
+      <DataTableFilters
+        onSearch={onSearch}
+        searchValue={query?.search}
+        searchPlaceholder={i18n.t('events:page.search').toString()}
+        onResetFilters={onResetFilters}
+        results={
+          <>
+            <span>{i18n.t('events:page.found', { count: events?.meta?.totalItems ?? 0 })}</span>
+            <Button
+              label={i18n.t('general:download_table')}
+              icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
+              className="btn-text-primary px-2"
+              onClick={onExport}
+            />
+          </>
+        }
+      >
         <SelectFilter
           label={`${i18n.t('events:filters.department')}`}
           placeholder={`${i18n.t('events:filters.all_departments')}`}
@@ -406,54 +474,37 @@ const Events = ({ query, setQuery }: EventsProps) => {
           defaultValue={query?.departmentId}
           allowDeselect
         />
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <StatisticsCard
-          label={`${i18n.t('events:counters.upcoming')}`}
-          value={`${counters?.upcoming ?? '-'}`}
-        />
-        <StatisticsCard
-          label={`${i18n.t('events:counters.ongoing')}`}
-          value={`${counters?.ongoing ?? '-'}`}
-        />
-        <StatisticsCard
-          label={`${i18n.t('events:counters.participants')}`}
-          value={`${counters?.participants ?? '-'}`}
-        />
-      </div>
-      <Tabs<EventState>
-        tabs={EventsTabsOptions}
-        onClick={onTabClick}
-        defaultTab={currentTab(query?.eventState)}
-      >
+      </DataTableFilters>
+      <Tabs<EventState> tabs={tabs} onClick={onTabClick} defaultTab={currentTab(query?.eventState)}>
         <Card>
-          <CardHeader>
-            <h2>{currentTab(query.eventState).value}</h2>
-            <Button
-              label={i18n.t('general:download_table')}
-              icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
-              className="btn-outline-secondary ml-auto"
-              onClick={onExport}
-            />
-          </CardHeader>
           <CardBody>
-            <DataTableComponent
-              columns={[
-                ...(query.eventState === EventState.PAST
-                  ? PastEventsTableHeader
-                  : OpenEventsTableHeader),
-                buildEventsActionColumn(),
-              ]}
-              data={events?.items}
-              loading={isEventsLoading || isArchivingEvent || isDeletingEvent || isPublishingEvent}
-              pagination
-              paginationPerPage={query.limit}
-              paginationTotalRows={events?.meta?.totalItems}
-              paginationDefaultPage={query.page}
-              onChangeRowsPerPage={onRowsPerPageChange}
-              onChangePage={onChangePage}
-              onSort={onSort}
-            />
+            {!isEventsLoading && !events?.items?.length ? (
+              <p className="py-12 text-center text-cool-gray-500">{i18n.t('events:page.empty')}</p>
+            ) : (
+              <DataTableComponent
+                columns={[
+                  nameColumn,
+                  periodColumn,
+                  locationColumn,
+                  departmentsColumn,
+                  participantsColumn,
+                  ...(query.eventState === EventState.PAST ? [hoursColumn] : []),
+                  statusColumn,
+                  buildEventsActionColumn(),
+                ]}
+                data={events?.items}
+                loading={
+                  isEventsLoading || isArchivingEvent || isDeletingEvent || isPublishingEvent
+                }
+                pagination
+                paginationPerPage={query.limit}
+                paginationTotalRows={events?.meta?.totalItems}
+                paginationDefaultPage={query.page}
+                onChangeRowsPerPage={onRowsPerPageChange}
+                onChangePage={onChangePage}
+                onSort={onSort}
+              />
+            )}
           </CardBody>
         </Card>
       </Tabs>
