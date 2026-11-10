@@ -56,8 +56,9 @@ const orbIcons = [
 export const LoginHero = ({ height = 330 }: { height?: number }) => {
   const reducedMotion = useReducedMotion();
   const rotation = useSharedValue(0);
-  const logoScale = useSharedValue(reducedMotion ? 1 : 0.6);
-  const logoOpacity = useSharedValue(reducedMotion ? 1 : 0);
+  // the mark is visible from the first frame: only its scale animates, so it can't stay hidden
+  // when the entry animation doesn't run (seen on a slow Android emulator)
+  const logoScale = useSharedValue(reducedMotion ? 1 : 0.85);
 
   useEffect(() => {
     if (reducedMotion) {
@@ -65,8 +66,7 @@ export const LoginHero = ({ height = 330 }: { height?: number }) => {
     }
     rotation.value = withRepeat(withTiming(360, { duration: 40000, easing: Easing.linear }), -1);
     logoScale.value = withSpring(1, { damping: 12, stiffness: 140 });
-    logoOpacity.value = withTiming(1, { duration: 360 });
-  }, [reducedMotion, rotation, logoScale, logoOpacity]);
+  }, [reducedMotion, rotation, logoScale]);
 
   const orbitStyle = useAnimatedStyle(() => ({
     transform: [{ rotate: `${rotation.value}deg` }],
@@ -76,7 +76,6 @@ export const LoginHero = ({ height = 330 }: { height?: number }) => {
     transform: [{ rotate: `${-rotation.value}deg` }],
   }));
   const logoStyle = useAnimatedStyle(() => ({
-    opacity: logoOpacity.value,
     transform: [{ scale: logoScale.value }],
   }));
 
