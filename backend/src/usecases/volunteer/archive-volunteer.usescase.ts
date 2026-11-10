@@ -65,8 +65,8 @@ export class ArchiveVolunteerUsecase
           volunteer.organization.id,
           volunteer.user.id,
           volunteer.organization.name,
-          volunteer.user.notificationsSettings.notificationsViaPush,
-          volunteer.user.notificationsSettings.notificationsViaEmail,
+          volunteer.user.notificationsSettings?.notificationsViaPush ?? false,
+          volunteer.user.notificationsSettings?.notificationsViaEmail ?? false,
           volunteer.user.email,
         ),
       );

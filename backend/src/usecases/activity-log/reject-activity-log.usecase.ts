@@ -64,8 +64,10 @@ export class RejectActivityLogUsecase
         rejected.organization.id,
         rejected.volunteer.user.id,
         rejected.organization.name,
-        rejected.volunteer.user.notificationsSettings.notificationsViaPush,
-        rejected.volunteer.user.notificationsSettings.notificationsViaEmail,
+        rejected.volunteer.user.notificationsSettings?.notificationsViaPush ??
+          false,
+        rejected.volunteer.user.notificationsSettings?.notificationsViaEmail ??
+          false,
         rejected.volunteer.user.email,
         rejected.id,
         rejected.hours,

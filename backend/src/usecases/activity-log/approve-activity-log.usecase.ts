@@ -57,8 +57,10 @@ export class ApproveActivityLogUsecase
         approved.organization.id,
         approved.volunteer.user.id,
         approved.organization.name,
-        approved.volunteer.user.notificationsSettings.notificationsViaPush,
-        approved.volunteer.user.notificationsSettings.notificationsViaEmail,
+        approved.volunteer.user.notificationsSettings?.notificationsViaPush ??
+          false,
+        approved.volunteer.user.notificationsSettings?.notificationsViaEmail ??
+          false,
         approved.volunteer.user.email,
         approved.id,
         approved.hours,

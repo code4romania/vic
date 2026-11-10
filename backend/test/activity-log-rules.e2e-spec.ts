@@ -171,4 +171,31 @@ describe('Activity log rules (e2e)', () => {
     ).toBe('ACTIVITY_LOG_010');
     await patch({ hours: 1.5 }).expect(400);
   });
+
+  it('logs, approves and rejects hours of a volunteer without notification settings (no account), not a 500', async () => {
+    await q(
+      `UPDATE "user" SET notifications_settings_id = NULL WHERE type = 'regular'`,
+    );
+    const created = await log({ hours: 2 }).expect(201);
+    const [pending] = await q(
+      `INSERT INTO activity_log (date, hours, status, volunteer_id, organization_id)
+       VALUES ($1, 1, 'pending', $2, $3) RETURNING id`,
+      [day(-2), volunteerId, organizationId],
+    );
+    await http()
+      .patch(`/activity-log/${pending.id}/approve`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+    const [other] = await q(
+      `INSERT INTO activity_log (date, hours, status, volunteer_id, organization_id)
+       VALUES ($1, 1, 'pending', $2, $3) RETURNING id`,
+      [day(-3), volunteerId, organizationId],
+    );
+    await http()
+      .patch(`/activity-log/${other.id}/reject`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({ rejectionReason: 'Nu' })
+      .expect(200);
+    expect(created.body.id).toBeDefined();
+  });
 });
