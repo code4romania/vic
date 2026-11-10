@@ -89,7 +89,8 @@
     },
     "confirm": "Confirm",
     "no_options": "No options",
-    "type_for_options": "Type for options..."
+    "type_for_options": "Type for options...",
+    "actions": "Actions"
   },
   "header": {
     "login": "Login",
@@ -98,7 +99,8 @@
         "my_account": "My account",
         "logout": "Log out"
       }
-    }
+    },
+    "open_menu": "Open the menu"
   },
   "side_menu": {
     "options": {
@@ -124,7 +126,8 @@
       "all_organizations": "All organizations",
       "all_volunteers": "All volunteers"
     },
-    "collapse": "Narrow the menu"
+    "collapse": "Narrow the menu",
+    "aria": "Main menu"
   },
   "volunteer": {
     "all": "All volunteers",
@@ -445,7 +448,8 @@
       "ORG_008": "This administrator is not in your organization.",
       "ORG_009": "Invites are only for admins who have not logged in yet.",
       "ORG_010": "You cannot change your own status.",
-      "ORG_011": "Type the organization's name exactly to delete it."
+      "ORG_011": "Type the organization's name exactly to delete it.",
+      "ORG_003": "The logo is not valid: pick a PNG, JPG, GIF or WEBP image of at most 5 MB."
     },
     "form": {
       "description": {
@@ -467,7 +471,7 @@
       "active": "Active",
       "suspended": "Suspended"
     },
-    "validation_banner": "Your organization is awaiting validation by the VIC team. You can set everything up meanwhile. Until then volunteers can't see it, you can't start a campaign and no hours can be registered.",
+    "validation_banner": "Your organization is awaiting validation by the VIC team. You can set everything up meanwhile. Until then volunteers can't see it and you can't add volunteers, create events or approve hours; those buttons stay disabled until validation.",
     "validation": {
       "title": "Validation",
       "description": "The VIC super admin validates the organization based on its tax ID (CUI)."
@@ -525,7 +529,8 @@
           "manage": "Icons, links to departments and archived activities"
         }
       }
-    }
+    },
+    "validation_required": "Available once the VIC team validates the organization."
   },
   "pagination": {
     "rows_per_page": "Rows per page",
@@ -543,7 +548,7 @@
       "rejected_requests": "Rejected applications"
     },
     "filters": {
-      "access_request_range": "Access request period",
+      "access_request_range": "Request period",
       "access_request_rejected_range": "Rejection period"
     },
     "popover": {
@@ -854,6 +859,13 @@
         "role": "Role",
         "hours": "Approved hours in the organization",
         "registeredOn": "Registration date"
+      },
+      "export": "Export",
+      "export_title": "Export from the event",
+      "kind": {
+        "title": "What to export",
+        "registrations": "Registered volunteers, with the chosen columns",
+        "answers": "All answers in the table, with the filters applied"
       }
     },
     "registrations": {
@@ -948,7 +960,8 @@
       "responses_title": "Registered volunteers and answers ({{count}})",
       "responses_found_one": "{{count}} answer found",
       "responses_found_other": "{{count}} answers found",
-      "search": "Search by name"
+      "search": "Search by name",
+      "visibility": "Visibility"
     },
     "rsvp_status": {
       "approved": "Going",
@@ -1469,7 +1482,7 @@
       "title": "Pending approvals",
       "subtitle": "Requests waiting for your decision",
       "review": "Review",
-      "volunteers": "Volunteer applications",
+      "volunteers": "Join requests",
       "hours": "Volunteer hours",
       "events": "Event registrations",
       "count_one": "{{count}} request",
@@ -1838,6 +1851,11 @@
         "free": "Free for non-governmental organizations in Romania"
       },
       "footer": "VIC · Volunteer Manager, a Code for Romania project"
+    },
+    "access_blocked": {
+      "title": "Access to your account was stopped",
+      "description": "Your organization was suspended by the VIC team or your admin account was disabled. Contact the VIC team or another admin of your organization for details.",
+      "back_to_login": "Back to login"
     }
   },
   "login": {
@@ -2094,7 +2112,8 @@
     "errors": {
       "load": "The team could not be loaded",
       "too_many": "Too many invites. Try again later.",
-      "generic": "Something went wrong. Please try again."
+      "generic": "Something went wrong. Please try again.",
+      "USER_001": "This admin no longer exists. Reload the page."
     },
     "status_short": {
       "active": "Active",
@@ -2139,7 +2158,7 @@
     "confirm": {
       "validate": {
         "title": "Validate organization",
-        "description": "{{name}} becomes visible to volunteers and can start campaigns."
+        "description": "{{name}} becomes visible to volunteers and can add volunteers, create events and log hours."
       },
       "suspend": {
         "title": "Suspend organization",
@@ -2198,7 +2217,7 @@
     "pending_total_one": "One request is waiting for your decision.",
     "pending_total_other": "{{count}} requests are waiting for your decision.",
     "tabs": {
-      "volunteers": "Volunteer applications",
+      "volunteers": "Join requests",
       "hours": "Volunteer hours",
       "events": "Event registrations"
     },
@@ -2391,10 +2410,32 @@
       "organizations_other": "{{count}} organizations found",
       "volunteers_one": "{{count}} volunteer found",
       "volunteers_other": "{{count}} volunteers found"
+    },
+    "actions": {
+      "suspend": "Suspend",
+      "unsuspend": "Reactivate"
+    },
+    "confirm": {
+      "suspend": {
+        "title": "Suspend organization",
+        "description": "No admin of {{name}} will be able to log in and the organization is hidden from volunteers until it is reactivated."
+      },
+      "unsuspend": {
+        "title": "Reactivate organization",
+        "description": "The admins of {{name}} will be able to log in again and the organization becomes visible to volunteers."
+      }
+    },
+    "toast": {
+      "suspend": "{{name}} was suspended",
+      "unsuspend": "{{name}} was reactivated"
+    },
+    "errors": {
+      "generic": "Something went wrong. Please try again."
     }
   },
   "states": {
     "loading": "Loading…",
-    "error_title": "The data could not be loaded"
+    "error_title": "The data could not be loaded",
+    "retry": "Try again"
   }
 }

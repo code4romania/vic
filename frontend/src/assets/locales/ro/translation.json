@@ -70,7 +70,7 @@
     "confirm_delete": "Ești sigur că dorești ștergerea acestui {{item}}?",
     "invalid_date": "Va rugam să introduceți o dată",
     "unlimited": "nelimitat",
-    "search": "Cauta...",
+    "search": "Caută...",
     "publish": "Publică",
     "filters": {
       "show": "Filtre",
@@ -89,7 +89,8 @@
     },
     "confirm": "Confirmă",
     "no_options": "Fără opțiuni",
-    "type_for_options": "Începeți să scrieți pentru opțiuni..."
+    "type_for_options": "Începeți să scrieți pentru opțiuni...",
+    "actions": "Acțiuni"
   },
   "header": {
     "login": "Login",
@@ -98,7 +99,8 @@
         "my_account": "Contul meu",
         "logout": "Ieși din cont"
       }
-    }
+    },
+    "open_menu": "Deschide meniul"
   },
   "side_menu": {
     "options": {
@@ -124,7 +126,8 @@
       "all_organizations": "Toate organizațiile",
       "all_volunteers": "Toți voluntarii"
     },
-    "collapse": "Restrânge meniul"
+    "collapse": "Restrânge meniul",
+    "aria": "Meniu principal"
   },
   "volunteer": {
     "all": "Toți voluntarii",
@@ -449,7 +452,8 @@
       "ORG_008": "Acest administrator nu face parte din organizația ta.",
       "ORG_009": "Invitațiile sunt doar pentru administratorii care nu au intrat încă în cont.",
       "ORG_010": "Nu îți poți schimba propriul status.",
-      "ORG_011": "Scrie exact numele organizației pentru a o șterge."
+      "ORG_011": "Scrie exact numele organizației pentru a o șterge.",
+      "ORG_003": "Logo-ul nu este valid: alege o imagine PNG, JPG, GIF sau WEBP de cel mult 5 MB."
     },
     "form": {
       "description": {
@@ -471,7 +475,7 @@
       "active": "Activă",
       "suspended": "Suspendată"
     },
-    "validation_banner": "Organizația ta așteaptă validarea echipei VIC. Între timp poți configura totul. Până atunci voluntarii nu o pot vedea, nu poți porni o campanie și nu se pot înregistra ore.",
+    "validation_banner": "Organizația ta așteaptă validarea echipei VIC. Între timp poți configura totul. Până atunci voluntarii nu o pot vedea, nu poți adăuga voluntari, crea evenimente sau aproba ore. Butoanele pentru aceste acțiuni sunt dezactivate până la validare.",
     "validation": {
       "title": "Validare",
       "description": "Super adminul VIC validează organizația pe baza CUI-ului."
@@ -530,7 +534,8 @@
           "manage": "Pictograme, legături cu departamente și activități arhivate"
         }
       }
-    }
+    },
+    "validation_required": "Disponibil după ce echipa VIC validează organizația."
   },
   "pagination": {
     "rows_per_page": "Rânduri pe pagină",
@@ -548,7 +553,7 @@
       "rejected_requests": "Cereri respinse"
     },
     "filters": {
-      "access_request_range": "Perioadă cerere access",
+      "access_request_range": "Perioada cererii de înscriere",
       "access_request_rejected_range": "Perioadă respingere"
     },
     "popover": {
@@ -863,6 +868,13 @@
         "role": "Rol",
         "hours": "Ore aprobate în organizație",
         "registeredOn": "Data înscrierii"
+      },
+      "export": "Exportă",
+      "export_title": "Exportă din eveniment",
+      "kind": {
+        "title": "Ce exporți",
+        "registrations": "Voluntarii înscriși, cu coloanele alese",
+        "answers": "Toate răspunsurile din tabel, cu filtrele aplicate"
       }
     },
     "registrations": {
@@ -962,7 +974,8 @@
       "responses_found_one": "{{count}} răspuns găsit",
       "responses_found_few": "{{count}} răspunsuri găsite",
       "responses_found_other": "{{count}} de răspunsuri găsite",
-      "search": "Caută după nume"
+      "search": "Caută după nume",
+      "visibility": "Vizibilitate"
     },
     "rsvp_status": {
       "approved": "Participă",
@@ -1491,7 +1504,7 @@
       "title": "Aprobări în așteptare",
       "subtitle": "Cereri care așteaptă decizia ta",
       "review": "Revizuiește",
-      "volunteers": "Aplicații voluntari",
+      "volunteers": "Cereri de înscriere",
       "hours": "Ore de voluntariat",
       "events": "Înscrieri la evenimente",
       "count_one": "{{count}} cerere",
@@ -1862,6 +1875,11 @@
         "free": "Gratuit pentru organizațiile neguvernamentale din România"
       },
       "footer": "VIC · Volunteer Manager, un proiect Code for Romania"
+    },
+    "access_blocked": {
+      "title": "Accesul la cont a fost oprit",
+      "description": "Organizația ta a fost suspendată de echipa VIC sau contul tău de administrator a fost dezactivat. Pentru detalii, contactează echipa VIC sau un alt administrator al organizației.",
+      "back_to_login": "Înapoi la autentificare"
     }
   },
   "login": {
@@ -2118,7 +2136,8 @@
     "errors": {
       "load": "Echipa nu a putut fi încărcată",
       "too_many": "Prea multe invitații. Încearcă mai târziu.",
-      "generic": "A apărut o eroare. Încearcă din nou."
+      "generic": "A apărut o eroare. Încearcă din nou.",
+      "USER_001": "Administratorul nu mai există. Reîncarcă pagina."
     },
     "status_short": {
       "active": "Activ",
@@ -2164,7 +2183,7 @@
     "confirm": {
       "validate": {
         "title": "Validează organizația",
-        "description": "{{name}} devine vizibilă voluntarilor și poate porni campanii."
+        "description": "{{name}} devine vizibilă voluntarilor și poate adăuga voluntari, crea evenimente și înregistra ore."
       },
       "suspend": {
         "title": "Suspendă organizația",
@@ -2226,7 +2245,7 @@
     "pending_total_few": "{{count}} cereri așteaptă decizia ta.",
     "pending_total_other": "{{count}} de cereri așteaptă decizia ta.",
     "tabs": {
-      "volunteers": "Aplicații voluntari",
+      "volunteers": "Cereri de înscriere",
       "hours": "Ore de voluntariat",
       "events": "Înscrieri la evenimente"
     },
@@ -2421,10 +2440,32 @@
       "volunteers_one": "{{count}} voluntar găsit",
       "volunteers_few": "{{count}} voluntari găsiți",
       "volunteers_other": "{{count}} de voluntari găsiți"
+    },
+    "actions": {
+      "suspend": "Suspendă",
+      "unsuspend": "Reactivează"
+    },
+    "confirm": {
+      "suspend": {
+        "title": "Suspendă organizația",
+        "description": "Niciun administrator al {{name}} nu va mai putea intra în cont, iar organizația nu mai e vizibilă voluntarilor până la reactivare."
+      },
+      "unsuspend": {
+        "title": "Reactivează organizația",
+        "description": "Administratorii {{name}} vor putea intra din nou în cont, iar organizația redevine vizibilă voluntarilor."
+      }
+    },
+    "toast": {
+      "suspend": "{{name}} a fost suspendată",
+      "unsuspend": "{{name}} a fost reactivată"
+    },
+    "errors": {
+      "generic": "A apărut o eroare. Încearcă din nou."
     }
   },
   "states": {
     "loading": "Se încarcă…",
-    "error_title": "Datele nu au putut fi încărcate"
+    "error_title": "Datele nu au putut fi încărcate",
+    "retry": "Încearcă din nou"
   }
 }
