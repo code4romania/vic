@@ -23,7 +23,7 @@ const MediaCell = ({ logo, title, subtitle }: MediaCellProps) => (
       <small className="font-robotoMedium text-cool-gray-900 line-clamp-2" title={title}>
         {title}
       </small>
-      <small className="truncate text-cool-gray-500" title={subtitle}>
+      <small className="line-clamp-2 text-cool-gray-500" title={subtitle}>
         {subtitle || ''}
       </small>
     </div>

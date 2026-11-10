@@ -34,7 +34,7 @@ import Button from './Button';
 import CardBody from './CardBody';
 import CardHeader from './CardHeader';
 import ConfirmationModal from './ConfirmationModal';
-import DataTableComponent from './DataTableComponent';
+import DataTableComponent, { useNarrowScreen } from './DataTableComponent';
 import LinkCell from './LinkCell';
 import Popover from './Popover';
 import Select, { SelectItem } from './Select';
@@ -167,6 +167,7 @@ const ContractsTable = ({
   renderHeader,
 }: ContractsTableProps) => {
   const { t } = useTranslation('documents');
+  const narrow = useNarrowScreen();
   const [showUpload, setShowUpload] = useState(false);
   const [showCertificate, setShowCertificate] = useState(false);
   const [toDelete, setToDelete] = useState<IContractListItem | null>(null);
@@ -232,28 +233,29 @@ const ContractsTable = ({
 
   const actionColumn: TableColumn<IContractListItem> = {
     name: i18n.t('documents:page.headers.actions'),
-    minWidth: '13rem',
+    // phones: icon buttons (the names stay for screen readers), so the volunteer keeps room
+    minWidth: narrow ? '8rem' : '13rem',
     right: true,
     allowOverflow: true,
     cell: (row) => (
-      <div className="flex items-center justify-end gap-1">
+      <div className="flex items-center justify-end gap-1 !overflow-visible">
         <a
           href={row.uri}
           target="_blank"
           rel="noreferrer"
-          className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-sm font-robotoMedium text-cool-gray-700 hover:bg-cool-gray-100 hover:text-cool-gray-900"
+          className="flex shrink-0 items-center gap-1.5 px-2 py-1.5 rounded-lg text-sm font-robotoMedium text-cool-gray-700 whitespace-nowrap hover:bg-cool-gray-100 hover:text-cool-gray-900"
         >
           <EyeIcon className="w-4 h-4" aria-hidden="true" />
-          {t('page.view')}
+          <span className="sr-only sm:not-sr-only">{t('page.view')}</span>
         </a>
         <button
           type="button"
           aria-label={`${t('page.pdf')} ${row.fileName}`}
-          className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-sm font-robotoMedium text-cool-gray-700 hover:bg-cool-gray-100 hover:text-cool-gray-900"
+          className="flex shrink-0 items-center gap-1.5 px-2 py-1.5 rounded-lg text-sm font-robotoMedium text-cool-gray-700 whitespace-nowrap hover:bg-cool-gray-100 hover:text-cool-gray-900"
           onClick={() => downloadFile(row.uri, row.fileName)}
         >
           <ArrowDownTrayIcon className="w-4 h-4" aria-hidden="true" />
-          {t('page.pdf')}
+          <span className="sr-only sm:not-sr-only">{t('page.pdf')}</span>
         </button>
         {!readOnly && (
           <Popover<IContractListItem>

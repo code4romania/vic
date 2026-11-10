@@ -189,6 +189,9 @@ const SuperAdminLists = () => {
     },
     {
       id: 'actions',
+      // phones: the organization and its status; suspending is done from a larger screen and
+      // validation from its own page
+      hide: Media.SM,
       name: '',
       minWidth: '9rem',
       right: true,

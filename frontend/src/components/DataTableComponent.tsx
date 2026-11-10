@@ -9,11 +9,12 @@ import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import { PaginationConfig } from '../common/constants/pagination';
 
 // Phones (the table library's "sm" breakpoint): the columns marked hide: Media.SM are gone, and
-// the rest drop their desktop minimum widths so status and the "⋮" menu stay on screen. A column
-// that does not grow (status, hours) takes only the width of its content.
+// the rest drop their desktop minimum widths so status and the "⋮" menu stay on screen. The main
+// column (grow 2 or more: the name) takes the room left; the others (status, hours) take only the
+// width of their content.
 const NARROW = '(max-width: 599px)';
 
-const useNarrowScreen = (): boolean => {
+export const useNarrowScreen = (): boolean => {
   const query = typeof window !== 'undefined' && window.matchMedia?.(NARROW);
   const [narrow, setNarrow] = useState<boolean>(!!query && query.matches);
   useEffect(() => {
@@ -71,7 +72,7 @@ const DataTableComponent = <T extends object>({
         ? // a column with a button (allowOverflow) keeps its width, so the button is not cut
           columns.map((column) => {
             if (column.allowOverflow || column.width) return column;
-            return { ...column, minWidth: column.grow === 0 ? 'fit-content' : '0' };
+            return { ...column, minWidth: (column.grow ?? 1) >= 2 ? '0' : 'fit-content' };
           })
         : columns,
     [narrow, columns],

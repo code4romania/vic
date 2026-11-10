@@ -139,7 +139,7 @@ const hoursColumn: TableColumn<IEvent> = {
 const statusColumn: TableColumn<IEvent> = {
   id: 'status',
   name: i18n.t('events:table.status'),
-  minWidth: '8rem',
+  minWidth: '9.5rem',
   grow: 0,
   sortable: true,
   cell: (row: IEvent) => (

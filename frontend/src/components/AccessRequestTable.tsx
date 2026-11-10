@@ -69,6 +69,7 @@ const PendingAccessRequestsTableHeader = [
     id: 'requestedBy.name',
     name: i18n.t('general:name'),
     sortable: true,
+    grow: 2,
     cell: (row: IAccessRequest) => (
       <MediaCell logo={row.requestedBy.profilePicture || ''} title={row.requestedBy.name} />
     ),

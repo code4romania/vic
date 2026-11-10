@@ -165,7 +165,8 @@ const PendingActivityLogTableHeader = [
   },
   {
     id: 'date',
-    hide: Media.SM,
+    // tablets: the volunteer's name keeps its room; the side panel shows the date
+    hide: Media.MD,
     name: i18n.t('activity_log:header.execution_date'),
     sortable: true,
     grow: 1,
@@ -177,7 +178,7 @@ const PendingActivityLogTableHeader = [
     name: i18n.t('volunteer:name', { status: '' }),
     sortable: true,
     grow: 2,
-    minWidth: '9rem',
+    minWidth: '11rem',
     cell: (row: IActivityLogListItem) =>
       row.volunteer && <VolunteerCell volunteer={row.volunteer} />,
   },
