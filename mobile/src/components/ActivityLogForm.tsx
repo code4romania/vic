@@ -30,6 +30,10 @@ interface ActivityLogFormProps {
   errors: FieldErrors<ActivityLogFormTypes>;
 }
 
+// The backend's rule (M12): whole hours, at least 1, at most 24 in a day
+export const HOURS_MIN = 1;
+export const HOURS_MAX = 24;
+
 export const activityLogSchema = yup
   .object({
     activityTypeId: yup.string().required(`${i18n.t('activity_log:form.task.required')}`),
@@ -46,8 +50,8 @@ export const activityLogSchema = yup
       .typeError(`${i18n.t('activity_log:form.hours.number')}`)
       .integer(`${i18n.t('activity_log:form.hours.integer')}`)
       .required(`${i18n.t('activity_log:form.hours.required')}`)
-      .min(1, `${i18n.t('activity_log:form.hours.min', { value: 1 })}`)
-      .max(300, `${i18n.t('activity_log:form.hours.max', { value: 300 })}`),
+      .min(HOURS_MIN, `${i18n.t('activity_log:form.hours.min', { value: HOURS_MIN })}`)
+      .max(HOURS_MAX, `${i18n.t('activity_log:form.hours.max', { value: HOURS_MAX })}`),
     mentions: yup
       .string()
       .max(300, `${i18n.t('activity_log:form.mentions.max', { value: 300 })}`)
@@ -114,6 +118,8 @@ const ActivityLogForm = ({ isLoading, control, errors }: ActivityLogFormProps) =
             label={`${t('form.hours.label')}`}
             value={Number(value) || 0}
             onChange={(next) => onChange(`${next}`)}
+            min={HOURS_MIN}
+            max={HOURS_MAX}
             error={errors.hours?.message}
             disabled={isLoading}
           />

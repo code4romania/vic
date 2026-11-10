@@ -123,6 +123,39 @@ describe('Volunteer applications (e2e)', () => {
     });
   });
 
+  it("searches new requests without diacritics and filters by the user's day in Romania", async () => {
+    const id = await apply();
+    // 20 November 2026, 00:30 in Bucharest (still the 19th in UTC)
+    await testApp.dataSource.query(
+      `UPDATE access_request SET created_on = '2026-11-19T22:30:00Z' WHERE id = $1`,
+      [id],
+    );
+    await testApp.dataSource.query(
+      `UPDATE "user" SET name = 'Elena Ștefănescu' WHERE id = $1`,
+      [userId],
+    );
+    const found = async (query: Record<string, string>): Promise<number> =>
+      (
+        await http()
+          .get('/access-request/new')
+          .query(query)
+          .set('Authorization', await web())
+          .expect(200)
+      ).body.items.length;
+
+    expect(await found({ search: 'stefanescu' })).toBe(1);
+    expect(await found({ search: 'ȘTEFĂNESCU' })).toBe(1);
+    expect(await found({ search: 'popescu' })).toBe(0);
+
+    // what the web sends for a day: wall-clock times with no zone
+    const day = (d: string): Record<string, string> => ({
+      createdOnStart: `${d} 00:00:00`,
+      createdOnEnd: `${d} 23:59:59`,
+    });
+    expect(await found(day('2026-11-20'))).toBe(1);
+    expect(await found(day('2026-11-19'))).toBe(0);
+  });
+
   it('needs a reason to reject, and sends it to the volunteer', async () => {
     const id = await apply();
 

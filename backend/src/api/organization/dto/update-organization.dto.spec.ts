@@ -71,7 +71,7 @@ describe('UpdateOrganizationDto (multipart edit form)', () => {
       expect.arrayContaining([
         'description must be longer than or equal to 50 characters',
         'website must be a URL address',
-        'taxId must be a CUI',
+        'taxId must be a valid CUI',
       ]),
     );
   });

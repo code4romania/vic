@@ -7,6 +7,10 @@ enum ActivityLogExceptionCodes {
   ACTIVITY_LOG_004 = 'ACTIVITY_LOG_004',
   ACTIVITY_LOG_005 = 'ACTIVITY_LOG_005',
   ACTIVITY_LOG_006 = 'ACTIVITY_LOG_006',
+  ACTIVITY_LOG_007 = 'ACTIVITY_LOG_007',
+  ACTIVITY_LOG_008 = 'ACTIVITY_LOG_008',
+  ACTIVITY_LOG_009 = 'ACTIVITY_LOG_009',
+  ACTIVITY_LOG_010 = 'ACTIVITY_LOG_010',
 }
 
 type ActivityTypeExceptionCodeType = keyof typeof ActivityLogExceptionCodes;
@@ -38,5 +42,23 @@ export const ActivityLogExceptionMessages: Record<
   [ActivityLogExceptionCodes.ACTIVITY_LOG_006]: {
     code_error: ActivityLogExceptionCodes.ACTIVITY_LOG_006,
     message: 'A reason is required to reject hours',
+  },
+  // M12
+  [ActivityLogExceptionCodes.ACTIVITY_LOG_007]: {
+    code_error: ActivityLogExceptionCodes.ACTIVITY_LOG_007,
+    message: 'Hours cannot be logged for a future date',
+  },
+  [ActivityLogExceptionCodes.ACTIVITY_LOG_008]: {
+    code_error: ActivityLogExceptionCodes.ACTIVITY_LOG_008,
+    message: 'A volunteer cannot log more than 24 hours in one day',
+  },
+  [ActivityLogExceptionCodes.ACTIVITY_LOG_009]: {
+    code_error: ActivityLogExceptionCodes.ACTIVITY_LOG_009,
+    message:
+      'These hours are already logged (same volunteer, date, event and activity type)',
+  },
+  [ActivityLogExceptionCodes.ACTIVITY_LOG_010]: {
+    code_error: ActivityLogExceptionCodes.ACTIVITY_LOG_010,
+    message: 'Hours cannot be logged for a draft event',
   },
 };

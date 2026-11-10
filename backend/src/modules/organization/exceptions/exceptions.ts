@@ -11,6 +11,8 @@ export enum OrganizationExceptionCodes {
   ORG_009 = 'ORG_009',
   ORG_010 = 'ORG_010',
   ORG_011 = 'ORG_011',
+  ORG_012 = 'ORG_012',
+  ORG_013 = 'ORG_013',
 }
 
 type OrganizationExceptionCodeType = keyof typeof OrganizationExceptionCodes;
@@ -61,5 +63,15 @@ export const OrganizationExceptionMessages: Record<
   [OrganizationExceptionCodes.ORG_011]: {
     message: 'Type the organization name exactly to delete it',
     code_error: OrganizationExceptionCodes.ORG_011,
+  },
+  // M9
+  [OrganizationExceptionCodes.ORG_012]: {
+    message:
+      'The tax id (CUI) cannot be changed after the organization was validated; contact the VIC team',
+    code_error: OrganizationExceptionCodes.ORG_012,
+  },
+  [OrganizationExceptionCodes.ORG_013]: {
+    message: 'Your own access was disabled in the meantime',
+    code_error: OrganizationExceptionCodes.ORG_013,
   },
 };

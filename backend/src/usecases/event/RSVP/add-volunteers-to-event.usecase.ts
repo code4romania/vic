@@ -7,9 +7,11 @@ import { EventStatus } from 'src/modules/event/enums/event-status.enum';
 import { EventRSVPExceptionMessages } from 'src/modules/event/exceptions/event-rsvp.exceptions';
 import { IEventCandidateModel } from 'src/modules/event/models/event.model';
 import { EventFacade } from 'src/modules/event/services/event.facade';
+import { hasEventEnded } from 'src/modules/event/event-end';
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
 import VolunteerAddedToEventEvent from 'src/modules/notifications/events/ngo-event/volunteer-added.event';
 import { OrganizationGateService } from 'src/usecases/organization/organization-gate.service';
+import { DataSource } from 'typeorm';
 import { GetOneEventUseCase } from '../get-one-event.usecase';
 
 // VIC 2.0 (#496): the NGO registers volunteers to an event directly. They are "going" right away (no
@@ -25,6 +27,7 @@ export class AddVolunteersToEventUseCase
     private readonly organizationGate: OrganizationGateService,
     private readonly exceptionsService: ExceptionsService,
     private readonly eventEmitter: EventEmitter2,
+    private readonly dataSource: DataSource,
   ) {}
 
   async execute({
@@ -50,7 +53,7 @@ export class AddVolunteersToEventUseCase
         EventRSVPExceptionMessages.EVENT_RSVP_006,
       );
     }
-    if (event.endDate && new Date(event.endDate) <= new Date()) {
+    if (hasEventEnded(event)) {
       this.exceptionsService.badRequestException(
         EventRSVPExceptionMessages.EVENT_RSVP_007,
       );
@@ -69,52 +72,77 @@ export class AddVolunteersToEventUseCase
       );
     }
 
-    const toAdd = candidates.filter((candidate) => !candidate.registered);
-    if (event.capacity) {
-      const going = await this.eventFacade.countGoing(eventId);
-      if (going + toAdd.length > event.capacity) {
-        this.exceptionsService.badRequestException(
-          EventRSVPExceptionMessages.EVENT_RSVP_008,
-        );
-      }
-    }
-
-    // #501: added by the NGO = an approved registration (a pending or rejected one becomes approved)
+    // #501: added by the NGO = an approved registration (a pending or rejected one becomes approved).
+    // B7: the capacity check and the writes happen under a lock on the event.
     const decision = {
       status: EventRegistrationStatus.APPROVED,
       decidedById: adminId ?? null,
       decidedOn: new Date(),
     };
-    for (const candidate of toAdd) {
-      const existing = await this.eventFacade.findRSVP({
-        eventId,
-        userId: candidate.userId,
-      });
-      if (existing) {
-        await this.eventFacade.updateRSVP(existing.id, {
-          going: true,
-          rejectionReason: null,
-          ...decision,
-        });
-      } else {
-        await this.eventFacade.createRSVP({
-          eventId,
-          userId: candidate.userId,
-          going: true,
-          mention: null,
-          ...decision,
-        });
+    const toAdd = await this.eventFacade.withEventLock(eventId, async (tx) => {
+      const pending = [];
+      for (const candidate of candidates) {
+        const existing = await tx.findStatus(candidate.userId);
+        if (
+          existing?.going &&
+          existing.status === EventRegistrationStatus.APPROVED
+        ) {
+          continue;
+        }
+        pending.push({ candidate, existing });
       }
-    }
+      if (
+        tx.capacity &&
+        (await tx.countApproved()) + pending.length > tx.capacity
+      ) {
+        this.exceptionsService.badRequestException(
+          EventRSVPExceptionMessages.EVENT_RSVP_008,
+        );
+      }
+      for (const { candidate, existing } of pending) {
+        if (existing) {
+          await tx.update(existing.id, {
+            going: true,
+            rejectionReason: null,
+            ...decision,
+          });
+        } else {
+          await tx.create({
+            eventId,
+            userId: candidate.userId,
+            going: true,
+            mention: null,
+            ...decision,
+          });
+        }
+      }
+      return pending.map(({ candidate }) => candidate);
+    });
 
     if (toAdd.length) {
+      // like every other notification, only by the channels each volunteer turned on
+      const settings: { id: string; push: boolean; email: boolean }[] =
+        await this.dataSource.query(
+          `SELECT u.id, COALESCE(ns.notifications_via_push, false) AS push,
+                  COALESCE(ns.notifications_via_email, false) AS email
+             FROM "user" u
+             LEFT JOIN notifications_settings ns ON ns.id = u.notifications_settings_id
+            WHERE u.id = ANY($1::uuid[])`,
+          [toAdd.map((candidate) => candidate.userId)],
+        );
+      const wants = new Map(settings.map((row) => [row.id, row]));
       this.eventEmitter.emit(
         EVENTS.NGO_EVENT.VOLUNTEER_ADDED,
         new VolunteerAddedToEventEvent(
           organizationId,
-          toAdd.map((candidate) => candidate.userId),
+          toAdd
+            .filter((candidate) => wants.get(candidate.userId)?.push)
+            .map((candidate) => candidate.userId),
           event.organization?.name,
-          toAdd.map((candidate) => candidate.email).filter(Boolean),
+          toAdd
+            .filter((candidate) => wants.get(candidate.userId)?.email)
+            .map((candidate) => candidate.email)
+            .filter(Boolean),
           event.id,
           event.name,
         ),

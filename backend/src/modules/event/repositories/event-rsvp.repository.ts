@@ -7,6 +7,7 @@ import {
 } from 'src/infrastructure/base/repository-with-pagination.class';
 import { Repository } from 'typeorm';
 import { EventRSVPEntity } from '../entities/event-rsvp.entity';
+import { eventEndSql } from '../event-end';
 import { IEventRSVPRepository } from '../interfaces/event-rsvp-repository.interface';
 import {
   CreateEventRSVPOptions,
@@ -16,6 +17,7 @@ import {
   FindManyEventRSVPOptions,
   IEventRegistrationListItem,
   IEventRSVPModel,
+  IEventRSVPTransaction,
   UpdateEventRSVPOptions,
 } from '../models/event-rsvp.model';
 
@@ -37,6 +39,52 @@ export class EventRSVPRepository
     );
 
     return this.find({ id: rsvpEntity.id });
+  }
+
+  // B7: registrations of one event change one at a time. The event row is locked (SELECT ... FOR
+  // UPDATE) for the whole transaction, so two volunteers (or a volunteer and an admin) cannot both
+  // take the last seat: the second one waits, then counts the first one's registration.
+  async withEventLock<T>(
+    eventId: string,
+    work: (tx: IEventRSVPTransaction) => Promise<T>,
+  ): Promise<T> {
+    return this.rsvpRepository.manager.transaction(async (manager) => {
+      const [event] = await manager.query(
+        `SELECT capacity FROM event WHERE id = $1 FOR UPDATE`,
+        [eventId],
+      );
+      const tx: IEventRSVPTransaction = {
+        capacity: event?.capacity ?? null,
+        countApproved: async () => {
+          const [row] = await manager.query(
+            `SELECT count(*) AS n FROM event_rsvp WHERE event_id = $1 AND going AND status = 'approved'`,
+            [eventId],
+          );
+          return +row.n;
+        },
+        findStatus: async (userId) =>
+          (await manager.findOne(EventRSVPEntity, {
+            select: {
+              id: true,
+              going: true,
+              status: true,
+              rejectionReason: true,
+            },
+            where: { eventId, userId },
+          })) ?? null,
+        create: async (rsvp) =>
+          (
+            await manager.save(
+              EventRSVPEntity,
+              EventRSVPModelTransformer.toEntity(rsvp),
+            )
+          ).id,
+        update: async (id, updates) => {
+          await manager.update(EventRSVPEntity, { id }, { ...updates });
+        },
+      };
+      return work(tx);
+    });
   }
 
   async find(findOptions: FindEventRSVPOptions): Promise<IEventRSVPModel> {
@@ -102,6 +150,13 @@ export class EventRSVPRepository
       query.andWhere('rsvp.going = :going', {
         going: findOptions.going,
       });
+      // "going" means a registration the NGO has not rejected (#501), in the list and its export
+      if (findOptions.going) {
+        query.andWhere(
+          '(rsvp.status IS NULL OR rsvp.status <> :rejectedRegistration)',
+          { rejectedRegistration: 'rejected' },
+        );
+      }
     }
 
     if (findOptions.search) {
@@ -187,6 +242,8 @@ export class EventRSVPRepository
        LEFT JOIN "user" a ON a.id = r.decided_by
        WHERE e.organization_id = $1 AND r.going AND r.status = $2
          AND ($3::uuid IS NULL OR e.id = $3)
+         -- M10: a pending registration to an event that has ended can no longer be decided
+         AND (r.status <> 'pending' OR ${eventEndSql('e.start_date', 'e.end_date')} > now())
          AND ($4::text IS NULL OR u.name ILIKE '%' || $4 || '%' OR u.email ILIKE '%' || $4 || '%' OR e.name ILIKE '%' || $4 || '%')`;
     const [{ total }] = await this.rsvpRepository.query(
       `SELECT count(*) AS total ${where}`,

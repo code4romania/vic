@@ -190,4 +190,95 @@ describe('Delete volunteer (e2e)', () => {
       .expect(403);
     expect(await count(`SELECT count(*) FROM volunteer`, [])).toBe(2);
   });
+
+  it('M8: a person added without an account is erased with their last volunteer record', async () => {
+    const [ghost] = await q(
+      `INSERT INTO "user" (type, name, email, phone, has_account)
+       VALUES ('regular', 'Ion Fără Cont', 'ion@example.ro', '+40720000009', false) RETURNING id`,
+    );
+    const [ghostProfile] = await q(
+      `INSERT INTO volunteer_profile (email) VALUES ('ion@crucea.ro') RETURNING id`,
+    );
+    const [ghostVolunteer] = await q(
+      `INSERT INTO volunteer (user_id, organization_id, status, volunteer_profile_id) VALUES ($1, $2, 'active', $3) RETURNING id`,
+      [ghost.id, organizationId, ghostProfile.id],
+    );
+    await q(
+      `INSERT INTO volunteer_history (history_original_id, user_id, organization_id) VALUES ($1, $2, $3)`,
+      [ghostVolunteer.id, ghost.id, organizationId],
+    );
+    await http()
+      .delete(`/volunteer/${ghostVolunteer.id}`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .expect(200);
+
+    const [erased] = await q(
+      `SELECT name, email, phone, deleted_on FROM "user" WHERE id = $1`,
+      [ghost.id],
+    );
+    expect(erased.name).not.toContain('Ion');
+    expect(erased.email).not.toContain('ion@');
+    expect(erased.phone).toBeNull();
+    expect(erased.deleted_on).not.toBeNull();
+    expect(
+      await count(`SELECT count(*) FROM volunteer_history WHERE user_id = $1`, [
+        ghost.id,
+      ]),
+    ).toBe(0);
+    // a person with an account keeps it
+    const [elena] = await q(`SELECT name FROM "user" WHERE id = $1`, [userId]);
+    expect(elena.name).toBe('Elena Pop');
+  });
+
+  it('M8: deleting the account removes the data in every NGO and anonymizes the person', async () => {
+    const identity = await testApp.app.get(AuthIdentityFacade).createIdentity({
+      realm: AuthRealm.MOBILE,
+      email: 'elena@example.ro',
+      status: AuthIdentityStatus.ACTIVE,
+      userId,
+    });
+    const token = await testApp.mintAccessToken(identity, AuthRealm.MOBILE);
+    await q(`UPDATE volunteer SET notes = 'Notă internă' WHERE user_id = $1`, [
+      userId,
+    ]);
+    await q(
+      `INSERT INTO volunteer_history (history_original_id, user_id, organization_id) VALUES ($1, $2, $3)`,
+      [volunteerId, userId, organizationId],
+    );
+    await http()
+      .delete('/mobile/user')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+
+    for (const table of [
+      'activity_log',
+      'contract',
+      'announcement_response',
+      'event_rsvp',
+      'access_request',
+      'volunteer',
+      'volunteer_profile',
+      'volunteer_history',
+    ]) {
+      expect([table, await count(`SELECT count(*) FROM ${table}`, [])]).toEqual(
+        [table, 0],
+      );
+    }
+    expect(
+      await count(`SELECT count(*) FROM auth_identity WHERE user_id = $1`, [
+        userId,
+      ]),
+    ).toBe(0);
+    const [user] = await q(
+      `SELECT name, email, phone, birthday, deleted_on FROM "user" WHERE id = $1`,
+      [userId],
+    );
+    expect(user).toMatchObject({ phone: null, birthday: null });
+    expect(user.name).not.toContain('Elena');
+    expect(user.email).not.toContain('elena');
+    expect(user.deleted_on).not.toBeNull();
+    // the NGOs' events and announcements stay
+    expect(await count(`SELECT count(*) FROM event`, [])).toBe(2);
+    expect(await count(`SELECT count(*) FROM announcement`, [])).toBe(2);
+  });
 });

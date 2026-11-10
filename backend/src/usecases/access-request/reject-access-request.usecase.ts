@@ -69,8 +69,10 @@ export class RejectAccessRequestUseCase
         accessRequest.organizationId,
         accessRequest.requestedBy.id,
         organization.name,
-        accessRequest.requestedBy.notificationsSettings.notificationsViaPush,
-        accessRequest.requestedBy.notificationsSettings.notificationsViaEmail,
+        accessRequest.requestedBy.notificationsSettings?.notificationsViaPush ??
+          false,
+        accessRequest.requestedBy.notificationsSettings
+          ?.notificationsViaEmail ?? false,
         accessRequest.requestedBy.email,
         updates.rejectionReason,
       ),

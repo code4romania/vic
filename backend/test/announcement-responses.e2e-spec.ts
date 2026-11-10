@@ -151,6 +151,24 @@ describe('Announcement responses (e2e)', () => {
     expect(body.items[0].volunteerId).toBeDefined();
   });
 
+  it('two answers sent at once: one is kept, the other gets 400 ANNOUNCEMENT_007, never a 500', async () => {
+    const token = await testApp.mintAccessToken(
+      people.Bogdan,
+      AuthRealm.MOBILE,
+    );
+    const send = (): request.Test =>
+      http()
+        .post(`/mobile/anouncement/${announcementId}/response`)
+        .set('Authorization', `Bearer ${token}`)
+        .send({ comment: 'Vin' });
+    const results = await Promise.all([send(), send(), send()]);
+    expect(results.map((r) => r.status).sort()).toEqual([201, 400, 400]);
+    for (const r of results.filter((r) => r.status === 400)) {
+      expect(r.body.code_error).toBe('ANNOUNCEMENT_007');
+    }
+    expect((await responses()).body.meta.totalItems).toBe(1);
+  });
+
   it("shows the volunteer's own answer in the app list", async () => {
     await respond('Bogdan', 'Vin', 201);
     const token = await testApp.mintAccessToken(

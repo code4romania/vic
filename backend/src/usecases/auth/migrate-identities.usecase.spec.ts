@@ -96,7 +96,12 @@ describe('MigrateIdentitiesUseCase (database)', () => {
   let organizationId: string;
   beforeEach(async () => {
     held = [];
-    await truncate(dataSource, ['auth_identity', 'user', 'organization']);
+    await truncate(dataSource, [
+      'auth_identity',
+      'volunteer',
+      'user',
+      'organization',
+    ]);
     const [row] = await dataSource.query(
       `INSERT INTO organization (name, email, phone) VALUES ('Org', 'org@org.test', '+40711111111') RETURNING id`,
     );
@@ -236,7 +241,7 @@ describe('MigrateIdentitiesUseCase (database)', () => {
     expect(await dataSource.getRepository(AuthTokenEntity).count()).toBe(1);
   });
 
-  it('keeps the newest of two rows with the same email in one realm and reports the other', async () => {
+  it('keeps the oldest of two rows with the same email and no history, and reports the other', async () => {
     // The unique index ignores case but not spaces, so " Dup@x.ro" and "dup@x.ro" can both exist.
     const older = await insertUser('regular', ' Dup@x.ro', {
       createdOn: new Date('2023-01-01'),
@@ -245,19 +250,43 @@ describe('MigrateIdentitiesUseCase (database)', () => {
       createdOn: new Date('2024-01-01'),
     });
 
-    const report = await useCase.execute();
-
-    expect(report.volunteers).toBe(1);
+    const report = await useCase.execute({ dryRun: true });
     expect(report.duplicates).toEqual([
       {
         realm: AuthRealm.MOBILE,
         email: 'dup@x.ro',
-        keptUserId: newer,
-        otherUserIds: [older],
+        keptUserId: older,
+        otherUserIds: [newer],
+        kept: { userId: older, history: 0, createdOn: expect.any(Date) },
+        others: [{ userId: newer, history: 0, createdOn: expect.any(Date) }],
       },
     ]);
+
+    await useCase.execute();
     const [identity] = await identities();
-    expect(identity.userId).toBe(newer);
+    expect(identity.userId).toBe(older);
+  });
+
+  it('M18: keeps the row with history (volunteer records, hours) over a newer empty one', async () => {
+    const withHistory = await insertUser('regular', 'hist@x.ro', {
+      createdOn: new Date('2024-01-01'),
+    });
+    const older = await insertUser('regular', ' Hist@x.ro', {
+      createdOn: new Date('2022-01-01'),
+    });
+    await dataSource.query(
+      `INSERT INTO volunteer (user_id, organization_id, status) VALUES ($1, $2, 'active')`,
+      [withHistory, organizationId],
+    );
+
+    const report = await useCase.execute();
+    expect(report.duplicates[0]).toMatchObject({
+      keptUserId: withHistory,
+      otherUserIds: [older],
+      kept: { history: 1 },
+    });
+    const [identity] = await identities();
+    expect(identity.userId).toBe(withHistory);
   });
 
   it('a dry run counts everything and writes nothing', async () => {

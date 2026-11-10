@@ -42,6 +42,16 @@ export class CreateEventUseCase implements IUseCaseService<IEventModel> {
     // 0. An NGO that is not validated (or is suspended) cannot be joined, run events or log hours (decision 1)
     await this.organizationGate.assertValidated(data.organizationId);
 
+    // 0b. M13: the event cannot end before it starts (400 EVENT_010)
+    if (
+      data.endDate &&
+      new Date(data.endDate).getTime() < new Date(data.startDate).getTime()
+    ) {
+      this.exceptionsService.badRequestException(
+        EventExceptionMessages.EVENT_010,
+      );
+    }
+
     // 1. Check if the the organization exists
     const organization = await this.getOrganizationUseCaseService.execute(
       data.organizationId,

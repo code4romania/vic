@@ -63,6 +63,18 @@ export const normalize = (value: unknown): string =>
 const headerKey = (value: unknown): string =>
   normalize(value).replace(/ /g, '');
 
+// A CSV saved by Excel on a Romanian Windows is often Windows-1250, not UTF-8: a file with a UTF-8
+// BOM or valid UTF-8 is read as UTF-8, anything else as Windows-1250 (ș, ț, ă, î, â survive).
+export const decodeCsv = (buffer: Buffer): string => {
+  try {
+    return new TextDecoder('utf-8', { fatal: true, ignoreBOM: false }).decode(
+      buffer,
+    );
+  } catch {
+    return new TextDecoder('windows-1250').decode(buffer);
+  }
+};
+
 interface CityRow {
   id: number;
   name: string;
@@ -200,10 +212,7 @@ export class ImportVolunteersUseCase
       const isExcel = /\.xlsx?$/i.test(file.originalname ?? '');
       const workbook = isExcel
         ? XLSX.read(file.buffer, { type: 'buffer' })
-        : XLSX.read(file.buffer.toString('utf8').replace(/^\uFEFF/, ''), {
-            type: 'string',
-            raw: true,
-          });
+        : XLSX.read(decodeCsv(file.buffer), { type: 'string', raw: true });
       const sheet = workbook.Sheets[workbook.SheetNames[0]];
       table = XLSX.utils.sheet_to_json(sheet, {
         header: 1,

@@ -9,6 +9,7 @@ import { OrganizationModule } from '../organization/organization.module';
 import { SuperAdminGuard } from './guards/super-admin.guard';
 import { GoogleTokenVerifier } from './services/social/google.verifier';
 import { AppleTokenVerifier } from './services/social/apple.verifier';
+import { AppleTokenService } from './services/social/apple-token.service';
 import { SocialTokenVerifierService } from './services/social/social-token-verifier.service';
 import { MobileJwtStrategy } from './strategies/jwt-mobile.strategy';
 import { WebJwtStrategy } from './strategies/jwt-web.strategy';
@@ -70,6 +71,7 @@ import { AuthCleanupProcessor } from './jobs/auth-cleanup.processor';
     SuperAdminGuard,
     GoogleTokenVerifier,
     AppleTokenVerifier,
+    AppleTokenService,
     SocialTokenVerifierService,
   ],
   exports: [
@@ -83,6 +85,7 @@ import { AuthCleanupProcessor } from './jobs/auth-cleanup.processor';
     AuthCleanupProcessor,
     SuperAdminGuard,
     SocialTokenVerifierService,
+    AppleTokenService,
   ],
 })
 export class AuthenticationModule {}

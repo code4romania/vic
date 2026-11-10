@@ -165,6 +165,19 @@ class EnvironmentVariables {
   @IsOptional()
   @IsString()
   APPLE_SERVICES_ID: string; // web sign-in
+  // Sign in with Apple token revocation on account deletion (App Store 5.1.1(v)); all three or none
+  @IsOptional()
+  @IsString()
+  APPLE_TEAM_ID: string;
+  @IsOptional()
+  @IsString()
+  APPLE_KEY_ID: string;
+  @IsOptional()
+  @IsString()
+  APPLE_PRIVATE_KEY: string; // the .p8 key, base64 encoded on one line (or the PEM with \n)
+  @IsOptional()
+  @IsString()
+  APPLE_WEB_REDIRECT_URI: string; // the redirect URI of the web Sign in with Apple, if it uses one
   @IsString()
   @NotEmptyWhenDeployed()
   MAIL_CONTACT: string;

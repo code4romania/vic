@@ -1,4 +1,5 @@
-import { IsEnum, IsOptional } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsBoolean, IsEnum, IsOptional } from 'class-validator';
 import {
   BasePaginationFilterDto,
   SortableBy,
@@ -17,4 +18,15 @@ export class GetAdminOrganizationsDto extends GetAdminVolunteersDto {
   @IsOptional()
   @IsEnum(OrganizationStatus)
   status?: OrganizationStatus;
+
+  // true: only the organizations awaiting validation (confirmed, active, not validated yet);
+  // false: only the validated ones
+  @IsOptional()
+  @Transform(({ obj }) =>
+    obj.awaitingValidation === undefined || obj.awaitingValidation === ''
+      ? undefined
+      : obj.awaitingValidation === true || obj.awaitingValidation === 'true',
+  )
+  @IsBoolean()
+  awaitingValidation?: boolean;
 }

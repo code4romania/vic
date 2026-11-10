@@ -63,6 +63,29 @@ export class UpdateEventUseCase implements IUseCaseService<IEventModel> {
       }
     }
 
+    // 3.3. M13: the event cannot end before it starts (400 EVENT_010)
+    const startDate = data.startDate ?? event.startDate;
+    const endDate = data.endDate !== undefined ? data.endDate : event.endDate;
+    if (
+      endDate &&
+      startDate &&
+      new Date(endDate).getTime() < new Date(startDate).getTime()
+    ) {
+      this.exceptionsService.badRequestException(
+        EventExceptionMessages.EVENT_010,
+      );
+    }
+
+    // 3.4. M13: the capacity cannot drop below the registrations already approved (400 EVENT_011)
+    if (
+      data.capacity &&
+      data.capacity < (await this.eventFacade.countGoing(event.id))
+    ) {
+      this.exceptionsService.badRequestException(
+        EventExceptionMessages.EVENT_011,
+      );
+    }
+
     // 4. Save
     const updated = await this.eventFacade.update(id, data);
 

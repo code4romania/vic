@@ -1,6 +1,6 @@
 import {
   IsDate,
-  IsNumber,
+  IsInt,
   IsOptional,
   IsString,
   IsUUID,
@@ -13,9 +13,10 @@ export class CreateActivityLogByAdminDto {
   @IsDate()
   date: Date;
 
-  @IsNumber()
+  // M12: whole hours (the column is an integer), at most a day
+  @IsInt()
   @Min(1)
-  @Max(300)
+  @Max(24)
   hours: number;
 
   @IsString()
@@ -26,9 +27,10 @@ export class CreateActivityLogByAdminDto {
   @IsUUID()
   volunteerId: string;
 
+  // null on an edit removes the event
   @IsUUID()
   @IsOptional()
-  eventId?: string;
+  eventId?: string | null;
 
   @IsUUID()
   @IsOptional()

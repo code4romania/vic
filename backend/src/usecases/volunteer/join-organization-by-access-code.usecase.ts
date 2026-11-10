@@ -10,13 +10,7 @@ import {
 } from 'src/modules/volunteer/model/volunteer.model';
 import { CreateVolunteerUseCase } from './create-volunteer.usecase';
 import { AccessCodeFacade } from 'src/modules/organization/services/access-code.facade';
-import {
-  endOfDay,
-  endOfToday,
-  endOfTomorrow,
-  isWithinInterval,
-  startOfDay,
-} from 'date-fns';
+import { bucharestDay } from 'src/common/helpers/bucharest-time';
 import { AccessCodeExceptionMessages } from 'src/modules/organization/exceptions/access-codes.exceptions';
 
 @Injectable()
@@ -64,19 +58,12 @@ export class JoinOrganizationByAccessCodeUsecase
       );
     }
 
-    // Added this to have more control over the time.
-    const today = endOfToday();
-    // start of the day to have the full interval
-    const startDate = startOfDay(accessCode.startDate);
-    // end of the day to have the full interval, and also in case the interval is open ended end of tomorrow will always include today
-    const endDate = endOfDay(accessCode.endDate || endOfTomorrow());
-
-    // check fi the access code is valid
+    // Valid from its first day to its last day (none: no end), as calendar days in Romania whatever
+    // the server's zone; YYYY-MM-DD strings compare in date order.
+    const today = bucharestDay();
     if (
-      !isWithinInterval(today, {
-        start: startDate,
-        end: endDate,
-      })
+      today < bucharestDay(new Date(accessCode.startDate)) ||
+      (accessCode.endDate && today > bucharestDay(new Date(accessCode.endDate)))
     ) {
       this.exceptionService.badRequestException(
         AccessCodeExceptionMessages.ACCESS_CODE_001,

@@ -18,6 +18,7 @@ import {
 } from 'src/modules/auth/services/session.service';
 import { SocialTokenVerifierService } from 'src/modules/auth/services/social/social-token-verifier.service';
 import { DataSource } from 'typeorm';
+import { AppleTokenService } from 'src/modules/auth/services/social/apple-token.service';
 
 // Mobile only (decision 7). Finds the login by provider link, else by verified email, else creates one
 // with the same email: the email code login keeps working for it too.
@@ -28,12 +29,14 @@ export class SocialLoginUseCase implements IUseCaseService<SessionTokens> {
     private readonly authIdentityFacade: AuthIdentityFacade,
     private readonly sessionService: SessionService,
     private readonly dataSource: DataSource,
+    private readonly appleTokens: AppleTokenService,
   ) {}
 
   async execute(
     provider: AuthProvider,
     token: string,
     client: SessionClient = {},
+    authorizationCode?: string,
   ): Promise<SessionTokens> {
     const social = await this.verifier.verify(provider, token);
     if (!social.email || !social.emailVerified) {
@@ -98,6 +101,14 @@ export class SocialLoginUseCase implements IUseCaseService<SessionTokens> {
 
       return current;
     });
+
+    // App Store 5.1.1(v): keep what is needed to revoke the Apple sign-in when the account is deleted
+    if (provider === AuthProvider.APPLE && authorizationCode) {
+      await this.appleTokens.storeFromAuthorizationCode(
+        identity.id,
+        authorizationCode,
+      );
+    }
 
     return this.sessionService.createSession(
       identity,

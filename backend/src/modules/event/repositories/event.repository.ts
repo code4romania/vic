@@ -37,9 +37,18 @@ import {
 import { EventStatus } from '../enums/event-status.enum';
 import { VolunteerEntity } from 'src/modules/volunteer/entities/volunteer.entity';
 import { EventRSVPEntity } from '../entities/event-rsvp.entity';
-import { endOfDay, endOfMonth } from 'date-fns';
+import { endOfMonth } from 'date-fns';
+import {
+  bucharestDay,
+  endOfBucharestDay,
+} from 'src/common/helpers/bucharest-time';
 import { VolunteerProfileEntity } from 'src/modules/volunteer/entities/volunteer-profile.entity';
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
+import { visibleToVolunteersCondition } from 'src/modules/organization/organization-visibility';
+import { eventEndSql } from '../event-end';
+
+// The query builder's event end: the end date, or the end of the start day (event-end.ts)
+const EVENT_END = eventEndSql('event.startDate', 'event.endDate');
 
 @Injectable()
 export class EventRepository
@@ -130,7 +139,7 @@ export class EventRepository
       .then(([row]) => +row.n);
   }
 
-  // #493: one query; the department filter matches the list's (#494)
+  // #493: one query; the department filter matches the list's (#494). Like the tabs, drafts count too.
   async countByState({
     organizationId,
     departmentId,
@@ -140,8 +149,8 @@ export class EventRepository
          SELECT event.id, event.start_date > now() AS upcoming
          FROM event
          WHERE event.organization_id = $1
-           AND event.status = 'published'
-           AND (event.end_date > now() OR event.end_date IS NULL)
+           AND event.deleted_on IS NULL
+           AND ${eventEndSql('event.start_date', 'event.end_date')} > now()
            AND ($2::uuid IS NULL
              OR EXISTS (SELECT 1 FROM event_targets_organization_structure t WHERE t."eventId" = event.id AND t."organizationStructureId" = $2)
              OR NOT EXISTS (SELECT 1 FROM event_targets_organization_structure t WHERE t."eventId" = event.id))
@@ -175,10 +184,13 @@ export class EventRepository
     const query = this.eventRepository
       .createQueryBuilder('event')
       .leftJoinAndMapMany('event.targets', 'event.targets', 'targets')
+      // M11: the event's hours are its approved hours
       .leftJoinAndMapMany(
         'event.activityLogs',
         'event.activityLogs',
         'activityLog',
+        'activityLog.status = :approvedLogStatus',
+        { approvedLogStatus: 'approved' },
       )
       .loadRelationCountAndMap(
         'event.going',
@@ -222,8 +234,7 @@ export class EventRepository
     if (eventState) {
       const currentDate = new Date();
       // an event with no end date has not finished
-      const notEnded =
-        '(event.endDate > :currentDate OR event.endDate IS NULL)';
+      const notEnded = `${EVENT_END} > :currentDate`;
       if (eventState === EventState.OPEN) {
         query.andWhere(notEnded, { currentDate });
       } else if (eventState === EventState.UPCOMING) {
@@ -233,7 +244,7 @@ export class EventRepository
           currentDate,
         });
       } else {
-        query.andWhere('event.endDate <= :currentDate', {
+        query.andWhere(`${EVENT_END} <= :currentDate`, {
           currentDate,
         });
       }
@@ -333,7 +344,7 @@ export class EventRepository
 
     // Get all events in progress from the organizations i am part or public events
     query.andWhere(
-      '(event.endDate > :currentDate OR event.endDate IS NULL) AND ((event.isPublic = :isPublic AND event.organizationId NOT IN ' +
+      `${EVENT_END} > :currentDate AND ((event.isPublic = :isPublic AND event.organizationId NOT IN ` +
         query
           .subQuery()
           .select('vol.organizationId')
@@ -363,7 +374,7 @@ export class EventRepository
     const query = this.createSelectOpenOrganizationGoingEventsBaseSelectQuery();
 
     query.andWhere(
-      '(event.endDate > :currentDate OR event.endDate IS NULL) AND v.userId = :userId AND v.status = :volunteerStatus AND (targets.id = vp.departmentId OR targets.id IS NULL)',
+      `${EVENT_END} > :currentDate AND v.userId = :userId AND v.status = :volunteerStatus AND (targets.id = vp.departmentId OR targets.id IS NULL)`,
       {
         currentDate: new Date(),
         userId,
@@ -382,7 +393,7 @@ export class EventRepository
     const query = this.createSelectOpenOrganizationGoingEventsBaseSelectQuery();
 
     query.andWhere(
-      '(event.endDate > :currentDate OR event.endDate IS NULL) AND ((v.status = :active AND v.userId = :userId) OR event.isPublic = :isPublic)',
+      `${EVENT_END} > :currentDate AND ((v.status = :active AND v.userId = :userId) OR event.isPublic = :isPublic)`,
       {
         currentDate: new Date(),
         active: VolunteerStatus.ACTIVE,
@@ -417,8 +428,11 @@ export class EventRepository
     const { organizationId } = findOptions;
     const events = await this.eventRepository
       .createQueryBuilder('event')
+      .innerJoin('event.organization', 'organization')
       .select()
-      .where(
+      // M7: no hours on the events of a suspended or not yet validated NGO
+      .where(visibleToVolunteersCondition('organization'))
+      .andWhere(
         'event.status = :status AND event.startDate <= :currentDate AND event.organizationId = :organizationId',
         {
           status: EventStatus.PUBLISHED,
@@ -432,36 +446,44 @@ export class EventRepository
   }
 
   private createSelectOpenOrganizationGoingEventsBaseSelectQuery(): SelectQueryBuilder<EventEntity> {
-    return this.eventRepository
-      .createQueryBuilder('event')
-      .leftJoinAndMapMany('event.targets', 'event.targets', 'targets')
-      .leftJoinAndMapOne(
-        'event.organization',
-        'event.organization',
-        'organization',
-      )
-      .leftJoin(VolunteerEntity, 'v', 'v.organizationId = event.organizationId')
-      .leftJoin(VolunteerProfileEntity, 'vp', 'vp.id = v.volunteerProfileId')
-      .select([
-        'event.id',
-        'event.name',
-        'event.startDate',
-        'event.endDate',
-        'event.status',
-        'event.isPublic',
-        'event.createdOn',
-        'event.organizationId',
-        'event.capacity',
-        'event.location',
-        'targets.id',
-        'targets.name',
-        'organization.id',
-        'organization.name',
-        'organization.logo',
-      ])
-      .where('event.status = :status', {
-        status: EventStatus.PUBLISHED,
-      });
+    return (
+      this.eventRepository
+        .createQueryBuilder('event')
+        .leftJoinAndMapMany('event.targets', 'event.targets', 'targets')
+        .leftJoinAndMapOne(
+          'event.organization',
+          'event.organization',
+          'organization',
+        )
+        .leftJoin(
+          VolunteerEntity,
+          'v',
+          'v.organizationId = event.organizationId',
+        )
+        .leftJoin(VolunteerProfileEntity, 'vp', 'vp.id = v.volunteerProfileId')
+        .select([
+          'event.id',
+          'event.name',
+          'event.startDate',
+          'event.endDate',
+          'event.status',
+          'event.isPublic',
+          'event.createdOn',
+          'event.organizationId',
+          'event.capacity',
+          'event.location',
+          'targets.id',
+          'targets.name',
+          'organization.id',
+          'organization.name',
+          'organization.logo',
+        ])
+        .where('event.status = :status', {
+          status: EventStatus.PUBLISHED,
+        })
+        // M7: no events of a suspended or not yet validated NGO in the app's lists and search
+        .andWhere(visibleToVolunteersCondition('organization'))
+    );
   }
 
   private async searchOrderAndPaginate(
@@ -548,7 +570,7 @@ export class EventRepository
         {
           eventRSVPs: { userId, going: true },
           startDate: LessThanOrEqual(endOfMonth(new Date())),
-          endDate: MoreThan(endOfDay(new Date())),
+          endDate: MoreThan(endOfBucharestDay(bucharestDay())),
         },
       ],
     });

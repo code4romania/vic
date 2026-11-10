@@ -44,13 +44,21 @@ export class AdminOrganizationsController {
   // #511
   @Get()
   async getAll(
-    @Query() { page, limit, search, status }: GetAdminOrganizationsDto,
+    @Query()
+    {
+      page,
+      limit,
+      search,
+      status,
+      awaitingValidation,
+    }: GetAdminOrganizationsDto,
   ): Promise<Pagination<IAdminOrganizationListItem>> {
     return this.listAdminOrganizationsUseCase.execute({
       page,
       limit,
       search,
       status,
+      awaitingValidation,
     });
   }
 

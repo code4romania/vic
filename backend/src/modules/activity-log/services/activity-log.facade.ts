@@ -11,14 +11,25 @@ import {
   UpdateActivityLogOptions,
 } from '../models/activity-log.model';
 import { ActivityLogRepositoryService } from '../repositories/activity-log.repository';
+import { assertActivityLogAllowed } from '../activity-log-rules';
+import { DataSource } from 'typeorm';
 
 @Injectable()
 export class ActivityLogFacade {
   constructor(
     private readonly activityLogRepository: ActivityLogRepositoryService,
+    private readonly dataSource: DataSource,
   ) {}
 
+  // M12: every new log follows the shared rules (activity-log-rules.ts)
   async create(newLog: CreateActivityLogOptions): Promise<IActivityLogModel> {
+    await assertActivityLogAllowed(this.dataSource.manager, {
+      volunteerId: newLog.volunteerId,
+      date: newLog.date,
+      hours: newLog.hours,
+      eventId: newLog.eventId,
+      activityTypeId: newLog.activityTypeId,
+    });
     return this.activityLogRepository.create(newLog);
   }
 
@@ -36,6 +47,35 @@ export class ActivityLogFacade {
     id: string,
     updates: UpdateActivityLogOptions,
   ): Promise<IActivityLogModel> {
+    // M12: an edit of the hours, date, event or type follows the same rules, on the edited values
+    const data = updates as {
+      date?: Date;
+      hours?: number;
+      eventId?: string | null;
+      activityTypeId?: string | null;
+    };
+    if (
+      data.date !== undefined ||
+      data.hours !== undefined ||
+      data.eventId !== undefined ||
+      data.activityTypeId !== undefined
+    ) {
+      const current = await this.activityLogRepository.find(id);
+      if (current) {
+        await assertActivityLogAllowed(this.dataSource.manager, {
+          volunteerId: current.volunteer?.id,
+          date: data.date ?? current.date,
+          hours: data.hours ?? current.hours,
+          eventId:
+            data.eventId !== undefined ? data.eventId : current.event?.id,
+          activityTypeId:
+            data.activityTypeId !== undefined
+              ? data.activityTypeId
+              : current.activityType?.id,
+          excludeId: id,
+        });
+      }
+    }
     return this.activityLogRepository.update(id, updates);
   }
 

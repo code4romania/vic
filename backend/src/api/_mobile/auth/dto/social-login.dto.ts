@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsIn, IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import {
+  IsIn,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from 'class-validator';
 import { AuthProvider } from 'src/modules/auth/enums/auth.enums';
 
 export class SocialLoginDto {
@@ -15,4 +21,16 @@ export class SocialLoginDto {
   @IsNotEmpty()
   @MaxLength(8192)
   token: string;
+
+  // App Store 5.1.1(v): Apple's one-time authorization code from the same sign-in, optional. VIC
+  // exchanges it for a refresh token and revokes that when the account is deleted. Ignored for Google.
+  @ApiProperty({
+    required: false,
+    description:
+      'Apple only: the authorizationCode from the same Sign in with Apple response',
+  })
+  @IsOptional()
+  @IsString()
+  @MaxLength(4096)
+  authorizationCode?: string;
 }

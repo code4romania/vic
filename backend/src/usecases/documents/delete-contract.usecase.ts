@@ -6,7 +6,7 @@ import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
 import { GetOneContractUsecase } from './get-one-contract.usecase';
 import { ContractFacade } from 'src/modules/documents/services/contract.facade';
 import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
-import { assertVolunteerEditable } from 'src/modules/volunteer/volunteer-status.rules';
+import { assertVolunteerAcceptsDocuments } from 'src/modules/volunteer/volunteer-status.rules';
 
 @Injectable()
 export class DeleteContractUsecase implements IUseCaseService<string> {
@@ -25,7 +25,7 @@ export class DeleteContractUsecase implements IUseCaseService<string> {
       organizationId,
     });
     // An inactive or blocked volunteer's contracts are read-only
-    assertVolunteerEditable(contract.volunteer);
+    assertVolunteerAcceptsDocuments(contract.volunteer);
 
     // #486: the NGO uploaded it, so it can also remove a wrong upload, signed or not
     try {

@@ -172,6 +172,21 @@ describe('Mobile events filters (e2e)', () => {
     ).toEqual(['Maraton']);
   });
 
+  it('reads a date with no time as the day in Romania', async () => {
+    // 21 May 2030, 01:30 in Bucharest; still 20 May in UTC
+    await testApp.dataSource.query(
+      `INSERT INTO event (name, description, start_date, status, organization_id)
+       VALUES ('Noaptea muzeelor', 'd', '2030-05-20T22:30:00Z', 'published', $1)`,
+      [orgs.Crucea],
+    );
+    const day = async (d: string): Promise<string[]> =>
+      names(
+        await list({ organizationId: orgs.Crucea, startFrom: d, startTo: d }),
+      );
+    expect(await day('2030-05-20')).toEqual(['Curățenie']);
+    expect(await day('2030-05-21')).toEqual(['Noaptea muzeelor']);
+  });
+
   it('treats a request with no eventFilter as the open list', async () => {
     const { body } = await request(testApp.app.getHttpServer())
       .get('/mobile/event')

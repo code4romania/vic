@@ -20,7 +20,7 @@ export const HoursStepper = ({
   value,
   onChange,
   min = 1,
-  max = 300,
+  max = 24,
   error,
   disabled,
   testID = 'hours-stepper',

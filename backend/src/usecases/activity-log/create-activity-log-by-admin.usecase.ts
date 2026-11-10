@@ -110,8 +110,10 @@ export class CreateActivityLogByAdmin
         created.organization.id,
         created.volunteer.user.id,
         created.organization.name,
-        created.volunteer.user.notificationsSettings.notificationsViaPush,
-        created.volunteer.user.notificationsSettings.notificationsViaEmail,
+        created.volunteer.user.notificationsSettings?.notificationsViaPush ??
+          false,
+        created.volunteer.user.notificationsSettings?.notificationsViaEmail ??
+          false,
         created.volunteer.user.email,
         created.id,
         created.hours,

@@ -46,6 +46,15 @@ export class AuthIdentityEntity extends BaseEntity {
   @Column({ type: 'text', name: 'legacy_cognito_username', nullable: true })
   legacyCognitoUsername: string;
 
+  // App Store 5.1.1(v): the Apple refresh token, encrypted (AppleTokenService); never selected
+  @Column({
+    type: 'text',
+    name: 'apple_refresh_token',
+    nullable: true,
+    select: false,
+  })
+  appleRefreshToken?: string;
+
   @Column({ type: 'uuid', name: 'user_id', nullable: true })
   userId: string;
 

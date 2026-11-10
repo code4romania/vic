@@ -14,7 +14,7 @@ import { ContractFacade } from 'src/modules/documents/services/contract.facade';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { VolunteerExceptionMessages } from 'src/modules/volunteer/exceptions/volunteer.exceptions';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
-import { assertVolunteerEditable } from 'src/modules/volunteer/volunteer-status.rules';
+import { assertVolunteerAcceptsDocuments } from 'src/modules/volunteer/volunteer-status.rules';
 import { GetOrganizationUseCaseService } from '../organization/get-organization.usecase';
 
 export interface UploadContractOptions {
@@ -67,7 +67,7 @@ export class UploadContractUsecase {
       );
     }
 
-    // 3. The volunteer is the NGO's own, and editable
+    // 3. The volunteer is the NGO's own, active or inactive (M16)
     const volunteer = await this.volunteerFacade.find({
       id: options.volunteerId,
       organizationId: admin.organizationId,
@@ -77,7 +77,7 @@ export class UploadContractUsecase {
         VolunteerExceptionMessages.VOLUNTEER_001,
       );
     }
-    assertVolunteerEditable(volunteer);
+    assertVolunteerAcceptsDocuments(volunteer);
 
     // 4. The contract number, when given, stays unique within the NGO
     const contractNumber = options.contractNumber?.trim() || null;

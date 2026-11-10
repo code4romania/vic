@@ -32,7 +32,7 @@ describe('Organization registration and validation (e2e)', () => {
     email: 'contact@ong-nou.ro',
     phone: '+40700000100',
     // #469: only the minimum; description, address, website and logo come later
-    taxId: 'RO12345678',
+    taxId: 'RO12345674',
     firstName: 'Ana',
     lastName: 'Popescu',
     adminEmail: ADMIN_EMAIL,
@@ -152,6 +152,8 @@ describe('Organization registration and validation (e2e)', () => {
       (await register({ turnstileToken: 'bot' }).expect(400)).body.code_error,
     ).toBe('ORG_006');
     await register({ taxId: '' }).expect(400);
+    // M9: the CUI check digit
+    await register({ taxId: 'RO12345678' }).expect(400);
     await register({ description: 'prea scurta' }).expect(400);
     await register({ acceptedTerms: 'false' }).expect(400);
     // #510: both self-declarations are required
@@ -224,35 +226,35 @@ describe('Organization registration and validation (e2e)', () => {
         name: 'ASOCIATIA NOUA',
         email: 'x1@x.ro',
         phone: '+40799999991',
-        taxId: '11111111',
+        taxId: '11111110',
         adminEmail: 'x1@a.ro',
       },
       {
         name: 'Alt nume 1',
         email: 'CONTACT@ONG-NOU.RO',
         phone: '+40799999992',
-        taxId: '22222222',
+        taxId: '22222229',
         adminEmail: 'x2@a.ro',
       },
       {
         name: 'Alt nume 2',
         email: 'x3@x.ro',
         phone: '+40700000100',
-        taxId: '33333333',
+        taxId: '33333338',
         adminEmail: 'x3@a.ro',
       },
       {
         name: 'Alt nume 3',
         email: 'x4@x.ro',
         phone: '+40799999994',
-        taxId: 'ro12345678',
+        taxId: 'ro 0012345674',
         adminEmail: 'x4@a.ro',
       },
       {
         name: 'Alt nume 4',
         email: 'x5@x.ro',
         phone: '+40799999995',
-        taxId: '55555555',
+        taxId: '55555556',
         adminEmail: ADMIN_EMAIL,
       },
     ]) {
@@ -271,7 +273,7 @@ describe('Organization registration and validation (e2e)', () => {
 
     const notice = testApp.mailbox.last('super@vic.ro');
     expect(notice.subject).toContain('ONG nou de validat: Asociatia Noua');
-    expect(notice.context.subtitle).toContain('RO12345678');
+    expect(notice.context.subtitle).toContain('CUI 12345674');
     expect(notice.context.cta.link).toBe('https://vic.test/admin/validation');
 
     const own = await http
@@ -281,7 +283,8 @@ describe('Organization registration and validation (e2e)', () => {
     expect(own.body).toMatchObject({
       status: 'active',
       validatedAt: null,
-      taxId: 'RO12345678',
+      // M9: stored normalized
+      taxId: '12345674',
     });
     expect(own.body).not.toHaveProperty('statuteUrl');
     expect(own.body).not.toHaveProperty('activityArea');
@@ -322,7 +325,7 @@ describe('Organization registration and validation (e2e)', () => {
     expect(pending.body).toHaveLength(1);
     expect(pending.body[0]).toMatchObject({
       id: organization.id,
-      taxId: 'RO12345678',
+      taxId: '12345674',
       firstAdmin: expect.objectContaining({ email: ADMIN_EMAIL }),
     });
     expect(pending.body[0]).not.toHaveProperty('statuteUrl');
@@ -433,5 +436,34 @@ describe('Organization registration and validation (e2e)', () => {
 
     testApp.mailbox.clear();
     await register().expect(201);
+  });
+
+  it('M9: the CUI can change until the NGO is validated, then it is locked', async () => {
+    const { accessToken } = await registeredAndConfirmed();
+    const patch = (taxId: string): Test =>
+      http
+        .patch('/organization')
+        .set('Authorization', `Bearer ${accessToken}`)
+        .field('taxId', taxId);
+
+    expect((await patch('RO 18547290').expect(200)).body.taxId).toBe(
+      '18547290',
+    );
+    await patch('18547291').expect(400);
+
+    const { id } = await organizationRow();
+    await testApp.dataSource.query(
+      `UPDATE organization SET validated_at = now() WHERE id = $1`,
+      [id],
+    );
+    const locked = await patch('12345674').expect(400);
+    expect(locked.body.code_error).toBe('ORG_012');
+    // the same CUI, spelled differently, is not a change
+    await patch('RO018547290').expect(200);
+    const [row] = await testApp.dataSource.query(
+      `SELECT tax_id FROM organization WHERE id = $1`,
+      [id],
+    );
+    expect(row.tax_id).toBe('18547290');
   });
 });

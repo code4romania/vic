@@ -8,6 +8,7 @@ import {
   FindManyEventRSVPOptions,
   IEventRegistrationListItem,
   IEventRSVPModel,
+  IEventRSVPTransaction,
   UpdateEventRSVPOptions,
 } from '../models/event-rsvp.model';
 import {
@@ -86,6 +87,14 @@ export class EventFacade {
 
   async archive(id: string): Promise<IEventModel> {
     return this.eventRepository.updateStatus(id, EventStatus.ARCHIVED);
+  }
+
+  // B7: capacity check and write in one transaction, under a lock on the event row
+  withEventLock<T>(
+    eventId: string,
+    work: (tx: IEventRSVPTransaction) => Promise<T>,
+  ): Promise<T> {
+    return this.rsvpRepository.withEventLock(eventId, work);
   }
 
   async createRSVP(rsvp: CreateEventRSVPOptions): Promise<IEventRSVPModel> {

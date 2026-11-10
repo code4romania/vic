@@ -1,3 +1,4 @@
+import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 import { ActivityLogSource } from '../enums/activity-log-source.enum';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -23,6 +24,8 @@ import {
   UpdateActivityLogOptions,
 } from '../models/activity-log.model';
 import { DATE_CONSTANTS } from 'src/common/constants/constants';
+
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 @Injectable()
 export class ActivityLogRepositoryService
@@ -129,6 +132,13 @@ export class ActivityLogRepositoryService
       query.andWhere('activityLog.status = :status', {
         status: ActivityLogStatus.PENDING,
       });
+      // M10: the organization's "to decide" list (and its counter) leaves out the hours of
+      // inactive or blocked volunteers, which are read-only; a volunteer's own tab keeps them
+      if (!findOptions.volunteerId) {
+        query.andWhere('volunteer.status = :editableVolunteerStatus', {
+          editableVolunteerStatus: VolunteerStatus.ACTIVE,
+        });
+      }
     } else if (
       findOptions.resolutionStatus === ActivityLogResolutionStatus.SOLVED
     ) {
@@ -148,9 +158,13 @@ export class ActivityLogRepositoryService
       }
     }
 
+    // The admin's id (two admins can share a name); a name is still accepted from older clients
     if (findOptions.approvedOrRejectedBy) {
+      const byId = UUID.test(findOptions.approvedOrRejectedBy);
       query.andWhere(
-        '(approvedBy.name = :approvedOrRejectedBy OR rejectedBy.name = :approvedOrRejectedBy)',
+        byId
+          ? '(approvedBy.id = :approvedOrRejectedBy OR rejectedBy.id = :approvedOrRejectedBy)'
+          : '(approvedBy.name = :approvedOrRejectedBy OR rejectedBy.name = :approvedOrRejectedBy)',
         {
           approvedOrRejectedBy: findOptions.approvedOrRejectedBy,
         },

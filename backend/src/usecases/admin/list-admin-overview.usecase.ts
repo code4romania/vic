@@ -56,12 +56,22 @@ export class ListAdminOrganizationsUseCase {
   constructor(private readonly dataSource: DataSource) {}
 
   public async execute(
-    options: IAdminListOptions & { status?: OrganizationStatus },
+    options: IAdminListOptions & {
+      status?: OrganizationStatus;
+      awaitingValidation?: boolean;
+    },
   ): Promise<Pagination<IAdminOrganizationListItem>> {
     const where = `o.deleted_on IS NULL
       AND ($1::text IS NULL OR o.name ILIKE $1 OR o.email ILIKE $1 OR o.tax_id ILIKE $1)
-      AND ($2::text IS NULL OR o.status::text = $2)`;
-    const params = [like(options.search), options.status ?? null];
+      AND ($2::text IS NULL OR o.status::text = $2)
+      AND ($3::boolean IS NULL
+        OR ($3 AND o.status = 'active' AND o.validated_at IS NULL)
+        OR (NOT $3 AND o.validated_at IS NOT NULL))`;
+    const params = [
+      like(options.search),
+      options.status ?? null,
+      options.awaitingValidation ?? null,
+    ];
     const [{ total }] = await this.dataSource.query(
       `SELECT COUNT(*) AS total FROM organization o WHERE ${where}`,
       params,
@@ -75,7 +85,7 @@ export class ListAdminOrganizationsUseCase {
          FROM organization o
         WHERE ${where}
         ORDER BY o.created_on DESC, o.id
-        LIMIT $3 OFFSET $4`,
+        LIMIT $4 OFFSET $5`,
       [...params, options.limit, (options.page - 1) * options.limit],
     );
     return paginate(rows, +total, options);

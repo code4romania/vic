@@ -115,6 +115,7 @@ Organizations: `POST /organizations/register` (public, multipart with `logo` and
 | `REDIS_KEY_PREFIX` | optional ioredis `keyPrefix`; empty in production, `test:` in `.env.test` |
 | `TURNSTILE_SECRET` | Cloudflare Turnstile, NGO registration only |
 | `GOOGLE_CLIENT_IDS`, `APPLE_BUNDLE_ID`, `APPLE_SERVICES_ID` | social token verification (Google audiences: web, iOS and Android client ids; Apple audiences: the bundle id and the web Services ID) |
+| `APPLE_TEAM_ID`, `APPLE_KEY_ID`, `APPLE_PRIVATE_KEY`, `APPLE_WEB_REDIRECT_URI` | optional; App Store 5.1.1(v): the Sign in with Apple key (the .p8, base64 on one line) that exchanges the `authorizationCode` sent with an Apple sign-in for a refresh token (kept AES-GCM encrypted in `auth_identity.apple_refresh_token`, key derived from `AUTH_TOKEN_KEY`) and revokes it when the account (or the NGO, for admins) is deleted. Without the first three nothing is exchanged or revoked |
 | `MAIL_CONTACT` | the address shown in emails and policy pages |
 
 Removed in Layer 9 (with `src/infrastructure/providers/cognito/`, `src/modules/onghub/` and `@aws-sdk/client-cognito-identity-provider`): `COGNITO_*` (six variables) and `ONG_HUB_API`. `AWS_*` stay for S3; `jwks-rsa` stays for the Apple verifier (R24). Old `.env` files may still list them; they are ignored.

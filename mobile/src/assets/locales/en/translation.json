@@ -633,8 +633,8 @@
         "number": "The number must contain only digits",
         "placeholder": "Add number of hours",
         "required": "The number of hours is compulsory",
-        "min": "The number of hours must be greater than {{value}}",
-        "max": "The number of hours must be less than {{value}}",
+        "min": "The number of hours must be at least {{value}}",
+        "max": "You can log at most {{value}} hours a day",
         "integer": "The number of hours must be whole"
       },
       "mentions": {
@@ -648,6 +648,10 @@
       "ACTIVITY_LOG_001": "No logging of hours",
       "ACTIVITY_LOG_002": "The volunteer does not have a completed profile",
       "ACTIVITY_LOG_004": "Cannot cancel approved or rejected requests",
+      "ACTIVITY_LOG_007": "Hours cannot be logged for a future date.",
+      "ACTIVITY_LOG_008": "No more than 24 hours can be logged in one day.",
+      "ACTIVITY_LOG_009": "These hours are already logged for the same day, event and activity.",
+      "ACTIVITY_LOG_010": "Hours cannot be logged for an event that is not published.",
       "VOLUNTEER_001": "Volunteer does not exist",
       "EVENT_001": "The event does not exist",
       "ACTIVITY_TYPE_001": "Type of activity does not exist"

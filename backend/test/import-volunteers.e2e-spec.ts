@@ -179,6 +179,30 @@ describe('Import volunteers (e2e)', () => {
     expect(count).toBe(1);
   });
 
+  it('reads a CSV saved as Windows-1250 (Excel on a Romanian Windows) without losing diacritics', async () => {
+    // ş = 0xBA, Ţ = 0xDE, ţ = 0xFE, ă = 0xE3 in Windows-1250
+    const cp1250: Record<string, number> = {
+      ş: 0xba,
+      Ş: 0xaa,
+      ţ: 0xfe,
+      Ţ: 0xde,
+      ă: 0xe3,
+    };
+    const encode = (text: string): Buffer =>
+      Buffer.from([...text].map((c) => cp1250[c] ?? c.charCodeAt(0)));
+    const csv = encode(
+      'Prenume;Nume;Email;Judeţ;Departament\r\nŞtefan;Ţurcanu;stefan@example.ro;;Logistică\r\n',
+    );
+
+    const { body } = await upload(csv, 201);
+    expect(body).toEqual({ imported: 1, skipped: [], errors: [] });
+    const [user] = await testApp.dataSource.query(
+      `SELECT first_name, last_name FROM "user" WHERE email = 'stefan@example.ro'`,
+    );
+    expect(user).toEqual({ first_name: 'Ştefan', last_name: 'Ţurcanu' });
+    expect((await volunteers())[0].department).toBe('Logistică');
+  });
+
   it('reads an Excel file with the same columns', async () => {
     const sheet = XLSX.utils.aoa_to_sheet([
       ['Prenume', 'Nume', 'Email'],

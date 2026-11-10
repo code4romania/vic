@@ -6,6 +6,7 @@ import { EventRegistrationStatus } from 'src/modules/event/enums/event-registrat
 import { EventRSVPExceptionMessages } from 'src/modules/event/exceptions/event-rsvp.exceptions';
 import { IEventRSVPModel } from 'src/modules/event/models/event-rsvp.model';
 import { EventFacade } from 'src/modules/event/services/event.facade';
+import { hasEventEnded } from 'src/modules/event/event-end';
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
 import RegistrationDecidedEvent from 'src/modules/notifications/events/ngo-event/registration-decided.event';
 import { OrganizationGateService } from 'src/usecases/organization/organization-gate.service';
@@ -52,7 +53,7 @@ export class DecideEventRegistrationUseCase
         EventRSVPExceptionMessages.EVENT_RSVP_010,
       );
     }
-    if (event.endDate && new Date(event.endDate) <= new Date()) {
+    if (hasEventEnded(event)) {
       this.exceptionsService.badRequestException(
         EventRSVPExceptionMessages.EVENT_RSVP_007,
       );
@@ -66,24 +67,27 @@ export class DecideEventRegistrationUseCase
       return rsvp;
     }
 
-    if (
-      status === EventRegistrationStatus.APPROVED &&
-      rsvp.status !== EventRegistrationStatus.APPROVED &&
-      event.capacity &&
-      (await this.eventFacade.countGoing(event.id)) >= event.capacity
-    ) {
-      this.exceptionsService.badRequestException(
-        EventRSVPExceptionMessages.EVENT_RSVP_008,
-      );
-    }
-
-    const updated = await this.eventFacade.updateRSVP(id, {
-      going: true,
-      status,
-      rejectionReason: reason,
-      decidedById: adminId,
-      decidedOn: new Date(),
+    // B7: approving takes a seat; the count and the write happen under a lock on the event
+    await this.eventFacade.withEventLock(event.id, async (tx) => {
+      if (
+        status === EventRegistrationStatus.APPROVED &&
+        rsvp.status !== EventRegistrationStatus.APPROVED &&
+        tx.capacity &&
+        (await tx.countApproved()) >= tx.capacity
+      ) {
+        this.exceptionsService.badRequestException(
+          EventRSVPExceptionMessages.EVENT_RSVP_008,
+        );
+      }
+      await tx.update(id, {
+        going: true,
+        status,
+        rejectionReason: reason,
+        decidedById: adminId,
+        decidedOn: new Date(),
+      });
     });
+    const updated = await this.eventFacade.findRSVP({ id });
 
     const settings = rsvp.user?.notificationsSettings;
     this.eventEmitter.emit(

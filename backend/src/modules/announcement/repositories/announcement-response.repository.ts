@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { AnnouncementExceptionMessages } from '../exceptions/announcement.exceptions';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import { In, Repository } from 'typeorm';
@@ -17,11 +18,22 @@ export class AnnouncementResponseRepository {
     private readonly responseRepository: Repository<AnnouncementResponseEntity>,
   ) {}
 
+  // A second answer (two taps arriving together pass the "already answered" check) hits the unique
+  // constraint: 400 ANNOUNCEMENT_007 like the check, not a 500.
   async create(options: CreateAnnouncementResponseOptions): Promise<string> {
-    const saved = await this.responseRepository.save(
-      this.responseRepository.create(options),
-    );
-    return saved.id;
+    try {
+      const saved = await this.responseRepository.save(
+        this.responseRepository.create(options),
+      );
+      return saved.id;
+    } catch (error) {
+      if ((error as { code?: string })?.code === '23505') {
+        throw new BadRequestException(
+          AnnouncementExceptionMessages.ANNOUNCEMENT_007,
+        );
+      }
+      throw error;
+    }
   }
 
   async exists(announcementId: string, userId: string): Promise<boolean> {

@@ -40,6 +40,24 @@ export type UpdateEventRSVPOptions = Pick<IEventRSVPModel, 'going'> &
     decidedById?: string;
   };
 
+// B7: what a registration change can do while it holds the lock on its event (see
+// EventRSVPRepository.withEventLock): the capacity and the approved count are read under the lock.
+export interface IEventRSVPTransaction {
+  capacity: number | null;
+  countApproved(): Promise<number>;
+  findStatus(userId: string): Promise<{
+    id: string;
+    going: boolean;
+    status: EventRegistrationStatus | null;
+    rejectionReason: string | null;
+  } | null>;
+  create(rsvp: CreateEventRSVPOptions): Promise<string>;
+  update(
+    id: string,
+    updates: UpdateEventRSVPOptions & { rejectionReason?: string | null },
+  ): Promise<void>;
+}
+
 export type FindEventRSVPOptions = Partial<
   Pick<IEventRSVPModel, 'id'> &
     Pick<CreateEventRSVPOptions, 'eventId' | 'userId'>

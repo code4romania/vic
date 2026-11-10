@@ -4,6 +4,10 @@ import {
 } from 'src/modules/auth/enums/auth.enums';
 import { IAuthIdentityModel } from 'src/modules/auth/models/auth-identity.model';
 import { AuthIdentityFacade } from 'src/modules/auth/services/auth-identity.facade';
+import {
+  bucharestDay,
+  startOfBucharestDay,
+} from 'src/common/helpers/bucharest-time';
 import * as request from 'supertest';
 import { createTestApp, TestApp } from './utils/test-app';
 import { truncate } from './utils/test-data-source';
@@ -159,6 +163,41 @@ describe('Access codes and actions history (e2e)', () => {
       `SELECT usage_count FROM access_code`,
     );
     expect(code.usage_count).toBe(1);
+  });
+
+  it("a code is valid from its first to its last day in Romania, whatever the server's zone", async () => {
+    await testApp.dataSource.query(`DELETE FROM volunteer`);
+    const today = startOfBucharestDay(bucharestDay());
+    const at = (ms: number): string =>
+      new Date(today.getTime() + ms).toISOString();
+    const HOUR = 60 * 60 * 1000;
+    const code = async (
+      name: string,
+      start: string,
+      end: string | null,
+    ): Promise<void> => {
+      await testApp.dataSource.query(
+        `INSERT INTO access_code (code, start_date, end_date, usage_count, organization_id, created_by)
+         VALUES ($1, $2, $3, 0, $4, (SELECT id FROM "user" WHERE type = 'admin'))`,
+        [name, start, end, organizationId],
+      );
+    };
+    await code('ENDED', at(-48 * HOUR), at(-1 * HOUR)); // last day: yesterday
+    await code('LATER', at(25 * HOUR), null); // first day: tomorrow
+    await code('TODAY', at(-48 * HOUR), at(30 * 60 * 1000)); // last day: today, 00:30
+    const send = async (name: string, status: number): Promise<void> => {
+      const response = await http()
+        .post('/mobile/volunteer/access-code')
+        .set('Authorization', await mobile())
+        .send({ organizationId, code: name })
+        .expect(status);
+      if (status === 400) {
+        expect(response.body.code_error).toBe('ACCESS_CODE_001');
+      }
+    };
+    await send('ENDED', 400);
+    await send('LATER', 400);
+    await send('TODAY', 201);
   });
 
   it('logs access codes and announcement changes, latest first', async () => {
