@@ -40,6 +40,7 @@ import { EventRSVPEntity } from '../entities/event-rsvp.entity';
 import { endOfDay, endOfMonth } from 'date-fns';
 import { VolunteerProfileEntity } from 'src/modules/volunteer/entities/volunteer-profile.entity';
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
+import { visibleToVolunteersCondition } from 'src/modules/organization/organization-visibility';
 
 @Injectable()
 export class EventRepository
@@ -417,8 +418,11 @@ export class EventRepository
     const { organizationId } = findOptions;
     const events = await this.eventRepository
       .createQueryBuilder('event')
+      .innerJoin('event.organization', 'organization')
       .select()
-      .where(
+      // M7: no hours on the events of a suspended or not yet validated NGO
+      .where(visibleToVolunteersCondition('organization'))
+      .andWhere(
         'event.status = :status AND event.startDate <= :currentDate AND event.organizationId = :organizationId',
         {
           status: EventStatus.PUBLISHED,
@@ -461,7 +465,9 @@ export class EventRepository
       ])
       .where('event.status = :status', {
         status: EventStatus.PUBLISHED,
-      });
+      })
+      // M7: no events of a suspended or not yet validated NGO in the app's lists and search
+      .andWhere(visibleToVolunteersCondition('organization'));
   }
 
   private async searchOrderAndPaginate(

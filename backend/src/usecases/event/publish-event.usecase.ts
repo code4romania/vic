@@ -9,6 +9,7 @@ import { IEventModel } from 'src/modules/event/models/event.model';
 import { EventFacade } from 'src/modules/event/services/event.facade';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { GetOneEventUseCase } from './get-one-event.usecase';
+import { OrganizationGateService } from '../organization/organization-gate.service';
 import { GetOrganizationUseCaseService } from '../organization/get-organization.usecase';
 import { GetVolunteersUserDataForNotificationsUsecase } from '../volunteer/get-volunteers-user-data-for-notifications.usecase';
 import { EventEmitter2 } from '@nestjs/event-emitter';
@@ -25,12 +26,16 @@ export class PublishEventUseCase implements IUseCaseService<IEventModel> {
     private readonly getOrganizationUsecase: GetOrganizationUseCaseService,
     private readonly getVolunteerUserDataForNotificationsUsecase: GetVolunteersUserDataForNotificationsUsecase,
     private readonly eventEmitter: EventEmitter2,
+    private readonly organizationGate: OrganizationGateService,
   ) {}
 
   public async execute(
     id: string,
     admin: IAdminUserModel,
   ): Promise<IEventModel> {
+    // M7: a suspended or not yet validated NGO cannot publish events (403 ORG_005)
+    await this.organizationGate.assertValidated(admin.organizationId);
+
     const organization = await this.getOrganizationUsecase.execute(
       admin.organizationId,
     );

@@ -264,4 +264,40 @@ describe('Event capacity and registration rules (e2e)', () => {
       .send({ capacity: 3 })
       .expect(200);
   });
+
+  it("hides a suspended or unvalidated NGO's events from the app and refuses to publish them", async () => {
+    const names = async (eventFilter: string): Promise<string[]> => {
+      const response = await http()
+        .get('/mobile/event')
+        .query({ eventFilter, limit: 20, page: 1 })
+        .set(
+          'Authorization',
+          `Bearer ${await testApp.mintAccessToken(people.V1, AuthRealm.MOBILE)}`,
+        )
+        .expect(200);
+      return response.body.items.map((e: { name: string }) => e.name);
+    };
+    await rsvp('V1', true, 200);
+    expect(await names('OPEN')).toEqual(['Maraton']);
+    expect(await names('GOING')).toEqual(['Maraton']);
+
+    await testApp.dataSource.query(
+      `UPDATE organization SET status = 'suspended'`,
+    );
+    expect(await names('OPEN')).toEqual([]);
+    expect(await names('ORGANIZATIONS')).toEqual([]);
+    expect(await names('GOING')).toEqual([]);
+
+    // a suspended NGO's admins cannot log in; an unvalidated one's can, but cannot publish
+    await testApp.dataSource.query(
+      `UPDATE organization SET status = 'active', validated_at = NULL`,
+    );
+    expect(await names('OPEN')).toEqual([]);
+    await testApp.dataSource.query(`UPDATE event SET status = 'draft'`);
+    const publish = await http()
+      .patch(`/event/${eventId}/publish`)
+      .set('Authorization', await adminAuth())
+      .expect(403);
+    expect(publish.body.code_error).toBe('ORG_005');
+  });
 });
