@@ -1,13 +1,13 @@
 import { JwtService } from '@nestjs/jwt';
-import axios from 'axios';
+import { createPublicKey } from 'crypto';
 import { OAuth2Client } from 'google-auth-library';
+import { JwksClient } from 'jwks-rsa';
 import {
   createTestAuthConfig,
   generateTestAuthKeys,
 } from '../../../../../test/utils/auth-test-config';
 import { AuthExceptionCodes } from '../../exceptions/exceptions';
 import { AppleTokenVerifier } from './apple.verifier';
-import { FacebookTokenVerifier } from './facebook.verifier';
 import { GoogleTokenVerifier } from './google.verifier';
 
 // No network: provider keys are throwaway test keys and HTTP calls are recorded responses.
@@ -22,8 +22,7 @@ const signer = new JwtService({ privateKey });
 const authConfig = createTestAuthConfig({
   GOOGLE_CLIENT_IDS: 'ios-client,web-client',
   APPLE_BUNDLE_ID: 'org.commitglobal.vic',
-  FACEBOOK_APP_ID: '123',
-  FACEBOOK_APP_SECRET: 'secret',
+  APPLE_SERVICES_ID: 'org.commitglobal.vic.web',
 });
 
 const sign = (
@@ -144,6 +143,17 @@ describe('AppleTokenVerifier', () => {
     });
   });
 
+  it('accepts the web Services ID as audience too (#512)', async () => {
+    await expect(
+      verifier.verify(
+        apple(
+          { sub: 'apple-1', email: 'ana@icloud.com', email_verified: true },
+          { audience: 'org.commitglobal.vic.web' },
+        ),
+      ),
+    ).resolves.toMatchObject({ subject: 'apple-1', emailVerified: true });
+  });
+
   it('refuses another audience, another issuer and an expired token', async () => {
     const payload = { sub: 'apple-1', email: 'x@y.com', email_verified: true };
     await rejectsWith13(
@@ -175,65 +185,35 @@ describe('AppleTokenVerifier', () => {
   });
 });
 
-describe('FacebookTokenVerifier', () => {
-  const verifier = new FacebookTokenVerifier(authConfig);
-  const respond = (
-    debug: Record<string, unknown>,
-    me: Record<string, unknown>,
-  ): jest.SpyInstance =>
-    jest.spyOn(axios, 'get').mockImplementation(async (url: string) => ({
-      data: url.endsWith('/debug_token') ? { data: debug } : me,
-    }));
+// The real key lookup, with Apple's JWKS document replaced: the key is picked by the token's kid.
+describe('AppleTokenVerifier with a mocked JWKS', () => {
+  const jwk = {
+    ...createPublicKey(publicKey).export({ format: 'jwk' }),
+    kid: 'provider-key',
+    use: 'sig',
+    alg: 'RS256',
+  };
+  const token = sign(
+    { sub: 'apple-2', email: 'ion@icloud.com', email_verified: 'true' },
+    { issuer: 'https://appleid.apple.com', audience: 'org.commitglobal.vic' },
+  );
 
-  it('returns the Facebook user for a valid token issued to our app', async () => {
-    const get = respond(
-      { is_valid: true, app_id: '123', user_id: 'fb-1' },
-      { id: 'fb-1', email: 'ana@example.ro' },
-    );
+  it('checks the signature with the JWKS key named in the token header', async () => {
+    const getKeys = jest
+      .spyOn(JwksClient.prototype, 'getKeys')
+      .mockResolvedValue([jwk] as never);
 
-    await expect(verifier.verify('user-token')).resolves.toEqual({
-      subject: 'fb-1',
-      email: 'ana@example.ro',
-      emailVerified: true,
-    });
-    expect(get).toHaveBeenCalledWith(
-      'https://graph.facebook.com/debug_token',
-      expect.objectContaining({
-        params: { input_token: 'user-token', access_token: '123|secret' },
-      }),
-    );
+    await expect(
+      new AppleTokenVerifier(authConfig).verify(token),
+    ).resolves.toMatchObject({ subject: 'apple-2', email: 'ion@icloud.com' });
+    expect(getKeys).toHaveBeenCalled();
   });
 
-  it.each([
-    [
-      'an invalid token',
-      { is_valid: false, app_id: '123', user_id: 'fb-1' },
-      { id: 'fb-1', email: 'a@b.ro' },
-    ],
-    [
-      'a token of another app',
-      { is_valid: true, app_id: '999', user_id: 'fb-1' },
-      { id: 'fb-1', email: 'a@b.ro' },
-    ],
-    [
-      'no email shared',
-      { is_valid: true, app_id: '123', user_id: 'fb-1' },
-      { id: 'fb-1' },
-    ],
-    [
-      'a /me for another user',
-      { is_valid: true, app_id: '123', user_id: 'fb-1' },
-      { id: 'fb-2', email: 'a@b.ro' },
-    ],
-  ])('refuses %s', async (_, debug, me) => {
-    respond(debug, me);
+  it('turns a kid missing from the JWKS into AUTH_013', async () => {
+    jest
+      .spyOn(JwksClient.prototype, 'getKeys')
+      .mockResolvedValue([{ ...jwk, kid: 'another-key' }] as never);
 
-    await rejectsWith13(verifier.verify('user-token'));
-  });
-
-  it('turns a network error into AUTH_013', async () => {
-    jest.spyOn(axios, 'get').mockRejectedValue(new Error('timeout'));
-
-    await rejectsWith13(verifier.verify('user-token'));
+    await rejectsWith13(new AppleTokenVerifier(authConfig).verify(token));
   });
 });

@@ -44,6 +44,7 @@ Full text and the resolution of every review finding (R1 to R36) are in `.scratc
 - **Local first (2026-10-21).** Migrations run only against the local database until the staging rehearsal; nothing from `feat/own-auth` is merged to `main` or deployed before then, because `migrationsRun: true` applies migrations on boot. The only exception is a small announce PR with no migration, deployed before T-7. This replaces the last Consequence above: Layers 0 to 2 no longer deploy early.
 - **Social users choose (2026-10-21).** A social user may ignore the transition email and sign in with Google, Facebook or Apple in the new app; the email says so.
 - **Scope (2026-10-22).** Replace Cognito and NGO Hub only. Volunteers never came from NGO Hub; an "Add volunteer" button on the web is a separate feature after the switch.
+- **Social login (2026-11-10, #512).** Replaces decision 7: Google and Apple in the app and on the web, no Facebook. The web signs in only an existing admin, by the verified email, and keeps no provider link. Facebook links imported from Cognito stay in the table but are no longer accepted.
 - **Maintenance (R1, R2).** At 0:00 the VIC ECS service is scaled to 0 (never the shared ALB) and the web shows a static page; the new backend starts with `MAINTENANCE_MODE=true` and lets only `MAINTENANCE_ALLOWED_IPS` through for the smoke test.
 
 Recorded deviations from the design:

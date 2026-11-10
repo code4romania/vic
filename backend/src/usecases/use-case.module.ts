@@ -22,6 +22,7 @@ import { ConfirmEmailUseCase } from './auth/confirm-email.usecase';
 import { RefreshSessionUseCase } from './auth/refresh-session.usecase';
 import { LogoutUseCase } from './auth/logout.usecase';
 import { SocialLoginUseCase } from './auth/social-login.usecase';
+import { WebSocialLoginUseCase } from './auth/web-social-login.usecase';
 import { RequestLoginUseCase } from './auth/request-login.usecase';
 import { LoginWithLinkUseCase } from './auth/login-with-link.usecase';
 import { LoginWithCodeUseCase } from './auth/login-with-code.usecase';
@@ -223,6 +224,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     RefreshSessionUseCase,
     LogoutUseCase,
     SocialLoginUseCase,
+    WebSocialLoginUseCase,
     RequestLoginUseCase,
     LoginWithLinkUseCase,
     LoginWithCodeUseCase,
@@ -406,6 +408,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     RefreshSessionUseCase,
     LogoutUseCase,
     SocialLoginUseCase,
+    WebSocialLoginUseCase,
     RequestLoginUseCase,
     LoginWithLinkUseCase,
     LoginWithCodeUseCase,

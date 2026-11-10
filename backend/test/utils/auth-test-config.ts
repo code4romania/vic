@@ -35,8 +35,6 @@ export const TEST_AUTH_SETTINGS: Record<string, string> = {
   MAINTENANCE_MODE: 'false',
   TURNSTILE_SECRET: '1x0000000000000000000000000000000AA',
   GOOGLE_CLIENT_IDS: 'test-google-client',
-  FACEBOOK_APP_ID: 'test-facebook-app',
-  FACEBOOK_APP_SECRET: 'test-facebook-secret',
   APPLE_BUNDLE_ID: 'org.commitglobal.vic',
 };
 

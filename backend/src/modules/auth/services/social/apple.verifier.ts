@@ -8,7 +8,7 @@ import { SocialIdentity, SocialTokenVerifier } from './social-identity';
 const APPLE_ISSUER = 'https://appleid.apple.com';
 
 // Apple identity token from AppleAuthentication.signInAsync: signature against Apple's JWKS, issuer,
-// audience = the app's bundle id, expiry. Apple puts the email in every token for the same team.
+// audience = the app's bundle id or the web Services ID, expiry. Apple puts the email in every token for the same team.
 @Injectable()
 export class AppleTokenVerifier implements SocialTokenVerifier {
   private readonly jwks = new JwksClient({
@@ -30,7 +30,7 @@ export class AppleTokenVerifier implements SocialTokenVerifier {
         publicKey,
         algorithms: ['RS256'],
         issuer: APPLE_ISSUER,
-        audience: this.authConfig.appleBundleId,
+        audience: this.authConfig.appleAudiences,
       });
       if (!payload?.sub) throw new Error('no subject');
 

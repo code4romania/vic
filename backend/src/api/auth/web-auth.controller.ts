@@ -26,6 +26,8 @@ import { RequestLoginUseCase } from 'src/usecases/auth/request-login.usecase';
 import { LogoutUseCase } from 'src/usecases/auth/logout.usecase';
 import { RefreshSessionUseCase } from 'src/usecases/auth/refresh-session.usecase';
 import { ResendVerificationUseCase } from 'src/usecases/auth/resend-verification.usecase';
+import { WebSocialLoginUseCase } from 'src/usecases/auth/web-social-login.usecase';
+import { SocialLoginDto } from 'src/api/_mobile/auth/dto/social-login.dto';
 import {
   clearRefreshCookie,
   REFRESH_COOKIE,
@@ -35,6 +37,7 @@ import { RequestLoginDto } from './dto/request-login.dto';
 import { ResendVerificationDto } from './dto/resend-verification.dto';
 import { AdminProfilePresenter } from './presenters/admin-profile.presenter';
 import { SessionPresenter } from './presenters/session.presenter';
+import { requestClient } from './request-client';
 
 const AUTH_THROTTLE = { default: { limit: 10, ttl: 60000 } };
 
@@ -48,6 +51,7 @@ export class WebAuthController {
     private readonly refreshSessionUseCase: RefreshSessionUseCase,
     private readonly logoutUseCase: LogoutUseCase,
     private readonly resendVerificationUseCase: ResendVerificationUseCase,
+    private readonly webSocialLoginUseCase: WebSocialLoginUseCase,
     private readonly authConfig: AuthConfigService,
   ) {}
 
@@ -60,6 +64,30 @@ export class WebAuthController {
   @Post('login/request')
   async requestLogin(@Body() { email }: RequestLoginDto): Promise<void> {
     await this.requestLoginUseCase.execute(AuthRealm.WEB, email);
+  }
+
+  // Google or Apple (#512): an existing admin login only, by verified email. Same answer as a magic link:
+  // the access token and the admin in the body, the refresh token in the vic_refresh cookie.
+  @Public()
+  @Throttle(AUTH_THROTTLE)
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({ type: SessionPresenter })
+  @Post('social')
+  async social(
+    @Body() { provider, token }: SocialLoginDto,
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<SessionPresenter> {
+    const result = await this.webSocialLoginUseCase.execute(
+      provider,
+      token,
+      requestClient(req),
+    );
+    setRefreshCookie(res, result.tokens.refreshToken, this.authConfig);
+    return new SessionPresenter(result.tokens, {
+      includeRefreshToken: false,
+      user: new AdminProfilePresenter(result.admin),
+    });
   }
 
   @Public()

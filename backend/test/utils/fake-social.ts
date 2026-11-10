@@ -7,7 +7,7 @@ import {
   SocialTokenVerifier,
 } from 'src/modules/auth/services/social/social-identity';
 
-// The e2e suite never calls Google, Apple or Facebook. A fixture token is the claims a provider would sign,
+// The e2e suite never calls Google or Apple. A fixture token is the claims a provider would sign,
 // base64url-encoded; the fake checks the same things the real verifiers do (audience, expiry, a subject)
 // and answers AUTH_013 otherwise. The real signature checks are covered by social-verifiers.spec.ts.
 export const SOCIAL_TEST_AUDIENCE = 'vic-e2e';

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { EnvelopeIcon, EnvelopeOpenIcon } from '@heroicons/react/24/outline';
@@ -11,10 +11,12 @@ import { toastOptions } from '../hooks/useToast';
 import Button from '../components/Button';
 import { AUTH_ERRORS } from '../common/errors/entities/auth.errors';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { useRequestLoginMutation } from '../services/auth/auth.service';
+import { useLoginWithSocialMutation, useRequestLoginMutation } from '../services/auth/auth.service';
 import { getAuthErrorCode } from '../common/utils/auth-error';
 import AuthShell, { AuthNotice } from '../components/AuthShell';
 import OpenAppBox from '../components/OpenAppBox';
+import SocialLoginButtons, { SocialProvider } from '../components/SocialLoginButtons';
+import { useAuth } from '../hooks/useAuth';
 
 type LoginForm = { email: string };
 
@@ -26,13 +28,16 @@ const showMigrationNotice = (): boolean => {
 
 // VIC 2.0 (#514): no passwords. The admin types an email and gets a magic link (15 minutes) that opens
 // /login/link. The answer is the same whether or not an account exists, except for a volunteer's email
-// (AUTH_012: use the app).
+// (AUTH_012: use the app). Google and Apple (#512) sign an existing admin in by the verified email.
 const Login = () => {
   const { t } = useTranslation('login');
   const [error, setError] = useState<AUTH_ERRORS | 'generic' | null>(null);
   const [sentTo, setSentTo] = useState<string | null>(null);
   const [submittedEmail, setSubmittedEmail] = useState<string>('');
   const requestLogin = useRequestLoginMutation();
+  const loginWithSocial = useLoginWithSocialMutation();
+  const { startSession } = useAuth();
+  const navigate = useNavigate();
 
   const schema = yup.object({
     email: yup.string().trim().email(t('form.email.invalid')).required(t('form.email.required')),
@@ -60,6 +65,21 @@ const Login = () => {
   };
 
   const onSubmit = ({ email }: LoginForm) => send(email.trim());
+
+  const onSocialToken = (provider: SocialProvider, token: string) => {
+    setError(null);
+    setSubmittedEmail('');
+    loginWithSocial.mutate(
+      { provider, token },
+      {
+        onSuccess: async (session) => {
+          await startSession(session);
+          navigate('/', { replace: true });
+        },
+        onError: (err) => setError(getAuthErrorCode(err) ?? 'generic'),
+      },
+    );
+  };
 
   const onSendAgain = () => {
     if (sentTo) send(sentTo, () => toast.success(t('sent.again_done'), toastOptions('success')));
@@ -117,9 +137,15 @@ const Login = () => {
         <OpenAppBox
           title={t('volunteer_account.title')}
           description={t('volunteer_account.description')}
-          email={submittedEmail}
+          email={submittedEmail || undefined}
         />
       )}
+
+      <SocialLoginButtons
+        onToken={onSocialToken}
+        onError={() => setError(AUTH_ERRORS.AUTH_013)}
+        disabled={loginWithSocial.isLoading}
+      />
 
       <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)} noValidate>
         <Controller

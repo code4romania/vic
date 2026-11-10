@@ -83,16 +83,16 @@ export class AuthConfigService implements JwtOptionsFactory {
     return splitList(this.configService.get('GOOGLE_CLIENT_IDS'));
   }
 
-  get facebookAppId(): string {
-    return this.configService.get('FACEBOOK_APP_ID');
-  }
-
-  get facebookAppSecret(): string {
-    return this.configService.get('FACEBOOK_APP_SECRET');
-  }
-
   get appleBundleId(): string {
     return this.configService.get('APPLE_BUNDLE_ID');
+  }
+
+  // The app signs in with the bundle id as audience, the web with the Services ID.
+  get appleAudiences(): string[] {
+    return [
+      this.appleBundleId,
+      ...splitList(this.configService.get('APPLE_SERVICES_ID')),
+    ].filter(Boolean);
   }
 
   createJwtOptions(): JwtModuleOptions {

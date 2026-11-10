@@ -1803,7 +1803,8 @@
       "AUTH_010": "Prea multe cereri. Încearcă din nou peste un minut.",
       "AUTH_011": "Versiunea aplicației este prea veche.",
       "AUTH_012": "Acesta este un cont de voluntar. Folosește aplicația mobilă VIC.",
-      "AUTH_013": "Autentificarea cu acest cont nu a reușit."
+      "AUTH_013": "Autentificarea cu acest cont nu a reușit.",
+      "AUTH_014": "Nu există niciun cont de administrator cu emailul acestui cont. Folosește emailul organizației sau înregistrează organizația."
     },
     "maintenance": {
       "title": "VIC este în mentenanță",
@@ -1862,7 +1863,12 @@
       "description": "Voluntarii folosesc aplicația mobilă VIC. Platforma web este pentru administratorii organizațiilor.",
       "open_app": "Deschide aplicația"
     },
-    "no_password": "Fără parolă: primești pe email un link valabil 15 minute."
+    "no_password": "Fără parolă: primești pe email un link valabil 15 minute.",
+    "social": {
+      "google": "Continuă cu Google",
+      "apple": "Continuă cu Apple",
+      "or": "sau cu emailul"
+    }
   },
   "login_link": {
     "title": {

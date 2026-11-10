@@ -6,6 +6,7 @@ import {
   confirmEmail,
   getTokenInfo,
   loginWithLink,
+  loginWithSocial,
   requestLogin,
   resendToken,
   resendVerification,
@@ -46,3 +47,12 @@ export const useConfirmEmailMutation = () =>
   useMutation((token: string) => confirmEmail(token), {
     onError: (error: AuthApiError) => Promise.resolve(error),
   });
+
+export const useLoginWithSocialMutation = () =>
+  useMutation(
+    ({ provider, token }: { provider: 'google' | 'apple'; token: string }) =>
+      loginWithSocial(provider, token),
+    {
+      onError: (error: AuthApiError) => Promise.resolve(error),
+    },
+  );
