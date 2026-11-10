@@ -112,6 +112,12 @@ const Onboarding = ({ navigation }: any) => {
   const Scene = StoryScenes[index];
   const story = STORIES[index];
 
+  // The scene shrinks to the room left between the header and the text: on a small phone
+  // (iPhone SE, Android 360×640) the text never covers it.
+  const [stageHeight, setStageHeight] = useState(0);
+  const [sceneHeight, setSceneHeight] = useState(0);
+  const sceneScale = stageHeight && sceneHeight ? Math.min(1, (stageHeight - 16) / sceneHeight) : 1;
+
   return (
     <View style={[styles.screen, { paddingTop: insets.top + 14 }]} testID="onboarding">
       <StatusBar style="light" />
@@ -153,19 +159,30 @@ const Onboarding = ({ navigation }: any) => {
         onLongPress={onHold}
         delayLongPress={180}
         onPressOut={onRelease}
+        onLayout={(event) => setStageHeight(event.nativeEvent.layout.height)}
         accessibilityRole="button"
         accessibilityLabel={`${t('a11y.stage')}`}
         accessibilityHint={`${t('a11y.stage_hint')}`}
         testID="onboarding-stage"
       >
-        <Svg width={300} height={300} style={styles.glow} pointerEvents="none">
+        <Svg
+          width={300}
+          height={300}
+          style={[styles.glow, { transform: [{ scale: sceneScale }] }]}
+          pointerEvents="none"
+        >
           <Circle cx={150} cy={150} r={150} fill={story.color} opacity={0.12} />
           <Circle cx={150} cy={150} r={90} fill={story.color} opacity={0.12} />
         </Svg>
-        <Scene key={story.key} />
+        <View
+          style={{ transform: [{ scale: sceneScale }] }}
+          onLayout={(event) => setSceneHeight(event.nativeEvent.layout.height)}
+        >
+          <Scene key={story.key} />
+        </View>
       </Pressable>
 
-      <View style={[styles.copy, { bottom: 132 + insets.bottom }]} accessibilityLiveRegion="polite">
+      <View style={styles.copy} accessibilityLiveRegion="polite">
         <Enter key={`eye-${index}`}>
           <VText variant="label" color={story.color} style={styles.eyebrow}>
             {t(`stories.${story.key}.eyebrow`)}
@@ -176,7 +193,7 @@ const Onboarding = ({ navigation }: any) => {
         </Enter>
       </View>
 
-      <View style={[styles.foot, { bottom: 24 + insets.bottom }]}>
+      <View style={[styles.foot, { paddingBottom: 24 + insets.bottom }]}>
         {last ? (
           <VButton label={t('start')} onPress={finish} testID="onboarding-start" />
         ) : (
@@ -212,11 +229,18 @@ const styles = StyleSheet.create({
   },
   brand: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   brandText: { fontFamily: fonts.title, fontSize: 20, letterSpacing: 1.2, color: colors.white },
-  stage: { flex: 1, alignItems: 'center', justifyContent: 'center', marginBottom: 250 },
+  // stage, text and buttons stack in the normal flow: nothing overlaps whatever the screen height
+  stage: {
+    flex: 1,
+    minHeight: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
   glow: { position: 'absolute' },
-  copy: { position: 'absolute', left: 24, right: 24, gap: 8, minHeight: 100 },
+  copy: { paddingHorizontal: 24, paddingTop: 8, paddingBottom: 20, gap: 8, minHeight: 100 },
   eyebrow: { fontFamily: fonts.bold, letterSpacing: 0.3 },
   title: { fontFamily: fonts.title, fontSize: 30, lineHeight: 36, color: colors.white },
-  foot: { position: 'absolute', left: 24, right: 24, gap: 14 },
+  foot: { paddingHorizontal: 24, gap: 14 },
   center: { textAlign: 'center' },
 });
