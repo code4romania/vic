@@ -147,7 +147,7 @@ describe('Volunteers (#475, #476)', () => {
         .getAllByRole('button')
         .at(-1) as HTMLElement,
     );
-    expect(screen.queryByText(t('volunteers:popover.activate'))).toBeNull();
+    expect(screen.queryByText(t('volunteers:popover.activate_candidate'))).toBeNull();
     await userEvent.keyboard('{Escape}');
 
     await userEvent.click(
@@ -155,7 +155,7 @@ describe('Volunteers (#475, #476)', () => {
         .getAllByRole('button')
         .at(-1) as HTMLElement,
     );
-    await userEvent.click(await screen.findByText(t('volunteers:popover.activate')));
+    await userEvent.click(await screen.findByText(t('volunteers:popover.activate_candidate')));
     await waitFor(() => expect(activated).toEqual(['c1']));
   });
 });

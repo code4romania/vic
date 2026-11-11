@@ -17,16 +17,18 @@ const INPUT_SPACING = 16;
 
 interface FormLayoutProps {
   children: React.ReactNode;
+  scrollRef?: React.RefObject<KeyboardAwareScrollViewRef | null>;
 }
 
-const FormLayout = ({ children }: FormLayoutProps) => {
+const FormLayout = ({ children, scrollRef }: FormLayoutProps) => {
   const actionsHeight = useContext(FormLayoutBottomOffsetContext);
-  const scrollViewRef = useRef<KeyboardAwareScrollViewRef>(null);
+  const internalScrollRef = useRef<KeyboardAwareScrollViewRef>(null);
+  const scrollViewRef = scrollRef ?? internalScrollRef;
   const { input } = useReanimatedFocusedInput();
 
   const assureFocusedInputVisible = useCallback(() => {
     scrollViewRef.current?.assureFocusedInputVisible();
-  }, []);
+  }, [scrollViewRef]);
 
   // The automatic scroll of KeyboardAwareScrollView doesn't run on Android (RN 0.86), so we trigger it
   // once the keyboard is open and whenever the focus moves to another input while it stays open.

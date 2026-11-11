@@ -63,6 +63,10 @@ export const normalize = (value: unknown): string =>
 const headerKey = (value: unknown): string =>
   normalize(value).replace(/ /g, '');
 
+// County names are compared with hyphens as spaces, so "Caras Severin" in a file still matches "Caraș-Severin".
+const countyKey = (value: unknown): string =>
+  normalize(value).replace(/-/g, ' ');
+
 // A CSV saved by Excel on a Romanian Windows is often Windows-1250, not UTF-8: a file with a UTF-8
 // BOM or valid UTF-8 is read as UTF-8, anything else as Windows-1250 (ș, ț, ă, î, â survive).
 export const decodeCsv = (buffer: Buffer): string => {
@@ -136,12 +140,12 @@ export class ImportVolunteersUseCase
       let locationId: number;
       if (values.city.trim()) {
         const city = normalize(values.city);
-        const county = normalize(values.county);
+        const county = countyKey(values.county);
         const matches = cities.filter(
           (candidate) =>
             normalize(candidate.name) === city &&
             (!county ||
-              normalize(candidate.county) === county ||
+              countyKey(candidate.county) === county ||
               normalize(candidate.abbreviation) === county),
         );
         if (matches.length === 1) locationId = matches[0].id;

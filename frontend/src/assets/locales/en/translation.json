@@ -276,6 +276,7 @@
     "popover": {
       "view": "View profile",
       "archive": "Mark as inactive",
+      "activate_candidate": "Activate volunteer",
       "activate": "Voluntary reactivation",
       "delete": "Delete from NGO",
       "block": "Voluntary blocking"

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { KeyboardAwareScrollViewRef } from 'react-native-keyboard-controller';
 import PageLayout from '../layouts/PageLayout';
 import FormLayout from '../layouts/FormLayout';
 import { useTranslation } from 'react-i18next';
@@ -89,6 +90,7 @@ const schema = yup.object({
 const CreateUser = ({ navigation }: any) => {
   const { t } = useTranslation('register');
   const paddingTop = usePaddingTop();
+  const scrollRef = useRef<KeyboardAwareScrollViewRef>(null);
 
   const { mutate: createUserProfile, isLoading } = useCreateUserProfileMutation();
 
@@ -134,12 +136,16 @@ const CreateUser = ({ navigation }: any) => {
       onBackButtonPress={navigation.goBack}
       actionsOptions={{
         primaryActionLabel: t('general:continue'),
-        onPrimaryActionButtonClick: handleSubmit(onSubmit),
+        onPrimaryActionButtonClick: handleSubmit(onSubmit, (invalidFields) => {
+          if (invalidFields.acceptTerms) {
+            scrollRef.current?.scrollToEnd({ animated: true });
+          }
+        }),
         loading: isLoading,
       }}
       headerStyle={{ paddingTop }}
     >
-      <FormLayout>
+      <FormLayout scrollRef={scrollRef}>
         {/* 20pt side margins: the layout gives 16 */}
         <View style={styles.content}>
           <View style={styles.intro}>
