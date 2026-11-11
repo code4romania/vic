@@ -70,7 +70,9 @@ const SectionHead = ({
   testID?: string;
 }) => (
   <View style={styles.sectionHead}>
-    <VText variant="h2">{title}</VText>
+    <VText variant="h2" style={styles.sectionTitle}>
+      {title}
+    </VText>
     {!!action && (
       // 44pt touch target around the short link
       <Pressable
@@ -261,7 +263,7 @@ const Home = ({ navigation }: any) => {
               {t('hello', { name: userProfile?.firstName || '' })}
             </VText>
             {!!organization?.name && (
-              <VText variant="sub" color="rgba(255,255,255,0.75)" numberOfLines={1}>
+              <VText variant="sub" color="rgba(255,255,255,0.75)">
                 {organization.name}
               </VText>
             )}
@@ -438,6 +440,7 @@ const styles = StyleSheet.create({
   },
   section: { marginTop: 28, gap: 10 },
   sectionHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  sectionTitle: { flex: 1 },
   link: { textDecorationLine: 'underline' },
   linkTouch: { minHeight: 44, justifyContent: 'center' },
   todoIcon: {

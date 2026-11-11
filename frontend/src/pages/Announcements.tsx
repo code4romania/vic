@@ -36,6 +36,7 @@ import EmptyContent from '../components/EmptyContent';
 import LoadErrorContent from '../components/LoadErrorContent';
 import AnnouncementCard from '../components/AnnouncementCard';
 import AnnouncementPager from '../components/AnnouncementPager';
+import { useValidationGate } from '../hooks/useValidationGate';
 
 type HeroIcon = ComponentType<SVGProps<SVGSVGElement>>;
 
@@ -74,6 +75,7 @@ const Announcements = ({ query, setQuery }: AnnouncementsProps) => {
   const [searchWord, setSearchWord] = useState<string>(query?.search || '');
 
   const navigate = useNavigate();
+  const { gate } = useValidationGate();
 
   // the tabs always show one status; active by default
   const status = isStatus(query?.status) ? query.status : AnnouncementStatus.ACTIVE;
@@ -202,6 +204,7 @@ const Announcements = ({ query, setQuery }: AnnouncementsProps) => {
             className="btn-primary"
             label={i18n.t('announcement:page.add')}
             onClick={onAdd}
+            {...gate}
           />
         }
       >
@@ -291,6 +294,7 @@ const Announcements = ({ query, setQuery }: AnnouncementsProps) => {
                   className="btn-primary"
                   label={i18n.t('announcement:page.add')}
                   onClick={onAdd}
+                  {...gate}
                 />
               )
             }

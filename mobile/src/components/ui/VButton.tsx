@@ -32,7 +32,7 @@ const palette: Record<
 
 /**
  * VIC 2.0 button. Yellow (`primary`) is only for the main action of a screen, with navy text.
- * Heights: 52 (regular) and 36 (small pill).
+ * Minimum heights: 52 (regular) and 36 (small pill); labels can wrap.
  */
 export const VButton = ({
   label,
@@ -77,8 +77,7 @@ export const VButton = ({
           <VText
             variant="button"
             color={p.fg}
-            style={size === 'small' ? styles.smallLabel : null}
-            numberOfLines={1}
+            style={[styles.label, size === 'small' ? styles.smallLabel : null]}
           >
             {label}
           </VText>
@@ -92,10 +91,16 @@ export default VButton;
 
 const styles = StyleSheet.create({
   base: { alignItems: 'center', justifyContent: 'center', flexDirection: 'row' },
-  regular: { height: 52, borderRadius: radius.button, paddingHorizontal: 20 },
-  small: { height: 36, borderRadius: 18, paddingHorizontal: 14 },
+  regular: {
+    minHeight: 52,
+    paddingVertical: 12,
+    borderRadius: radius.button,
+    paddingHorizontal: 20,
+  },
+  small: { minHeight: 36, paddingVertical: 6, borderRadius: 18, paddingHorizontal: 14 },
+  label: { flexShrink: 1, textAlign: 'center' },
   smallLabel: { fontSize: 14 },
-  content: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  content: { flexShrink: 1, flexDirection: 'row', alignItems: 'center', gap: 8 },
   disabled: { opacity: 0.4 },
   bordered: { borderWidth: 1 },
 });

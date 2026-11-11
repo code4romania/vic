@@ -9,6 +9,7 @@ interface AnnouncementFormCardProps {
   submitLabel: string;
   submitIcon?: ReactNode;
   disabled?: boolean;
+  submitTitle?: string;
   onCancel: () => void;
   onSubmit: () => void;
   children: ReactNode;
@@ -22,6 +23,7 @@ const AnnouncementFormCard = ({
   submitLabel,
   submitIcon,
   disabled,
+  submitTitle,
   onCancel,
   onSubmit,
   children,
@@ -46,6 +48,7 @@ const AnnouncementFormCard = ({
           label={submitLabel}
           icon={submitIcon}
           disabled={disabled}
+          title={submitTitle}
           onClick={onSubmit}
         />
       </div>

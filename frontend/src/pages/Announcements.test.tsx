@@ -105,3 +105,32 @@ describe('Announcements (#502)', () => {
     expect(screen.getByDisplayValue('4')).toBeInTheDocument();
   });
 });
+
+describe('announcement validation gate (#620)', () => {
+  const unvalidated = () => server.use(
+    http.get(api('/organization'), () => HttpResponse.json({ id: 'org-1', validatedAt: null })),
+  );
+
+  it('disables both new-announcement actions with the explanation', async () => {
+    useApi();
+    unvalidated();
+    server.use(http.get(api('/announcement'), () => HttpResponse.json({ items: [], meta: meta(0) })));
+    renderPage(<Announcements query={{ limit: 10, page: 1 }} setQuery={vi.fn()} />);
+
+    await screen.findByText(t('announcement:page.empty_title'));
+    const buttons = screen.getAllByRole('button', { name: t('announcement:page.add') });
+    expect(buttons).toHaveLength(2);
+    await waitFor(() => buttons.forEach((button) => expect(button).toBeDisabled()));
+    buttons.forEach((button) => expect(button).toHaveAttribute('title', t('organization:validation_required')));
+  });
+
+  it('disables creation on direct navigation, when publish now is turned off', async () => {
+    unvalidated();
+    renderPage(<AddAnnouncement />);
+    const button = screen.getByRole('button', { name: t('announcement:actions.create') });
+    await waitFor(() => expect(button).toBeDisabled());
+    expect(button).toHaveAttribute('title', t('organization:validation_required'));
+    await userEvent.click(screen.getByRole('checkbox'));
+    expect(button).toBeDisabled();
+  });
+});

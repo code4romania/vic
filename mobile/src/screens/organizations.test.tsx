@@ -186,7 +186,7 @@ describe('Organizație', () => {
     await renderApp('organization-profile');
     const bar = await screen.findByTestId('organization-bar');
     expect(within(bar).getByText('Membru')).toBeTruthy();
-    expect(within(bar).getByText('din 01/03/2025')).toBeTruthy();
+    expect(within(bar).getByText('din 01.03.2025')).toBeTruthy();
     expect(screen.getByTestId('organization-leave')).toBeTruthy();
   });
 

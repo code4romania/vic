@@ -12,7 +12,7 @@ import {
 import { useCancelAccessRequestMutation } from '../services/access-request/access-request.service';
 import { OrganizatinVolunteerStatus } from '../common/enums/organization-volunteer-status.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { formatDate } from '../common/utils/utils';
+import { datePickerService } from '../common/utils/birthday';
 import { colors, fonts, radius, shadows, spacing, StatusTone } from '../common/theme/tokens';
 import { useOrganization } from '../store/organization/organization.selector';
 import { useUserProfile } from '../store/profile/profile.selector';
@@ -168,9 +168,12 @@ const OrganizationProfile = ({ navigation, route }: any) => {
         return (
           <>
             <Badge label={`${t('bar.member')}`} tone="ok" />
-            <VText variant="cap" style={styles.barText} numberOfLines={1}>
+            <VText variant="cap" style={styles.barText}>
               {t('bar.member_since', {
-                date: formatDate(new Date(organization.volunteer.createdOn)),
+                date: datePickerService('ro').format(
+                  new Date(organization.volunteer.createdOn),
+                  'DD.MM.YYYY',
+                ),
               })}
             </VText>
             <VButton
