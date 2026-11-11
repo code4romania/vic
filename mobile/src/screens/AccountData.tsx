@@ -91,6 +91,7 @@ const AccountData = ({ navigation }: any) => {
     handleSubmit,
     watch,
     reset,
+    getValues,
   } = useForm<AccountDataFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
@@ -131,8 +132,8 @@ const AccountData = ({ navigation }: any) => {
       },
       {
         onSuccess: () => {
-          // the saved values become the new baseline: leaving no longer asks to discard
-          reset(payload);
+          // Keep registered fields in the baseline; Yup can omit an empty optional phone.
+          reset(getValues());
           setSelectedProfilePicture(null);
           Toast.show({ text1: `${t('submit.success')}`, type: 'success' });
         },
