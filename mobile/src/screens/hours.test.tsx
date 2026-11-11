@@ -12,6 +12,8 @@ import useStore from '../store/store';
 import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { formatLogLongDay, formatLogShortDay } from '../common/utils/activity-log-format';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { queryKeys } from '../services/query-keys';
 
 jest.mock('@gorhom/bottom-sheet', () => require('@gorhom/bottom-sheet/mock'));
 // the legacy pickers load their options from the API
@@ -23,6 +25,9 @@ jest.mock('../components/FormInput', () => () => null);
 const mockListCalls: any[][] = [];
 const mockCancel = jest.fn();
 const mockCreate = jest.fn();
+const mockRefetchList = jest.fn();
+const mockRefetchCounters = jest.fn();
+let queryClient: QueryClient;
 let mockLogQuery: any = { isFetching: false };
 
 const entry = (id: string, extra: Record<string, unknown> = {}) => ({
@@ -54,10 +59,10 @@ jest.mock('../services/activity-log/activity-log.service', () => ({
       isRefetching: false,
       hasNextPage: false,
       fetchNextPage: jest.fn(),
-      refetch: jest.fn(),
+      refetch: mockRefetchList,
     };
   },
-  useActivityLogsCounters: () => ({ refetch: jest.fn() }),
+  useActivityLogsCounters: () => ({ refetch: mockRefetchCounters }),
   useActivityLogQuery: () => mockLogQuery,
   useCancelActivityLogMutation: () => ({ mutate: mockCancel, isLoading: false }),
   useCreateActivityLogMutation: () => ({ mutate: mockCreate, isLoading: false }),
@@ -84,6 +89,11 @@ const renderApp = (initialRouteName = 'hours', params?: Record<string, unknown>)
         </Navigator>
       </NavigationContainer>
     </SafeAreaProvider>,
+    {
+      wrapper: ({ children }) => (
+        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      ),
+    },
   );
 
 const setProfile = (volunteerProfileId: string | null = 'p1') =>
@@ -122,13 +132,62 @@ const detailParams = {
 };
 
 beforeEach(() => {
+  queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   mockLogQuery = { isFetching: false, error: null, refetch: jest.fn() };
   mockListCalls.length = 0;
   jest.clearAllMocks();
   setProfile();
 });
 
+afterEach(() => queryClient.clear());
+
 describe('Ore', () => {
+  it('refetches the current list and counters on initial focus and when returning', async () => {
+    await renderApp();
+    expect(mockRefetchList).toHaveBeenCalledTimes(1);
+    expect(mockRefetchCounters).toHaveBeenCalledTimes(1);
+
+    await fireEvent.press(screen.getByTestId('hours-add'));
+    expect(mockRefetchList).toHaveBeenCalledTimes(1);
+    expect(mockRefetchCounters).toHaveBeenCalledTimes(1);
+
+    await fireEvent.press(await screen.findByTestId('modal-close'));
+    expect(await screen.findByTestId('hours-add')).toBeTruthy();
+    expect(mockRefetchList).toHaveBeenCalledTimes(2);
+    expect(mockRefetchCounters).toHaveBeenCalledTimes(2);
+  });
+
+  it('does not refetch again when updated counters rerender the focused screen', async () => {
+    await renderApp();
+    await act(async () => {
+      useStore.setState({ counters: { approved: 151, pending: 3, rejected: 5 } });
+    });
+
+    expect(within(screen.getByTestId('hours-total-approved')).getByText('151h')).toBeTruthy();
+    expect(mockRefetchList).toHaveBeenCalledTimes(1);
+    expect(mockRefetchCounters).toHaveBeenCalledTimes(1);
+  });
+
+  it('marks cached segments stale on focus without fetching them', async () => {
+    const fetchList = jest.fn(async () => ({ pages: [] }));
+    const keys = Object.values(ActivityLogStatus).map((status) =>
+      queryKeys.activityLogs('org-1', OrderDirection.DESC, '', status),
+    );
+    for (const key of keys) {
+      await queryClient.fetchQuery(key, fetchList, { staleTime: Infinity });
+    }
+    fetchList.mockClear();
+
+    await renderApp();
+
+    for (const key of keys) {
+      expect(queryClient.getQueryState(key)?.isInvalidated).toBe(true);
+    }
+    expect(fetchList).not.toHaveBeenCalled();
+    expect(mockRefetchList).toHaveBeenCalledTimes(1);
+    expect(mockRefetchCounters).toHaveBeenCalledTimes(1);
+  });
+
   it('shows the organization, the totals and the pending entries first, newest first', async () => {
     await renderApp();
     expect(await screen.findByText('Ore de voluntariat')).toBeTruthy();
