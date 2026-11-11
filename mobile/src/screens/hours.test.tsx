@@ -1,8 +1,9 @@
 import React from 'react';
+import { Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { fireEvent, render, screen, within } from '@testing-library/react-native';
+import { act, fireEvent, render, screen, within } from '@testing-library/react-native';
 import '../common/config/i18n';
 import ActivityLogs from './ActivityLogs';
 import ActivityLog from './ActivityLog';
@@ -172,6 +173,31 @@ describe('Ore', () => {
     await renderApp();
     await fireEvent.press(await screen.findByTestId('hours-add'));
     expect(screen.getByText('Completează datele')).toBeTruthy();
+  });
+
+  it('asks before closing changed hours and keeps them when staying', async () => {
+    const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
+    await renderApp();
+    await fireEvent.press(await screen.findByTestId('hours-add'));
+    await fireEvent.press(await screen.findByTestId('hours-stepper-plus'));
+    await fireEvent.press(screen.getByTestId('modal-close'));
+    expect(alert).toHaveBeenCalledTimes(1);
+    expect(screen.getByTestId('hours-stepper-value').props.children).toBe('2h');
+    const buttons = alert.mock.calls[0][2]!;
+    expect(buttons[0].style).toBe('cancel');
+    await act(async () => buttons[1].onPress!());
+    expect(await screen.findByTestId('hours-add')).toBeTruthy();
+    alert.mockRestore();
+  });
+
+  it('closes unchanged hours without asking', async () => {
+    const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
+    await renderApp();
+    await fireEvent.press(await screen.findByTestId('hours-add'));
+    await fireEvent.press(await screen.findByTestId('modal-close'));
+    expect(await screen.findByTestId('hours-add')).toBeTruthy();
+    expect(alert).not.toHaveBeenCalled();
+    alert.mockRestore();
   });
 
   it('adds hours from today with the − / + stepper', async () => {

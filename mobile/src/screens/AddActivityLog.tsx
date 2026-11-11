@@ -1,4 +1,5 @@
 import React from 'react';
+import { useConfirmDiscard } from '../hooks/useConfirmDiscard';
 import ModalLayout from '../layouts/ModalLayout';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -23,7 +24,7 @@ const AddActivityLog = ({ navigation }: any) => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<ActivityLogFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
@@ -31,6 +32,8 @@ const AddActivityLog = ({ navigation }: any) => {
     // the canvas starts from today and one hour
     defaultValues: { date: new Date(), hours: '1' },
   });
+
+  const allowLeave = useConfirmDiscard(navigation, isDirty);
 
   const onSubmit = (activityLog: ActivityLogFormTypes) => {
     logHours(
@@ -41,7 +44,10 @@ const AddActivityLog = ({ navigation }: any) => {
         },
       },
       {
-        onSuccess: () => navigation.goBack(),
+        onSuccess: () => {
+          allowLeave();
+          navigation.goBack();
+        },
         onError: (error: any) => {
           Toast.show({
             type: 'error',
