@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import i18n from '../common/config/i18n';
 import PageLayout from '../layouts/PageLayout';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import Card from '../layouts/CardLayout';
 import CardHeader from '../components/CardHeader';
 import CardBody from '../components/CardBody';

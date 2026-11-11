@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { CalendarIcon, ClockIcon, UsersIcon } from '@heroicons/react/24/outline';
 import i18n from '../common/config/i18n';
 import Card from '../layouts/CardLayout';

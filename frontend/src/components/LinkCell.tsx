@@ -1,6 +1,6 @@
 import React from 'react';
 import CellLayout from '../layouts/CellLayout';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 interface LinkCellProps {
   href: string;

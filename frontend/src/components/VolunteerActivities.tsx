@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { EyeIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { Media, TableColumn } from 'react-data-table-component';
 import i18n from '../common/config/i18n';

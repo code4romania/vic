@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { BoltIcon } from '@heroicons/react/24/outline';
 import i18n from '../common/config/i18n';
 import { ActivityTypeStatus } from '../common/enums/activity-type-status.enum';
