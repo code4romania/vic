@@ -7,14 +7,6 @@ import { renderPage, t } from '../test/render';
 import API from '../services/api';
 import { api, businessError, server } from '../test/server';
 
-// The widget would load Cloudflare's script: hand out a token instead.
-vi.mock('../components/Turnstile', () => ({
-  default: ({ onToken }: { onToken: (token: string) => void }) => {
-    React.useEffect(() => onToken('turnstile-ok'), [onToken]);
-    return null;
-  },
-}));
-
 const f = (key: string) => t(`register_organization:form.${key}.label`);
 
 const fillAll = async () => {
@@ -71,7 +63,7 @@ describe('RegisterOrganization', () => {
     expect(document.querySelector('input[type="password"]')).toBeNull();
   });
 
-  it('sends the multipart form with the Turnstile token and shows the masked email', async () => {
+  it('sends the multipart form and shows the masked email', async () => {
     // The FormData as the page hands it to axios (MSW cannot read a jsdom multipart body).
     let form: FormData | undefined;
     const interceptor = API.interceptors.request.use((config) => {
@@ -90,7 +82,6 @@ describe('RegisterOrganization', () => {
     expect(
       screen.getByText(t('register_organization:success.description', { email: 't•••@ong.test' })),
     ).toBeInTheDocument();
-    expect(form?.get('turnstileToken')).toBe('turnstile-ok');
     expect(form?.get('taxId')).toBe('RO18547290');
     // #469: only the minimum
     for (const key of ['address', 'activityArea', 'website', 'description', 'logo', 'statute']) {
@@ -107,7 +98,6 @@ describe('RegisterOrganization', () => {
 
   it.each([
     ['ORG_004', 409],
-    ['ORG_006', 400],
   ])('shows the %s message', async (code, status) => {
     server.use(http.post(api('/organizations/register'), () => businessError(status, code)));
     renderPage(<RegisterOrganization />, { auth: { isAuthenticated: false } });

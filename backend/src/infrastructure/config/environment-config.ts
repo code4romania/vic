@@ -155,9 +155,6 @@ class EnvironmentVariables {
   MAINTENANCE_ALLOWED_IPS: string; // comma separated
   @IsString()
   @NotEmptyWhenDeployed()
-  TURNSTILE_SECRET: string;
-  @IsString()
-  @NotEmptyWhenDeployed()
   GOOGLE_CLIENT_IDS: string; // comma separated
   @IsString()
   @NotEmptyWhenDeployed()

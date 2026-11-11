@@ -8,7 +8,6 @@ import { AuthRealm } from 'src/modules/auth/enums/auth.enums';
 import { IAuthIdentityModel } from 'src/modules/auth/models/auth-identity.model';
 import { SessionService } from 'src/modules/auth/services/session.service';
 import { MailService } from 'src/modules/mail/services/mail.service';
-import { TurnstileService } from 'src/infrastructure/providers/turnstile/turnstile.service';
 import { getQueueToken } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { QUEUES } from 'src/common/constants/constants';
@@ -20,8 +19,6 @@ import { FakeSocialVerifier } from './fake-social';
 import { GoogleTokenVerifier } from 'src/modules/auth/services/social/google.verifier';
 import { AppleTokenVerifier } from 'src/modules/auth/services/social/apple.verifier';
 import Redis from 'ioredis';
-
-export const TURNSTILE_OK = 'turnstile-ok';
 
 export interface TestApp {
   app: INestApplication;
@@ -56,9 +53,6 @@ export async function createTestApp(
   let builder = Test.createTestingModule({ imports: [AppModule] })
     .overrideProvider(MailService)
     .useValue(mailbox)
-    // No call to Cloudflare from the tests: TURNSTILE_OK passes, anything else fails.
-    .overrideProvider(TurnstileService)
-    .useValue({ verify: async (token: string) => token === TURNSTILE_OK })
     // No call to Google or Apple: fixture tokens from test/utils/fake-social.ts.
     .overrideProvider(GoogleTokenVerifier)
     .useValue(new FakeSocialVerifier())

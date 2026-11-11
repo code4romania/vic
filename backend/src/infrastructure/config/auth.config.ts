@@ -75,10 +75,6 @@ export class AuthConfigService implements JwtOptionsFactory {
     return splitList(this.configService.get('MAINTENANCE_ALLOWED_IPS'));
   }
 
-  get turnstileSecret(): string {
-    return this.configService.get('TURNSTILE_SECRET');
-  }
-
   get googleClientIds(): string[] {
     return splitList(this.configService.get('GOOGLE_CLIENT_IDS'));
   }

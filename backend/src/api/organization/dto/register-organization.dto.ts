@@ -1,12 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import {
-  Equals,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  MaxLength,
-} from 'class-validator';
+import { Equals, IsOptional } from 'class-validator';
 import { IsNormalizedEmail } from 'src/api/auth/dto/validators';
 import {
   Address,
@@ -107,10 +101,4 @@ export class RegisterOrganizationDto {
   )
   @Equals(true, { message: 'the self-declaration must be accepted' })
   declaresRepresentative: boolean;
-
-  @ApiProperty({ description: 'The Cloudflare Turnstile token from the form' })
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(4096)
-  turnstileToken: string;
 }

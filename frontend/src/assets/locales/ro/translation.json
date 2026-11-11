@@ -466,7 +466,6 @@
       "no_data": "Nu s-au putut încărca datele organizației",
       "ORG_004": "Există deja o organizație cu același nume, email, telefon sau CUI.",
       "ORG_005": "Organizația nu este validată încă. Va fi posibil după ce echipa VIC o validează.",
-      "ORG_006": "Verificarea anti-robot nu a reușit. Încearcă din nou.",
       "ORG_008": "Acest administrator nu face parte din organizația ta.",
       "ORG_009": "Invitațiile sunt doar pentru administratorii care nu au intrat încă în cont.",
       "ORG_010": "Nu îți poți schimba propriul status.",
@@ -2113,7 +2112,6 @@
       }
     },
     "errors": {
-      "turnstile_missing": "Completează verificarea anti-robot.",
       "generic": "Înregistrarea nu a reușit. Verifică datele și încearcă din nou."
     },
     "organization_card_description": "Datele oficiale ale ONG-ului. CUI-ul este verificat de echipa VIC.",
