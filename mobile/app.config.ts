@@ -34,7 +34,7 @@ const expoConfig: ExpoConfig = {
   scheme: 'vic',
   // Store builds take buildNumber / versionCode from EAS (appVersionSource: remote, autoIncrement
   // in eas.json); the numbers below are only the starting point and the local/dev value.
-  version: '1.1.0',
+  version: '2.0.0',
   orientation: 'portrait',
   icon: './src/assets/images/icon.png',
   userInterfaceStyle: 'light',
@@ -116,7 +116,7 @@ const expoConfig: ExpoConfig = {
   },
   // appVersion, not sdkVersion: own-auth builds must never share over-the-air updates with the
   // 1.0.x builds (an update from this code would crash an install without expo-secure-store, and the
-  // "Update now" update for 1.0.x must not land on 1.1.0). Bump `version` for every native change.
+  // "Update now" update for 1.0.x must not land on 2.0.0). Bump `version` for every native change.
   runtimeVersion: {
     policy: 'appVersion',
   },
