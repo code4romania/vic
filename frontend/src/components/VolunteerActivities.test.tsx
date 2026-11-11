@@ -8,8 +8,8 @@ import { api, server } from '../test/server';
 import { VolunteerStatus } from '../common/enums/volunteer-status.enum';
 
 const mockNavigate = vi.fn();
-vi.mock('react-router', async () => ({
-  ...(await vi.importActual<object>('react-router')),
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual<object>('react-router-dom')),
   useNavigate: () => mockNavigate,
 }));
 

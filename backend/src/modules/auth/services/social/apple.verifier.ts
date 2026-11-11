@@ -30,7 +30,8 @@ export class AppleTokenVerifier implements SocialTokenVerifier {
         publicKey,
         algorithms: ['RS256'],
         issuer: APPLE_ISSUER,
-        audience: this.authConfig.appleAudiences,
+        // @nestjs/jwt 12 types the audience list as non-empty; the config always holds the bundle id.
+        audience: this.authConfig.appleAudiences as [string, ...string[]],
       });
       if (!payload?.sub) throw new Error('no subject');
 

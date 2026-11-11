@@ -19,7 +19,7 @@ import { IActivityLogListItem } from '../common/interfaces/activity-log.interfac
 import CellLayout from '../layouts/CellLayout';
 import StatusBadge, { ACTIVITY_LOG_STATUS_TONE } from './StatusBadge';
 import InitialsAvatar from './InitialsAvatar';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import ActivityLogSidePanel from './ActivityLogSidePanel';
 import DataTableFilters from './DataTableFilters';
 import DateRangePicker from './DateRangePicker';

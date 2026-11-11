@@ -1,6 +1,6 @@
 import React from 'react';
 import { CalendarIcon, MapPinIcon, UsersIcon } from '@heroicons/react/24/outline';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import i18n from '../common/config/i18n';
 import { formatEventDate } from '../common/utils/utils';
 import Card from '../layouts/CardLayout';

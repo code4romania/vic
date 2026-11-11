@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { TrashIcon } from '@heroicons/react/24/outline';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router-dom';
 import i18n from '../common/config/i18n';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import EmptyContent from '../components/EmptyContent';

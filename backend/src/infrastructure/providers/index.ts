@@ -1,4 +1,3 @@
-export * from './cache/cache-provider.module';
 export * from './database/database-provider.module';
 export * from './mail/mail-provider.module';
 export * from './throttle/throttle.module';

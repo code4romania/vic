@@ -6,7 +6,7 @@ import i18n from '../common/config/i18n';
 import PageHeader from '../components/PageHeader';
 import Button from '../components/Button';
 import StatisticsCard from '../components/StatisticsCard';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { ActivityLogResolutionStatus } from '../common/enums/activity-log-resolution-status.enum';
 import ActivityLogTableWithQueryParams from '../containers/query/ActivityLogTableWithQueryParams';
 import { ActivityLogsProps } from '../containers/query/ActivityLogsWithQueryParams';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import i18n from '../common/config/i18n';
 import { formatDateWithTime } from '../common/utils/utils';
 import Card from '../layouts/CardLayout';

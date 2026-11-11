@@ -13,7 +13,6 @@ import { MailModule } from './modules/mail/mail.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { UserModule } from './modules/user/user.module';
 import {
-  CacheProviderModule,
   DatabaseProviderModule,
   QueueProviderModule,
   RedisProviderModule,
@@ -35,7 +34,6 @@ import { ExpoPushNotificationsProviderModule } from './infrastructure/providers/
     }),
     // Providers
     DatabaseProviderModule,
-    CacheProviderModule,
     QueueProviderModule,
     RedisProviderModule,
     ThrottleModule,

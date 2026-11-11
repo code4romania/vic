@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import i18n from '../common/config/i18n';
 import { useDashboardOverviewQuery } from '../services/dashboard/dashboard.service';
 import StatisticsCard from './StatisticsCard';
