@@ -327,7 +327,7 @@ const AccessRequestTable = ({
 
   // row actions
   const onView = (row: IAccessRequest) => {
-    navigate(row.id);
+    navigate(`/volunteers/requests/${row.id}`);
   };
 
   const onReject = (row: IAccessRequest) => {
