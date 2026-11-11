@@ -13,7 +13,7 @@ import useStore from '../../store/store';
 import { IActivityLogCounters } from '../../common/interfaces/activity-log-counters.interface';
 import { IActivityLog } from '../../common/interfaces/activity-log.interface';
 import { ActivityLogFormTypes } from '../../components/ActivityLogForm';
-import { queryKeys, refetchWhen } from '../query-keys';
+import { queryKeys, useRefetchWhen } from '../query-keys';
 
 // After adding, editing or deleting an entry: the lists, the totals and the profile statistics.
 const useRefreshHours = () => {
@@ -68,7 +68,8 @@ export const useActivityLogsCounters = (volunteerId: string | undefined) => {
       enabled,
     },
   );
-  return { ...query, refetch: refetchWhen(enabled, query.refetch) };
+  const refetch = useRefetchWhen(enabled, query.refetch);
+  return { ...query, refetch };
 };
 
 export const useActivityLogQuery = (activityLogId: string) => {
@@ -109,5 +110,6 @@ export const useActivityLogsInfiniteQuery = (
       enabled,
     },
   );
-  return { ...query, refetch: refetchWhen(enabled, query.refetch) };
+  const refetch = useRefetchWhen(enabled, query.refetch);
+  return { ...query, refetch };
 };

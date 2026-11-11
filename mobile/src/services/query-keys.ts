@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 
@@ -22,3 +23,10 @@ export const refetchWhen =
   <T>(enabled: boolean, refetch: () => Promise<T>) =>
   (): Promise<T | undefined> =>
     enabled ? refetch() : Promise.resolve(undefined);
+
+// Keep refetch stable for screens using it in useFocusEffect/useCallback dependencies (issue #612).
+export const useRefetchWhen = <T>(enabled: boolean, refetch: () => Promise<T>) =>
+  useCallback(
+    (): Promise<T | undefined> => (enabled ? refetch() : Promise.resolve(undefined)),
+    [enabled, refetch],
+  );
