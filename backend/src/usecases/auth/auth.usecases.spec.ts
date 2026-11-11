@@ -247,6 +247,34 @@ describe('LoginWithCodeUseCase / LoginWithLinkUseCase (VIC 2.0, #514)', () => {
     );
   });
 
+  it('code: hides AUTH_015 as AUTH_005 and passes AUTH_006 through unchanged', async () => {
+    const verifyCode = jest.fn();
+    const useCase = new LoginWithCodeUseCase(
+      {
+        findIdentity: jest
+          .fn()
+          .mockResolvedValue(identity({ realm: AuthRealm.MOBILE })),
+      } as unknown as AuthIdentityFacade,
+      { verifyCode } as unknown as OneTimeTokenService,
+      completeLogin as unknown as CompleteLoginHelper,
+      {} as SessionService,
+    );
+
+    verifyCode.mockRejectedValue(
+      new AuthException(AuthExceptionCodes.AUTH_015),
+    );
+    await rejectsWith(
+      useCase.execute('ana@example.ro', '000000'),
+      AuthExceptionCodes.AUTH_005,
+    );
+
+    const exhausted = new AuthException(AuthExceptionCodes.AUTH_006);
+    verifyCode.mockRejectedValue(exhausted);
+    await expect(useCase.execute('ana@example.ro', '000000')).rejects.toBe(
+      exhausted,
+    );
+  });
+
   it('code: an unknown email is AUTH_005, a disabled login AUTH_004', async () => {
     const findIdentity = jest.fn().mockResolvedValue(null);
     const useCase = new LoginWithCodeUseCase(

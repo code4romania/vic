@@ -147,6 +147,7 @@
       "AUTH_011": "This version of the app is too old. Update it from the store.",
       "AUTH_012": "This is an organization account. Use VIC on the web.",
       "AUTH_013": "Signing in with this account failed.",
+      "AUTH_015": "The code is not correct. Check your email and try again.",
       "social_failed": "Signing in failed. Try again or continue with your email."
     }
   },

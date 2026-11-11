@@ -9,6 +9,7 @@ import {
   AuthException,
   AuthExceptionCodes,
 } from 'src/modules/auth/exceptions/exceptions';
+import { IAuthTokenModel } from 'src/modules/auth/models/auth-token.model';
 import { AuthIdentityFacade } from 'src/modules/auth/services/auth-identity.facade';
 import { OneTimeTokenService } from 'src/modules/auth/services/one-time-token.service';
 import {
@@ -18,7 +19,7 @@ import {
 } from 'src/modules/auth/services/session.service';
 import { CompleteLoginHelper } from './complete-login.helper';
 
-// The app: email + the 6-digit code from the email. A wrong code counts an attempt (AUTH_005); the fifth
+// The app: email + the 6-digit code from the email. A wrong code counts an attempt (AUTH_005 here); the fifth
 // ends the code (AUTH_006). A volunteer without a profile yet gets 404 USER_001 on /mobile/user/profile
 // afterwards, which is the app's signal to open the profile form.
 @Injectable()
@@ -44,11 +45,23 @@ export class LoginWithCodeUseCase implements IUseCaseService<SessionTokens> {
       throw new AuthException(AuthExceptionCodes.AUTH_004);
     }
 
-    const token = await this.oneTimeTokenService.verifyCode(
-      identity,
-      AuthTokenType.LOGIN,
-      code,
-    );
+    let token: IAuthTokenModel;
+    try {
+      token = await this.oneTimeTokenService.verifyCode(
+        identity,
+        AuthTokenType.LOGIN,
+        code,
+      );
+    } catch (error) {
+      // Anonymous callers must not learn whether this email has a live login code.
+      if (
+        error instanceof AuthException &&
+        error.code === AuthExceptionCodes.AUTH_015
+      ) {
+        throw new AuthException(AuthExceptionCodes.AUTH_005);
+      }
+      throw error;
+    }
     const updated = await this.completeLogin.consume(identity, token);
 
     return this.sessionService.createSession(updated, AuthRealm.MOBILE, client);

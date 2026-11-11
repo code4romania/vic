@@ -99,7 +99,7 @@ export class OneTimeTokenService {
   }
 
   // Returns the live code row when the code matches. Every try takes one of the code's five attempts
-  // first, atomically, so parallel requests cannot compare more than five codes. A mismatch is AUTH_005;
+  // first, atomically, so parallel requests cannot compare more than five codes. A mismatch is AUTH_015;
   // the fifth ends the code (AUTH_006). No live code at all is AUTH_005. A code issued for a purpose only
   // matches when verified for the same purpose.
   public async verifyCode(
@@ -148,7 +148,7 @@ export class OneTimeTokenService {
       await this.authIdentityFacade.replaceLiveTokens(identity.id, [type]);
       throw new AuthException(AuthExceptionCodes.AUTH_006);
     }
-    throw new AuthException(AuthExceptionCodes.AUTH_005);
+    throw new AuthException(AuthExceptionCodes.AUTH_015);
   }
 
   // Marks the token used inside the caller's transaction; AUTH_005 if another request used it first.

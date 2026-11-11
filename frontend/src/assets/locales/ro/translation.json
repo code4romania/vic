@@ -1894,7 +1894,8 @@
       "AUTH_011": "Versiunea aplicației este prea veche.",
       "AUTH_012": "Acesta este un cont de voluntar. Folosește aplicația mobilă VIC.",
       "AUTH_013": "Autentificarea cu acest cont nu a reușit.",
-      "AUTH_014": "Nu există niciun cont de administrator cu emailul acestui cont. Folosește emailul organizației sau înregistrează organizația."
+      "AUTH_014": "Nu există niciun cont de administrator cu emailul acestui cont. Folosește emailul organizației sau înregistrează organizația.",
+      "AUTH_015": "Codul nu este corect. Verifică emailul și încearcă din nou."
     },
     "maintenance": {
       "title": "VIC este în mentenanță",
