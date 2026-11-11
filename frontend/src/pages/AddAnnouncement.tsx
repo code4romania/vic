@@ -15,6 +15,7 @@ import PageHeader from '../components/PageHeader';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import PageLayout from '../layouts/PageLayout';
 import { useCreateAnnouncementMutation } from '../services/announcement/announcement.service';
+import { useValidationGate } from '../hooks/useValidationGate';
 
 export const anouncementFormValidationSchema = yup.object({
   name: yup
@@ -72,6 +73,7 @@ const defaultValuesFor = (original?: IAnnouncement): Partial<AnnouncementFormTyp
 
 const AddAnnouncement = () => {
   const navigate = useNavigate();
+  const { gate } = useValidationGate();
   const location = useLocation();
   const duplicateOf = (location.state as { duplicateOf?: IAnnouncement } | null)?.duplicateOf;
 
@@ -127,6 +129,8 @@ const AddAnnouncement = () => {
               ? i18n.t('announcement:create.duplicate_subtitle', { name: duplicateOf.name })
               : i18n.t('announcement:create.subtitle')
           }
+          disabled={gate.disabled}
+          submitTitle={gate.title}
           submitLabel={i18n.t('announcement:actions.create')}
           submitIcon={<PlusIcon className="h-5 w-5" />}
           onCancel={onBackButtonPress}

@@ -17,6 +17,7 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import LoadingContent from '../components/LoadingContent';
 import PageHeader from '../components/PageHeader';
 import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
+import { useValidationGate } from '../hooks/useValidationGate';
 
 export const AddAccessCodeValidationSchema = yup.object({
   code: yup
@@ -50,6 +51,7 @@ export const AddAccessCodeValidationSchema = yup.object({
 
 const AddAccessCode = () => {
   const navigate = useNavigate();
+  const { gate } = useValidationGate();
 
   const { mutateAsync: createAccessCode, isLoading } = useCreateAccessCodesMutation();
 
@@ -104,6 +106,7 @@ const AddAccessCode = () => {
               className="btn-primary"
               icon={<CloudArrowUpIcon className="h-5 w-5 md:hidden" />}
               onClick={handleSubmit(onSubmit)}
+              {...gate}
             />
           </CardHeader>
           <CardBody>

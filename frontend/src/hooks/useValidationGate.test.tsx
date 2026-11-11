@@ -20,11 +20,11 @@ describe('validation gate (blocker 5)', () => {
 
     await waitFor(() => expect(button('add_volunteer')).toBeDisabled());
     expect(button('add_event')).toBeDisabled();
-    // contracts can be managed before validation, as announcements
+    // Contracts can be managed before validation.
     expect(button('manage_contracts')).toBeEnabled();
     expect(button('add_volunteer')).toHaveAttribute('title', t('organization:validation_required'));
-    // announcements do not reach new people: they stay available
-    expect(button('add_announcement')).toBeEnabled();
+    expect(button('add_announcement')).toBeDisabled();
+    expect(button('add_announcement')).toHaveAttribute('title', t('organization:validation_required'));
   });
 
   it('leaves everything enabled for a validated organization', async () => {
@@ -34,5 +34,7 @@ describe('validation gate (blocker 5)', () => {
     await waitFor(() => expect(queryClient.getQueryData(['organization'])).toBeDefined());
     expect(button('add_volunteer')).toBeEnabled();
     expect(button('add_volunteer')).not.toHaveAttribute('title');
+    expect(button('add_announcement')).toBeEnabled();
+    expect(button('add_announcement')).not.toHaveAttribute('title');
   });
 });

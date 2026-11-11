@@ -17,7 +17,7 @@ const t = (key: string): string => `${i18n.t(`dashboard:quick_actions.${key}`)}`
 const ACTIONS = [
   { key: 'add_volunteer', href: '/volunteers/add', Icon: UserPlusIcon, needsValidation: true },
   { key: 'add_event', href: '/events/add', Icon: CalendarIcon, needsValidation: true },
-  { key: 'add_announcement', href: '/announcements/add', Icon: MegaphoneIcon },
+  { key: 'add_announcement', href: '/announcements/add', Icon: MegaphoneIcon, needsValidation: true },
   // as in the design: the fourth shortcut opens the contracts
   { key: 'manage_contracts', href: '/documents/contracts', Icon: DocumentCheckIcon },
 ];
