@@ -17,7 +17,7 @@ import {
 import { OrganizationFacadeService } from 'src/modules/organization/services/organization.facade';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { GetOrganizationUseCaseService } from './get-organization.usecase';
-import { normalizeCui } from 'src/modules/organization/cui';
+import { isValidCui, normalizeCui } from 'src/modules/organization/cui';
 import {
   isLogoImage,
   RegisterOrganizationFiles,
@@ -50,16 +50,19 @@ export class UpdateOrganizationUseCase
       admin.organizationId,
     );
 
-    // M9: the CUI is what the super admin checked; once validated it is locked (400 ORG_012).
-    // Sending the same CUI (in any spelling) is fine: the edit form always sends it.
-    if (
-      current.validatedAt &&
+    const taxIdChanged =
       changes.taxId !== undefined &&
-      normalizeCui(changes.taxId ?? '') !== normalizeCui(current.taxId ?? '')
-    ) {
+      normalizeCui(changes.taxId ?? '') !== normalizeCui(current.taxId ?? '');
+
+    // The CUI checked by the super admin stays locked after validation.
+    if (current.validatedAt && taxIdChanged) {
       throw new BadRequestException(OrganizationExceptionMessages.ORG_012);
     }
-    if (current.validatedAt) {
+    if (taxIdChanged && !isValidCui(changes.taxId)) {
+      throw new BadRequestException(['taxId must be a valid CUI']);
+    }
+    // Preserve legacy stored values when the submitted CUI is equivalent.
+    if (!taxIdChanged) {
       changes = { ...changes, taxId: undefined };
     }
 

@@ -1,13 +1,13 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsOptional } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
+import { normalizeCui } from 'src/modules/organization/cui';
 import { IsNormalizedEmail } from 'src/api/auth/dto/validators';
 import {
   Address,
   Description,
   OrganizationName,
   Phone,
-  TaxId,
   Website,
 } from './organization-fields';
 
@@ -64,6 +64,10 @@ export class UpdateOrganizationDto {
   @BlankAsUnchanged()
   @ApiPropertyOptional()
   @IsOptional()
-  @TaxId()
+  // The checksum is checked against the stored value in UpdateOrganizationUseCase.
+  @Transform(({ value }) =>
+    typeof value === 'string' ? normalizeCui(value.trim()) : value,
+  )
+  @IsString()
   taxId?: string;
 }

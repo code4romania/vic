@@ -37,9 +37,9 @@ describe('RegisterOrganization', () => {
     );
   });
 
-  it('checks the CUI like the backend: RO and spaces are fine, the check digit is not', async () => {
+  it.each(['12345678', 'RO 185 472 91'])('rejects invalid CUI %s on registration', async (taxId) => {
     renderPage(<RegisterOrganization />, { auth: { isAuthenticated: false } });
-    await userEvent.type(screen.getByLabelText(f('taxId')), 'RO 185 472 91');
+    await userEvent.type(screen.getByLabelText(f('taxId')), taxId);
     await submit();
     expect(
       await screen.findByText(t('register_organization:form.tax_id_invalid')),
