@@ -45,7 +45,7 @@ const EditActivityLog = ({ isOpen, onClose, activityLog }: EditActivityLogProps)
       reset({
         date: new Date(activityLog.date),
         hours: activityLog.hours,
-        mentions: activityLog.mentions,
+        mentions: activityLog.mentions ?? '',
         volunteer: mapUserToListItem(activityLog.volunteer),
         task: activityLog.activityType
           ? mapUserToListItem(activityLog.activityType)
