@@ -3,6 +3,7 @@ import * as FileSystem from 'expo-file-system/legacy';
 import { shareAsync } from 'expo-sharing';
 import { MIME_TYPES } from '../constants/constants';
 import { IContractListItem } from '../interfaces/contract-list-item.interface';
+import { sanitizeFileName } from './sanitize-file-name';
 
 const save = async (uri: string, fileName: string, mimetype: string) => {
   // Android 11+ can write to a folder the user picks; everywhere else we open the share sheet
@@ -28,8 +29,9 @@ const save = async (uri: string, fileName: string, mimetype: string) => {
 
 /** Downloads a signed contract and saves or shares it (was duplicated in Documents and ContractHistory). */
 export const downloadContract = async (contract: IContractListItem) => {
-  const localPath = `${FileSystem.documentDirectory}${contract.contractFileName}`;
+  const fileName = sanitizeFileName(contract.contractFileName);
+  const localPath = `${FileSystem.documentDirectory}${fileName}`;
   const file = await FileSystem.downloadAsync(contract.path, localPath);
-  const extension = contract.contractFileName.split('.').pop() as string;
-  await save(file.uri, contract.contractFileName, MIME_TYPES[extension] as string);
+  const extension = fileName.split('.').pop() as string;
+  await save(file.uri, fileName, MIME_TYPES[extension] as string);
 };

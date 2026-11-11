@@ -19,6 +19,7 @@ import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { romanianNeedsDe } from '../common/utils/plural';
 import { usePersonalStatistics } from '../services/statistics/statistics.service';
+import { useGetUserProfileQuery } from '../services/user/user.service';
 import {
   IOrganizationVolunteer,
   isCandidateVolunteer,
@@ -94,12 +95,14 @@ const Settings = ({ navigation }: any) => {
   const { activate } = useActivateOrganization();
   const { logout } = useAuth();
   const { data: stats, refetch: refetchStats } = usePersonalStatistics();
+  const { refetch: refetchProfile } = useGetUserProfileQuery();
 
-  // hours get approved and events pass while the app is open: refresh when Profil comes back
+  // Memberships and statistics can change while the app is open: refresh on focus.
   useFocusEffect(
     useCallback(() => {
       refetchStats();
-    }, [refetchStats]),
+      refetchProfile();
+    }, [refetchStats, refetchProfile]),
   );
 
   const years = (count: number) => {

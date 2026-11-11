@@ -21,9 +21,8 @@ export const updateUserProfile = async (
 
   formData.append('firstName', updates.firstName);
   formData.append('lastName', updates.lastName);
-  if (updates.phone) {
-    formData.append('phone', updates.phone);
-  }
+  // Always send the phone: an empty value clears a saved number (omitting it keeps the old one)
+  formData.append('phone', updates.phone ?? '');
   if (updates.cityId) {
     formData.append('locationId', updates.cityId.toString());
   }

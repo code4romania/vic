@@ -12,13 +12,15 @@ import { NewsType } from '../common/enums/news-type.enum';
 
 const mockEventCalls: any[][] = [];
 let mockGoing: any[] = [];
+const mockRefetch = jest.fn();
+const mockRefetchProfile = jest.fn();
 
 const query = (data: unknown) => ({
   data,
   error: null,
   isFetching: false,
   isRefetching: false,
-  refetch: jest.fn(),
+  refetch: mockRefetch,
 });
 
 jest.mock('../services/statistics/statistics.service', () => ({
@@ -50,6 +52,9 @@ jest.mock('../services/event/event.service', () => ({
   },
 }));
 jest.mock('../services/user/user.api', () => ({ getUserProfile: jest.fn() }));
+jest.mock('../services/user/user.service', () => ({
+  useGetUserProfileQuery: () => ({ refetch: mockRefetchProfile }),
+}));
 
 const { Navigator, Screen } = createNativeStackNavigator();
 const Stub = ({ route }: any) => (
@@ -111,6 +116,11 @@ beforeEach(() => {
 });
 
 describe('Acasă', () => {
+  it('refetches the profile on focus', async () => {
+    await renderHome();
+    expect(mockRefetchProfile).toHaveBeenCalledTimes(1);
+  });
+
   it('greets the volunteer and shows this month and the announcements', async () => {
     await renderHome();
     expect(await screen.findByText('Bună, Ana')).toBeTruthy();

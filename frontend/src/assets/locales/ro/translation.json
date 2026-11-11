@@ -276,6 +276,7 @@
     "popover": {
       "view": "Vizualizează profil",
       "archive": "Marchează ca inactiv",
+      "activate_candidate": "Activează voluntar",
       "activate": "Reactivează voluntar",
       "delete": "Șterge din ONG",
       "block": "Blochează voluntar"

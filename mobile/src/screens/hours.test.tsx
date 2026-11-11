@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { act, fireEvent, render, screen, within } from '@testing-library/react-native';
-import '../common/config/i18n';
+import i18n from '../common/config/i18n';
 import ActivityLogs from './ActivityLogs';
 import ActivityLog from './ActivityLog';
 import AddActivityLog from './AddActivityLog';
@@ -214,6 +214,36 @@ describe('Ore', () => {
 });
 
 describe('Ore: detaliu', () => {
+  it.each<[string, number, string]>([
+    ['ro', 1, 'Ora de la Asistență medicală nu mai ajunge la organizație.'],
+    ['ro', 2, 'Cele 2 ore de la Asistență medicală nu mai ajung la organizație.'],
+    ['ro', 19, 'Cele 19 ore de la Asistență medicală nu mai ajung la organizație.'],
+    ['ro', 20, 'Cele 20 de ore de la Asistență medicală nu mai ajung la organizație.'],
+    ['ro', 24, 'Cele 24 de ore de la Asistență medicală nu mai ajung la organizație.'],
+    ['ro', 100, 'Cele 100 de ore de la Asistență medicală nu mai ajung la organizație.'],
+    ['ro', 101, 'Cele 101 ore de la Asistență medicală nu mai ajung la organizație.'],
+    ['ro', 1.5, 'Cele 1.5 ore de la Asistență medicală nu mai ajung la organizație.'],
+    ['ro', 20.5, 'Cele 20.5 ore de la Asistență medicală nu mai ajung la organizație.'],
+    ['en', 1, 'The hour for Asistență medicală will no longer reach the organization.'],
+    ['en', 2, 'The 2 hours for Asistență medicală will no longer reach the organization.'],
+    ['en', 20, 'The 20 hours for Asistență medicală will no longer reach the organization.'],
+    ['en', 1.5, 'The 1.5 hours for Asistență medicală will no longer reach the organization.'],
+  ])('uses the %s confirmation for %s hours', async (language, hours, expected) => {
+    await act(async () => {
+      await i18n.changeLanguage(language);
+    });
+    try {
+      detail(ActivityLogStatus.PENDING, { hours });
+      await renderApp('activity-log', detailParams);
+      await fireEvent.press(await screen.findByTestId('log-delete'));
+      expect(screen.getByText(expected)).toBeTruthy();
+    } finally {
+      await act(async () => {
+        await i18n.changeLanguage('ro');
+      });
+    }
+  });
+
   it('a pending entry can be deleted after confirming', async () => {
     detail(ActivityLogStatus.PENDING);
     await renderApp('activity-log', detailParams);

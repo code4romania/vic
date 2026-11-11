@@ -6,6 +6,7 @@ import { ImageAttachement } from '../../common/interfaces/image-attachement.inte
 import { IUserProfile } from '../../common/interfaces/user-profile.interface';
 import useStore from '../../store/store';
 import { useUserProfile } from '../../store/profile/profile.selector';
+import { hasProfileChanged } from './profile-changes';
 
 export const useCreateUserProfileMutation = () => {
   const { setUserProfile } = useStore();
@@ -14,7 +15,7 @@ export const useCreateUserProfileMutation = () => {
     (userProfile: ICreateUserPayload) => createUserProfile(userProfile),
     {
       onSuccess: (data: IUserProfile) => {
-        setUserProfile({ ...data, myOrganizations: [] });
+        setUserProfile({ ...data, myOrganizations: data.myOrganizations ?? [] });
       },
     },
   );
@@ -25,12 +26,7 @@ export const useGetUserProfileQuery = () => {
   const { userProfile } = useUserProfile();
   return useQuery(['user-profile'], () => getUserProfile(), {
     onSuccess: (data: IUserProfile) => {
-      if (
-        data.activeOrganization?.id !== userProfile?.activeOrganization?.id ||
-        data.myOrganizations.length !== userProfile?.myOrganizations.length ||
-        data.activeOrganization?.volunteerProfileId !==
-          userProfile.activeOrganization?.volunteerProfileId
-      ) {
+      if (hasProfileChanged(userProfile, data)) {
         setUserProfile({ ...data });
       }
     },

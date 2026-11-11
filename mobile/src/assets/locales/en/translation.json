@@ -670,7 +670,8 @@
     "confirmation_modal": {
       "paragraph": " Are you sure you want to delete this log?",
       "heading": "Delete this entry?",
-      "description": "The {{hours}} hours for {{title}} will no longer reach the organization."
+      "description": "The hour for {{title}} will no longer reach the organization.",
+      "description_plural": "The {{hours}} hours for {{title}} will no longer reach the organization."
     },
     "toast": {
       "success": "The log was successfully deleted."

@@ -33,6 +33,28 @@ describe('user use cases adapted to own auth', () => {
     };
   });
 
+  it('passes an explicit phone clear to the user service', async () => {
+    users.findRegularUser.mockResolvedValue({
+      id: 'user-id',
+      phone: '+40720000001',
+    });
+    users.updateRegularUser = jest.fn().mockResolvedValue({ id: 'user-id' });
+    const profile = { execute: jest.fn().mockResolvedValue({ id: 'user-id' }) };
+    const useCase = new UpdateRegularUserUsecase(
+      users as unknown as UserFacadeService,
+      profile as unknown as GetOneRegularUserProfileUseCase,
+      exceptions,
+      {} as S3Service,
+    );
+
+    await useCase.execute('user-id', { phone: null });
+
+    expect(users.updateRegularUser).toHaveBeenCalledWith('user-id', {
+      phone: null,
+    });
+    expect(profile.execute).toHaveBeenCalledWith({ id: 'user-id' });
+  });
+
   describe('CreateRegularUsereUseCaseService', () => {
     let profile: { execute: jest.Mock };
     let useCase: CreateRegularUsereUseCaseService;

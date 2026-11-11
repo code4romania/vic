@@ -18,6 +18,32 @@ const pendingLog = {
   createdOn: '2026-11-04T10:00:00.000Z',
 };
 
+describe('ActivityLogSidePanel editing', () => {
+  it.each([null, '', 'Punct de hidratare'])(
+    'saves an entry with mentions %j without changing the field',
+    async (mentions) => {
+      let body: Record<string, unknown> | undefined;
+      server.use(
+        http.get(api('/listing/activity-types'), () => HttpResponse.json([])),
+        http.get(api('/activity-log/log-1'), () => HttpResponse.json({ ...pendingLog, mentions })),
+        http.patch(api('/activity-log/log-1'), async ({ request }) => {
+          body = (await request.json()) as Record<string, unknown>;
+          return HttpResponse.json({ ...pendingLog, ...body });
+        }),
+      );
+      renderPage(<ActivityLogSidePanel isOpen onClose={vi.fn()} activityLogId="log-1" />);
+
+      await userEvent.click(
+        await screen.findByRole('button', { name: t('general:edit', { item: '' }).trim() }),
+      );
+      await userEvent.click(await screen.findByRole('button', { name: t('general:save') }));
+
+      await waitFor(() => expect(body).toMatchObject({ mentions: mentions ?? '', hours: 4 }));
+      expect(screen.queryByText('mentions cannot be null')).not.toBeInTheDocument();
+    },
+  );
+});
+
 // #593: hours are never rejected without a reason; the volunteer sees it in the app and by email.
 describe('ActivityLogSidePanel rejection (#593)', () => {
   it('needs a reason to reject the hours, and sends it', async () => {

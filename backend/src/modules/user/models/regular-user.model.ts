@@ -45,12 +45,12 @@ export type UpdateRegularUserOptions = Partial<
     | 'firstName'
     | 'lastName'
     | 'birthday'
-    | 'phone'
     | 'sex'
     | 'profilePicture'
     | 'hasAccount'
   >
 > & {
+  phone?: string | null;
   activeOrganizationId?: string;
   locationId?: number;
   notificationsSettingsId?: string;
