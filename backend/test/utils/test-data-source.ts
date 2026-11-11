@@ -86,6 +86,8 @@ export async function createTestDataSource(): Promise<DataSource> {
 // Empties the tables a spec writes to; CASCADE also clears the rows that reference them.
 // An audit write left over from the previous test (actions_archive is filled by an async
 // listener) can deadlock with the TRUNCATE, so a deadlock is retried a few times.
+// On a busy CI runner the TRUNCATE CASCADE can take several seconds, so unit specs use the same
+// 20s timeout as the e2e ones (jest.testTimeout in package.json) instead of Jest's default 5s.
 export async function truncate(
   dataSource: DataSource,
   tables: string[],
