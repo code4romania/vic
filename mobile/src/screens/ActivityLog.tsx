@@ -16,6 +16,7 @@ import { useActivityLogs } from '../store/activity-log/activity-log.selectors';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import ActivityLogSkeleton from '../components/skeleton/activity-log-skeleton';
 import { EventIcon } from '../components/events/EventIcons';
+import { romanianNeedsDe } from '../common/utils/plural';
 import { LOG_STATUS_TONE } from '../components/hours/LogRow';
 import { ToastHost } from '../common/config/toast';
 import {
@@ -222,7 +223,15 @@ const ActivityLog = ({ navigation, route }: any) => {
           ref={deleteSheet}
           title={`${t('confirmation_modal.heading')}`}
           subtitle={
-            log ? `${t('confirmation_modal.description', { hours: log.hours, title })}` : ''
+            log
+              ? `${t('confirmation_modal.description', {
+                  count: log.hours,
+                  hours: log.hours,
+                  title,
+                  context:
+                    Number.isInteger(log.hours) && romanianNeedsDe(log.hours) ? 'de' : undefined,
+                })}`
+              : ''
           }
           testID="log-delete-sheet"
         >

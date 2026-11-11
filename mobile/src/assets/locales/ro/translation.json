@@ -696,7 +696,10 @@
         "confirmation_modal": {
             "paragraph": " Ești sigur că vrei să ștergi această înregistrare?",
             "heading": "Ștergi înregistrarea?",
-            "description": "Cele {{hours}} ore de la {{title}} nu mai ajung la organizație."
+            "description_0": "Ora de la {{title}} nu mai ajunge la organizație.",
+            "description_1": "Cele {{hours}} ore de la {{title}} nu mai ajung la organizație.",
+            "description_2": "Cele {{hours}} ore de la {{title}} nu mai ajung la organizație.",
+            "description_de_2": "Cele {{hours}} de ore de la {{title}} nu mai ajung la organizație."
         },
         "toast": {
             "success": "Înregistrarea a fost ștearsă cu succes."
