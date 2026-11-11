@@ -56,6 +56,22 @@
         "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "584495752855-ebpn9ei6dhpogrp6geg6fkvtfobk054j.apps.googleusercontent.com"
       }
     },
+    "staging": {
+      "channel": "staging",
+      "env": {
+        "EXPO_PUBLIC_ENVIRONMENT": "staging",
+        "EXPO_PUBLIC_API_URL": "https://api-vic-staging.ngohub.ro",
+        "EXPO_PUBLIC_PRIVACY_POLICY_LINK": "https://www.ngohub.ro/ro/politica-de-confidentialitate",
+        "EXPO_PUBLIC_TERMS_AND_CONDITIONS_LINK": "https://www.ngohub.ro/ro/termeni-si-conditii",
+        "EXPO_PUBLIC_INFORMATION_LINK": "https://www.ngohub.ro/ro/vic",
+        "EXPO_PUBLIC_CONTACT_EMAIL": "civic@commitglobal.org",
+        "EXPO_PUBLIC_APP_STORE_URL": "https://apps.apple.com/ro/app/vic/id6474194051",
+        "EXPO_PUBLIC_PLAY_STORE_URL": "https://play.google.com/store/apps/details?id=org.commitglobal.vic",
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "584495752855-8s4vks6ufmamnnplvs10arsuhqggobom.apps.googleusercontent.com",
+        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "584495752855-ebpn9ei6dhpogrp6geg6fkvtfobk054j.apps.googleusercontent.com"
+      },
+      "autoIncrement": true
+    },
     "production": {
       "channel": "production",
       "autoIncrement": true,
@@ -72,6 +88,23 @@
     }
   },
   "submit": {
-    "production": {}
+    "staging": {
+      "android": {
+        "track": "internal",
+        "releaseStatus": "completed"
+      },
+      "ios": {
+        "ascAppId": "6474194051"
+      }
+    },
+    "production": {
+      "android": {
+        "track": "production",
+        "releaseStatus": "draft"
+      },
+      "ios": {
+        "ascAppId": "6474194051"
+      }
+    }
   }
 }
