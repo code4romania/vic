@@ -37,7 +37,7 @@ export const updateOrganization = async (
   }).then((res) => res.data);
 };
 
-// Public: the NGO (#469: name, CUI, email, phone), its first admin and the Turnstile token.
+// Public: the NGO (#469: name, CUI, email, phone), its first admin.
 export const registerOrganization = async (
   data: IRegisterOrganization,
   files: IOrganizationFiles,

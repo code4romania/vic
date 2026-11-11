@@ -39,7 +39,6 @@ export interface IRegisterOrganization extends IOrganizationFields {
   acceptedTerms: boolean;
   declaresRegisteredNgo: boolean;
   declaresRepresentative: boolean;
-  turnstileToken: string;
 }
 
 export interface IMaskedEmail {

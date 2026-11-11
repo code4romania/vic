@@ -27,7 +27,6 @@ export default defineConfig({
     css: false,
     env: {
       VITE_API_URL: 'http://api.test',
-      VITE_TURNSTILE_SITE_KEY: 'test-site-key',
       VITE_APP_STORE_URL: 'https://apps.apple.test/vic',
       VITE_PLAY_STORE_URL: 'https://play.google.test/vic',
       VITE_MIGRATION_NOTICE_UNTIL: '2099-12-31',

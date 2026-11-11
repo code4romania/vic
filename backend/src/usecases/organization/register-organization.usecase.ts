@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common';
 import { S3_FILE_PATHS } from 'src/common/constants/constants';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
-import { TurnstileService } from 'src/infrastructure/providers/turnstile/turnstile.service';
 import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
 import { AUTH_EMAILS } from 'src/modules/auth/constants/auth-emails';
 import {
@@ -37,7 +36,6 @@ export interface RegisterOrganizationOptions {
   lastName: string;
   adminEmail: string;
   adminPhone: string;
-  turnstileToken: string;
 }
 
 export interface RegisterOrganizationFiles {
@@ -53,7 +51,6 @@ export class RegisterOrganizationUseCase
   implements IUseCaseService<{ maskedEmail: string }>
 {
   constructor(
-    private readonly turnstile: TurnstileService,
     private readonly organizationFacade: OrganizationFacadeService,
     private readonly userFacade: UserFacadeService,
     private readonly authIdentityFacade: AuthIdentityFacade,
@@ -66,22 +63,16 @@ export class RegisterOrganizationUseCase
   async execute(
     options: RegisterOrganizationOptions,
     files: RegisterOrganizationFiles,
-    ip?: string,
   ): Promise<{ maskedEmail: string }> {
-    // 1. Not a robot (ORG_006)
-    if (!(await this.turnstile.verify(options.turnstileToken, ip))) {
-      throw new BadRequestException(OrganizationExceptionMessages.ORG_006);
-    }
-
-    // 2. The logo, when given, is an image (#469: no statute, the CUI is what gets validated)
+    // 1. The logo, when given, is an image (#469: no statute, the CUI is what gets validated)
     if (files.logo && !isLogoImage(files.logo)) {
       throw new BadRequestException(OrganizationExceptionMessages.ORG_003);
     }
 
-    // 3. Unique name, email, phone and tax id ignoring case, and an admin email not already a web login (409 ORG_004)
+    // 2. Unique name, email, phone and tax id ignoring case, and an admin email not already a web login (409 ORG_004)
     await this.assertUnique(options);
 
-    // 4. One transaction: organization, its first admin, the admin's login, the files, the confirmation link
+    // 3. One transaction: organization, its first admin, the admin's login, the files, the confirmation link
     const { admin, secret } = await this.dataSource
       .transaction(async (manager) => {
         const organization = await this.organizationFacade.createOrganization(
@@ -150,7 +141,7 @@ export class RegisterOrganizationUseCase
         throw error;
       });
 
-    // 5. After the commit: the 24 h confirmation link
+    // 4. After the commit: the 24 h confirmation link
     await this.authMailer.send(
       admin.email,
       AUTH_EMAILS.confirmOrganizationLink(

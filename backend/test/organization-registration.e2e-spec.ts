@@ -7,7 +7,7 @@ import { IAuthIdentityModel } from 'src/modules/auth/models/auth-identity.model'
 import { AuthIdentityFacade } from 'src/modules/auth/services/auth-identity.facade';
 import { Test } from 'supertest';
 import { api, asWeb, linkSecret, refreshCookie } from './utils/http';
-import { createTestApp, TestApp, TURNSTILE_OK } from './utils/test-app';
+import { createTestApp, TestApp } from './utils/test-app';
 import { truncate } from './utils/test-data-source';
 
 // A 1x1 transparent PNG.
@@ -40,7 +40,6 @@ describe('Organization registration and validation (e2e)', () => {
     acceptedTerms: 'true',
     declaresRegisteredNgo: 'true',
     declaresRepresentative: 'true',
-    turnstileToken: TURNSTILE_OK,
     ...overrides,
   });
 
@@ -147,10 +146,7 @@ describe('Organization registration and validation (e2e)', () => {
     expect(identity.lastLoginAt).toBeInstanceOf(Date);
   });
 
-  it('refuses a failed anti-robot check (ORG_006), a missing CUI, a short description, unaccepted terms', async () => {
-    expect(
-      (await register({ turnstileToken: 'bot' }).expect(400)).body.code_error,
-    ).toBe('ORG_006');
+  it('refuses a missing CUI, a short description, unaccepted terms', async () => {
     await register({ taxId: '' }).expect(400);
     // M9: the CUI check digit
     await register({ taxId: 'RO12345678' }).expect(400);
