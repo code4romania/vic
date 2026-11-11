@@ -430,7 +430,8 @@ describe('Contracts (e2e)', () => {
       endDate: null,
       expiringSoon: false,
     });
-    expect(body.fileName).toMatch(/^Adeverinta_45\/2026\.pdf$/);
+    // the number keeps its "/", the file name replaces it so it can be saved on a phone (#613)
+    expect(body.fileName).toMatch(/^Adeverinta_45-2026\.pdf$/);
     await upload({
       type: 'CERTIFICATE',
       startDate: '2026-11-10',
