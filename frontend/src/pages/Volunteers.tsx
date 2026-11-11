@@ -254,7 +254,7 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
           ? [
               view,
               {
-                label: i18n.t('volunteers:popover.activate'),
+                label: i18n.t('volunteers:popover.activate_candidate'),
                 icon: <CheckCircleIcon className="menu-icon" />,
                 onClick: onActivate,
               },
