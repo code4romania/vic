@@ -79,12 +79,31 @@ export const decodeCsv = (buffer: Buffer): string => {
   }
 };
 
-interface CityRow {
+export interface CityRow {
   id: number;
   name: string;
   county: string;
   abbreviation: string;
 }
+
+// The cities a file's city and county can mean. Case, spaces and diacritics don't matter (ş/ţ with
+// cedilla too), so a file written without diacritics still finds "Târgu Mureș"; the county, by name
+// or abbreviation, narrows same-named cities and is optional.
+export const matchCities = (
+  cities: CityRow[],
+  city: unknown,
+  county: unknown,
+): CityRow[] => {
+  const name = normalize(city);
+  const countyName = countyKey(county);
+  return cities.filter(
+    (candidate) =>
+      normalize(candidate.name) === name &&
+      (!countyName ||
+        countyKey(candidate.county) === countyName ||
+        normalize(candidate.abbreviation) === countyName),
+  );
+};
 
 // #473: the NGO imports volunteers from a CSV (or an Excel sheet) with first name, last name, email,
 // phone, city, county and department. Valid rows become Candidates (no email, no account unless the
@@ -139,15 +158,7 @@ export class ImportVolunteersUseCase
 
       let locationId: number;
       if (values.city.trim()) {
-        const city = normalize(values.city);
-        const county = countyKey(values.county);
-        const matches = cities.filter(
-          (candidate) =>
-            normalize(candidate.name) === city &&
-            (!county ||
-              countyKey(candidate.county) === county ||
-              normalize(candidate.abbreviation) === county),
-        );
+        const matches = matchCities(cities, values.city, values.county);
         if (matches.length === 1) locationId = matches[0].id;
         else reasons.push(matches.length ? 'city_ambiguous' : 'city_not_found');
       }
