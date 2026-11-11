@@ -9,6 +9,7 @@ import { useMonthlyStatistics } from '../services/statistics/statistics.service'
 import { useAnouncementsSnapshot } from '../services/anouncement/anouncement.service';
 import { useEventsInfiniteQuery } from '../services/event/event.service';
 import { getUserProfile } from '../services/user/user.api';
+import { useGetUserProfileQuery } from '../services/user/user.service';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { EventType } from '../common/enums/event-type.enum';
 import { NewsType } from '../common/enums/news-type.enum';
@@ -107,6 +108,7 @@ const Home = ({ navigation }: any) => {
 
   const { userProfile } = useUserProfile();
   const { setUserProfile } = useStore();
+  const { refetch: refetchProfile } = useGetUserProfileQuery();
   const organization = userProfile?.activeOrganization;
 
   const statistics = useMonthlyStatistics();
@@ -122,7 +124,8 @@ const Home = ({ navigation }: any) => {
       refetchStatistics();
       refetchAnouncements();
       refetchUpcoming();
-    }, [refetchStatistics, refetchAnouncements, refetchUpcoming]),
+      refetchProfile();
+    }, [refetchStatistics, refetchAnouncements, refetchUpcoming, refetchProfile]),
   );
 
   const onRefresh = async () => {

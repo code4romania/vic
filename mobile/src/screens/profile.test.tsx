@@ -20,6 +20,8 @@ const mockSwitch = jest.fn();
 let mockStats: any;
 let mockPersonal: any;
 const mockRefetchPersonal = jest.fn();
+const mockRefetchProfile = jest.fn();
+const mockRefetchStats = jest.fn();
 
 jest.mock('../hooks/useAuth', () => ({ useAuth: () => ({ logout: mockLogout }) }));
 jest.mock('../services/organization/organization.service', () => ({
@@ -36,13 +38,13 @@ jest.mock('../services/organization/organization.service', () => ({
   }),
 }));
 jest.mock('../services/volunteer/volunteer.service', () => ({
-  useVolunteerStats: () => ({ data: mockStats, refetch: jest.fn() }),
+  useVolunteerStats: () => ({ data: mockStats, refetch: mockRefetchStats }),
 }));
 jest.mock('../services/statistics/statistics.service', () => ({
   usePersonalStatistics: () => ({ data: mockPersonal, refetch: mockRefetchPersonal }),
 }));
 jest.mock('../services/user/user.service', () => ({
-  useGetUserProfileQuery: () => ({ refetch: jest.fn() }),
+  useGetUserProfileQuery: () => ({ refetch: mockRefetchProfile }),
 }));
 
 const { Navigator, Screen } = createNativeStackNavigator();
@@ -108,6 +110,11 @@ beforeEach(() => {
 });
 
 describe('Profil', () => {
+  it('refetches the profile on focus', async () => {
+    await renderApp();
+    expect(mockRefetchProfile).toHaveBeenCalledTimes(1);
+  });
+
   it('shows who you are, your organizations with the active one, and the settings', async () => {
     await renderApp();
     expect(await screen.findByText('Ana')).toBeTruthy();
