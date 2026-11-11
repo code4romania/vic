@@ -116,6 +116,12 @@ describe('Data and security (e2e)', () => {
 
     const good = await code('ADD_ADMIN');
     expect(testApp.mailbox.last('ana@crucea.ro').subject).toContain(good);
+    const wrong = good === '000000' ? '111111' : '000000';
+    const refused = await post('/organization/team', {
+      ...admin,
+      code: wrong,
+    }).expect(400);
+    expect(refused.body.code_error).toBe('AUTH_015');
     await post('/organization/team', { ...admin, code: good }).expect(201);
     await post('/organization/team', {
       ...admin,
@@ -131,7 +137,7 @@ describe('Data and security (e2e)', () => {
       confirmation: 'Crucea Verde',
       code: addAdminCode,
     }).expect(400);
-    expect(refused.body.code_error).toBe('AUTH_005');
+    expect(refused.body.code_error).toBe('AUTH_015');
     expect(
       await count(`SELECT count(*) FROM organization WHERE id = $1`, [
         organizationId,
@@ -241,7 +247,10 @@ describe('Data and security (e2e)', () => {
     expect((await download().expect(400)).body.code_error).toBe('AUTH_005');
     const valid = await code('EXPORT_VOLUNTEERS');
     expect(testApp.mailbox.last('ana@crucea.ro').subject).toBeTruthy();
-    await download('000000').expect(400);
+    const wrong = valid === '000000' ? '111111' : '000000';
+    expect((await download(wrong).expect(400)).body.code_error).toBe(
+      'AUTH_015',
+    );
     const res = await download(valid).expect(200);
     expect(res.headers['content-disposition']).toContain('Voluntari.xlsx');
     // a code works once

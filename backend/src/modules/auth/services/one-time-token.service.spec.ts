@@ -214,13 +214,64 @@ describe('OneTimeTokenService (database)', () => {
       ).resolves.toMatchObject({ id: token.id });
     });
 
+    it('a wrong code is AUTH_015 and the right code still works afterwards', async () => {
+      const { secret, token } = await issueCode();
+      const wrong = secret === '000000' ? '000001' : '000000';
+
+      await rejectsWith(
+        service.verifyCode(ana, AuthTokenType.LOGIN, wrong),
+        AuthExceptionCodes.AUTH_015,
+      );
+      await expect(
+        service.verifyCode(ana, AuthTokenType.LOGIN, secret),
+      ).resolves.toMatchObject({ id: token.id });
+    });
+
+    it('an identity without a live code is AUTH_005', async () => {
+      const { secret } = await issueCode(ana);
+
+      await rejectsWith(
+        service.verifyCode(bogdan, AuthTokenType.LOGIN, secret),
+        AuthExceptionCodes.AUTH_005,
+      );
+    });
+
+    it('an expired code is AUTH_005', async () => {
+      const { secret, token } = await issueCode();
+      await dataSource
+        .getRepository(AuthTokenEntity)
+        .update(token.id, { expiresAt: new Date(Date.now() - 1000) });
+
+      await rejectsWith(
+        service.verifyCode(ana, AuthTokenType.LOGIN, secret),
+        AuthExceptionCodes.AUTH_005,
+      );
+    });
+
+    it('a used code is AUTH_005', async () => {
+      const { secret, token } = await issueCode();
+      await service.consume(token);
+
+      await rejectsWith(
+        service.verifyCode(ana, AuthTokenType.LOGIN, secret),
+        AuthExceptionCodes.AUTH_005,
+      );
+    });
+
     it('refuses the same digits for another identity', async () => {
+      // Give the identities different codes so the test cannot collide by chance.
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const crypto = require('crypto');
+      jest
+        .spyOn(crypto, 'randomInt')
+        .mockReturnValueOnce(42)
+        .mockReturnValueOnce(43);
       const { secret } = await issueCode(ana);
       await issueCode(bogdan);
 
       await rejectsWith(
         service.verifyCode(bogdan, AuthTokenType.LOGIN, secret),
-        AuthExceptionCodes.AUTH_005,
+        AuthExceptionCodes.AUTH_015,
       );
     });
 
@@ -231,7 +282,7 @@ describe('OneTimeTokenService (database)', () => {
       for (let attempt = 1; attempt <= 4; attempt++) {
         await rejectsWith(
           service.verifyCode(ana, AuthTokenType.LOGIN, wrong),
-          AuthExceptionCodes.AUTH_005,
+          AuthExceptionCodes.AUTH_015,
         );
       }
       await rejectsWith(
@@ -273,7 +324,7 @@ describe('OneTimeTokenService (database)', () => {
       for (let attempt = 1; attempt <= 4; attempt++) {
         await rejectsWith(
           service.verifyCode(ana, AuthTokenType.LOGIN, wrong),
-          AuthExceptionCodes.AUTH_005,
+          AuthExceptionCodes.AUTH_015,
         );
       }
       await expect(
@@ -296,11 +347,11 @@ describe('OneTimeTokenService (database)', () => {
           secret,
           'DELETE_ORGANIZATION',
         ),
-        AuthExceptionCodes.AUTH_005,
+        AuthExceptionCodes.AUTH_015,
       );
       await rejectsWith(
         service.verifyCode(ana, AuthTokenType.SENSITIVE_ACTION, secret),
-        AuthExceptionCodes.AUTH_005,
+        AuthExceptionCodes.AUTH_015,
       );
       await expect(
         service.verifyCode(
@@ -323,7 +374,7 @@ describe('OneTimeTokenService (database)', () => {
       const { token } = await issueCode();
       await rejectsWith(
         service.verifyCode(ana, AuthTokenType.LOGIN, '12ab56'),
-        AuthExceptionCodes.AUTH_005,
+        AuthExceptionCodes.AUTH_015,
       );
       const [row] = await dataSource.query(
         'SELECT attempts FROM auth_token WHERE id = $1',

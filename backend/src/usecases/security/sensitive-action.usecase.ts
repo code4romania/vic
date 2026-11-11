@@ -76,8 +76,8 @@ export class SensitiveActionUsecase {
     return { maskedEmail: this.oneTimeTokenService.maskEmail(admin.email) };
   }
 
-  // AUTH_005 for a wrong or expired code, or one asked for another action (the fifth wrong one ends it,
-  // AUTH_006). A good code is used up.
+  // AUTH_015 for a wrong code (including a code asked for another action), AUTH_005 when there is no
+  // live code (expired, used, never asked), AUTH_006 on the fifth wrong one. A good code is used up.
   public async verify(
     admin: IWebRequestUser,
     code: string,

@@ -1870,7 +1870,8 @@
       "AUTH_011": "The app version is too old.",
       "AUTH_012": "This is a volunteer account. Use the VIC mobile app.",
       "AUTH_013": "Signing in with this account failed.",
-      "AUTH_014": "There is no admin account with this account's email. Use your organization email or register your organization."
+      "AUTH_014": "There is no admin account with this account's email. Use your organization email or register your organization.",
+      "AUTH_015": "The code is not correct. Check your email and try again."
     },
     "maintenance": {
       "title": "VIC is under maintenance",

@@ -159,6 +159,7 @@
             "AUTH_011": "Versiunea aplicației este prea veche. Actualizeaz-o din magazin.",
             "AUTH_012": "Acesta este un cont de organizație. Folosește VIC pe web.",
             "AUTH_013": "Autentificarea cu acest cont nu a reușit.",
+            "AUTH_015": "Codul nu este corect. Verifică emailul și încearcă din nou.",
             "social_failed": "Autentificarea nu a reușit. Încearcă din nou sau intră cu emailul."
         }
     },

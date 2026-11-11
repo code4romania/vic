@@ -173,11 +173,11 @@ describe('Settings (#506, #508, #509)', () => {
       expect(exportCode).toBe('123456');
     });
 
-    it('shows the wrong-code error when the backup code is refused', async () => {
+    it.each(['AUTH_005', 'AUTH_015'])('shows %s when the backup code is refused', async (code) => {
       server.use(
         http.post(api('/security/code'), () => HttpResponse.json({ maskedEmail: 'a•••@ong.test' })),
         http.get(api('/security/backup'), () =>
-          HttpResponse.json({ statusCode: 400, code_error: 'AUTH_005' }, { status: 400 }),
+          HttpResponse.json({ statusCode: 400, code_error: code }, { status: 400 }),
         ),
       );
       renderPage(<Settings />, { route: '/settings?tab=security' });
@@ -195,7 +195,7 @@ describe('Settings (#506, #508, #509)', () => {
       await userEvent.click(
         within(dialog).getByRole('button', { name: t('settings:security.download_code.confirm') }),
       );
-      await waitFor(() => expect(useErrorToast).toHaveBeenCalledWith(t('auth:errors.AUTH_005')));
+      await waitFor(() => expect(useErrorToast).toHaveBeenCalledWith(t(`auth:errors.${code}`)));
       expect(downloadExcel).not.toHaveBeenCalled();
     });
 

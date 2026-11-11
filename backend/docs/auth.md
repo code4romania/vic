@@ -89,6 +89,7 @@ Organizations: `POST /organizations/register` (public, multipart with `logo` and
 | AUTH_012 | Volunteer account on the web login | 409 |
 | AUTH_013 | Social token invalid or email not verified | 401 |
 | AUTH_014 | No admin account for this email (web social sign-in) | 404 |
+| AUTH_015 | Wrong code (sensitive actions and email change; the app login still answers AUTH_005) | 400 |
 | ORG_004 | An organization with the same name, email, phone or tax id exists | 409 |
 | ORG_005 | Organization not validated | 403 |
 | ORG_007 | Statute missing or not a PDF | 400 |

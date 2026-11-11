@@ -152,8 +152,8 @@ describe('AuthContextProvider', () => {
       await waitFor(() => expect(ctx.current.isUserPending).toBe(true));
     });
 
-    it('a wrong code (AUTH_005) says so', async () => {
-      api.loginWithCode.mockRejectedValue(httpError(400, 'AUTH_005'));
+    it.each(['AUTH_005', 'AUTH_015'])('a wrong code (%s) says so', async (code) => {
+      api.loginWithCode.mockRejectedValue(httpError(400, code));
       const ctx = await codeSentTo('a@b.ro');
 
       await expect(ctx.current.loginWithCode('111111')).rejects.toBeDefined();

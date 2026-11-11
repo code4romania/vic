@@ -149,7 +149,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       session = await authApi.loginWithCode(userName, code.trim());
     } catch (error: any) {
       const errorCode = getAuthErrorCode(error);
-      if (errorCode === AUTH_ERRORS.AUTH_005) {
+      if (errorCode === AUTH_ERRORS.AUTH_005 || errorCode === AUTH_ERRORS.AUTH_015) {
         showError(i18n.t('auth:errors.code_mismatch'));
       } else if (!isHandledElsewhere(error)) {
         showError(authErrorText(error, 'auth:errors.login'));
