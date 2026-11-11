@@ -1,4 +1,5 @@
-import { queryKeys, refetchWhen } from './query-keys';
+import { renderHook } from '@testing-library/react-native';
+import { queryKeys, refetchWhen, useRefetchWhen } from './query-keys';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
 
@@ -23,5 +24,37 @@ describe('refetchWhen', () => {
     await expect(refetchWhen(false, refetch)()).resolves.toBeUndefined();
     expect(refetch).not.toHaveBeenCalled();
     await expect(refetchWhen(true, refetch)()).resolves.toBe('data');
+  });
+});
+
+describe('useRefetchWhen', () => {
+  it('keeps the same function across rerenders with unchanged inputs', async () => {
+    const refetch = jest.fn(async () => 'data');
+    const { result, rerender } = await renderHook(
+      ({ enabled }: { enabled: boolean }) => useRefetchWhen(enabled, refetch),
+      { initialProps: { enabled: true } },
+    );
+    const initialRefetch = result.current;
+
+    await rerender({ enabled: true });
+
+    expect(result.current).toBe(initialRefetch);
+    expect(refetch).not.toHaveBeenCalled();
+  });
+
+  it('resolves undefined without calling refetch when disabled', async () => {
+    const refetch = jest.fn(async () => 'data');
+    const { result } = await renderHook(() => useRefetchWhen(false, refetch));
+
+    await expect(result.current()).resolves.toBeUndefined();
+    expect(refetch).not.toHaveBeenCalled();
+  });
+
+  it('calls refetch and returns its result when enabled', async () => {
+    const refetch = jest.fn(async () => 'data');
+    const { result } = await renderHook(() => useRefetchWhen(true, refetch));
+
+    await expect(result.current()).resolves.toBe('data');
+    expect(refetch).toHaveBeenCalledTimes(1);
   });
 });
