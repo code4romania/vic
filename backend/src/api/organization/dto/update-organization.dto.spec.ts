@@ -60,18 +60,23 @@ describe('UpdateOrganizationDto (multipart edit form)', () => {
     expect(dto.website).toBeNull();
   });
 
+  it('defers the checksum to the use case, which can compare the stored CUI', async () => {
+    const { dto, errors } = await parse({ taxId: 'RO 12345678' });
+
+    expect(errors).toEqual([]);
+    expect(dto.taxId).toBe('12345678');
+  });
+
   it('still validates the fields that are filled in', async () => {
     const { errors } = await parse({
       description: 'Prea scurta',
       website: 'seed-unu.ro',
-      taxId: 'ABC',
     });
 
     expect(errors).toEqual(
       expect.arrayContaining([
         'description must be longer than or equal to 50 characters',
         'website must be a URL address',
-        'taxId must be a valid CUI',
       ]),
     );
   });

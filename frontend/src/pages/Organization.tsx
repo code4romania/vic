@@ -27,8 +27,6 @@ import {
   useUpdateOrganizationMutation,
 } from '../services/organization/organization.service';
 
-const schema = yup.object(organizationProfileSchema).required();
-
 const t = (key: string, options?: Record<string, unknown>): string =>
   `${i18n.t(`organization:setup.${key}`, options)}`;
 const label = (name: string): string => `${i18n.t(`register_organization:form.${name}.label`)}`;
@@ -42,6 +40,8 @@ const Organization = () => {
   const [logo, setLogo] = useState<File | null>(null);
   const { data: organization, error, isLoading, refetch } = useOrganizationQuery();
   const { mutate: updateOrganization, isLoading: isSaving } = useUpdateOrganizationMutation();
+
+  const schema = yup.object(organizationProfileSchema(organization?.taxId)).required();
 
   const {
     handleSubmit,

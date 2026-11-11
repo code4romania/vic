@@ -43,20 +43,21 @@ const division = (id: string, name: string, type: string, numberOfMembers = 0) =
 });
 
 describe('Configurare organizație', () => {
-  it('edits the profile in place, with the CUI and its validation, and saves it', async () => {
+  it.each(['RO18547290', '12345678'])('saves the profile with unchanged CUI %s', async (taxId) => {
+    const organization = { ...ORGANIZATION, taxId };
     let saved: FormData | undefined;
     server.use(
-      http.get(api('/organization'), () => HttpResponse.json(ORGANIZATION)),
+      http.get(api('/organization'), () => HttpResponse.json(organization)),
       http.patch(api('/organization'), async ({ request }) => {
         saved = await request.formData();
-        return HttpResponse.json(ORGANIZATION);
+        return HttpResponse.json(organization);
       }),
       http.get(api('/organization-structure/:type'), () => HttpResponse.json(page([]))),
       http.get(api('/activity-type'), () => HttpResponse.json([])),
     );
     renderPage(<Organization />, { route: '/organization' });
 
-    expect(await screen.findByDisplayValue('RO18547290')).toBeInTheDocument();
+    expect(await screen.findByDisplayValue(taxId)).toBeInTheDocument();
     expect(
       screen.getByText(t('organization:setup.info.validated', { date: '01.11.2026' })),
     ).toBeInTheDocument();
@@ -69,6 +70,30 @@ describe('Configurare organizație', () => {
     await userEvent.type(phone, '+40700000009');
     await userEvent.click(save);
     await waitFor(() => expect(saved?.get('phone')).toBe('+40700000009'));
+    expect(saved?.get('taxId')).toBe(taxId);
+  });
+
+  it('rejects a changed invalid CUI before saving', async () => {
+    const patch = vi.fn(() => HttpResponse.json(ORGANIZATION));
+    server.use(
+      http.get(api('/organization'), () =>
+        HttpResponse.json({ ...ORGANIZATION, taxId: '12345678' }),
+      ),
+      http.patch(api('/organization'), patch),
+      http.get(api('/organization-structure/:type'), () => HttpResponse.json(page([]))),
+      http.get(api('/activity-type'), () => HttpResponse.json([])),
+    );
+    renderPage(<Organization />, { route: '/organization' });
+
+    const taxId = await screen.findByDisplayValue('12345678');
+    await userEvent.clear(taxId);
+    await userEvent.type(taxId, '18547291');
+    await userEvent.click(screen.getByRole('button', { name: t('organization:setup.save') }));
+
+    expect(
+      await screen.findByText(t('register_organization:form.tax_id_invalid')),
+    ).toBeInTheDocument();
+    expect(patch).not.toHaveBeenCalled();
   });
 
   it('adds, renames and deletes departments as chips, through the existing endpoints', async () => {

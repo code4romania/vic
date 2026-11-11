@@ -6,7 +6,7 @@ import FormInput from './FormInput';
 import FormTextarea from './FormTextarea';
 import FileUpload from './FileUpload';
 import { IOrganizationFields } from '../common/interfaces/organization.interface';
-import { isValidCui } from '../common/utils/cui';
+import { isValidCui, normalizeCui } from '../common/utils/cui';
 
 export const LOGO_MAX_BYTES = 5 * 1024 * 1024;
 
@@ -14,6 +14,20 @@ const t = (key: string, options?: Record<string, unknown>) =>
   i18n.t(`register_organization:form.${key}`, options) as string;
 
 const optionalText = () => yup.string().ensure().trim();
+
+const taxIdSchema = (initialTaxId?: string | null) =>
+  yup
+    .string()
+    .trim()
+    .required(t('required'))
+    .test(
+      'cui',
+      t('tax_id_invalid'),
+      (value) =>
+        !value ||
+        (initialTaxId != null && normalizeCui(value) === normalizeCui(initialTaxId)) ||
+        isValidCui(value),
+    );
 
 // The same rules as backend/src/api/organization/dto/organization-fields.ts. #469: registration asks only
 // for name, CUI, email and phone; description, address and website are optional and filled in later.
@@ -30,17 +44,13 @@ export const organizationFieldsSchema = {
     .trim()
     .required(t('required'))
     .max(20, t('max', { value: 20 })),
-  taxId: yup
-    .string()
-    .trim()
-    .required(t('required'))
-    // as the backend: "RO" and spaces are fine, the check digit must be right
-    .test('cui', t('tax_id_invalid'), (value) => !value || isValidCui(value)),
+  taxId: taxIdSchema(),
 };
 
 // The profile fields an admin fills in later from the Organization page.
-export const organizationProfileSchema = {
+export const organizationProfileSchema = (initialTaxId?: string | null) => ({
   ...organizationFieldsSchema,
+  taxId: taxIdSchema(initialTaxId),
   address: optionalText().test(
     'length',
     t('min', { value: 2 }),
@@ -54,7 +64,7 @@ export const organizationProfileSchema = {
     t('description.length'),
     (value) => !value || (value.length >= 50 && value.length <= 250),
   ),
-};
+});
 
 interface OrganizationFieldsProps<T extends FieldValues & IOrganizationFields> {
   control: Control<T>;
