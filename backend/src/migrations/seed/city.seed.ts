@@ -32,7 +32,7 @@ export const CITIES = [
   {
     id: 7,
     countyId: 6,
-    name: 'Abramut',
+    name: 'Abrămuț',
   },
   {
     id: 8,
@@ -62,22 +62,22 @@ export const CITIES = [
   {
     id: 13,
     countyId: 41,
-    name: 'Abus',
+    name: 'Abuș',
   },
   {
     id: 14,
     countyId: 46,
-    name: 'Acas',
+    name: 'Acâș',
   },
   {
     id: 15,
     countyId: 41,
-    name: 'Acatari',
+    name: 'Acățari',
   },
   {
     id: 16,
     countyId: 1,
-    name: 'Achimetesti',
+    name: 'Achimețești',
   },
   {
     id: 17,
@@ -92,7 +92,7 @@ export const CITIES = [
   {
     id: 19,
     countyId: 2,
-    name: 'Aciuta',
+    name: 'Aciuța',
   },
   {
     id: 20,
@@ -102,7 +102,7 @@ export const CITIES = [
   {
     id: 21,
     countyId: 10,
-    name: 'Acris',
+    name: 'Acriș',
   },
   {
     id: 22,
@@ -122,32 +122,32 @@ export const CITIES = [
   {
     id: 25,
     countyId: 41,
-    name: 'Adamus',
+    name: 'Adămuș',
   },
   {
     id: 26,
     countyId: 24,
-    name: 'Adanca',
+    name: 'Adânca',
   },
   {
     id: 27,
     countyId: 34,
-    name: 'Adancata',
+    name: 'Adâncata',
   },
   {
     id: 28,
     countyId: 25,
-    name: 'Adancata',
+    name: 'Adâncata',
   },
   {
     id: 29,
     countyId: 48,
-    name: 'Adancata',
+    name: 'Adâncata',
   },
   {
     id: 30,
     countyId: 8,
-    name: 'Adaseni',
+    name: 'Adășeni',
   },
   {
     id: 31,
@@ -197,22 +197,22 @@ export const CITIES = [
   {
     id: 40,
     countyId: 3,
-    name: 'Adunati',
+    name: 'Adunați',
   },
   {
     id: 41,
     countyId: 44,
-    name: 'Adunati',
+    name: 'Adunați',
   },
   {
     id: 42,
     countyId: 40,
-    name: 'Adunatii Teiului',
+    name: 'Adunații Teiului',
   },
   {
     id: 43,
     countyId: 29,
-    name: 'Adunatii-Copaceni',
+    name: 'Adunații-Copăceni',
   },
   {
     id: 44,
@@ -222,27 +222,27 @@ export const CITIES = [
   {
     id: 45,
     countyId: 52,
-    name: 'Afanata',
+    name: 'Afânata',
   },
   {
     id: 46,
     countyId: 3,
-    name: 'Afrimesti',
+    name: 'Afrimești',
   },
   {
     id: 47,
     countyId: 36,
-    name: 'Afumati',
+    name: 'Afumați',
   },
   {
     id: 48,
     countyId: 25,
-    name: 'Afumati',
+    name: 'Afumați',
   },
   {
     id: 49,
     countyId: 43,
-    name: 'Afumati',
+    name: 'Afumați',
   },
   {
     id: 50,
@@ -267,22 +267,22 @@ export const CITIES = [
   {
     id: 54,
     countyId: 21,
-    name: 'Agarbiciu',
+    name: 'Agârbiciu',
   },
   {
     id: 55,
     countyId: 47,
-    name: 'Agarbiciu',
+    name: 'Agârbiciu',
   },
   {
     id: 56,
     countyId: 42,
-    name: 'Agarcia',
+    name: 'Agârcia',
   },
   {
     id: 57,
     countyId: 5,
-    name: 'Agas',
+    name: 'Agăș',
   },
   {
     id: 58,
@@ -292,17 +292,17 @@ export const CITIES = [
   {
     id: 59,
     countyId: 45,
-    name: 'Aghires',
+    name: 'Aghireș',
   },
   {
     id: 60,
     countyId: 21,
-    name: 'Aghiresu',
+    name: 'Aghireșu',
   },
   {
     id: 61,
     countyId: 21,
-    name: 'Aghiresu-Fabrici',
+    name: 'Aghireșu-Fabrici',
   },
   {
     id: 62,
@@ -322,12 +322,12 @@ export const CITIES = [
   {
     id: 65,
     countyId: 7,
-    name: 'Agries',
+    name: 'Agrieș',
   },
   {
     id: 66,
     countyId: 7,
-    name: 'Agriesel',
+    name: 'Agrieșel',
   },
   {
     id: 67,
@@ -337,37 +337,37 @@ export const CITIES = [
   {
     id: 68,
     countyId: 21,
-    name: 'Agris',
+    name: 'Agriș',
   },
   {
     id: 69,
     countyId: 46,
-    name: 'Agris',
+    name: 'Agriș',
   },
   {
     id: 70,
     countyId: 41,
-    name: 'Agristeu',
+    name: 'Agrișteu',
   },
   {
     id: 71,
     countyId: 7,
-    name: 'Agrisu de Jos',
+    name: 'Agrișu de Jos',
   },
   {
     id: 72,
     countyId: 7,
-    name: 'Agrisu de Sus',
+    name: 'Agrișu de Sus',
   },
   {
     id: 73,
     countyId: 2,
-    name: 'Agrisu Mare',
+    name: 'Agrișu Mare',
   },
   {
     id: 74,
     countyId: 2,
-    name: 'Agrisu Mic',
+    name: 'Agrișu Mic',
   },
   {
     id: 75,
@@ -382,7 +382,7 @@ export const CITIES = [
   {
     id: 77,
     countyId: 23,
-    name: 'Aita Seaca',
+    name: 'Aita Seacă',
   },
   {
     id: 78,
@@ -402,7 +402,7 @@ export const CITIES = [
   {
     id: 81,
     countyId: 47,
-    name: 'Alamor',
+    name: 'Alămor',
   },
   {
     id: 82,
@@ -442,102 +442,102 @@ export const CITIES = [
   {
     id: 89,
     countyId: 6,
-    name: 'Albesti',
+    name: 'Albești',
   },
   {
     id: 90,
     countyId: 18,
-    name: 'Albesti',
+    name: 'Albești',
   },
   {
     id: 91,
     countyId: 25,
-    name: 'Albesti',
+    name: 'Albești',
   },
   {
     id: 92,
     countyId: 35,
-    name: 'Albesti',
+    name: 'Albești',
   },
   {
     id: 93,
     countyId: 43,
-    name: 'Albesti',
+    name: 'Albești',
   },
   {
     id: 94,
     countyId: 53,
-    name: 'Albesti',
+    name: 'Albești',
   },
   {
     id: 95,
     countyId: 3,
-    name: 'Albesti',
+    name: 'Albești',
   },
   {
     id: 96,
     countyId: 8,
-    name: 'Albesti',
+    name: 'Albești',
   },
   {
     id: 97,
     countyId: 22,
-    name: 'Albesti',
+    name: 'Albești',
   },
   {
     id: 98,
     countyId: 34,
-    name: 'Albesti',
+    name: 'Albești',
   },
   {
     id: 99,
     countyId: 41,
-    name: 'Albesti',
+    name: 'Albești',
   },
   {
     id: 100,
     countyId: 49,
-    name: 'Albesti',
+    name: 'Albești',
   },
   {
     id: 101,
     countyId: 53,
-    name: 'Albesti (Delesti)',
+    name: 'Albești (Delești)',
   },
   {
     id: 102,
     countyId: 44,
-    name: 'Albesti-Muru',
+    name: 'Albești-Muru',
   },
   {
     id: 103,
     countyId: 44,
-    name: 'Albesti-Paleologu',
+    name: 'Albești-Paleologu',
   },
   {
     id: 104,
     countyId: 7,
-    name: 'Albestii Bistritei',
+    name: 'Albeștii Bistriței',
   },
   {
     id: 105,
     countyId: 3,
-    name: 'Albestii de Arges',
+    name: 'Albeștii de Argeș',
   },
   {
     id: 106,
     countyId: 3,
-    name: 'Albestii de Muscel',
+    name: 'Albeștii de Muscel',
   },
   {
     id: 107,
     countyId: 3,
-    name: 'Albestii Pamanteni',
+    name: 'Albeștii Pamânteni',
   },
   {
     id: 108,
     countyId: 3,
-    name: 'Albestii Ungureni',
+    name: 'Albeștii Ungureni',
   },
   {
     id: 109,
@@ -567,17 +567,17 @@ export const CITIES = [
   {
     id: 114,
     countyId: 6,
-    name: 'Albis',
+    name: 'Albiș',
   },
   {
     id: 115,
     countyId: 23,
-    name: 'Albis',
+    name: 'Albiș',
   },
   {
     id: 116,
     countyId: 53,
-    name: 'Albita',
+    name: 'Albița',
   },
   {
     id: 117,
@@ -592,7 +592,7 @@ export const CITIES = [
   {
     id: 119,
     countyId: 40,
-    name: 'Albulesti',
+    name: 'Albulești',
   },
   {
     id: 120,
@@ -607,32 +607,32 @@ export const CITIES = [
   {
     id: 122,
     countyId: 2,
-    name: 'Aldesti',
+    name: 'Aldești',
   },
   {
     id: 123,
     countyId: 52,
-    name: 'Aldesti',
+    name: 'Aldești',
   },
   {
     id: 124,
     countyId: 28,
-    name: 'Aldesti',
+    name: 'Aldești',
   },
   {
     id: 125,
     countyId: 1,
-    name: 'Alecus',
+    name: 'Alecuș',
   },
   {
     id: 126,
     countyId: 6,
-    name: 'Alesd',
+    name: 'Aleșd',
   },
   {
     id: 127,
     countyId: 45,
-    name: 'Aleus',
+    name: 'Aleuș',
   },
   {
     id: 128,
@@ -642,7 +642,7 @@ export const CITIES = [
   {
     id: 129,
     countyId: 31,
-    name: 'Alexandrita',
+    name: 'Alexandrița',
   },
   {
     id: 130,
@@ -677,12 +677,12 @@ export const CITIES = [
   {
     id: 136,
     countyId: 54,
-    name: 'Alexandru Vlahuta',
+    name: 'Alexandru Vlahuță',
   },
   {
     id: 137,
     countyId: 53,
-    name: 'Alexandru Vlahuta',
+    name: 'Alexandru Vlahuță',
   },
   {
     id: 138,
@@ -702,7 +702,7 @@ export const CITIES = [
   {
     id: 141,
     countyId: 35,
-    name: 'Alexesti',
+    name: 'Alexești',
   },
   {
     id: 142,
@@ -722,17 +722,17 @@ export const CITIES = [
   {
     id: 145,
     countyId: 43,
-    name: 'Alimanesti',
+    name: 'Alimănești',
   },
   {
     id: 146,
     countyId: 30,
-    name: 'Alimpesti',
+    name: 'Alimpești',
   },
   {
     id: 147,
     countyId: 50,
-    name: 'Alios',
+    name: 'Alioș',
   },
   {
     id: 148,
@@ -752,87 +752,87 @@ export const CITIES = [
   {
     id: 151,
     countyId: 25,
-    name: 'Almaj',
+    name: 'Almăj',
   },
   {
     id: 152,
     countyId: 25,
-    name: 'Almajel',
+    name: 'Almăjel',
   },
   {
     id: 153,
     countyId: 40,
-    name: 'Almajel',
+    name: 'Almăjel',
   },
   {
     id: 154,
     countyId: 22,
-    name: 'Almalau',
+    name: 'Almălău',
   },
   {
     id: 155,
     countyId: 42,
-    name: 'Almas',
+    name: 'Almaș',
   },
   {
     id: 156,
     countyId: 2,
-    name: 'Almas',
+    name: 'Almaș',
   },
   {
     id: 157,
     countyId: 33,
-    name: 'Almas-Saliste',
+    name: 'Almaș-Săliște',
   },
   {
     id: 158,
     countyId: 33,
-    name: 'Almasel',
+    name: 'Almășel',
   },
   {
     id: 159,
     countyId: 45,
-    name: 'Almasu',
+    name: 'Almașu',
   },
   {
     id: 160,
     countyId: 1,
-    name: 'Almasu de Mijloc',
+    name: 'Almașu de Mijloc',
   },
   {
     id: 161,
     countyId: 6,
-    name: 'Almasu Mare',
+    name: 'Almașu Mare',
   },
   {
     id: 162,
     countyId: 1,
-    name: 'Almasu Mare',
+    name: 'Almașu Mare',
   },
   {
     id: 163,
     countyId: 33,
-    name: 'Almasu Mic',
+    name: 'Almașu Mic',
   },
   {
     id: 164,
     countyId: 6,
-    name: 'Almasu Mic (Balc)',
+    name: 'Almașu Mic (Balc)',
   },
   {
     id: 165,
     countyId: 6,
-    name: 'Almasu Mic (Sarbi)',
+    name: 'Almașu Mic (Sârbi)',
   },
   {
     id: 166,
     countyId: 33,
-    name: 'Almasu Mic de Munte',
+    name: 'Almașu Mic de Munte',
   },
   {
     id: 167,
     countyId: 33,
-    name: 'Almasu Sec',
+    name: 'Almașu Sec',
   },
   {
     id: 168,
@@ -842,7 +842,7 @@ export const CITIES = [
   {
     id: 169,
     countyId: 47,
-    name: 'Altina',
+    name: 'Alțina',
   },
   {
     id: 170,
@@ -852,7 +852,7 @@ export const CITIES = [
   {
     id: 171,
     countyId: 33,
-    name: 'Alun (Bosorod)',
+    name: 'Alun (Boșorod)',
   },
   {
     id: 172,
@@ -867,92 +867,92 @@ export const CITIES = [
   {
     id: 174,
     countyId: 3,
-    name: 'Alunis',
+    name: 'Aluniș',
   },
   {
     id: 175,
     countyId: 18,
-    name: 'Alunis',
+    name: 'Aluniș',
   },
   {
     id: 176,
     countyId: 24,
-    name: 'Alunis',
+    name: 'Aluniș',
   },
   {
     id: 177,
     countyId: 31,
-    name: 'Alunis',
+    name: 'Aluniș',
   },
   {
     id: 178,
     countyId: 44,
-    name: 'Alunis',
+    name: 'Aluniș',
   },
   {
     id: 179,
     countyId: 2,
-    name: 'Alunis',
+    name: 'Aluniș',
   },
   {
     id: 180,
     countyId: 21,
-    name: 'Alunis',
+    name: 'Aluniș',
   },
   {
     id: 181,
     countyId: 30,
-    name: 'Alunis',
+    name: 'Aluniș',
   },
   {
     id: 182,
     countyId: 41,
-    name: 'Alunis',
+    name: 'Aluniș',
   },
   {
     id: 183,
     countyId: 45,
-    name: 'Alunis',
+    name: 'Aluniș',
   },
   {
     id: 184,
     countyId: 21,
-    name: 'Alunisu',
+    name: 'Alunișu',
   },
   {
     id: 185,
     countyId: 36,
-    name: 'Alunisu',
+    name: 'Alunișu',
   },
   {
     id: 186,
     countyId: 24,
-    name: 'Alunisu',
+    name: 'Alunișu',
   },
   {
     id: 187,
     countyId: 43,
-    name: 'Alunisu',
+    name: 'Alunișu',
   },
   {
     id: 188,
     countyId: 3,
-    name: 'Alunisu (Baiculesti)',
+    name: 'Alunișu (Băiculești)',
   },
   {
     id: 189,
     countyId: 3,
-    name: 'Alunisu (Bradulet)',
+    name: 'Alunișu (Brăduleț)',
   },
   {
     id: 190,
     countyId: 7,
-    name: 'Alunisul',
+    name: 'Alunișul',
   },
   {
     id: 191,
     countyId: 40,
-    name: 'Alunisul',
+    name: 'Alunișul',
   },
   {
     id: 192,
@@ -972,27 +972,27 @@ export const CITIES = [
   {
     id: 195,
     countyId: 34,
-    name: 'Amara Noua',
+    name: 'Amara Nouă',
   },
   {
     id: 196,
     countyId: 25,
-    name: 'Amarasti',
+    name: 'Amărăști',
   },
   {
     id: 197,
     countyId: 52,
-    name: 'Amarasti',
+    name: 'Amărăști',
   },
   {
     id: 198,
     countyId: 25,
-    name: 'Amarastii de Jos',
+    name: 'Amărăștii de Jos',
   },
   {
     id: 199,
     countyId: 25,
-    name: 'Amarastii de Sus',
+    name: 'Amărăștii de Sus',
   },
   {
     id: 200,
@@ -1002,7 +1002,7 @@ export const CITIES = [
   {
     id: 201,
     countyId: 46,
-    name: 'Amati',
+    name: 'Amați',
   },
   {
     id: 202,
@@ -1012,12 +1012,12 @@ export const CITIES = [
   {
     id: 203,
     countyId: 47,
-    name: 'Amnas',
+    name: 'Amnaș',
   },
   {
     id: 204,
     countyId: 1,
-    name: 'Ampoita',
+    name: 'Ampoița',
   },
   {
     id: 205,
@@ -1032,7 +1032,7 @@ export const CITIES = [
   {
     id: 207,
     countyId: 34,
-    name: 'Andrasesti',
+    name: 'Andrășești',
   },
   {
     id: 208,
@@ -1042,27 +1042,27 @@ export const CITIES = [
   {
     id: 209,
     countyId: 30,
-    name: 'Andreesti',
+    name: 'Andreești',
   },
   {
     id: 210,
     countyId: 2,
-    name: 'Andrei Saguna',
+    name: 'Andrei Șaguna',
   },
   {
     id: 211,
     countyId: 54,
-    name: 'Andreiasu de Jos',
+    name: 'Andreiașu de Jos',
   },
   {
     id: 212,
     countyId: 54,
-    name: 'Andreiasu de Sus',
+    name: 'Andreiașu de Sus',
   },
   {
     id: 213,
     countyId: 52,
-    name: 'Andreiesti',
+    name: 'Andreiești',
   },
   {
     id: 214,
@@ -1077,32 +1077,32 @@ export const CITIES = [
   {
     id: 216,
     countyId: 35,
-    name: 'Andrieseni',
+    name: 'Andrieșeni',
   },
   {
     id: 217,
     countyId: 29,
-    name: 'Anghelesti',
+    name: 'Anghelești',
   },
   {
     id: 218,
     countyId: 1,
-    name: 'Anghelesti',
+    name: 'Anghelești',
   },
   {
     id: 219,
     countyId: 54,
-    name: 'Anghelesti',
+    name: 'Anghelești',
   },
   {
     id: 220,
     countyId: 23,
-    name: 'Anghelus',
+    name: 'Angheluș',
   },
   {
     id: 221,
     countyId: 3,
-    name: 'Anghinesti',
+    name: 'Anghinești',
   },
   {
     id: 222,
@@ -1112,7 +1112,7 @@ export const CITIES = [
   {
     id: 223,
     countyId: 7,
-    name: 'Anies',
+    name: 'Anieș',
   },
   {
     id: 224,
@@ -1127,12 +1127,12 @@ export const CITIES = [
   {
     id: 226,
     countyId: 30,
-    name: 'Aninisu din Deal',
+    name: 'Aninișu din Deal',
   },
   {
     id: 227,
     countyId: 30,
-    name: 'Aninisu din Vale',
+    name: 'Aninișu din Vale',
   },
   {
     id: 228,
@@ -1167,7 +1167,7 @@ export const CITIES = [
   {
     id: 234,
     countyId: 24,
-    name: 'Aninosani',
+    name: 'Aninoșani',
   },
   {
     id: 235,
@@ -1177,7 +1177,7 @@ export const CITIES = [
   {
     id: 236,
     countyId: 21,
-    name: 'Antas',
+    name: 'Antăș',
   },
   {
     id: 237,
@@ -1192,12 +1192,12 @@ export const CITIES = [
   {
     id: 239,
     countyId: 5,
-    name: 'Antohesti',
+    name: 'Antohești',
   },
   {
     id: 240,
     countyId: 49,
-    name: 'Antonesti',
+    name: 'Antonești',
   },
   {
     id: 241,
@@ -1207,12 +1207,12 @@ export const CITIES = [
   {
     id: 242,
     countyId: 5,
-    name: 'Apa Asau',
+    name: 'Apa Asău',
   },
   {
     id: 243,
     countyId: 30,
-    name: 'Apa Neagra',
+    name: 'Apa Neagră',
   },
   {
     id: 244,
@@ -1232,7 +1232,7 @@ export const CITIES = [
   {
     id: 247,
     countyId: 10,
-    name: 'Apata',
+    name: 'Apața',
   },
   {
     id: 248,
@@ -1277,7 +1277,7 @@ export const CITIES = [
   {
     id: 256,
     countyId: 47,
-    name: 'Apos',
+    name: 'Apoș',
   },
   {
     id: 257,
@@ -1307,17 +1307,17 @@ export const CITIES = [
   {
     id: 262,
     countyId: 42,
-    name: 'Aramesti',
+    name: 'Arămești',
   },
   {
     id: 263,
     countyId: 42,
-    name: 'Aramoaia',
+    name: 'Arămoaia',
   },
   {
     id: 264,
     countyId: 2,
-    name: 'Araneag',
+    name: 'Arăneag',
   },
   {
     id: 265,
@@ -1327,12 +1327,12 @@ export const CITIES = [
   {
     id: 266,
     countyId: 33,
-    name: 'Aranies',
+    name: 'Arănieș',
   },
   {
     id: 267,
     countyId: 18,
-    name: 'Arbanasi',
+    name: 'Arbănași',
   },
   {
     id: 268,
@@ -1362,12 +1362,12 @@ export const CITIES = [
   {
     id: 273,
     countyId: 43,
-    name: 'Arcesti',
+    name: 'Arcești',
   },
   {
     id: 274,
     countyId: 43,
-    name: 'Arcesti-Cot',
+    name: 'Arcești-Cot',
   },
   {
     id: 275,
@@ -1382,7 +1382,7 @@ export const CITIES = [
   {
     id: 277,
     countyId: 2,
-    name: 'Archis',
+    name: 'Archiș',
   },
   {
     id: 278,
@@ -1397,7 +1397,7 @@ export const CITIES = [
   {
     id: 280,
     countyId: 23,
-    name: 'Arcus',
+    name: 'Arcuș',
   },
   {
     id: 281,
@@ -1412,7 +1412,7 @@ export const CITIES = [
   {
     id: 283,
     countyId: 42,
-    name: 'Ardeluta',
+    name: 'Ardeluța',
   },
   {
     id: 284,
@@ -1467,12 +1467,12 @@ export const CITIES = [
   {
     id: 294,
     countyId: 3,
-    name: 'Argesani',
+    name: 'Argeșani',
   },
   {
     id: 295,
     countyId: 3,
-    name: 'Argeselu',
+    name: 'Argeșelu',
   },
   {
     id: 296,
@@ -1492,22 +1492,22 @@ export const CITIES = [
   {
     id: 299,
     countyId: 21,
-    name: 'Arghisu',
+    name: 'Arghișu',
   },
   {
     id: 300,
     countyId: 40,
-    name: 'Arginesti',
+    name: 'Arginești',
   },
   {
     id: 301,
     countyId: 44,
-    name: 'Aricestii Rahtivani',
+    name: 'Ariceștii Rahtivani',
   },
   {
     id: 302,
     countyId: 44,
-    name: 'Aricestii Zeletin',
+    name: 'Ariceștii Zeletin',
   },
   {
     id: 303,
@@ -1522,17 +1522,17 @@ export const CITIES = [
   {
     id: 305,
     countyId: 1,
-    name: 'Arieseni',
+    name: 'Arieșeni',
   },
   {
     id: 306,
     countyId: 39,
-    name: 'Ariesu de Camp',
+    name: 'Arieșu de Câmp',
   },
   {
     id: 307,
     countyId: 39,
-    name: 'Ariesu de Padure',
+    name: 'Arieșu de Pădure',
   },
   {
     id: 308,
@@ -1547,22 +1547,22 @@ export const CITIES = [
   {
     id: 310,
     countyId: 39,
-    name: 'Arinis',
+    name: 'Ariniș',
   },
   {
     id: 311,
     countyId: 44,
-    name: 'Arionestii Noi',
+    name: 'Arioneștii Noi',
   },
   {
     id: 312,
     countyId: 44,
-    name: 'Arionestii Vechi',
+    name: 'Arioneștii Vechi',
   },
   {
     id: 313,
     countyId: 23,
-    name: 'Ariusd',
+    name: 'Ariușd',
   },
   {
     id: 314,
@@ -1572,37 +1572,37 @@ export const CITIES = [
   {
     id: 315,
     countyId: 31,
-    name: 'Armaseni',
+    name: 'Armășeni',
   },
   {
     id: 316,
     countyId: 53,
-    name: 'Armaseni (Bacesti)',
+    name: 'Armășeni (Băcești)',
   },
   {
     id: 317,
     countyId: 53,
-    name: 'Armaseni (Bunesti-Averesti)',
+    name: 'Armășeni (Bunești-Averești)',
   },
   {
     id: 318,
     countyId: 31,
-    name: 'Armasenii Noi',
+    name: 'Armășenii Noi',
   },
   {
     id: 319,
     countyId: 52,
-    name: 'Armasesti',
+    name: 'Armășești',
   },
   {
     id: 320,
     countyId: 34,
-    name: 'Armasesti',
+    name: 'Armășești',
   },
   {
     id: 321,
     countyId: 53,
-    name: 'Armasoaia',
+    name: 'Armășoaia',
   },
   {
     id: 322,
@@ -1617,7 +1617,7 @@ export const CITIES = [
   {
     id: 324,
     countyId: 20,
-    name: 'Armenis',
+    name: 'Armeniș',
   },
   {
     id: 325,
@@ -1627,7 +1627,7 @@ export const CITIES = [
   {
     id: 326,
     countyId: 1,
-    name: 'Aronesti',
+    name: 'Aronești',
   },
   {
     id: 327,
@@ -1637,17 +1637,17 @@ export const CITIES = [
   {
     id: 328,
     countyId: 6,
-    name: 'Arpasel',
+    name: 'Arpășel',
   },
   {
     id: 329,
     countyId: 47,
-    name: 'Arpasu de Jos',
+    name: 'Arpașu de Jos',
   },
   {
     id: 330,
     countyId: 47,
-    name: 'Arpasu de Sus',
+    name: 'Arpașu de Sus',
   },
   {
     id: 331,
@@ -1662,27 +1662,27 @@ export const CITIES = [
   {
     id: 333,
     countyId: 30,
-    name: 'Arseni',
+    name: 'Arșeni',
   },
   {
     id: 334,
     countyId: 7,
-    name: 'Arsita',
+    name: 'Arșița',
   },
   {
     id: 335,
     countyId: 54,
-    name: 'Arsita',
+    name: 'Arșița',
   },
   {
     id: 336,
     countyId: 41,
-    name: 'Arsita',
+    name: 'Arșița',
   },
   {
     id: 337,
     countyId: 53,
-    name: 'Arsita',
+    name: 'Arșița',
   },
   {
     id: 338,
@@ -1707,17 +1707,17 @@ export const CITIES = [
   {
     id: 342,
     countyId: 19,
-    name: 'Artari',
+    name: 'Arțari',
   },
   {
     id: 343,
     countyId: 48,
-    name: 'Artari',
+    name: 'Arțari',
   },
   {
     id: 344,
     countyId: 1,
-    name: 'Arti',
+    name: 'Arți',
   },
   {
     id: 345,
@@ -1737,37 +1737,37 @@ export const CITIES = [
   {
     id: 348,
     countyId: 43,
-    name: 'Arvateasca',
+    name: 'Arvăteasca',
   },
   {
     id: 349,
     countyId: 31,
-    name: 'Arvateni',
+    name: 'Arvățeni',
   },
   {
     id: 350,
     countyId: 40,
-    name: 'Arvatesti',
+    name: 'Arvătești',
   },
   {
     id: 351,
     countyId: 5,
-    name: 'Asau',
+    name: 'Asău',
   },
   {
     id: 352,
     countyId: 21,
-    name: 'Aschileu',
+    name: 'Așchileu',
   },
   {
     id: 353,
     countyId: 21,
-    name: 'Aschileu Mare',
+    name: 'Așchileu Mare',
   },
   {
     id: 354,
     countyId: 21,
-    name: 'Aschileu Mic',
+    name: 'Așchileu Mic',
   },
   {
     id: 355,
@@ -1782,7 +1782,7 @@ export const CITIES = [
   {
     id: 357,
     countyId: 6,
-    name: 'Astileu',
+    name: 'Aștileu',
   },
   {
     id: 358,
@@ -1802,12 +1802,12 @@ export const CITIES = [
   {
     id: 361,
     countyId: 6,
-    name: 'Ateas',
+    name: 'Ateaș',
   },
   {
     id: 362,
     countyId: 47,
-    name: 'Atel',
+    name: 'Ațel',
   },
   {
     id: 363,
@@ -1822,7 +1822,7 @@ export const CITIES = [
   {
     id: 365,
     countyId: 41,
-    name: 'Atintis',
+    name: 'Ațintiș',
   },
   {
     id: 366,
@@ -1852,7 +1852,7 @@ export const CITIES = [
   {
     id: 371,
     countyId: 52,
-    name: 'Auresti',
+    name: 'Aurești',
   },
   {
     id: 372,
@@ -1867,22 +1867,22 @@ export const CITIES = [
   {
     id: 374,
     countyId: 6,
-    name: 'Auseu',
+    name: 'Aușeu',
   },
   {
     id: 375,
     countyId: 35,
-    name: 'Avantu',
+    name: 'Avântu',
   },
   {
     id: 376,
     countyId: 42,
-    name: 'Averesti',
+    name: 'Averești',
   },
   {
     id: 377,
     countyId: 53,
-    name: 'Averesti',
+    name: 'Averești',
   },
   {
     id: 378,
@@ -1907,42 +1907,42 @@ export const CITIES = [
   {
     id: 382,
     countyId: 2,
-    name: 'Avram Iancu (Varfurile)',
+    name: 'Avram Iancu (Vârfurile)',
   },
   {
     id: 383,
     countyId: 8,
-    name: 'Avrameni',
+    name: 'Avrămeni',
   },
   {
     id: 384,
     countyId: 31,
-    name: 'Avramesti',
+    name: 'Avrămești',
   },
   {
     id: 385,
     countyId: 52,
-    name: 'Avramesti',
+    name: 'Avrămești',
   },
   {
     id: 386,
     countyId: 41,
-    name: 'Avramesti',
+    name: 'Avrămești',
   },
   {
     id: 387,
     countyId: 53,
-    name: 'Avramesti',
+    name: 'Avrămești',
   },
   {
     id: 388,
     countyId: 1,
-    name: 'Avramesti (Arieseni)',
+    name: 'Avrămești (Arieșeni)',
   },
   {
     id: 389,
     countyId: 1,
-    name: 'Avramesti (Avram Iancu)',
+    name: 'Avrămești (Avram Iancu)',
   },
   {
     id: 390,
@@ -1992,12 +1992,12 @@ export const CITIES = [
   {
     id: 399,
     countyId: 49,
-    name: 'Babaita',
+    name: 'Băbăița',
   },
   {
     id: 400,
     countyId: 3,
-    name: 'Babana',
+    name: 'Băbana',
   },
   {
     id: 401,
@@ -2007,117 +2007,117 @@ export const CITIES = [
   {
     id: 402,
     countyId: 46,
-    name: 'Babasesti',
+    name: 'Băbășești',
   },
   {
     id: 403,
     countyId: 21,
-    name: 'Babdiu',
+    name: 'Băbdiu',
   },
   {
     id: 404,
     countyId: 18,
-    name: 'Babeni',
+    name: 'Băbeni',
   },
   {
     id: 405,
     countyId: 52,
-    name: 'Babeni',
+    name: 'Băbeni',
   },
   {
     id: 406,
     countyId: 45,
-    name: 'Babeni',
+    name: 'Băbeni',
   },
   {
     id: 407,
     countyId: 52,
-    name: 'Babeni-Oltetu',
+    name: 'Băbeni-Oltețu',
   },
   {
     id: 408,
     countyId: 46,
-    name: 'Babesti',
+    name: 'Băbești',
   },
   {
     id: 409,
     countyId: 8,
-    name: 'Babiceni',
+    name: 'Băbiceni',
   },
   {
     id: 410,
     countyId: 43,
-    name: 'Babiciu',
+    name: 'Băbiciu',
   },
   {
     id: 411,
     countyId: 45,
-    name: 'Babiu',
+    name: 'Băbiu',
   },
   {
     id: 412,
     countyId: 50,
-    name: 'Babsa',
+    name: 'Babșa',
   },
   {
     id: 413,
     countyId: 46,
-    name: 'Babta',
+    name: 'Babța',
   },
   {
     id: 414,
     countyId: 52,
-    name: 'Babuesti',
+    name: 'Băbuești',
   },
   {
     id: 415,
     countyId: 53,
-    name: 'Babusa',
+    name: 'Băbușa',
   },
   {
     id: 416,
     countyId: 53,
-    name: 'Babuta',
+    name: 'Băbuța',
   },
   {
     id: 417,
     countyId: 21,
-    name: 'Babutiu',
+    name: 'Băbuțiu',
   },
   {
     id: 418,
     countyId: 33,
-    name: 'Bacaia',
+    name: 'Bacâia',
   },
   {
     id: 419,
     countyId: 1,
-    name: 'Bacainti',
+    name: 'Băcăinți',
   },
   {
     id: 420,
     countyId: 49,
-    name: 'Bacalesti',
+    name: 'Băcălești',
   },
   {
     id: 421,
     countyId: 53,
-    name: 'Bacani',
+    name: 'Băcani',
   },
   {
     id: 422,
     countyId: 53,
-    name: 'Bacaoani',
+    name: 'Băcăoani',
   },
   {
     id: 423,
     countyId: 5,
-    name: 'Bacau',
+    name: 'Bacău',
   },
   {
     id: 424,
     countyId: 2,
-    name: 'Bacau de Mijloc',
+    name: 'Bacău de Mijloc',
   },
   {
     id: 425,
@@ -2132,42 +2132,42 @@ export const CITIES = [
   {
     id: 427,
     countyId: 23,
-    name: 'Bacel',
+    name: 'Băcel',
   },
   {
     id: 428,
     countyId: 18,
-    name: 'Baceni',
+    name: 'Băceni',
   },
   {
     id: 429,
     countyId: 24,
-    name: 'Bacesti',
+    name: 'Băcești',
   },
   {
     id: 430,
     countyId: 53,
-    name: 'Bacesti',
+    name: 'Băcești',
   },
   {
     id: 431,
     countyId: 3,
-    name: 'Bacesti',
+    name: 'Băcești',
   },
   {
     id: 432,
     countyId: 30,
-    name: 'Bacesti',
+    name: 'Băcești',
   },
   {
     id: 433,
     countyId: 33,
-    name: 'Bacia',
+    name: 'Băcia',
   },
   {
     id: 434,
     countyId: 5,
-    name: 'Bacioiu',
+    name: 'Băcioiu',
   },
   {
     id: 435,
@@ -2182,12 +2182,12 @@ export const CITIES = [
   {
     id: 437,
     countyId: 40,
-    name: 'Bacles',
+    name: 'Bâcleș',
   },
   {
     id: 438,
     countyId: 5,
-    name: 'Baclesti',
+    name: 'Bâclești',
   },
   {
     id: 439,
@@ -2197,122 +2197,122 @@ export const CITIES = [
   {
     id: 440,
     countyId: 29,
-    name: 'Bacu',
+    name: 'Bâcu',
   },
   {
     id: 441,
     countyId: 35,
-    name: 'Bacu',
+    name: 'Bâcu',
   },
   {
     id: 442,
     countyId: 45,
-    name: 'Badacin',
+    name: 'Bădăcin',
   },
   {
     id: 443,
     countyId: 1,
-    name: 'Badai',
+    name: 'Bădăi',
   },
   {
     id: 444,
     countyId: 8,
-    name: 'Badarai',
+    name: 'Bădărăi',
   },
   {
     id: 445,
     countyId: 53,
-    name: 'Badeana',
+    name: 'Bădeana',
   },
   {
     id: 446,
     countyId: 3,
-    name: 'Badeni',
+    name: 'Bădeni',
   },
   {
     id: 447,
     countyId: 21,
-    name: 'Badeni',
+    name: 'Bădeni',
   },
   {
     id: 448,
     countyId: 31,
-    name: 'Badeni',
+    name: 'Bădeni',
   },
   {
     id: 449,
     countyId: 52,
-    name: 'Badeni',
+    name: 'Bădeni',
   },
   {
     id: 450,
     countyId: 18,
-    name: 'Badeni',
+    name: 'Bădeni',
   },
   {
     id: 451,
     countyId: 24,
-    name: 'Badeni',
+    name: 'Bădeni',
   },
   {
     id: 452,
     countyId: 35,
-    name: 'Badeni',
+    name: 'Bădeni',
   },
   {
     id: 453,
     countyId: 30,
-    name: 'Badesti',
+    name: 'Bădești',
   },
   {
     id: 454,
     countyId: 21,
-    name: 'Badesti',
+    name: 'Bădești',
   },
   {
     id: 455,
     countyId: 3,
-    name: 'Badesti (Barla)',
+    name: 'Bădești (Bârla)',
   },
   {
     id: 456,
     countyId: 3,
-    name: 'Badesti (Pietrosani)',
+    name: 'Bădești (Pietroșani)',
   },
   {
     id: 457,
     countyId: 48,
-    name: 'Badeuti',
+    name: 'Bădeuți',
   },
   {
     id: 458,
     countyId: 3,
-    name: 'Badicea',
+    name: 'Bădicea',
   },
   {
     id: 459,
     countyId: 18,
-    name: 'Badila',
+    name: 'Bădila',
   },
   {
     id: 460,
     countyId: 3,
-    name: 'Badila',
+    name: 'Bădila',
   },
   {
     id: 461,
     countyId: 3,
-    name: 'Badislava',
+    name: 'Bădislava',
   },
   {
     id: 462,
     countyId: 40,
-    name: 'Baditesti',
+    name: 'Bădițești',
   },
   {
     id: 463,
     countyId: 8,
-    name: 'Badiuti',
+    name: 'Bădiuți',
   },
   {
     id: 464,
@@ -2322,7 +2322,7 @@ export const CITIES = [
   {
     id: 465,
     countyId: 25,
-    name: 'Badosi',
+    name: 'Bădoși',
   },
   {
     id: 466,
@@ -2332,47 +2332,47 @@ export const CITIES = [
   {
     id: 467,
     countyId: 49,
-    name: 'Baduleasa',
+    name: 'Băduleasa',
   },
   {
     id: 468,
     countyId: 3,
-    name: 'Badulesti',
+    name: 'Bădulești',
   },
   {
     id: 469,
     countyId: 24,
-    name: 'Badulesti',
+    name: 'Bădulești',
   },
   {
     id: 470,
     countyId: 18,
-    name: 'Baesti',
+    name: 'Băești',
   },
   {
     id: 471,
     countyId: 41,
-    name: 'Bagaciu',
+    name: 'Băgaciu',
   },
   {
     id: 472,
     countyId: 21,
-    name: 'Bagaciu',
+    name: 'Băgaciu',
   },
   {
     id: 473,
     countyId: 21,
-    name: 'Bagara',
+    name: 'Băgara',
   },
   {
     id: 474,
     countyId: 1,
-    name: 'Bagau',
+    name: 'Băgău',
   },
   {
     id: 475,
     countyId: 43,
-    name: 'Bagesti',
+    name: 'Bâgești',
   },
   {
     id: 476,
@@ -2412,7 +2412,7 @@ export const CITIES = [
   {
     id: 483,
     countyId: 5,
-    name: 'Bahnaseni',
+    name: 'Băhnășeni',
   },
   {
     id: 484,
@@ -2427,12 +2427,12 @@ export const CITIES = [
   {
     id: 486,
     countyId: 42,
-    name: 'Bahnisoara',
+    name: 'Băhnișoara',
   },
   {
     id: 487,
     countyId: 1,
-    name: 'Bai',
+    name: 'Băi',
   },
   {
     id: 488,
@@ -2452,17 +2452,17 @@ export const CITIES = [
   {
     id: 491,
     countyId: 40,
-    name: 'Baia de Arama',
+    name: 'Baia de Aramă',
   },
   {
     id: 492,
     countyId: 1,
-    name: 'Baia de Aries',
+    name: 'Baia de Arieș',
   },
   {
     id: 493,
     countyId: 33,
-    name: 'Baia de Cris',
+    name: 'Baia de Criș',
   },
   {
     id: 494,
@@ -2477,7 +2477,7 @@ export const CITIES = [
   {
     id: 496,
     countyId: 40,
-    name: 'Baia Noua',
+    name: 'Baia Nouă',
   },
   {
     id: 497,
@@ -2487,12 +2487,12 @@ export const CITIES = [
   {
     id: 498,
     countyId: 52,
-    name: 'Baiasa',
+    name: 'Băiașa',
   },
   {
     id: 499,
     countyId: 52,
-    name: 'Baiasu',
+    name: 'Băiașu',
   },
   {
     id: 500,
@@ -2502,42 +2502,42 @@ export const CITIES = [
   {
     id: 501,
     countyId: 8,
-    name: 'Baiceni',
+    name: 'Băiceni',
   },
   {
     id: 502,
     countyId: 35,
-    name: 'Baiceni (Cucuteni)',
+    name: 'Băiceni (Cucuteni)',
   },
   {
     id: 503,
     countyId: 35,
-    name: 'Baiceni (Todiresti)',
+    name: 'Băiceni (Todirești)',
   },
   {
     id: 504,
     countyId: 44,
-    name: 'Baicoi',
+    name: 'Băicoi',
   },
   {
     id: 505,
     countyId: 3,
-    name: 'Baiculesti',
+    name: 'Băiculești',
   },
   {
     id: 506,
     countyId: 33,
-    name: 'Baiesti',
+    name: 'Băiești',
   },
   {
     id: 507,
     countyId: 3,
-    name: 'Baila',
+    name: 'Băila',
   },
   {
     id: 508,
     countyId: 18,
-    name: 'Baile',
+    name: 'Băile',
   },
   {
     id: 509,
@@ -2547,62 +2547,62 @@ export const CITIES = [
   {
     id: 510,
     countyId: 39,
-    name: 'Baile Borsa',
+    name: 'Băile Borșa',
   },
   {
     id: 511,
     countyId: 31,
-    name: 'Baile Chirui',
+    name: 'Băile Chirui',
   },
   {
     id: 512,
     countyId: 53,
-    name: 'Baile Dranceni',
+    name: 'Băile Drânceni',
   },
   {
     id: 513,
     countyId: 6,
-    name: 'Baile Felix',
+    name: 'Băile Felix',
   },
   {
     id: 514,
     countyId: 52,
-    name: 'Baile Govora',
+    name: 'Băile Govora',
   },
   {
     id: 515,
     countyId: 20,
-    name: 'Baile Herculane',
+    name: 'Băile Herculane',
   },
   {
     id: 516,
     countyId: 31,
-    name: 'Baile Homorod',
+    name: 'Băile Homorod',
   },
   {
     id: 517,
     countyId: 52,
-    name: 'Baile Olanesti',
+    name: 'Băile Olănești',
   },
   {
     id: 518,
     countyId: 31,
-    name: 'Baile Tusnad',
+    name: 'Băile Tușnad',
   },
   {
     id: 519,
     countyId: 25,
-    name: 'Bailesti',
+    name: 'Băilești',
   },
   {
     id: 520,
     countyId: 5,
-    name: 'Baimac',
+    name: 'Băimac',
   },
   {
     id: 521,
     countyId: 48,
-    name: 'Bainet',
+    name: 'Baineț',
   },
   {
     id: 522,
@@ -2612,72 +2612,72 @@ export const CITIES = [
   {
     id: 523,
     countyId: 48,
-    name: 'Baisesti',
+    name: 'Băișești',
   },
   {
     id: 524,
     countyId: 21,
-    name: 'Baisoara',
+    name: 'Băișoara',
   },
   {
     id: 525,
     countyId: 21,
-    name: 'Baita',
+    name: 'Băița',
   },
   {
     id: 526,
     countyId: 39,
-    name: 'Baita',
+    name: 'Băița',
   },
   {
     id: 527,
     countyId: 6,
-    name: 'Baita',
+    name: 'Băița',
   },
   {
     id: 528,
     countyId: 33,
-    name: 'Baita',
+    name: 'Băița',
   },
   {
     id: 529,
     countyId: 41,
-    name: 'Baita',
+    name: 'Băița',
   },
   {
     id: 530,
     countyId: 39,
-    name: 'Baita de sub Codru',
+    name: 'Băița de sub Codru',
   },
   {
     id: 531,
     countyId: 6,
-    name: 'Baita-Plai',
+    name: 'Băița-Plai',
   },
   {
     id: 532,
     countyId: 39,
-    name: 'Baiut',
+    name: 'Băiuț',
   },
   {
     id: 533,
     countyId: 3,
-    name: 'Bajanesti',
+    name: 'Băjănești',
   },
   {
     id: 534,
     countyId: 18,
-    name: 'Bajani',
+    name: 'Băjani',
   },
   {
     id: 535,
     countyId: 52,
-    name: 'Bajenari',
+    name: 'Băjenari',
   },
   {
     id: 536,
     countyId: 3,
-    name: 'Bajesti',
+    name: 'Băjești',
   },
   {
     id: 537,
@@ -2692,7 +2692,7 @@ export const CITIES = [
   {
     id: 539,
     countyId: 41,
-    name: 'Bala',
+    name: 'Băla',
   },
   {
     id: 540,
@@ -2707,7 +2707,7 @@ export const CITIES = [
   {
     id: 542,
     countyId: 28,
-    name: 'Balabanesti',
+    name: 'Bălăbănești',
   },
   {
     id: 543,
@@ -2717,22 +2717,22 @@ export const CITIES = [
   {
     id: 544,
     countyId: 48,
-    name: 'Balaceana',
+    name: 'Bălăceana',
   },
   {
     id: 545,
     countyId: 36,
-    name: 'Balaceanca',
+    name: 'Bălăceanca',
   },
   {
     id: 546,
     countyId: 18,
-    name: 'Balaceanu',
+    name: 'Bălăceanu',
   },
   {
     id: 547,
     countyId: 30,
-    name: 'Balacesti',
+    name: 'Bălăcești',
   },
   {
     id: 548,
@@ -2742,7 +2742,7 @@ export const CITIES = [
   {
     id: 549,
     countyId: 40,
-    name: 'Balacita',
+    name: 'Bălăcița',
   },
   {
     id: 550,
@@ -2757,82 +2757,82 @@ export const CITIES = [
   {
     id: 552,
     countyId: 5,
-    name: 'Balaia',
+    name: 'Bălaia',
   },
   {
     id: 553,
     countyId: 18,
-    name: 'Balaia',
+    name: 'Bălaia',
   },
   {
     id: 554,
     countyId: 6,
-    name: 'Balaia',
+    name: 'Bălaia',
   },
   {
     id: 555,
     countyId: 45,
-    name: 'Balan',
+    name: 'Bălan',
   },
   {
     id: 556,
     countyId: 31,
-    name: 'Balan',
+    name: 'Bălan',
   },
   {
     id: 557,
     countyId: 5,
-    name: 'Balaneasa',
+    name: 'Bălăneasa',
   },
   {
     id: 558,
     countyId: 18,
-    name: 'Balanesti',
+    name: 'Bălănești',
   },
   {
     id: 559,
     countyId: 30,
-    name: 'Balanesti',
+    name: 'Bălănești',
   },
   {
     id: 560,
     countyId: 43,
-    name: 'Balanesti',
+    name: 'Bălănești',
   },
   {
     id: 561,
     countyId: 24,
-    name: 'Balanesti',
+    name: 'Bălănești',
   },
   {
     id: 562,
     countyId: 42,
-    name: 'Balanesti',
+    name: 'Bălănești',
   },
   {
     id: 563,
     countyId: 54,
-    name: 'Balanesti',
+    name: 'Bălănești',
   },
   {
     id: 564,
     countyId: 5,
-    name: 'Balanesti (Dealu Morii)',
+    name: 'Bălănești (Dealu Morii)',
   },
   {
     id: 565,
     countyId: 5,
-    name: 'Balanesti (Podu Turcului)',
+    name: 'Bălănești (Podu Turcului)',
   },
   {
     id: 566,
     countyId: 30,
-    name: 'Balani',
+    name: 'Bălani',
   },
   {
     id: 567,
     countyId: 29,
-    name: 'Balanu',
+    name: 'Bălanu',
   },
   {
     id: 568,
@@ -2842,17 +2842,17 @@ export const CITIES = [
   {
     id: 569,
     countyId: 28,
-    name: 'Balasesti',
+    name: 'Bălășești',
   },
   {
     id: 570,
     countyId: 33,
-    name: 'Balata',
+    name: 'Bălata',
   },
   {
     id: 571,
     countyId: 41,
-    name: 'Balauseri',
+    name: 'Bălăușeri',
   },
   {
     id: 572,
@@ -2867,12 +2867,12 @@ export const CITIES = [
   {
     id: 574,
     countyId: 5,
-    name: 'Balca',
+    name: 'Bâlca',
   },
   {
     id: 575,
     countyId: 1,
-    name: 'Balcaciu',
+    name: 'Bălcaciu',
   },
   {
     id: 576,
@@ -2882,27 +2882,27 @@ export const CITIES = [
   {
     id: 577,
     countyId: 48,
-    name: 'Balcauti',
+    name: 'Bălcăuți',
   },
   {
     id: 578,
     countyId: 30,
-    name: 'Balcesti',
+    name: 'Bălcești',
   },
   {
     id: 579,
     countyId: 52,
-    name: 'Balcesti',
+    name: 'Bălcești',
   },
   {
     id: 580,
     countyId: 21,
-    name: 'Balcesti (Belis)',
+    name: 'Bălcești (Beliș)',
   },
   {
     id: 581,
     countyId: 21,
-    name: 'Balcesti (Capusu Mare)',
+    name: 'Bălcești (Căpușu Mare)',
   },
   {
     id: 582,
@@ -2917,7 +2917,7 @@ export const CITIES = [
   {
     id: 584,
     countyId: 24,
-    name: 'Baldana',
+    name: 'Bâldana',
   },
   {
     id: 585,
@@ -2927,122 +2927,122 @@ export const CITIES = [
   {
     id: 586,
     countyId: 9,
-    name: 'Baldovinesti',
+    name: 'Baldovinești',
   },
   {
     id: 587,
     countyId: 49,
-    name: 'Baldovinesti',
+    name: 'Baldovinești',
   },
   {
     id: 588,
     countyId: 43,
-    name: 'Baldovinesti',
+    name: 'Baldovinești',
   },
   {
     id: 589,
     countyId: 43,
-    name: 'Baleasa',
+    name: 'Băleasa',
   },
   {
     id: 590,
     countyId: 6,
-    name: 'Baleni',
+    name: 'Băleni',
   },
   {
     id: 591,
     countyId: 28,
-    name: 'Baleni',
+    name: 'Băleni',
   },
   {
     id: 592,
     countyId: 24,
-    name: 'Baleni',
+    name: 'Băleni',
   },
   {
     id: 593,
     countyId: 24,
-    name: 'Baleni-Romani',
+    name: 'Băleni-Români',
   },
   {
     id: 594,
     countyId: 24,
-    name: 'Baleni-Sarbi',
+    name: 'Băleni-Sârbi',
   },
   {
     id: 595,
     countyId: 30,
-    name: 'Balesti',
+    name: 'Bălești',
   },
   {
     id: 596,
     countyId: 53,
-    name: 'Balesti',
+    name: 'Bălești',
   },
   {
     id: 597,
     countyId: 1,
-    name: 'Balesti',
+    name: 'Bălești',
   },
   {
     id: 598,
     countyId: 54,
-    name: 'Balesti',
+    name: 'Bălești',
   },
   {
     id: 599,
     countyId: 1,
-    name: 'Balesti-Catun',
+    name: 'Bălești-Cătun',
   },
   {
     id: 600,
     countyId: 18,
-    name: 'Balhacu',
+    name: 'Bâlhacu',
   },
   {
     id: 601,
     countyId: 3,
-    name: 'Balilesti',
+    name: 'Bălilești',
   },
   {
     id: 602,
     countyId: 3,
-    name: 'Balilesti (Tigveni)',
+    name: 'Bălilești (Tigveni)',
   },
   {
     id: 603,
     countyId: 48,
-    name: 'Balinesti',
+    name: 'Bălinești',
   },
   {
     id: 604,
     countyId: 50,
-    name: 'Balint',
+    name: 'Balinț',
   },
   {
     id: 605,
     countyId: 28,
-    name: 'Balintesti',
+    name: 'Balintești',
   },
   {
     id: 606,
     countyId: 8,
-    name: 'Balinti',
+    name: 'Balinți',
   },
   {
     id: 607,
     countyId: 1,
-    name: 'Balmosesti',
+    name: 'Bălmoșești',
   },
   {
     id: 608,
     countyId: 6,
-    name: 'Balnaca',
+    name: 'Bălnaca',
   },
   {
     id: 609,
     countyId: 6,
-    name: 'Balnaca-Grosi',
+    name: 'Bălnaca-Groși',
   },
   {
     id: 610,
@@ -3057,17 +3057,17 @@ export const CITIES = [
   {
     id: 612,
     countyId: 1,
-    name: 'Balomiru de Camp',
+    name: 'Balomiru de Câmp',
   },
   {
     id: 613,
     countyId: 30,
-    name: 'Balosani',
+    name: 'Baloșani',
   },
   {
     id: 614,
     countyId: 50,
-    name: 'Balosesti',
+    name: 'Baloșești',
   },
   {
     id: 615,
@@ -3097,42 +3097,42 @@ export const CITIES = [
   {
     id: 620,
     countyId: 5,
-    name: 'Balotesti',
+    name: 'Balotești',
   },
   {
     id: 621,
     countyId: 40,
-    name: 'Balotesti',
+    name: 'Balotești',
   },
   {
     id: 622,
     countyId: 36,
-    name: 'Balotesti',
+    name: 'Balotești',
   },
   {
     id: 623,
     countyId: 43,
-    name: 'Bals',
+    name: 'Balș',
   },
   {
     id: 624,
     countyId: 35,
-    name: 'Bals',
+    name: 'Balș',
   },
   {
     id: 625,
     countyId: 33,
-    name: 'Balsa',
+    name: 'Balșa',
   },
   {
     id: 626,
     countyId: 52,
-    name: 'Balsoara',
+    name: 'Bălșoara',
   },
   {
     id: 627,
     countyId: 25,
-    name: 'Balta',
+    name: 'Bâlta',
   },
   {
     id: 628,
@@ -3142,17 +3142,17 @@ export const CITIES = [
   {
     id: 629,
     countyId: 30,
-    name: 'Balta',
+    name: 'Bâlta',
   },
   {
     id: 630,
     countyId: 18,
-    name: 'Balta Alba',
+    name: 'Balta Albă',
   },
   {
     id: 631,
     countyId: 8,
-    name: 'Balta Arsa',
+    name: 'Balta Arsă',
   },
   {
     id: 632,
@@ -3162,17 +3162,17 @@ export const CITIES = [
   {
     id: 633,
     countyId: 36,
-    name: 'Balta Neagra',
+    name: 'Balta Neagră',
   },
   {
     id: 634,
     countyId: 54,
-    name: 'Balta Ratei',
+    name: 'Balta Raței',
   },
   {
     id: 635,
     countyId: 49,
-    name: 'Balta Sarata',
+    name: 'Balta Sărată',
   },
   {
     id: 636,
@@ -3192,167 +3192,167 @@ export const CITIES = [
   {
     id: 639,
     countyId: 18,
-    name: 'Baltagari',
+    name: 'Băltăgari',
   },
   {
     id: 640,
     countyId: 22,
-    name: 'Baltagesti',
+    name: 'Băltăgești',
   },
   {
     id: 641,
     countyId: 40,
-    name: 'Baltanele (Greci)',
+    name: 'Bâltanele (Greci)',
   },
   {
     id: 642,
     countyId: 40,
-    name: 'Baltanele (Prunisor)',
+    name: 'Bâltanele (Prunișor)',
   },
   {
     id: 643,
     countyId: 28,
-    name: 'Baltareti',
+    name: 'Băltăreți',
   },
   {
     id: 644,
     countyId: 18,
-    name: 'Baltareti',
+    name: 'Băltăreți',
   },
   {
     id: 645,
     countyId: 5,
-    name: 'Baltata',
+    name: 'Bălțata',
   },
   {
     id: 646,
     countyId: 3,
-    name: 'Baltata',
+    name: 'Bălțata',
   },
   {
     id: 647,
     countyId: 52,
-    name: 'Baltateni',
+    name: 'Băltățeni',
   },
   {
     id: 648,
     countyId: 53,
-    name: 'Baltateni',
+    name: 'Băltățeni',
   },
   {
     id: 649,
     countyId: 42,
-    name: 'Baltatesti',
+    name: 'Bălțătești',
   },
   {
     id: 650,
     countyId: 35,
-    name: 'Baltati',
+    name: 'Bălțați',
   },
   {
     id: 651,
     countyId: 53,
-    name: 'Baltati',
+    name: 'Bălțați',
   },
   {
     id: 652,
     countyId: 43,
-    name: 'Baltati',
+    name: 'Bălțați',
   },
   {
     id: 653,
     countyId: 18,
-    name: 'Balteni',
+    name: 'Bălteni',
   },
   {
     id: 654,
     countyId: 36,
-    name: 'Balteni',
+    name: 'Bălteni',
   },
   {
     id: 655,
     countyId: 43,
-    name: 'Balteni',
+    name: 'Bălteni',
   },
   {
     id: 656,
     countyId: 53,
-    name: 'Balteni',
+    name: 'Bălteni',
   },
   {
     id: 657,
     countyId: 3,
-    name: 'Balteni',
+    name: 'Bălteni',
   },
   {
     id: 658,
     countyId: 24,
-    name: 'Balteni',
+    name: 'Bălteni',
   },
   {
     id: 659,
     countyId: 35,
-    name: 'Balteni',
+    name: 'Bălteni',
   },
   {
     id: 660,
     countyId: 52,
-    name: 'Balteni',
+    name: 'Bălteni',
   },
   {
     id: 661,
     countyId: 30,
-    name: 'Balteni',
+    name: 'Bâlteni',
   },
   {
     id: 662,
     countyId: 53,
-    name: 'Balteni-Deal',
+    name: 'Bălteni-Deal',
   },
   {
     id: 663,
     countyId: 51,
-    name: 'Baltenii de Jos',
+    name: 'Băltenii de Jos',
   },
   {
     id: 664,
     countyId: 51,
-    name: 'Baltenii de Sus',
+    name: 'Băltenii de Sus',
   },
   {
     id: 665,
     countyId: 44,
-    name: 'Baltesti',
+    name: 'Bălțești',
   },
   {
     id: 666,
     countyId: 30,
-    name: 'Baltisoara',
+    name: 'Bâltișoara',
   },
   {
     id: 667,
     countyId: 44,
-    name: 'Baltita',
+    name: 'Băltița',
   },
   {
     id: 668,
     countyId: 5,
-    name: 'Balusa',
+    name: 'Bălușa',
   },
   {
     id: 669,
     countyId: 8,
-    name: 'Baluseni',
+    name: 'Bălușeni',
   },
   {
     id: 670,
     countyId: 8,
-    name: 'Balusenii Noi',
+    name: 'Bălușenii Noi',
   },
   {
     id: 671,
     countyId: 35,
-    name: 'Balusesti',
+    name: 'Bălușești',
   },
   {
     id: 672,
@@ -3362,22 +3362,22 @@ export const CITIES = [
   {
     id: 673,
     countyId: 42,
-    name: 'Balusesti (Icusesti)',
+    name: 'Bălușești (Icușești)',
   },
   {
     id: 674,
     countyId: 40,
-    name: 'Baluta',
+    name: 'Băluța',
   },
   {
     id: 675,
     countyId: 52,
-    name: 'Balutoaia',
+    name: 'Băluțoaia',
   },
   {
     id: 676,
     countyId: 40,
-    name: 'Balvanesti',
+    name: 'Bâlvănești',
   },
   {
     id: 677,
@@ -3392,7 +3392,7 @@ export const CITIES = [
   {
     id: 679,
     countyId: 3,
-    name: 'Banaresti',
+    name: 'Bănărești',
   },
   {
     id: 680,
@@ -3407,12 +3407,12 @@ export const CITIES = [
   {
     id: 682,
     countyId: 48,
-    name: 'Bancesti',
+    name: 'Băncești',
   },
   {
     id: 683,
     countyId: 53,
-    name: 'Bancesti',
+    name: 'Băncești',
   },
   {
     id: 684,
@@ -3427,87 +3427,87 @@ export const CITIES = [
   {
     id: 686,
     countyId: 9,
-    name: 'Bandoiu',
+    name: 'Băndoiu',
   },
   {
     id: 687,
     countyId: 28,
-    name: 'Baneasa',
+    name: 'Băneasa',
   },
   {
     id: 688,
     countyId: 42,
-    name: 'Baneasa',
+    name: 'Băneasa',
   },
   {
     id: 689,
     countyId: 22,
-    name: 'Baneasa',
+    name: 'Băneasa',
   },
   {
     id: 690,
     countyId: 29,
-    name: 'Baneasa',
+    name: 'Băneasa',
   },
   {
     id: 691,
     countyId: 49,
-    name: 'Baneasa',
+    name: 'Băneasa',
   },
   {
     id: 692,
     countyId: 2,
-    name: 'Banesti',
+    name: 'Bănești',
   },
   {
     id: 693,
     countyId: 29,
-    name: 'Banesti',
+    name: 'Bănești',
   },
   {
     id: 694,
     countyId: 48,
-    name: 'Banesti',
+    name: 'Bănești',
   },
   {
     id: 695,
     countyId: 24,
-    name: 'Banesti',
+    name: 'Bănești',
   },
   {
     id: 696,
     countyId: 44,
-    name: 'Banesti',
+    name: 'Bănești',
   },
   {
     id: 697,
     countyId: 52,
-    name: 'Banesti',
+    name: 'Bănești',
   },
   {
     id: 698,
     countyId: 20,
-    name: 'Bania',
+    name: 'Bănia',
   },
   {
     id: 699,
     countyId: 3,
-    name: 'Banicesti',
+    name: 'Bănicești',
   },
   {
     id: 700,
     countyId: 45,
-    name: 'Banisor',
+    name: 'Bănișor',
   },
   {
     id: 701,
     countyId: 33,
-    name: 'Banita',
+    name: 'Bănița',
   },
   {
     id: 702,
     countyId: 18,
-    name: 'Banita',
+    name: 'Banița',
   },
   {
     id: 703,
@@ -3532,12 +3532,12 @@ export const CITIES = [
   {
     id: 707,
     countyId: 3,
-    name: 'Bantau',
+    name: 'Bântău',
   },
   {
     id: 708,
     countyId: 52,
-    name: 'Bantesti',
+    name: 'Bănțești',
   },
   {
     id: 709,
@@ -3557,47 +3557,47 @@ export const CITIES = [
   {
     id: 712,
     countyId: 41,
-    name: 'Bara',
+    name: 'Bâra',
   },
   {
     id: 713,
     countyId: 44,
-    name: 'Bara',
+    name: 'Bâra',
   },
   {
     id: 714,
     countyId: 1,
-    name: 'Barabant',
+    name: 'Bărăbanț',
   },
   {
     id: 715,
     countyId: 24,
-    name: 'Baraceni',
+    name: 'Bărăceni',
   },
   {
     id: 716,
     countyId: 22,
-    name: 'Baraganu',
+    name: 'Bărăganu',
   },
   {
     id: 717,
     countyId: 9,
-    name: 'Baraganul',
+    name: 'Bărăganul',
   },
   {
     id: 718,
     countyId: 21,
-    name: 'Barai',
+    name: 'Bărăi',
   },
   {
     id: 719,
     countyId: 40,
-    name: 'Baraiacu',
+    name: 'Bârâiacu',
   },
   {
     id: 720,
     countyId: 44,
-    name: 'Baraitaru',
+    name: 'Bărăitaru',
   },
   {
     id: 721,
@@ -3607,22 +3607,22 @@ export const CITIES = [
   {
     id: 722,
     countyId: 8,
-    name: 'Baranca (Cristinesti)',
+    name: 'Baranca (Cristinești)',
   },
   {
     id: 723,
     countyId: 8,
-    name: 'Baranca (Hudesti)',
+    name: 'Baranca (Hudești)',
   },
   {
     id: 724,
     countyId: 3,
-    name: 'Baranesti',
+    name: 'Bărănești',
   },
   {
     id: 725,
     countyId: 25,
-    name: 'Baranu',
+    name: 'Băranu',
   },
   {
     id: 726,
@@ -3632,57 +3632,57 @@ export const CITIES = [
   {
     id: 727,
     countyId: 3,
-    name: 'Barasti',
+    name: 'Bărăști',
   },
   {
     id: 728,
     countyId: 43,
-    name: 'Barasti',
+    name: 'Bărăști',
   },
   {
     id: 729,
     countyId: 1,
-    name: 'Barasti',
+    name: 'Bărăști',
   },
   {
     id: 730,
     countyId: 18,
-    name: 'Barasti',
+    name: 'Bărăști',
   },
   {
     id: 731,
     countyId: 48,
-    name: 'Barasti',
+    name: 'Bărăști',
   },
   {
     id: 732,
     countyId: 43,
-    name: 'Barasti (Colonesti)',
+    name: 'Bărăști (Colonești)',
   },
   {
     id: 733,
     countyId: 43,
-    name: 'Barasti (Morunglav)',
+    name: 'Bărăști (Morunglav)',
   },
   {
     id: 734,
     countyId: 43,
-    name: 'Barastii de Cepturi',
+    name: 'Bărăștii de Cepturi',
   },
   {
     id: 735,
     countyId: 43,
-    name: 'Barastii de Vede',
+    name: 'Bărăștii de Vede',
   },
   {
     id: 736,
     countyId: 33,
-    name: 'Barastii Hategului',
+    name: 'Bărăștii Hațegului',
   },
   {
     id: 737,
     countyId: 33,
-    name: 'Barastii Iliei',
+    name: 'Bărăștii Iliei',
   },
   {
     id: 738,
@@ -3692,122 +3692,122 @@ export const CITIES = [
   {
     id: 739,
     countyId: 2,
-    name: 'Baratca',
+    name: 'Barațca',
   },
   {
     id: 740,
     countyId: 31,
-    name: 'Baratcos',
+    name: 'Barațcoș',
   },
   {
     id: 741,
     countyId: 50,
-    name: 'Barateaz',
+    name: 'Bărăteaz',
   },
   {
     id: 742,
     countyId: 5,
-    name: 'Barati',
+    name: 'Barați',
   },
   {
     id: 743,
     countyId: 43,
-    name: 'Barbalai',
+    name: 'Bărbălăi',
   },
   {
     id: 744,
     countyId: 3,
-    name: 'Barbalani',
+    name: 'Bărbălani',
   },
   {
     id: 745,
     countyId: 3,
-    name: 'Barbalatesti',
+    name: 'Bărbălătești',
   },
   {
     id: 746,
     countyId: 52,
-    name: 'Barbarigeni',
+    name: 'Bărbărigeni',
   },
   {
     id: 747,
     countyId: 34,
-    name: 'Barbatescu',
+    name: 'Bărbătescu',
   },
   {
     id: 748,
     countyId: 3,
-    name: 'Barbatesti',
+    name: 'Bărbătești',
   },
   {
     id: 749,
     countyId: 35,
-    name: 'Barbatesti',
+    name: 'Bărbătești',
   },
   {
     id: 750,
     countyId: 30,
-    name: 'Barbatesti',
+    name: 'Bărbătești',
   },
   {
     id: 751,
     countyId: 52,
-    name: 'Barbatesti',
+    name: 'Bărbătești',
   },
   {
     id: 752,
     countyId: 1,
-    name: 'Barbesti',
+    name: 'Bărbești',
   },
   {
     id: 753,
     countyId: 5,
-    name: 'Barboasa',
+    name: 'Bărboasa',
   },
   {
     id: 754,
     countyId: 25,
-    name: 'Barboi',
+    name: 'Bărboi',
   },
   {
     id: 755,
     countyId: 41,
-    name: 'Barbosi',
+    name: 'Bărboși',
   },
   {
     id: 756,
     countyId: 53,
-    name: 'Barbosi',
+    name: 'Barboși',
   },
   {
     id: 757,
     countyId: 20,
-    name: 'Barbosu',
+    name: 'Bărbosu',
   },
   {
     id: 758,
     countyId: 24,
-    name: 'Barbuceanu',
+    name: 'Bărbuceanu',
   },
   {
     id: 759,
     countyId: 52,
-    name: 'Barbuceni',
+    name: 'Bărbuceni',
   },
   {
     id: 760,
     countyId: 34,
-    name: 'Barbulesti',
+    name: 'Bărbulești',
   },
   {
     id: 761,
     countyId: 24,
-    name: 'Barbuletu',
+    name: 'Bărbulețu',
   },
   {
     id: 762,
     countyId: 18,
-    name: 'Barbuncesti',
+    name: 'Bărbuncești',
   },
   {
     id: 763,
@@ -3817,17 +3817,17 @@ export const CITIES = [
   {
     id: 764,
     countyId: 25,
-    name: 'Barca',
+    name: 'Bârca',
   },
   {
     id: 765,
     countyId: 43,
-    name: 'Barca',
+    name: 'Bârca',
   },
   {
     id: 766,
     countyId: 30,
-    name: 'Barcaciu',
+    name: 'Bârcaciu',
   },
   {
     id: 767,
@@ -3842,27 +3842,27 @@ export const CITIES = [
   {
     id: 769,
     countyId: 42,
-    name: 'Barcanesti',
+    name: 'Bărcănești',
   },
   {
     id: 770,
     countyId: 44,
-    name: 'Barcanesti',
+    name: 'Bărcănești',
   },
   {
     id: 771,
     countyId: 34,
-    name: 'Barcanesti',
+    name: 'Bărcănești',
   },
   {
     id: 772,
     countyId: 43,
-    name: 'Barcanesti',
+    name: 'Bărcănești',
   },
   {
     id: 773,
     countyId: 52,
-    name: 'Barcanesti',
+    name: 'Bărcănești',
   },
   {
     id: 774,
@@ -3877,132 +3877,132 @@ export const CITIES = [
   {
     id: 776,
     countyId: 33,
-    name: 'Barcea Mare',
+    name: 'Bârcea Mare',
   },
   {
     id: 777,
     countyId: 33,
-    name: 'Barcea Mica',
+    name: 'Bârcea Mică',
   },
   {
     id: 778,
     countyId: 10,
-    name: 'Barcut',
+    name: 'Bărcut',
   },
   {
     id: 779,
     countyId: 40,
-    name: 'Barda',
+    name: 'Bârda',
   },
   {
     id: 780,
     countyId: 41,
-    name: 'Bardesti',
+    name: 'Bărdești',
   },
   {
     id: 781,
     countyId: 1,
-    name: 'Bardesti',
+    name: 'Bârdești',
   },
   {
     id: 782,
     countyId: 39,
-    name: 'Bargau',
+    name: 'Bârgău',
   },
   {
     id: 783,
     countyId: 42,
-    name: 'Bargauani',
+    name: 'Bârgăuani',
   },
   {
     id: 784,
     countyId: 47,
-    name: 'Barghis',
+    name: 'Bârghiș',
   },
   {
     id: 785,
     countyId: 42,
-    name: 'Barjoveni',
+    name: 'Bârjoveni',
   },
   {
     id: 786,
     countyId: 3,
-    name: 'Barla',
+    name: 'Bârla',
   },
   {
     id: 787,
     countyId: 7,
-    name: 'Barla',
+    name: 'Bârla',
   },
   {
     id: 788,
     countyId: 53,
-    name: 'Barlad',
+    name: 'Bârlad',
   },
   {
     id: 789,
     countyId: 53,
-    name: 'Barlalesti',
+    name: 'Bârlălești',
   },
   {
     id: 790,
     countyId: 21,
-    name: 'Barlea',
+    name: 'Bârlea',
   },
   {
     id: 791,
     countyId: 35,
-    name: 'Barlesti',
+    name: 'Bârlești',
   },
   {
     id: 792,
     countyId: 1,
-    name: 'Barlesti (Bistra)',
+    name: 'Bârlești (Bistra)',
   },
   {
     id: 793,
     countyId: 1,
-    name: 'Barlesti (Mogos)',
+    name: 'Bârlești (Mogoș)',
   },
   {
     id: 794,
     countyId: 1,
-    name: 'Barlesti (Scarisoara)',
+    name: 'Bârlești (Scărișoara)',
   },
   {
     id: 795,
     countyId: 1,
-    name: 'Barlesti-Catun',
+    name: 'Bârlești-Cătun',
   },
   {
     id: 796,
     countyId: 41,
-    name: 'Barlibas',
+    name: 'Bârlibaș',
   },
   {
     id: 797,
     countyId: 41,
-    name: 'Barlibasoaia',
+    name: 'Bârlibășoaia',
   },
   {
     id: 798,
     countyId: 40,
-    name: 'Barlogeni',
+    name: 'Bârlogeni',
   },
   {
     id: 799,
     countyId: 52,
-    name: 'Barlogu',
+    name: 'Bârlogu',
   },
   {
     id: 800,
     countyId: 3,
-    name: 'Barlogu',
+    name: 'Bârlogu',
   },
   {
     id: 801,
     countyId: 3,
-    name: 'Barloi',
+    name: 'Bârloi',
   },
   {
     id: 802,
@@ -4012,152 +4012,152 @@ export const CITIES = [
   {
     id: 803,
     countyId: 50,
-    name: 'Barna',
+    name: 'Bârna',
   },
   {
     id: 804,
     countyId: 42,
-    name: 'Barnadu',
+    name: 'Bârnadu',
   },
   {
     id: 805,
     countyId: 5,
-    name: 'Barnesti',
+    name: 'Bărnești',
   },
   {
     id: 806,
     countyId: 35,
-    name: 'Barnova',
+    name: 'Bârnova',
   },
   {
     id: 807,
     countyId: 52,
-    name: 'Baroiu',
+    name: 'Băroiu',
   },
   {
     id: 808,
     countyId: 2,
-    name: 'Barsa',
+    name: 'Bârsa',
   },
   {
     id: 809,
     countyId: 45,
-    name: 'Barsa',
+    name: 'Bârsa',
   },
   {
     id: 810,
     countyId: 1,
-    name: 'Barsana',
+    name: 'Bârsana',
   },
   {
     id: 811,
     countyId: 39,
-    name: 'Barsana',
+    name: 'Bârsana',
   },
   {
     id: 812,
     countyId: 5,
-    name: 'Barsanesti',
+    name: 'Bârsănești',
   },
   {
     id: 813,
     countyId: 8,
-    name: 'Barsanesti',
+    name: 'Bârsănești',
   },
   {
     id: 814,
     countyId: 33,
-    name: 'Barsau',
+    name: 'Bârsău',
   },
   {
     id: 815,
     countyId: 46,
-    name: 'Barsau',
+    name: 'Bârsău',
   },
   {
     id: 816,
     countyId: 46,
-    name: 'Barsau de Jos',
+    name: 'Bârsău de Jos',
   },
   {
     id: 817,
     countyId: 46,
-    name: 'Barsau de Sus',
+    name: 'Bârsău de Sus',
   },
   {
     id: 818,
     countyId: 45,
-    name: 'Barsau Mare',
+    name: 'Bârsău Mare',
   },
   {
     id: 819,
     countyId: 45,
-    name: 'Barsauta',
+    name: 'Bârsăuța',
   },
   {
     id: 820,
     countyId: 30,
-    name: 'Barsesti',
+    name: 'Bârsești',
   },
   {
     id: 821,
     countyId: 54,
-    name: 'Barsesti',
+    name: 'Bârsești',
   },
   {
     id: 822,
     countyId: 52,
-    name: 'Barsesti (Budesti)',
+    name: 'Bârsești (Budești)',
   },
   {
     id: 823,
     countyId: 52,
-    name: 'Barsesti (Mihaesti)',
+    name: 'Bârsești (Mihăești)',
   },
   {
     id: 824,
     countyId: 3,
-    name: 'Barsestii de Jos',
+    name: 'Bârseștii de Jos',
   },
   {
     id: 825,
     countyId: 49,
-    name: 'Barsestii de Jos',
+    name: 'Bârseștii de Jos',
   },
   {
     id: 826,
     countyId: 3,
-    name: 'Barsestii de Sus',
+    name: 'Bârseștii de Sus',
   },
   {
     id: 827,
     countyId: 43,
-    name: 'Barsestii de Sus',
+    name: 'Bârseștii de Sus',
   },
   {
     id: 828,
     countyId: 52,
-    name: 'Barsoiu',
+    name: 'Bârsoiu',
   },
   {
     id: 829,
     countyId: 53,
-    name: 'Bartalus-Mocani',
+    name: 'Bărtăluș-Mocani',
   },
   {
     id: 830,
     countyId: 53,
-    name: 'Bartalus-Razesi',
+    name: 'Bărtăluș-Răzeși',
   },
   {
     id: 831,
     countyId: 5,
-    name: 'Bartasesti',
+    name: 'Bărtășești',
   },
   {
     id: 832,
     countyId: 42,
-    name: 'Barticesti',
+    name: 'Barticești',
   },
   {
     id: 833,
@@ -4167,7 +4167,7 @@ export const CITIES = [
   {
     id: 834,
     countyId: 20,
-    name: 'Barz',
+    name: 'Bârz',
   },
   {
     id: 835,
@@ -4182,7 +4182,7 @@ export const CITIES = [
   {
     id: 837,
     countyId: 41,
-    name: 'Barza',
+    name: 'Bârza',
   },
   {
     id: 838,
@@ -4197,7 +4197,7 @@ export const CITIES = [
   {
     id: 840,
     countyId: 20,
-    name: 'Barza',
+    name: 'Bârza',
   },
   {
     id: 841,
@@ -4207,62 +4207,62 @@ export const CITIES = [
   {
     id: 842,
     countyId: 1,
-    name: 'Barzan',
+    name: 'Bârzan',
   },
   {
     id: 843,
     countyId: 31,
-    name: 'Barzava',
+    name: 'Bârzava',
   },
   {
     id: 844,
     countyId: 2,
-    name: 'Barzava',
+    name: 'Bârzava',
   },
   {
     id: 845,
     countyId: 30,
-    name: 'Barzeiu',
+    name: 'Bârzeiu',
   },
   {
     id: 846,
     countyId: 30,
-    name: 'Barzeiu de Gilort',
+    name: 'Bârzeiu de Gilort',
   },
   {
     id: 847,
     countyId: 2,
-    name: 'Barzesti',
+    name: 'Bârzești',
   },
   {
     id: 848,
     countyId: 53,
-    name: 'Barzesti',
+    name: 'Bârzești',
   },
   {
     id: 849,
     countyId: 3,
-    name: 'Barzesti',
+    name: 'Bârzești',
   },
   {
     id: 850,
     countyId: 52,
-    name: 'Barzesti',
+    name: 'Bârzești',
   },
   {
     id: 851,
     countyId: 44,
-    name: 'Barzila',
+    name: 'Bărzila',
   },
   {
     id: 852,
     countyId: 1,
-    name: 'Barzogani',
+    name: 'Bârzogani',
   },
   {
     id: 853,
     countyId: 5,
-    name: 'Barzulesti',
+    name: 'Bârzulești',
   },
   {
     id: 854,
@@ -4287,32 +4287,32 @@ export const CITIES = [
   {
     id: 858,
     countyId: 5,
-    name: 'Basasti',
+    name: 'Băsăști',
   },
   {
     id: 859,
     countyId: 18,
-    name: 'Basca Chiojdului',
+    name: 'Bâsca Chiojdului',
   },
   {
     id: 860,
     countyId: 18,
-    name: 'Basca Rozilei',
+    name: 'Bâsca Rozilei',
   },
   {
     id: 861,
     countyId: 18,
-    name: 'Bascenii de Jos',
+    name: 'Bâscenii de Jos',
   },
   {
     id: 862,
     countyId: 18,
-    name: 'Bascenii de Sus',
+    name: 'Bâscenii de Sus',
   },
   {
     id: 863,
     countyId: 25,
-    name: 'Bascov',
+    name: 'Bașcov',
   },
   {
     id: 864,
@@ -4327,22 +4327,22 @@ export const CITIES = [
   {
     id: 866,
     countyId: 49,
-    name: 'Bascoveni',
+    name: 'Bâscoveni',
   },
   {
     id: 867,
     countyId: 39,
-    name: 'Basesti',
+    name: 'Băsești',
   },
   {
     id: 868,
     countyId: 42,
-    name: 'Basta',
+    name: 'Bașta',
   },
   {
     id: 869,
     countyId: 33,
-    name: 'Bastea',
+    name: 'Baștea',
   },
   {
     id: 870,
@@ -4352,12 +4352,12 @@ export const CITIES = [
   {
     id: 871,
     countyId: 7,
-    name: 'Bata',
+    name: 'Bața',
   },
   {
     id: 872,
     countyId: 33,
-    name: 'Batalar',
+    name: 'Bățălar',
   },
   {
     id: 873,
@@ -4367,52 +4367,52 @@ export const CITIES = [
   {
     id: 874,
     countyId: 23,
-    name: 'Batani',
+    name: 'Bățani',
   },
   {
     id: 875,
     countyId: 23,
-    name: 'Batanii Mari',
+    name: 'Bățanii Mari',
   },
   {
     id: 876,
     countyId: 23,
-    name: 'Batanii Mici',
+    name: 'Bățanii Mici',
   },
   {
     id: 877,
     countyId: 6,
-    name: 'Batar',
+    name: 'Batăr',
   },
   {
     id: 878,
     countyId: 46,
-    name: 'Batarci',
+    name: 'Bătarci',
   },
   {
     id: 879,
     countyId: 43,
-    name: 'Batareni',
+    name: 'Bătăreni',
   },
   {
     id: 880,
     countyId: 52,
-    name: 'Batasani',
+    name: 'Bătășani',
   },
   {
     id: 881,
     countyId: 54,
-    name: 'Batcari',
+    name: 'Bâtcari',
   },
   {
     id: 882,
     countyId: 44,
-    name: 'Batesti',
+    name: 'Bătești',
   },
   {
     id: 883,
     countyId: 50,
-    name: 'Batesti',
+    name: 'Bătești',
   },
   {
     id: 884,
@@ -4427,7 +4427,7 @@ export const CITIES = [
   {
     id: 886,
     countyId: 54,
-    name: 'Batinesti',
+    name: 'Bătinești',
   },
   {
     id: 887,
@@ -4447,62 +4447,62 @@ export const CITIES = [
   {
     id: 890,
     countyId: 41,
-    name: 'Batos',
+    name: 'Batoș',
   },
   {
     id: 891,
     countyId: 40,
-    name: 'Batoti',
+    name: 'Batoți',
   },
   {
     id: 892,
     countyId: 33,
-    name: 'Batrana',
+    name: 'Bătrâna',
   },
   {
     id: 893,
     countyId: 42,
-    name: 'Batranesti',
+    name: 'Bătrânești',
   },
   {
     id: 894,
     countyId: 8,
-    name: 'Batranesti',
+    name: 'Bătrânești',
   },
   {
     id: 895,
     countyId: 44,
-    name: 'Batrani',
+    name: 'Bătrâni',
   },
   {
     id: 896,
     countyId: 3,
-    name: 'Batrani',
+    name: 'Bătrâni',
   },
   {
     id: 897,
     countyId: 2,
-    name: 'Batuta',
+    name: 'Bătuța',
   },
   {
     id: 898,
     countyId: 20,
-    name: 'Bautar',
+    name: 'Băuțar',
   },
   {
     id: 899,
     countyId: 30,
-    name: 'Bazavani',
+    name: 'Băzăvani',
   },
   {
     id: 900,
     countyId: 25,
-    name: 'Bazdana',
+    name: 'Bâzdâna',
   },
   {
     id: 901,
     countyId: 1,
-    name: 'Bazesti',
+    name: 'Băzești',
   },
   {
     id: 902,
@@ -4512,7 +4512,7 @@ export const CITIES = [
   {
     id: 903,
     countyId: 20,
-    name: 'Bazias',
+    name: 'Baziaș',
   },
   {
     id: 904,
@@ -4522,12 +4522,12 @@ export const CITIES = [
   {
     id: 905,
     countyId: 50,
-    name: 'Bazos',
+    name: 'Bazoș',
   },
   {
     id: 906,
     countyId: 50,
-    name: 'Bazosu Nou',
+    name: 'Bazoșu Nou',
   },
   {
     id: 907,
@@ -4537,7 +4537,7 @@ export const CITIES = [
   {
     id: 908,
     countyId: 31,
-    name: 'Becas',
+    name: 'Becaș',
   },
   {
     id: 909,
@@ -4572,7 +4572,7 @@ export const CITIES = [
   {
     id: 915,
     countyId: 24,
-    name: 'Bechinesti',
+    name: 'Bechinești',
   },
   {
     id: 916,
@@ -4607,17 +4607,17 @@ export const CITIES = [
   {
     id: 922,
     countyId: 52,
-    name: 'Becsani',
+    name: 'Becșani',
   },
   {
     id: 923,
     countyId: 43,
-    name: 'Beculesti',
+    name: 'Beculești',
   },
   {
     id: 924,
     countyId: 3,
-    name: 'Beculesti',
+    name: 'Beculești',
   },
   {
     id: 925,
@@ -4677,12 +4677,12 @@ export const CITIES = [
   {
     id: 936,
     countyId: 6,
-    name: 'Beius',
+    name: 'Beiuș',
   },
   {
     id: 937,
     countyId: 6,
-    name: 'Beiusele',
+    name: 'Beiușele',
   },
   {
     id: 938,
@@ -4692,12 +4692,12 @@ export const CITIES = [
   {
     id: 939,
     countyId: 33,
-    name: 'Bejan-Tarnavita',
+    name: 'Bejan-Târnăvița',
   },
   {
     id: 940,
     countyId: 53,
-    name: 'Bejenesti',
+    name: 'Bejenești',
   },
   {
     id: 941,
@@ -4717,7 +4717,7 @@ export const CITIES = [
   {
     id: 944,
     countyId: 35,
-    name: 'Belcesti',
+    name: 'Belcești',
   },
   {
     id: 945,
@@ -4727,7 +4727,7 @@ export const CITIES = [
   {
     id: 946,
     countyId: 53,
-    name: 'Belcesti',
+    name: 'Belcești',
   },
   {
     id: 947,
@@ -4777,12 +4777,12 @@ export const CITIES = [
   {
     id: 956,
     countyId: 3,
-    name: 'Beleti',
+    name: 'Beleți',
   },
   {
     id: 957,
     countyId: 3,
-    name: 'Beleti-Negresti',
+    name: 'Beleți-Negrești',
   },
   {
     id: 958,
@@ -4807,12 +4807,12 @@ export const CITIES = [
   {
     id: 962,
     countyId: 50,
-    name: 'Belint',
+    name: 'Belinț',
   },
   {
     id: 963,
     countyId: 21,
-    name: 'Belis',
+    name: 'Beliș',
   },
   {
     id: 964,
@@ -4822,17 +4822,17 @@ export const CITIES = [
   {
     id: 965,
     countyId: 20,
-    name: 'Belobresca',
+    name: 'Belobreșca',
   },
   {
     id: 966,
     countyId: 25,
-    name: 'Belot',
+    name: 'Beloț',
   },
   {
     id: 967,
     countyId: 2,
-    name: 'Belotint',
+    name: 'Belotinț',
   },
   {
     id: 968,
@@ -4862,42 +4862,42 @@ export const CITIES = [
   {
     id: 973,
     countyId: 5,
-    name: 'Benesti',
+    name: 'Benești',
   },
   {
     id: 974,
     countyId: 47,
-    name: 'Benesti',
+    name: 'Benești',
   },
   {
     id: 975,
     countyId: 53,
-    name: 'Benesti',
+    name: 'Benești',
   },
   {
     id: 976,
     countyId: 2,
-    name: 'Benesti',
+    name: 'Benești',
   },
   {
     id: 977,
     countyId: 25,
-    name: 'Benesti',
+    name: 'Benești',
   },
   {
     id: 978,
     countyId: 52,
-    name: 'Benesti',
+    name: 'Benești',
   },
   {
     id: 979,
     countyId: 30,
-    name: 'Bengesti',
+    name: 'Bengești',
   },
   {
     id: 980,
     countyId: 30,
-    name: 'Bengesti-Ciocadia',
+    name: 'Bengești-Ciocadia',
   },
   {
     id: 981,
@@ -4912,7 +4912,7 @@ export const CITIES = [
   {
     id: 983,
     countyId: 31,
-    name: 'Bentid',
+    name: 'Bențid',
   },
   {
     id: 984,
@@ -4922,22 +4922,22 @@ export const CITIES = [
   {
     id: 985,
     countyId: 52,
-    name: 'Berbesti',
+    name: 'Berbești',
   },
   {
     id: 986,
     countyId: 39,
-    name: 'Berbesti',
+    name: 'Berbești',
   },
   {
     id: 987,
     countyId: 52,
-    name: 'Berbesti (Lalosu)',
+    name: 'Berbești (Laloșu)',
   },
   {
     id: 988,
     countyId: 25,
-    name: 'Berbesu',
+    name: 'Berbeșu',
   },
   {
     id: 989,
@@ -4967,12 +4967,12 @@ export const CITIES = [
   {
     id: 994,
     countyId: 30,
-    name: 'Bercesti',
+    name: 'Bercești',
   },
   {
     id: 995,
     countyId: 18,
-    name: 'Bercesti',
+    name: 'Bercești',
   },
   {
     id: 996,
@@ -4987,12 +4987,12 @@ export const CITIES = [
   {
     id: 998,
     countyId: 21,
-    name: 'Berchiesu',
+    name: 'Berchieșu',
   },
   {
     id: 999,
     countyId: 48,
-    name: 'Berchisesti',
+    name: 'Berchișești',
   },
   {
     id: 1000,
@@ -5037,17 +5037,17 @@ export const CITIES = [
   {
     id: 1008,
     countyId: 50,
-    name: 'Berecuta',
+    name: 'Berecuța',
   },
   {
     id: 1009,
     countyId: 50,
-    name: 'Beregsau Mare',
+    name: 'Beregsău Mare',
   },
   {
     id: 1010,
     countyId: 50,
-    name: 'Beregsau Mic',
+    name: 'Beregsău Mic',
   },
   {
     id: 1011,
@@ -5057,47 +5057,47 @@ export const CITIES = [
   {
     id: 1012,
     countyId: 28,
-    name: 'Beresti',
+    name: 'Berești',
   },
   {
     id: 1013,
     countyId: 52,
-    name: 'Beresti',
+    name: 'Berești',
   },
   {
     id: 1014,
     countyId: 5,
-    name: 'Beresti',
+    name: 'Berești',
   },
   {
     id: 1015,
     countyId: 48,
-    name: 'Beresti',
+    name: 'Berești',
   },
   {
     id: 1016,
     countyId: 5,
-    name: 'Beresti-Bistrita',
+    name: 'Berești-Bistrița',
   },
   {
     id: 1017,
     countyId: 28,
-    name: 'Beresti-Meria',
+    name: 'Berești-Meria',
   },
   {
     id: 1018,
     countyId: 5,
-    name: 'Beresti-Tazlau',
+    name: 'Berești-Tazlău',
   },
   {
     id: 1019,
     countyId: 3,
-    name: 'Berevoesti',
+    name: 'Berevoești',
   },
   {
     id: 1020,
     countyId: 24,
-    name: 'Berevoesti',
+    name: 'Berevoești',
   },
   {
     id: 1021,
@@ -5142,7 +5142,7 @@ export const CITIES = [
   {
     id: 1029,
     countyId: 3,
-    name: 'Berindesti',
+    name: 'Berindești',
   },
   {
     id: 1030,
@@ -5162,12 +5162,12 @@ export const CITIES = [
   {
     id: 1033,
     countyId: 39,
-    name: 'Berinta',
+    name: 'Berința',
   },
   {
     id: 1034,
     countyId: 52,
-    name: 'Berislavesti',
+    name: 'Berislăvești',
   },
   {
     id: 1035,
@@ -5182,17 +5182,17 @@ export const CITIES = [
   {
     id: 1037,
     countyId: 9,
-    name: 'Berlesti',
+    name: 'Berlești',
   },
   {
     id: 1038,
     countyId: 30,
-    name: 'Berlesti',
+    name: 'Berlești',
   },
   {
     id: 1039,
     countyId: 20,
-    name: 'Berliste',
+    name: 'Berliște',
   },
   {
     id: 1040,
@@ -5207,12 +5207,12 @@ export const CITIES = [
   {
     id: 1042,
     countyId: 9,
-    name: 'Bertestii de Jos',
+    name: 'Berteștii de Jos',
   },
   {
     id: 1043,
     countyId: 9,
-    name: 'Bertestii de Sus',
+    name: 'Berteștii de Sus',
   },
   {
     id: 1044,
@@ -5237,17 +5237,17 @@ export const CITIES = [
   {
     id: 1048,
     countyId: 5,
-    name: 'Berzunti',
+    name: 'Berzunți',
   },
   {
     id: 1049,
     countyId: 18,
-    name: 'Beslii',
+    name: 'Beșlii',
   },
   {
     id: 1050,
     countyId: 51,
-    name: 'Bestepe',
+    name: 'Beștepe',
   },
   {
     id: 1051,
@@ -5257,17 +5257,17 @@ export const CITIES = [
   {
     id: 1052,
     countyId: 1,
-    name: 'Beta',
+    name: 'Beța',
   },
   {
     id: 1053,
     countyId: 31,
-    name: 'Betesti',
+    name: 'Betești',
   },
   {
     id: 1054,
     countyId: 42,
-    name: 'Betesti',
+    name: 'Bețești',
   },
   {
     id: 1055,
@@ -5327,22 +5327,22 @@ export const CITIES = [
   {
     id: 1066,
     countyId: 30,
-    name: 'Bibesti',
+    name: 'Bibești',
   },
   {
     id: 1067,
     countyId: 5,
-    name: 'Bibiresti',
+    name: 'Bibirești',
   },
   {
     id: 1068,
     countyId: 23,
-    name: 'Biborteni',
+    name: 'Biborțeni',
   },
   {
     id: 1069,
     countyId: 30,
-    name: 'Bibulesti',
+    name: 'Bibulești',
   },
   {
     id: 1070,
@@ -5357,7 +5357,7 @@ export const CITIES = [
   {
     id: 1072,
     countyId: 6,
-    name: 'Bicacel',
+    name: 'Bicăcel',
   },
   {
     id: 1073,
@@ -5367,17 +5367,17 @@ export const CITIES = [
   {
     id: 1074,
     countyId: 21,
-    name: 'Bicalatu',
+    name: 'Bicălatu',
   },
   {
     id: 1075,
     countyId: 41,
-    name: 'Bicasu',
+    name: 'Bicașu',
   },
   {
     id: 1076,
     countyId: 46,
-    name: 'Bicau',
+    name: 'Bicău',
   },
   {
     id: 1077,
@@ -5402,22 +5402,22 @@ export const CITIES = [
   {
     id: 1081,
     countyId: 54,
-    name: 'Bicestii de Jos',
+    name: 'Biceștii de Jos',
   },
   {
     id: 1082,
     countyId: 54,
-    name: 'Bicestii de Sus',
+    name: 'Biceștii de Sus',
   },
   {
     id: 1083,
     countyId: 23,
-    name: 'Bicfalau',
+    name: 'Bicfalău',
   },
   {
     id: 1084,
     countyId: 54,
-    name: 'Bichesti',
+    name: 'Bichești',
   },
   {
     id: 1085,
@@ -5432,12 +5432,12 @@ export const CITIES = [
   {
     id: 1087,
     countyId: 41,
-    name: 'Bichis',
+    name: 'Bichiș',
   },
   {
     id: 1088,
     countyId: 1,
-    name: 'Bidigesti',
+    name: 'Bidigești',
   },
   {
     id: 1089,
@@ -5452,7 +5452,7 @@ export const CITIES = [
   {
     id: 1091,
     countyId: 20,
-    name: 'Bigar',
+    name: 'Bigăr',
   },
   {
     id: 1092,
@@ -5487,7 +5487,7 @@ export const CITIES = [
   {
     id: 1098,
     countyId: 1,
-    name: 'Bilanesti',
+    name: 'Bilănești',
   },
   {
     id: 1099,
@@ -5502,12 +5502,12 @@ export const CITIES = [
   {
     id: 1101,
     countyId: 3,
-    name: 'Bilcesti',
+    name: 'Bilcești',
   },
   {
     id: 1102,
     countyId: 24,
-    name: 'Bilciuresti',
+    name: 'Bilciurești',
   },
   {
     id: 1103,
@@ -5522,17 +5522,17 @@ export const CITIES = [
   {
     id: 1105,
     countyId: 54,
-    name: 'Biliesti',
+    name: 'Biliești',
   },
   {
     id: 1106,
     countyId: 20,
-    name: 'Binis',
+    name: 'Biniș',
   },
   {
     id: 1107,
     countyId: 2,
-    name: 'Birchis',
+    name: 'Birchiș',
   },
   {
     id: 1108,
@@ -5562,7 +5562,7 @@ export const CITIES = [
   {
     id: 1113,
     countyId: 22,
-    name: 'Biruinta',
+    name: 'Biruința',
   },
   {
     id: 1114,
@@ -5602,22 +5602,22 @@ export const CITIES = [
   {
     id: 1121,
     countyId: 41,
-    name: 'Bistra Muresului',
+    name: 'Bistra Mureșului',
   },
   {
     id: 1122,
     countyId: 25,
-    name: 'Bistret',
+    name: 'Bistreț',
   },
   {
     id: 1123,
     countyId: 40,
-    name: 'Bistretu',
+    name: 'Bistrețu',
   },
   {
     id: 1124,
     countyId: 25,
-    name: 'Bistretu Nou',
+    name: 'Bistrețu Nou',
   },
   {
     id: 1125,
@@ -5627,27 +5627,27 @@ export const CITIES = [
   {
     id: 1126,
     countyId: 40,
-    name: 'Bistrita',
+    name: 'Bistrița',
   },
   {
     id: 1127,
     countyId: 52,
-    name: 'Bistrita',
+    name: 'Bistrița',
   },
   {
     id: 1128,
     countyId: 7,
-    name: 'Bistrita',
+    name: 'Bistrița',
   },
   {
     id: 1129,
     countyId: 42,
-    name: 'Bistrita',
+    name: 'Bistrița',
   },
   {
     id: 1130,
     countyId: 7,
-    name: 'Bistrita Bargaului',
+    name: 'Bistrița Bârgăului',
   },
   {
     id: 1131,
@@ -5657,7 +5657,7 @@ export const CITIES = [
   {
     id: 1132,
     countyId: 43,
-    name: 'Bistrita Noua',
+    name: 'Bistrița Nouă',
   },
   {
     id: 1133,
@@ -5667,17 +5667,17 @@ export const CITIES = [
   {
     id: 1134,
     countyId: 34,
-    name: 'Bitina-Pamanteni',
+    name: 'Bițina-Pământeni',
   },
   {
     id: 1135,
     countyId: 34,
-    name: 'Bitina-Ungureni',
+    name: 'Bițina-Ungureni',
   },
   {
     id: 1136,
     countyId: 45,
-    name: 'Biusa',
+    name: 'Biușa',
   },
   {
     id: 1137,
@@ -5692,7 +5692,7 @@ export const CITIES = [
   {
     id: 1139,
     countyId: 48,
-    name: 'Bivolaria',
+    name: 'Bivolăria',
   },
   {
     id: 1140,
@@ -5707,12 +5707,12 @@ export const CITIES = [
   {
     id: 1142,
     countyId: 54,
-    name: 'Bizighesti',
+    name: 'Bizighești',
   },
   {
     id: 1143,
     countyId: 45,
-    name: 'Bizusa-Bai',
+    name: 'Bizușa-Băi',
   },
   {
     id: 1144,
@@ -5727,27 +5727,27 @@ export const CITIES = [
   {
     id: 1146,
     countyId: 35,
-    name: 'Blagesti',
+    name: 'Blăgești',
   },
   {
     id: 1147,
     countyId: 5,
-    name: 'Blagesti',
+    name: 'Blăgești',
   },
   {
     id: 1148,
     countyId: 53,
-    name: 'Blagesti',
+    name: 'Blăgești',
   },
   {
     id: 1149,
     countyId: 30,
-    name: 'Blahnita de Jos',
+    name: 'Blahnița de Jos',
   },
   {
     id: 1150,
     countyId: 30,
-    name: 'Blahnita de Sus',
+    name: 'Blahnița de Sus',
   },
   {
     id: 1151,
@@ -5767,32 +5767,32 @@ export const CITIES = [
   {
     id: 1154,
     countyId: 18,
-    name: 'Blajani',
+    name: 'Blăjani',
   },
   {
     id: 1155,
     countyId: 47,
-    name: 'Blajel',
+    name: 'Blăjel',
   },
   {
     id: 1156,
     countyId: 33,
-    name: 'Blajeni',
+    name: 'Blăjeni',
   },
   {
     id: 1157,
     countyId: 33,
-    name: 'Blajeni-Vulcan',
+    name: 'Blăjeni-Vulcan',
   },
   {
     id: 1158,
     countyId: 7,
-    name: 'Blajenii de Jos',
+    name: 'Blăjenii de Jos',
   },
   {
     id: 1159,
     countyId: 7,
-    name: 'Blajenii de Sus',
+    name: 'Blăjenii de Sus',
   },
   {
     id: 1160,
@@ -5807,7 +5807,7 @@ export const CITIES = [
   {
     id: 1162,
     countyId: 8,
-    name: 'Blandesti',
+    name: 'Blândești',
   },
   {
     id: 1163,
@@ -5817,12 +5817,12 @@ export const CITIES = [
   {
     id: 1164,
     countyId: 52,
-    name: 'Blanoiu',
+    name: 'Blănoiu',
   },
   {
     id: 1165,
     countyId: 28,
-    name: 'Blanzi',
+    name: 'Blânzi',
   },
   {
     id: 1166,
@@ -5842,7 +5842,7 @@ export const CITIES = [
   {
     id: 1169,
     countyId: 49,
-    name: 'Blejesti',
+    name: 'Blejești',
   },
   {
     id: 1170,
@@ -5852,12 +5852,12 @@ export const CITIES = [
   {
     id: 1171,
     countyId: 53,
-    name: 'Blesca',
+    name: 'Bleșca',
   },
   {
     id: 1172,
     countyId: 21,
-    name: 'Blidaresti',
+    name: 'Blidărești',
   },
   {
     id: 1173,
@@ -5887,12 +5887,12 @@ export const CITIES = [
   {
     id: 1178,
     countyId: 54,
-    name: 'Blidari (Carligele)',
+    name: 'Blidari (Cârligele)',
   },
   {
     id: 1179,
     countyId: 54,
-    name: 'Blidari (Dumitresti)',
+    name: 'Blidari (Dumitrești)',
   },
   {
     id: 1180,
@@ -5902,7 +5902,7 @@ export const CITIES = [
   {
     id: 1181,
     countyId: 1,
-    name: 'Blidesti',
+    name: 'Blidești',
   },
   {
     id: 1182,
@@ -5912,7 +5912,7 @@ export const CITIES = [
   {
     id: 1183,
     countyId: 5,
-    name: 'Boanta',
+    name: 'Boanța',
   },
   {
     id: 1184,
@@ -5942,27 +5942,27 @@ export const CITIES = [
   {
     id: 1189,
     countyId: 40,
-    name: 'Bobaita',
+    name: 'Bobaița',
   },
   {
     id: 1190,
     countyId: 33,
-    name: 'Bobalna',
+    name: 'Bobâlna',
   },
   {
     id: 1191,
     countyId: 21,
-    name: 'Bobalna',
+    name: 'Bobâlna',
   },
   {
     id: 1192,
     countyId: 1,
-    name: 'Bobaresti (Sohodol)',
+    name: 'Bobărești (Sohodol)',
   },
   {
     id: 1193,
     countyId: 1,
-    name: 'Bobaresti (Vidra)',
+    name: 'Bobărești (Vidra)',
   },
   {
     id: 1194,
@@ -5982,17 +5982,17 @@ export const CITIES = [
   {
     id: 1197,
     countyId: 53,
-    name: 'Bobesti',
+    name: 'Bobești',
   },
   {
     id: 1198,
     countyId: 44,
-    name: 'Bobicesti',
+    name: 'Bobicești',
   },
   {
     id: 1199,
     countyId: 43,
-    name: 'Bobicesti',
+    name: 'Bobicești',
   },
   {
     id: 1200,
@@ -6017,12 +6017,12 @@ export const CITIES = [
   {
     id: 1204,
     countyId: 42,
-    name: 'Boboiesti',
+    name: 'Boboiești',
   },
   {
     id: 1205,
     countyId: 30,
-    name: 'Boboiesti',
+    name: 'Boboiești',
   },
   {
     id: 1206,
@@ -6032,7 +6032,7 @@ export const CITIES = [
   {
     id: 1207,
     countyId: 5,
-    name: 'Bobos',
+    name: 'Boboș',
   },
   {
     id: 1208,
@@ -6052,7 +6052,7 @@ export const CITIES = [
   {
     id: 1211,
     countyId: 8,
-    name: 'Bobulesti',
+    name: 'Bobulești',
   },
   {
     id: 1212,
@@ -6067,7 +6067,7 @@ export const CITIES = [
   {
     id: 1214,
     countyId: 1,
-    name: 'Bocesti',
+    name: 'Bocești',
   },
   {
     id: 1215,
@@ -6077,7 +6077,7 @@ export const CITIES = [
   {
     id: 1216,
     countyId: 46,
-    name: 'Bocicau',
+    name: 'Bocicău',
   },
   {
     id: 1217,
@@ -6097,32 +6097,32 @@ export const CITIES = [
   {
     id: 1220,
     countyId: 35,
-    name: 'Bocnita',
+    name: 'Bocnița',
   },
   {
     id: 1221,
     countyId: 20,
-    name: 'Bocsa',
+    name: 'Bocșa',
   },
   {
     id: 1222,
     countyId: 52,
-    name: 'Bocsa',
+    name: 'Bocșa',
   },
   {
     id: 1223,
     countyId: 45,
-    name: 'Bocsa',
+    name: 'Bocșa',
   },
   {
     id: 1224,
     countyId: 33,
-    name: 'Bocsa Mare',
+    name: 'Bocșa Mare',
   },
   {
     id: 1225,
     countyId: 33,
-    name: 'Bocsa Mica',
+    name: 'Bocșa Mică',
   },
   {
     id: 1226,
@@ -6132,12 +6132,12 @@ export const CITIES = [
   {
     id: 1227,
     countyId: 45,
-    name: 'Bocsita',
+    name: 'Bocșița',
   },
   {
     id: 1228,
     countyId: 1,
-    name: 'Bocsitura',
+    name: 'Bocșitura',
   },
   {
     id: 1229,
@@ -6147,12 +6147,12 @@ export const CITIES = [
   {
     id: 1230,
     countyId: 25,
-    name: 'Bodaiesti',
+    name: 'Bodăiești',
   },
   {
     id: 1231,
     countyId: 25,
-    name: 'Bodaiestii de Sus',
+    name: 'Bodăieștii de Sus',
   },
   {
     id: 1232,
@@ -6167,47 +6167,47 @@ export const CITIES = [
   {
     id: 1234,
     countyId: 2,
-    name: 'Bodesti',
+    name: 'Bodești',
   },
   {
     id: 1235,
     countyId: 42,
-    name: 'Bodesti',
+    name: 'Bodești',
   },
   {
     id: 1236,
     countyId: 54,
-    name: 'Bodesti',
+    name: 'Bodești',
   },
   {
     id: 1237,
     countyId: 35,
-    name: 'Bodesti',
+    name: 'Bodești',
   },
   {
     id: 1238,
     countyId: 44,
-    name: 'Bodesti',
+    name: 'Bodești',
   },
   {
     id: 1239,
     countyId: 1,
-    name: 'Bodesti',
+    name: 'Bodești',
   },
   {
     id: 1240,
     countyId: 52,
-    name: 'Bodesti (Alunu)',
+    name: 'Bodești (Alunu)',
   },
   {
     id: 1241,
     countyId: 52,
-    name: 'Bodesti (Barbatesti)',
+    name: 'Bodești (Bărbătești)',
   },
   {
     id: 1242,
     countyId: 42,
-    name: 'Bodestii de Jos',
+    name: 'Bodeștii de Jos',
   },
   {
     id: 1243,
@@ -6217,12 +6217,12 @@ export const CITIES = [
   {
     id: 1244,
     countyId: 18,
-    name: 'Bodinesti',
+    name: 'Bodinești',
   },
   {
     id: 1245,
     countyId: 48,
-    name: 'Bodnareni',
+    name: 'Bodnăreni',
   },
   {
     id: 1246,
@@ -6242,12 +6242,12 @@ export const CITIES = [
   {
     id: 1249,
     countyId: 23,
-    name: 'Bodos',
+    name: 'Bodoș',
   },
   {
     id: 1250,
     countyId: 1,
-    name: 'Bodresti',
+    name: 'Bodrești',
   },
   {
     id: 1251,
@@ -6267,7 +6267,7 @@ export const CITIES = [
   {
     id: 1254,
     countyId: 20,
-    name: 'Bogaltin',
+    name: 'Bogâltin',
   },
   {
     id: 1255,
@@ -6307,17 +6307,17 @@ export const CITIES = [
   {
     id: 1262,
     countyId: 10,
-    name: 'Bogata Olteana',
+    name: 'Bogata Olteană',
   },
   {
     id: 1263,
     countyId: 3,
-    name: 'Bogati',
+    name: 'Bogați',
   },
   {
     id: 1264,
     countyId: 47,
-    name: 'Bogatu Roman',
+    name: 'Bogatu Român',
   },
   {
     id: 1265,
@@ -6327,12 +6327,12 @@ export const CITIES = [
   {
     id: 1266,
     countyId: 39,
-    name: 'Bogdan Voda',
+    name: 'Bogdan Vodă',
   },
   {
     id: 1267,
     countyId: 5,
-    name: 'Bogdan Voda',
+    name: 'Bogdan Vodă',
   },
   {
     id: 1268,
@@ -6372,77 +6372,77 @@ export const CITIES = [
   {
     id: 1275,
     countyId: 5,
-    name: 'Bogdanesti',
+    name: 'Bogdănești',
   },
   {
     id: 1276,
     countyId: 35,
-    name: 'Bogdanesti',
+    name: 'Bogdănești',
   },
   {
     id: 1277,
     countyId: 48,
-    name: 'Bogdanesti',
+    name: 'Bogdănești',
   },
   {
     id: 1278,
     countyId: 8,
-    name: 'Bogdanesti',
+    name: 'Bogdănești',
   },
   {
     id: 1279,
     countyId: 44,
-    name: 'Bogdanesti',
+    name: 'Bogdănești',
   },
   {
     id: 1280,
     countyId: 53,
-    name: 'Bogdanesti',
+    name: 'Bogdănești',
   },
   {
     id: 1281,
     countyId: 52,
-    name: 'Bogdanesti (Bujoreni)',
+    name: 'Bogdănești (Bujoreni)',
   },
   {
     id: 1282,
     countyId: 53,
-    name: 'Bogdanesti (Falciu)',
+    name: 'Bogdănești (Fălciu)',
   },
   {
     id: 1283,
     countyId: 1,
-    name: 'Bogdanesti (Mogos)',
+    name: 'Bogdănești (Mogoș)',
   },
   {
     id: 1284,
     countyId: 52,
-    name: 'Bogdanesti (Otesani)',
+    name: 'Bogdănești (Oteșani)',
   },
   {
     id: 1285,
     countyId: 5,
-    name: 'Bogdanesti (Scorteni)',
+    name: 'Bogdănești (Scorțeni)',
   },
   {
     id: 1286,
     countyId: 52,
-    name: 'Bogdanesti (Tomsani)',
+    name: 'Bogdănești (Tomșani)',
   },
   {
     id: 1287,
     countyId: 5,
-    name: 'Bogdanesti (Traian)',
+    name: 'Bogdănești (Traian)',
   },
   {
     id: 1288,
     countyId: 1,
-    name: 'Bogdanesti (Vidra)',
+    name: 'Bogdănești (Vidra)',
   },
   {
     id: 1289,
     countyId: 53,
-    name: 'Bogdanita',
+    name: 'Bogdănița',
   },
   {
     id: 1290,
@@ -6457,17 +6457,17 @@ export const CITIES = [
   {
     id: 1292,
     countyId: 53,
-    name: 'Bogesti',
+    name: 'Bogești',
   },
   {
     id: 1293,
     countyId: 54,
-    name: 'Boghesti',
+    name: 'Boghești',
   },
   {
     id: 1294,
     countyId: 54,
-    name: 'Boghestii de Sus',
+    name: 'Bogheștii de Sus',
   },
   {
     id: 1295,
@@ -6477,22 +6477,22 @@ export const CITIES = [
   {
     id: 1296,
     countyId: 46,
-    name: 'Boghis',
+    name: 'Boghiș',
   },
   {
     id: 1297,
     countyId: 45,
-    name: 'Boghis',
+    name: 'Boghiș',
   },
   {
     id: 1298,
     countyId: 1,
-    name: 'Boglesti',
+    name: 'Boglești',
   },
   {
     id: 1299,
     countyId: 20,
-    name: 'Bogodint',
+    name: 'Bogodinț',
   },
   {
     id: 1300,
@@ -6507,7 +6507,7 @@ export const CITIES = [
   {
     id: 1302,
     countyId: 42,
-    name: 'Bogzesti',
+    name: 'Bogzești',
   },
   {
     id: 1303,
@@ -6517,7 +6517,7 @@ export const CITIES = [
   {
     id: 1304,
     countyId: 10,
-    name: 'Boholt',
+    name: 'Boholț',
   },
   {
     id: 1305,
@@ -6542,7 +6542,7 @@ export const CITIES = [
   {
     id: 1309,
     countyId: 33,
-    name: 'Boia Barzii',
+    name: 'Boia Bârzii',
   },
   {
     id: 1310,
@@ -6572,42 +6572,42 @@ export const CITIES = [
   {
     id: 1315,
     countyId: 46,
-    name: 'Boinesti',
+    name: 'Boinești',
   },
   {
     id: 1316,
     countyId: 20,
-    name: 'Boinita',
+    name: 'Boinița',
   },
   {
     id: 1317,
     countyId: 52,
-    name: 'Boisoara',
+    name: 'Boișoara',
   },
   {
     id: 1318,
     countyId: 42,
-    name: 'Boistea',
+    name: 'Boiștea',
   },
   {
     id: 1319,
     countyId: 5,
-    name: 'Boistea',
+    name: 'Boiștea',
   },
   {
     id: 1320,
     countyId: 5,
-    name: 'Boistea de Jos',
+    name: 'Boiștea de Jos',
   },
   {
     id: 1321,
     countyId: 33,
-    name: 'Boita',
+    name: 'Boița',
   },
   {
     id: 1322,
     countyId: 47,
-    name: 'Boita',
+    name: 'Boița',
   },
   {
     id: 1323,
@@ -6642,7 +6642,7 @@ export const CITIES = [
   {
     id: 1329,
     countyId: 21,
-    name: 'Boj-Catun',
+    name: 'Boj-Cătun',
   },
   {
     id: 1330,
@@ -6672,12 +6672,12 @@ export const CITIES = [
   {
     id: 1335,
     countyId: 5,
-    name: 'Bolatau',
+    name: 'Bolătău',
   },
   {
     id: 1336,
     countyId: 53,
-    name: 'Bolati',
+    name: 'Bolați',
   },
   {
     id: 1337,
@@ -6687,17 +6687,17 @@ export const CITIES = [
   {
     id: 1338,
     countyId: 30,
-    name: 'Bolbocesti',
+    name: 'Bolbocești',
   },
   {
     id: 1339,
     countyId: 30,
-    name: 'Bolbosi',
+    name: 'Bolboși',
   },
   {
     id: 1340,
     countyId: 3,
-    name: 'Bolculesti',
+    name: 'Bolculești',
   },
   {
     id: 1341,
@@ -6712,27 +6712,27 @@ export const CITIES = [
   {
     id: 1343,
     countyId: 1,
-    name: 'Boldesti',
+    name: 'Boldești',
   },
   {
     id: 1344,
     countyId: 44,
-    name: 'Boldesti',
+    name: 'Boldești',
   },
   {
     id: 1345,
     countyId: 35,
-    name: 'Boldesti',
+    name: 'Boldești',
   },
   {
     id: 1346,
     countyId: 44,
-    name: 'Boldesti-Gradistea',
+    name: 'Boldești-Gradiștea',
   },
   {
     id: 1347,
     countyId: 44,
-    name: 'Boldesti-Scaeni',
+    name: 'Boldești-Scăeni',
   },
   {
     id: 1348,
@@ -6747,7 +6747,7 @@ export const CITIES = [
   {
     id: 1350,
     countyId: 21,
-    name: 'Boldut',
+    name: 'Bolduț',
   },
   {
     id: 1351,
@@ -6777,17 +6777,17 @@ export const CITIES = [
   {
     id: 1356,
     countyId: 54,
-    name: 'Bolotesti',
+    name: 'Bolotești',
   },
   {
     id: 1357,
     countyId: 1,
-    name: 'Bolovanesti',
+    name: 'Bolovănești',
   },
   {
     id: 1358,
     countyId: 3,
-    name: 'Bolovanesti',
+    name: 'Bolovănești',
   },
   {
     id: 1359,
@@ -6797,17 +6797,17 @@ export const CITIES = [
   {
     id: 1360,
     countyId: 5,
-    name: 'Bolovanis',
+    name: 'Bolovăniș',
   },
   {
     id: 1361,
     countyId: 20,
-    name: 'Bolvasnita',
+    name: 'Bolvașnița',
   },
   {
     id: 1362,
     countyId: 1,
-    name: 'Boncesti',
+    name: 'Boncești',
   },
   {
     id: 1363,
@@ -6827,27 +6827,27 @@ export const CITIES = [
   {
     id: 1366,
     countyId: 21,
-    name: 'Bont',
+    name: 'Bonț',
   },
   {
     id: 1367,
     countyId: 39,
-    name: 'Bontaieni',
+    name: 'Bontăieni',
   },
   {
     id: 1368,
     countyId: 54,
-    name: 'Bontesti',
+    name: 'Bonțești',
   },
   {
     id: 1369,
     countyId: 2,
-    name: 'Bontesti',
+    name: 'Bonțești',
   },
   {
     id: 1370,
     countyId: 21,
-    name: 'Bontida',
+    name: 'Bonțida',
   },
   {
     id: 1371,
@@ -6862,12 +6862,12 @@ export const CITIES = [
   {
     id: 1373,
     countyId: 34,
-    name: 'Boranesti',
+    name: 'Borănești',
   },
   {
     id: 1374,
     countyId: 30,
-    name: 'Borascu',
+    name: 'Borăscu',
   },
   {
     id: 1375,
@@ -6897,7 +6897,7 @@ export const CITIES = [
   {
     id: 1380,
     countyId: 54,
-    name: 'Bordeasca Noua',
+    name: 'Bordeasca Nouă',
   },
   {
     id: 1381,
@@ -6927,37 +6927,37 @@ export const CITIES = [
   {
     id: 1386,
     countyId: 54,
-    name: 'Bordesti',
+    name: 'Bordești',
   },
   {
     id: 1387,
     countyId: 54,
-    name: 'Bordestii de Jos',
+    name: 'Bordeștii de Jos',
   },
   {
     id: 1388,
     countyId: 1,
-    name: 'Bordestii Poieni',
+    name: 'Bordeștii Poieni',
   },
   {
     id: 1389,
     countyId: 41,
-    name: 'Bordosiu',
+    name: 'Bordoșiu',
   },
   {
     id: 1390,
     countyId: 34,
-    name: 'Bordusani',
+    name: 'Bordușani',
   },
   {
     id: 1391,
     countyId: 18,
-    name: 'Bordusani',
+    name: 'Bordușani',
   },
   {
     id: 1392,
     countyId: 34,
-    name: 'Borduselu',
+    name: 'Bordușelu',
   },
   {
     id: 1393,
@@ -6972,22 +6972,22 @@ export const CITIES = [
   {
     id: 1395,
     countyId: 1,
-    name: 'Borlesti',
+    name: 'Borlești',
   },
   {
     id: 1396,
     countyId: 42,
-    name: 'Borlesti',
+    name: 'Borlești',
   },
   {
     id: 1397,
     countyId: 3,
-    name: 'Borlesti',
+    name: 'Borlești',
   },
   {
     id: 1398,
     countyId: 46,
-    name: 'Borlesti',
+    name: 'Borlești',
   },
   {
     id: 1399,
@@ -7007,7 +7007,7 @@ export const CITIES = [
   {
     id: 1402,
     countyId: 42,
-    name: 'Bornis',
+    name: 'Borniș',
   },
   {
     id: 1403,
@@ -7017,7 +7017,7 @@ export const CITIES = [
   {
     id: 1404,
     countyId: 3,
-    name: 'Borobanesti',
+    name: 'Borobănești',
   },
   {
     id: 1405,
@@ -7027,12 +7027,12 @@ export const CITIES = [
   {
     id: 1406,
     countyId: 53,
-    name: 'Borodesti',
+    name: 'Borodești',
   },
   {
     id: 1407,
     countyId: 43,
-    name: 'Boroesti',
+    name: 'Boroești',
   },
   {
     id: 1408,
@@ -7047,22 +7047,22 @@ export const CITIES = [
   {
     id: 1410,
     countyId: 52,
-    name: 'Borosesti',
+    name: 'Boroșești',
   },
   {
     id: 1411,
     countyId: 35,
-    name: 'Borosesti',
+    name: 'Boroșești',
   },
   {
     id: 1412,
     countyId: 23,
-    name: 'Borosneu Mare',
+    name: 'Boroșneu Mare',
   },
   {
     id: 1413,
     countyId: 23,
-    name: 'Borosneu Mic',
+    name: 'Boroșneu Mic',
   },
   {
     id: 1414,
@@ -7072,12 +7072,12 @@ export const CITIES = [
   {
     id: 1415,
     countyId: 30,
-    name: 'Borosteni',
+    name: 'Boroșteni',
   },
   {
     id: 1416,
     countyId: 3,
-    name: 'Borovinesti',
+    name: 'Borovinești',
   },
   {
     id: 1417,
@@ -7087,42 +7087,42 @@ export const CITIES = [
   {
     id: 1418,
     countyId: 6,
-    name: 'Bors',
+    name: 'Borș',
   },
   {
     id: 1419,
     countyId: 6,
-    name: 'Borsa',
+    name: 'Borșa',
   },
   {
     id: 1420,
     countyId: 35,
-    name: 'Borsa',
+    name: 'Borșa',
   },
   {
     id: 1421,
     countyId: 21,
-    name: 'Borsa',
+    name: 'Borșa',
   },
   {
     id: 1422,
     countyId: 39,
-    name: 'Borsa',
+    name: 'Borșa',
   },
   {
     id: 1423,
     countyId: 21,
-    name: 'Borsa-Catun',
+    name: 'Borșa-Cătun',
   },
   {
     id: 1424,
     countyId: 21,
-    name: 'Borsa-Crestaia',
+    name: 'Borșa-Crestaia',
   },
   {
     id: 1425,
     countyId: 5,
-    name: 'Borsani',
+    name: 'Borșani',
   },
   {
     id: 1426,
@@ -7132,7 +7132,7 @@ export const CITIES = [
   {
     id: 1427,
     countyId: 42,
-    name: 'Borseni',
+    name: 'Borșeni',
   },
   {
     id: 1428,
@@ -7157,17 +7157,17 @@ export const CITIES = [
   {
     id: 1432,
     countyId: 8,
-    name: 'Borzesti',
+    name: 'Borzești',
   },
   {
     id: 1433,
     countyId: 5,
-    name: 'Borzesti',
+    name: 'Borzești',
   },
   {
     id: 1434,
     countyId: 21,
-    name: 'Borzesti',
+    name: 'Borzești',
   },
   {
     id: 1435,
@@ -7182,7 +7182,7 @@ export const CITIES = [
   {
     id: 1437,
     countyId: 33,
-    name: 'Bos',
+    name: 'Boș',
   },
   {
     id: 1438,
@@ -7207,32 +7207,32 @@ export const CITIES = [
   {
     id: 1442,
     countyId: 44,
-    name: 'Bosilcesti',
+    name: 'Boșilcești',
   },
   {
     id: 1443,
     countyId: 19,
-    name: 'Bosneagu',
+    name: 'Boșneagu',
   },
   {
     id: 1444,
     countyId: 33,
-    name: 'Bosorod',
+    name: 'Boșorod',
   },
   {
     id: 1445,
     countyId: 5,
-    name: 'Bosoteni',
+    name: 'Boșoteni',
   },
   {
     id: 1446,
     countyId: 5,
-    name: 'Bostanesti',
+    name: 'Bostănești',
   },
   {
     id: 1447,
     countyId: 35,
-    name: 'Bosteni',
+    name: 'Boșteni',
   },
   {
     id: 1448,
@@ -7242,17 +7242,17 @@ export const CITIES = [
   {
     id: 1449,
     countyId: 1,
-    name: 'Botani',
+    name: 'Boțani',
   },
   {
     id: 1450,
     countyId: 3,
-    name: 'Botarcani',
+    name: 'Boțârcani',
   },
   {
     id: 1451,
     countyId: 54,
-    name: 'Botarlau',
+    name: 'Boțârlău',
   },
   {
     id: 1452,
@@ -7292,7 +7292,7 @@ export const CITIES = [
   {
     id: 1459,
     countyId: 50,
-    name: 'Botesti',
+    name: 'Botești',
   },
   {
     id: 1460,
@@ -7302,37 +7302,37 @@ export const CITIES = [
   {
     id: 1461,
     countyId: 5,
-    name: 'Botesti',
+    name: 'Botești',
   },
   {
     id: 1462,
     countyId: 48,
-    name: 'Botesti',
+    name: 'Botești',
   },
   {
     id: 1463,
     countyId: 3,
-    name: 'Botesti',
+    name: 'Boțești',
   },
   {
     id: 1464,
     countyId: 53,
-    name: 'Botesti',
+    name: 'Boțești',
   },
   {
     id: 1465,
     countyId: 1,
-    name: 'Botesti (Campeni)',
+    name: 'Botești (Câmpeni)',
   },
   {
     id: 1466,
     countyId: 1,
-    name: 'Botesti (Scarisoara)',
+    name: 'Botești (Scărișoara)',
   },
   {
     id: 1467,
     countyId: 1,
-    name: 'Botesti (Zlatna)',
+    name: 'Botești (Zlatna)',
   },
   {
     id: 1468,
@@ -7347,7 +7347,7 @@ export const CITIES = [
   {
     id: 1470,
     countyId: 50,
-    name: 'Botinesti',
+    name: 'Botinești',
   },
   {
     id: 1471,
@@ -7362,7 +7362,7 @@ export const CITIES = [
   {
     id: 1473,
     countyId: 53,
-    name: 'Botoaia',
+    name: 'Boțoaia',
   },
   {
     id: 1474,
@@ -7392,42 +7392,42 @@ export const CITIES = [
   {
     id: 1479,
     countyId: 48,
-    name: 'Botos',
+    name: 'Botoș',
   },
   {
     id: 1480,
     countyId: 48,
-    name: 'Botosana',
+    name: 'Botoșana',
   },
   {
     id: 1481,
     countyId: 8,
-    name: 'Botosani',
+    name: 'Botoșani',
   },
   {
     id: 1482,
     countyId: 48,
-    name: 'Botosanita Mare',
+    name: 'Botoșanița Mare',
   },
   {
     id: 1483,
     countyId: 48,
-    name: 'Botosanita Mica',
+    name: 'Botoșanița Mică',
   },
   {
     id: 1484,
     countyId: 25,
-    name: 'Botosesti-Paia',
+    name: 'Botoșești-Paia',
   },
   {
     id: 1485,
     countyId: 48,
-    name: 'Botus',
+    name: 'Botuș',
   },
   {
     id: 1486,
     countyId: 48,
-    name: 'Botusel',
+    name: 'Botușel',
   },
   {
     id: 1487,
@@ -7442,7 +7442,7 @@ export const CITIES = [
   {
     id: 1489,
     countyId: 35,
-    name: 'Boureni (Motca)',
+    name: 'Boureni (Moțca)',
   },
   {
     id: 1490,
@@ -7452,7 +7452,7 @@ export const CITIES = [
   {
     id: 1491,
     countyId: 53,
-    name: 'Bousori',
+    name: 'Boușori',
   },
   {
     id: 1492,
@@ -7467,12 +7467,12 @@ export const CITIES = [
   {
     id: 1494,
     countyId: 39,
-    name: 'Bozanta Mare',
+    name: 'Bozânta Mare',
   },
   {
     id: 1495,
     countyId: 39,
-    name: 'Bozanta Mica',
+    name: 'Bozânta Mică',
   },
   {
     id: 1496,
@@ -7487,7 +7487,7 @@ export const CITIES = [
   {
     id: 1498,
     countyId: 33,
-    name: 'Bozes',
+    name: 'Bozeș',
   },
   {
     id: 1499,
@@ -7517,12 +7517,12 @@ export const CITIES = [
   {
     id: 1504,
     countyId: 45,
-    name: 'Bozies',
+    name: 'Bozieș',
   },
   {
     id: 1505,
     countyId: 7,
-    name: 'Bozies',
+    name: 'Bozieș',
   },
   {
     id: 1506,
@@ -7542,12 +7542,12 @@ export const CITIES = [
   {
     id: 1509,
     countyId: 3,
-    name: 'Brabeti',
+    name: 'Brabeți',
   },
   {
     id: 1510,
     countyId: 25,
-    name: 'Brabeti',
+    name: 'Brabeți',
   },
   {
     id: 1511,
@@ -7562,7 +7562,7 @@ export const CITIES = [
   {
     id: 1513,
     countyId: 5,
-    name: 'Brad (Beresti-Bistrita)',
+    name: 'Brad (Berești-Bistrița)',
   },
   {
     id: 1514,
@@ -7577,137 +7577,137 @@ export const CITIES = [
   {
     id: 1516,
     countyId: 54,
-    name: 'Bradacesti',
+    name: 'Brădăcești',
   },
   {
     id: 1517,
     countyId: 24,
-    name: 'Bradatel',
+    name: 'Brădățel',
   },
   {
     id: 1518,
     countyId: 48,
-    name: 'Bradatel',
+    name: 'Brădățel',
   },
   {
     id: 1519,
     countyId: 33,
-    name: 'Bradatel',
+    name: 'Brădățel',
   },
   {
     id: 1520,
     countyId: 1,
-    name: 'Bradeana',
+    name: 'Brădeana',
   },
   {
     id: 1521,
     countyId: 9,
-    name: 'Bradeanca',
+    name: 'Brădeanca',
   },
   {
     id: 1522,
     countyId: 18,
-    name: 'Bradeanca',
+    name: 'Brădeanca',
   },
   {
     id: 1523,
     countyId: 18,
-    name: 'Bradeanu',
+    name: 'Brădeanu',
   },
   {
     id: 1524,
     countyId: 47,
-    name: 'Bradeni',
+    name: 'Brădeni',
   },
   {
     id: 1525,
     countyId: 1,
-    name: 'Bradesti',
+    name: 'Brădești',
   },
   {
     id: 1526,
     countyId: 31,
-    name: 'Bradesti',
+    name: 'Brădești',
   },
   {
     id: 1527,
     countyId: 25,
-    name: 'Bradesti',
+    name: 'Brădești',
   },
   {
     id: 1528,
     countyId: 53,
-    name: 'Bradesti',
+    name: 'Brădești',
   },
   {
     id: 1529,
     countyId: 25,
-    name: 'Bradestii Batrani',
+    name: 'Brădeștii Bătrâni',
   },
   {
     id: 1530,
     countyId: 6,
-    name: 'Bradet',
+    name: 'Brădet',
   },
   {
     id: 1531,
     countyId: 30,
-    name: 'Bradet',
+    name: 'Brădet',
   },
   {
     id: 1532,
     countyId: 1,
-    name: 'Bradet',
+    name: 'Brădet',
   },
   {
     id: 1533,
     countyId: 23,
-    name: 'Bradet',
+    name: 'Brădet',
   },
   {
     id: 1534,
     countyId: 44,
-    name: 'Bradet',
+    name: 'Brădet',
   },
   {
     id: 1535,
     countyId: 30,
-    name: 'Bradetel',
+    name: 'Brădețel',
   },
   {
     id: 1536,
     countyId: 41,
-    name: 'Bradetelu',
+    name: 'Brădețelu',
   },
   {
     id: 1537,
     countyId: 3,
-    name: 'Bradetu',
+    name: 'Brădetu',
   },
   {
     id: 1538,
     countyId: 54,
-    name: 'Bradetu',
+    name: 'Brădetu',
   },
   {
     id: 1539,
     countyId: 30,
-    name: 'Bradiceni',
+    name: 'Brădiceni',
   },
   {
     id: 1540,
     countyId: 35,
-    name: 'Bradicesti',
+    name: 'Brădicești',
   },
   {
     id: 1541,
     countyId: 52,
-    name: 'Bradisor',
+    name: 'Brădișor',
   },
   {
     id: 1542,
     countyId: 20,
-    name: 'Bradisoru de Jos',
+    name: 'Brădișoru de Jos',
   },
   {
     id: 1543,
@@ -7732,27 +7732,27 @@ export const CITIES = [
   {
     id: 1547,
     countyId: 3,
-    name: 'Bradulet',
+    name: 'Brăduleț',
   },
   {
     id: 1548,
     countyId: 23,
-    name: 'Bradut',
+    name: 'Brăduț',
   },
   {
     id: 1549,
     countyId: 8,
-    name: 'Braesti',
+    name: 'Brăești',
   },
   {
     id: 1550,
     countyId: 35,
-    name: 'Braesti',
+    name: 'Brăești',
   },
   {
     id: 1551,
     countyId: 18,
-    name: 'Braesti',
+    name: 'Brăești',
   },
   {
     id: 1552,
@@ -7767,52 +7767,52 @@ export const CITIES = [
   {
     id: 1554,
     countyId: 18,
-    name: 'Bragareasa',
+    name: 'Brăgăreasa',
   },
   {
     id: 1555,
     countyId: 40,
-    name: 'Bragleasa',
+    name: 'Brâgleasa',
   },
   {
     id: 1556,
     countyId: 45,
-    name: 'Braglez',
+    name: 'Brâglez',
   },
   {
     id: 1557,
     countyId: 28,
-    name: 'Brahasesti',
+    name: 'Brăhășești',
   },
   {
     id: 1558,
     countyId: 53,
-    name: 'Brahasoaia',
+    name: 'Brăhășoaia',
   },
   {
     id: 1559,
     countyId: 48,
-    name: 'Braiesti',
+    name: 'Brăiești',
   },
   {
     id: 1560,
     countyId: 9,
-    name: 'Braila',
+    name: 'Brăila',
   },
   {
     id: 1561,
     countyId: 3,
-    name: 'Braileni',
+    name: 'Brăileni',
   },
   {
     id: 1562,
     countyId: 21,
-    name: 'Braisoru',
+    name: 'Brăișoru',
   },
   {
     id: 1563,
     countyId: 25,
-    name: 'Bralostita',
+    name: 'Braloștița',
   },
   {
     id: 1564,
@@ -7827,172 +7827,172 @@ export const CITIES = [
   {
     id: 1566,
     countyId: 49,
-    name: 'Branceni',
+    name: 'Brânceni',
   },
   {
     id: 1567,
     countyId: 49,
-    name: 'Brancoveanca',
+    name: 'Brâncoveanca',
   },
   {
     id: 1568,
     countyId: 24,
-    name: 'Brancoveanu',
+    name: 'Brâncoveanu',
   },
   {
     id: 1569,
     countyId: 41,
-    name: 'Brancovenesti',
+    name: 'Brâncovenești',
   },
   {
     id: 1570,
     countyId: 43,
-    name: 'Brancoveni',
+    name: 'Brâncoveni',
   },
   {
     id: 1571,
     countyId: 25,
-    name: 'Brandusa',
+    name: 'Brândușa',
   },
   {
     id: 1572,
     countyId: 30,
-    name: 'Branesti',
+    name: 'Brănești',
   },
   {
     id: 1573,
     countyId: 36,
-    name: 'Branesti',
+    name: 'Brănești',
   },
   {
     id: 1574,
     countyId: 24,
-    name: 'Branesti',
+    name: 'Brănești',
   },
   {
     id: 1575,
     countyId: 28,
-    name: 'Branesti',
+    name: 'Brănești',
   },
   {
     id: 1576,
     countyId: 50,
-    name: 'Branesti',
+    name: 'Brănești',
   },
   {
     id: 1577,
     countyId: 43,
-    name: 'Branet',
+    name: 'Braneț',
   },
   {
     id: 1578,
     countyId: 33,
-    name: 'Branisca',
+    name: 'Brănișca',
   },
   {
     id: 1579,
     countyId: 29,
-    name: 'Branistari',
+    name: 'Brăniștari',
   },
   {
     id: 1580,
     countyId: 25,
-    name: 'Braniste (Daneti)',
+    name: 'Braniște (Daneți)',
   },
   {
     id: 1581,
     countyId: 25,
-    name: 'Braniste (Filiasi)',
+    name: 'Braniște (Filiași)',
   },
   {
     id: 1582,
     countyId: 25,
-    name: 'Braniste (Podari)',
+    name: 'Braniște (Podari)',
   },
   {
     id: 1583,
     countyId: 3,
-    name: 'Branistea',
+    name: 'Braniștea',
   },
   {
     id: 1584,
     countyId: 24,
-    name: 'Branistea',
+    name: 'Braniștea',
   },
   {
     id: 1585,
     countyId: 29,
-    name: 'Branistea',
+    name: 'Braniștea',
   },
   {
     id: 1586,
     countyId: 48,
-    name: 'Branistea',
+    name: 'Braniștea',
   },
   {
     id: 1587,
     countyId: 7,
-    name: 'Branistea',
+    name: 'Braniștea',
   },
   {
     id: 1588,
     countyId: 28,
-    name: 'Branistea',
+    name: 'Braniștea',
   },
   {
     id: 1589,
     countyId: 40,
-    name: 'Branistea',
+    name: 'Braniștea',
   },
   {
     id: 1590,
     countyId: 28,
-    name: 'Branistea (Nicoresti)',
+    name: 'Braniștea (Nicorești)',
   },
   {
     id: 1591,
     countyId: 3,
-    name: 'Branzari',
+    name: 'Brânzari',
   },
   {
     id: 1592,
     countyId: 40,
-    name: 'Branzeni',
+    name: 'Brânzeni',
   },
   {
     id: 1593,
     countyId: 42,
-    name: 'Brasauti',
+    name: 'Brășăuți',
   },
   {
     id: 1594,
     countyId: 48,
-    name: 'Brasca',
+    name: 'Brașca',
   },
   {
     id: 1595,
     countyId: 33,
-    name: 'Braseu',
+    name: 'Brășeu',
   },
   {
     id: 1596,
     countyId: 10,
-    name: 'Brasov',
+    name: 'Brașov',
   },
   {
     id: 1597,
     countyId: 43,
-    name: 'Brastavatu',
+    name: 'Brastavățu',
   },
   {
     id: 1598,
     countyId: 44,
-    name: 'Bratasanca',
+    name: 'Brătășanca',
   },
   {
     id: 1599,
     countyId: 49,
-    name: 'Bratasani',
+    name: 'Brătășani',
   },
   {
     id: 1600,
@@ -8007,7 +8007,7 @@ export const CITIES = [
   {
     id: 1602,
     countyId: 3,
-    name: 'Brateasca',
+    name: 'Brăteasca',
   },
   {
     id: 1603,
@@ -8017,82 +8017,82 @@ export const CITIES = [
   {
     id: 1604,
     countyId: 8,
-    name: 'Brateni',
+    name: 'Brăteni',
   },
   {
     id: 1605,
     countyId: 7,
-    name: 'Brateni',
+    name: 'Brăteni',
   },
   {
     id: 1606,
     countyId: 42,
-    name: 'Brates',
+    name: 'Brateș',
   },
   {
     id: 1607,
     countyId: 23,
-    name: 'Brates',
+    name: 'Brateș',
   },
   {
     id: 1608,
     countyId: 5,
-    name: 'Bratesti',
+    name: 'Brătești',
   },
   {
     id: 1609,
     countyId: 30,
-    name: 'Bratesti',
+    name: 'Brătești',
   },
   {
     id: 1610,
     countyId: 44,
-    name: 'Bratesti',
+    name: 'Brătești',
   },
   {
     id: 1611,
     countyId: 3,
-    name: 'Bratesti',
+    name: 'Brătești',
   },
   {
     id: 1612,
     countyId: 6,
-    name: 'Bratesti',
+    name: 'Brătești',
   },
   {
     id: 1613,
     countyId: 35,
-    name: 'Bratesti',
+    name: 'Brătești',
   },
   {
     id: 1614,
     countyId: 49,
-    name: 'Bratesti',
+    name: 'Brătești',
   },
   {
     id: 1615,
     countyId: 24,
-    name: 'Bratestii de Jos',
+    name: 'Brăteștii de Jos',
   },
   {
     id: 1616,
     countyId: 9,
-    name: 'Bratesu Vechi',
+    name: 'Brateșu Vechi',
   },
   {
     id: 1617,
     countyId: 40,
-    name: 'Bratesul',
+    name: 'Brateșul',
   },
   {
     id: 1618,
     countyId: 3,
-    name: 'Bratia (Berevoesti)',
+    name: 'Bratia (Berevoești)',
   },
   {
     id: 1619,
     countyId: 3,
-    name: 'Bratia (Ciomagesti)',
+    name: 'Bratia (Ciomăgești)',
   },
   {
     id: 1620,
@@ -8107,12 +8107,12 @@ export const CITIES = [
   {
     id: 1622,
     countyId: 5,
-    name: 'Bratila',
+    name: 'Brătila',
   },
   {
     id: 1623,
     countyId: 18,
-    name: 'Bratilesti',
+    name: 'Brătilești',
   },
   {
     id: 1624,
@@ -8122,7 +8122,7 @@ export const CITIES = [
   {
     id: 1625,
     countyId: 40,
-    name: 'Brativoesti',
+    name: 'Brativoești',
   },
   {
     id: 1626,
@@ -8132,37 +8132,37 @@ export const CITIES = [
   {
     id: 1627,
     countyId: 52,
-    name: 'Bratovesti',
+    name: 'Bratovești',
   },
   {
     id: 1628,
     countyId: 25,
-    name: 'Bratovoesti',
+    name: 'Bratovoești',
   },
   {
     id: 1629,
     countyId: 30,
-    name: 'Bratuia',
+    name: 'Brătuia',
   },
   {
     id: 1630,
     countyId: 35,
-    name: 'Bratuleni',
+    name: 'Brătuleni',
   },
   {
     id: 1631,
     countyId: 28,
-    name: 'Bratulesti',
+    name: 'Brătulești',
   },
   {
     id: 1632,
     countyId: 35,
-    name: 'Bratulesti',
+    name: 'Brătulești',
   },
   {
     id: 1633,
     countyId: 1,
-    name: 'Brazesti',
+    name: 'Brăzești',
   },
   {
     id: 1634,
@@ -8197,7 +8197,7 @@ export const CITIES = [
   {
     id: 1640,
     countyId: 33,
-    name: 'Braznic',
+    name: 'Brâznic',
   },
   {
     id: 1641,
@@ -8332,12 +8332,12 @@ export const CITIES = [
   {
     id: 1667,
     countyId: 44,
-    name: 'Brebu Manastirei',
+    name: 'Brebu Mânăstirei',
   },
   {
     id: 1668,
     countyId: 44,
-    name: 'Brebu Megiesesc',
+    name: 'Brebu Megieșesc',
   },
   {
     id: 1669,
@@ -8347,12 +8347,12 @@ export const CITIES = [
   {
     id: 1670,
     countyId: 8,
-    name: 'Brehuiesti',
+    name: 'Brehuiești',
   },
   {
     id: 1671,
     countyId: 50,
-    name: 'Brestea',
+    name: 'Breștea',
   },
   {
     id: 1672,
@@ -8362,17 +8362,17 @@ export const CITIES = [
   {
     id: 1673,
     countyId: 50,
-    name: 'Brestovat',
+    name: 'Brestovăț',
   },
   {
     id: 1674,
     countyId: 40,
-    name: 'Breta',
+    name: 'Breța',
   },
   {
     id: 1675,
     countyId: 23,
-    name: 'Bretcu',
+    name: 'Brețcu',
   },
   {
     id: 1676,
@@ -8382,12 +8382,12 @@ export const CITIES = [
   {
     id: 1677,
     countyId: 33,
-    name: 'Bretea Muresana',
+    name: 'Bretea Mureșană',
   },
   {
     id: 1678,
     countyId: 33,
-    name: 'Bretea Romana',
+    name: 'Bretea Română',
   },
   {
     id: 1679,
@@ -8407,12 +8407,12 @@ export const CITIES = [
   {
     id: 1682,
     countyId: 40,
-    name: 'Breznita-Motru',
+    name: 'Breznița-Motru',
   },
   {
     id: 1683,
     countyId: 40,
-    name: 'Breznita-Ocol',
+    name: 'Breznița-Ocol',
   },
   {
     id: 1684,
@@ -8442,7 +8442,7 @@ export const CITIES = [
   {
     id: 1689,
     countyId: 42,
-    name: 'Britcani',
+    name: 'Brițcani',
   },
   {
     id: 1690,
@@ -8467,117 +8467,117 @@ export const CITIES = [
   {
     id: 1694,
     countyId: 8,
-    name: 'Broscauti',
+    name: 'Broscăuți',
   },
   {
     id: 1695,
     countyId: 53,
-    name: 'Broscosesti',
+    name: 'Broscoșești',
   },
   {
     id: 1696,
     countyId: 49,
-    name: 'Brosteanca',
+    name: 'Broșteanca',
   },
   {
     id: 1697,
     countyId: 8,
-    name: 'Brosteni',
+    name: 'Broșteni',
   },
   {
     id: 1698,
     countyId: 30,
-    name: 'Brosteni',
+    name: 'Broșteni',
   },
   {
     id: 1699,
     countyId: 35,
-    name: 'Brosteni',
+    name: 'Broșteni',
   },
   {
     id: 1700,
     countyId: 42,
-    name: 'Brosteni',
+    name: 'Broșteni',
   },
   {
     id: 1701,
     countyId: 47,
-    name: 'Brosteni',
+    name: 'Broșteni',
   },
   {
     id: 1702,
     countyId: 52,
-    name: 'Brosteni',
+    name: 'Broșteni',
   },
   {
     id: 1703,
     countyId: 53,
-    name: 'Brosteni',
+    name: 'Broșteni',
   },
   {
     id: 1704,
     countyId: 20,
-    name: 'Brosteni',
+    name: 'Broșteni',
   },
   {
     id: 1705,
     countyId: 34,
-    name: 'Brosteni',
+    name: 'Broșteni',
   },
   {
     id: 1706,
     countyId: 40,
-    name: 'Brosteni',
+    name: 'Broșteni',
   },
   {
     id: 1707,
     countyId: 43,
-    name: 'Brosteni',
+    name: 'Broșteni',
   },
   {
     id: 1708,
     countyId: 48,
-    name: 'Brosteni',
+    name: 'Broșteni',
   },
   {
     id: 1709,
     countyId: 54,
-    name: 'Brosteni',
+    name: 'Broșteni',
   },
   {
     id: 1710,
     countyId: 3,
-    name: 'Brosteni (Aninoasa)',
+    name: 'Broșteni (Aninoasa)',
   },
   {
     id: 1711,
     countyId: 24,
-    name: 'Brosteni (Bezdead)',
+    name: 'Broșteni (Bezdead)',
   },
   {
     id: 1712,
     countyId: 3,
-    name: 'Brosteni (Costesti)',
+    name: 'Broșteni (Costești)',
   },
   {
     id: 1713,
     countyId: 48,
-    name: 'Brosteni (Draguseni)',
+    name: 'Broșteni (Drăgușeni)',
   },
   {
     id: 1714,
     countyId: 24,
-    name: 'Brosteni (Produlesti)',
+    name: 'Broșteni (Produlești)',
   },
   {
     id: 1715,
     countyId: 24,
-    name: 'Brosteni (Visina)',
+    name: 'Broșteni (Vișina)',
   },
   {
     id: 1716,
     countyId: 30,
-    name: 'Brostenii de Sus',
+    name: 'Broștenii de Sus',
   },
   {
     id: 1717,
@@ -8612,7 +8612,7 @@ export const CITIES = [
   {
     id: 1723,
     countyId: 6,
-    name: 'Brusturi (Finis)',
+    name: 'Brusturi (Finiș)',
   },
   {
     id: 1724,
@@ -8632,7 +8632,7 @@ export const CITIES = [
   {
     id: 1727,
     countyId: 1,
-    name: 'Bubesti',
+    name: 'Bubești',
   },
   {
     id: 1728,
@@ -8642,7 +8642,7 @@ export const CITIES = [
   {
     id: 1729,
     countyId: 2,
-    name: 'Buceava-Soimus',
+    name: 'Buceava-Șoimuș',
   },
   {
     id: 1730,
@@ -8652,27 +8652,27 @@ export const CITIES = [
   {
     id: 1731,
     countyId: 1,
-    name: 'Bucerdea Granoasa',
+    name: 'Bucerdea Grânoasă',
   },
   {
     id: 1732,
     countyId: 1,
-    name: 'Bucerdea Vinoasa',
+    name: 'Bucerdea Vinoasă',
   },
   {
     id: 1733,
     countyId: 33,
-    name: 'Buces',
+    name: 'Buceș',
   },
   {
     id: 1734,
     countyId: 33,
-    name: 'Buces-Vulcan',
+    name: 'Buceș-Vulcan',
   },
   {
     id: 1735,
     countyId: 28,
-    name: 'Bucesti',
+    name: 'Bucești',
   },
   {
     id: 1736,
@@ -8682,7 +8682,7 @@ export const CITIES = [
   {
     id: 1737,
     countyId: 44,
-    name: 'Buchilasi',
+    name: 'Buchilași',
   },
   {
     id: 1738,
@@ -8707,12 +8707,12 @@ export const CITIES = [
   {
     id: 1742,
     countyId: 43,
-    name: 'Bucinisu',
+    name: 'Bucinișu',
   },
   {
     id: 1743,
     countyId: 43,
-    name: 'Bucinisu Mic',
+    name: 'Bucinișu Mic',
   },
   {
     id: 1744,
@@ -8792,7 +8792,7 @@ export const CITIES = [
   {
     id: 1759,
     countyId: 20,
-    name: 'Bucosnita',
+    name: 'Bucoșnița',
   },
   {
     id: 1760,
@@ -8812,12 +8812,12 @@ export const CITIES = [
   {
     id: 1763,
     countyId: 25,
-    name: 'Bucovat',
+    name: 'Bucovăț',
   },
   {
     id: 1764,
     countyId: 50,
-    name: 'Bucovat (Dumbrava)',
+    name: 'Bucovăț (Dumbrava)',
   },
   {
     id: 1765,
@@ -8832,52 +8832,52 @@ export const CITIES = [
   {
     id: 1767,
     countyId: 5,
-    name: 'Bucsa',
+    name: 'Bucșa',
   },
   {
     id: 1768,
     countyId: 34,
-    name: 'Bucsa',
+    name: 'Bucșa',
   },
   {
     id: 1769,
     countyId: 30,
-    name: 'Bucsana',
+    name: 'Bucșana',
   },
   {
     id: 1770,
     countyId: 29,
-    name: 'Bucsani',
+    name: 'Bucșani',
   },
   {
     id: 1771,
     countyId: 24,
-    name: 'Bucsani',
+    name: 'Bucșani',
   },
   {
     id: 1772,
     countyId: 52,
-    name: 'Bucsani',
+    name: 'Bucșani',
   },
   {
     id: 1773,
     countyId: 3,
-    name: 'Bucsenesti',
+    name: 'Bucșenești',
   },
   {
     id: 1774,
     countyId: 3,
-    name: 'Bucsenesti-Lotasi',
+    name: 'Bucșenești-Lotași',
   },
   {
     id: 1775,
     countyId: 5,
-    name: 'Bucsesti',
+    name: 'Bucșești',
   },
   {
     id: 1776,
     countyId: 48,
-    name: 'Bucsoaia',
+    name: 'Bucșoaia',
   },
   {
     id: 1777,
@@ -8897,12 +8897,12 @@ export const CITIES = [
   {
     id: 1780,
     countyId: 33,
-    name: 'Bucuresci',
+    name: 'Bucureșci',
   },
   {
     id: 1781,
     countyId: 11,
-    name: 'Bucuresti',
+    name: 'București',
   },
   {
     id: 1782,
@@ -8942,32 +8942,32 @@ export const CITIES = [
   {
     id: 1789,
     countyId: 53,
-    name: 'Buda (Alexandru Vlahuta)',
+    name: 'Buda (Alexandru Vlahuță)',
   },
   {
     id: 1790,
     countyId: 44,
-    name: 'Buda (Aricestii Rahtivani)',
+    name: 'Buda (Ariceștii Rahtivani)',
   },
   {
     id: 1791,
     countyId: 5,
-    name: 'Buda (Berzunti)',
+    name: 'Buda (Berzunți)',
   },
   {
     id: 1792,
     countyId: 5,
-    name: 'Buda (Blagesti)',
+    name: 'Buda (Blăgești)',
   },
   {
     id: 1793,
     countyId: 53,
-    name: 'Buda (Bogdanesti)',
+    name: 'Buda (Bogdănești)',
   },
   {
     id: 1794,
     countyId: 35,
-    name: 'Buda (Braesti)',
+    name: 'Buda (Brăești)',
   },
   {
     id: 1795,
@@ -8977,32 +8977,32 @@ export const CITIES = [
   {
     id: 1796,
     countyId: 53,
-    name: 'Buda (Osesti)',
+    name: 'Buda (Oșești)',
   },
   {
     id: 1797,
     countyId: 5,
-    name: 'Buda (Rachitoasa)',
+    name: 'Buda (Răchitoasa)',
   },
   {
     id: 1798,
     countyId: 44,
-    name: 'Buda (Rafov)',
+    name: 'Buda (Râfov)',
   },
   {
     id: 1799,
     countyId: 48,
-    name: 'Buda (Rasca)',
+    name: 'Buda (Râșca)',
   },
   {
     id: 1800,
     countyId: 48,
-    name: 'Buda (Zvoristea)',
+    name: 'Buda (Zvoriștea)',
   },
   {
     id: 1801,
     countyId: 18,
-    name: 'Buda Craciunesti',
+    name: 'Buda Crăciunești',
   },
   {
     id: 1802,
@@ -9017,17 +9017,17 @@ export const CITIES = [
   {
     id: 1804,
     countyId: 35,
-    name: 'Budai',
+    name: 'Budăi',
   },
   {
     id: 1805,
     countyId: 1,
-    name: 'Budaiesti',
+    name: 'Budăiești',
   },
   {
     id: 1806,
     countyId: 40,
-    name: 'Budanesti',
+    name: 'Budănești',
   },
   {
     id: 1807,
@@ -9042,7 +9042,7 @@ export const CITIES = [
   {
     id: 1809,
     countyId: 3,
-    name: 'Budeasa Mica',
+    name: 'Budeasa Mică',
   },
   {
     id: 1810,
@@ -9067,57 +9067,57 @@ export const CITIES = [
   {
     id: 1814,
     countyId: 5,
-    name: 'Budesti',
+    name: 'Budești',
   },
   {
     id: 1815,
     countyId: 18,
-    name: 'Budesti',
+    name: 'Budești',
   },
   {
     id: 1816,
     countyId: 35,
-    name: 'Budesti',
+    name: 'Budești',
   },
   {
     id: 1817,
     countyId: 42,
-    name: 'Budesti',
+    name: 'Budești',
   },
   {
     id: 1818,
     countyId: 54,
-    name: 'Budesti',
+    name: 'Budești',
   },
   {
     id: 1819,
     countyId: 2,
-    name: 'Budesti',
+    name: 'Budești',
   },
   {
     id: 1820,
     countyId: 7,
-    name: 'Budesti',
+    name: 'Budești',
   },
   {
     id: 1821,
     countyId: 19,
-    name: 'Budesti',
+    name: 'Budești',
   },
   {
     id: 1822,
     countyId: 39,
-    name: 'Budesti',
+    name: 'Budești',
   },
   {
     id: 1823,
     countyId: 52,
-    name: 'Budesti',
+    name: 'Budești',
   },
   {
     id: 1824,
     countyId: 53,
-    name: 'Budesti',
+    name: 'Budești',
   },
   {
     id: 1825,
@@ -9127,7 +9127,7 @@ export const CITIES = [
   {
     id: 1826,
     countyId: 7,
-    name: 'Budesti-Fanate',
+    name: 'Budești-Fânațe',
   },
   {
     id: 1827,
@@ -9142,12 +9142,12 @@ export const CITIES = [
   {
     id: 1829,
     countyId: 3,
-    name: 'Budisteni',
+    name: 'Budișteni',
   },
   {
     id: 1830,
     countyId: 18,
-    name: 'Budisteni',
+    name: 'Budișteni',
   },
   {
     id: 1831,
@@ -9182,7 +9182,7 @@ export const CITIES = [
   {
     id: 1837,
     countyId: 52,
-    name: 'Budurasti',
+    name: 'Budurăști',
   },
   {
     id: 1838,
@@ -9197,17 +9197,17 @@ export const CITIES = [
   {
     id: 1840,
     countyId: 7,
-    name: 'Budus',
+    name: 'Buduș',
   },
   {
     id: 1841,
     countyId: 6,
-    name: 'Buduslau',
+    name: 'Buduslău',
   },
   {
     id: 1842,
     countyId: 34,
-    name: 'Buesti',
+    name: 'Buești',
   },
   {
     id: 1843,
@@ -9242,27 +9242,27 @@ export const CITIES = [
   {
     id: 1849,
     countyId: 8,
-    name: 'Buhaceni',
+    name: 'Buhăceni',
   },
   {
     id: 1850,
     countyId: 35,
-    name: 'Buhaeni',
+    name: 'Buhăeni',
   },
   {
     id: 1851,
     countyId: 53,
-    name: 'Buhaiesti',
+    name: 'Buhăiești',
   },
   {
     id: 1852,
     countyId: 42,
-    name: 'Buhalnita',
+    name: 'Buhalnița',
   },
   {
     id: 1853,
     countyId: 35,
-    name: 'Buhalnita',
+    name: 'Buhalnița',
   },
   {
     id: 1854,
@@ -9287,7 +9287,7 @@ export const CITIES = [
   {
     id: 1858,
     countyId: 5,
-    name: 'Buhusi',
+    name: 'Buhuși',
   },
   {
     id: 1859,
@@ -9302,17 +9302,17 @@ export const CITIES = [
   {
     id: 1861,
     countyId: 40,
-    name: 'Buicesti',
+    name: 'Buicești',
   },
   {
     id: 1862,
     countyId: 43,
-    name: 'Buicesti',
+    name: 'Buicești',
   },
   {
     id: 1863,
     countyId: 8,
-    name: 'Buimaceni',
+    name: 'Buimăceni',
   },
   {
     id: 1864,
@@ -9367,7 +9367,7 @@ export const CITIES = [
   {
     id: 1874,
     countyId: 49,
-    name: 'Bujoru (Calmatuiu)',
+    name: 'Bujoru (Călmățuiu)',
   },
   {
     id: 1875,
@@ -9417,7 +9417,7 @@ export const CITIES = [
   {
     id: 1884,
     countyId: 31,
-    name: 'Bulgareni',
+    name: 'Bulgăreni',
   },
   {
     id: 1885,
@@ -9427,7 +9427,7 @@ export const CITIES = [
   {
     id: 1886,
     countyId: 50,
-    name: 'Bulgarus',
+    name: 'Bulgăruș',
   },
   {
     id: 1887,
@@ -9452,37 +9452,37 @@ export const CITIES = [
   {
     id: 1891,
     countyId: 25,
-    name: 'Bulzesti',
+    name: 'Bulzești',
   },
   {
     id: 1892,
     countyId: 33,
-    name: 'Bulzestii de Jos',
+    name: 'Bulzeștii de Jos',
   },
   {
     id: 1893,
     countyId: 33,
-    name: 'Bulzestii de Sus',
+    name: 'Bulzeștii de Sus',
   },
   {
     id: 1894,
     countyId: 9,
-    name: 'Bumbacari',
+    name: 'Bumbăcari',
   },
   {
     id: 1895,
     countyId: 53,
-    name: 'Bumbata',
+    name: 'Bumbăta',
   },
   {
     id: 1896,
     countyId: 30,
-    name: 'Bumbesti-Jiu',
+    name: 'Bumbești-Jiu',
   },
   {
     id: 1897,
     countyId: 30,
-    name: 'Bumbesti-Pitic',
+    name: 'Bumbești-Pițic',
   },
   {
     id: 1898,
@@ -9492,7 +9492,7 @@ export const CITIES = [
   {
     id: 1899,
     countyId: 52,
-    name: 'Bumbuesti',
+    name: 'Bumbuești',
   },
   {
     id: 1900,
@@ -9507,52 +9507,52 @@ export const CITIES = [
   {
     id: 1902,
     countyId: 50,
-    name: 'Bunea Mica',
+    name: 'Bunea Mică',
   },
   {
     id: 1903,
     countyId: 10,
-    name: 'Bunesti',
+    name: 'Bunești',
   },
   {
     id: 1904,
     countyId: 33,
-    name: 'Bunesti',
+    name: 'Bunești',
   },
   {
     id: 1905,
     countyId: 52,
-    name: 'Bunesti',
+    name: 'Bunești',
   },
   {
     id: 1906,
     countyId: 21,
-    name: 'Bunesti',
+    name: 'Bunești',
   },
   {
     id: 1907,
     countyId: 48,
-    name: 'Bunesti',
+    name: 'Bunești',
   },
   {
     id: 1908,
     countyId: 53,
-    name: 'Bunesti',
+    name: 'Bunești',
   },
   {
     id: 1909,
     countyId: 3,
-    name: 'Bunesti (Cotmeana)',
+    name: 'Bunești (Cotmeana)',
   },
   {
     id: 1910,
     countyId: 3,
-    name: 'Bunesti (Malureni)',
+    name: 'Bunești (Mălureni)',
   },
   {
     id: 1911,
     countyId: 53,
-    name: 'Bunesti-Averesti',
+    name: 'Bunești-Averești',
   },
   {
     id: 1912,
@@ -9567,7 +9567,7 @@ export const CITIES = [
   {
     id: 1914,
     countyId: 52,
-    name: 'Bungetani',
+    name: 'Bungețani',
   },
   {
     id: 1915,
@@ -9602,7 +9602,7 @@ export const CITIES = [
   {
     id: 1921,
     countyId: 6,
-    name: 'Buntesti',
+    name: 'Buntești',
   },
   {
     id: 1922,
@@ -9622,7 +9622,7 @@ export const CITIES = [
   {
     id: 1925,
     countyId: 52,
-    name: 'Burdalesti',
+    name: 'Burdălești',
   },
   {
     id: 1926,
@@ -9637,7 +9637,7 @@ export const CITIES = [
   {
     id: 1928,
     countyId: 3,
-    name: 'Burdesti',
+    name: 'Burdești',
   },
   {
     id: 1929,
@@ -9647,7 +9647,7 @@ export const CITIES = [
   {
     id: 1930,
     countyId: 43,
-    name: 'Burdulesti',
+    name: 'Burdulești',
   },
   {
     id: 1931,
@@ -9657,12 +9657,12 @@ export const CITIES = [
   {
     id: 1932,
     countyId: 3,
-    name: 'Buretesti',
+    name: 'Burețești',
   },
   {
     id: 1933,
     countyId: 36,
-    name: 'Burias',
+    name: 'Buriaș',
   },
   {
     id: 1934,
@@ -9672,7 +9672,7 @@ export const CITIES = [
   {
     id: 1935,
     countyId: 40,
-    name: 'Burila Mica',
+    name: 'Burila Mică',
   },
   {
     id: 1936,
@@ -9697,17 +9697,17 @@ export const CITIES = [
   {
     id: 1940,
     countyId: 8,
-    name: 'Burlesti',
+    name: 'Burlești',
   },
   {
     id: 1941,
     countyId: 3,
-    name: 'Burlusi',
+    name: 'Burluși',
   },
   {
     id: 1942,
     countyId: 3,
-    name: 'Burnesti',
+    name: 'Burnești',
   },
   {
     id: 1943,
@@ -9742,32 +9742,32 @@ export const CITIES = [
   {
     id: 1949,
     countyId: 35,
-    name: 'Buruienesti',
+    name: 'Buruienești',
   },
   {
     id: 1950,
     countyId: 42,
-    name: 'Buruienesti',
+    name: 'Buruienești',
   },
   {
     id: 1951,
     countyId: 5,
-    name: 'Buruienis',
+    name: 'Buruieniș',
   },
   {
     id: 1952,
     countyId: 5,
-    name: 'Buruienisu de Sus',
+    name: 'Buruienișu de Sus',
   },
   {
     id: 1953,
     countyId: 1,
-    name: 'Burzesti',
+    name: 'Burzești',
   },
   {
     id: 1954,
     countyId: 1,
-    name: 'Burzonesti',
+    name: 'Burzonești',
   },
   {
     id: 1955,
@@ -9777,12 +9777,12 @@ export const CITIES = [
   {
     id: 1956,
     countyId: 39,
-    name: 'Busag',
+    name: 'Bușag',
   },
   {
     id: 1957,
     countyId: 43,
-    name: 'Busca',
+    name: 'Bușca',
   },
   {
     id: 1958,
@@ -9792,32 +9792,32 @@ export const CITIES = [
   {
     id: 1959,
     countyId: 40,
-    name: 'Busesti',
+    name: 'Busești',
   },
   {
     id: 1960,
     countyId: 42,
-    name: 'Busmei',
+    name: 'Bușmei',
   },
   {
     id: 1961,
     countyId: 18,
-    name: 'Bustea',
+    name: 'Buștea',
   },
   {
     id: 1962,
     countyId: 44,
-    name: 'Bustenari',
+    name: 'Buștenari',
   },
   {
     id: 1963,
     countyId: 25,
-    name: 'Busteni',
+    name: 'Bușteni',
   },
   {
     id: 1964,
     countyId: 44,
-    name: 'Busteni',
+    name: 'Bușteni',
   },
   {
     id: 1965,
@@ -9837,7 +9837,7 @@ export const CITIES = [
   {
     id: 1968,
     countyId: 25,
-    name: 'Busuletu',
+    name: 'Busulețu',
   },
   {
     id: 1969,
@@ -9862,7 +9862,7 @@ export const CITIES = [
   {
     id: 1973,
     countyId: 49,
-    name: 'Butculesti',
+    name: 'Butculești',
   },
   {
     id: 1974,
@@ -9887,17 +9887,17 @@ export const CITIES = [
   {
     id: 1978,
     countyId: 49,
-    name: 'Butesti',
+    name: 'Butești',
   },
   {
     id: 1979,
     countyId: 1,
-    name: 'Butesti (Horea)',
+    name: 'Butești (Horea)',
   },
   {
     id: 1980,
     countyId: 1,
-    name: 'Butesti (Mogos)',
+    name: 'Butești (Mogoș)',
   },
   {
     id: 1981,
@@ -9912,7 +9912,7 @@ export const CITIES = [
   {
     id: 1983,
     countyId: 42,
-    name: 'Butnaresti',
+    name: 'Butnărești',
   },
   {
     id: 1984,
@@ -9922,7 +9922,7 @@ export const CITIES = [
   {
     id: 1985,
     countyId: 40,
-    name: 'Butoiesti',
+    name: 'Butoiești',
   },
   {
     id: 1986,
@@ -9942,7 +9942,7 @@ export const CITIES = [
   {
     id: 1989,
     countyId: 53,
-    name: 'Butucaria',
+    name: 'Butucăria',
   },
   {
     id: 1990,
@@ -9962,7 +9962,7 @@ export const CITIES = [
   {
     id: 1993,
     countyId: 7,
-    name: 'Buza Catun',
+    name: 'Buza Cătun',
   },
   {
     id: 1994,
@@ -9972,17 +9972,17 @@ export const CITIES = [
   {
     id: 1995,
     countyId: 10,
-    name: 'Buzaiel',
+    name: 'Buzăiel',
   },
   {
     id: 1996,
     countyId: 45,
-    name: 'Buzas',
+    name: 'Buzaș',
   },
   {
     id: 1997,
     countyId: 18,
-    name: 'Buzau',
+    name: 'Buzău',
   },
   {
     id: 1998,
@@ -10017,22 +10017,22 @@ export const CITIES = [
   {
     id: 2004,
     countyId: 39,
-    name: 'Buzesti',
+    name: 'Buzești',
   },
   {
     id: 2005,
     countyId: 30,
-    name: 'Buzesti',
+    name: 'Buzești',
   },
   {
     id: 2006,
     countyId: 43,
-    name: 'Buzesti',
+    name: 'Buzești',
   },
   {
     id: 2007,
     countyId: 50,
-    name: 'Buzias',
+    name: 'Buziaș',
   },
   {
     id: 2008,
@@ -10047,7 +10047,7 @@ export const CITIES = [
   {
     id: 2010,
     countyId: 3,
-    name: 'Buzoesti',
+    name: 'Buzoești',
   },
   {
     id: 2011,
@@ -10067,17 +10067,17 @@ export const CITIES = [
   {
     id: 2014,
     countyId: 6,
-    name: 'Cabesti',
+    name: 'Căbești',
   },
   {
     id: 2015,
     countyId: 5,
-    name: 'Cabesti',
+    name: 'Căbești',
   },
   {
     id: 2016,
     countyId: 33,
-    name: 'Cabesti',
+    name: 'Căbești',
   },
   {
     id: 2017,
@@ -10087,32 +10087,32 @@ export const CITIES = [
   {
     id: 2018,
     countyId: 52,
-    name: 'Caciulata',
+    name: 'Căciulata',
   },
   {
     id: 2019,
     countyId: 41,
-    name: 'Caciulata',
+    name: 'Căciulata',
   },
   {
     id: 2020,
     countyId: 25,
-    name: 'Caciulatesti',
+    name: 'Căciulătești',
   },
   {
     id: 2021,
     countyId: 36,
-    name: 'Caciulati',
+    name: 'Căciulați',
   },
   {
     id: 2022,
     countyId: 25,
-    name: 'Caciulatu',
+    name: 'Căciulatu',
   },
   {
     id: 2023,
     countyId: 42,
-    name: 'Caciulesti',
+    name: 'Căciulești',
   },
   {
     id: 2024,
@@ -10122,7 +10122,7 @@ export const CITIES = [
   {
     id: 2025,
     countyId: 41,
-    name: 'Cacuciu',
+    name: 'Căcuciu',
   },
   {
     id: 2026,
@@ -10137,12 +10137,12 @@ export const CITIES = [
   {
     id: 2028,
     countyId: 31,
-    name: 'Cadaciu Mare',
+    name: 'Cădaciu Mare',
   },
   {
     id: 2029,
     countyId: 31,
-    name: 'Cadaciu Mic',
+    name: 'Cădaciu Mic',
   },
   {
     id: 2030,
@@ -10152,7 +10152,7 @@ export const CITIES = [
   {
     id: 2031,
     countyId: 5,
-    name: 'Cadaresti',
+    name: 'Cădărești',
   },
   {
     id: 2032,
@@ -10162,32 +10162,32 @@ export const CITIES = [
   {
     id: 2033,
     countyId: 21,
-    name: 'Caianu',
+    name: 'Căianu',
   },
   {
     id: 2034,
     countyId: 7,
-    name: 'Caianu Mare',
+    name: 'Căianu Mare',
   },
   {
     id: 2035,
     countyId: 7,
-    name: 'Caianu Mic',
+    name: 'Căianu Mic',
   },
   {
     id: 2036,
     countyId: 21,
-    name: 'Caianu Mic',
+    name: 'Căianu Mic',
   },
   {
     id: 2037,
     countyId: 21,
-    name: 'Caianu-Vama',
+    name: 'Căianu-Vamă',
   },
   {
     id: 2038,
     countyId: 54,
-    name: 'Caiata',
+    name: 'Căiata',
   },
   {
     id: 2039,
@@ -10197,37 +10197,37 @@ export const CITIES = [
   {
     id: 2040,
     countyId: 33,
-    name: 'Cainelu de Jos',
+    name: 'Căinelu de Jos',
   },
   {
     id: 2041,
     countyId: 33,
-    name: 'Cainelu de Sus',
+    name: 'Căinelu de Sus',
   },
   {
     id: 2042,
     countyId: 52,
-    name: 'Caineni',
+    name: 'Câineni',
   },
   {
     id: 2043,
     countyId: 9,
-    name: 'Caineni-Bai',
+    name: 'Câineni-Băi',
   },
   {
     id: 2044,
     countyId: 52,
-    name: 'Cainenii Mari',
+    name: 'Câinenii Mari',
   },
   {
     id: 2045,
     countyId: 52,
-    name: 'Cainenii Mici',
+    name: 'Câinenii Mici',
   },
   {
     id: 2046,
     countyId: 5,
-    name: 'Caiuti',
+    name: 'Căiuți',
   },
   {
     id: 2047,
@@ -10237,17 +10237,17 @@ export const CITIES = [
   {
     id: 2048,
     countyId: 45,
-    name: 'Calacea',
+    name: 'Călacea',
   },
   {
     id: 2049,
     countyId: 6,
-    name: 'Calacea',
+    name: 'Călacea',
   },
   {
     id: 2050,
     countyId: 50,
-    name: 'Calacea',
+    name: 'Călacea',
   },
   {
     id: 2051,
@@ -10257,82 +10257,82 @@ export const CITIES = [
   {
     id: 2052,
     countyId: 48,
-    name: 'Calafindesti',
+    name: 'Calafindești',
   },
   {
     id: 2053,
     countyId: 33,
-    name: 'Calan',
+    name: 'Călan',
   },
   {
     id: 2054,
     countyId: 33,
-    name: 'Calanu Mic',
+    name: 'Călanu Mic',
   },
   {
     id: 2055,
     countyId: 30,
-    name: 'Calaparu',
+    name: 'Calapăru',
   },
   {
     id: 2056,
     countyId: 5,
-    name: 'Calapodesti',
+    name: 'Calapodești',
   },
   {
     id: 2057,
     countyId: 8,
-    name: 'Calarasi',
+    name: 'Călărași',
   },
   {
     id: 2058,
     countyId: 19,
-    name: 'Calarasi',
+    name: 'Călărași',
   },
   {
     id: 2059,
     countyId: 21,
-    name: 'Calarasi',
+    name: 'Călărași',
   },
   {
     id: 2060,
     countyId: 25,
-    name: 'Calarasi',
+    name: 'Călărași',
   },
   {
     id: 2061,
     countyId: 21,
-    name: 'Calarasi-Gara',
+    name: 'Călărași-Gară',
   },
   {
     id: 2062,
     countyId: 19,
-    name: 'Calarasii Vechi',
+    name: 'Călărașii Vechi',
   },
   {
     id: 2063,
     countyId: 19,
-    name: 'Calareti',
+    name: 'Călăreți',
   },
   {
     id: 2064,
     countyId: 21,
-    name: 'Calata',
+    name: 'Călata',
   },
   {
     id: 2065,
     countyId: 6,
-    name: 'Calatani',
+    name: 'Călătani',
   },
   {
     id: 2066,
     countyId: 6,
-    name: 'Calatea',
+    name: 'Călățea',
   },
   {
     id: 2067,
     countyId: 21,
-    name: 'Calatele',
+    name: 'Călățele',
   },
   {
     id: 2068,
@@ -10342,42 +10342,42 @@ export const CITIES = [
   {
     id: 2069,
     countyId: 5,
-    name: 'Calcai',
+    name: 'Călcâi',
   },
   {
     id: 2070,
     countyId: 30,
-    name: 'Calcesti',
+    name: 'Câlcești',
   },
   {
     id: 2071,
     countyId: 3,
-    name: 'Caldararu',
+    name: 'Căldăraru',
   },
   {
     id: 2072,
     countyId: 36,
-    name: 'Caldararu',
+    name: 'Căldăraru',
   },
   {
     id: 2073,
     countyId: 18,
-    name: 'Caldarasti',
+    name: 'Căldărăști',
   },
   {
     id: 2074,
     countyId: 18,
-    name: 'Caldarusa',
+    name: 'Căldărușa',
   },
   {
     id: 2075,
     countyId: 9,
-    name: 'Caldarusa',
+    name: 'Căldărușa',
   },
   {
     id: 2076,
     countyId: 18,
-    name: 'Caldaruseanca',
+    name: 'Căldărușeanca',
   },
   {
     id: 2077,
@@ -10392,12 +10392,12 @@ export const CITIES = [
   {
     id: 2079,
     countyId: 1,
-    name: 'Calene',
+    name: 'Călene',
   },
   {
     id: 2080,
     countyId: 30,
-    name: 'Calesti',
+    name: 'Călești',
   },
   {
     id: 2081,
@@ -10407,47 +10407,47 @@ export const CITIES = [
   {
     id: 2082,
     countyId: 54,
-    name: 'Calienii Noi',
+    name: 'Călienii Noi',
   },
   {
     id: 2083,
     countyId: 54,
-    name: 'Calienii Vechi',
+    name: 'Călienii Vechi',
   },
   {
     id: 2084,
     countyId: 52,
-    name: 'Caligi',
+    name: 'Căligi',
   },
   {
     id: 2085,
     countyId: 54,
-    name: 'Calimaneasa',
+    name: 'Călimăneasa',
   },
   {
     id: 2086,
     countyId: 31,
-    name: 'Calimanel',
+    name: 'Călimănel',
   },
   {
     id: 2087,
     countyId: 41,
-    name: 'Calimanesti',
+    name: 'Călimănești',
   },
   {
     id: 2088,
     countyId: 54,
-    name: 'Calimanesti',
+    name: 'Călimănești',
   },
   {
     id: 2089,
     countyId: 52,
-    name: 'Calimanesti',
+    name: 'Călimănești',
   },
   {
     id: 2090,
     countyId: 53,
-    name: 'Calimanesti',
+    name: 'Călimănești',
   },
   {
     id: 2091,
@@ -10457,62 +10457,62 @@ export const CITIES = [
   {
     id: 2092,
     countyId: 52,
-    name: 'Calina',
+    name: 'Călina',
   },
   {
     id: 2093,
     countyId: 3,
-    name: 'Calinesti',
+    name: 'Călinești',
   },
   {
     id: 2094,
     countyId: 25,
-    name: 'Calinesti',
+    name: 'Călinești',
   },
   {
     id: 2095,
     countyId: 43,
-    name: 'Calinesti',
+    name: 'Călinești',
   },
   {
     id: 2096,
     countyId: 49,
-    name: 'Calinesti',
+    name: 'Călinești',
   },
   {
     id: 2097,
     countyId: 5,
-    name: 'Calinesti',
+    name: 'Călinești',
   },
   {
     id: 2098,
     countyId: 39,
-    name: 'Calinesti',
+    name: 'Călinești',
   },
   {
     id: 2099,
     countyId: 44,
-    name: 'Calinesti',
+    name: 'Călinești',
   },
   {
     id: 2100,
     countyId: 52,
-    name: 'Calinesti',
+    name: 'Călinești',
   },
   {
     id: 2101,
     countyId: 8,
-    name: 'Calinesti (Bucecea)',
+    name: 'Călinești (Bucecea)',
   },
   {
     id: 2102,
     countyId: 48,
-    name: 'Calafindesti',
+    name: 'Calafindești',
   },
   {
     id: 2103,
     countyId: 48,
-    name: 'Calinesti (Darmanesti)',
+    name: 'Călinești (Dărmănești)',
   },
   {
     id: 2104,
@@ -10522,42 +10522,42 @@ export const CITIES = [
   {
     id: 2105,
     countyId: 46,
-    name: 'Calinesti-Oas',
+    name: 'Călinești-Oaș',
   },
   {
     id: 2106,
     countyId: 48,
-    name: 'Calinesti-Vasilache',
+    name: 'Călinești-Vasilache',
   },
   {
     id: 2107,
     countyId: 40,
-    name: 'Calinestii de Jos',
+    name: 'Călineștii de Jos',
   },
   {
     id: 2108,
     countyId: 40,
-    name: 'Calinestii de Sus',
+    name: 'Călineștii de Sus',
   },
   {
     id: 2109,
     countyId: 5,
-    name: 'Calini',
+    name: 'Călini',
   },
   {
     id: 2110,
     countyId: 28,
-    name: 'Calmatui',
+    name: 'Călmățui',
   },
   {
     id: 2111,
     countyId: 49,
-    name: 'Calmatuiu',
+    name: 'Călmățuiu',
   },
   {
     id: 2112,
     countyId: 49,
-    name: 'Calmatuiu de Sus',
+    name: 'Călmățuiu de Sus',
   },
   {
     id: 2113,
@@ -10567,7 +10567,7 @@ export const CITIES = [
   {
     id: 2114,
     countyId: 31,
-    name: 'Calnaci',
+    name: 'Călnaci',
   },
   {
     id: 2115,
@@ -10577,27 +10577,27 @@ export const CITIES = [
   {
     id: 2116,
     countyId: 20,
-    name: 'Calnic',
+    name: 'Câlnic',
   },
   {
     id: 2117,
     countyId: 1,
-    name: 'Calnic',
+    name: 'Câlnic',
   },
   {
     id: 2118,
     countyId: 30,
-    name: 'Calnic',
+    name: 'Câlnic',
   },
   {
     id: 2119,
     countyId: 30,
-    name: 'Calnicu de Sus',
+    name: 'Câlnicu de Sus',
   },
   {
     id: 2120,
     countyId: 49,
-    name: 'Calomfiresti',
+    name: 'Calomfirești',
   },
   {
     id: 2121,
@@ -10607,132 +10607,132 @@ export const CITIES = [
   {
     id: 2122,
     countyId: 25,
-    name: 'Calopar',
+    name: 'Calopăr',
   },
   {
     id: 2123,
     countyId: 3,
-    name: 'Calotesti',
+    name: 'Calotești',
   },
   {
     id: 2124,
     countyId: 18,
-    name: 'Caltesti',
+    name: 'Câlțești',
   },
   {
     id: 2125,
     countyId: 18,
-    name: 'Caltuna',
+    name: 'Călțuna',
   },
   {
     id: 2126,
     countyId: 30,
-    name: 'Calugareasa',
+    name: 'Călugăreasa',
   },
   {
     id: 2127,
     countyId: 25,
-    name: 'Calugarei',
+    name: 'Călugărei',
   },
   {
     id: 2128,
     countyId: 5,
-    name: 'Calugareni',
+    name: 'Călugăreni',
   },
   {
     id: 2129,
     countyId: 22,
-    name: 'Calugareni',
+    name: 'Călugăreni',
   },
   {
     id: 2130,
     countyId: 29,
-    name: 'Calugareni',
+    name: 'Călugăreni',
   },
   {
     id: 2131,
     countyId: 41,
-    name: 'Calugareni',
+    name: 'Călugăreni',
   },
   {
     id: 2132,
     countyId: 44,
-    name: 'Calugareni',
+    name: 'Călugăreni',
   },
   {
     id: 2133,
     countyId: 53,
-    name: 'Calugareni',
+    name: 'Călugăreni',
   },
   {
     id: 2134,
     countyId: 2,
-    name: 'Calugareni',
+    name: 'Călugăreni',
   },
   {
     id: 2135,
     countyId: 8,
-    name: 'Calugareni',
+    name: 'Călugăreni',
   },
   {
     id: 2136,
     countyId: 30,
-    name: 'Calugareni',
+    name: 'Călugăreni',
   },
   {
     id: 2137,
     countyId: 31,
-    name: 'Calugareni',
+    name: 'Călugăreni',
   },
   {
     id: 2138,
     countyId: 42,
-    name: 'Calugareni',
+    name: 'Călugăreni',
   },
   {
     id: 2139,
     countyId: 48,
-    name: 'Calugareni',
+    name: 'Călugăreni',
   },
   {
     id: 2140,
     countyId: 24,
-    name: 'Calugareni (Cobia)',
+    name: 'Călugăreni (Cobia)',
   },
   {
     id: 2141,
     countyId: 24,
-    name: 'Calugareni (Contesti)',
+    name: 'Călugăreni (Conțești)',
   },
   {
     id: 2142,
     countyId: 8,
-    name: 'Calugarenii Noi',
+    name: 'Călugărenii Noi',
   },
   {
     id: 2143,
     countyId: 1,
-    name: 'Calugaresti',
+    name: 'Călugărești',
   },
   {
     id: 2144,
     countyId: 6,
-    name: 'Calugari',
+    name: 'Călugări',
   },
   {
     id: 2145,
     countyId: 49,
-    name: 'Calugaru',
+    name: 'Călugaru',
   },
   {
     id: 2146,
     countyId: 43,
-    name: 'Calui',
+    name: 'Călui',
   },
   {
     id: 2147,
     countyId: 41,
-    name: 'Caluseri',
+    name: 'Călușeri',
   },
   {
     id: 2148,
@@ -10742,22 +10742,22 @@ export const CITIES = [
   {
     id: 2149,
     countyId: 45,
-    name: 'Camar',
+    name: 'Camăr',
   },
   {
     id: 2150,
     countyId: 21,
-    name: 'Camarasu',
+    name: 'Cămărașu',
   },
   {
     id: 2151,
     countyId: 46,
-    name: 'Camarzana',
+    name: 'Cămărzana',
   },
   {
     id: 2152,
     countyId: 48,
-    name: 'Camarzani',
+    name: 'Cămârzani',
   },
   {
     id: 2153,
@@ -10777,17 +10777,17 @@ export const CITIES = [
   {
     id: 2156,
     countyId: 20,
-    name: 'Camenita',
+    name: 'Camenița',
   },
   {
     id: 2157,
     countyId: 46,
-    name: 'Camin',
+    name: 'Cămin',
   },
   {
     id: 2158,
     countyId: 29,
-    name: 'Camineasca',
+    name: 'Cămineasca',
   },
   {
     id: 2159,
@@ -10797,247 +10797,247 @@ export const CITIES = [
   {
     id: 2160,
     countyId: 7,
-    name: 'Camp',
+    name: 'Câmp',
   },
   {
     id: 2161,
     countyId: 6,
-    name: 'Camp',
+    name: 'Câmp',
   },
   {
     id: 2162,
     countyId: 6,
-    name: 'Camp-Moti',
+    name: 'Câmp-Moți',
   },
   {
     id: 2163,
     countyId: 6,
-    name: 'Campani',
+    name: 'Câmpani',
   },
   {
     id: 2164,
     countyId: 6,
-    name: 'Campani de Pomezeu',
+    name: 'Câmpani de Pomezeu',
   },
   {
     id: 2165,
     countyId: 21,
-    name: 'Campenesti',
+    name: 'Câmpenești',
   },
   {
     id: 2166,
     countyId: 1,
-    name: 'Campeni',
+    name: 'Câmpeni',
   },
   {
     id: 2167,
     countyId: 8,
-    name: 'Campeni',
+    name: 'Câmpeni',
   },
   {
     id: 2168,
     countyId: 25,
-    name: 'Campeni',
+    name: 'Câmpeni',
   },
   {
     id: 2169,
     countyId: 5,
-    name: 'Campeni',
+    name: 'Câmpeni',
   },
   {
     id: 2170,
     countyId: 18,
-    name: 'Campeni',
+    name: 'Câmpeni',
   },
   {
     id: 2171,
     countyId: 41,
-    name: 'Campenita',
+    name: 'Câmpenița',
   },
   {
     id: 2172,
     countyId: 20,
-    name: 'Campia',
+    name: 'Câmpia',
   },
   {
     id: 2173,
     countyId: 45,
-    name: 'Campia',
+    name: 'Câmpia',
   },
   {
     id: 2174,
     countyId: 21,
-    name: 'Campia Turzii',
+    name: 'Câmpia Turzii',
   },
   {
     id: 2175,
     countyId: 44,
-    name: 'Campina',
+    name: 'Câmpina',
   },
   {
     id: 2176,
     countyId: 54,
-    name: 'Campineanca',
+    name: 'Câmpineanca',
   },
   {
     id: 2177,
     countyId: 30,
-    name: 'Campofeni',
+    name: 'Câmpofeni',
   },
   {
     id: 2178,
     countyId: 41,
-    name: 'Campu Cetatii',
+    name: 'Câmpu Cetății',
   },
   {
     id: 2179,
     countyId: 1,
-    name: 'Campu Goblii',
+    name: 'Câmpu Goblii',
   },
   {
     id: 2180,
     countyId: 33,
-    name: 'Campu lui Neag',
+    name: 'Câmpu lui Neag',
   },
   {
     id: 2181,
     countyId: 30,
-    name: 'Campu Mare',
+    name: 'Câmpu Mare',
   },
   {
     id: 2182,
     countyId: 43,
-    name: 'Campu Mare',
+    name: 'Câmpu Mare',
   },
   {
     id: 2183,
     countyId: 40,
-    name: 'Campu Mare',
+    name: 'Câmpu Mare',
   },
   {
     id: 2184,
     countyId: 43,
-    name: 'Campu Parului',
+    name: 'Câmpu Părului',
   },
   {
     id: 2185,
     countyId: 3,
-    name: 'Campulung',
+    name: 'Câmpulung',
   },
   {
     id: 2186,
     countyId: 39,
-    name: 'Campulung la Tisa',
+    name: 'Câmpulung la Tisa',
   },
   {
     id: 2187,
     countyId: 48,
-    name: 'Campulung Moldovenesc',
+    name: 'Câmpulung Moldovenesc',
   },
   {
     id: 2188,
     countyId: 18,
-    name: 'Campulungeanca',
+    name: 'Câmpulungeanca',
   },
   {
     id: 2189,
     countyId: 29,
-    name: 'Campurelu',
+    name: 'Câmpurelu',
   },
   {
     id: 2190,
     countyId: 54,
-    name: 'Campuri',
+    name: 'Câmpuri',
   },
   {
     id: 2191,
     countyId: 33,
-    name: 'Campuri de Sus',
+    name: 'Câmpuri de Sus',
   },
   {
     id: 2192,
     countyId: 33,
-    name: 'Campuri-Surduc',
+    name: 'Câmpuri-Surduc',
   },
   {
     id: 2193,
     countyId: 30,
-    name: 'Camuiesti',
+    name: 'Cămuiești',
   },
   {
     id: 2194,
     countyId: 19,
-    name: 'Candeasca',
+    name: 'Cândeasca',
   },
   {
     id: 2195,
     countyId: 43,
-    name: 'Candelesti',
+    name: 'Cândelești',
   },
   {
     id: 2196,
     countyId: 3,
-    name: 'Candesti',
+    name: 'Cândești',
   },
   {
     id: 2197,
     countyId: 18,
-    name: 'Candesti',
+    name: 'Cândești',
   },
   {
     id: 2198,
     countyId: 42,
-    name: 'Candesti',
+    name: 'Cândești',
   },
   {
     id: 2199,
     countyId: 1,
-    name: 'Candesti',
+    name: 'Cândești',
   },
   {
     id: 2200,
     countyId: 8,
-    name: 'Candesti',
+    name: 'Cândești',
   },
   {
     id: 2201,
     countyId: 24,
-    name: 'Candesti',
+    name: 'Cândești',
   },
   {
     id: 2202,
     countyId: 54,
-    name: 'Candesti',
+    name: 'Cândești',
   },
   {
     id: 2203,
     countyId: 24,
-    name: 'Candesti-Deal',
+    name: 'Cândești-Deal',
   },
   {
     id: 2204,
     countyId: 24,
-    name: 'Candesti-Vale',
+    name: 'Cândești-Vale',
   },
   {
     id: 2205,
     countyId: 41,
-    name: 'Candu',
+    name: 'Cându',
   },
   {
     id: 2206,
     countyId: 30,
-    name: 'Canepesti',
+    name: 'Cânepești',
   },
   {
     id: 2207,
     countyId: 18,
-    name: 'Canesti',
+    name: 'Cănești',
   },
   {
     id: 2208,
     countyId: 20,
-    name: 'Canicea',
+    name: 'Cănicea',
   },
   {
     id: 2209,
@@ -11047,92 +11047,92 @@ export const CITIES = [
   {
     id: 2210,
     countyId: 53,
-    name: 'Cantalaresti',
+    name: 'Cănțălărești',
   },
   {
     id: 2211,
     countyId: 33,
-    name: 'Caoi',
+    name: 'Căoi',
   },
   {
     id: 2212,
     countyId: 44,
-    name: 'Cap Rosu',
+    name: 'Cap Roșu',
   },
   {
     id: 2213,
     countyId: 1,
-    name: 'Capalna',
+    name: 'Căpâlna',
   },
   {
     id: 2214,
     countyId: 45,
-    name: 'Capalna',
+    name: 'Căpâlna',
   },
   {
     id: 2215,
     countyId: 6,
-    name: 'Capalna',
+    name: 'Căpâlna',
   },
   {
     id: 2216,
     countyId: 1,
-    name: 'Capalna de Jos',
+    name: 'Căpâlna de Jos',
   },
   {
     id: 2217,
     countyId: 41,
-    name: 'Capalna de Sus',
+    name: 'Căpâlna de Sus',
   },
   {
     id: 2218,
     countyId: 2,
-    name: 'Capalnas',
+    name: 'Căpălnaș',
   },
   {
     id: 2219,
     countyId: 31,
-    name: 'Capalnita',
+    name: 'Căpâlnița',
   },
   {
     id: 2220,
     countyId: 50,
-    name: 'Capat',
+    name: 'Căpăt',
   },
   {
     id: 2221,
     countyId: 5,
-    name: 'Capata',
+    name: 'Capăta',
   },
   {
     id: 2222,
     countyId: 3,
-    name: 'Capatanenii Pamanteni',
+    name: 'Căpățânenii Pământeni',
   },
   {
     id: 2223,
     countyId: 3,
-    name: 'Capatanenii Ungureni',
+    name: 'Căpățânenii Ungureni',
   },
   {
     id: 2224,
     countyId: 40,
-    name: 'Capatanesti',
+    name: 'Căpățânești',
   },
   {
     id: 2225,
     countyId: 18,
-    name: 'Capatanesti',
+    name: 'Căpățânești',
   },
   {
     id: 2226,
     countyId: 23,
-    name: 'Capeni',
+    name: 'Căpeni',
   },
   {
     id: 2227,
     countyId: 41,
-    name: 'Capeti',
+    name: 'Căpeți',
   },
   {
     id: 2228,
@@ -11142,7 +11142,7 @@ export const CITIES = [
   {
     id: 2229,
     countyId: 46,
-    name: 'Capleni',
+    name: 'Căpleni',
   },
   {
     id: 2230,
@@ -11152,62 +11152,62 @@ export const CITIES = [
   {
     id: 2231,
     countyId: 5,
-    name: 'Capotesti',
+    name: 'Căpotești',
   },
   {
     id: 2232,
     countyId: 53,
-    name: 'Capotesti',
+    name: 'Căpotești',
   },
   {
     id: 2233,
     countyId: 30,
-    name: 'Capreni',
+    name: 'Căpreni',
   },
   {
     id: 2234,
     countyId: 21,
-    name: 'Caprioara',
+    name: 'Căprioara',
   },
   {
     id: 2235,
     countyId: 2,
-    name: 'Caprioara',
+    name: 'Căprioara',
   },
   {
     id: 2236,
     countyId: 51,
-    name: 'Caprioara',
+    name: 'Căprioara',
   },
   {
     id: 2237,
     countyId: 24,
-    name: 'Caprioru',
+    name: 'Căprioru',
   },
   {
     id: 2238,
     countyId: 2,
-    name: 'Capruta',
+    name: 'Căpruța',
   },
   {
     id: 2239,
     countyId: 42,
-    name: 'Capsa',
+    name: 'Capșa',
   },
   {
     id: 2240,
     countyId: 24,
-    name: 'Capsuna',
+    name: 'Căpșuna',
   },
   {
     id: 2241,
     countyId: 1,
-    name: 'Captalan',
+    name: 'Căptălan',
   },
   {
     id: 2242,
     countyId: 48,
-    name: 'Capu Campului',
+    name: 'Capu Câmpului',
   },
   {
     id: 2243,
@@ -11247,7 +11247,7 @@ export const CITIES = [
   {
     id: 2250,
     countyId: 3,
-    name: 'Capu Piscului (Merisani)',
+    name: 'Capu Piscului (Merișani)',
   },
   {
     id: 2251,
@@ -11257,27 +11257,27 @@ export const CITIES = [
   {
     id: 2252,
     countyId: 1,
-    name: 'Capud',
+    name: 'Căpud',
   },
   {
     id: 2253,
     countyId: 53,
-    name: 'Capusneni',
+    name: 'Căpușneni',
   },
   {
     id: 2254,
     countyId: 41,
-    name: 'Capusu de Campie',
+    name: 'Căpușu de Câmpie',
   },
   {
     id: 2255,
     countyId: 21,
-    name: 'Capusu Mare',
+    name: 'Căpușu Mare',
   },
   {
     id: 2256,
     countyId: 21,
-    name: 'Capusu Mic',
+    name: 'Căpușu Mic',
   },
   {
     id: 2257,
@@ -11292,12 +11292,12 @@ export const CITIES = [
   {
     id: 2259,
     countyId: 33,
-    name: 'Caraci',
+    name: 'Căraci',
   },
   {
     id: 2260,
     countyId: 5,
-    name: 'Caraclau',
+    name: 'Caraclău',
   },
   {
     id: 2261,
@@ -11317,17 +11317,17 @@ export const CITIES = [
   {
     id: 2264,
     countyId: 40,
-    name: 'Caramidaru',
+    name: 'Cărămidaru',
   },
   {
     id: 2265,
     countyId: 2,
-    name: 'Carand',
+    name: 'Cărand',
   },
   {
     id: 2266,
     countyId: 6,
-    name: 'Carandeni',
+    name: 'Cărăndeni',
   },
   {
     id: 2267,
@@ -11337,12 +11337,12 @@ export const CITIES = [
   {
     id: 2268,
     countyId: 20,
-    name: 'Caransebes',
+    name: 'Caransebeș',
   },
   {
     id: 2269,
     countyId: 6,
-    name: 'Caranzel',
+    name: 'Cărănzel',
   },
   {
     id: 2270,
@@ -11357,7 +11357,7 @@ export const CITIES = [
   {
     id: 2272,
     countyId: 28,
-    name: 'Carapcesti',
+    name: 'Cărăpcești',
   },
   {
     id: 2273,
@@ -11367,22 +11367,22 @@ export const CITIES = [
   {
     id: 2274,
     countyId: 6,
-    name: 'Carasau',
+    name: 'Cărăsău',
   },
   {
     id: 2275,
     countyId: 46,
-    name: 'Caraseu',
+    name: 'Cărășeu',
   },
   {
     id: 2276,
     countyId: 20,
-    name: 'Carasova',
+    name: 'Carașova',
   },
   {
     id: 2277,
     countyId: 33,
-    name: 'Carastau',
+    name: 'Cărăstău',
   },
   {
     id: 2278,
@@ -11392,17 +11392,17 @@ export const CITIES = [
   {
     id: 2279,
     countyId: 1,
-    name: 'Carasti',
+    name: 'Cârăști',
   },
   {
     id: 2280,
     countyId: 18,
-    name: 'Caratnau de Jos',
+    name: 'Cărătnău de Jos',
   },
   {
     id: 2281,
     countyId: 18,
-    name: 'Caratnau de Sus',
+    name: 'Cărătnău de Sus',
   },
   {
     id: 2282,
@@ -11412,47 +11412,47 @@ export const CITIES = [
   {
     id: 2283,
     countyId: 49,
-    name: 'Caravaneti',
+    name: 'Caravaneți',
   },
   {
     id: 2284,
     countyId: 30,
-    name: 'Carbesti',
+    name: 'Cârbești',
   },
   {
     id: 2285,
     countyId: 20,
-    name: 'Carbunari',
+    name: 'Cărbunari',
   },
   {
     id: 2286,
     countyId: 39,
-    name: 'Carbunari',
+    name: 'Cărbunari',
   },
   {
     id: 2287,
     countyId: 35,
-    name: 'Carbunari',
+    name: 'Cărbunari',
   },
   {
     id: 2288,
     countyId: 44,
-    name: 'Carbunari',
+    name: 'Cărbunari',
   },
   {
     id: 2289,
     countyId: 44,
-    name: 'Carbunesti',
+    name: 'Cărbunești',
   },
   {
     id: 2290,
     countyId: 30,
-    name: 'Carbunesti-Sat',
+    name: 'Cărbunești-Sat',
   },
   {
     id: 2291,
     countyId: 52,
-    name: 'Carcadiesti',
+    name: 'Carcadiești',
   },
   {
     id: 2292,
@@ -11462,27 +11462,27 @@ export const CITIES = [
   {
     id: 2293,
     countyId: 25,
-    name: 'Carcea',
+    name: 'Cârcea',
   },
   {
     id: 2294,
     countyId: 40,
-    name: 'Carceni',
+    name: 'Cârceni',
   },
   {
     id: 2295,
     countyId: 3,
-    name: 'Carcesti',
+    name: 'Cârcești',
   },
   {
     id: 2296,
     countyId: 30,
-    name: 'Carciu',
+    name: 'Cârciu',
   },
   {
     id: 2297,
     countyId: 3,
-    name: 'Carciumaresti',
+    name: 'Cârciumărești',
   },
   {
     id: 2298,
@@ -11497,147 +11497,147 @@ export const CITIES = [
   {
     id: 2300,
     countyId: 53,
-    name: 'Carja',
+    name: 'Cârja',
   },
   {
     id: 2301,
     countyId: 44,
-    name: 'Carjari',
+    name: 'Cârjari',
   },
   {
     id: 2302,
     countyId: 40,
-    name: 'Carjei',
+    name: 'Cârjei',
   },
   {
     id: 2303,
     countyId: 51,
-    name: 'Carjelari',
+    name: 'Cârjelari',
   },
   {
     id: 2304,
     countyId: 33,
-    name: 'Carjiti',
+    name: 'Cârjiți',
   },
   {
     id: 2305,
     countyId: 35,
-    name: 'Carjoaia',
+    name: 'Cârjoaia',
   },
   {
     id: 2306,
     countyId: 53,
-    name: 'Carjoani',
+    name: 'Cârjoani',
   },
   {
     id: 2307,
     countyId: 24,
-    name: 'Carlanesti',
+    name: 'Cârlănești',
   },
   {
     id: 2308,
     countyId: 48,
-    name: 'Carlibaba',
+    name: 'Cârlibaba',
   },
   {
     id: 2309,
     countyId: 48,
-    name: 'Carlibaba Noua',
+    name: 'Cârlibaba Nouă',
   },
   {
     id: 2310,
     countyId: 42,
-    name: 'Carlig',
+    name: 'Cârlig',
   },
   {
     id: 2311,
     countyId: 35,
-    name: 'Carlig',
+    name: 'Cârlig',
   },
   {
     id: 2312,
     countyId: 30,
-    name: 'Carligei',
+    name: 'Cârligei',
   },
   {
     id: 2313,
     countyId: 25,
-    name: 'Carligei',
+    name: 'Cârligei',
   },
   {
     id: 2314,
     countyId: 54,
-    name: 'Carligele',
+    name: 'Cârligele',
   },
   {
     id: 2315,
     countyId: 5,
-    name: 'Carligi',
+    name: 'Cârligi',
   },
   {
     id: 2316,
     countyId: 42,
-    name: 'Carligi',
+    name: 'Cârligi',
   },
   {
     id: 2317,
     countyId: 18,
-    name: 'Carligu Mare',
+    name: 'Cârligu Mare',
   },
   {
     id: 2318,
     countyId: 18,
-    name: 'Carligu Mic',
+    name: 'Cârligu Mic',
   },
   {
     id: 2319,
     countyId: 43,
-    name: 'Carlogani',
+    name: 'Cârlogani',
   },
   {
     id: 2320,
     countyId: 52,
-    name: 'Carlogani',
+    name: 'Cârlogani',
   },
   {
     id: 2321,
     countyId: 18,
-    name: 'Carlomanesti',
+    name: 'Cârlomănești',
   },
   {
     id: 2322,
     countyId: 28,
-    name: 'Carlomanesti',
+    name: 'Cârlomănești',
   },
   {
     id: 2323,
     countyId: 49,
-    name: 'Carlomanu',
+    name: 'Cârlomanu',
   },
   {
     id: 2324,
     countyId: 33,
-    name: 'Carmazanesti',
+    name: 'Cărmăzănești',
   },
   {
     id: 2325,
     countyId: 25,
-    name: 'Carna',
+    name: 'Cârna',
   },
   {
     id: 2326,
     countyId: 20,
-    name: 'Carnecea',
+    name: 'Cârnecea',
   },
   {
     id: 2327,
     countyId: 33,
-    name: 'Carnesti',
+    name: 'Cârnești',
   },
   {
     id: 2328,
     countyId: 35,
-    name: 'Carniceni',
+    name: 'Cârniceni',
   },
   {
     id: 2329,
@@ -11657,62 +11657,62 @@ export const CITIES = [
   {
     id: 2332,
     countyId: 3,
-    name: 'Carpenis',
+    name: 'Cărpeniș',
   },
   {
     id: 2333,
     countyId: 29,
-    name: 'Carpenisu',
+    name: 'Cărpenișu',
   },
   {
     id: 2334,
     countyId: 23,
-    name: 'Carpinenii',
+    name: 'Cărpinenii',
   },
   {
     id: 2335,
     countyId: 6,
-    name: 'Carpinet',
+    name: 'Cărpinet',
   },
   {
     id: 2336,
     countyId: 30,
-    name: 'Carpinis',
+    name: 'Cărpiniș',
   },
   {
     id: 2337,
     countyId: 39,
-    name: 'Carpinis',
+    name: 'Cărpiniș',
   },
   {
     id: 2338,
     countyId: 10,
-    name: 'Carpinis',
+    name: 'Cărpiniș',
   },
   {
     id: 2339,
     countyId: 33,
-    name: 'Carpinis',
+    name: 'Cărpiniș',
   },
   {
     id: 2340,
     countyId: 50,
-    name: 'Carpinis',
+    name: 'Cărpiniș',
   },
   {
     id: 2341,
     countyId: 1,
-    name: 'Carpinis (Garbova)',
+    name: 'Cărpiniș (Gârbova)',
   },
   {
     id: 2342,
     countyId: 1,
-    name: 'Carpinis (Rosia Montana)',
+    name: 'Cărpiniș (Roșia Montană)',
   },
   {
     id: 2343,
     countyId: 18,
-    name: 'Carpinistea',
+    name: 'Cărpiniștea',
   },
   {
     id: 2344,
@@ -11722,67 +11722,67 @@ export const CITIES = [
   {
     id: 2345,
     countyId: 20,
-    name: 'Carsa Rosie',
+    name: 'Cârșa Roșie',
   },
   {
     id: 2346,
     countyId: 20,
-    name: 'Carsie',
+    name: 'Cârșie',
   },
   {
     id: 2347,
     countyId: 54,
-    name: 'Carsochesti-Corabita',
+    name: 'Carșochești-Corăbița',
   },
   {
     id: 2348,
     countyId: 52,
-    name: 'Carstanesti',
+    name: 'Cârstănești',
   },
   {
     id: 2349,
     countyId: 43,
-    name: 'Carstani',
+    name: 'Cârstani',
   },
   {
     id: 2350,
     countyId: 3,
-    name: 'Carstieni',
+    name: 'Cârstieni',
   },
   {
     id: 2351,
     countyId: 25,
-    name: 'Carstovani',
+    name: 'Cârstovani',
   },
   {
     id: 2352,
     countyId: 40,
-    name: 'Carsu',
+    name: 'Cârșu',
   },
   {
     id: 2353,
     countyId: 31,
-    name: 'Carta',
+    name: 'Cârța',
   },
   {
     id: 2354,
     countyId: 47,
-    name: 'Carta',
+    name: 'Cârța',
   },
   {
     id: 2355,
     countyId: 53,
-    name: 'Cartibasi',
+    name: 'Cârțibași',
   },
   {
     id: 2356,
     countyId: 44,
-    name: 'Cartierul Dambu',
+    name: 'Cartierul Dâmbu',
   },
   {
     id: 2357,
     countyId: 47,
-    name: 'Cartisoara',
+    name: 'Cârțișoara',
   },
   {
     id: 2358,
@@ -11797,22 +11797,22 @@ export const CITIES = [
   {
     id: 2360,
     countyId: 1,
-    name: 'Cartulesti',
+    name: 'Cârțulești',
   },
   {
     id: 2361,
     countyId: 25,
-    name: 'Caruia',
+    name: 'Căruia',
   },
   {
     id: 2362,
     countyId: 22,
-    name: 'Carvan',
+    name: 'Carvăn',
   },
   {
     id: 2363,
     countyId: 1,
-    name: 'Casa de Piatra',
+    name: 'Casa de Piatră',
   },
   {
     id: 2364,
@@ -11822,37 +11822,37 @@ export const CITIES = [
   {
     id: 2365,
     countyId: 42,
-    name: 'Casaria',
+    name: 'Cășăria',
   },
   {
     id: 2366,
     countyId: 22,
-    name: 'Cascioarele',
+    name: 'Căscioarele',
   },
   {
     id: 2367,
     countyId: 19,
-    name: 'Cascioarele',
+    name: 'Căscioarele',
   },
   {
     id: 2368,
     countyId: 29,
-    name: 'Cascioarele (Gaiseni)',
+    name: 'Căscioarele (Găiseni)',
   },
   {
     id: 2369,
     countyId: 29,
-    name: 'Cascioarele (Ulmi)',
+    name: 'Căscioarele (Ulmi)',
   },
   {
     id: 2370,
     countyId: 21,
-    name: 'Caseiu',
+    name: 'Cășeiu',
   },
   {
     id: 2371,
     countyId: 21,
-    name: 'Casele Micesti',
+    name: 'Casele Micești',
   },
   {
     id: 2372,
@@ -11872,12 +11872,12 @@ export const CITIES = [
   {
     id: 2375,
     countyId: 5,
-    name: 'Casin',
+    name: 'Cașin',
   },
   {
     id: 2376,
     countyId: 23,
-    name: 'Casinu Mic',
+    name: 'Cașinu Mic',
   },
   {
     id: 2377,
@@ -11887,27 +11887,27 @@ export const CITIES = [
   {
     id: 2378,
     countyId: 51,
-    name: 'Caslita',
+    name: 'Câșlița',
   },
   {
     id: 2379,
     countyId: 1,
-    name: 'Casoaia',
+    name: 'Căsoaia',
   },
   {
     id: 2380,
     countyId: 18,
-    name: 'Casoca',
+    name: 'Cașoca',
   },
   {
     id: 2381,
     countyId: 48,
-    name: 'Casoi',
+    name: 'Căsoi',
   },
   {
     id: 2382,
     countyId: 47,
-    name: 'Casolt',
+    name: 'Cașolț',
   },
   {
     id: 2383,
@@ -11917,7 +11917,7 @@ export const CITIES = [
   {
     id: 2384,
     countyId: 33,
-    name: 'Castau',
+    name: 'Căstău',
   },
   {
     id: 2385,
@@ -11937,17 +11937,17 @@ export const CITIES = [
   {
     id: 2388,
     countyId: 41,
-    name: 'Casva',
+    name: 'Cașva',
   },
   {
     id: 2389,
     countyId: 10,
-    name: 'Cata',
+    name: 'Cața',
   },
   {
     id: 2390,
     countyId: 21,
-    name: 'Catalina',
+    name: 'Cătălina',
   },
   {
     id: 2391,
@@ -11957,7 +11957,7 @@ export const CITIES = [
   {
     id: 2392,
     countyId: 39,
-    name: 'Catalina',
+    name: 'Cătălina',
   },
   {
     id: 2393,
@@ -11967,12 +11967,12 @@ export const CITIES = [
   {
     id: 2394,
     countyId: 8,
-    name: 'Catamaresti',
+    name: 'Cătămărești',
   },
   {
     id: 2395,
     countyId: 8,
-    name: 'Catamaresti-Deal',
+    name: 'Cătămărești-Deal',
   },
   {
     id: 2396,
@@ -12007,47 +12007,47 @@ export const CITIES = [
   {
     id: 2402,
     countyId: 54,
-    name: 'Catauti',
+    name: 'Cătăuți',
   },
   {
     id: 2403,
     countyId: 21,
-    name: 'Catcau',
+    name: 'Câțcău',
   },
   {
     id: 2404,
     countyId: 3,
-    name: 'Cateasca',
+    name: 'Căteasca',
   },
   {
     id: 2405,
     countyId: 36,
-    name: 'Catelu',
+    name: 'Cățelu',
   },
   {
     id: 2406,
     countyId: 52,
-    name: 'Catetu',
+    name: 'Cățetu',
   },
   {
     id: 2407,
     countyId: 18,
-    name: 'Catiasu',
+    name: 'Cătiașu',
   },
   {
     id: 2408,
     countyId: 21,
-    name: 'Catina',
+    name: 'Cătina',
   },
   {
     id: 2409,
     countyId: 18,
-    name: 'Catina',
+    name: 'Cătina',
   },
   {
     id: 2410,
     countyId: 44,
-    name: 'Catina',
+    name: 'Cătina',
   },
   {
     id: 2411,
@@ -12057,42 +12057,42 @@ export const CITIES = [
   {
     id: 2412,
     countyId: 34,
-    name: 'Catrunesti',
+    name: 'Cătrunești',
   },
   {
     id: 2413,
     countyId: 3,
-    name: 'Catunasi',
+    name: 'Cătunași',
   },
   {
     id: 2414,
     countyId: 30,
-    name: 'Catunele',
+    name: 'Cătunele',
   },
   {
     id: 2415,
     countyId: 49,
-    name: 'Catunu',
+    name: 'Cătunu',
   },
   {
     id: 2416,
     countyId: 44,
-    name: 'Catunu (Berceni)',
+    name: 'Cătunu (Berceni)',
   },
   {
     id: 2417,
     countyId: 24,
-    name: 'Catunu (Cornesti)',
+    name: 'Cătunu (Cornești)',
   },
   {
     id: 2418,
     countyId: 44,
-    name: 'Catunu (Drajna)',
+    name: 'Cătunu (Drajna)',
   },
   {
     id: 2419,
     countyId: 24,
-    name: 'Catunu (Salcioara)',
+    name: 'Cătunu (Sălcioara)',
   },
   {
     id: 2420,
@@ -12102,17 +12102,17 @@ export const CITIES = [
   {
     id: 2421,
     countyId: 46,
-    name: 'Cauas',
+    name: 'Căuaș',
   },
   {
     id: 2422,
     countyId: 6,
-    name: 'Cauasd',
+    name: 'Căuașd',
   },
   {
     id: 2423,
     countyId: 35,
-    name: 'Cauesti',
+    name: 'Căuești',
   },
   {
     id: 2424,
@@ -12122,27 +12122,27 @@ export const CITIES = [
   {
     id: 2425,
     countyId: 5,
-    name: 'Cauia',
+    name: 'Căuia',
   },
   {
     id: 2426,
     countyId: 28,
-    name: 'Cauiesti',
+    name: 'Căuiești',
   },
   {
     id: 2427,
     countyId: 42,
-    name: 'Causeni',
+    name: 'Căușeni',
   },
   {
     id: 2428,
     countyId: 28,
-    name: 'Cavadinesti',
+    name: 'Cavadinești',
   },
   {
     id: 2429,
     countyId: 20,
-    name: 'Cavaran',
+    name: 'Căvăran',
   },
   {
     id: 2430,
@@ -12162,42 +12162,42 @@ export const CITIES = [
   {
     id: 2433,
     countyId: 33,
-    name: 'Cazanesti',
+    name: 'Căzănești',
   },
   {
     id: 2434,
     countyId: 40,
-    name: 'Cazanesti',
+    name: 'Căzănești',
   },
   {
     id: 2435,
     countyId: 53,
-    name: 'Cazanesti',
+    name: 'Căzănești',
   },
   {
     id: 2436,
     countyId: 34,
-    name: 'Cazanesti',
+    name: 'Căzănești',
   },
   {
     id: 2437,
     countyId: 43,
-    name: 'Cazanesti',
+    name: 'Căzănești',
   },
   {
     id: 2438,
     countyId: 52,
-    name: 'Cazanesti (Ghioroiu)',
+    name: 'Căzănești (Ghioroiu)',
   },
   {
     id: 2439,
     countyId: 52,
-    name: 'Cazanesti (Milcoiu)',
+    name: 'Căzănești (Milcoiu)',
   },
   {
     id: 2440,
     countyId: 52,
-    name: 'Cazanesti (Ramnicu Valcea)',
+    name: 'Căzănești (Râmnicu Vâlcea)',
   },
   {
     id: 2441,
@@ -12222,7 +12222,7 @@ export const CITIES = [
   {
     id: 2445,
     countyId: 42,
-    name: 'Ceahlau',
+    name: 'Ceahlău',
   },
   {
     id: 2446,
@@ -12257,7 +12257,7 @@ export const CITIES = [
   {
     id: 2452,
     countyId: 40,
-    name: 'Cearangu',
+    name: 'Cearângu',
   },
   {
     id: 2453,
@@ -12272,7 +12272,7 @@ export const CITIES = [
   {
     id: 2455,
     countyId: 3,
-    name: 'Ceauresti',
+    name: 'Ceaurești',
   },
   {
     id: 2456,
@@ -12282,7 +12282,7 @@ export const CITIES = [
   {
     id: 2457,
     countyId: 3,
-    name: 'Ceausesti',
+    name: 'Ceaușești',
   },
   {
     id: 2458,
@@ -12292,12 +12292,12 @@ export const CITIES = [
   {
     id: 2459,
     countyId: 41,
-    name: 'Cecalaca',
+    name: 'Cecălaca',
   },
   {
     id: 2460,
     countyId: 31,
-    name: 'Cechesti',
+    name: 'Cechești',
   },
   {
     id: 2461,
@@ -12317,7 +12317,7 @@ export const CITIES = [
   {
     id: 2464,
     countyId: 46,
-    name: 'Cehalut',
+    name: 'Cehăluț',
   },
   {
     id: 2465,
@@ -12327,7 +12327,7 @@ export const CITIES = [
   {
     id: 2466,
     countyId: 31,
-    name: 'Cehetel',
+    name: 'Cehețel',
   },
   {
     id: 2467,
@@ -12347,7 +12347,7 @@ export const CITIES = [
   {
     id: 2470,
     countyId: 6,
-    name: 'Ceisoara',
+    name: 'Ceișoara',
   },
   {
     id: 2471,
@@ -12377,7 +12377,7 @@ export const CITIES = [
   {
     id: 2476,
     countyId: 6,
-    name: 'Cenalos',
+    name: 'Cenaloș',
   },
   {
     id: 2477,
@@ -12407,7 +12407,7 @@ export const CITIES = [
   {
     id: 2482,
     countyId: 3,
-    name: 'Ceparii Pamanteni',
+    name: 'Ceparii Pământeni',
   },
   {
     id: 2483,
@@ -12417,12 +12417,12 @@ export const CITIES = [
   {
     id: 2484,
     countyId: 53,
-    name: 'Cepesti',
+    name: 'Cepești',
   },
   {
     id: 2485,
     countyId: 43,
-    name: 'Cepesti',
+    name: 'Cepești',
   },
   {
     id: 2486,
@@ -12432,7 +12432,7 @@ export const CITIES = [
   {
     id: 2487,
     countyId: 35,
-    name: 'Ceplenita',
+    name: 'Ceplenița',
   },
   {
     id: 2488,
@@ -12457,27 +12457,27 @@ export const CITIES = [
   {
     id: 2492,
     countyId: 40,
-    name: 'Ceranganul',
+    name: 'Cerânganul',
   },
   {
     id: 2493,
     countyId: 44,
-    name: 'Cerasu',
+    name: 'Cerașu',
   },
   {
     id: 2494,
     countyId: 25,
-    name: 'Cerat',
+    name: 'Cerăt',
   },
   {
     id: 2495,
     countyId: 30,
-    name: 'Ceratu de Copacioasa',
+    name: 'Cerătu de Copăcioasa',
   },
   {
     id: 2496,
     countyId: 33,
-    name: 'Cerbal',
+    name: 'Cerbăl',
   },
   {
     id: 2497,
@@ -12487,7 +12487,7 @@ export const CITIES = [
   {
     id: 2498,
     countyId: 21,
-    name: 'Cerbesti',
+    name: 'Cerbești',
   },
   {
     id: 2499,
@@ -12557,17 +12557,17 @@ export const CITIES = [
   {
     id: 2512,
     countyId: 1,
-    name: 'Cergau',
+    name: 'Cergău',
   },
   {
     id: 2513,
     countyId: 1,
-    name: 'Cergau Mare',
+    name: 'Cergău Mare',
   },
   {
     id: 2514,
     countyId: 1,
-    name: 'Cergau Mic',
+    name: 'Cergău Mic',
   },
   {
     id: 2515,
@@ -12582,22 +12582,22 @@ export const CITIES = [
   {
     id: 2517,
     countyId: 45,
-    name: 'Cerisa',
+    name: 'Cerișa',
   },
   {
     id: 2518,
     countyId: 33,
-    name: 'Cerisor',
+    name: 'Cerișor',
   },
   {
     id: 2519,
     countyId: 52,
-    name: 'Cermegesti (Ladesti)',
+    name: 'Cermegești (Lădești)',
   },
   {
     id: 2520,
     countyId: 52,
-    name: 'Cermegesti (Pesceana)',
+    name: 'Cermegești (Pesceana)',
   },
   {
     id: 2521,
@@ -12627,12 +12627,12 @@ export const CITIES = [
   {
     id: 2526,
     countyId: 40,
-    name: 'Cerna-Varf',
+    name: 'Cerna-Vârf',
   },
   {
     id: 2527,
     countyId: 30,
-    name: 'Cernadia',
+    name: 'Cernădia',
   },
   {
     id: 2528,
@@ -12652,17 +12652,17 @@ export const CITIES = [
   {
     id: 2531,
     countyId: 25,
-    name: 'Cernatesti',
+    name: 'Cernătești',
   },
   {
     id: 2532,
     countyId: 18,
-    name: 'Cernatesti',
+    name: 'Cernătești',
   },
   {
     id: 2533,
     countyId: 22,
-    name: 'Cernavoda',
+    name: 'Cernavodă',
   },
   {
     id: 2534,
@@ -12672,17 +12672,17 @@ export const CITIES = [
   {
     id: 2535,
     countyId: 8,
-    name: 'Cernesti',
+    name: 'Cernești',
   },
   {
     id: 2536,
     countyId: 44,
-    name: 'Cernesti',
+    name: 'Cernești',
   },
   {
     id: 2537,
     countyId: 39,
-    name: 'Cernesti',
+    name: 'Cernești',
   },
   {
     id: 2538,
@@ -12692,7 +12692,7 @@ export const CITIES = [
   {
     id: 2539,
     countyId: 40,
-    name: 'Cerneti',
+    name: 'Cerneți',
   },
   {
     id: 2540,
@@ -12707,12 +12707,12 @@ export const CITIES = [
   {
     id: 2542,
     countyId: 52,
-    name: 'Cernisoara',
+    name: 'Cernișoara',
   },
   {
     id: 2543,
     countyId: 33,
-    name: 'Cernisoara Florese',
+    name: 'Cernișoara Florese',
   },
   {
     id: 2544,
@@ -12727,7 +12727,7 @@ export const CITIES = [
   {
     id: 2546,
     countyId: 3,
-    name: 'Cersani',
+    name: 'Cerșani',
   },
   {
     id: 2547,
@@ -12747,7 +12747,7 @@ export const CITIES = [
   {
     id: 2550,
     countyId: 28,
-    name: 'Certesti',
+    name: 'Cerțești',
   },
   {
     id: 2551,
@@ -12762,7 +12762,7 @@ export const CITIES = [
   {
     id: 2553,
     countyId: 1,
-    name: 'Ceru-Bacainti',
+    name: 'Ceru-Băcăinți',
   },
   {
     id: 2554,
@@ -12772,17 +12772,17 @@ export const CITIES = [
   {
     id: 2555,
     countyId: 40,
-    name: 'Cervenita',
+    name: 'Cervenița',
   },
   {
     id: 2556,
     countyId: 8,
-    name: 'Cervicesti',
+    name: 'Cervicești',
   },
   {
     id: 2557,
     countyId: 8,
-    name: 'Cervicesti-Deal',
+    name: 'Cervicești-Deal',
   },
   {
     id: 2558,
@@ -12827,7 +12827,7 @@ export const CITIES = [
   {
     id: 2566,
     countyId: 1,
-    name: 'Cetatea de Balta',
+    name: 'Cetatea de Baltă',
   },
   {
     id: 2567,
@@ -12837,52 +12837,52 @@ export const CITIES = [
   {
     id: 2568,
     countyId: 52,
-    name: 'Cetateaua',
+    name: 'Cetățeaua',
   },
   {
     id: 2569,
     countyId: 39,
-    name: 'Cetatele',
+    name: 'Cetățele',
   },
   {
     id: 2570,
     countyId: 3,
-    name: 'Cetateni',
+    name: 'Cetățeni',
   },
   {
     id: 2571,
     countyId: 5,
-    name: 'Cetatuia',
+    name: 'Cetățuia',
   },
   {
     id: 2572,
     countyId: 29,
-    name: 'Cetatuia',
+    name: 'Cetățuia',
   },
   {
     id: 2573,
     countyId: 53,
-    name: 'Cetatuia',
+    name: 'Cetățuia',
   },
   {
     id: 2574,
     countyId: 24,
-    name: 'Cetatuia',
+    name: 'Cetățuia',
   },
   {
     id: 2575,
     countyId: 31,
-    name: 'Cetatuia',
+    name: 'Cetățuia',
   },
   {
     id: 2576,
     countyId: 25,
-    name: 'Cetatuia (Cioroiasi)',
+    name: 'Cetățuia (Cioroiași)',
   },
   {
     id: 2577,
     countyId: 25,
-    name: 'Cetatuia (Vela)',
+    name: 'Cetățuia (Vela)',
   },
   {
     id: 2578,
@@ -12897,12 +12897,12 @@ export const CITIES = [
   {
     id: 2580,
     countyId: 41,
-    name: 'Ceuas',
+    name: 'Ceuaș',
   },
   {
     id: 2581,
     countyId: 41,
-    name: 'Ceuasu de Campie',
+    name: 'Ceuașu de Câmpie',
   },
   {
     id: 2582,
@@ -12922,17 +12922,17 @@ export const CITIES = [
   {
     id: 2585,
     countyId: 50,
-    name: 'Cheches',
+    name: 'Checheș',
   },
   {
     id: 2586,
     countyId: 45,
-    name: 'Chechis',
+    name: 'Chechiș',
   },
   {
     id: 2587,
     countyId: 39,
-    name: 'Chechis',
+    name: 'Chechiș',
   },
   {
     id: 2588,
@@ -12942,7 +12942,7 @@ export const CITIES = [
   {
     id: 2589,
     countyId: 31,
-    name: 'Chedia Mica',
+    name: 'Chedia Mică',
   },
   {
     id: 2590,
@@ -12992,7 +12992,7 @@ export const CITIES = [
   {
     id: 2599,
     countyId: 43,
-    name: 'Chelbesti',
+    name: 'Chelbești',
   },
   {
     id: 2600,
@@ -13002,12 +13002,12 @@ export const CITIES = [
   {
     id: 2601,
     countyId: 39,
-    name: 'Chelinta',
+    name: 'Chelința',
   },
   {
     id: 2602,
     countyId: 8,
-    name: 'Chelis',
+    name: 'Cheliș',
   },
   {
     id: 2603,
@@ -13032,7 +13032,7 @@ export const CITIES = [
   {
     id: 2607,
     countyId: 52,
-    name: 'Cherasti',
+    name: 'Cherăști',
   },
   {
     id: 2608,
@@ -13047,7 +13047,7 @@ export const CITIES = [
   {
     id: 2610,
     countyId: 2,
-    name: 'Cherelus',
+    name: 'Chereluș',
   },
   {
     id: 2611,
@@ -13062,12 +13062,12 @@ export const CITIES = [
   {
     id: 2613,
     countyId: 46,
-    name: 'Chereusa',
+    name: 'Chereușa',
   },
   {
     id: 2614,
     countyId: 33,
-    name: 'Cherghes',
+    name: 'Chergheș',
   },
   {
     id: 2615,
@@ -13077,37 +13077,37 @@ export const CITIES = [
   {
     id: 2616,
     countyId: 43,
-    name: 'Cherlestii din Deal',
+    name: 'Cherleștii din Deal',
   },
   {
     id: 2617,
     countyId: 43,
-    name: 'Cherlestii Mosteni',
+    name: 'Cherleștii Moșteni',
   },
   {
     id: 2618,
     countyId: 53,
-    name: 'Chersacosu',
+    name: 'Chersăcosu',
   },
   {
     id: 2619,
     countyId: 6,
-    name: 'Chesa',
+    name: 'Cheșa',
   },
   {
     id: 2620,
     countyId: 21,
-    name: 'Chesau',
+    name: 'Chesău',
   },
   {
     id: 2621,
     countyId: 6,
-    name: 'Chesereu',
+    name: 'Cheșereu',
   },
   {
     id: 2622,
     countyId: 2,
-    name: 'Chesint',
+    name: 'Chesinț',
   },
   {
     id: 2623,
@@ -13117,22 +13117,22 @@ export const CITIES = [
   {
     id: 2624,
     countyId: 44,
-    name: 'Chesnoiu',
+    name: 'Cheșnoiu',
   },
   {
     id: 2625,
     countyId: 6,
-    name: 'Chet',
+    name: 'Cheț',
   },
   {
     id: 2626,
     countyId: 41,
-    name: 'Chetani',
+    name: 'Chețani',
   },
   {
     id: 2627,
     countyId: 7,
-    name: 'Chetiu',
+    name: 'Chețiu',
   },
   {
     id: 2628,
@@ -13142,12 +13142,12 @@ export const CITIES = [
   {
     id: 2629,
     countyId: 53,
-    name: 'Chetresti',
+    name: 'Chetrești',
   },
   {
     id: 2630,
     countyId: 5,
-    name: 'Chetris',
+    name: 'Chetriș',
   },
   {
     id: 2631,
@@ -13162,7 +13162,7 @@ export const CITIES = [
   {
     id: 2633,
     countyId: 50,
-    name: 'Cheveresu Mare',
+    name: 'Chevereșu Mare',
   },
   {
     id: 2634,
@@ -13172,7 +13172,7 @@ export const CITIES = [
   {
     id: 2635,
     countyId: 25,
-    name: 'Chiasu',
+    name: 'Chiașu',
   },
   {
     id: 2636,
@@ -13202,17 +13202,17 @@ export const CITIES = [
   {
     id: 2643,
     countyId: 9,
-    name: 'Chichinetu',
+    name: 'Chichinețu',
   },
   {
     id: 2644,
     countyId: 23,
-    name: 'Chichis',
+    name: 'Chichiș',
   },
   {
     id: 2645,
     countyId: 45,
-    name: 'Chichisa',
+    name: 'Chichișa',
   },
   {
     id: 2646,
@@ -13237,7 +13237,7 @@ export const CITIES = [
   {
     id: 2650,
     countyId: 45,
-    name: 'Chiesd',
+    name: 'Chieșd',
   },
   {
     id: 2651,
@@ -13322,12 +13322,12 @@ export const CITIES = [
   {
     id: 2667,
     countyId: 48,
-    name: 'Chiliseni',
+    name: 'Chilișeni',
   },
   {
     id: 2668,
     countyId: 35,
-    name: 'Chilisoaia',
+    name: 'Chilișoaia',
   },
   {
     id: 2669,
@@ -13347,7 +13347,7 @@ export const CITIES = [
   {
     id: 2672,
     countyId: 41,
-    name: 'Chincius',
+    name: 'Chinciuș',
   },
   {
     id: 2673,
@@ -13362,7 +13362,7 @@ export const CITIES = [
   {
     id: 2675,
     countyId: 43,
-    name: 'Chintesti',
+    name: 'Chintești',
   },
   {
     id: 2676,
@@ -13372,7 +13372,7 @@ export const CITIES = [
   {
     id: 2677,
     countyId: 31,
-    name: 'Chinusu',
+    name: 'Chinușu',
   },
   {
     id: 2678,
@@ -13382,12 +13382,12 @@ export const CITIES = [
   {
     id: 2679,
     countyId: 7,
-    name: 'Chiochis',
+    name: 'Chiochiș',
   },
   {
     id: 2680,
     countyId: 9,
-    name: 'Chioibasesti',
+    name: 'Chioibășești',
   },
   {
     id: 2681,
@@ -13407,7 +13407,7 @@ export const CITIES = [
   {
     id: 2684,
     countyId: 35,
-    name: 'Chiperesti',
+    name: 'Chiperești',
   },
   {
     id: 2685,
@@ -13422,7 +13422,7 @@ export const CITIES = [
   {
     id: 2687,
     countyId: 7,
-    name: 'Chirales',
+    name: 'Chiraleș',
   },
   {
     id: 2688,
@@ -13437,17 +13437,17 @@ export const CITIES = [
   {
     id: 2690,
     countyId: 53,
-    name: 'Chircesti',
+    name: 'Chircești',
   },
   {
     id: 2691,
     countyId: 29,
-    name: 'Chirculesti',
+    name: 'Chirculești',
   },
   {
     id: 2692,
     countyId: 52,
-    name: 'Chirculesti',
+    name: 'Chirculești',
   },
   {
     id: 2693,
@@ -13457,7 +13457,7 @@ export const CITIES = [
   {
     id: 2694,
     countyId: 6,
-    name: 'Chiribis',
+    name: 'Chiribiș',
   },
   {
     id: 2695,
@@ -13467,7 +13467,7 @@ export const CITIES = [
   {
     id: 2696,
     countyId: 52,
-    name: 'Chiricesti',
+    name: 'Chiricești',
   },
   {
     id: 2697,
@@ -13482,37 +13482,37 @@ export const CITIES = [
   {
     id: 2699,
     countyId: 21,
-    name: 'Chiris',
+    name: 'Chiriș',
   },
   {
     id: 2700,
     countyId: 42,
-    name: 'Chiriteni',
+    name: 'Chirițeni',
   },
   {
     id: 2701,
     countyId: 44,
-    name: 'Chiritesti',
+    name: 'Chirițești',
   },
   {
     id: 2702,
     countyId: 3,
-    name: 'Chiritesti (Suseni)',
+    name: 'Chirițești (Suseni)',
   },
   {
     id: 2703,
     countyId: 3,
-    name: 'Chiritesti (Uda)',
+    name: 'Chirițești (Uda)',
   },
   {
     id: 2704,
     countyId: 3,
-    name: 'Chiritesti (Vedea)',
+    name: 'Chirițești (Vedea)',
   },
   {
     id: 2705,
     countyId: 18,
-    name: 'Chirlesti',
+    name: 'Chirlești',
   },
   {
     id: 2706,
@@ -13532,7 +13532,7 @@ export const CITIES = [
   {
     id: 2709,
     countyId: 34,
-    name: 'Chiroiu-Pamanteni',
+    name: 'Chiroiu-Pamânteni',
   },
   {
     id: 2710,
@@ -13547,22 +13547,22 @@ export const CITIES = [
   {
     id: 2712,
     countyId: 47,
-    name: 'Chirpar',
+    name: 'Chirpăr',
   },
   {
     id: 2713,
     countyId: 41,
-    name: 'Chisalita',
+    name: 'Chisălița',
   },
   {
     id: 2714,
     countyId: 46,
-    name: 'Chisau',
+    name: 'Chisău',
   },
   {
     id: 2715,
     countyId: 33,
-    name: 'Chiscadaga',
+    name: 'Chișcădaga',
   },
   {
     id: 2716,
@@ -13572,17 +13572,17 @@ export const CITIES = [
   {
     id: 2717,
     countyId: 8,
-    name: 'Chiscareni',
+    name: 'Chișcăreni',
   },
   {
     id: 2718,
     countyId: 35,
-    name: 'Chiscareni',
+    name: 'Chișcăreni',
   },
   {
     id: 2719,
     countyId: 6,
-    name: 'Chiscau',
+    name: 'Chișcău',
   },
   {
     id: 2720,
@@ -13597,27 +13597,27 @@ export const CITIES = [
   {
     id: 2722,
     countyId: 2,
-    name: 'Chisineu-Cris',
+    name: 'Chișineu-Criș',
   },
   {
     id: 2723,
     countyId: 6,
-    name: 'Chisirid',
+    name: 'Chișirid',
   },
   {
     id: 2724,
     countyId: 2,
-    name: 'Chislaca',
+    name: 'Chișlaca',
   },
   {
     id: 2725,
     countyId: 6,
-    name: 'Chislaz',
+    name: 'Chișlaz',
   },
   {
     id: 2726,
     countyId: 50,
-    name: 'Chisoda',
+    name: 'Chișoda',
   },
   {
     id: 2727,
@@ -13627,27 +13627,27 @@ export const CITIES = [
   {
     id: 2728,
     countyId: 3,
-    name: 'Chitani',
+    name: 'Chițani',
   },
   {
     id: 2729,
     countyId: 54,
-    name: 'Chitcani',
+    name: 'Chițcani',
   },
   {
     id: 2730,
     countyId: 53,
-    name: 'Chitcani',
+    name: 'Chițcani',
   },
   {
     id: 2731,
     countyId: 43,
-    name: 'Chiteasca',
+    name: 'Chițeasca',
   },
   {
     id: 2732,
     countyId: 3,
-    name: 'Chitesti',
+    name: 'Chițești',
   },
   {
     id: 2733,
@@ -13667,27 +13667,27 @@ export const CITIES = [
   {
     id: 2736,
     countyId: 53,
-    name: 'Chitoc',
+    name: 'Chițoc',
   },
   {
     id: 2737,
     countyId: 44,
-    name: 'Chitorani',
+    name: 'Chițorani',
   },
   {
     id: 2738,
     countyId: 8,
-    name: 'Chitoveni',
+    name: 'Chițoveni',
   },
   {
     id: 2739,
     countyId: 21,
-    name: 'Chiuiesti',
+    name: 'Chiuiești',
   },
   {
     id: 2740,
     countyId: 23,
-    name: 'Chiurus',
+    name: 'Chiuruș',
   },
   {
     id: 2741,
@@ -13702,7 +13702,7 @@ export const CITIES = [
   {
     id: 2743,
     countyId: 50,
-    name: 'Chizatau',
+    name: 'Chizătău',
   },
   {
     id: 2744,
@@ -13737,22 +13737,22 @@ export const CITIES = [
   {
     id: 2750,
     countyId: 3,
-    name: 'Cicanesti',
+    name: 'Cicănești',
   },
   {
     id: 2751,
     countyId: 1,
-    name: 'Cicard',
+    name: 'Cicârd',
   },
   {
     id: 2752,
     countyId: 39,
-    name: 'Cicarlau',
+    name: 'Cicârlău',
   },
   {
     id: 2753,
     countyId: 1,
-    name: 'Cicau',
+    name: 'Cicău',
   },
   {
     id: 2754,
@@ -13767,12 +13767,12 @@ export const CITIES = [
   {
     id: 2756,
     countyId: 7,
-    name: 'Ciceu-Giurgesti',
+    name: 'Ciceu-Giurgești',
   },
   {
     id: 2757,
     countyId: 7,
-    name: 'Ciceu-Mihaiesti',
+    name: 'Ciceu-Mihăiești',
   },
   {
     id: 2758,
@@ -13792,12 +13792,12 @@ export const CITIES = [
   {
     id: 2761,
     countyId: 20,
-    name: 'Ciclova Montana',
+    name: 'Ciclova Montană',
   },
   {
     id: 2762,
     countyId: 20,
-    name: 'Ciclova Romana',
+    name: 'Ciclova Română',
   },
   {
     id: 2763,
@@ -13807,7 +13807,7 @@ export const CITIES = [
   {
     id: 2764,
     countyId: 3,
-    name: 'Ciesti',
+    name: 'Ciești',
   },
   {
     id: 2765,
@@ -13822,7 +13822,7 @@ export const CITIES = [
   {
     id: 2767,
     countyId: 33,
-    name: 'Cigmau',
+    name: 'Cigmău',
   },
   {
     id: 2768,
@@ -13857,12 +13857,12 @@ export const CITIES = [
   {
     id: 2774,
     countyId: 33,
-    name: 'Cincis-Cerna',
+    name: 'Cinciș-Cerna',
   },
   {
     id: 2775,
     countyId: 10,
-    name: 'Cincsor',
+    name: 'Cincșor',
   },
   {
     id: 2776,
@@ -13902,7 +13902,7 @@ export const CITIES = [
   {
     id: 2783,
     countyId: 3,
-    name: 'Ciobanesti',
+    name: 'Ciobănești',
   },
   {
     id: 2784,
@@ -13912,17 +13912,17 @@ export const CITIES = [
   {
     id: 2785,
     countyId: 31,
-    name: 'Ciobanis',
+    name: 'Ciobăniș',
   },
   {
     id: 2786,
     countyId: 22,
-    name: 'Ciobanita',
+    name: 'Ciobănița',
   },
   {
     id: 2787,
     countyId: 18,
-    name: 'Ciobanoaia',
+    name: 'Ciobănoaia',
   },
   {
     id: 2788,
@@ -13932,7 +13932,7 @@ export const CITIES = [
   {
     id: 2789,
     countyId: 5,
-    name: 'Ciobanus',
+    name: 'Ciobănuș',
   },
   {
     id: 2790,
@@ -13942,7 +13942,7 @@ export const CITIES = [
   {
     id: 2791,
     countyId: 52,
-    name: 'Cioboti',
+    name: 'Cioboți',
   },
   {
     id: 2792,
@@ -13962,22 +13962,22 @@ export const CITIES = [
   {
     id: 2795,
     countyId: 52,
-    name: 'Ciocaltei',
+    name: 'Ciocâltei',
   },
   {
     id: 2796,
     countyId: 3,
-    name: 'Ciocanai',
+    name: 'Ciocănăi',
   },
   {
     id: 2797,
     countyId: 24,
-    name: 'Ciocanari',
+    name: 'Ciocănari',
   },
   {
     id: 2798,
     countyId: 52,
-    name: 'Ciocanari',
+    name: 'Ciocănari',
   },
   {
     id: 2799,
@@ -13987,37 +13987,37 @@ export const CITIES = [
   {
     id: 2800,
     countyId: 18,
-    name: 'Ciocanesti',
+    name: 'Ciocănești',
   },
   {
     id: 2801,
     countyId: 24,
-    name: 'Ciocanesti',
+    name: 'Ciocănești',
   },
   {
     id: 2802,
     countyId: 43,
-    name: 'Ciocanesti',
+    name: 'Ciocănești',
   },
   {
     id: 2803,
     countyId: 3,
-    name: 'Ciocanesti',
+    name: 'Ciocănești',
   },
   {
     id: 2804,
     countyId: 19,
-    name: 'Ciocanesti',
+    name: 'Ciocănești',
   },
   {
     id: 2805,
     countyId: 25,
-    name: 'Ciocanesti',
+    name: 'Ciocănești',
   },
   {
     id: 2806,
     countyId: 48,
-    name: 'Ciocanesti',
+    name: 'Ciocănești',
   },
   {
     id: 2807,
@@ -14032,27 +14032,27 @@ export const CITIES = [
   {
     id: 2809,
     countyId: 35,
-    name: 'Ciocarlesti',
+    name: 'Ciocârlești',
   },
   {
     id: 2810,
     countyId: 34,
-    name: 'Ciocarlia',
+    name: 'Ciocârlia',
   },
   {
     id: 2811,
     countyId: 22,
-    name: 'Ciocarlia',
+    name: 'Ciocârlia',
   },
   {
     id: 2812,
     countyId: 22,
-    name: 'Ciocarlia de Sus',
+    name: 'Ciocârlia de Sus',
   },
   {
     id: 2813,
     countyId: 1,
-    name: 'Ciocasu',
+    name: 'Ciocașu',
   },
   {
     id: 2814,
@@ -14062,7 +14062,7 @@ export const CITIES = [
   {
     id: 2815,
     countyId: 3,
-    name: 'Ciocesti',
+    name: 'Ciocești',
   },
   {
     id: 2816,
@@ -14072,7 +14072,7 @@ export const CITIES = [
   {
     id: 2817,
     countyId: 40,
-    name: 'Ciochiuta',
+    name: 'Ciochiuța',
   },
   {
     id: 2818,
@@ -14092,7 +14092,7 @@ export const CITIES = [
   {
     id: 2821,
     countyId: 39,
-    name: 'Ciocotis',
+    name: 'Ciocotiș',
   },
   {
     id: 2822,
@@ -14117,37 +14117,37 @@ export const CITIES = [
   {
     id: 2826,
     countyId: 3,
-    name: 'Ciofrangeni',
+    name: 'Ciofrângeni',
   },
   {
     id: 2827,
     countyId: 35,
-    name: 'Ciohorani',
+    name: 'Ciohorăni',
   },
   {
     id: 2828,
     countyId: 54,
-    name: 'Ciolanesti',
+    name: 'Ciolănești',
   },
   {
     id: 2829,
     countyId: 49,
-    name: 'Ciolanesti',
+    name: 'Ciolănești',
   },
   {
     id: 2830,
     countyId: 49,
-    name: 'Ciolanestii din Deal',
+    name: 'Ciolăneștii din Deal',
   },
   {
     id: 2831,
     countyId: 49,
-    name: 'Ciolanestii din Vale',
+    name: 'Ciolăneștii din Vale',
   },
   {
     id: 2832,
     countyId: 3,
-    name: 'Ciolcesti',
+    name: 'Ciolcești',
   },
   {
     id: 2833,
@@ -14162,27 +14162,27 @@ export const CITIES = [
   {
     id: 2835,
     countyId: 3,
-    name: 'Ciomagesti',
+    name: 'Ciomăgești',
   },
   {
     id: 2836,
     countyId: 48,
-    name: 'Ciomartan',
+    name: 'Ciomârtan',
   },
   {
     id: 2837,
     countyId: 46,
-    name: 'Cionchesti',
+    name: 'Cionchești',
   },
   {
     id: 2838,
     countyId: 1,
-    name: 'Cionesti',
+    name: 'Cionești',
   },
   {
     id: 2839,
     countyId: 30,
-    name: 'Cionti',
+    name: 'Cionți',
   },
   {
     id: 2840,
@@ -14192,12 +14192,12 @@ export const CITIES = [
   {
     id: 2841,
     countyId: 52,
-    name: 'Cioponesti',
+    name: 'Cioponești',
   },
   {
     id: 2842,
     countyId: 43,
-    name: 'Cioraca',
+    name: 'Ciorâca',
   },
   {
     id: 2843,
@@ -14232,17 +14232,17 @@ export const CITIES = [
   {
     id: 2849,
     countyId: 28,
-    name: 'Ciorasti',
+    name: 'Ciorăști',
   },
   {
     id: 2850,
     countyId: 54,
-    name: 'Ciorasti',
+    name: 'Ciorăști',
   },
   {
     id: 2851,
     countyId: 52,
-    name: 'Ciorasti',
+    name: 'Ciorăști',
   },
   {
     id: 2852,
@@ -14257,17 +14257,17 @@ export const CITIES = [
   {
     id: 2854,
     countyId: 36,
-    name: 'Ciorogarla',
+    name: 'Ciorogârla',
   },
   {
     id: 2855,
     countyId: 25,
-    name: 'Cioroiasi',
+    name: 'Cioroiași',
   },
   {
     id: 2856,
     countyId: 43,
-    name: 'Cioroiasu',
+    name: 'Cioroiașu',
   },
   {
     id: 2857,
@@ -14287,12 +14287,12 @@ export const CITIES = [
   {
     id: 2860,
     countyId: 52,
-    name: 'Ciortesti',
+    name: 'Ciortești',
   },
   {
     id: 2861,
     countyId: 35,
-    name: 'Ciortesti',
+    name: 'Ciortești',
   },
   {
     id: 2862,
@@ -14307,17 +14307,17 @@ export const CITIES = [
   {
     id: 2864,
     countyId: 40,
-    name: 'Ciovarnasani',
+    name: 'Ciovârnășani',
   },
   {
     id: 2865,
     countyId: 41,
-    name: 'Cipaieni',
+    name: 'Cipăieni',
   },
   {
     id: 2866,
     countyId: 41,
-    name: 'Cipau',
+    name: 'Cipău',
   },
   {
     id: 2867,
@@ -14327,87 +14327,87 @@ export const CITIES = [
   {
     id: 2868,
     countyId: 7,
-    name: 'Cireasi',
+    name: 'Cireași',
   },
   {
     id: 2869,
     countyId: 43,
-    name: 'Cireasov',
+    name: 'Cireașov',
   },
   {
     id: 2870,
     countyId: 20,
-    name: 'Ciresa',
+    name: 'Cireșa',
   },
   {
     id: 2871,
     countyId: 44,
-    name: 'Ciresanu',
+    name: 'Cireșanu',
   },
   {
     id: 2872,
     countyId: 20,
-    name: 'Ciresel',
+    name: 'Cireșel',
   },
   {
     id: 2873,
     countyId: 31,
-    name: 'Cireseni',
+    name: 'Cireșeni',
   },
   {
     id: 2874,
     countyId: 35,
-    name: 'Cireseni',
+    name: 'Cireșeni',
   },
   {
     id: 2875,
     countyId: 5,
-    name: 'Ciresoaia',
+    name: 'Cireșoaia',
   },
   {
     id: 2876,
     countyId: 7,
-    name: 'Ciresoaia',
+    name: 'Cireșoaia',
   },
   {
     id: 2877,
     countyId: 3,
-    name: 'Ciresu',
+    name: 'Cireșu',
   },
   {
     id: 2878,
     countyId: 18,
-    name: 'Ciresu',
+    name: 'Cireșu',
   },
   {
     id: 2879,
     countyId: 50,
-    name: 'Ciresu',
+    name: 'Cireșu',
   },
   {
     id: 2880,
     countyId: 9,
-    name: 'Ciresu',
+    name: 'Cireșu',
   },
   {
     id: 2881,
     countyId: 40,
-    name: 'Ciresu',
+    name: 'Cireșu',
   },
   {
     id: 2882,
     countyId: 52,
-    name: 'Ciresu',
+    name: 'Cireșu',
   },
   {
     id: 2883,
     countyId: 50,
-    name: 'Ciresu Mic',
+    name: 'Cireșu Mic',
   },
   {
     id: 2884,
     countyId: 52,
-    name: 'Ciresul',
+    name: 'Cireșul',
   },
   {
     id: 2885,
@@ -14417,7 +14417,7 @@ export const CITIES = [
   {
     id: 2886,
     countyId: 41,
-    name: 'Cirhagau',
+    name: 'Cirhagău',
   },
   {
     id: 2887,
@@ -14432,42 +14432,42 @@ export const CITIES = [
   {
     id: 2889,
     countyId: 18,
-    name: 'Cislau',
+    name: 'Cislău',
   },
   {
     id: 2890,
     countyId: 8,
-    name: 'Cismanesti',
+    name: 'Cișmănești',
   },
   {
     id: 2891,
     countyId: 3,
-    name: 'Cismea',
+    name: 'Cișmea',
   },
   {
     id: 2892,
     countyId: 8,
-    name: 'Cismea',
+    name: 'Cișmea',
   },
   {
     id: 2893,
     countyId: 51,
-    name: 'Cismeaua Noua',
+    name: 'Cișmeaua Nouă',
   },
   {
     id: 2894,
     countyId: 28,
-    name: 'Cismele',
+    name: 'Cișmele',
   },
   {
     id: 2895,
     countyId: 47,
-    name: 'Cisnadie',
+    name: 'Cisnădie',
   },
   {
     id: 2896,
     countyId: 47,
-    name: 'Cisnadioara',
+    name: 'Cisnădioara',
   },
   {
     id: 2897,
@@ -14477,7 +14477,7 @@ export const CITIES = [
   {
     id: 2898,
     countyId: 1,
-    name: 'Cisteiu de Mures',
+    name: 'Cisteiu de Mureș',
   },
   {
     id: 2899,
@@ -14492,7 +14492,7 @@ export const CITIES = [
   {
     id: 2901,
     countyId: 21,
-    name: 'Ciubancuta',
+    name: 'Ciubăncuța',
   },
   {
     id: 2902,
@@ -14512,7 +14512,7 @@ export const CITIES = [
   {
     id: 2905,
     countyId: 52,
-    name: 'Ciucheti',
+    name: 'Ciucheți',
   },
   {
     id: 2906,
@@ -14522,12 +14522,12 @@ export const CITIES = [
   {
     id: 2907,
     countyId: 31,
-    name: 'Ciucsangeorgiu',
+    name: 'Ciucsângeorgiu',
   },
   {
     id: 2908,
     countyId: 1,
-    name: 'Ciuculesti',
+    name: 'Ciuculești',
   },
   {
     id: 2909,
@@ -14537,12 +14537,12 @@ export const CITIES = [
   {
     id: 2910,
     countyId: 20,
-    name: 'Ciudanovita',
+    name: 'Ciudanovița',
   },
   {
     id: 2911,
     countyId: 5,
-    name: 'Ciughes',
+    name: 'Ciugheș',
   },
   {
     id: 2912,
@@ -14582,12 +14582,12 @@ export const CITIES = [
   {
     id: 2919,
     countyId: 33,
-    name: 'Ciula Mica',
+    name: 'Ciula Mică',
   },
   {
     id: 2920,
     countyId: 1,
-    name: 'Ciuldesti',
+    name: 'Ciuldești',
   },
   {
     id: 2921,
@@ -14602,17 +14602,17 @@ export const CITIES = [
   {
     id: 2923,
     countyId: 6,
-    name: 'Ciulesti',
+    name: 'Ciulești',
   },
   {
     id: 2924,
     countyId: 34,
-    name: 'Ciulnita',
+    name: 'Ciulnița',
   },
   {
     id: 2925,
     countyId: 3,
-    name: 'Ciulnita',
+    name: 'Ciulnița',
   },
   {
     id: 2926,
@@ -14622,12 +14622,12 @@ export const CITIES = [
   {
     id: 2927,
     countyId: 33,
-    name: 'Ciulpaz',
+    name: 'Ciulpăz',
   },
   {
     id: 2928,
     countyId: 21,
-    name: 'Ciumafaia',
+    name: 'Ciumăfaia',
   },
   {
     id: 2929,
@@ -14642,17 +14642,17 @@ export const CITIES = [
   {
     id: 2931,
     countyId: 45,
-    name: 'Ciumarna',
+    name: 'Ciumărna',
   },
   {
     id: 2932,
     countyId: 48,
-    name: 'Ciumarna',
+    name: 'Ciumârna',
   },
   {
     id: 2933,
     countyId: 5,
-    name: 'Ciumasi',
+    name: 'Ciumași',
   },
   {
     id: 2934,
@@ -14667,17 +14667,17 @@ export const CITIES = [
   {
     id: 2936,
     countyId: 46,
-    name: 'Ciumesti',
+    name: 'Ciumești',
   },
   {
     id: 2937,
     countyId: 33,
-    name: 'Ciumita',
+    name: 'Ciumița',
   },
   {
     id: 2938,
     countyId: 48,
-    name: 'Ciumulesti',
+    name: 'Ciumulești',
   },
   {
     id: 2939,
@@ -14697,17 +14697,17 @@ export const CITIES = [
   {
     id: 2942,
     countyId: 2,
-    name: 'Ciuntesti',
+    name: 'Ciuntești',
   },
   {
     id: 2943,
     countyId: 3,
-    name: 'Ciupa-Manciulescu',
+    name: 'Ciupa-Mănciulescu',
   },
   {
     id: 2944,
     countyId: 44,
-    name: 'Ciupelnita',
+    name: 'Ciupelnița',
   },
   {
     id: 2945,
@@ -14732,12 +14732,12 @@ export const CITIES = [
   {
     id: 2949,
     countyId: 49,
-    name: 'Ciuperceni (Cosmesti)',
+    name: 'Ciuperceni (Cosmești)',
   },
   {
     id: 2950,
     countyId: 30,
-    name: 'Ciupercenii de Oltet',
+    name: 'Ciupercenii de Olteț',
   },
   {
     id: 2951,
@@ -14762,7 +14762,7 @@ export const CITIES = [
   {
     id: 2955,
     countyId: 35,
-    name: 'Ciurbesti',
+    name: 'Ciurbești',
   },
   {
     id: 2956,
@@ -14782,32 +14782,32 @@ export const CITIES = [
   {
     id: 2959,
     countyId: 3,
-    name: 'Ciuresti',
+    name: 'Ciurești',
   },
   {
     id: 2960,
     countyId: 43,
-    name: 'Ciuresti',
+    name: 'Ciurești',
   },
   {
     id: 2961,
     countyId: 28,
-    name: 'Ciuresti',
+    name: 'Ciurești',
   },
   {
     id: 2962,
     countyId: 28,
-    name: 'Ciurestii Noi',
+    name: 'Ciureștii Noi',
   },
   {
     id: 2963,
     countyId: 21,
-    name: 'Ciurgau',
+    name: 'Ciurgău',
   },
   {
     id: 2964,
     countyId: 41,
-    name: 'Ciurgau',
+    name: 'Ciurgău',
   },
   {
     id: 2965,
@@ -14822,7 +14822,7 @@ export const CITIES = [
   {
     id: 2967,
     countyId: 54,
-    name: 'Ciuslea',
+    name: 'Ciușlea',
   },
   {
     id: 2968,
@@ -14847,7 +14847,7 @@ export const CITIES = [
   {
     id: 2972,
     countyId: 52,
-    name: 'Ciutesti',
+    name: 'Ciutești',
   },
   {
     id: 2973,
@@ -14857,7 +14857,7 @@ export const CITIES = [
   {
     id: 2974,
     countyId: 5,
-    name: 'Ciuturesti',
+    name: 'Ciuturești',
   },
   {
     id: 2975,
@@ -14877,7 +14877,7 @@ export const CITIES = [
   {
     id: 2978,
     countyId: 49,
-    name: 'Clanita',
+    name: 'Clănița',
   },
   {
     id: 2979,
@@ -14887,7 +14887,7 @@ export const CITIES = [
   {
     id: 2980,
     countyId: 19,
-    name: 'Clatesti',
+    name: 'Clătești',
   },
   {
     id: 2981,
@@ -14907,7 +14907,7 @@ export const CITIES = [
   {
     id: 2984,
     countyId: 30,
-    name: 'Clesnesti',
+    name: 'Cleșnești',
   },
   {
     id: 2985,
@@ -14917,17 +14917,17 @@ export const CITIES = [
   {
     id: 2986,
     countyId: 48,
-    name: 'Climauti',
+    name: 'Climăuți',
   },
   {
     id: 2987,
     countyId: 5,
-    name: 'Climesti',
+    name: 'Climești',
   },
   {
     id: 2988,
     countyId: 42,
-    name: 'Climesti',
+    name: 'Climești',
   },
   {
     id: 2989,
@@ -14937,7 +14937,7 @@ export const CITIES = [
   {
     id: 2990,
     countyId: 54,
-    name: 'Clipicesti',
+    name: 'Clipicești',
   },
   {
     id: 2991,
@@ -14947,7 +14947,7 @@ export const CITIES = [
   {
     id: 2992,
     countyId: 45,
-    name: 'Clit',
+    name: 'Cliț',
   },
   {
     id: 2993,
@@ -14957,7 +14957,7 @@ export const CITIES = [
   {
     id: 2994,
     countyId: 41,
-    name: 'Cloasterf',
+    name: 'Cloașterf',
   },
   {
     id: 2995,
@@ -14987,17 +14987,17 @@ export const CITIES = [
   {
     id: 3000,
     countyId: 30,
-    name: 'Closani',
+    name: 'Cloșani',
   },
   {
     id: 3001,
     countyId: 22,
-    name: 'Closca',
+    name: 'Cloșca',
   },
   {
     id: 3002,
     countyId: 51,
-    name: 'Closca',
+    name: 'Cloșca',
   },
   {
     id: 3003,
@@ -15032,7 +15032,7 @@ export const CITIES = [
   {
     id: 3009,
     countyId: 35,
-    name: 'Coada Stancii',
+    name: 'Coada Stâncii',
   },
   {
     id: 3010,
@@ -15047,7 +15047,7 @@ export const CITIES = [
   {
     id: 3012,
     countyId: 39,
-    name: 'Coas',
+    name: 'Coaș',
   },
   {
     id: 3013,
@@ -15062,12 +15062,12 @@ export const CITIES = [
   {
     id: 3015,
     countyId: 52,
-    name: 'Coasta (Golesti)',
+    name: 'Coasta (Golești)',
   },
   {
     id: 3016,
     countyId: 52,
-    name: 'Coasta (Pausesti-Maglasi)',
+    name: 'Coasta (Păușești-Măglași)',
   },
   {
     id: 3017,
@@ -15082,7 +15082,7 @@ export const CITIES = [
   {
     id: 3019,
     countyId: 1,
-    name: 'Coasta Hentii',
+    name: 'Coasta Henții',
   },
   {
     id: 3020,
@@ -15092,7 +15092,7 @@ export const CITIES = [
   {
     id: 3021,
     countyId: 35,
-    name: 'Coasta Magurii',
+    name: 'Coasta Măgurii',
   },
   {
     id: 3022,
@@ -15107,7 +15107,7 @@ export const CITIES = [
   {
     id: 3024,
     countyId: 1,
-    name: 'Coasta Vascului',
+    name: 'Coasta Vâscului',
   },
   {
     id: 3025,
@@ -15117,7 +15117,7 @@ export const CITIES = [
   {
     id: 3026,
     countyId: 31,
-    name: 'Cobatesti',
+    name: 'Cobătești',
   },
   {
     id: 3027,
@@ -15127,12 +15127,12 @@ export const CITIES = [
   {
     id: 3028,
     countyId: 24,
-    name: 'Cobiuta',
+    name: 'Cobiuța',
   },
   {
     id: 3029,
     countyId: 1,
-    name: 'Cobles',
+    name: 'Cobleș',
   },
   {
     id: 3030,
@@ -15147,12 +15147,12 @@ export const CITIES = [
   {
     id: 3032,
     countyId: 18,
-    name: 'Coca-Antimiresti',
+    name: 'Coca-Antimirești',
   },
   {
     id: 3033,
     countyId: 18,
-    name: 'Coca-Niculesti',
+    name: 'Coca-Niculești',
   },
   {
     id: 3034,
@@ -15162,7 +15162,7 @@ export const CITIES = [
   {
     id: 3035,
     countyId: 18,
-    name: 'Cocarceni',
+    name: 'Cocârceni',
   },
   {
     id: 3036,
@@ -15172,17 +15172,17 @@ export const CITIES = [
   {
     id: 3037,
     countyId: 3,
-    name: 'Cocenesti',
+    name: 'Cocenești',
   },
   {
     id: 3038,
     countyId: 1,
-    name: 'Cocesti',
+    name: 'Cocești',
   },
   {
     id: 3039,
     countyId: 3,
-    name: 'Cochinesti',
+    name: 'Cochinești',
   },
   {
     id: 3040,
@@ -15217,7 +15217,7 @@ export const CITIES = [
   {
     id: 3046,
     countyId: 6,
-    name: 'Cociuba Mica',
+    name: 'Cociuba Mică',
   },
   {
     id: 3047,
@@ -15237,27 +15237,27 @@ export const CITIES = [
   {
     id: 3050,
     countyId: 43,
-    name: 'Cocorasti',
+    name: 'Cocorăști',
   },
   {
     id: 3051,
     countyId: 44,
-    name: 'Cocorastii Caplii',
+    name: 'Cocorăștii Caplii',
   },
   {
     id: 3052,
     countyId: 44,
-    name: 'Cocorastii Colt',
+    name: 'Cocorăștii Colț',
   },
   {
     id: 3053,
     countyId: 44,
-    name: 'Cocorastii Grind',
+    name: 'Cocorăștii Grind',
   },
   {
     id: 3054,
     countyId: 44,
-    name: 'Cocorastii Mislii',
+    name: 'Cocorăștii Mislii',
   },
   {
     id: 3055,
@@ -15282,17 +15282,17 @@ export const CITIES = [
   {
     id: 3059,
     countyId: 54,
-    name: 'Cocosari',
+    name: 'Cocoșari',
   },
   {
     id: 3060,
     countyId: 44,
-    name: 'Cocosesti',
+    name: 'Cocoșești',
   },
   {
     id: 3061,
     countyId: 1,
-    name: 'Cocosesti',
+    name: 'Cocoșești',
   },
   {
     id: 3062,
@@ -15302,7 +15302,7 @@ export const CITIES = [
   {
     id: 3063,
     countyId: 53,
-    name: 'Codaesti',
+    name: 'Codăești',
   },
   {
     id: 3064,
@@ -15332,12 +15332,12 @@ export const CITIES = [
   {
     id: 3069,
     countyId: 54,
-    name: 'Codresti',
+    name: 'Codrești',
   },
   {
     id: 3070,
     countyId: 6,
-    name: 'Codrisoru',
+    name: 'Codrișoru',
   },
   {
     id: 3071,
@@ -15387,17 +15387,17 @@ export const CITIES = [
   {
     id: 3080,
     countyId: 19,
-    name: 'Cojesti',
+    name: 'Cojești',
   },
   {
     id: 3081,
     countyId: 43,
-    name: 'Cojgarei',
+    name: 'Cojgărei',
   },
   {
     id: 3082,
     countyId: 30,
-    name: 'Cojmanesti',
+    name: 'Cojmănești',
   },
   {
     id: 3083,
@@ -15407,7 +15407,7 @@ export const CITIES = [
   {
     id: 3084,
     countyId: 48,
-    name: 'Cojocareni',
+    name: 'Cojocăreni',
   },
   {
     id: 3085,
@@ -15452,7 +15452,7 @@ export const CITIES = [
   {
     id: 3093,
     countyId: 40,
-    name: 'Colaret',
+    name: 'Colareț',
   },
   {
     id: 3094,
@@ -15462,7 +15462,7 @@ export const CITIES = [
   {
     id: 3095,
     countyId: 7,
-    name: 'Coldau',
+    name: 'Coldău',
   },
   {
     id: 3096,
@@ -15477,47 +15477,47 @@ export const CITIES = [
   {
     id: 3098,
     countyId: 1,
-    name: 'Coleseni',
+    name: 'Coleșeni',
   },
   {
     id: 3099,
     countyId: 6,
-    name: 'Colesti',
+    name: 'Colești',
   },
   {
     id: 3100,
     countyId: 18,
-    name: 'Colibasi',
+    name: 'Colibași',
   },
   {
     id: 3101,
     countyId: 30,
-    name: 'Colibasi',
+    name: 'Colibași',
   },
   {
     id: 3102,
     countyId: 40,
-    name: 'Colibasi',
+    name: 'Colibași',
   },
   {
     id: 3103,
     countyId: 3,
-    name: 'Colibasi',
+    name: 'Colibași',
   },
   {
     id: 3104,
     countyId: 24,
-    name: 'Colibasi',
+    name: 'Colibași',
   },
   {
     id: 3105,
     countyId: 29,
-    name: 'Colibasi',
+    name: 'Colibași',
   },
   {
     id: 3106,
     countyId: 43,
-    name: 'Colibasi',
+    name: 'Colibași',
   },
   {
     id: 3107,
@@ -15527,7 +15527,7 @@ export const CITIES = [
   {
     id: 3108,
     countyId: 7,
-    name: 'Colibita',
+    name: 'Colibița',
   },
   {
     id: 3109,
@@ -15542,12 +15542,12 @@ export const CITIES = [
   {
     id: 3111,
     countyId: 5,
-    name: 'Colonesti',
+    name: 'Colonești',
   },
   {
     id: 3112,
     countyId: 43,
-    name: 'Colonesti',
+    name: 'Colonești',
   },
   {
     id: 3113,
@@ -15572,7 +15572,7 @@ export const CITIES = [
   {
     id: 3117,
     countyId: 50,
-    name: 'Colonia Bulgara',
+    name: 'Colonia Bulgară',
   },
   {
     id: 3118,
@@ -15582,12 +15582,12 @@ export const CITIES = [
   {
     id: 3119,
     countyId: 50,
-    name: 'Colonia Mica',
+    name: 'Colonia Mică',
   },
   {
     id: 3120,
     countyId: 10,
-    name: 'Colonia Reconstructia',
+    name: 'Colonia Reconstrucția',
   },
   {
     id: 3121,
@@ -15597,82 +15597,82 @@ export const CITIES = [
   {
     id: 3122,
     countyId: 47,
-    name: 'Colonia Talmaciu',
+    name: 'Colonia Tălmaciu',
   },
   {
     id: 3123,
     countyId: 47,
-    name: 'Colonia Tarnava',
+    name: 'Colonia Târnava',
   },
   {
     id: 3124,
     countyId: 18,
-    name: 'Coltaneni',
+    name: 'Colțăneni',
   },
   {
     id: 3125,
     countyId: 39,
-    name: 'Coltau',
+    name: 'Coltău',
   },
   {
     id: 3126,
     countyId: 9,
-    name: 'Coltea',
+    name: 'Colțea',
   },
   {
     id: 3127,
     countyId: 18,
-    name: 'Colteni',
+    name: 'Colțeni',
   },
   {
     id: 3128,
     countyId: 30,
-    name: 'Coltesti',
+    name: 'Colțești',
   },
   {
     id: 3129,
     countyId: 1,
-    name: 'Coltesti',
+    name: 'Colțești',
   },
   {
     id: 3130,
     countyId: 52,
-    name: 'Coltesti',
+    name: 'Coltești',
   },
   {
     id: 3131,
     countyId: 18,
-    name: 'Colti',
+    name: 'Colți',
   },
   {
     id: 3132,
     countyId: 18,
-    name: 'Coltii de Jos',
+    name: 'Colții de Jos',
   },
   {
     id: 3133,
     countyId: 39,
-    name: 'Coltirea',
+    name: 'Colțirea',
   },
   {
     id: 3134,
     countyId: 3,
-    name: 'Coltu',
+    name: 'Colțu',
   },
   {
     id: 3135,
     countyId: 35,
-    name: 'Coltu Cornii',
+    name: 'Colțu Cornii',
   },
   {
     id: 3136,
     countyId: 44,
-    name: 'Coltu de Jos',
+    name: 'Colțu de Jos',
   },
   {
     id: 3137,
     countyId: 18,
-    name: 'Coltu Pietrii',
+    name: 'Colțu Pietrii',
   },
   {
     id: 3138,
@@ -15727,47 +15727,47 @@ export const CITIES = [
   {
     id: 3148,
     countyId: 23,
-    name: 'Comandau',
+    name: 'Comandău',
   },
   {
     id: 3149,
     countyId: 9,
-    name: 'Comaneasca',
+    name: 'Comăneasca',
   },
   {
     id: 3150,
     countyId: 5,
-    name: 'Comanesti',
+    name: 'Comănești',
   },
   {
     id: 3151,
     countyId: 31,
-    name: 'Comanesti',
+    name: 'Comănești',
   },
   {
     id: 3152,
     countyId: 43,
-    name: 'Comanesti',
+    name: 'Comănești',
   },
   {
     id: 3153,
     countyId: 2,
-    name: 'Comanesti',
+    name: 'Comănești',
   },
   {
     id: 3154,
     countyId: 28,
-    name: 'Comanesti',
+    name: 'Comănești',
   },
   {
     id: 3155,
     countyId: 40,
-    name: 'Comanesti',
+    name: 'Comănești',
   },
   {
     id: 3156,
     countyId: 48,
-    name: 'Comanesti',
+    name: 'Comănești',
   },
   {
     id: 3157,
@@ -15777,12 +15777,12 @@ export const CITIES = [
   {
     id: 3158,
     countyId: 25,
-    name: 'Comanicea',
+    name: 'Comănicea',
   },
   {
     id: 3159,
     countyId: 43,
-    name: 'Comanita',
+    name: 'Comănița',
   },
   {
     id: 3160,
@@ -15807,7 +15807,7 @@ export const CITIES = [
   {
     id: 3164,
     countyId: 24,
-    name: 'Comisani',
+    name: 'Comișani',
   },
   {
     id: 3165,
@@ -15817,7 +15817,7 @@ export const CITIES = [
   {
     id: 3166,
     countyId: 46,
-    name: 'Comlausa',
+    name: 'Comlăușa',
   },
   {
     id: 3167,
@@ -15827,12 +15827,12 @@ export const CITIES = [
   {
     id: 3168,
     countyId: 50,
-    name: 'Comlosu Mare',
+    name: 'Comloșu Mare',
   },
   {
     id: 3169,
     countyId: 50,
-    name: 'Comlosu Mic',
+    name: 'Comloșu Mic',
   },
   {
     id: 3170,
@@ -15842,12 +15842,12 @@ export const CITIES = [
   {
     id: 3171,
     countyId: 20,
-    name: 'Comoraste',
+    name: 'Comorâște',
   },
   {
     id: 3172,
     countyId: 21,
-    name: 'Comorata',
+    name: 'Comorâța',
   },
   {
     id: 3173,
@@ -15857,12 +15857,12 @@ export const CITIES = [
   {
     id: 3174,
     countyId: 25,
-    name: 'Comosteni',
+    name: 'Comoșteni',
   },
   {
     id: 3175,
     countyId: 21,
-    name: 'Comsesti',
+    name: 'Comșești',
   },
   {
     id: 3176,
@@ -15872,22 +15872,22 @@ export const CITIES = [
   {
     id: 3177,
     countyId: 8,
-    name: 'Concesti',
+    name: 'Concești',
   },
   {
     id: 3178,
     countyId: 34,
-    name: 'Condeesti',
+    name: 'Condeești',
   },
   {
     id: 3179,
     countyId: 30,
-    name: 'Condeiesti',
+    name: 'Condeiești',
   },
   {
     id: 3180,
     countyId: 52,
-    name: 'Condoiesti',
+    name: 'Condoiești',
   },
   {
     id: 3181,
@@ -15912,12 +15912,12 @@ export const CITIES = [
   {
     id: 3185,
     countyId: 22,
-    name: 'Constanta',
+    name: 'Constanța',
   },
   {
     id: 3186,
     countyId: 19,
-    name: 'Constantin Brancoveanu',
+    name: 'Constantin Brâncoveanu',
   },
   {
     id: 3187,
@@ -15932,12 +15932,12 @@ export const CITIES = [
   {
     id: 3189,
     countyId: 9,
-    name: 'Constantinesti',
+    name: 'Constantinești',
   },
   {
     id: 3190,
     countyId: 43,
-    name: 'Constantinesti',
+    name: 'Constantinești',
   },
   {
     id: 3191,
@@ -15947,92 +15947,92 @@ export const CITIES = [
   {
     id: 3192,
     countyId: 5,
-    name: 'Contesti',
+    name: 'Conțești',
   },
   {
     id: 3193,
     countyId: 35,
-    name: 'Contesti',
+    name: 'Conțești',
   },
   {
     id: 3194,
     countyId: 3,
-    name: 'Contesti',
+    name: 'Conțești',
   },
   {
     id: 3195,
     countyId: 24,
-    name: 'Contesti',
+    name: 'Conțești',
   },
   {
     id: 3196,
     countyId: 49,
-    name: 'Contesti',
+    name: 'Conțești',
   },
   {
     id: 3197,
     countyId: 53,
-    name: 'Copaceana',
+    name: 'Copăceana',
   },
   {
     id: 3198,
     countyId: 49,
-    name: 'Copaceanca',
+    name: 'Copăceanca',
   },
   {
     id: 3199,
     countyId: 6,
-    name: 'Copacel',
+    name: 'Copăcel',
   },
   {
     id: 3200,
     countyId: 10,
-    name: 'Copacel',
+    name: 'Copăcel',
   },
   {
     id: 3201,
     countyId: 20,
-    name: 'Copacele',
+    name: 'Copăcele',
   },
   {
     id: 3202,
     countyId: 52,
-    name: 'Copacelu',
+    name: 'Copăcelu',
   },
   {
     id: 3203,
     countyId: 6,
-    name: 'Copaceni',
+    name: 'Copăceni',
   },
   {
     id: 3204,
     countyId: 24,
-    name: 'Copaceni',
+    name: 'Copăceni',
   },
   {
     id: 3205,
     countyId: 52,
-    name: 'Copaceni',
+    name: 'Copăceni',
   },
   {
     id: 3206,
     countyId: 21,
-    name: 'Copaceni',
+    name: 'Copăceni',
   },
   {
     id: 3207,
     countyId: 36,
-    name: 'Copaceni',
+    name: 'Copăceni',
   },
   {
     id: 3208,
     countyId: 52,
-    name: 'Copaceni (Racovita)',
+    name: 'Copăceni (Racovița)',
   },
   {
     id: 3209,
     countyId: 54,
-    name: 'Copacesti',
+    name: 'Copăcești',
   },
   {
     id: 3210,
@@ -16042,12 +16042,12 @@ export const CITIES = [
   {
     id: 3211,
     countyId: 30,
-    name: 'Copacioasa',
+    name: 'Copăcioasa',
   },
   {
     id: 3212,
     countyId: 40,
-    name: 'Copacioasa',
+    name: 'Copăcioasa',
   },
   {
     id: 3213,
@@ -16057,7 +16057,7 @@ export const CITIES = [
   {
     id: 3214,
     countyId: 8,
-    name: 'Copalau',
+    name: 'Copălău',
   },
   {
     id: 3215,
@@ -16072,7 +16072,7 @@ export const CITIES = [
   {
     id: 3217,
     countyId: 39,
-    name: 'Copalnic-Manastur',
+    name: 'Copalnic-Mănăștur',
   },
   {
     id: 3218,
@@ -16092,12 +16092,12 @@ export const CITIES = [
   {
     id: 3221,
     countyId: 47,
-    name: 'Copsa Mare',
+    name: 'Copșa Mare',
   },
   {
     id: 3222,
     countyId: 47,
-    name: 'Copsa Mica',
+    name: 'Copșa Mică',
   },
   {
     id: 3223,
@@ -16142,17 +16142,17 @@ export const CITIES = [
   {
     id: 3231,
     countyId: 2,
-    name: 'Corbesti',
+    name: 'Corbești',
   },
   {
     id: 3232,
     countyId: 41,
-    name: 'Corbesti',
+    name: 'Corbești',
   },
   {
     id: 3233,
     countyId: 6,
-    name: 'Corbesti',
+    name: 'Corbești',
   },
   {
     id: 3234,
@@ -16177,7 +16177,7 @@ export const CITIES = [
   {
     id: 3238,
     countyId: 54,
-    name: 'Corbita',
+    name: 'Corbița',
   },
   {
     id: 3239,
@@ -16187,7 +16187,7 @@ export const CITIES = [
   {
     id: 3240,
     countyId: 3,
-    name: 'Corbsori',
+    name: 'Corbșori',
   },
   {
     id: 3241,
@@ -16217,12 +16217,12 @@ export const CITIES = [
   {
     id: 3246,
     countyId: 18,
-    name: 'Corbu (Catina)',
+    name: 'Corbu (Cătina)',
   },
   {
     id: 3247,
     countyId: 18,
-    name: 'Corbu (Glodeanu-Silistea)',
+    name: 'Corbu (Glodeanu-Siliștea)',
   },
   {
     id: 3248,
@@ -16257,17 +16257,17 @@ export const CITIES = [
   {
     id: 3254,
     countyId: 8,
-    name: 'Cordareni',
+    name: 'Cordăreni',
   },
   {
     id: 3255,
     countyId: 6,
-    name: 'Cordau',
+    name: 'Cordău',
   },
   {
     id: 3256,
     countyId: 41,
-    name: 'Cordos',
+    name: 'Cordoș',
   },
   {
     id: 3257,
@@ -16287,7 +16287,7 @@ export const CITIES = [
   {
     id: 3260,
     countyId: 8,
-    name: 'Corjauti',
+    name: 'Corjăuți',
   },
   {
     id: 3261,
@@ -16302,22 +16302,22 @@ export const CITIES = [
   {
     id: 3263,
     countyId: 40,
-    name: 'Corlatel',
+    name: 'Corlățel',
   },
   {
     id: 3264,
     countyId: 8,
-    name: 'Corlateni',
+    name: 'Corlăteni',
   },
   {
     id: 3265,
     countyId: 43,
-    name: 'Corlatesti',
+    name: 'Corlătești',
   },
   {
     id: 3266,
     countyId: 44,
-    name: 'Corlatesti',
+    name: 'Corlătești',
   },
   {
     id: 3267,
@@ -16327,7 +16327,7 @@ export const CITIES = [
   {
     id: 3268,
     countyId: 45,
-    name: 'Cormenis',
+    name: 'Cormeniș',
   },
   {
     id: 3269,
@@ -16337,32 +16337,32 @@ export const CITIES = [
   {
     id: 3270,
     countyId: 5,
-    name: 'Cornatel',
+    name: 'Cornățel',
   },
   {
     id: 3271,
     countyId: 3,
-    name: 'Cornatel',
+    name: 'Cornățel',
   },
   {
     id: 3272,
     countyId: 47,
-    name: 'Cornatel',
+    name: 'Cornățel',
   },
   {
     id: 3273,
     countyId: 43,
-    name: 'Cornatelu',
+    name: 'Cornățelu',
   },
   {
     id: 3274,
     countyId: 5,
-    name: 'Cornatelu',
+    name: 'Cornățelu',
   },
   {
     id: 3275,
     countyId: 24,
-    name: 'Cornatelu',
+    name: 'Cornățelu',
   },
   {
     id: 3276,
@@ -16387,57 +16387,57 @@ export const CITIES = [
   {
     id: 3280,
     countyId: 21,
-    name: 'Cornesti',
+    name: 'Cornești',
   },
   {
     id: 3281,
     countyId: 30,
-    name: 'Cornesti',
+    name: 'Cornești',
   },
   {
     id: 3282,
     countyId: 39,
-    name: 'Cornesti',
+    name: 'Cornești',
   },
   {
     id: 3283,
     countyId: 5,
-    name: 'Cornesti',
+    name: 'Cornești',
   },
   {
     id: 3284,
     countyId: 24,
-    name: 'Cornesti',
+    name: 'Cornești',
   },
   {
     id: 3285,
     countyId: 35,
-    name: 'Cornesti',
+    name: 'Cornești',
   },
   {
     id: 3286,
     countyId: 50,
-    name: 'Cornesti',
+    name: 'Cornești',
   },
   {
     id: 3287,
     countyId: 41,
-    name: 'Cornesti (Adamus)',
+    name: 'Cornești (Adămuș)',
   },
   {
     id: 3288,
     countyId: 41,
-    name: 'Cornesti (Craciunesti)',
+    name: 'Cornești (Crăciunești)',
   },
   {
     id: 3289,
     countyId: 21,
-    name: 'Cornesti (Garbau)',
+    name: 'Cornești (Gârbău)',
   },
   {
     id: 3290,
     countyId: 21,
-    name: 'Cornesti (Mihai Viteazu)',
+    name: 'Cornești (Mihai Viteazu)',
   },
   {
     id: 3291,
@@ -16502,7 +16502,7 @@ export const CITIES = [
   {
     id: 3303,
     countyId: 53,
-    name: 'Corni-Albesti',
+    name: 'Corni-Albești',
   },
   {
     id: 3304,
@@ -16517,22 +16517,22 @@ export const CITIES = [
   {
     id: 3306,
     countyId: 6,
-    name: 'Cornisesti',
+    name: 'Cornișești',
   },
   {
     id: 3307,
     countyId: 20,
-    name: 'Cornisoru',
+    name: 'Cornișoru',
   },
   {
     id: 3308,
     countyId: 25,
-    name: 'Cornita',
+    name: 'Cornița',
   },
   {
     id: 3309,
     countyId: 6,
-    name: 'Cornitel',
+    name: 'Cornițel',
   },
   {
     id: 3310,
@@ -16557,7 +16557,7 @@ export const CITIES = [
   {
     id: 3314,
     countyId: 44,
-    name: 'Cornu de Jos (Draganesti)',
+    name: 'Cornu de Jos (Drăgănești)',
   },
   {
     id: 3315,
@@ -16577,7 +16577,7 @@ export const CITIES = [
   {
     id: 3318,
     countyId: 20,
-    name: 'Cornutel',
+    name: 'Cornuțel',
   },
   {
     id: 3319,
@@ -16587,17 +16587,17 @@ export const CITIES = [
   {
     id: 3320,
     countyId: 30,
-    name: 'Corobai',
+    name: 'Corobăi',
   },
   {
     id: 3321,
     countyId: 53,
-    name: 'Corobanesti',
+    name: 'Corobănești',
   },
   {
     id: 3322,
     countyId: 48,
-    name: 'Corocaiesti',
+    name: 'Corocăiești',
   },
   {
     id: 3323,
@@ -16612,7 +16612,7 @@ export const CITIES = [
   {
     id: 3325,
     countyId: 53,
-    name: 'Corodesti',
+    name: 'Corodești',
   },
   {
     id: 3326,
@@ -16632,32 +16632,32 @@ export const CITIES = [
   {
     id: 3329,
     countyId: 1,
-    name: 'Coroiesti',
+    name: 'Coroiești',
   },
   {
     id: 3330,
     countyId: 53,
-    name: 'Coroiesti',
+    name: 'Coroiești',
   },
   {
     id: 3331,
     countyId: 33,
-    name: 'Coroiesti',
+    name: 'Coroiești',
   },
   {
     id: 3332,
     countyId: 53,
-    name: 'Coroiesti (Bogdanita)',
+    name: 'Coroiești (Bogdănița)',
   },
   {
     id: 3333,
     countyId: 53,
-    name: 'Coroiestii de Sus',
+    name: 'Coroieștii de Sus',
   },
   {
     id: 3334,
     countyId: 41,
-    name: 'Coroisanmartin',
+    name: 'Coroisânmărtin',
   },
   {
     id: 3335,
@@ -16692,12 +16692,12 @@ export const CITIES = [
   {
     id: 3341,
     countyId: 30,
-    name: 'Corsoru',
+    name: 'Corșoru',
   },
   {
     id: 3342,
     countyId: 1,
-    name: 'Cortesti',
+    name: 'Corțești',
   },
   {
     id: 3343,
@@ -16727,12 +16727,12 @@ export const CITIES = [
   {
     id: 3348,
     countyId: 21,
-    name: 'Corusu',
+    name: 'Corușu',
   },
   {
     id: 3349,
     countyId: 7,
-    name: 'Corvinesti',
+    name: 'Corvinești',
   },
   {
     id: 3350,
@@ -16747,112 +16747,112 @@ export const CITIES = [
   {
     id: 3352,
     countyId: 34,
-    name: 'Cosambesti',
+    name: 'Cosâmbești',
   },
   {
     id: 3353,
     countyId: 52,
-    name: 'Cosani',
+    name: 'Coșani',
   },
   {
     id: 3354,
     countyId: 50,
-    name: 'Cosarii',
+    name: 'Coșarii',
   },
   {
     id: 3355,
     countyId: 50,
-    name: 'Cosava',
+    name: 'Coșava',
   },
   {
     id: 3356,
     countyId: 7,
-    name: 'Cosbuc',
+    name: 'Coșbuc',
   },
   {
     id: 3357,
     countyId: 53,
-    name: 'Cosca',
+    name: 'Coșca',
   },
   {
     id: 3358,
     countyId: 6,
-    name: 'Cosdeni',
+    name: 'Coșdeni',
   },
   {
     id: 3359,
     countyId: 45,
-    name: 'Coseiu',
+    name: 'Coșeiu',
   },
   {
     id: 3360,
     countyId: 23,
-    name: 'Coseni',
+    name: 'Coșeni',
   },
   {
     id: 3361,
     countyId: 44,
-    name: 'Coserele',
+    name: 'Coșerele',
   },
   {
     id: 3362,
     countyId: 34,
-    name: 'Cosereni',
+    name: 'Coșereni',
   },
   {
     id: 3363,
     countyId: 25,
-    name: 'Cosereni',
+    name: 'Coșereni',
   },
   {
     id: 3364,
     countyId: 3,
-    name: 'Coseri',
+    name: 'Coșeri',
   },
   {
     id: 3365,
     countyId: 7,
-    name: 'Coseriu',
+    name: 'Coșeriu',
   },
   {
     id: 3366,
     countyId: 3,
-    name: 'Cosesti',
+    name: 'Coșești',
   },
   {
     id: 3367,
     countyId: 33,
-    name: 'Cosesti',
+    name: 'Cosești',
   },
   {
     id: 3368,
     countyId: 53,
-    name: 'Cosesti',
+    name: 'Coșești',
   },
   {
     id: 3369,
     countyId: 50,
-    name: 'Cosevita',
+    name: 'Coșevița',
   },
   {
     id: 3370,
     countyId: 35,
-    name: 'Cositeni',
+    name: 'Cosițeni',
   },
   {
     id: 3371,
     countyId: 28,
-    name: 'Cositeni',
+    name: 'Cosițeni',
   },
   {
     id: 3372,
     countyId: 1,
-    name: 'Coslariu',
+    name: 'Coșlariu',
   },
   {
     id: 3373,
     countyId: 1,
-    name: 'Coslariu Nou',
+    name: 'Coșlariu Nou',
   },
   {
     id: 3374,
@@ -16872,17 +16872,17 @@ export const CITIES = [
   {
     id: 3377,
     countyId: 28,
-    name: 'Cosmesti',
+    name: 'Cosmești',
   },
   {
     id: 3378,
     countyId: 49,
-    name: 'Cosmesti',
+    name: 'Cosmești',
   },
   {
     id: 3379,
     countyId: 28,
-    name: 'Cosmestii-Vale',
+    name: 'Cosmeștii-Vale',
   },
   {
     id: 3380,
@@ -16902,12 +16902,12 @@ export const CITIES = [
   {
     id: 3383,
     countyId: 48,
-    name: 'Cosna',
+    name: 'Coșna',
   },
   {
     id: 3384,
     countyId: 5,
-    name: 'Cosnea',
+    name: 'Coșnea',
   },
   {
     id: 3385,
@@ -16922,7 +16922,7 @@ export const CITIES = [
   {
     id: 3387,
     countyId: 49,
-    name: 'Cosoaia',
+    name: 'Coșoaia',
   },
   {
     id: 3388,
@@ -16937,17 +16937,17 @@ export const CITIES = [
   {
     id: 3390,
     countyId: 49,
-    name: 'Cosoteni',
+    name: 'Coșoteni',
   },
   {
     id: 3391,
     countyId: 40,
-    name: 'Cosovat',
+    name: 'Cosovăț',
   },
   {
     id: 3392,
     countyId: 25,
-    name: 'Cosoveni',
+    name: 'Coșoveni',
   },
   {
     id: 3393,
@@ -16957,7 +16957,7 @@ export const CITIES = [
   {
     id: 3394,
     countyId: 48,
-    name: 'Costana',
+    name: 'Costâna',
   },
   {
     id: 3395,
@@ -16967,12 +16967,12 @@ export const CITIES = [
   {
     id: 3396,
     countyId: 50,
-    name: 'Costeiu',
+    name: 'Coșteiu',
   },
   {
     id: 3397,
     countyId: 50,
-    name: 'Costeiu de Sus',
+    name: 'Coșteiu de Sus',
   },
   {
     id: 3398,
@@ -16992,87 +16992,87 @@ export const CITIES = [
   {
     id: 3401,
     countyId: 3,
-    name: 'Costesti',
+    name: 'Costești',
   },
   {
     id: 3402,
     countyId: 18,
-    name: 'Costesti',
+    name: 'Costești',
   },
   {
     id: 3403,
     countyId: 30,
-    name: 'Costesti',
+    name: 'Costești',
   },
   {
     id: 3404,
     countyId: 35,
-    name: 'Costesti',
+    name: 'Costești',
   },
   {
     id: 3405,
     countyId: 52,
-    name: 'Costesti',
+    name: 'Costești',
   },
   {
     id: 3406,
     countyId: 8,
-    name: 'Costesti',
+    name: 'Costești',
   },
   {
     id: 3407,
     countyId: 24,
-    name: 'Costesti',
+    name: 'Costești',
   },
   {
     id: 3408,
     countyId: 33,
-    name: 'Costesti',
+    name: 'Costești',
   },
   {
     id: 3409,
     countyId: 40,
-    name: 'Costesti',
+    name: 'Costești',
   },
   {
     id: 3410,
     countyId: 53,
-    name: 'Costesti',
+    name: 'Costești',
   },
   {
     id: 3411,
     countyId: 1,
-    name: 'Costesti (Albac)',
+    name: 'Costești (Albac)',
   },
   {
     id: 3412,
     countyId: 3,
-    name: 'Costesti (Cotmeana)',
+    name: 'Costești (Cotmeana)',
   },
   {
     id: 3413,
     countyId: 1,
-    name: 'Costesti (Poiana Vadului)',
+    name: 'Costești (Poiana Vadului)',
   },
   {
     id: 3414,
     countyId: 33,
-    name: 'Costesti-Deal',
+    name: 'Costești-Deal',
   },
   {
     id: 3415,
     countyId: 3,
-    name: 'Costesti-Valsan',
+    name: 'Costești-Vâlsan',
   },
   {
     id: 3416,
     countyId: 24,
-    name: 'Costestii din Deal',
+    name: 'Costeștii din Deal',
   },
   {
     id: 3417,
     countyId: 24,
-    name: 'Costestii din Vale',
+    name: 'Costeștii din Vale',
   },
   {
     id: 3418,
@@ -17092,62 +17092,62 @@ export const CITIES = [
   {
     id: 3421,
     countyId: 8,
-    name: 'Costinesti',
+    name: 'Costinești',
   },
   {
     id: 3422,
     countyId: 22,
-    name: 'Costinesti',
+    name: 'Costinești',
   },
   {
     id: 3423,
     countyId: 20,
-    name: 'Costis',
+    name: 'Costiș',
   },
   {
     id: 3424,
     countyId: 48,
-    name: 'Costisa',
+    name: 'Costișa',
   },
   {
     id: 3425,
     countyId: 42,
-    name: 'Costisa',
+    name: 'Costișa',
   },
   {
     id: 3426,
     countyId: 54,
-    name: 'Costisa (Homocea)',
+    name: 'Costișa (Homocea)',
   },
   {
     id: 3427,
     countyId: 54,
-    name: 'Costisa (Tanasoaia)',
+    name: 'Costișa (Tănăsoaia)',
   },
   {
     id: 3428,
     countyId: 54,
-    name: 'Costisa de Sus',
+    name: 'Costișa de Sus',
   },
   {
     id: 3429,
     countyId: 24,
-    name: 'Costisata',
+    name: 'Costișata',
   },
   {
     id: 3430,
     countyId: 3,
-    name: 'Costita',
+    name: 'Costiță',
   },
   {
     id: 3431,
     countyId: 8,
-    name: 'Costiugeni',
+    name: 'Coștiugeni',
   },
   {
     id: 3432,
     countyId: 39,
-    name: 'Costiui',
+    name: 'Coștiui',
   },
   {
     id: 3433,
@@ -17162,32 +17162,32 @@ export const CITIES = [
   {
     id: 3435,
     countyId: 8,
-    name: 'Cosula',
+    name: 'Coșula',
   },
   {
     id: 3436,
     countyId: 8,
-    name: 'Cosuleni',
+    name: 'Coșuleni',
   },
   {
     id: 3437,
     countyId: 8,
-    name: 'Cotargaci',
+    name: 'Cotârgaci',
   },
   {
     id: 3438,
     countyId: 35,
-    name: 'Cotargaci',
+    name: 'Cotârgaci',
   },
   {
     id: 3439,
     countyId: 48,
-    name: 'Cotargasi',
+    name: 'Cotârgași',
   },
   {
     id: 3440,
     countyId: 18,
-    name: 'Cotatcu',
+    name: 'Coțatcu',
   },
   {
     id: 3441,
@@ -17202,7 +17202,7 @@ export const CITIES = [
   {
     id: 3443,
     countyId: 3,
-    name: 'Cotenesti',
+    name: 'Cotenești',
   },
   {
     id: 3444,
@@ -17222,12 +17222,12 @@ export const CITIES = [
   {
     id: 3447,
     countyId: 3,
-    name: 'Cotesti',
+    name: 'Cotești',
   },
   {
     id: 3448,
     countyId: 54,
-    name: 'Cotesti',
+    name: 'Cotești',
   },
   {
     id: 3449,
@@ -17252,7 +17252,7 @@ export const CITIES = [
   {
     id: 3453,
     countyId: 3,
-    name: 'Cotmenita',
+    name: 'Cotmenița',
   },
   {
     id: 3454,
@@ -17262,37 +17262,37 @@ export const CITIES = [
   {
     id: 3455,
     countyId: 19,
-    name: 'Cotofanca',
+    name: 'Coțofanca',
   },
   {
     id: 3456,
     countyId: 5,
-    name: 'Cotofanesti',
+    name: 'Coțofănești',
   },
   {
     id: 3457,
     countyId: 44,
-    name: 'Cotofenesti',
+    name: 'Coțofenești',
   },
   {
     id: 3458,
     countyId: 25,
-    name: 'Cotofenii din Dos',
+    name: 'Coțofenii din Dos',
   },
   {
     id: 3459,
     countyId: 25,
-    name: 'Cotofenii din Fata',
+    name: 'Coțofenii din Față',
   },
   {
     id: 3460,
     countyId: 1,
-    name: 'Cotorasti',
+    name: 'Cotorăști',
   },
   {
     id: 3461,
     countyId: 43,
-    name: 'Cotorbesti',
+    name: 'Cotorbești',
   },
   {
     id: 3462,
@@ -17347,7 +17347,7 @@ export const CITIES = [
   {
     id: 3472,
     countyId: 48,
-    name: 'Cotu Baii',
+    name: 'Cotu Băii',
   },
   {
     id: 3473,
@@ -17382,7 +17382,7 @@ export const CITIES = [
   {
     id: 3479,
     countyId: 8,
-    name: 'Cotu Miculinti',
+    name: 'Cotu Miculinți',
   },
   {
     id: 3480,
@@ -17397,12 +17397,12 @@ export const CITIES = [
   {
     id: 3482,
     countyId: 22,
-    name: 'Cotu Vaii',
+    name: 'Cotu Văii',
   },
   {
     id: 3483,
     countyId: 42,
-    name: 'Cotu Vames',
+    name: 'Cotu Vameș',
   },
   {
     id: 3484,
@@ -17412,12 +17412,12 @@ export const CITIES = [
   {
     id: 3485,
     countyId: 41,
-    name: 'Cotus',
+    name: 'Cotuș',
   },
   {
     id: 3486,
     countyId: 8,
-    name: 'Cotusca',
+    name: 'Coțușca',
   },
   {
     id: 3487,
@@ -17432,7 +17432,7 @@ export const CITIES = [
   {
     id: 3489,
     countyId: 2,
-    name: 'Covasint',
+    name: 'Covăsinț',
   },
   {
     id: 3490,
@@ -17457,7 +17457,7 @@ export const CITIES = [
   {
     id: 3494,
     countyId: 47,
-    name: 'Coves',
+    name: 'Coveș',
   },
   {
     id: 3495,
@@ -17482,7 +17482,7 @@ export const CITIES = [
   {
     id: 3499,
     countyId: 48,
-    name: 'Cozanesti',
+    name: 'Cozănești',
   },
   {
     id: 3500,
@@ -17537,42 +17537,42 @@ export const CITIES = [
   {
     id: 3510,
     countyId: 53,
-    name: 'Cozmesti',
+    name: 'Cozmești',
   },
   {
     id: 3511,
     countyId: 35,
-    name: 'Cozmesti',
+    name: 'Cozmești',
   },
   {
     id: 3512,
     countyId: 35,
-    name: 'Cozmesti (Stolniceni-Prajescu)',
+    name: 'Cozmești (Stolniceni-Prăjescu)',
   },
   {
     id: 3513,
     countyId: 42,
-    name: 'Cracaoani',
+    name: 'Crăcăoani',
   },
   {
     id: 3514,
     countyId: 42,
-    name: 'Cracaul Negru',
+    name: 'Cracăul Negru',
   },
   {
     id: 3515,
     countyId: 43,
-    name: 'Craciunei',
+    name: 'Crăciunei',
   },
   {
     id: 3516,
     countyId: 31,
-    name: 'Craciunel',
+    name: 'Crăciunel',
   },
   {
     id: 3517,
     countyId: 1,
-    name: 'Craciunelu de Jos',
+    name: 'Crăciunelu de Jos',
   },
   {
     id: 3518,
@@ -17582,32 +17582,32 @@ export const CITIES = [
   {
     id: 3519,
     countyId: 24,
-    name: 'Craciunesti',
+    name: 'Crăciunești',
   },
   {
     id: 3520,
     countyId: 39,
-    name: 'Craciunesti',
+    name: 'Crăciunești',
   },
   {
     id: 3521,
     countyId: 53,
-    name: 'Craciunesti',
+    name: 'Crăciunești',
   },
   {
     id: 3522,
     countyId: 33,
-    name: 'Craciunesti',
+    name: 'Crăciunești',
   },
   {
     id: 3523,
     countyId: 41,
-    name: 'Craciunesti',
+    name: 'Crăciunești',
   },
   {
     id: 3524,
     countyId: 20,
-    name: 'Cracu Almaj',
+    name: 'Cracu Almăj',
   },
   {
     id: 3525,
@@ -17632,17 +17632,17 @@ export const CITIES = [
   {
     id: 3529,
     countyId: 21,
-    name: 'Craesti',
+    name: 'Crăești',
   },
   {
     id: 3530,
     countyId: 40,
-    name: 'Craguesti',
+    name: 'Crăguești',
   },
   {
     id: 3531,
     countyId: 33,
-    name: 'Craguis',
+    name: 'Crăguiș',
   },
   {
     id: 3532,
@@ -17652,32 +17652,32 @@ export const CITIES = [
   {
     id: 3533,
     countyId: 46,
-    name: 'Craidorolt',
+    name: 'Craidorolț',
   },
   {
     id: 3534,
     countyId: 28,
-    name: 'Craiesti',
+    name: 'Crăiești',
   },
   {
     id: 3535,
     countyId: 42,
-    name: 'Craiesti',
+    name: 'Crăiești',
   },
   {
     id: 3536,
     countyId: 5,
-    name: 'Craiesti',
+    name: 'Crăiești',
   },
   {
     id: 3537,
     countyId: 41,
-    name: 'Craiesti',
+    name: 'Crăiești',
   },
   {
     id: 3538,
     countyId: 41,
-    name: 'Craiesti (Adamus)',
+    name: 'Crăiești (Adămuș)',
   },
   {
     id: 3539,
@@ -17687,7 +17687,7 @@ export const CITIES = [
   {
     id: 3540,
     countyId: 7,
-    name: 'Crainimat',
+    name: 'Crainimăt',
   },
   {
     id: 3541,
@@ -17697,7 +17697,7 @@ export const CITIES = [
   {
     id: 3542,
     countyId: 21,
-    name: 'Crairat',
+    name: 'Crairât',
   },
   {
     id: 3543,
@@ -17712,102 +17712,102 @@ export const CITIES = [
   {
     id: 3545,
     countyId: 50,
-    name: 'Cralovat',
+    name: 'Cralovăț',
   },
   {
     id: 3546,
     countyId: 43,
-    name: 'Crampoia',
+    name: 'Crâmpoia',
   },
   {
     id: 3547,
     countyId: 3,
-    name: 'Crampotani',
+    name: 'Crâmpotani',
   },
   {
     id: 3548,
     countyId: 6,
-    name: 'Crancesti',
+    name: 'Crâncești',
   },
   {
     id: 3549,
     countyId: 18,
-    name: 'Crang',
+    name: 'Crâng',
   },
   {
     id: 3550,
     countyId: 53,
-    name: 'Crang',
+    name: 'Crâng',
   },
   {
     id: 3551,
     countyId: 24,
-    name: 'Crangasi',
+    name: 'Crângași',
   },
   {
     id: 3552,
     countyId: 49,
-    name: 'Crangeni',
+    name: 'Crângeni',
   },
   {
     id: 3553,
     countyId: 28,
-    name: 'Crangeni',
+    name: 'Crângeni',
   },
   {
     id: 3554,
     countyId: 49,
-    name: 'Crangu',
+    name: 'Crângu',
   },
   {
     id: 3555,
     countyId: 22,
-    name: 'Crangu',
+    name: 'Crângu',
   },
   {
     id: 3556,
     countyId: 52,
-    name: 'Crangu',
+    name: 'Crângu',
   },
   {
     id: 3557,
     countyId: 53,
-    name: 'Crangu Nou',
+    name: 'Crângu Nou',
   },
   {
     id: 3558,
     countyId: 29,
-    name: 'Cranguri',
+    name: 'Crânguri',
   },
   {
     id: 3559,
     countyId: 24,
-    name: 'Crangurile',
+    name: 'Crângurile',
   },
   {
     id: 3560,
     countyId: 44,
-    name: 'Crangurile',
+    name: 'Crângurile',
   },
   {
     id: 3561,
     countyId: 24,
-    name: 'Crangurile de Jos',
+    name: 'Crângurile de Jos',
   },
   {
     id: 3562,
     countyId: 24,
-    name: 'Crangurile de Sus',
+    name: 'Crângurile de Sus',
   },
   {
     id: 3563,
     countyId: 34,
-    name: 'Crasanii de Jos',
+    name: 'Crăsanii de Jos',
   },
   {
     id: 3564,
     countyId: 34,
-    name: 'Crasanii de Sus',
+    name: 'Crăsanii de Sus',
   },
   {
     id: 3565,
@@ -17837,7 +17837,7 @@ export const CITIES = [
   {
     id: 3570,
     countyId: 39,
-    name: 'Crasna Viseului',
+    name: 'Crasna Vișeului',
   },
   {
     id: 3571,
@@ -17847,7 +17847,7 @@ export const CITIES = [
   {
     id: 3572,
     countyId: 53,
-    name: 'Crasnaseni',
+    name: 'Crăsnășeni',
   },
   {
     id: 3573,
@@ -17857,12 +17857,12 @@ export const CITIES = [
   {
     id: 3574,
     countyId: 36,
-    name: 'Creata',
+    name: 'Creața',
   },
   {
     id: 3575,
     countyId: 22,
-    name: 'Credinta',
+    name: 'Credința',
   },
   {
     id: 3576,
@@ -17892,52 +17892,52 @@ export const CITIES = [
   {
     id: 3581,
     countyId: 52,
-    name: 'Creteni',
+    name: 'Crețeni',
   },
   {
     id: 3582,
     countyId: 30,
-    name: 'Cretesti',
+    name: 'Crețești',
   },
   {
     id: 3583,
     countyId: 53,
-    name: 'Cretesti',
+    name: 'Crețești',
   },
   {
     id: 3584,
     countyId: 1,
-    name: 'Cretesti',
+    name: 'Crețești',
   },
   {
     id: 3585,
     countyId: 36,
-    name: 'Cretesti',
+    name: 'Crețești',
   },
   {
     id: 3586,
     countyId: 53,
-    name: 'Cretestii de Sus',
+    name: 'Crețeștii de Sus',
   },
   {
     id: 3587,
     countyId: 43,
-    name: 'Creti',
+    name: 'Creți',
   },
   {
     id: 3588,
     countyId: 24,
-    name: 'Cretu',
+    name: 'Crețu',
   },
   {
     id: 3589,
     countyId: 36,
-    name: 'Cretuleasca',
+    name: 'Crețuleasca',
   },
   {
     id: 3590,
     countyId: 24,
-    name: 'Cretulesti',
+    name: 'Crețulești',
   },
   {
     id: 3591,
@@ -17952,12 +17952,12 @@ export const CITIES = [
   {
     id: 3593,
     countyId: 29,
-    name: 'Crevedia Mica',
+    name: 'Crevedia Mică',
   },
   {
     id: 3594,
     countyId: 18,
-    name: 'Crevelesti',
+    name: 'Crevelești',
   },
   {
     id: 3595,
@@ -17967,7 +17967,7 @@ export const CITIES = [
   {
     id: 3596,
     countyId: 1,
-    name: 'Cricau',
+    name: 'Cricău',
   },
   {
     id: 3597,
@@ -17992,67 +17992,67 @@ export const CITIES = [
   {
     id: 3601,
     countyId: 47,
-    name: 'Crint',
+    name: 'Crinț',
   },
   {
     id: 3602,
     countyId: 3,
-    name: 'Crintesti',
+    name: 'Crintești',
   },
   {
     id: 3603,
     countyId: 33,
-    name: 'Cris',
+    name: 'Criș',
   },
   {
     id: 3604,
     countyId: 41,
-    name: 'Cris',
+    name: 'Criș',
   },
   {
     id: 3605,
     countyId: 22,
-    name: 'Crisan',
+    name: 'Crișan',
   },
   {
     id: 3606,
     countyId: 51,
-    name: 'Crisan',
+    name: 'Crișan',
   },
   {
     id: 3607,
     countyId: 33,
-    name: 'Crisan',
+    name: 'Crișan',
   },
   {
     id: 3608,
     countyId: 33,
-    name: 'Criscior',
+    name: 'Crișcior',
   },
   {
     id: 3609,
     countyId: 1,
-    name: 'Criseni',
+    name: 'Crișeni',
   },
   {
     id: 3610,
     countyId: 31,
-    name: 'Criseni',
+    name: 'Crișeni',
   },
   {
     id: 3611,
     countyId: 46,
-    name: 'Criseni',
+    name: 'Crișeni',
   },
   {
     id: 3612,
     countyId: 21,
-    name: 'Criseni',
+    name: 'Crișeni',
   },
   {
     id: 3613,
     countyId: 45,
-    name: 'Criseni',
+    name: 'Crișeni',
   },
   {
     id: 3614,
@@ -18062,52 +18062,52 @@ export const CITIES = [
   {
     id: 3615,
     countyId: 45,
-    name: 'Cristelec',
+    name: 'Criștelec',
   },
   {
     id: 3616,
     countyId: 2,
-    name: 'Cristesti',
+    name: 'Cristești',
   },
   {
     id: 3617,
     countyId: 35,
-    name: 'Cristesti',
+    name: 'Cristești',
   },
   {
     id: 3618,
     countyId: 53,
-    name: 'Cristesti',
+    name: 'Cristești',
   },
   {
     id: 3619,
     countyId: 1,
-    name: 'Cristesti',
+    name: 'Cristești',
   },
   {
     id: 3620,
     countyId: 8,
-    name: 'Cristesti',
+    name: 'Cristești',
   },
   {
     id: 3621,
     countyId: 41,
-    name: 'Cristesti',
+    name: 'Cristești',
   },
   {
     id: 3622,
     countyId: 35,
-    name: 'Cristesti (Braesti)',
+    name: 'Cristești (Brăești)',
   },
   {
     id: 3623,
     countyId: 35,
-    name: 'Cristesti (Holboca)',
+    name: 'Cristești (Holboca)',
   },
   {
     id: 3624,
     countyId: 7,
-    name: 'Cristestii Ciceului',
+    name: 'Cristeștii Ciceului',
   },
   {
     id: 3625,
@@ -18122,27 +18122,27 @@ export const CITIES = [
   {
     id: 3627,
     countyId: 8,
-    name: 'Cristinesti',
+    name: 'Cristinești',
   },
   {
     id: 3628,
     countyId: 6,
-    name: 'Cristioru de Jos',
+    name: 'Criștioru de Jos',
   },
   {
     id: 3629,
     countyId: 6,
-    name: 'Cristioru de Sus',
+    name: 'Criștioru de Sus',
   },
   {
     id: 3630,
     countyId: 45,
-    name: 'Cristolt',
+    name: 'Cristolț',
   },
   {
     id: 3631,
     countyId: 45,
-    name: 'Cristoltel',
+    name: 'Cristolțel',
   },
   {
     id: 3632,
@@ -18157,12 +18157,12 @@ export const CITIES = [
   {
     id: 3634,
     countyId: 45,
-    name: 'Cristur-Criseni',
+    name: 'Cristur-Crișeni',
   },
   {
     id: 3635,
     countyId: 7,
-    name: 'Cristur-Sieu',
+    name: 'Cristur-Șieu',
   },
   {
     id: 3636,
@@ -18172,7 +18172,7 @@ export const CITIES = [
   {
     id: 3637,
     countyId: 10,
-    name: 'Crit',
+    name: 'Criț',
   },
   {
     id: 3638,
@@ -18202,32 +18202,32 @@ export const CITIES = [
   {
     id: 3643,
     countyId: 19,
-    name: 'Crivat',
+    name: 'Crivăț',
   },
   {
     id: 3644,
     countyId: 24,
-    name: 'Crivatu',
+    name: 'Crivățu',
   },
   {
     id: 3645,
     countyId: 3,
-    name: 'Crivatu',
+    name: 'Crivățu',
   },
   {
     id: 3646,
     countyId: 53,
-    name: 'Crivesti',
+    name: 'Crivești',
   },
   {
     id: 3647,
     countyId: 35,
-    name: 'Crivesti (Strunga)',
+    name: 'Crivești (Strunga)',
   },
   {
     id: 3648,
     countyId: 35,
-    name: 'Crivesti (Vanatori)',
+    name: 'Crivești (Vânători)',
   },
   {
     id: 3649,
@@ -18317,7 +18317,7 @@ export const CITIES = [
   {
     id: 3666,
     countyId: 29,
-    name: 'Crucea de Piatra',
+    name: 'Crucea de Piatră',
   },
   {
     id: 3667,
@@ -18342,47 +18342,47 @@ export const CITIES = [
   {
     id: 3671,
     countyId: 3,
-    name: 'Crucisoara',
+    name: 'Crucișoara',
   },
   {
     id: 3672,
     countyId: 46,
-    name: 'Crucisor',
+    name: 'Crucișor',
   },
   {
     id: 3673,
     countyId: 34,
-    name: 'Crunti',
+    name: 'Crunți',
   },
   {
     id: 3674,
     countyId: 30,
-    name: 'Cruset',
+    name: 'Crușeț',
   },
   {
     id: 3675,
     countyId: 20,
-    name: 'Crusovat',
+    name: 'Crușovăț',
   },
   {
     id: 3676,
     countyId: 20,
-    name: 'Crusovita',
+    name: 'Crușovița',
   },
   {
     id: 3677,
     countyId: 43,
-    name: 'Crusovu',
+    name: 'Crușovu',
   },
   {
     id: 3678,
     countyId: 45,
-    name: 'Cublesu',
+    name: 'Cubleșu',
   },
   {
     id: 3679,
     countyId: 21,
-    name: 'Cublesu Somesan',
+    name: 'Cubleșu Someșan',
   },
   {
     id: 3680,
@@ -18407,7 +18407,7 @@ export const CITIES = [
   {
     id: 3684,
     countyId: 52,
-    name: 'Cucesti',
+    name: 'Cucești',
   },
   {
     id: 3685,
@@ -18417,7 +18417,7 @@ export const CITIES = [
   {
     id: 3686,
     countyId: 5,
-    name: 'Cuchinis',
+    name: 'Cuchiniș',
   },
   {
     id: 3687,
@@ -18452,7 +18452,7 @@ export const CITIES = [
   {
     id: 3693,
     countyId: 8,
-    name: 'Cucorani',
+    name: 'Cucorăni',
   },
   {
     id: 3694,
@@ -18477,32 +18477,32 @@ export const CITIES = [
   {
     id: 3698,
     countyId: 49,
-    name: 'Cucueti',
+    name: 'Cucueți',
   },
   {
     id: 3699,
     countyId: 43,
-    name: 'Cucueti',
+    name: 'Cucueți',
   },
   {
     id: 3700,
     countyId: 19,
-    name: 'Cucuieti',
+    name: 'Cucuieți',
   },
   {
     id: 3701,
     countyId: 5,
-    name: 'Cucuieti (Dofteana)',
+    name: 'Cucuieți (Dofteana)',
   },
   {
     id: 3702,
     countyId: 5,
-    name: 'Cucuieti (Solont)',
+    name: 'Cucuieți (Solonț)',
   },
   {
     id: 3703,
     countyId: 33,
-    name: 'Cucuis',
+    name: 'Cucuiș',
   },
   {
     id: 3704,
@@ -18512,7 +18512,7 @@ export const CITIES = [
   {
     id: 3705,
     countyId: 52,
-    name: 'Cuculesti',
+    name: 'Cuculești',
   },
   {
     id: 3706,
@@ -18542,7 +18542,7 @@ export const CITIES = [
   {
     id: 3711,
     countyId: 35,
-    name: 'Cucuteni (Letcani)',
+    name: 'Cucuteni (Lețcani)',
   },
   {
     id: 3712,
@@ -18572,7 +18572,7 @@ export const CITIES = [
   {
     id: 3717,
     countyId: 2,
-    name: 'Cuias',
+    name: 'Cuiaș',
   },
   {
     id: 3718,
@@ -18587,17 +18587,17 @@ export const CITIES = [
   {
     id: 3720,
     countyId: 33,
-    name: 'Cuies',
+    name: 'Cuieș',
   },
   {
     id: 3721,
     countyId: 6,
-    name: 'Cuiesd',
+    name: 'Cuieșd',
   },
   {
     id: 3722,
     countyId: 41,
-    name: 'Cuiesd',
+    name: 'Cuieșd',
   },
   {
     id: 3723,
@@ -18642,7 +18642,7 @@ export const CITIES = [
   {
     id: 3731,
     countyId: 1,
-    name: 'Culdesti',
+    name: 'Culdești',
   },
   {
     id: 3732,
@@ -18652,12 +18652,12 @@ export const CITIES = [
   {
     id: 3733,
     countyId: 22,
-    name: 'Cumpana',
+    name: 'Cumpăna',
   },
   {
     id: 3734,
     countyId: 48,
-    name: 'Cumparatura',
+    name: 'Cumpărătura',
   },
   {
     id: 3735,
@@ -18667,7 +18667,7 @@ export const CITIES = [
   {
     id: 3736,
     countyId: 19,
-    name: 'Cunesti',
+    name: 'Cunești',
   },
   {
     id: 3737,
@@ -18682,7 +18682,7 @@ export const CITIES = [
   {
     id: 3739,
     countyId: 1,
-    name: 'Cunta',
+    name: 'Cunța',
   },
   {
     id: 3740,
@@ -18702,7 +18702,7 @@ export const CITIES = [
   {
     id: 3743,
     countyId: 39,
-    name: 'Cupseni',
+    name: 'Cupșeni',
   },
   {
     id: 3744,
@@ -18712,42 +18712,42 @@ export const CITIES = [
   {
     id: 3745,
     countyId: 20,
-    name: 'Cuptoare (Resita)',
+    name: 'Cuptoare (Reșița)',
   },
   {
     id: 3746,
     countyId: 35,
-    name: 'Curagau',
+    name: 'Curagău',
   },
   {
     id: 3747,
     countyId: 6,
-    name: 'Curatele',
+    name: 'Curățele',
   },
   {
     id: 3748,
     countyId: 19,
-    name: 'Curatesti',
+    name: 'Curătești',
   },
   {
     id: 3749,
     countyId: 1,
-    name: 'Curaturi',
+    name: 'Curături',
   },
   {
     id: 3750,
     countyId: 35,
-    name: 'Curaturi',
+    name: 'Curături',
   },
   {
     id: 3751,
     countyId: 52,
-    name: 'Curaturile',
+    name: 'Curăturile',
   },
   {
     id: 3752,
     countyId: 18,
-    name: 'Curcanesti',
+    name: 'Curcănești',
   },
   {
     id: 3753,
@@ -18772,7 +18772,7 @@ export const CITIES = [
   {
     id: 3757,
     countyId: 42,
-    name: 'Curechistea',
+    name: 'Curechiștea',
   },
   {
     id: 3758,
@@ -18782,37 +18782,37 @@ export const CITIES = [
   {
     id: 3759,
     countyId: 41,
-    name: 'Curete',
+    name: 'Curețe',
   },
   {
     id: 3760,
     countyId: 5,
-    name: 'Curita',
+    name: 'Curița',
   },
   {
     id: 3761,
     countyId: 18,
-    name: 'Curmatura',
+    name: 'Curmătura',
   },
   {
     id: 3762,
     countyId: 25,
-    name: 'Curmatura',
+    name: 'Curmătura',
   },
   {
     id: 3763,
     countyId: 1,
-    name: 'Curmatura',
+    name: 'Curmătură',
   },
   {
     id: 3764,
     countyId: 20,
-    name: 'Curmatura',
+    name: 'Curmătura',
   },
   {
     id: 3765,
     countyId: 44,
-    name: 'Curmatura',
+    name: 'Curmătura',
   },
   {
     id: 3766,
@@ -18827,7 +18827,7 @@ export const CITIES = [
   {
     id: 3768,
     countyId: 33,
-    name: 'Curpenii Silvasului',
+    name: 'Curpenii Silvașului',
   },
   {
     id: 3769,
@@ -18837,12 +18837,12 @@ export const CITIES = [
   {
     id: 3770,
     countyId: 53,
-    name: 'Cursesti-Deal',
+    name: 'Cursești-Deal',
   },
   {
     id: 3771,
     countyId: 53,
-    name: 'Cursesti-Vale',
+    name: 'Cursești-Vale',
   },
   {
     id: 3772,
@@ -18857,7 +18857,7 @@ export const CITIES = [
   {
     id: 3774,
     countyId: 3,
-    name: 'Curtea de Arges',
+    name: 'Curtea de Argeș',
   },
   {
     id: 3775,
@@ -18882,7 +18882,7 @@ export const CITIES = [
   {
     id: 3779,
     countyId: 8,
-    name: 'Curtesti',
+    name: 'Curtești',
   },
   {
     id: 3780,
@@ -18892,52 +18892,52 @@ export const CITIES = [
   {
     id: 3781,
     countyId: 30,
-    name: 'Curtisoara',
+    name: 'Curtișoara',
   },
   {
     id: 3782,
     countyId: 43,
-    name: 'Curtisoara',
+    name: 'Curtișoara',
   },
   {
     id: 3783,
     countyId: 43,
-    name: 'Curtisoara (Dobretu)',
+    name: 'Curtișoara (Dobrețu)',
   },
   {
     id: 3784,
     countyId: 6,
-    name: 'Curtuiseni',
+    name: 'Curtuișeni',
   },
   {
     id: 3785,
     countyId: 21,
-    name: 'Curtuiusu Dejului',
+    name: 'Curtuiușu Dejului',
   },
   {
     id: 3786,
     countyId: 39,
-    name: 'Curtuiusu Mare',
+    name: 'Curtuiușu Mare',
   },
   {
     id: 3787,
     countyId: 39,
-    name: 'Curtuiusu Mic',
+    name: 'Curtuiușu Mic',
   },
   {
     id: 3788,
     countyId: 7,
-    name: 'Cusma',
+    name: 'Cușma',
   },
   {
     id: 3789,
     countyId: 31,
-    name: 'Cusmed',
+    name: 'Cușmed',
   },
   {
     id: 3790,
     countyId: 41,
-    name: 'Custelnic',
+    name: 'Cuștelnic',
   },
   {
     id: 3791,
@@ -18952,7 +18952,7 @@ export const CITIES = [
   {
     id: 3793,
     countyId: 6,
-    name: 'Cusuius',
+    name: 'Cusuiuș',
   },
   {
     id: 3794,
@@ -18967,7 +18967,7 @@ export const CITIES = [
   {
     id: 3796,
     countyId: 46,
-    name: 'Cuta',
+    name: 'Cuța',
   },
   {
     id: 3797,
@@ -18987,17 +18987,17 @@ export const CITIES = [
   {
     id: 3800,
     countyId: 45,
-    name: 'Cutis',
+    name: 'Cutiș',
   },
   {
     id: 3801,
     countyId: 10,
-    name: 'Cutus',
+    name: 'Cutuș',
   },
   {
     id: 3802,
     countyId: 2,
-    name: 'Cuvesdia',
+    name: 'Cuveșdia',
   },
   {
     id: 3803,
@@ -19012,47 +19012,47 @@ export const CITIES = [
   {
     id: 3805,
     countyId: 24,
-    name: 'Cuza Voda',
+    name: 'Cuza Vodă',
   },
   {
     id: 3806,
     countyId: 43,
-    name: 'Cuza Voda',
+    name: 'Cuza Vodă',
   },
   {
     id: 3807,
     countyId: 8,
-    name: 'Cuza Voda',
+    name: 'Cuza Vodă',
   },
   {
     id: 3808,
     countyId: 22,
-    name: 'Cuza Voda',
+    name: 'Cuza Vodă',
   },
   {
     id: 3809,
     countyId: 28,
-    name: 'Cuza Voda',
+    name: 'Cuza Vodă',
   },
   {
     id: 3810,
     countyId: 35,
-    name: 'Cuza Voda (Ipatele)',
+    name: 'Cuza Vodă (Ipatele)',
   },
   {
     id: 3811,
     countyId: 35,
-    name: 'Cuza Voda (Popricani)',
+    name: 'Cuza Vodă (Popricani)',
   },
   {
     id: 3812,
     countyId: 9,
-    name: 'Cuza Voda (Salcia Tudor)',
+    name: 'Cuza Vodă (Salcia Tudor)',
   },
   {
     id: 3813,
     countyId: 9,
-    name: 'Cuza Voda (Stancuta)',
+    name: 'Cuza Vodă (Stăncuța)',
   },
   {
     id: 3814,
@@ -19062,7 +19062,7 @@ export const CITIES = [
   {
     id: 3815,
     countyId: 45,
-    name: 'Cuzaplac',
+    name: 'Cuzăplac',
   },
   {
     id: 3816,
@@ -19072,17 +19072,17 @@ export const CITIES = [
   {
     id: 3817,
     countyId: 8,
-    name: 'Cuzlau',
+    name: 'Cuzlău',
   },
   {
     id: 3818,
     countyId: 33,
-    name: 'Dabaca',
+    name: 'Dăbâca',
   },
   {
     id: 3819,
     countyId: 21,
-    name: 'Dabaca',
+    name: 'Dăbâca',
   },
   {
     id: 3820,
@@ -19092,7 +19092,7 @@ export const CITIES = [
   {
     id: 3821,
     countyId: 25,
-    name: 'Dabuleni',
+    name: 'Dăbuleni',
   },
   {
     id: 3822,
@@ -19112,32 +19112,32 @@ export const CITIES = [
   {
     id: 3825,
     countyId: 5,
-    name: 'Dadesti',
+    name: 'Dădești',
   },
   {
     id: 3826,
     countyId: 35,
-    name: 'Dadesti',
+    name: 'Dădești',
   },
   {
     id: 3827,
     countyId: 51,
-    name: 'Daeni',
+    name: 'Dăeni',
   },
   {
     id: 3828,
     countyId: 52,
-    name: 'Daesti',
+    name: 'Dăești',
   },
   {
     id: 3829,
     countyId: 52,
-    name: 'Daesti (Popesti)',
+    name: 'Dăești (Popești)',
   },
   {
     id: 3830,
     countyId: 35,
-    name: 'Dagata',
+    name: 'Dagâța',
   },
   {
     id: 3831,
@@ -19167,22 +19167,22 @@ export const CITIES = [
   {
     id: 3836,
     countyId: 1,
-    name: 'Daia Romana',
+    name: 'Daia Română',
   },
   {
     id: 3837,
     countyId: 10,
-    name: 'Daisoara',
+    name: 'Dăișoara',
   },
   {
     id: 3838,
     countyId: 40,
-    name: 'Dalbocita',
+    name: 'Dâlbocița',
   },
   {
     id: 3839,
     countyId: 20,
-    name: 'Dalboset',
+    name: 'Dalboșeț',
   },
   {
     id: 3840,
@@ -19192,42 +19192,42 @@ export const CITIES = [
   {
     id: 3841,
     countyId: 19,
-    name: 'Dalga',
+    name: 'Dâlga',
   },
   {
     id: 3842,
     countyId: 19,
-    name: 'Dalga-Gara',
+    name: 'Dâlga-Gară',
   },
   {
     id: 3843,
     countyId: 10,
-    name: 'Dalghiu',
+    name: 'Dălghiu',
   },
   {
     id: 3844,
     countyId: 54,
-    name: 'Dalhauti',
+    name: 'Dălhăuți',
   },
   {
     id: 3845,
     countyId: 33,
-    name: 'Dalja Mare',
+    name: 'Dâlja Mare',
   },
   {
     id: 3846,
     countyId: 33,
-    name: 'Dalja Mica',
+    name: 'Dâlja Mică',
   },
   {
     id: 3847,
     countyId: 18,
-    name: 'Dalma',
+    name: 'Dâlma',
   },
   {
     id: 3848,
     countyId: 40,
-    name: 'Dalma',
+    name: 'Dâlma',
   },
   {
     id: 3849,
@@ -19242,122 +19242,122 @@ export const CITIES = [
   {
     id: 3851,
     countyId: 39,
-    name: 'Damacuseni',
+    name: 'Dămăcușeni',
   },
   {
     id: 3852,
     countyId: 41,
-    name: 'Dambau',
+    name: 'Dâmbău',
   },
   {
     id: 3853,
     countyId: 30,
-    name: 'Dambova',
+    name: 'Dâmbova',
   },
   {
     id: 3854,
     countyId: 24,
-    name: 'Dambovicioara',
+    name: 'Dâmbovicioara',
   },
   {
     id: 3855,
     countyId: 3,
-    name: 'Dambovicioara',
+    name: 'Dâmbovicioara',
   },
   {
     id: 3856,
     countyId: 18,
-    name: 'Dambroca',
+    name: 'Dâmbroca',
   },
   {
     id: 3857,
     countyId: 41,
-    name: 'Dambu',
+    name: 'Dâmbu',
   },
   {
     id: 3858,
     countyId: 44,
-    name: 'Dambu',
+    name: 'Dâmbu',
   },
   {
     id: 3859,
     countyId: 21,
-    name: 'Dambu Mare',
+    name: 'Dâmbu Mare',
   },
   {
     id: 3860,
     countyId: 1,
-    name: 'Dambureni',
+    name: 'Dâmbureni',
   },
   {
     id: 3861,
     countyId: 21,
-    name: 'Damburile',
+    name: 'Dâmburile',
   },
   {
     id: 3862,
     countyId: 43,
-    name: 'Damburile',
+    name: 'Dâmburile',
   },
   {
     id: 3863,
     countyId: 8,
-    name: 'Damideni',
+    name: 'Dămideni',
   },
   {
     id: 3864,
     countyId: 5,
-    name: 'Damienesti',
+    name: 'Dămienești',
   },
   {
     id: 3865,
     countyId: 41,
-    name: 'Damieni',
+    name: 'Dămieni',
   },
   {
     id: 3866,
     countyId: 6,
-    name: 'Damis',
+    name: 'Damiș',
   },
   {
     id: 3867,
     countyId: 52,
-    name: 'Damteni',
+    name: 'Dămțeni',
   },
   {
     id: 3868,
     countyId: 42,
-    name: 'Damuc',
+    name: 'Dămuc',
   },
   {
     id: 3869,
     countyId: 5,
-    name: 'Danaila',
+    name: 'Dănăila',
   },
   {
     id: 3870,
     countyId: 52,
-    name: 'Dancai',
+    name: 'Dăncăi',
   },
   {
     id: 3871,
     countyId: 35,
-    name: 'Dancas',
+    name: 'Dancaș',
   },
   {
     id: 3872,
     countyId: 40,
-    name: 'Danceu',
+    name: 'Dănceu',
   },
   {
     id: 3873,
     countyId: 30,
-    name: 'Danciulesti',
+    name: 'Dănciulești',
   },
   {
     id: 3874,
     countyId: 21,
-    name: 'Dancu',
+    name: 'Dâncu',
   },
   {
     id: 3875,
@@ -19367,107 +19367,107 @@ export const CITIES = [
   {
     id: 3876,
     countyId: 33,
-    name: 'Dancu Mare',
+    name: 'Dâncu Mare',
   },
   {
     id: 3877,
     countyId: 33,
-    name: 'Dancu Mic',
+    name: 'Dâncu Mic',
   },
   {
     id: 3878,
     countyId: 1,
-    name: 'Dandut',
+    name: 'Dănduț',
   },
   {
     id: 3879,
     countyId: 43,
-    name: 'Daneasa',
+    name: 'Dăneasa',
   },
   {
     id: 3880,
     countyId: 41,
-    name: 'Danes',
+    name: 'Daneș',
   },
   {
     id: 3881,
     countyId: 19,
-    name: 'Danesti',
+    name: 'Dănești',
   },
   {
     id: 3882,
     countyId: 31,
-    name: 'Danesti',
+    name: 'Dănești',
   },
   {
     id: 3883,
     countyId: 42,
-    name: 'Danesti',
+    name: 'Dănești',
   },
   {
     id: 3884,
     countyId: 30,
-    name: 'Danesti',
+    name: 'Dănești',
   },
   {
     id: 3885,
     countyId: 39,
-    name: 'Danesti',
+    name: 'Dănești',
   },
   {
     id: 3886,
     countyId: 53,
-    name: 'Danesti',
+    name: 'Dănești',
   },
   {
     id: 3887,
     countyId: 39,
-    name: 'Danestii Chioarului',
+    name: 'Dăneștii Chioarului',
   },
   {
     id: 3888,
     countyId: 25,
-    name: 'Daneti',
+    name: 'Daneți',
   },
   {
     id: 3889,
     countyId: 21,
-    name: 'Dangau Mare',
+    name: 'Dângău Mare',
   },
   {
     id: 3890,
     countyId: 21,
-    name: 'Dangau Mic',
+    name: 'Dângău Mic',
   },
   {
     id: 3891,
     countyId: 8,
-    name: 'Dangeni',
+    name: 'Dângeni',
   },
   {
     id: 3892,
     countyId: 52,
-    name: 'Dangesti',
+    name: 'Dângești',
   },
   {
     id: 3893,
     countyId: 52,
-    name: 'Danicei',
+    name: 'Dănicei',
   },
   {
     id: 3894,
     countyId: 48,
-    name: 'Danila',
+    name: 'Dănila',
   },
   {
     id: 3895,
     countyId: 18,
-    name: 'Danulesti',
+    name: 'Dănulești',
   },
   {
     id: 3896,
     countyId: 33,
-    name: 'Danulesti',
+    name: 'Dănulești',
   },
   {
     id: 3897,
@@ -19492,77 +19492,77 @@ export const CITIES = [
   {
     id: 3901,
     countyId: 36,
-    name: 'Darasti-Ilfov',
+    name: 'Dărăști-Ilfov',
   },
   {
     id: 3902,
     countyId: 29,
-    name: 'Darasti-Vlasca',
+    name: 'Dărăști-Vlașca',
   },
   {
     id: 3903,
     countyId: 21,
-    name: 'Darja',
+    name: 'Dârja',
   },
   {
     id: 3904,
     countyId: 31,
-    name: 'Darjiu',
+    name: 'Dârjiu',
   },
   {
     id: 3905,
     countyId: 1,
-    name: 'Darlesti',
+    name: 'Dârlești',
   },
   {
     id: 3906,
     countyId: 42,
-    name: 'Darloaia',
+    name: 'Dârloaia',
   },
   {
     id: 3907,
     countyId: 47,
-    name: 'Darlos',
+    name: 'Dârlos',
   },
   {
     id: 3908,
     countyId: 5,
-    name: 'Darmaneasca',
+    name: 'Dărmăneasca',
   },
   {
     id: 3909,
     countyId: 5,
-    name: 'Darmanesti',
+    name: 'Dărmănești',
   },
   {
     id: 3910,
     countyId: 48,
-    name: 'Darmanesti',
+    name: 'Dărmănești',
   },
   {
     id: 3911,
     countyId: 24,
-    name: 'Darmanesti',
+    name: 'Dărmănești',
   },
   {
     id: 3912,
     countyId: 3,
-    name: 'Darmanesti',
+    name: 'Dârmănești',
   },
   {
     id: 3913,
     countyId: 48,
-    name: 'Darmoxa',
+    name: 'Dârmoxa',
   },
   {
     id: 3914,
     countyId: 1,
-    name: 'Daroaia',
+    name: 'Dăroaia',
   },
   {
     id: 3915,
     countyId: 21,
-    name: 'Darot',
+    name: 'Daroț',
   },
   {
     id: 3916,
@@ -19572,47 +19572,47 @@ export const CITIES = [
   {
     id: 3917,
     countyId: 19,
-    name: 'Darvari',
+    name: 'Dârvari',
   },
   {
     id: 3918,
     countyId: 40,
-    name: 'Darvari',
+    name: 'Dârvari',
   },
   {
     id: 3919,
     countyId: 36,
-    name: 'Darvari',
+    name: 'Dârvari',
   },
   {
     id: 3920,
     countyId: 44,
-    name: 'Darvari',
+    name: 'Dârvari',
   },
   {
     id: 3921,
     countyId: 49,
-    name: 'Darvas',
+    name: 'Dărvaș',
   },
   {
     id: 3922,
     countyId: 24,
-    name: 'Darza',
+    name: 'Dârza',
   },
   {
     id: 3923,
     countyId: 18,
-    name: 'Dascalesti',
+    name: 'Dăscălești',
   },
   {
     id: 3924,
     countyId: 36,
-    name: 'Dascalu',
+    name: 'Dascălu',
   },
   {
     id: 3925,
     countyId: 41,
-    name: 'Dataseni',
+    name: 'Dătășeni',
   },
   {
     id: 3926,
@@ -19627,17 +19627,17 @@ export const CITIES = [
   {
     id: 3928,
     countyId: 43,
-    name: 'Davidesti',
+    name: 'Davidești',
   },
   {
     id: 3929,
     countyId: 3,
-    name: 'Davidesti',
+    name: 'Davidești',
   },
   {
     id: 3930,
     countyId: 53,
-    name: 'Davidesti',
+    name: 'Davidești',
   },
   {
     id: 3931,
@@ -19692,7 +19692,7 @@ export const CITIES = [
   {
     id: 3941,
     countyId: 52,
-    name: 'Dealu Alunis',
+    name: 'Dealu Aluniș',
   },
   {
     id: 3942,
@@ -19757,7 +19757,7 @@ export const CITIES = [
   {
     id: 3954,
     countyId: 1,
-    name: 'Dealu Crisului',
+    name: 'Dealu Crișului',
   },
   {
     id: 3955,
@@ -19772,7 +19772,7 @@ export const CITIES = [
   {
     id: 3957,
     countyId: 1,
-    name: 'Dealu Dostatului',
+    name: 'Dealu Doștatului',
   },
   {
     id: 3958,
@@ -19802,12 +19802,12 @@ export const CITIES = [
   {
     id: 3963,
     countyId: 1,
-    name: 'Dealu Frumos (Garda de Sus)',
+    name: 'Dealu Frumos (Gârda de Sus)',
   },
   {
     id: 3964,
     countyId: 1,
-    name: 'Dealu Frumos (Vadu Motilor)',
+    name: 'Dealu Frumos (Vadu Moților)',
   },
   {
     id: 3965,
@@ -19817,22 +19817,22 @@ export const CITIES = [
   {
     id: 3966,
     countyId: 52,
-    name: 'Dealu Glameia',
+    name: 'Dealu Glămeia',
   },
   {
     id: 3967,
     countyId: 1,
-    name: 'Dealu Goiesti',
+    name: 'Dealu Goiești',
   },
   {
     id: 3968,
     countyId: 1,
-    name: 'Dealu Lamasoi',
+    name: 'Dealu Lămășoi',
   },
   {
     id: 3969,
     countyId: 52,
-    name: 'Dealu Launele',
+    name: 'Dealu Lăunele',
   },
   {
     id: 3970,
@@ -19897,12 +19897,12 @@ export const CITIES = [
   {
     id: 3982,
     countyId: 52,
-    name: 'Dealu Mare (Gusoeni)',
+    name: 'Dealu Mare (Gușoeni)',
   },
   {
     id: 3983,
     countyId: 52,
-    name: 'Dealu Mare (Ionesti)',
+    name: 'Dealu Mare (Ionești)',
   },
   {
     id: 3984,
@@ -19932,17 +19932,17 @@ export const CITIES = [
   {
     id: 3989,
     countyId: 3,
-    name: 'Dealu Orasului',
+    name: 'Dealu Orașului',
   },
   {
     id: 3990,
     countyId: 1,
-    name: 'Dealu Ordancusii',
+    name: 'Dealu Ordâncușii',
   },
   {
     id: 3991,
     countyId: 3,
-    name: 'Dealu Padurii',
+    name: 'Dealu Pădurii',
   },
   {
     id: 3992,
@@ -19962,7 +19962,7 @@ export const CITIES = [
   {
     id: 3995,
     countyId: 54,
-    name: 'Dealu Sarii',
+    name: 'Dealu Sării',
   },
   {
     id: 3996,
@@ -19972,7 +19972,7 @@ export const CITIES = [
   {
     id: 3997,
     countyId: 53,
-    name: 'Dealu Secarii',
+    name: 'Dealu Secării',
   },
   {
     id: 3998,
@@ -19982,7 +19982,7 @@ export const CITIES = [
   {
     id: 3999,
     countyId: 7,
-    name: 'Dealu Stefanitei',
+    name: 'Dealu Ștefăniței',
   },
   {
     id: 4000,
@@ -19992,7 +19992,7 @@ export const CITIES = [
   {
     id: 4001,
     countyId: 52,
-    name: 'Dealu Valeni',
+    name: 'Dealu Văleni',
   },
   {
     id: 4002,
@@ -20012,7 +20012,7 @@ export const CITIES = [
   {
     id: 4005,
     countyId: 3,
-    name: 'Dealu Viilor (Mosoaia)',
+    name: 'Dealu Viilor (Moșoaia)',
   },
   {
     id: 4006,
@@ -20047,12 +20047,12 @@ export const CITIES = [
   {
     id: 4012,
     countyId: 40,
-    name: 'Dedovita Noua',
+    name: 'Dedovița Nouă',
   },
   {
     id: 4013,
     countyId: 40,
-    name: 'Dedovita Veche',
+    name: 'Dedovița Veche',
   },
   {
     id: 4014,
@@ -20062,17 +20062,17 @@ export const CITIES = [
   {
     id: 4015,
     countyId: 3,
-    name: 'Dedulesti',
+    name: 'Dedulești',
   },
   {
     id: 4016,
     countyId: 18,
-    name: 'Dedulesti',
+    name: 'Dedulești',
   },
   {
     id: 4017,
     countyId: 9,
-    name: 'Dedulesti',
+    name: 'Dedulești',
   },
   {
     id: 4018,
@@ -20102,7 +20102,7 @@ export const CITIES = [
   {
     id: 4023,
     countyId: 43,
-    name: 'Dejesti',
+    name: 'Dejești',
   },
   {
     id: 4024,
@@ -20112,7 +20112,7 @@ export const CITIES = [
   {
     id: 4025,
     countyId: 31,
-    name: 'Dejutiu',
+    name: 'Dejuțiu',
   },
   {
     id: 4026,
@@ -20202,7 +20202,7 @@ export const CITIES = [
   {
     id: 4043,
     countyId: 35,
-    name: 'Deleni (Ciortesti)',
+    name: 'Deleni (Ciortești)',
   },
   {
     id: 4044,
@@ -20217,12 +20217,12 @@ export const CITIES = [
   {
     id: 4046,
     countyId: 41,
-    name: 'Deleni (Pogaceaua)',
+    name: 'Deleni (Pogăceaua)',
   },
   {
     id: 4047,
     countyId: 1,
-    name: 'Deleni-Obarsie',
+    name: 'Deleni-Obârșie',
   },
   {
     id: 4048,
@@ -20232,22 +20232,22 @@ export const CITIES = [
   {
     id: 4049,
     countyId: 53,
-    name: 'Delesti',
+    name: 'Delești',
   },
   {
     id: 4050,
     countyId: 20,
-    name: 'Delinesti',
+    name: 'Delinești',
   },
   {
     id: 4051,
     countyId: 31,
-    name: 'Delnita',
+    name: 'Delnița',
   },
   {
     id: 4052,
     countyId: 48,
-    name: 'Delnita',
+    name: 'Delnița',
   },
   {
     id: 4053,
@@ -20262,12 +20262,12 @@ export const CITIES = [
   {
     id: 4055,
     countyId: 52,
-    name: 'Delureni (Ionesti)',
+    name: 'Delureni (Ionești)',
   },
   {
     id: 4056,
     countyId: 52,
-    name: 'Delureni (Stoilesti)',
+    name: 'Delureni (Stoilești)',
   },
   {
     id: 4057,
@@ -20277,17 +20277,17 @@ export const CITIES = [
   {
     id: 4058,
     countyId: 48,
-    name: 'Delut',
+    name: 'Deluț',
   },
   {
     id: 4059,
     countyId: 48,
-    name: 'Demacusa',
+    name: 'Demacușa',
   },
   {
     id: 4060,
     countyId: 33,
-    name: 'Densus',
+    name: 'Densuș',
   },
   {
     id: 4061,
@@ -20297,12 +20297,12 @@ export const CITIES = [
   {
     id: 4062,
     countyId: 1,
-    name: 'Deoncesti',
+    name: 'Deoncești',
   },
   {
     id: 4063,
     countyId: 49,
-    name: 'Deparati',
+    name: 'Deparați',
   },
   {
     id: 4064,
@@ -20312,7 +20312,7 @@ export const CITIES = [
   {
     id: 4065,
     countyId: 6,
-    name: 'Dernisoara',
+    name: 'Dernișoara',
   },
   {
     id: 4066,
@@ -20322,7 +20322,7 @@ export const CITIES = [
   {
     id: 4067,
     countyId: 45,
-    name: 'Dersida',
+    name: 'Derșida',
   },
   {
     id: 4068,
@@ -20337,17 +20337,17 @@ export const CITIES = [
   {
     id: 4070,
     countyId: 39,
-    name: 'Desesti',
+    name: 'Desești',
   },
   {
     id: 4071,
     countyId: 9,
-    name: 'Desirati',
+    name: 'Deșirați',
   },
   {
     id: 4072,
     countyId: 25,
-    name: 'Desnatui',
+    name: 'Desnățui',
   },
   {
     id: 4073,
@@ -20357,7 +20357,7 @@ export const CITIES = [
   {
     id: 4074,
     countyId: 21,
-    name: 'Deusu',
+    name: 'Deușu',
   },
   {
     id: 4075,
@@ -20382,7 +20382,7 @@ export const CITIES = [
   {
     id: 4079,
     countyId: 20,
-    name: 'Dezesti',
+    name: 'Dezești',
   },
   {
     id: 4080,
@@ -20397,22 +20397,22 @@ export const CITIES = [
   {
     id: 4082,
     countyId: 52,
-    name: 'Dezrobiti',
+    name: 'Dezrobiți',
   },
   {
     id: 4083,
     countyId: 5,
-    name: 'Diaconesti',
+    name: 'Diaconești',
   },
   {
     id: 4084,
     countyId: 52,
-    name: 'Diaconesti',
+    name: 'Diaconești',
   },
   {
     id: 4085,
     countyId: 24,
-    name: 'Diaconesti',
+    name: 'Diaconești',
   },
   {
     id: 4086,
@@ -20422,7 +20422,7 @@ export const CITIES = [
   {
     id: 4087,
     countyId: 6,
-    name: 'Dicanesti',
+    name: 'Dicănești',
   },
   {
     id: 4088,
@@ -20432,22 +20432,22 @@ export const CITIES = [
   {
     id: 4089,
     countyId: 3,
-    name: 'Diconesti',
+    name: 'Diconești',
   },
   {
     id: 4090,
     countyId: 52,
-    name: 'Diculesti',
+    name: 'Diculești',
   },
   {
     id: 4091,
     countyId: 49,
-    name: 'Didesti',
+    name: 'Didești',
   },
   {
     id: 4092,
     countyId: 30,
-    name: 'Didilesti',
+    name: 'Didilești',
   },
   {
     id: 4093,
@@ -20462,7 +20462,7 @@ export const CITIES = [
   {
     id: 4095,
     countyId: 5,
-    name: 'Dienet',
+    name: 'Dieneț',
   },
   {
     id: 4096,
@@ -20487,7 +20487,7 @@ export const CITIES = [
   {
     id: 4100,
     countyId: 8,
-    name: 'Dimacheni',
+    name: 'Dimăcheni',
   },
   {
     id: 4101,
@@ -20517,7 +20517,7 @@ export const CITIES = [
   {
     id: 4106,
     countyId: 52,
-    name: 'Dimulesti',
+    name: 'Dimulești',
   },
   {
     id: 4107,
@@ -20527,17 +20527,17 @@ export const CITIES = [
   {
     id: 4108,
     countyId: 3,
-    name: 'Dinculesti',
+    name: 'Dinculești',
   },
   {
     id: 4109,
     countyId: 46,
-    name: 'Dindesti',
+    name: 'Dindești',
   },
   {
     id: 4110,
     countyId: 46,
-    name: 'Dindestiu Mic',
+    name: 'Dindeștiu Mic',
   },
   {
     id: 4111,
@@ -20547,12 +20547,12 @@ export const CITIES = [
   {
     id: 4112,
     countyId: 50,
-    name: 'Dinias',
+    name: 'Diniaș',
   },
   {
     id: 4113,
     countyId: 54,
-    name: 'Diocheti-Rediu',
+    name: 'Diocheți-Rediu',
   },
   {
     id: 4114,
@@ -20562,27 +20562,27 @@ export const CITIES = [
   {
     id: 4115,
     countyId: 45,
-    name: 'Diosod',
+    name: 'Dioșod',
   },
   {
     id: 4116,
     countyId: 25,
-    name: 'Diosti',
+    name: 'Dioști',
   },
   {
     id: 4117,
     countyId: 7,
-    name: 'Dipsa',
+    name: 'Dipșa',
   },
   {
     id: 4118,
     countyId: 44,
-    name: 'Ditesti',
+    name: 'Dițești',
   },
   {
     id: 4119,
     countyId: 31,
-    name: 'Ditrau',
+    name: 'Ditrău',
   },
   {
     id: 4120,
@@ -20637,17 +20637,17 @@ export const CITIES = [
   {
     id: 4130,
     countyId: 47,
-    name: 'Dobarca',
+    name: 'Dobârca',
   },
   {
     id: 4131,
     countyId: 8,
-    name: 'Dobarceni',
+    name: 'Dobârceni',
   },
   {
     id: 4132,
     countyId: 23,
-    name: 'Dobarlau',
+    name: 'Dobârlău',
   },
   {
     id: 4133,
@@ -20672,12 +20672,12 @@ export const CITIES = [
   {
     id: 4137,
     countyId: 46,
-    name: 'Dobolt',
+    name: 'Dobolț',
   },
   {
     id: 4138,
     countyId: 23,
-    name: 'Doboseni',
+    name: 'Doboșeni',
   },
   {
     id: 4139,
@@ -20737,42 +20737,42 @@ export const CITIES = [
   {
     id: 4150,
     countyId: 3,
-    name: 'Dobresti',
+    name: 'Dobrești',
   },
   {
     id: 4151,
     countyId: 24,
-    name: 'Dobresti',
+    name: 'Dobrești',
   },
   {
     id: 4152,
     countyId: 50,
-    name: 'Dobresti',
+    name: 'Dobrești',
   },
   {
     id: 4153,
     countyId: 1,
-    name: 'Dobresti',
+    name: 'Dobrești',
   },
   {
     id: 4154,
     countyId: 6,
-    name: 'Dobresti',
+    name: 'Dobrești',
   },
   {
     id: 4155,
     countyId: 25,
-    name: 'Dobresti',
+    name: 'Dobrești',
   },
   {
     id: 4156,
     countyId: 52,
-    name: 'Dobresti',
+    name: 'Dobrești',
   },
   {
     id: 4157,
     countyId: 43,
-    name: 'Dobretu',
+    name: 'Dobrețu',
   },
   {
     id: 4158,
@@ -20802,12 +20802,12 @@ export const CITIES = [
   {
     id: 4163,
     countyId: 6,
-    name: 'Dobricionesti',
+    name: 'Dobricionești',
   },
   {
     id: 4164,
     countyId: 39,
-    name: 'Dobricu Lapusului',
+    name: 'Dobricu Lăpușului',
   },
   {
     id: 4165,
@@ -20817,7 +20817,7 @@ export const CITIES = [
   {
     id: 4166,
     countyId: 18,
-    name: 'Dobrilesti',
+    name: 'Dobrilești',
   },
   {
     id: 4167,
@@ -20827,12 +20827,12 @@ export const CITIES = [
   {
     id: 4168,
     countyId: 28,
-    name: 'Dobrinesti',
+    name: 'Dobrinești',
   },
   {
     id: 4169,
     countyId: 30,
-    name: 'Dobrita',
+    name: 'Dobrița',
   },
   {
     id: 4170,
@@ -20842,7 +20842,7 @@ export const CITIES = [
   {
     id: 4171,
     countyId: 36,
-    name: 'Dobroesti',
+    name: 'Dobroești',
   },
   {
     id: 4172,
@@ -20872,12 +20872,12 @@ export const CITIES = [
   {
     id: 4177,
     countyId: 53,
-    name: 'Dobroslovesti',
+    name: 'Dobroslovești',
   },
   {
     id: 4178,
     countyId: 33,
-    name: 'Dobrot',
+    name: 'Dobroț',
   },
   {
     id: 4179,
@@ -20897,12 +20897,12 @@ export const CITIES = [
   {
     id: 4182,
     countyId: 49,
-    name: 'Dobrotesti',
+    name: 'Dobrotești',
   },
   {
     id: 4183,
     countyId: 25,
-    name: 'Dobrotesti',
+    name: 'Dobrotești',
   },
   {
     id: 4184,
@@ -20917,7 +20917,7 @@ export const CITIES = [
   {
     id: 4186,
     countyId: 35,
-    name: 'Dobrovat',
+    name: 'Dobrovăț',
   },
   {
     id: 4187,
@@ -20927,12 +20927,12 @@ export const CITIES = [
   {
     id: 4188,
     countyId: 52,
-    name: 'Dobrusa',
+    name: 'Dobrușa',
   },
   {
     id: 4189,
     countyId: 53,
-    name: 'Docaneasa',
+    name: 'Docăneasa',
   },
   {
     id: 4190,
@@ -20957,7 +20957,7 @@ export const CITIES = [
   {
     id: 4194,
     countyId: 53,
-    name: 'Dodesti',
+    name: 'Dodești',
   },
   {
     id: 4195,
@@ -20972,7 +20972,7 @@ export const CITIES = [
   {
     id: 4197,
     countyId: 1,
-    name: 'Dogaresti',
+    name: 'Dogărești',
   },
   {
     id: 4198,
@@ -20997,7 +20997,7 @@ export const CITIES = [
   {
     id: 4202,
     countyId: 24,
-    name: 'Doicesti',
+    name: 'Doicești',
   },
   {
     id: 4203,
@@ -21012,12 +21012,12 @@ export const CITIES = [
   {
     id: 4205,
     countyId: 50,
-    name: 'Dolat',
+    name: 'Dolaț',
   },
   {
     id: 4206,
     countyId: 30,
-    name: 'Dolcesti',
+    name: 'Dolcești',
   },
   {
     id: 4207,
@@ -21027,7 +21027,7 @@ export const CITIES = [
   {
     id: 4208,
     countyId: 1,
-    name: 'Dolesti',
+    name: 'Dolești',
   },
   {
     id: 4209,
@@ -21042,27 +21042,27 @@ export const CITIES = [
   {
     id: 4211,
     countyId: 35,
-    name: 'Dolhesti',
+    name: 'Dolhești',
   },
   {
     id: 4212,
     countyId: 48,
-    name: 'Dolhesti',
+    name: 'Dolhești',
   },
   {
     id: 4213,
     countyId: 42,
-    name: 'Dolhesti',
+    name: 'Dolhești',
   },
   {
     id: 4214,
     countyId: 48,
-    name: 'Dolhestii Mari',
+    name: 'Dolheștii Mari',
   },
   {
     id: 4215,
     countyId: 48,
-    name: 'Dolhestii Mici',
+    name: 'Dolheștii Mici',
   },
   {
     id: 4216,
@@ -21077,7 +21077,7 @@ export const CITIES = [
   {
     id: 4218,
     countyId: 42,
-    name: 'Doljesti',
+    name: 'Doljești',
   },
   {
     id: 4219,
@@ -21092,37 +21092,37 @@ export const CITIES = [
   {
     id: 4221,
     countyId: 46,
-    name: 'Domanesti',
+    name: 'Domănești',
   },
   {
     id: 4222,
     countyId: 20,
-    name: 'Domasnea',
+    name: 'Domașnea',
   },
   {
     id: 4223,
     countyId: 3,
-    name: 'Domnesti',
+    name: 'Domnești',
   },
   {
     id: 4224,
     countyId: 36,
-    name: 'Domnesti',
+    name: 'Domnești',
   },
   {
     id: 4225,
     countyId: 7,
-    name: 'Domnesti',
+    name: 'Domnești',
   },
   {
     id: 4226,
     countyId: 54,
-    name: 'Domnesti-Sat',
+    name: 'Domnești-Sat',
   },
   {
     id: 4227,
     countyId: 54,
-    name: 'Domnesti-Targ',
+    name: 'Domnești-Târg',
   },
   {
     id: 4228,
@@ -21132,7 +21132,7 @@ export const CITIES = [
   {
     id: 4229,
     countyId: 35,
-    name: 'Domnita',
+    name: 'Domnița',
   },
   {
     id: 4230,
@@ -21142,7 +21142,7 @@ export const CITIES = [
   {
     id: 4231,
     countyId: 21,
-    name: 'Domosu',
+    name: 'Domoșu',
   },
   {
     id: 4232,
@@ -21152,7 +21152,7 @@ export const CITIES = [
   {
     id: 4233,
     countyId: 43,
-    name: 'Donesti',
+    name: 'Donești',
   },
   {
     id: 4234,
@@ -21162,17 +21162,17 @@ export const CITIES = [
   {
     id: 4235,
     countyId: 1,
-    name: 'Doptau',
+    name: 'Doptău',
   },
   {
     id: 4236,
     countyId: 19,
-    name: 'Dor Marunt',
+    name: 'Dor Mărunt',
   },
   {
     id: 4237,
     countyId: 2,
-    name: 'Dorgos',
+    name: 'Dorgoș',
   },
   {
     id: 4238,
@@ -21202,57 +21202,57 @@ export const CITIES = [
   {
     id: 4243,
     countyId: 42,
-    name: 'Dornesti',
+    name: 'Dornești',
   },
   {
     id: 4244,
     countyId: 48,
-    name: 'Dornesti',
+    name: 'Dornești',
   },
   {
     id: 4245,
     countyId: 48,
-    name: 'Dornisoara',
+    name: 'Dornișoara',
   },
   {
     id: 4246,
     countyId: 35,
-    name: 'Dorobant',
+    name: 'Dorobanț',
   },
   {
     id: 4247,
     countyId: 2,
-    name: 'Dorobanti',
+    name: 'Dorobanți',
   },
   {
     id: 4248,
     countyId: 8,
-    name: 'Dorobanti',
+    name: 'Dorobanți',
   },
   {
     id: 4249,
     countyId: 19,
-    name: 'Dorobantu',
+    name: 'Dorobanțu',
   },
   {
     id: 4250,
     countyId: 51,
-    name: 'Dorobantu',
+    name: 'Dorobanțu',
   },
   {
     id: 4251,
     countyId: 22,
-    name: 'Dorobantu',
+    name: 'Dorobanțu',
   },
   {
     id: 4252,
     countyId: 49,
-    name: 'Dorobantu',
+    name: 'Dorobanțu',
   },
   {
     id: 4253,
     countyId: 19,
-    name: 'Dorobantu (Plataresti)',
+    name: 'Dorobanțu (Plătărești)',
   },
   {
     id: 4254,
@@ -21272,17 +21272,17 @@ export const CITIES = [
   {
     id: 4257,
     countyId: 46,
-    name: 'Dorolt',
+    name: 'Dorolț',
   },
   {
     id: 4258,
     countyId: 21,
-    name: 'Doroltu',
+    name: 'Dorolțu',
   },
   {
     id: 4259,
     countyId: 35,
-    name: 'Doroscani',
+    name: 'Doroșcani',
   },
   {
     id: 4260,
@@ -21302,17 +21302,17 @@ export const CITIES = [
   {
     id: 4263,
     countyId: 5,
-    name: 'Dospinesti',
+    name: 'Dospinești',
   },
   {
     id: 4264,
     countyId: 24,
-    name: 'Dospinesti',
+    name: 'Dospinești',
   },
   {
     id: 4265,
     countyId: 1,
-    name: 'Dostat',
+    name: 'Doștat',
   },
   {
     id: 4266,
@@ -21332,17 +21332,17 @@ export const CITIES = [
   {
     id: 4269,
     countyId: 52,
-    name: 'Dosu Raului',
+    name: 'Dosu Râului',
   },
   {
     id: 4270,
     countyId: 1,
-    name: 'Dosu Vasesti',
+    name: 'Dosu Văsești',
   },
   {
     id: 4271,
     countyId: 52,
-    name: 'Dozesti',
+    name: 'Dozești',
   },
   {
     id: 4272,
@@ -21352,27 +21352,27 @@ export const CITIES = [
   {
     id: 4273,
     countyId: 49,
-    name: 'Dracesti',
+    name: 'Drăcești',
   },
   {
     id: 4274,
     countyId: 49,
-    name: 'Dracsani',
+    name: 'Drăcșani',
   },
   {
     id: 4275,
     countyId: 8,
-    name: 'Dracsani',
+    name: 'Dracșani',
   },
   {
     id: 4276,
     countyId: 49,
-    name: 'Dracsenei',
+    name: 'Drăcșenei',
   },
   {
     id: 4277,
     countyId: 41,
-    name: 'Draculea Bandului',
+    name: 'Drăculea Bandului',
   },
   {
     id: 4278,
@@ -21382,12 +21382,12 @@ export const CITIES = [
   {
     id: 4279,
     countyId: 24,
-    name: 'Dragaesti-Pamanteni',
+    name: 'Drăgăești-Pământeni',
   },
   {
     id: 4280,
     countyId: 24,
-    name: 'Dragaesti-Ungureni',
+    name: 'Drăgăești-Ungureni',
   },
   {
     id: 4281,
@@ -21397,7 +21397,7 @@ export const CITIES = [
   {
     id: 4282,
     countyId: 8,
-    name: 'Dragalina (Cristinesti)',
+    name: 'Dragalina (Cristinești)',
   },
   {
     id: 4283,
@@ -21407,162 +21407,162 @@ export const CITIES = [
   {
     id: 4284,
     countyId: 44,
-    name: 'Draganeasa',
+    name: 'Drăgăneasa',
   },
   {
     id: 4285,
     countyId: 29,
-    name: 'Draganeasca',
+    name: 'Drăgăneasca',
   },
   {
     id: 4286,
     countyId: 29,
-    name: 'Draganescu',
+    name: 'Drăgănescu',
   },
   {
     id: 4287,
     countyId: 44,
-    name: 'Draganesti',
+    name: 'Drăgănești',
   },
   {
     id: 4288,
     countyId: 6,
-    name: 'Draganesti',
+    name: 'Drăgănești',
   },
   {
     id: 4289,
     countyId: 35,
-    name: 'Draganesti',
+    name: 'Drăgănești',
   },
   {
     id: 4290,
     countyId: 28,
-    name: 'Draganesti',
+    name: 'Drăgănești',
   },
   {
     id: 4291,
     countyId: 42,
-    name: 'Draganesti',
+    name: 'Drăgănești',
   },
   {
     id: 4292,
     countyId: 52,
-    name: 'Draganesti (Brezoi)',
+    name: 'Drăgănești (Brezoi)',
   },
   {
     id: 4293,
     countyId: 52,
-    name: 'Draganesti (Golesti)',
+    name: 'Drăgănești (Golești)',
   },
   {
     id: 4294,
     countyId: 49,
-    name: 'Draganesti de Vede',
+    name: 'Drăgănești de Vede',
   },
   {
     id: 4295,
     countyId: 43,
-    name: 'Draganesti-Olt',
+    name: 'Drăgănești-Olt',
   },
   {
     id: 4296,
     countyId: 49,
-    name: 'Draganesti-Vlasca',
+    name: 'Drăgănești-Vlașca',
   },
   {
     id: 4297,
     countyId: 3,
-    name: 'Draganu',
+    name: 'Drăganu',
   },
   {
     id: 4298,
     countyId: 52,
-    name: 'Draganu',
+    name: 'Drăganu',
   },
   {
     id: 4299,
     countyId: 3,
-    name: 'Draganu-Olteni',
+    name: 'Drăganu-Olteni',
   },
   {
     id: 4300,
     countyId: 52,
-    name: 'Dragasani',
+    name: 'Drăgășani',
   },
   {
     id: 4301,
     countyId: 6,
-    name: 'Dragesti',
+    name: 'Drăgești',
   },
   {
     id: 4302,
     countyId: 53,
-    name: 'Dragesti',
+    name: 'Drăgești',
   },
   {
     id: 4303,
     countyId: 5,
-    name: 'Dragesti (Damienesti)',
+    name: 'Drăgești (Dămienești)',
   },
   {
     id: 4304,
     countyId: 5,
-    name: 'Dragesti (Tatarasti)',
+    name: 'Drăgești (Tătărăști)',
   },
   {
     id: 4305,
     countyId: 3,
-    name: 'Draghescu',
+    name: 'Drăghescu',
   },
   {
     id: 4306,
     countyId: 40,
-    name: 'Draghesti',
+    name: 'Drăghești',
   },
   {
     id: 4307,
     countyId: 39,
-    name: 'Draghia',
+    name: 'Drăghia',
   },
   {
     id: 4308,
     countyId: 29,
-    name: 'Draghiceanu',
+    name: 'Drăghiceanu',
   },
   {
     id: 4309,
     countyId: 43,
-    name: 'Draghiceni',
+    name: 'Drăghiceni',
   },
   {
     id: 4310,
     countyId: 44,
-    name: 'Draghicesti',
+    name: 'Drăghicești',
   },
   {
     id: 4311,
     countyId: 3,
-    name: 'Draghicesti',
+    name: 'Drăghicești',
   },
   {
     id: 4312,
     countyId: 3,
-    name: 'Draghici',
+    name: 'Drăghici',
   },
   {
     id: 4313,
     countyId: 49,
-    name: 'Draghinesti',
+    name: 'Drăghinești',
   },
   {
     id: 4314,
     countyId: 52,
-    name: 'Dragioiu',
+    name: 'Drăgioiu',
   },
   {
     id: 4315,
     countyId: 25,
-    name: 'Dragoaia',
+    name: 'Drăgoaia',
   },
   {
     id: 4316,
@@ -21572,57 +21572,57 @@ export const CITIES = [
   {
     id: 4317,
     countyId: 24,
-    name: 'Dragodanesti',
+    name: 'Dragodănești',
   },
   {
     id: 4318,
     countyId: 30,
-    name: 'Dragoeni',
+    name: 'Drăgoeni',
   },
   {
     id: 4319,
     countyId: 34,
-    name: 'Dragoesti',
+    name: 'Drăgoești',
   },
   {
     id: 4320,
     countyId: 52,
-    name: 'Dragoesti',
+    name: 'Drăgoești',
   },
   {
     id: 4321,
     countyId: 48,
-    name: 'Dragoiasa',
+    name: 'Drăgoiasa',
   },
   {
     id: 4322,
     countyId: 48,
-    name: 'Dragoiesti',
+    name: 'Drăgoiești',
   },
   {
     id: 4323,
     countyId: 30,
-    name: 'Dragoiesti',
+    name: 'Drăgoiești',
   },
   {
     id: 4324,
     countyId: 50,
-    name: 'Dragoiesti',
+    name: 'Drăgoiești',
   },
   {
     id: 4325,
     countyId: 1,
-    name: 'Dragoiesti-Lunca',
+    name: 'Drăgoiești-Luncă',
   },
   {
     id: 4326,
     countyId: 3,
-    name: 'Dragolesti',
+    name: 'Drăgolești',
   },
   {
     id: 4327,
     countyId: 53,
-    name: 'Dragomanesti',
+    name: 'Dragomănești',
   },
   {
     id: 4328,
@@ -21632,37 +21632,37 @@ export const CITIES = [
   {
     id: 4329,
     countyId: 24,
-    name: 'Dragomiresti',
+    name: 'Dragomirești',
   },
   {
     id: 4330,
     countyId: 42,
-    name: 'Dragomiresti',
+    name: 'Dragomirești',
   },
   {
     id: 4331,
     countyId: 53,
-    name: 'Dragomiresti',
+    name: 'Dragomirești',
   },
   {
     id: 4332,
     countyId: 39,
-    name: 'Dragomiresti',
+    name: 'Dragomirești',
   },
   {
     id: 4333,
     countyId: 50,
-    name: 'Dragomiresti',
+    name: 'Dragomirești',
   },
   {
     id: 4334,
     countyId: 36,
-    name: 'Dragomiresti-Deal',
+    name: 'Dragomirești-Deal',
   },
   {
     id: 4335,
     countyId: 36,
-    name: 'Dragomiresti-Vale',
+    name: 'Dragomirești-Vale',
   },
   {
     id: 4336,
@@ -21672,12 +21672,12 @@ export const CITIES = [
   {
     id: 4337,
     countyId: 19,
-    name: 'Dragos Voda',
+    name: 'Dragoș Vodă',
   },
   {
     id: 4338,
     countyId: 48,
-    name: 'Dragosa',
+    name: 'Dragoșa',
   },
   {
     id: 4339,
@@ -21687,7 +21687,7 @@ export const CITIES = [
   {
     id: 4340,
     countyId: 54,
-    name: 'Dragosloveni (Dumbraveni)',
+    name: 'Dragosloveni (Dumbrăveni)',
   },
   {
     id: 4341,
@@ -21697,22 +21697,22 @@ export const CITIES = [
   {
     id: 4342,
     countyId: 6,
-    name: 'Dragoteni',
+    name: 'Drăgoteni',
   },
   {
     id: 4343,
     countyId: 40,
-    name: 'Dragotesti',
+    name: 'Dragotești',
   },
   {
     id: 4344,
     countyId: 30,
-    name: 'Dragotesti',
+    name: 'Drăgotești',
   },
   {
     id: 4345,
     countyId: 25,
-    name: 'Dragotesti',
+    name: 'Drăgotești',
   },
   {
     id: 4346,
@@ -21722,12 +21722,12 @@ export const CITIES = [
   {
     id: 4347,
     countyId: 50,
-    name: 'Dragsina',
+    name: 'Dragșina',
   },
   {
     id: 4348,
     countyId: 50,
-    name: 'Dragsinesti',
+    name: 'Drăgsinești',
   },
   {
     id: 4349,
@@ -21742,52 +21742,52 @@ export const CITIES = [
   {
     id: 4351,
     countyId: 5,
-    name: 'Dragugesti',
+    name: 'Drăgugești',
   },
   {
     id: 4352,
     countyId: 52,
-    name: 'Dragulesti',
+    name: 'Drăgulești',
   },
   {
     id: 4353,
     countyId: 10,
-    name: 'Dragus',
+    name: 'Drăguș',
   },
   {
     id: 4354,
     countyId: 5,
-    name: 'Dragusani',
+    name: 'Drăgușani',
   },
   {
     id: 4355,
     countyId: 8,
-    name: 'Draguseni',
+    name: 'Drăgușeni',
   },
   {
     id: 4356,
     countyId: 35,
-    name: 'Draguseni',
+    name: 'Drăgușeni',
   },
   {
     id: 4357,
     countyId: 48,
-    name: 'Draguseni',
+    name: 'Drăgușeni',
   },
   {
     id: 4358,
     countyId: 28,
-    name: 'Draguseni',
+    name: 'Drăgușeni',
   },
   {
     id: 4359,
     countyId: 46,
-    name: 'Draguseni',
+    name: 'Drăgușeni',
   },
   {
     id: 4360,
     countyId: 30,
-    name: 'Dragutesti',
+    name: 'Drăguțești',
   },
   {
     id: 4361,
@@ -21807,42 +21807,42 @@ export const CITIES = [
   {
     id: 4364,
     countyId: 19,
-    name: 'Drajna Noua',
+    name: 'Drajna Nouă',
   },
   {
     id: 4365,
     countyId: 1,
-    name: 'Drambar',
+    name: 'Drâmbar',
   },
   {
     id: 4366,
     countyId: 53,
-    name: 'Dranceni',
+    name: 'Drânceni',
   },
   {
     id: 4367,
     countyId: 25,
-    name: 'Dranic',
+    name: 'Drănic',
   },
   {
     id: 4368,
     countyId: 43,
-    name: 'Dranovatu',
+    name: 'Dranovățu',
   },
   {
     id: 4369,
     countyId: 1,
-    name: 'Drasov',
+    name: 'Drașov',
   },
   {
     id: 4370,
     countyId: 10,
-    name: 'Drauseni',
+    name: 'Drăușeni',
   },
   {
     id: 4371,
     countyId: 2,
-    name: 'Draut',
+    name: 'Drauț',
   },
   {
     id: 4372,
@@ -21917,7 +21917,7 @@ export const CITIES = [
   {
     id: 4386,
     countyId: 20,
-    name: 'Dristie',
+    name: 'Driștie',
   },
   {
     id: 4387,
@@ -21942,7 +21942,7 @@ export const CITIES = [
   {
     id: 4391,
     countyId: 53,
-    name: 'Drujesti',
+    name: 'Drujești',
   },
   {
     id: 4392,
@@ -21952,17 +21952,17 @@ export const CITIES = [
   {
     id: 4393,
     countyId: 50,
-    name: 'Dubesti',
+    name: 'Dubești',
   },
   {
     id: 4394,
     countyId: 41,
-    name: 'Dubistea de Padure',
+    name: 'Dubiștea de Pădure',
   },
   {
     id: 4395,
     countyId: 48,
-    name: 'Dubiusca',
+    name: 'Dubiușca',
   },
   {
     id: 4397,
@@ -21982,7 +21982,7 @@ export const CITIES = [
   {
     id: 4400,
     countyId: 30,
-    name: 'Duculesti',
+    name: 'Duculești',
   },
   {
     id: 4401,
@@ -22007,12 +22007,12 @@ export const CITIES = [
   {
     id: 4405,
     countyId: 40,
-    name: 'Dudasu',
+    name: 'Dudașu',
   },
   {
     id: 4406,
     countyId: 40,
-    name: 'Dudasu Schelei',
+    name: 'Dudașu Schelei',
   },
   {
     id: 4407,
@@ -22022,27 +22022,27 @@ export const CITIES = [
   {
     id: 4408,
     countyId: 33,
-    name: 'Dudesti',
+    name: 'Dudești',
   },
   {
     id: 4409,
     countyId: 9,
-    name: 'Dudesti',
+    name: 'Dudești',
   },
   {
     id: 4410,
     countyId: 50,
-    name: 'Dudestii Noi',
+    name: 'Dudeștii Noi',
   },
   {
     id: 4411,
     countyId: 50,
-    name: 'Dudestii Vechi',
+    name: 'Dudeștii Vechi',
   },
   {
     id: 4412,
     countyId: 25,
-    name: 'Dudovicesti',
+    name: 'Dudovicești',
   },
   {
     id: 4413,
@@ -22087,12 +22087,12 @@ export const CITIES = [
   {
     id: 4421,
     countyId: 22,
-    name: 'Dulcesti',
+    name: 'Dulcești',
   },
   {
     id: 4422,
     countyId: 42,
-    name: 'Dulcesti',
+    name: 'Dulcești',
   },
   {
     id: 4423,
@@ -22107,7 +22107,7 @@ export const CITIES = [
   {
     id: 4425,
     countyId: 1,
-    name: 'Dumacesti',
+    name: 'Dumăcești',
   },
   {
     id: 4426,
@@ -22207,12 +22207,12 @@ export const CITIES = [
   {
     id: 4445,
     countyId: 48,
-    name: 'Dumbrava (Granicesti)',
+    name: 'Dumbrava (Grănicești)',
   },
   {
     id: 4446,
     countyId: 5,
-    name: 'Dumbrava (Gura Vaii)',
+    name: 'Dumbrava (Gura Văii)',
   },
   {
     id: 4447,
@@ -22227,7 +22227,7 @@ export const CITIES = [
   {
     id: 4449,
     countyId: 7,
-    name: 'Dumbrava (Nuseni)',
+    name: 'Dumbrava (Nușeni)',
   },
   {
     id: 4450,
@@ -22242,12 +22242,12 @@ export const CITIES = [
   {
     id: 4452,
     countyId: 5,
-    name: 'Dumbrava (Rachitoasa)',
+    name: 'Dumbrava (Răchitoasa)',
   },
   {
     id: 4453,
     countyId: 1,
-    name: 'Dumbrava (Sasciori)',
+    name: 'Dumbrava (Săsciori)',
   },
   {
     id: 4454,
@@ -22287,7 +22287,7 @@ export const CITIES = [
   {
     id: 4461,
     countyId: 42,
-    name: 'Dumbrava Rosie',
+    name: 'Dumbrava Roșie',
   },
   {
     id: 4462,
@@ -22297,137 +22297,137 @@ export const CITIES = [
   {
     id: 4463,
     countyId: 6,
-    name: 'Dumbravani',
+    name: 'Dumbrăvani',
   },
   {
     id: 4464,
     countyId: 22,
-    name: 'Dumbraveni',
+    name: 'Dumbrăveni',
   },
   {
     id: 4465,
     countyId: 36,
-    name: 'Dumbraveni',
+    name: 'Dumbrăveni',
   },
   {
     id: 4466,
     countyId: 48,
-    name: 'Dumbraveni',
+    name: 'Dumbrăveni',
   },
   {
     id: 4467,
     countyId: 53,
-    name: 'Dumbraveni',
+    name: 'Dumbrăveni',
   },
   {
     id: 4468,
     countyId: 7,
-    name: 'Dumbraveni',
+    name: 'Dumbrăveni',
   },
   {
     id: 4469,
     countyId: 30,
-    name: 'Dumbraveni',
+    name: 'Dumbrăveni',
   },
   {
     id: 4470,
     countyId: 47,
-    name: 'Dumbraveni',
+    name: 'Dumbrăveni',
   },
   {
     id: 4471,
     countyId: 54,
-    name: 'Dumbraveni',
+    name: 'Dumbrăveni',
   },
   {
     id: 4472,
     countyId: 48,
-    name: 'Dumbraveni (Rasca)',
+    name: 'Dumbrăveni (Râșca)',
   },
   {
     id: 4473,
     countyId: 3,
-    name: 'Dumbravesti',
+    name: 'Dumbrăvești',
   },
   {
     id: 4474,
     countyId: 52,
-    name: 'Dumbravesti',
+    name: 'Dumbrăvești',
   },
   {
     id: 4475,
     countyId: 44,
-    name: 'Dumbravesti',
+    name: 'Dumbrăvești',
   },
   {
     id: 4476,
     countyId: 41,
-    name: 'Dumbravioara',
+    name: 'Dumbrăvioara',
   },
   {
     id: 4477,
     countyId: 1,
-    name: 'Dumbravita',
+    name: 'Dumbrăvița',
   },
   {
     id: 4478,
     countyId: 6,
-    name: 'Dumbravita',
+    name: 'Dumbrăvița',
   },
   {
     id: 4479,
     countyId: 8,
-    name: 'Dumbravita',
+    name: 'Dumbrăvița',
   },
   {
     id: 4480,
     countyId: 33,
-    name: 'Dumbravita',
+    name: 'Dumbrăvița',
   },
   {
     id: 4481,
     countyId: 40,
-    name: 'Dumbravita',
+    name: 'Dumbrăvița',
   },
   {
     id: 4482,
     countyId: 48,
-    name: 'Dumbravita',
+    name: 'Dumbrăvița',
   },
   {
     id: 4483,
     countyId: 2,
-    name: 'Dumbravita',
+    name: 'Dumbrăvița',
   },
   {
     id: 4484,
     countyId: 7,
-    name: 'Dumbravita',
+    name: 'Dumbrăvița',
   },
   {
     id: 4485,
     countyId: 10,
-    name: 'Dumbravita',
+    name: 'Dumbrăvița',
   },
   {
     id: 4486,
     countyId: 35,
-    name: 'Dumbravita',
+    name: 'Dumbrăvița',
   },
   {
     id: 4487,
     countyId: 39,
-    name: 'Dumbravita',
+    name: 'Dumbrăvița',
   },
   {
     id: 4488,
     countyId: 50,
-    name: 'Dumbravita',
+    name: 'Dumbrăvița',
   },
   {
     id: 4489,
     countyId: 6,
-    name: 'Dumbravita de Codru',
+    name: 'Dumbrăvița de Codru',
   },
   {
     id: 4490,
@@ -22437,32 +22437,32 @@ export const CITIES = [
   {
     id: 4491,
     countyId: 1,
-    name: 'Dumesti',
+    name: 'Dumești',
   },
   {
     id: 4492,
     countyId: 35,
-    name: 'Dumesti',
+    name: 'Dumești',
   },
   {
     id: 4493,
     countyId: 33,
-    name: 'Dumesti',
+    name: 'Dumești',
   },
   {
     id: 4494,
     countyId: 53,
-    name: 'Dumesti',
+    name: 'Dumești',
   },
   {
     id: 4495,
     countyId: 53,
-    name: 'Dumestii Vechi',
+    name: 'Dumeștii Vechi',
   },
   {
     id: 4496,
     countyId: 3,
-    name: 'Dumiresti',
+    name: 'Dumirești',
   },
   {
     id: 4497,
@@ -22487,72 +22487,72 @@ export const CITIES = [
   {
     id: 4501,
     countyId: 34,
-    name: 'Dumitresti',
+    name: 'Dumitrești',
   },
   {
     id: 4502,
     countyId: 54,
-    name: 'Dumitresti',
+    name: 'Dumitrești',
   },
   {
     id: 4503,
     countyId: 43,
-    name: 'Dumitresti',
+    name: 'Dumitrești',
   },
   {
     id: 4504,
     countyId: 41,
-    name: 'Dumitrestii',
+    name: 'Dumitreștii',
   },
   {
     id: 4505,
     countyId: 54,
-    name: 'Dumitrestii de Sus',
+    name: 'Dumitreștii de Sus',
   },
   {
     id: 4506,
     countyId: 35,
-    name: 'Dumitrestii Galatii',
+    name: 'Dumitreștii Gălății',
   },
   {
     id: 4507,
     countyId: 54,
-    name: 'Dumitrestii-Fata',
+    name: 'Dumitreștii-Față',
   },
   {
     id: 4508,
     countyId: 7,
-    name: 'Dumitrita',
+    name: 'Dumitrița',
   },
   {
     id: 4509,
     countyId: 45,
-    name: 'Dumuslau',
+    name: 'Dumuslău',
   },
   {
     id: 4510,
     countyId: 22,
-    name: 'Dunarea',
+    name: 'Dunărea',
   },
   {
     id: 4511,
     countyId: 40,
-    name: 'Dunarea Mica',
+    name: 'Dunărea Mică',
   },
   {
     id: 4512,
     countyId: 22,
-    name: 'Dunareni',
+    name: 'Dunăreni',
   },
   {
     id: 4513,
     countyId: 51,
-    name: 'Dunavatu de Jos',
+    name: 'Dunavățu de Jos',
   },
   {
     id: 4514,
     countyId: 51,
-    name: 'Dunavatu de Sus',
+    name: 'Dunavățu de Sus',
   },
   {
     id: 4515,
@@ -22562,22 +22562,22 @@ export const CITIES = [
   {
     id: 4516,
     countyId: 24,
-    name: 'Dupa Deal',
+    name: 'După Deal',
   },
   {
     id: 4517,
     countyId: 41,
-    name: 'Dupa Deal (Cuci)',
+    name: 'După Deal (Cuci)',
   },
   {
     id: 4518,
     countyId: 41,
-    name: 'Dupa Deal (Iclanzel)',
+    name: 'După Deal (Iclănzel)',
   },
   {
     id: 4519,
     countyId: 1,
-    name: 'Dupa Deal (Lupsa)',
+    name: 'După Deal (Lupșa)',
   },
   {
     id: 4520,
@@ -22587,27 +22587,27 @@ export const CITIES = [
   {
     id: 4521,
     countyId: 54,
-    name: 'Dupa Magura',
+    name: 'După Măgura',
   },
   {
     id: 4522,
     countyId: 1,
-    name: 'Dupa Plese',
+    name: 'După Pleșe',
   },
   {
     id: 4523,
     countyId: 33,
-    name: 'Dupapiatra',
+    name: 'Dupăpiatră',
   },
   {
     id: 4524,
     countyId: 47,
-    name: 'Dupus',
+    name: 'Dupuș',
   },
   {
     id: 4525,
     countyId: 1,
-    name: 'Durasti',
+    name: 'Durăști',
   },
   {
     id: 4526,
@@ -22617,37 +22617,37 @@ export const CITIES = [
   {
     id: 4527,
     countyId: 8,
-    name: 'Durnesti',
+    name: 'Durnești',
   },
   {
     id: 4528,
     countyId: 8,
-    name: 'Durnesti (Santa Mare)',
+    name: 'Durnești (Santa Mare)',
   },
   {
     id: 4529,
     countyId: 8,
-    name: 'Durnesti (Ungureni)',
+    name: 'Durnești (Ungureni)',
   },
   {
     id: 4530,
     countyId: 39,
-    name: 'Durusa',
+    name: 'Durușa',
   },
   {
     id: 4531,
     countyId: 6,
-    name: 'Dusesti',
+    name: 'Dușești',
   },
   {
     id: 4532,
     countyId: 42,
-    name: 'Dusesti',
+    name: 'Dușești',
   },
   {
     id: 4533,
     countyId: 25,
-    name: 'Dutulesti',
+    name: 'Duțulești',
   },
   {
     id: 4534,
@@ -22677,7 +22677,7 @@ export const CITIES = [
   {
     id: 4539,
     countyId: 48,
-    name: 'Ehreste',
+    name: 'Ehrește',
   },
   {
     id: 4540,
@@ -22697,12 +22697,12 @@ export const CITIES = [
   {
     id: 4543,
     countyId: 53,
-    name: 'Emil Racovita',
+    name: 'Emil Racoviță',
   },
   {
     id: 4544,
     countyId: 5,
-    name: 'Enachesti',
+    name: 'Enăchești',
   },
   {
     id: 4545,
@@ -22712,7 +22712,7 @@ export const CITIES = [
   {
     id: 4546,
     countyId: 3,
-    name: 'Enculesti',
+    name: 'Enculești',
   },
   {
     id: 4547,
@@ -22722,7 +22722,7 @@ export const CITIES = [
   {
     id: 4548,
     countyId: 43,
-    name: 'Enosesti',
+    name: 'Enoșești',
   },
   {
     id: 4549,
@@ -22762,12 +22762,12 @@ export const CITIES = [
   {
     id: 4556,
     countyId: 40,
-    name: 'Erghevita',
+    name: 'Erghevița',
   },
   {
     id: 4557,
     countyId: 46,
-    name: 'Eriu-Sancrai',
+    name: 'Eriu-Sâncrai',
   },
   {
     id: 4558,
@@ -22787,7 +22787,7 @@ export const CITIES = [
   {
     id: 4561,
     countyId: 8,
-    name: 'Esanca',
+    name: 'Eșanca',
   },
   {
     id: 4562,
@@ -22802,7 +22802,7 @@ export const CITIES = [
   {
     id: 4564,
     countyId: 40,
-    name: 'Eselnita',
+    name: 'Eșelnița',
   },
   {
     id: 4565,
@@ -22827,7 +22827,7 @@ export const CITIES = [
   {
     id: 4569,
     countyId: 20,
-    name: 'Ezeris',
+    name: 'Ezeriș',
   },
   {
     id: 4570,
@@ -22837,162 +22837,162 @@ export const CITIES = [
   {
     id: 4571,
     countyId: 34,
-    name: 'Facaeni',
+    name: 'Făcăeni',
   },
   {
     id: 4572,
     countyId: 52,
-    name: 'Facai',
+    name: 'Făcăi',
   },
   {
     id: 4573,
     countyId: 25,
-    name: 'Facai',
+    name: 'Făcăi',
   },
   {
     id: 4574,
     countyId: 44,
-    name: 'Facaieni',
+    name: 'Făcăieni',
   },
   {
     id: 4575,
     countyId: 3,
-    name: 'Facaletesti',
+    name: 'Făcălețești',
   },
   {
     id: 4576,
     countyId: 29,
-    name: 'Facau',
+    name: 'Făcău',
   },
   {
     id: 4577,
     countyId: 22,
-    name: 'Faclia',
+    name: 'Făclia',
   },
   {
     id: 4578,
     countyId: 50,
-    name: 'Fadimac',
+    name: 'Fădimac',
   },
   {
     id: 4579,
     countyId: 10,
-    name: 'Fagaras',
+    name: 'Făgăraș',
   },
   {
     id: 4580,
     countyId: 51,
-    name: 'Fagarasu Nou',
+    name: 'Făgărașu Nou',
   },
   {
     id: 4581,
     countyId: 35,
-    name: 'Fagat',
+    name: 'Făgăt',
   },
   {
     id: 4582,
     countyId: 5,
-    name: 'Faget',
+    name: 'Făget',
   },
   {
     id: 4583,
     countyId: 44,
-    name: 'Faget',
+    name: 'Făget',
   },
   {
     id: 4584,
     countyId: 1,
-    name: 'Faget',
+    name: 'Făget',
   },
   {
     id: 4585,
     countyId: 25,
-    name: 'Faget',
+    name: 'Făget',
   },
   {
     id: 4586,
     countyId: 50,
-    name: 'Faget',
+    name: 'Făget',
   },
   {
     id: 4587,
     countyId: 5,
-    name: 'Fagetel',
+    name: 'Făgețel',
   },
   {
     id: 4588,
     countyId: 33,
-    name: 'Fagetel',
+    name: 'Făgețel',
   },
   {
     id: 4589,
     countyId: 31,
-    name: 'Fagetel (Frumoasa)',
+    name: 'Făgețel (Frumoasa)',
   },
   {
     id: 4590,
     countyId: 31,
-    name: 'Fagetel (Remetea)',
+    name: 'Făgețel (Remetea)',
   },
   {
     id: 4591,
     countyId: 43,
-    name: 'Fagetelu',
+    name: 'Făgețelu',
   },
   {
     id: 4592,
     countyId: 24,
-    name: 'Fagetu',
+    name: 'Făgetu',
   },
   {
     id: 4593,
     countyId: 45,
-    name: 'Fagetu',
+    name: 'Făgetu',
   },
   {
     id: 4594,
     countyId: 3,
-    name: 'Fagetu',
+    name: 'Făgetu',
   },
   {
     id: 4595,
     countyId: 44,
-    name: 'Fagetu',
+    name: 'Făgetu',
   },
   {
     id: 4596,
     countyId: 54,
-    name: 'Fagetu',
+    name: 'Făgetu',
   },
   {
     id: 4597,
     countyId: 1,
-    name: 'Fagetu de Jos',
+    name: 'Făgetu de Jos',
   },
   {
     id: 4598,
     countyId: 5,
-    name: 'Fagetu de Sus',
+    name: 'Făgetu de Sus',
   },
   {
     id: 4599,
     countyId: 1,
-    name: 'Fagetu de Sus',
+    name: 'Făgetu de Sus',
   },
   {
     id: 4600,
     countyId: 21,
-    name: 'Fagetu Ierii',
+    name: 'Făgetu Ierii',
   },
   {
     id: 4601,
     countyId: 5,
-    name: 'Faghieni',
+    name: 'Făghieni',
   },
   {
     id: 4602,
     countyId: 29,
-    name: 'Falastoaca',
+    name: 'Falaștoaca',
   },
   {
     id: 4603,
@@ -23002,32 +23002,32 @@ export const CITIES = [
   {
     id: 4604,
     countyId: 48,
-    name: 'Falcau',
+    name: 'Falcău',
   },
   {
     id: 4605,
     countyId: 53,
-    name: 'Falciu',
+    name: 'Fălciu',
   },
   {
     id: 4606,
     countyId: 43,
-    name: 'Falcoiu',
+    name: 'Fălcoiu',
   },
   {
     id: 4607,
     countyId: 45,
-    name: 'Falcusa',
+    name: 'Fălcușa',
   },
   {
     id: 4608,
     countyId: 3,
-    name: 'Falfani',
+    name: 'Fâlfani',
   },
   {
     id: 4609,
     countyId: 48,
-    name: 'Falticeni',
+    name: 'Fălticeni',
   },
   {
     id: 4610,
@@ -23037,217 +23037,217 @@ export const CITIES = [
   {
     id: 4611,
     countyId: 44,
-    name: 'Fanari (Gorgota)',
+    name: 'Fânari (Gorgota)',
   },
   {
     id: 4612,
     countyId: 7,
-    name: 'Fanate',
+    name: 'Fânațe',
   },
   {
     id: 4613,
     countyId: 39,
-    name: 'Fanate',
+    name: 'Fânațe',
   },
   {
     id: 4614,
     countyId: 6,
-    name: 'Fanate',
+    name: 'Fânațe',
   },
   {
     id: 4615,
     countyId: 21,
-    name: 'Fanate',
+    name: 'Fânațe',
   },
   {
     id: 4616,
     countyId: 41,
-    name: 'Fanate (Band)',
+    name: 'Fânațe (Band)',
   },
   {
     id: 4617,
     countyId: 41,
-    name: 'Fanate (Faragau)',
+    name: 'Fânațe (Fărăgău)',
   },
   {
     id: 4618,
     countyId: 41,
-    name: 'Fanate (Iclanzel)',
+    name: 'Fânațe (Iclănzel)',
   },
   {
     id: 4619,
     countyId: 41,
-    name: 'Fanate (Taureni)',
+    name: 'Fânațe (Tăureni)',
   },
   {
     id: 4620,
     countyId: 41,
-    name: 'Fanatele Capusului',
+    name: 'Fânațele Căpușului',
   },
   {
     id: 4621,
     countyId: 41,
-    name: 'Fanatele Madarasului',
+    name: 'Fânațele Mădărașului',
   },
   {
     id: 4622,
     countyId: 7,
-    name: 'Fanatele Silivasului',
+    name: 'Fânațele Silivașului',
   },
   {
     id: 4623,
     countyId: 41,
-    name: 'Fanatele Socolului',
+    name: 'Fânațele Socolului',
   },
   {
     id: 4624,
     countyId: 31,
-    name: 'Fancel',
+    name: 'Fâncel',
   },
   {
     id: 4625,
     countyId: 6,
-    name: 'Fancica',
+    name: 'Făncica',
   },
   {
     id: 4626,
     countyId: 33,
-    name: 'Fantana',
+    name: 'Fântâna',
   },
   {
     id: 4627,
     countyId: 10,
-    name: 'Fantana',
+    name: 'Fântâna',
   },
   {
     id: 4628,
     countyId: 41,
-    name: 'Fantana Babii',
+    name: 'Fântâna Babii',
   },
   {
     id: 4629,
     countyId: 53,
-    name: 'Fantana Blanarului',
+    name: 'Fântâna Blănarului',
   },
   {
     id: 4630,
     countyId: 31,
-    name: 'Fantana Brazilor',
+    name: 'Fântâna Brazilor',
   },
   {
     id: 4631,
     countyId: 19,
-    name: 'Fantana Doamnei',
+    name: 'Fântâna Doamnei',
   },
   {
     id: 4632,
     countyId: 40,
-    name: 'Fantana Domneasca',
+    name: 'Fântâna Domnească',
   },
   {
     id: 4633,
     countyId: 22,
-    name: 'Fantana Mare',
+    name: 'Fântâna Mare',
   },
   {
     id: 4634,
     countyId: 51,
-    name: 'Fantana Mare',
+    name: 'Fântâna Mare',
   },
   {
     id: 4635,
     countyId: 48,
-    name: 'Fantana Mare',
+    name: 'Fântâna Mare',
   },
   {
     id: 4636,
     countyId: 51,
-    name: 'Fantana Oilor',
+    name: 'Fântâna Oilor',
   },
   {
     id: 4637,
     countyId: 3,
-    name: 'Fantanea',
+    name: 'Fântânea',
   },
   {
     id: 4638,
     countyId: 2,
-    name: 'Fantanele',
+    name: 'Fântânele',
   },
   {
     id: 4639,
     countyId: 22,
-    name: 'Fantanele',
+    name: 'Fântânele',
   },
   {
     id: 4640,
     countyId: 30,
-    name: 'Fantanele',
+    name: 'Fântânele',
   },
   {
     id: 4641,
     countyId: 39,
-    name: 'Fantanele',
+    name: 'Fântânele',
   },
   {
     id: 4642,
     countyId: 44,
-    name: 'Fantanele',
+    name: 'Fântânele',
   },
   {
     id: 4643,
     countyId: 45,
-    name: 'Fantanele',
+    name: 'Fântânele',
   },
   {
     id: 4644,
     countyId: 49,
-    name: 'Fantanele',
+    name: 'Fântânele',
   },
   {
     id: 4645,
     countyId: 1,
-    name: 'Fantanele',
+    name: 'Fântânele',
   },
   {
     id: 4646,
     countyId: 7,
-    name: 'Fantanele',
+    name: 'Fântânele',
   },
   {
     id: 4647,
     countyId: 24,
-    name: 'Fantanele',
+    name: 'Fântânele',
   },
   {
     id: 4648,
     countyId: 28,
-    name: 'Fantanele',
+    name: 'Fântânele',
   },
   {
     id: 4649,
     countyId: 41,
-    name: 'Fantanele',
+    name: 'Fântânele',
   },
   {
     id: 4650,
     countyId: 47,
-    name: 'Fantanele',
+    name: 'Fântânele',
   },
   {
     id: 4651,
     countyId: 48,
-    name: 'Fantanele',
+    name: 'Fântânele',
   },
   {
     id: 4652,
     countyId: 53,
-    name: 'Fantanele',
+    name: 'Fântânele',
   },
   {
     id: 4653,
     countyId: 35,
-    name: 'Fantanele (Andrieseni)',
+    name: 'Fântânele (Andrieșeni)',
   },
   {
     id: 4654,
@@ -23257,62 +23257,62 @@ export const CITIES = [
   {
     id: 4655,
     countyId: 5,
-    name: 'Fantanele (Hemeius)',
+    name: 'Fântânele (Hemeiuș)',
   },
   {
     id: 4656,
     countyId: 18,
-    name: 'Fantanele (Margaritesti)',
+    name: 'Fântânele (Mărgăritești)',
   },
   {
     id: 4657,
     countyId: 5,
-    name: 'Fantanele (Motoseni)',
+    name: 'Fântânele (Motoșeni)',
   },
   {
     id: 4658,
     countyId: 18,
-    name: 'Fantanele (Naeni)',
+    name: 'Fântânele (Năeni)',
   },
   {
     id: 4659,
     countyId: 25,
-    name: 'Fantanele (Radovan)',
+    name: 'Fântânele (Radovan)',
   },
   {
     id: 4660,
     countyId: 25,
-    name: 'Fantanele (Teslui)',
+    name: 'Fântânele (Teslui)',
   },
   {
     id: 4661,
     countyId: 45,
-    name: 'Fantanele-Rus',
+    name: 'Fântânele-Rus',
   },
   {
     id: 4662,
     countyId: 28,
-    name: 'Fantani',
+    name: 'Fântâni',
   },
   {
     id: 4663,
     countyId: 25,
-    name: 'Fantani',
+    name: 'Fântâni',
   },
   {
     id: 4664,
     countyId: 40,
-    name: 'Fantanile Negre',
+    name: 'Fântânile Negre',
   },
   {
     id: 4665,
     countyId: 7,
-    name: 'Fantanita',
+    name: 'Fântânița',
   },
   {
     id: 4666,
     countyId: 41,
-    name: 'Faragau',
+    name: 'Fărăgău',
   },
   {
     id: 4667,
@@ -23327,102 +23327,102 @@ export const CITIES = [
   {
     id: 4669,
     countyId: 50,
-    name: 'Farasesti',
+    name: 'Fărășești',
   },
   {
     id: 4670,
     countyId: 1,
-    name: 'Farau',
+    name: 'Fărău',
   },
   {
     id: 4671,
     countyId: 33,
-    name: 'Farcadin',
+    name: 'Fărcădin',
   },
   {
     id: 4672,
     countyId: 25,
-    name: 'Farcas',
+    name: 'Fărcaș',
   },
   {
     id: 4673,
     countyId: 54,
-    name: 'Farcas',
+    name: 'Farcaș',
   },
   {
     id: 4674,
     countyId: 42,
-    name: 'Farcasa',
+    name: 'Farcașa',
   },
   {
     id: 4675,
     countyId: 5,
-    name: 'Farcasa',
+    name: 'Farcașa',
   },
   {
     id: 4676,
     countyId: 39,
-    name: 'Farcasa',
+    name: 'Fărcașa',
   },
   {
     id: 4677,
     countyId: 43,
-    name: 'Farcasele',
+    name: 'Fărcașele',
   },
   {
     id: 4678,
     countyId: 35,
-    name: 'Farcaseni',
+    name: 'Fărcășeni',
   },
   {
     id: 4679,
     countyId: 30,
-    name: 'Farcasesti',
+    name: 'Fărcășești',
   },
   {
     id: 4680,
     countyId: 30,
-    name: 'Farcasesti-Mosneni',
+    name: 'Fărcășești-Moșneni',
   },
   {
     id: 4681,
     countyId: 43,
-    name: 'Farcasu de Jos',
+    name: 'Fărcașu de Jos',
   },
   {
     id: 4682,
     countyId: 50,
-    name: 'Fardea',
+    name: 'Fârdea',
   },
   {
     id: 4683,
     countyId: 20,
-    name: 'Farliug',
+    name: 'Fârliug',
   },
   {
     id: 4684,
     countyId: 28,
-    name: 'Fartanesti',
+    name: 'Fârțănești',
   },
   {
     id: 4685,
     countyId: 52,
-    name: 'Fartatesti',
+    name: 'Fârtățești',
   },
   {
     id: 4686,
     countyId: 6,
-    name: 'Fasca',
+    name: 'Fâșca',
   },
   {
     id: 4687,
     countyId: 53,
-    name: 'Fastaci',
+    name: 'Fâstâci',
   },
   {
     id: 4688,
     countyId: 1,
-    name: 'Fata',
+    name: 'Fața',
   },
   {
     id: 4689,
@@ -23432,117 +23432,117 @@ export const CITIES = [
   {
     id: 4690,
     countyId: 1,
-    name: 'Fata Abrudului',
+    name: 'Fața Abrudului',
   },
   {
     id: 4691,
     countyId: 40,
-    name: 'Fata Cremenii',
+    name: 'Fața Cremenii',
   },
   {
     id: 4692,
     countyId: 1,
-    name: 'Fata Cristesei',
+    name: 'Fața Cristesei',
   },
   {
     id: 4693,
     countyId: 1,
-    name: 'Fata Lapusului',
+    name: 'Fața Lăpușului',
   },
   {
     id: 4694,
     countyId: 18,
-    name: 'Fata lui Nan',
+    name: 'Fața lui Nan',
   },
   {
     id: 4695,
     countyId: 40,
-    name: 'Fata Motrului',
+    name: 'Fața Motrului',
   },
   {
     id: 4696,
     countyId: 1,
-    name: 'Fata Pietrii',
+    name: 'Fața Pietrii',
   },
   {
     id: 4697,
     countyId: 33,
-    name: 'Fata Rosie',
+    name: 'Fața Roșie',
   },
   {
     id: 4698,
     countyId: 1,
-    name: 'Fata-Lazesti',
+    name: 'Fața-Lăzești',
   },
   {
     id: 4699,
     countyId: 9,
-    name: 'Faurei',
+    name: 'Făurei',
   },
   {
     id: 4700,
     countyId: 22,
-    name: 'Faurei',
+    name: 'Făurei',
   },
   {
     id: 4701,
     countyId: 54,
-    name: 'Faurei',
+    name: 'Făurei',
   },
   {
     id: 4702,
     countyId: 19,
-    name: 'Faurei',
+    name: 'Făurei',
   },
   {
     id: 4703,
     countyId: 42,
-    name: 'Faurei',
+    name: 'Făurei',
   },
   {
     id: 4704,
     countyId: 9,
-    name: 'Faurei-Sat',
+    name: 'Făurei-Sat',
   },
   {
     id: 4705,
     countyId: 21,
-    name: 'Faureni',
+    name: 'Făureni',
   },
   {
     id: 4706,
     countyId: 52,
-    name: 'Fauresti',
+    name: 'Făurești',
   },
   {
     id: 4707,
     countyId: 39,
-    name: 'Fauresti',
+    name: 'Făurești',
   },
   {
     id: 4708,
     countyId: 52,
-    name: 'Fauresti (Zatreni)',
+    name: 'Făurești (Zătreni)',
   },
   {
     id: 4709,
     countyId: 40,
-    name: 'Fauroaia',
+    name: 'Făuroaia',
   },
   {
     id: 4710,
     countyId: 35,
-    name: 'Fedeleseni',
+    name: 'Fedeleșeni',
   },
   {
     id: 4711,
     countyId: 3,
-    name: 'Fedelesoiu',
+    name: 'Fedeleșoiu',
   },
   {
     id: 4712,
     countyId: 52,
-    name: 'Fedelesoiu',
+    name: 'Fedeleșoiu',
   },
   {
     id: 4713,
@@ -23552,7 +23552,7 @@ export const CITIES = [
   {
     id: 4714,
     countyId: 53,
-    name: 'Fedesti',
+    name: 'Fedești',
   },
   {
     id: 4715,
@@ -23642,22 +23642,22 @@ export const CITIES = [
   {
     id: 4732,
     countyId: 6,
-    name: 'Feneris',
+    name: 'Feneriș',
   },
   {
     id: 4733,
     countyId: 1,
-    name: 'Fenes',
+    name: 'Feneș',
   },
   {
     id: 4734,
     countyId: 20,
-    name: 'Fenes',
+    name: 'Feneș',
   },
   {
     id: 4735,
     countyId: 2,
-    name: 'Fenis',
+    name: 'Feniș',
   },
   {
     id: 4736,
@@ -23677,22 +23677,22 @@ export const CITIES = [
   {
     id: 4739,
     countyId: 1,
-    name: 'Feresti',
+    name: 'Ferești',
   },
   {
     id: 4740,
     countyId: 53,
-    name: 'Feresti',
+    name: 'Ferești',
   },
   {
     id: 4741,
     countyId: 39,
-    name: 'Feresti',
+    name: 'Ferești',
   },
   {
     id: 4742,
     countyId: 5,
-    name: 'Ferestrau-Oituz',
+    name: 'Ferestrău-Oituz',
   },
   {
     id: 4743,
@@ -23722,37 +23722,37 @@ export const CITIES = [
   {
     id: 4748,
     countyId: 24,
-    name: 'Feteni',
+    name: 'Fețeni',
   },
   {
     id: 4749,
     countyId: 1,
-    name: 'Feteni',
+    name: 'Fețeni',
   },
   {
     id: 4750,
     countyId: 35,
-    name: 'Fetesti',
+    name: 'Fetești',
   },
   {
     id: 4751,
     countyId: 54,
-    name: 'Fetesti',
+    name: 'Fetești',
   },
   {
     id: 4752,
     countyId: 34,
-    name: 'Fetesti',
+    name: 'Fetești',
   },
   {
     id: 4753,
     countyId: 48,
-    name: 'Fetesti',
+    name: 'Fetești',
   },
   {
     id: 4754,
     countyId: 34,
-    name: 'Fetesti-Gara',
+    name: 'Fetești-Gară',
   },
   {
     id: 4755,
@@ -23772,22 +23772,22 @@ export const CITIES = [
   {
     id: 4758,
     countyId: 50,
-    name: 'Fibis',
+    name: 'Fibiș',
   },
   {
     id: 4759,
     countyId: 1,
-    name: 'Ficaresti',
+    name: 'Ficărești',
   },
   {
     id: 4760,
     countyId: 50,
-    name: 'Ficatar',
+    name: 'Ficătar',
   },
   {
     id: 4761,
     countyId: 5,
-    name: 'Fichitesti',
+    name: 'Fichitești',
   },
   {
     id: 4762,
@@ -23797,22 +23797,22 @@ export const CITIES = [
   {
     id: 4763,
     countyId: 24,
-    name: 'Fierbinti',
+    name: 'Fierbinți',
   },
   {
     id: 4764,
     countyId: 34,
-    name: 'Fierbinti-Targ',
+    name: 'Fierbinți-Târg',
   },
   {
     id: 4765,
     countyId: 34,
-    name: 'Fierbintii de Jos',
+    name: 'Fierbinții de Jos',
   },
   {
     id: 4766,
     countyId: 34,
-    name: 'Fierbintii de Sus',
+    name: 'Fierbinții de Sus',
   },
   {
     id: 4767,
@@ -23862,17 +23862,17 @@ export const CITIES = [
   {
     id: 4776,
     countyId: 31,
-    name: 'Filias',
+    name: 'Filiaș',
   },
   {
     id: 4777,
     countyId: 25,
-    name: 'Filiasi',
+    name: 'Filiași',
   },
   {
     id: 4778,
     countyId: 35,
-    name: 'Filiasi',
+    name: 'Filiași',
   },
   {
     id: 4779,
@@ -23887,27 +23887,27 @@ export const CITIES = [
   {
     id: 4781,
     countyId: 5,
-    name: 'Filipesti',
+    name: 'Filipești',
   },
   {
     id: 4782,
     countyId: 9,
-    name: 'Filipesti',
+    name: 'Filipești',
   },
   {
     id: 4783,
     countyId: 5,
-    name: 'Filipesti (Bogdanesti)',
+    name: 'Filipești (Bogdănești)',
   },
   {
     id: 4784,
     countyId: 44,
-    name: 'Filipestii de Padure',
+    name: 'Filipeștii de Pădure',
   },
   {
     id: 4785,
     countyId: 44,
-    name: 'Filipestii de Targ',
+    name: 'Filipeștii de Târg',
   },
   {
     id: 4786,
@@ -23927,12 +23927,12 @@ export const CITIES = [
   {
     id: 4789,
     countyId: 41,
-    name: 'Filpisu Mare',
+    name: 'Filpișu Mare',
   },
   {
     id: 4790,
     countyId: 41,
-    name: 'Filpisu Mic',
+    name: 'Filpișu Mic',
   },
   {
     id: 4791,
@@ -23942,12 +23942,12 @@ export const CITIES = [
   {
     id: 4792,
     countyId: 6,
-    name: 'Finis',
+    name: 'Finiș',
   },
   {
     id: 4793,
     countyId: 21,
-    name: 'Finisel',
+    name: 'Finișel',
   },
   {
     id: 4794,
@@ -23967,17 +23967,17 @@ export const CITIES = [
   {
     id: 4797,
     countyId: 18,
-    name: 'Fintesti',
+    name: 'Fințești',
   },
   {
     id: 4798,
     countyId: 39,
-    name: 'Finteusu Mare',
+    name: 'Finteușu Mare',
   },
   {
     id: 4799,
     countyId: 39,
-    name: 'Finteusu Mic',
+    name: 'Finteușu Mic',
   },
   {
     id: 4800,
@@ -23987,7 +23987,7 @@ export const CITIES = [
   {
     id: 4801,
     countyId: 52,
-    name: 'Firesti',
+    name: 'Firești',
   },
   {
     id: 4802,
@@ -24012,22 +24012,22 @@ export const CITIES = [
   {
     id: 4806,
     countyId: 45,
-    name: 'Firminis',
+    name: 'Firminiș',
   },
   {
     id: 4807,
     countyId: 31,
-    name: 'Firtanus',
+    name: 'Firtănuș',
   },
   {
     id: 4808,
     countyId: 31,
-    name: 'Firtusu',
+    name: 'Firtușu',
   },
   {
     id: 4809,
     countyId: 52,
-    name: 'Fiscalia',
+    name: 'Fișcălia',
   },
   {
     id: 4810,
@@ -24037,22 +24037,22 @@ export const CITIES = [
   {
     id: 4811,
     countyId: 10,
-    name: 'Fiser',
+    name: 'Fișer',
   },
   {
     id: 4812,
     countyId: 18,
-    name: 'Fisici',
+    name: 'Fișici',
   },
   {
     id: 4813,
     countyId: 41,
-    name: 'Fitcau',
+    name: 'Fițcău',
   },
   {
     id: 4814,
     countyId: 54,
-    name: 'Fitionesti',
+    name: 'Fitionești',
   },
   {
     id: 4815,
@@ -24062,42 +24062,42 @@ export const CITIES = [
   {
     id: 4816,
     countyId: 33,
-    name: 'Fizes',
+    name: 'Fizeș',
   },
   {
     id: 4817,
     countyId: 20,
-    name: 'Fizes',
+    name: 'Fizeș',
   },
   {
     id: 4818,
     countyId: 45,
-    name: 'Fizes',
+    name: 'Fizeș',
   },
   {
     id: 4819,
     countyId: 33,
-    name: 'Fizesti',
+    name: 'Fizești',
   },
   {
     id: 4820,
     countyId: 21,
-    name: 'Fizesu Gherlii',
+    name: 'Fizeșu Gherlii',
   },
   {
     id: 4821,
     countyId: 6,
-    name: 'Fizis',
+    name: 'Fiziș',
   },
   {
     id: 4822,
     countyId: 8,
-    name: 'Flamanzi',
+    name: 'Flămânzi',
   },
   {
     id: 4823,
     countyId: 1,
-    name: 'Flitesti',
+    name: 'Flitești',
   },
   {
     id: 4824,
@@ -24117,107 +24117,107 @@ export const CITIES = [
   {
     id: 4827,
     countyId: 30,
-    name: 'Floresteni',
+    name: 'Floreșteni',
   },
   {
     id: 4828,
     countyId: 8,
-    name: 'Floresti',
+    name: 'Florești',
   },
   {
     id: 4829,
     countyId: 21,
-    name: 'Floresti',
+    name: 'Florești',
   },
   {
     id: 4830,
     countyId: 30,
-    name: 'Floresti',
+    name: 'Florești',
   },
   {
     id: 4831,
     countyId: 40,
-    name: 'Floresti',
+    name: 'Florești',
   },
   {
     id: 4832,
     countyId: 47,
-    name: 'Floresti',
+    name: 'Florești',
   },
   {
     id: 4833,
     countyId: 53,
-    name: 'Floresti',
+    name: 'Florești',
   },
   {
     id: 4834,
     countyId: 7,
-    name: 'Floresti',
+    name: 'Florești',
   },
   {
     id: 4835,
     countyId: 18,
-    name: 'Floresti',
+    name: 'Florești',
   },
   {
     id: 4836,
     countyId: 25,
-    name: 'Floresti',
+    name: 'Florești',
   },
   {
     id: 4837,
     countyId: 29,
-    name: 'Floresti',
+    name: 'Florești',
   },
   {
     id: 4838,
     countyId: 44,
-    name: 'Floresti',
+    name: 'Florești',
   },
   {
     id: 4839,
     countyId: 51,
-    name: 'Floresti',
+    name: 'Florești',
   },
   {
     id: 4840,
     countyId: 1,
-    name: 'Floresti (Bucium)',
+    name: 'Florești (Bucium)',
   },
   {
     id: 4841,
     countyId: 5,
-    name: 'Floresti (Caiuti)',
+    name: 'Florești (Căiuți)',
   },
   {
     id: 4842,
     countyId: 1,
-    name: 'Floresti (Campeni)',
+    name: 'Florești (Câmpeni)',
   },
   {
     id: 4843,
     countyId: 5,
-    name: 'Floresti (Huruiesti)',
+    name: 'Florești (Huruiești)',
   },
   {
     id: 4844,
     countyId: 1,
-    name: 'Floresti (Ramet)',
+    name: 'Florești (Râmeț)',
   },
   {
     id: 4845,
     countyId: 1,
-    name: 'Floresti (Scarisoara)',
+    name: 'Florești (Scărișoara)',
   },
   {
     id: 4846,
     countyId: 5,
-    name: 'Floresti (Scorteni)',
+    name: 'Florești (Scorțeni)',
   },
   {
     id: 4847,
     countyId: 29,
-    name: 'Floresti-Stoenesti',
+    name: 'Florești-Stoenești',
   },
   {
     id: 4848,
@@ -24272,22 +24272,22 @@ export const CITIES = [
   {
     id: 4858,
     countyId: 53,
-    name: 'Focsa',
+    name: 'Focșa',
   },
   {
     id: 4859,
     countyId: 18,
-    name: 'Focsanei',
+    name: 'Focșănei',
   },
   {
     id: 4860,
     countyId: 54,
-    name: 'Focsani',
+    name: 'Focșani',
   },
   {
     id: 4861,
     countyId: 53,
-    name: 'Focseasca',
+    name: 'Focșeașca',
   },
   {
     id: 4862,
@@ -24317,7 +24317,7 @@ export const CITIES = [
   {
     id: 4867,
     countyId: 6,
-    name: 'Foglas',
+    name: 'Foglaș',
   },
   {
     id: 4868,
@@ -24327,7 +24327,7 @@ export const CITIES = [
   {
     id: 4869,
     countyId: 25,
-    name: 'Foisor',
+    name: 'Foișor',
   },
   {
     id: 4870,
@@ -24337,12 +24337,12 @@ export const CITIES = [
   {
     id: 4871,
     countyId: 52,
-    name: 'Folestii de Jos',
+    name: 'Foleștii de Jos',
   },
   {
     id: 4872,
     countyId: 52,
-    name: 'Folestii de Sus',
+    name: 'Foleștii de Sus',
   },
   {
     id: 4873,
@@ -24352,32 +24352,32 @@ export const CITIES = [
   {
     id: 4874,
     countyId: 28,
-    name: 'Foltesti',
+    name: 'Foltești',
   },
   {
     id: 4875,
     countyId: 6,
-    name: 'Fonau',
+    name: 'Fonău',
   },
   {
     id: 4876,
     countyId: 48,
-    name: 'Forasti',
+    name: 'Forăști',
   },
   {
     id: 4877,
     countyId: 35,
-    name: 'Forasti',
+    name: 'Forăști',
   },
   {
     id: 4878,
     countyId: 6,
-    name: 'Forau',
+    name: 'Forău',
   },
   {
     id: 4879,
     countyId: 33,
-    name: 'Fornadia',
+    name: 'Fornădia',
   },
   {
     id: 4880,
@@ -24392,12 +24392,12 @@ export const CITIES = [
   {
     id: 4882,
     countyId: 31,
-    name: 'Forteni',
+    name: 'Forțeni',
   },
   {
     id: 4883,
     countyId: 52,
-    name: 'Fotesti',
+    name: 'Fotești',
   },
   {
     id: 4884,
@@ -24407,32 +24407,32 @@ export const CITIES = [
   {
     id: 4885,
     countyId: 23,
-    name: 'Fotos',
+    name: 'Fotoș',
   },
   {
     id: 4886,
     countyId: 39,
-    name: 'Francenii Boiului',
+    name: 'Frâncenii Boiului',
   },
   {
     id: 4887,
     countyId: 45,
-    name: 'Francenii de Piatra',
+    name: 'Frâncenii de Piatră',
   },
   {
     id: 4888,
     countyId: 52,
-    name: 'Francesti',
+    name: 'Frâncești',
   },
   {
     id: 4889,
     countyId: 30,
-    name: 'Francesti',
+    name: 'Frâncești',
   },
   {
     id: 4890,
     countyId: 52,
-    name: 'Francesti-Coasta',
+    name: 'Frâncești-Coasta',
   },
   {
     id: 4891,
@@ -24452,7 +24452,7 @@ export const CITIES = [
   {
     id: 4894,
     countyId: 48,
-    name: 'Frasin (Brosteni)',
+    name: 'Frasin (Broșteni)',
   },
   {
     id: 4895,
@@ -24467,52 +24467,52 @@ export const CITIES = [
   {
     id: 4897,
     countyId: 52,
-    name: 'Frasina',
+    name: 'Frăsina',
   },
   {
     id: 4898,
     countyId: 18,
-    name: 'Frasinet',
+    name: 'Frăsinet',
   },
   {
     id: 4899,
     countyId: 19,
-    name: 'Frasinet',
+    name: 'Frăsinet',
   },
   {
     id: 4900,
     countyId: 49,
-    name: 'Frasinet',
+    name: 'Frăsinet',
   },
   {
     id: 4901,
     countyId: 21,
-    name: 'Frasinet',
+    name: 'Frăsinet',
   },
   {
     id: 4902,
     countyId: 44,
-    name: 'Frasinet',
+    name: 'Frăsinet',
   },
   {
     id: 4903,
     countyId: 43,
-    name: 'Frasinet-Gara',
+    name: 'Frăsinet-Gară',
   },
   {
     id: 4904,
     countyId: 43,
-    name: 'Frasinetu',
+    name: 'Frăsinetu',
   },
   {
     id: 4905,
     countyId: 19,
-    name: 'Frasinetu de Jos',
+    name: 'Frăsinetu de Jos',
   },
   {
     id: 4906,
     countyId: 20,
-    name: 'Frasinis',
+    name: 'Frăsiniș',
   },
   {
     id: 4907,
@@ -24532,7 +24532,7 @@ export const CITIES = [
   {
     id: 4910,
     countyId: 35,
-    name: 'Frasuleni',
+    name: 'Frăsuleni',
   },
   {
     id: 4911,
@@ -24542,62 +24542,62 @@ export const CITIES = [
   {
     id: 4912,
     countyId: 48,
-    name: 'Fratautii Noi',
+    name: 'Frătăuții Noi',
   },
   {
     id: 4913,
     countyId: 48,
-    name: 'Fratautii Vechi',
+    name: 'Frătăuții Vechi',
   },
   {
     id: 4914,
     countyId: 30,
-    name: 'Fratesti',
+    name: 'Frătești',
   },
   {
     id: 4915,
     countyId: 3,
-    name: 'Fratesti',
+    name: 'Frătești',
   },
   {
     id: 4916,
     countyId: 29,
-    name: 'Fratesti',
+    name: 'Frătești',
   },
   {
     id: 4917,
     countyId: 3,
-    name: 'Fratici',
+    name: 'Frătici',
   },
   {
     id: 4918,
     countyId: 25,
-    name: 'Fratila',
+    name: 'Frățila',
   },
   {
     id: 4919,
     countyId: 34,
-    name: 'Fratilesti',
+    name: 'Frățilești',
   },
   {
     id: 4920,
     countyId: 25,
-    name: 'Fratostita',
+    name: 'Fratoștița',
   },
   {
     id: 4921,
     countyId: 9,
-    name: 'Frecatei',
+    name: 'Frecăței',
   },
   {
     id: 4922,
     countyId: 54,
-    name: 'Frecatei',
+    name: 'Frecăței',
   },
   {
     id: 4923,
     countyId: 51,
-    name: 'Frecatei',
+    name: 'Frecăței',
   },
   {
     id: 4924,
@@ -24637,47 +24637,47 @@ export const CITIES = [
   {
     id: 4931,
     countyId: 19,
-    name: 'Frumusani',
+    name: 'Frumușani',
   },
   {
     id: 4932,
     countyId: 30,
-    name: 'Frumusei',
+    name: 'Frumușei',
   },
   {
     id: 4933,
     countyId: 5,
-    name: 'Frumuselu',
+    name: 'Frumușelu',
   },
   {
     id: 4934,
     countyId: 2,
-    name: 'Frumuseni',
+    name: 'Frumușeni',
   },
   {
     id: 4935,
     countyId: 8,
-    name: 'Frumusica',
+    name: 'Frumușica',
   },
   {
     id: 4936,
     countyId: 35,
-    name: 'Frumusica',
+    name: 'Frumușica',
   },
   {
     id: 4937,
     countyId: 28,
-    name: 'Frumusita',
+    name: 'Frumușița',
   },
   {
     id: 4938,
     countyId: 5,
-    name: 'Fruntesti',
+    name: 'Fruntești',
   },
   {
     id: 4939,
     countyId: 53,
-    name: 'Fruntiseni',
+    name: 'Fruntișeni',
   },
   {
     id: 4940,
@@ -24737,7 +24737,7 @@ export const CITIES = [
   {
     id: 4951,
     countyId: 5,
-    name: 'Fulgeris',
+    name: 'Fulgeriș',
   },
   {
     id: 4952,
@@ -24767,57 +24767,57 @@ export const CITIES = [
   {
     id: 4957,
     countyId: 10,
-    name: 'Fundatica',
+    name: 'Fundățica',
   },
   {
     id: 4958,
     countyId: 21,
-    name: 'Fundatura',
+    name: 'Fundătura',
   },
   {
     id: 4959,
     countyId: 52,
-    name: 'Fundatura',
+    name: 'Fundătura',
   },
   {
     id: 4960,
     countyId: 5,
-    name: 'Fundatura',
+    name: 'Fundătura',
   },
   {
     id: 4961,
     countyId: 41,
-    name: 'Fundatura',
+    name: 'Fundătura',
   },
   {
     id: 4962,
     countyId: 53,
-    name: 'Fundatura (Arsura)',
+    name: 'Fundătura (Arsura)',
   },
   {
     id: 4963,
     countyId: 53,
-    name: 'Fundatura (Delesti)',
+    name: 'Fundătura (Delești)',
   },
   {
     id: 4964,
     countyId: 53,
-    name: 'Fundatura Mare',
+    name: 'Fundătura Mare',
   },
   {
     id: 4965,
     countyId: 53,
-    name: 'Fundatura Mica',
+    name: 'Fundătura Mică',
   },
   {
     id: 4966,
     countyId: 5,
-    name: 'Fundatura Rachitoasa',
+    name: 'Fundătura Răchitoasa',
   },
   {
     id: 4967,
     countyId: 18,
-    name: 'Fundaturile',
+    name: 'Fundăturile',
   },
   {
     id: 4968,
@@ -24877,7 +24877,7 @@ export const CITIES = [
   {
     id: 4979,
     countyId: 8,
-    name: 'Fundu Hertii',
+    name: 'Fundu Herții',
   },
   {
     id: 4980,
@@ -24887,7 +24887,7 @@ export const CITIES = [
   {
     id: 4981,
     countyId: 5,
-    name: 'Fundu Racaciuni',
+    name: 'Fundu Răcăciuni',
   },
   {
     id: 4982,
@@ -24897,17 +24897,17 @@ export const CITIES = [
   {
     id: 4983,
     countyId: 5,
-    name: 'Fundu Vaii',
+    name: 'Fundu Văii',
   },
   {
     id: 4984,
     countyId: 53,
-    name: 'Fundu Vaii (Lipovat)',
+    name: 'Fundu Văii (Lipovăț)',
   },
   {
     id: 4985,
     countyId: 53,
-    name: 'Fundu Vaii (Poienesti)',
+    name: 'Fundu Văii (Poienești)',
   },
   {
     id: 4986,
@@ -24927,32 +24927,32 @@ export const CITIES = [
   {
     id: 4989,
     countyId: 33,
-    name: 'Furcsoara',
+    name: 'Furcșoara',
   },
   {
     id: 4990,
     countyId: 49,
-    name: 'Furculesti',
+    name: 'Furculești',
   },
   {
     id: 4991,
     countyId: 3,
-    name: 'Furduesti',
+    name: 'Furduești',
   },
   {
     id: 4992,
     countyId: 1,
-    name: 'Furduiesti (Campeni)',
+    name: 'Furduiești (Câmpeni)',
   },
   {
     id: 4993,
     countyId: 1,
-    name: 'Furduiesti (Sohodol)',
+    name: 'Furduiești (Sohodol)',
   },
   {
     id: 4994,
     countyId: 3,
-    name: 'Furesti',
+    name: 'Furești',
   },
   {
     id: 4995,
@@ -24967,12 +24967,12 @@ export const CITIES = [
   {
     id: 4997,
     countyId: 3,
-    name: 'Furnicosi',
+    name: 'Furnicoși',
   },
   {
     id: 4998,
     countyId: 18,
-    name: 'Furtunesti',
+    name: 'Furtunești',
   },
   {
     id: 4999,
@@ -24987,7 +24987,7 @@ export const CITIES = [
   {
     id: 5001,
     countyId: 1,
-    name: 'Gabud',
+    name: 'Găbud',
   },
   {
     id: 5002,
@@ -24997,42 +24997,42 @@ export const CITIES = [
   {
     id: 5003,
     countyId: 21,
-    name: 'Gadalin',
+    name: 'Gădălin',
   },
   {
     id: 5004,
     countyId: 42,
-    name: 'Gadinti',
+    name: 'Gâdinți',
   },
   {
     id: 5005,
     countyId: 24,
-    name: 'Gaesti',
+    name: 'Găești',
   },
   {
     id: 5006,
     countyId: 44,
-    name: 'Gageni',
+    name: 'Găgeni',
   },
   {
     id: 5007,
     countyId: 18,
-    name: 'Gageni',
+    name: 'Găgeni',
   },
   {
     id: 5008,
     countyId: 52,
-    name: 'Gageni',
+    name: 'Găgeni',
   },
   {
     id: 5009,
     countyId: 54,
-    name: 'Gagesti',
+    name: 'Găgești',
   },
   {
     id: 5010,
     countyId: 53,
-    name: 'Gagesti',
+    name: 'Găgești',
   },
   {
     id: 5011,
@@ -25047,37 +25047,37 @@ export const CITIES = [
   {
     id: 5013,
     countyId: 5,
-    name: 'Gaiceana',
+    name: 'Găiceana',
   },
   {
     id: 5014,
     countyId: 41,
-    name: 'Gaiesti',
+    name: 'Găiești',
   },
   {
     id: 5015,
     countyId: 48,
-    name: 'Gainesti',
+    name: 'Găinești',
   },
   {
     id: 5016,
     countyId: 52,
-    name: 'Gainesti',
+    name: 'Găinești',
   },
   {
     id: 5017,
     countyId: 3,
-    name: 'Gainusa',
+    name: 'Găinușa',
   },
   {
     id: 5018,
     countyId: 29,
-    name: 'Gaiseanca',
+    name: 'Găiseanca',
   },
   {
     id: 5019,
     countyId: 29,
-    name: 'Gaiseni',
+    name: 'Găiseni',
   },
   {
     id: 5020,
@@ -25087,27 +25087,27 @@ export const CITIES = [
   {
     id: 5021,
     countyId: 48,
-    name: 'Galanesti',
+    name: 'Gălănești',
   },
   {
     id: 5022,
     countyId: 41,
-    name: 'Galaoaia',
+    name: 'Gălăoaia',
   },
   {
     id: 5023,
     countyId: 6,
-    name: 'Galaseni',
+    name: 'Gălășeni',
   },
   {
     id: 5024,
     countyId: 45,
-    name: 'Galaseni',
+    name: 'Gălășeni',
   },
   {
     id: 5025,
     countyId: 3,
-    name: 'Galasesti (Budeasa)',
+    name: 'Gălășești (Budeasa)',
   },
   {
     id: 5026,
@@ -25117,47 +25117,47 @@ export const CITIES = [
   {
     id: 5027,
     countyId: 49,
-    name: 'Galateni',
+    name: 'Gălăteni',
   },
   {
     id: 5028,
     countyId: 41,
-    name: 'Galateni',
+    name: 'Gălățeni',
   },
   {
     id: 5029,
     countyId: 1,
-    name: 'Galati',
+    name: 'Galați',
   },
   {
     id: 5030,
     countyId: 33,
-    name: 'Galati',
+    name: 'Galați',
   },
   {
     id: 5031,
     countyId: 28,
-    name: 'Galati',
+    name: 'Galați',
   },
   {
     id: 5032,
     countyId: 7,
-    name: 'Galatii Bistritei',
+    name: 'Galații Bistriței',
   },
   {
     id: 5033,
     countyId: 19,
-    name: 'Galatui',
+    name: 'Gălățui',
   },
   {
     id: 5034,
     countyId: 31,
-    name: 'Galautas',
+    name: 'Gălăuțaș',
   },
   {
     id: 5035,
     countyId: 31,
-    name: 'Galautas-Parau',
+    name: 'Gălăuțaș-Pârâu',
   },
   {
     id: 5036,
@@ -25177,12 +25177,12 @@ export const CITIES = [
   {
     id: 5039,
     countyId: 5,
-    name: 'Galbeni (Filipesti)',
+    name: 'Galbeni (Filipești)',
   },
   {
     id: 5040,
     countyId: 5,
-    name: 'Galbeni (Nicolae Balcescu)',
+    name: 'Galbeni (Nicolae Bălcescu)',
   },
   {
     id: 5041,
@@ -25197,27 +25197,27 @@ export const CITIES = [
   {
     id: 5043,
     countyId: 18,
-    name: 'Galbinasi',
+    name: 'Gălbinași',
   },
   {
     id: 5044,
     countyId: 19,
-    name: 'Galbinasi',
+    name: 'Gălbinași',
   },
   {
     id: 5045,
     countyId: 22,
-    name: 'Galbiori',
+    name: 'Gălbiori',
   },
   {
     id: 5046,
     countyId: 30,
-    name: 'Galcesti',
+    name: 'Gâlcești',
   },
   {
     id: 5047,
     countyId: 3,
-    name: 'Galcesti',
+    name: 'Gâlcești',
   },
   {
     id: 5048,
@@ -25232,7 +25232,7 @@ export const CITIES = [
   {
     id: 5050,
     countyId: 19,
-    name: 'Galdau',
+    name: 'Gâldău',
   },
   {
     id: 5051,
@@ -25242,37 +25242,37 @@ export const CITIES = [
   {
     id: 5052,
     countyId: 47,
-    name: 'Gales',
+    name: 'Galeș',
   },
   {
     id: 5053,
     countyId: 30,
-    name: 'Galesoaia',
+    name: 'Găleșoaia',
   },
   {
     id: 5054,
     countyId: 41,
-    name: 'Galesti',
+    name: 'Gălești',
   },
   {
     id: 5055,
     countyId: 3,
-    name: 'Galesu',
+    name: 'Galeșu',
   },
   {
     id: 5056,
     countyId: 3,
-    name: 'Galeteanu',
+    name: 'Gălețeanu',
   },
   {
     id: 5057,
     countyId: 45,
-    name: 'Galgau',
+    name: 'Gâlgău',
   },
   {
     id: 5058,
     countyId: 45,
-    name: 'Galgau Almasului',
+    name: 'Gâlgău Almașului',
   },
   {
     id: 5059,
@@ -25292,37 +25292,37 @@ export const CITIES = [
   {
     id: 5062,
     countyId: 22,
-    name: 'Galita',
+    name: 'Galița',
   },
   {
     id: 5063,
     countyId: 44,
-    name: 'Galmeia',
+    name: 'Gâlmeia',
   },
   {
     id: 5064,
     countyId: 54,
-    name: 'Galoiesti',
+    name: 'Găloiești',
   },
   {
     id: 5065,
     countyId: 6,
-    name: 'Galospetreu',
+    name: 'Galoșpetreu',
   },
   {
     id: 5066,
     countyId: 45,
-    name: 'Galpaia',
+    name: 'Gălpâia',
   },
   {
     id: 5067,
     countyId: 2,
-    name: 'Galsa',
+    name: 'Galșa',
   },
   {
     id: 5068,
     countyId: 53,
-    name: 'Galtesti',
+    name: 'Gâlțești',
   },
   {
     id: 5069,
@@ -25332,7 +25332,7 @@ export const CITIES = [
   {
     id: 5070,
     countyId: 52,
-    name: 'Galtofani',
+    name: 'Gâltofani',
   },
   {
     id: 5071,
@@ -25342,92 +25342,92 @@ export const CITIES = [
   {
     id: 5072,
     countyId: 3,
-    name: 'Gamacesti',
+    name: 'Gămăcești',
   },
   {
     id: 5073,
     countyId: 24,
-    name: 'Gamanesti',
+    name: 'Gămănești',
   },
   {
     id: 5074,
     countyId: 30,
-    name: 'Gamani',
+    name: 'Gămani',
   },
   {
     id: 5075,
     countyId: 1,
-    name: 'Gambas',
+    name: 'Gâmbaș',
   },
   {
     id: 5076,
     countyId: 41,
-    name: 'Gambut',
+    name: 'Gâmbuț',
   },
   {
     id: 5077,
     countyId: 46,
-    name: 'Ganas',
+    name: 'Ganaș',
   },
   {
     id: 5078,
     countyId: 43,
-    name: 'Ganeasa',
+    name: 'Găneasa',
   },
   {
     id: 5079,
     countyId: 36,
-    name: 'Ganeasa',
+    name: 'Găneasa',
   },
   {
     id: 5080,
     countyId: 3,
-    name: 'Ganesti',
+    name: 'Gănești',
   },
   {
     id: 5081,
     countyId: 35,
-    name: 'Ganesti',
+    name: 'Gănești',
   },
   {
     id: 5082,
     countyId: 52,
-    name: 'Ganesti',
+    name: 'Gănești',
   },
   {
     id: 5083,
     countyId: 1,
-    name: 'Ganesti',
+    name: 'Gănești',
   },
   {
     id: 5084,
     countyId: 28,
-    name: 'Ganesti',
+    name: 'Gănești',
   },
   {
     id: 5085,
     countyId: 41,
-    name: 'Ganesti',
+    name: 'Gănești',
   },
   {
     id: 5086,
     countyId: 53,
-    name: 'Ganesti',
+    name: 'Gănești',
   },
   {
     id: 5087,
     countyId: 25,
-    name: 'Gangiova',
+    name: 'Gângiova',
   },
   {
     id: 5088,
     countyId: 33,
-    name: 'Gantaga',
+    name: 'Gânțaga',
   },
   {
     id: 5089,
     countyId: 52,
-    name: 'Gantulei',
+    name: 'Gănțulei',
   },
   {
     id: 5090,
@@ -25457,7 +25457,7 @@ export const CITIES = [
   {
     id: 5095,
     countyId: 53,
-    name: 'Gara Docaneasa',
+    name: 'Gara Docăneasa',
   },
   {
     id: 5096,
@@ -25477,237 +25477,237 @@ export const CITIES = [
   {
     id: 5099,
     countyId: 53,
-    name: 'Gara Rosiesti',
+    name: 'Gara Roșiești',
   },
   {
     id: 5100,
     countyId: 53,
-    name: 'Gara Talasman',
+    name: 'Gara Tălășman',
   },
   {
     id: 5101,
     countyId: 49,
-    name: 'Garagau',
+    name: 'Gărăgău',
   },
   {
     id: 5102,
     countyId: 20,
-    name: 'Garana',
+    name: 'Gărâna',
   },
   {
     id: 5103,
     countyId: 21,
-    name: 'Garbau',
+    name: 'Gârbău',
   },
   {
     id: 5104,
     countyId: 21,
-    name: 'Garbau Dejului',
+    name: 'Gârbău Dejului',
   },
   {
     id: 5105,
     countyId: 8,
-    name: 'Garbeni',
+    name: 'Gârbeni',
   },
   {
     id: 5106,
     countyId: 35,
-    name: 'Garbesti',
+    name: 'Gârbești',
   },
   {
     id: 5107,
     countyId: 8,
-    name: 'Garbesti',
+    name: 'Gârbești',
   },
   {
     id: 5108,
     countyId: 45,
-    name: 'Garbou',
+    name: 'Gârbou',
   },
   {
     id: 5109,
     countyId: 1,
-    name: 'Garbova',
+    name: 'Gârbova',
   },
   {
     id: 5110,
     countyId: 1,
-    name: 'Garbova de Jos',
+    name: 'Gârbova de Jos',
   },
   {
     id: 5111,
     countyId: 1,
-    name: 'Garbova de Sus',
+    name: 'Gârbova de Sus',
   },
   {
     id: 5112,
     countyId: 28,
-    name: 'Garbovat',
+    name: 'Gârbovăț',
   },
   {
     id: 5113,
     countyId: 20,
-    name: 'Garbovat',
+    name: 'Gârbovăț',
   },
   {
     id: 5114,
     countyId: 40,
-    name: 'Garbovatu de Jos',
+    name: 'Gârbovățu de Jos',
   },
   {
     id: 5115,
     countyId: 40,
-    name: 'Garbovatu de Sus',
+    name: 'Gârbovățu de Sus',
   },
   {
     id: 5116,
     countyId: 34,
-    name: 'Garbovi',
+    name: 'Gârbovi',
   },
   {
     id: 5117,
     countyId: 1,
-    name: 'Garbovita',
+    name: 'Gârbovița',
   },
   {
     id: 5118,
     countyId: 30,
-    name: 'Garbovu',
+    name: 'Gârbovu',
   },
   {
     id: 5119,
     countyId: 45,
-    name: 'Garceiu',
+    name: 'Gârceiu',
   },
   {
     id: 5120,
     countyId: 53,
-    name: 'Garceni',
+    name: 'Gârceni',
   },
   {
     id: 5121,
     countyId: 42,
-    name: 'Garcina',
+    name: 'Gârcina',
   },
   {
     id: 5122,
     countyId: 43,
-    name: 'Garcov',
+    name: 'Gârcov',
   },
   {
     id: 5123,
     countyId: 1,
-    name: 'Garda de Sus',
+    name: 'Gârda de Sus',
   },
   {
     id: 5124,
     countyId: 1,
-    name: 'Garda Seaca',
+    name: 'Gârda Seacă',
   },
   {
     id: 5125,
     countyId: 1,
-    name: 'Garda-Barbulesti',
+    name: 'Gârda-Bărbulești',
   },
   {
     id: 5126,
     countyId: 40,
-    name: 'Gardaneasa',
+    name: 'Gărdăneasa',
   },
   {
     id: 5127,
     countyId: 39,
-    name: 'Gardani',
+    name: 'Gârdani',
   },
   {
     id: 5128,
     countyId: 1,
-    name: 'Garde',
+    name: 'Gârde',
   },
   {
     id: 5129,
     countyId: 49,
-    name: 'Gardesti',
+    name: 'Gârdești',
   },
   {
     id: 5130,
     countyId: 53,
-    name: 'Gardesti',
+    name: 'Gârdești',
   },
   {
     id: 5131,
     countyId: 3,
-    name: 'Gardinesti',
+    name: 'Gărdinești',
   },
   {
     id: 5132,
     countyId: 40,
-    name: 'Gardoaia',
+    name: 'Gârdoaia',
   },
   {
     id: 5133,
     countyId: 5,
-    name: 'Garla Anei',
+    name: 'Gârla Anei',
   },
   {
     id: 5134,
     countyId: 40,
-    name: 'Garla Mare',
+    name: 'Gârla Mare',
   },
   {
     id: 5135,
     countyId: 5,
-    name: 'Garleni',
+    name: 'Gârleni',
   },
   {
     id: 5136,
     countyId: 24,
-    name: 'Garleni',
+    name: 'Gârleni',
   },
   {
     id: 5137,
     countyId: 5,
-    name: 'Garlenii de Sus',
+    name: 'Gârlenii de Sus',
   },
   {
     id: 5138,
     countyId: 25,
-    name: 'Garlesti',
+    name: 'Gârlești',
   },
   {
     id: 5139,
     countyId: 22,
-    name: 'Garliciu',
+    name: 'Gârliciu',
   },
   {
     id: 5140,
     countyId: 20,
-    name: 'Garliste',
+    name: 'Gârliște',
   },
   {
     id: 5141,
     countyId: 22,
-    name: 'Garlita',
+    name: 'Gârlița',
   },
   {
     id: 5142,
     countyId: 20,
-    name: 'Garnic',
+    name: 'Gârnic',
   },
   {
     id: 5143,
     countyId: 52,
-    name: 'Garnicet',
+    name: 'Gârnicet',
   },
   {
     id: 5144,
     countyId: 52,
-    name: 'Garnicetu',
+    name: 'Gârnicetu',
   },
   {
     id: 5145,
     countyId: 40,
-    name: 'Garnita',
+    name: 'Gârnița',
   },
   {
     id: 5146,
@@ -25717,92 +25717,92 @@ export const CITIES = [
   {
     id: 5147,
     countyId: 51,
-    name: 'Garvan',
+    name: 'Garvăn',
   },
   {
     id: 5148,
     countyId: 5,
-    name: 'Gasteni',
+    name: 'Gâșteni',
   },
   {
     id: 5149,
     countyId: 35,
-    name: 'Gastesti',
+    name: 'Gâștești',
   },
   {
     id: 5150,
     countyId: 50,
-    name: 'Gataia',
+    name: 'Gătaia',
   },
   {
     id: 5151,
     countyId: 52,
-    name: 'Gatejesti',
+    name: 'Gătejești',
   },
   {
     id: 5152,
     countyId: 29,
-    name: 'Gaujani',
+    name: 'Găujani',
   },
   {
     id: 5153,
     countyId: 3,
-    name: 'Gaujani',
+    name: 'Găujani',
   },
   {
     id: 5154,
     countyId: 52,
-    name: 'Gaujani',
+    name: 'Găujani',
   },
   {
     id: 5155,
     countyId: 41,
-    name: 'Gaura Sangerului',
+    name: 'Gaura Sângerului',
   },
   {
     id: 5156,
     countyId: 35,
-    name: 'Gaureni',
+    name: 'Găureni',
   },
   {
     id: 5157,
     countyId: 44,
-    name: 'Gavanel',
+    name: 'Găvănel',
   },
   {
     id: 5158,
     countyId: 18,
-    name: 'Gavanele',
+    name: 'Găvanele',
   },
   {
     id: 5159,
     countyId: 18,
-    name: 'Gavanesti',
+    name: 'Găvănești',
   },
   {
     id: 5160,
     countyId: 43,
-    name: 'Gavanesti',
+    name: 'Găvănești',
   },
   {
     id: 5161,
     countyId: 30,
-    name: 'Gavanesti',
+    name: 'Găvănești',
   },
   {
     id: 5162,
     countyId: 52,
-    name: 'Gavanesti',
+    name: 'Găvănești',
   },
   {
     id: 5163,
     countyId: 9,
-    name: 'Gavani',
+    name: 'Găvani',
   },
   {
     id: 5164,
     countyId: 53,
-    name: 'Gavanu',
+    name: 'Găvanu',
   },
   {
     id: 5165,
@@ -25812,7 +25812,7 @@ export const CITIES = [
   {
     id: 5166,
     countyId: 5,
-    name: 'Gazarie',
+    name: 'Găzărie',
   },
   {
     id: 5167,
@@ -25822,32 +25822,32 @@ export const CITIES = [
   {
     id: 5168,
     countyId: 3,
-    name: 'Geamana',
+    name: 'Geamăna',
   },
   {
     id: 5169,
     countyId: 1,
-    name: 'Geamana',
+    name: 'Geamăna',
   },
   {
     id: 5170,
     countyId: 52,
-    name: 'Geamana (Dragoesti)',
+    name: 'Geamăna (Drăgoești)',
   },
   {
     id: 5171,
     countyId: 52,
-    name: 'Geamana (Stoilesti)',
+    name: 'Geamăna (Stoilești)',
   },
   {
     id: 5172,
     countyId: 24,
-    name: 'Geangoesti',
+    name: 'Geangoești',
   },
   {
     id: 5173,
     countyId: 25,
-    name: 'Geblesti',
+    name: 'Geblești',
   },
   {
     id: 5174,
@@ -25877,7 +25877,7 @@ export const CITIES = [
   {
     id: 5179,
     countyId: 24,
-    name: 'Gemenea-Bratulesti',
+    name: 'Gemenea-Brătulești',
   },
   {
     id: 5180,
@@ -25902,7 +25902,7 @@ export const CITIES = [
   {
     id: 5184,
     countyId: 22,
-    name: 'General Scarisoreanu',
+    name: 'General Scărișoreanu',
   },
   {
     id: 5185,
@@ -25922,7 +25922,7 @@ export const CITIES = [
   {
     id: 5188,
     countyId: 33,
-    name: 'Geoagiu-Bai',
+    name: 'Geoagiu-Băi',
   },
   {
     id: 5189,
@@ -25937,7 +25937,7 @@ export const CITIES = [
   {
     id: 5191,
     countyId: 8,
-    name: 'George Cosbuc',
+    name: 'George Coșbuc',
   },
   {
     id: 5192,
@@ -25957,7 +25957,7 @@ export const CITIES = [
   {
     id: 5195,
     countyId: 6,
-    name: 'Gepis',
+    name: 'Gepiș',
   },
   {
     id: 5196,
@@ -25967,7 +25967,7 @@ export const CITIES = [
   {
     id: 5197,
     countyId: 46,
-    name: 'Gerausa',
+    name: 'Gerăușa',
   },
   {
     id: 5198,
@@ -26002,7 +26002,7 @@ export const CITIES = [
   {
     id: 5204,
     countyId: 1,
-    name: 'Ghedulesti',
+    name: 'Ghedulești',
   },
   {
     id: 5205,
@@ -26017,7 +26017,7 @@ export const CITIES = [
   {
     id: 5207,
     countyId: 42,
-    name: 'Ghelaiesti',
+    name: 'Ghelăiești',
   },
   {
     id: 5208,
@@ -26027,7 +26027,7 @@ export const CITIES = [
   {
     id: 5209,
     countyId: 23,
-    name: 'Ghelinta',
+    name: 'Ghelința',
   },
   {
     id: 5210,
@@ -26037,7 +26037,7 @@ export const CITIES = [
   {
     id: 5211,
     countyId: 7,
-    name: 'Ghemes',
+    name: 'Ghemeș',
   },
   {
     id: 5212,
@@ -26067,7 +26067,7 @@ export const CITIES = [
   {
     id: 5217,
     countyId: 34,
-    name: 'Gheorghe Lazar',
+    name: 'Gheorghe Lazăr',
   },
   {
     id: 5218,
@@ -26077,7 +26077,7 @@ export const CITIES = [
   {
     id: 5219,
     countyId: 40,
-    name: 'Gheorghesti',
+    name: 'Gheorghești',
   },
   {
     id: 5220,
@@ -26087,27 +26087,27 @@ export const CITIES = [
   {
     id: 5221,
     countyId: 48,
-    name: 'Gheorghiteni',
+    name: 'Gheorghițeni',
   },
   {
     id: 5222,
     countyId: 42,
-    name: 'Gheraesti',
+    name: 'Gherăești',
   },
   {
     id: 5223,
     countyId: 42,
-    name: 'Gheraestii Noi',
+    name: 'Gherăeștii Noi',
   },
   {
     id: 5224,
     countyId: 18,
-    name: 'Gheraseni',
+    name: 'Gherăseni',
   },
   {
     id: 5225,
     countyId: 25,
-    name: 'Ghercesti',
+    name: 'Ghercești',
   },
   {
     id: 5226,
@@ -26137,12 +26137,12 @@ export const CITIES = [
   {
     id: 5231,
     countyId: 24,
-    name: 'Gherghesti',
+    name: 'Gherghești',
   },
   {
     id: 5232,
     countyId: 53,
-    name: 'Gherghesti',
+    name: 'Gherghești',
   },
   {
     id: 5233,
@@ -26152,12 +26152,12 @@ export const CITIES = [
   {
     id: 5234,
     countyId: 44,
-    name: 'Gherghita',
+    name: 'Gherghița',
   },
   {
     id: 5235,
     countyId: 24,
-    name: 'Gherghitesti',
+    name: 'Gherghițești',
   },
   {
     id: 5236,
@@ -26177,37 +26177,37 @@ export const CITIES = [
   {
     id: 5239,
     countyId: 36,
-    name: 'Ghermanesti',
+    name: 'Ghermănești',
   },
   {
     id: 5240,
     countyId: 53,
-    name: 'Ghermanesti (Banca)',
+    name: 'Ghermănești (Banca)',
   },
   {
     id: 5241,
     countyId: 53,
-    name: 'Ghermanesti (Dranceni)',
+    name: 'Ghermănești (Drânceni)',
   },
   {
     id: 5242,
     countyId: 46,
-    name: 'Gherta Mare',
+    name: 'Gherța Mare',
   },
   {
     id: 5243,
     countyId: 46,
-    name: 'Gherta Mica',
+    name: 'Gherța Mică',
   },
   {
     id: 5244,
     countyId: 20,
-    name: 'Ghertenis',
+    name: 'Gherteniș',
   },
   {
     id: 5245,
     countyId: 1,
-    name: 'Ghetari',
+    name: 'Ghețari',
   },
   {
     id: 5246,
@@ -26222,12 +26222,12 @@ export const CITIES = [
   {
     id: 5248,
     countyId: 41,
-    name: 'Ghidasteu',
+    name: 'Ghidașteu',
   },
   {
     id: 5249,
     countyId: 23,
-    name: 'Ghidfalau',
+    name: 'Ghidfalău',
   },
   {
     id: 5250,
@@ -26247,12 +26247,12 @@ export const CITIES = [
   {
     id: 5253,
     countyId: 31,
-    name: 'Ghidut',
+    name: 'Ghiduț',
   },
   {
     id: 5254,
     countyId: 6,
-    name: 'Ghighiseni',
+    name: 'Ghighișeni',
   },
   {
     id: 5255,
@@ -26262,7 +26262,7 @@ export const CITIES = [
   {
     id: 5256,
     countyId: 42,
-    name: 'Ghigoiesti',
+    name: 'Ghigoiești',
   },
   {
     id: 5257,
@@ -26282,12 +26282,12 @@ export const CITIES = [
   {
     id: 5260,
     countyId: 5,
-    name: 'Ghilavesti',
+    name: 'Ghilăvești',
   },
   {
     id: 5261,
     countyId: 46,
-    name: 'Ghilesti',
+    name: 'Ghilești',
   },
   {
     id: 5262,
@@ -26302,42 +26302,42 @@ export const CITIES = [
   {
     id: 5264,
     countyId: 5,
-    name: 'Ghimes',
+    name: 'Ghimeș',
   },
   {
     id: 5265,
     countyId: 5,
-    name: 'Ghimes-Faget',
+    name: 'Ghimeș-Făget',
   },
   {
     id: 5266,
     countyId: 54,
-    name: 'Ghimicesti',
+    name: 'Ghimicești',
   },
   {
     id: 5267,
     countyId: 24,
-    name: 'Ghimpati',
+    name: 'Ghimpați',
   },
   {
     id: 5268,
     countyId: 43,
-    name: 'Ghimpati',
+    name: 'Ghimpați',
   },
   {
     id: 5269,
     countyId: 29,
-    name: 'Ghimpati',
+    name: 'Ghimpați',
   },
   {
     id: 5270,
     countyId: 43,
-    name: 'Ghimpeteni',
+    name: 'Ghimpețeni',
   },
   {
     id: 5271,
     countyId: 43,
-    name: 'Ghimpetenii Noi',
+    name: 'Ghimpețenii Noi',
   },
   {
     id: 5272,
@@ -26347,12 +26347,12 @@ export const CITIES = [
   {
     id: 5273,
     countyId: 42,
-    name: 'Ghindaoani',
+    name: 'Ghindăoani',
   },
   {
     id: 5274,
     countyId: 22,
-    name: 'Ghindaresti',
+    name: 'Ghindărești',
   },
   {
     id: 5275,
@@ -26372,17 +26372,17 @@ export const CITIES = [
   {
     id: 5278,
     countyId: 41,
-    name: 'Ghinesti',
+    name: 'Ghinești',
   },
   {
     id: 5279,
     countyId: 24,
-    name: 'Ghinesti',
+    name: 'Ghinești',
   },
   {
     id: 5280,
     countyId: 28,
-    name: 'Ghinghesti',
+    name: 'Ghinghești',
   },
   {
     id: 5281,
@@ -26392,7 +26392,7 @@ export const CITIES = [
   {
     id: 5282,
     countyId: 52,
-    name: 'Ghiobesti',
+    name: 'Ghiobești',
   },
   {
     id: 5283,
@@ -26442,17 +26442,17 @@ export const CITIES = [
   {
     id: 5292,
     countyId: 43,
-    name: 'Ghiosani',
+    name: 'Ghioșani',
   },
   {
     id: 5293,
     countyId: 44,
-    name: 'Ghiosesti',
+    name: 'Ghioșești',
   },
   {
     id: 5294,
     countyId: 31,
-    name: 'Ghipes',
+    name: 'Ghipeș',
   },
   {
     id: 5295,
@@ -26477,12 +26477,12 @@ export const CITIES = [
   {
     id: 5299,
     countyId: 46,
-    name: 'Ghirisa',
+    name: 'Ghirișa',
   },
   {
     id: 5300,
     countyId: 21,
-    name: 'Ghirisu Roman',
+    name: 'Ghirișu Român',
   },
   {
     id: 5301,
@@ -26512,7 +26512,7 @@ export const CITIES = [
   {
     id: 5306,
     countyId: 25,
-    name: 'Ghizdavesti',
+    name: 'Ghizdăvești',
   },
   {
     id: 5307,
@@ -26527,7 +26527,7 @@ export const CITIES = [
   {
     id: 5309,
     countyId: 47,
-    name: 'Giacas',
+    name: 'Giacăș',
   },
   {
     id: 5310,
@@ -26547,7 +26547,7 @@ export const CITIES = [
   {
     id: 5313,
     countyId: 52,
-    name: 'Gibesti',
+    name: 'Gibești',
   },
   {
     id: 5314,
@@ -26562,7 +26562,7 @@ export const CITIES = [
   {
     id: 5316,
     countyId: 21,
-    name: 'Gilau',
+    name: 'Gilău',
   },
   {
     id: 5317,
@@ -26572,7 +26572,7 @@ export const CITIES = [
   {
     id: 5318,
     countyId: 34,
-    name: 'Gimbasani',
+    name: 'Gimbășani',
   },
   {
     id: 5319,
@@ -26597,12 +26597,12 @@ export const CITIES = [
   {
     id: 5323,
     countyId: 6,
-    name: 'Girisu de Cris',
+    name: 'Girișu de Criș',
   },
   {
     id: 5324,
     countyId: 6,
-    name: 'Girisu Negru',
+    name: 'Girișu Negru',
   },
   {
     id: 5325,
@@ -26637,42 +26637,42 @@ export const CITIES = [
   {
     id: 5331,
     countyId: 6,
-    name: 'Giulesti',
+    name: 'Giulești',
   },
   {
     id: 5332,
     countyId: 42,
-    name: 'Giulesti',
+    name: 'Giulești',
   },
   {
     id: 5333,
     countyId: 52,
-    name: 'Giulesti',
+    name: 'Giulești',
   },
   {
     id: 5334,
     countyId: 39,
-    name: 'Giulesti',
+    name: 'Giulești',
   },
   {
     id: 5335,
     countyId: 48,
-    name: 'Giulesti',
+    name: 'Giulești',
   },
   {
     id: 5336,
     countyId: 52,
-    name: 'Giulestii de Sus',
+    name: 'Giuleștii de Sus',
   },
   {
     id: 5337,
     countyId: 41,
-    name: 'Giulus',
+    name: 'Giuluș',
   },
   {
     id: 5338,
     countyId: 50,
-    name: 'Giulvaz',
+    name: 'Giulvăz',
   },
   {
     id: 5339,
@@ -26692,12 +26692,12 @@ export const CITIES = [
   {
     id: 5342,
     countyId: 21,
-    name: 'Giurcuta de Jos',
+    name: 'Giurcuța de Jos',
   },
   {
     id: 5343,
     countyId: 21,
-    name: 'Giurcuta de Sus',
+    name: 'Giurcuța de Sus',
   },
   {
     id: 5344,
@@ -26717,22 +26717,22 @@ export const CITIES = [
   {
     id: 5347,
     countyId: 33,
-    name: 'Giurgesti',
+    name: 'Giurgești',
   },
   {
     id: 5348,
     countyId: 48,
-    name: 'Giurgesti',
+    name: 'Giurgești',
   },
   {
     id: 5349,
     countyId: 35,
-    name: 'Giurgesti',
+    name: 'Giurgești',
   },
   {
     id: 5350,
     countyId: 53,
-    name: 'Giurgesti',
+    name: 'Giurgești',
   },
   {
     id: 5351,
@@ -26752,12 +26752,12 @@ export const CITIES = [
   {
     id: 5354,
     countyId: 41,
-    name: 'Giurgis',
+    name: 'Giurgiș',
   },
   {
     id: 5355,
     countyId: 25,
-    name: 'Giurgita',
+    name: 'Giurgița',
   },
   {
     id: 5356,
@@ -26767,7 +26767,7 @@ export const CITIES = [
   {
     id: 5357,
     countyId: 1,
-    name: 'Giurgiut',
+    name: 'Giurgiuț',
   },
   {
     id: 5358,
@@ -26787,57 +26787,57 @@ export const CITIES = [
   {
     id: 5361,
     countyId: 45,
-    name: 'Giurtelecu Simleului',
+    name: 'Giurtelecu Șimleului',
   },
   {
     id: 5362,
     countyId: 43,
-    name: 'Giuvarasti',
+    name: 'Giuvărăști',
   },
   {
     id: 5363,
     countyId: 50,
-    name: 'Gladna Montana',
+    name: 'Gladna Montană',
   },
   {
     id: 5364,
     countyId: 50,
-    name: 'Gladna Romana',
+    name: 'Gladna Româna',
   },
   {
     id: 5365,
     countyId: 41,
-    name: 'Glajarie',
+    name: 'Glăjărie',
   },
   {
     id: 5366,
     countyId: 47,
-    name: 'Glamboaca',
+    name: 'Glâmboaca',
   },
   {
     id: 5367,
     countyId: 3,
-    name: 'Glambocata',
+    name: 'Glâmbocata',
   },
   {
     id: 5368,
     countyId: 3,
-    name: 'Glambocata-Deal',
+    name: 'Glâmbocata-Deal',
   },
   {
     id: 5369,
     countyId: 3,
-    name: 'Glambocel',
+    name: 'Glâmbocel',
   },
   {
     id: 5370,
     countyId: 3,
-    name: 'Glambocelu',
+    name: 'Glâmbocelu',
   },
   {
     id: 5371,
     countyId: 3,
-    name: 'Glambocu',
+    name: 'Glâmbocu',
   },
   {
     id: 5372,
@@ -26847,17 +26847,17 @@ export const CITIES = [
   {
     id: 5373,
     countyId: 5,
-    name: 'Glavanesti',
+    name: 'Glăvănești',
   },
   {
     id: 5374,
     countyId: 35,
-    name: 'Glavanesti',
+    name: 'Glăvănești',
   },
   {
     id: 5375,
     countyId: 52,
-    name: 'Glavile',
+    name: 'Glăvile',
   },
   {
     id: 5376,
@@ -26877,12 +26877,12 @@ export const CITIES = [
   {
     id: 5379,
     countyId: 1,
-    name: 'Gligoresti',
+    name: 'Gligorești',
   },
   {
     id: 5380,
     countyId: 21,
-    name: 'Gligoresti',
+    name: 'Gligorești',
   },
   {
     id: 5381,
@@ -26902,7 +26902,7 @@ export const CITIES = [
   {
     id: 5384,
     countyId: 20,
-    name: 'Globurau',
+    name: 'Globurău',
   },
   {
     id: 5385,
@@ -26932,12 +26932,12 @@ export const CITIES = [
   {
     id: 5390,
     countyId: 18,
-    name: 'Glodeanu Sarat',
+    name: 'Glodeanu Sărat',
   },
   {
     id: 5391,
     countyId: 18,
-    name: 'Glodeanu-Silistea',
+    name: 'Glodeanu-Siliștea',
   },
   {
     id: 5392,
@@ -26967,17 +26967,17 @@ export const CITIES = [
   {
     id: 5397,
     countyId: 35,
-    name: 'Glodenii Gandului',
+    name: 'Glodenii Gândului',
   },
   {
     id: 5398,
     countyId: 33,
-    name: 'Glodghilesti',
+    name: 'Glodghilești',
   },
   {
     id: 5399,
     countyId: 5,
-    name: 'Glodisoarele',
+    name: 'Glodișoarele',
   },
   {
     id: 5400,
@@ -26992,7 +26992,7 @@ export const CITIES = [
   {
     id: 5402,
     countyId: 3,
-    name: 'Glodu (Calinesti)',
+    name: 'Glodu (Călinești)',
   },
   {
     id: 5403,
@@ -27022,7 +27022,7 @@ export const CITIES = [
   {
     id: 5408,
     countyId: 1,
-    name: 'Glogovet',
+    name: 'Glogoveț',
   },
   {
     id: 5409,
@@ -27032,12 +27032,12 @@ export const CITIES = [
   {
     id: 5410,
     countyId: 40,
-    name: 'Goanta',
+    name: 'Goanța',
   },
   {
     id: 5411,
     countyId: 1,
-    name: 'Goasele',
+    name: 'Goașele',
   },
   {
     id: 5412,
@@ -27047,7 +27047,7 @@ export const CITIES = [
   {
     id: 5413,
     countyId: 40,
-    name: 'Godeanu (Obarsia-Closani)',
+    name: 'Godeanu (Obârșia-Cloșani)',
   },
   {
     id: 5414,
@@ -27062,27 +27062,27 @@ export const CITIES = [
   {
     id: 5416,
     countyId: 33,
-    name: 'Godinesti',
+    name: 'Godinești',
   },
   {
     id: 5417,
     countyId: 30,
-    name: 'Godinesti',
+    name: 'Godinești',
   },
   {
     id: 5418,
     countyId: 5,
-    name: 'Godinestii de Jos',
+    name: 'Godineștii de Jos',
   },
   {
     id: 5419,
     countyId: 5,
-    name: 'Godinestii de Sus',
+    name: 'Godineștii de Sus',
   },
   {
     id: 5420,
     countyId: 35,
-    name: 'Goesti',
+    name: 'Goești',
   },
   {
     id: 5421,
@@ -27107,27 +27107,27 @@ export const CITIES = [
   {
     id: 5425,
     countyId: 29,
-    name: 'Gogosari',
+    name: 'Gogoșari',
   },
   {
     id: 5426,
     countyId: 25,
-    name: 'Gogosesti',
+    name: 'Gogoșești',
   },
   {
     id: 5427,
     countyId: 25,
-    name: 'Gogosita',
+    name: 'Gogoșița',
   },
   {
     id: 5428,
     countyId: 40,
-    name: 'Gogosu',
+    name: 'Gogoșu',
   },
   {
     id: 5429,
     countyId: 25,
-    name: 'Gogosu',
+    name: 'Gogoșu',
   },
   {
     id: 5430,
@@ -27152,17 +27152,17 @@ export const CITIES = [
   {
     id: 5434,
     countyId: 18,
-    name: 'Goidesti',
+    name: 'Goidești',
   },
   {
     id: 5435,
     countyId: 1,
-    name: 'Goiesti',
+    name: 'Goiești',
   },
   {
     id: 5436,
     countyId: 25,
-    name: 'Goiesti',
+    name: 'Goiești',
   },
   {
     id: 5437,
@@ -27177,12 +27177,12 @@ export const CITIES = [
   {
     id: 5439,
     countyId: 1,
-    name: 'Gojeiesti',
+    name: 'Gojeiești',
   },
   {
     id: 5440,
     countyId: 35,
-    name: 'Golaiesti',
+    name: 'Golăiești',
   },
   {
     id: 5441,
@@ -27197,42 +27197,42 @@ export const CITIES = [
   {
     id: 5443,
     countyId: 25,
-    name: 'Golenti',
+    name: 'Golenți',
   },
   {
     id: 5444,
     countyId: 33,
-    name: 'Goles',
+    name: 'Goleș',
   },
   {
     id: 5445,
     countyId: 52,
-    name: 'Golesti',
+    name: 'Golești',
   },
   {
     id: 5446,
     countyId: 54,
-    name: 'Golesti',
+    name: 'Golești',
   },
   {
     id: 5447,
     countyId: 3,
-    name: 'Golesti (Balilesti)',
+    name: 'Golești (Bălilești)',
   },
   {
     id: 5448,
     countyId: 3,
-    name: 'Golesti (Stefanesti)',
+    name: 'Golești (Ștefănești)',
   },
   {
     id: 5449,
     countyId: 54,
-    name: 'Golestii de Sus',
+    name: 'Goleștii de Sus',
   },
   {
     id: 5450,
     countyId: 20,
-    name: 'Golet',
+    name: 'Goleț',
   },
   {
     id: 5451,
@@ -27272,17 +27272,17 @@ export const CITIES = [
   {
     id: 5458,
     countyId: 18,
-    name: 'Gomoesti',
+    name: 'Gomoești',
   },
   {
     id: 5459,
     countyId: 18,
-    name: 'Gontesti',
+    name: 'Gonțești',
   },
   {
     id: 5460,
     countyId: 3,
-    name: 'Goranesti',
+    name: 'Gorănești',
   },
   {
     id: 5461,
@@ -27292,7 +27292,7 @@ export const CITIES = [
   {
     id: 5462,
     countyId: 18,
-    name: 'Gorani',
+    name: 'Gorâni',
   },
   {
     id: 5463,
@@ -27302,7 +27302,7 @@ export const CITIES = [
   {
     id: 5464,
     countyId: 8,
-    name: 'Gorbanesti',
+    name: 'Gorbănești',
   },
   {
     id: 5465,
@@ -27322,7 +27322,7 @@ export const CITIES = [
   {
     id: 5468,
     countyId: 5,
-    name: 'Gorghesti',
+    name: 'Gorghești',
   },
   {
     id: 5469,
@@ -27342,7 +27342,7 @@ export const CITIES = [
   {
     id: 5472,
     countyId: 30,
-    name: 'Gornacel',
+    name: 'Gornăcel',
   },
   {
     id: 5473,
@@ -27357,12 +27357,12 @@ export const CITIES = [
   {
     id: 5475,
     countyId: 40,
-    name: 'Gornenti',
+    name: 'Gornenți',
   },
   {
     id: 5476,
     countyId: 41,
-    name: 'Gornesti',
+    name: 'Gornești',
   },
   {
     id: 5477,
@@ -27382,12 +27382,12 @@ export const CITIES = [
   {
     id: 5480,
     countyId: 40,
-    name: 'Gornovita',
+    name: 'Gornovița',
   },
   {
     id: 5481,
     countyId: 30,
-    name: 'Gornovita',
+    name: 'Gornovița',
   },
   {
     id: 5482,
@@ -27412,12 +27412,12 @@ export const CITIES = [
   {
     id: 5486,
     countyId: 52,
-    name: 'Gorunesti (Balcesti)',
+    name: 'Gorunești (Bălcești)',
   },
   {
     id: 5487,
     countyId: 52,
-    name: 'Gorunesti (Slatioara)',
+    name: 'Gorunești (Slătioara)',
   },
   {
     id: 5488,
@@ -27432,12 +27432,12 @@ export const CITIES = [
   {
     id: 5490,
     countyId: 42,
-    name: 'Gosmani',
+    name: 'Goșmani',
   },
   {
     id: 5491,
     countyId: 43,
-    name: 'Gostavatu',
+    name: 'Gostavățu',
   },
   {
     id: 5492,
@@ -27462,7 +27462,7 @@ export const CITIES = [
   {
     id: 5496,
     countyId: 33,
-    name: 'Gotesti',
+    name: 'Gotești',
   },
   {
     id: 5497,
@@ -27477,7 +27477,7 @@ export const CITIES = [
   {
     id: 5499,
     countyId: 33,
-    name: 'Govajdia',
+    name: 'Govăjdia',
   },
   {
     id: 5500,
@@ -27497,7 +27497,7 @@ export const CITIES = [
   {
     id: 5503,
     countyId: 50,
-    name: 'Grabat',
+    name: 'Grabăț',
   },
   {
     id: 5504,
@@ -27512,47 +27512,47 @@ export const CITIES = [
   {
     id: 5506,
     countyId: 5,
-    name: 'Gradesti',
+    name: 'Grădești',
   },
   {
     id: 5507,
     countyId: 22,
-    name: 'Gradina',
+    name: 'Grădina',
   },
   {
     id: 5508,
     countyId: 20,
-    name: 'Gradinari',
+    name: 'Grădinari',
   },
   {
     id: 5509,
     countyId: 35,
-    name: 'Gradinari',
+    name: 'Grădinari',
   },
   {
     id: 5510,
     countyId: 6,
-    name: 'Gradinari',
+    name: 'Grădinari',
   },
   {
     id: 5511,
     countyId: 29,
-    name: 'Gradinari',
+    name: 'Grădinari',
   },
   {
     id: 5512,
     countyId: 43,
-    name: 'Gradinari',
+    name: 'Grădinari',
   },
   {
     id: 5513,
     countyId: 41,
-    name: 'Gradini',
+    name: 'Grădini',
   },
   {
     id: 5514,
     countyId: 43,
-    name: 'Gradinile',
+    name: 'Grădinile',
   },
   {
     id: 5515,
@@ -27562,57 +27562,57 @@ export const CITIES = [
   {
     id: 5516,
     countyId: 25,
-    name: 'Gradistea',
+    name: 'Grădiștea',
   },
   {
     id: 5517,
     countyId: 36,
-    name: 'Gradistea',
+    name: 'Grădiștea',
   },
   {
     id: 5518,
     countyId: 44,
-    name: 'Gradistea',
+    name: 'Gradiștea',
   },
   {
     id: 5519,
     countyId: 19,
-    name: 'Gradistea',
+    name: 'Grădiștea',
   },
   {
     id: 5520,
     countyId: 29,
-    name: 'Gradistea',
+    name: 'Grădiștea',
   },
   {
     id: 5521,
     countyId: 43,
-    name: 'Gradistea',
+    name: 'Grădiștea',
   },
   {
     id: 5522,
     countyId: 52,
-    name: 'Gradistea',
+    name: 'Grădiștea',
   },
   {
     id: 5523,
     countyId: 33,
-    name: 'Gradistea de Munte',
+    name: 'Grădiștea de Munte',
   },
   {
     id: 5524,
     countyId: 49,
-    name: 'Gradisteanca',
+    name: 'Grădișteanca',
   },
   {
     id: 5525,
     countyId: 18,
-    name: 'Grajdana',
+    name: 'Grăjdana',
   },
   {
     id: 5526,
     countyId: 53,
-    name: 'Grajdeni',
+    name: 'Grăjdeni',
   },
   {
     id: 5527,
@@ -27622,32 +27622,32 @@ export const CITIES = [
   {
     id: 5528,
     countyId: 48,
-    name: 'Gramesti',
+    name: 'Grămești',
   },
   {
     id: 5529,
     countyId: 10,
-    name: 'Granari',
+    name: 'Grânari',
   },
   {
     id: 5530,
     countyId: 2,
-    name: 'Graniceri',
+    name: 'Grăniceri',
   },
   {
     id: 5531,
     countyId: 50,
-    name: 'Granicerii',
+    name: 'Grănicerii',
   },
   {
     id: 5532,
     countyId: 22,
-    name: 'Graniceru',
+    name: 'Grăniceru',
   },
   {
     id: 5533,
     countyId: 48,
-    name: 'Granicesti',
+    name: 'Grănicești',
   },
   {
     id: 5534,
@@ -27657,17 +27657,17 @@ export const CITIES = [
   {
     id: 5535,
     countyId: 41,
-    name: 'Grausorul',
+    name: 'Grâușorul',
   },
   {
     id: 5536,
     countyId: 3,
-    name: 'Greaban',
+    name: 'Greabăn',
   },
   {
     id: 5537,
     countyId: 3,
-    name: 'Greabanu',
+    name: 'Greabănu',
   },
   {
     id: 5538,
@@ -27677,17 +27677,17 @@ export const CITIES = [
   {
     id: 5539,
     countyId: 18,
-    name: 'Grebanu',
+    name: 'Grebănu',
   },
   {
     id: 5540,
     countyId: 41,
-    name: 'Grebenisu de Campie',
+    name: 'Grebenișu de Câmpie',
   },
   {
     id: 5541,
     countyId: 52,
-    name: 'Greblesti',
+    name: 'Greblești',
   },
   {
     id: 5542,
@@ -27697,7 +27697,7 @@ export const CITIES = [
   {
     id: 5543,
     countyId: 25,
-    name: 'Grecesti',
+    name: 'Grecești',
   },
   {
     id: 5544,
@@ -27737,7 +27737,7 @@ export const CITIES = [
   {
     id: 5551,
     countyId: 43,
-    name: 'Greeresti',
+    name: 'Greerești',
   },
   {
     id: 5552,
@@ -27762,7 +27762,7 @@ export const CITIES = [
   {
     id: 5556,
     countyId: 54,
-    name: 'Gresu',
+    name: 'Greșu',
   },
   {
     id: 5557,
@@ -27777,7 +27777,7 @@ export const CITIES = [
   {
     id: 5559,
     countyId: 35,
-    name: 'Griesti',
+    name: 'Griești',
   },
   {
     id: 5560,
@@ -27787,7 +27787,7 @@ export const CITIES = [
   {
     id: 5561,
     countyId: 48,
-    name: 'Grigoresti',
+    name: 'Grigorești',
   },
   {
     id: 5562,
@@ -27797,7 +27797,7 @@ export const CITIES = [
   {
     id: 5563,
     countyId: 34,
-    name: 'Grindasi',
+    name: 'Grindași',
   },
   {
     id: 5564,
@@ -27817,32 +27817,32 @@ export const CITIES = [
   {
     id: 5567,
     countyId: 42,
-    name: 'Grinties',
+    name: 'Grințieș',
   },
   {
     id: 5568,
     countyId: 28,
-    name: 'Grivita',
+    name: 'Grivița',
   },
   {
     id: 5569,
     countyId: 53,
-    name: 'Grivita',
+    name: 'Grivița',
   },
   {
     id: 5570,
     countyId: 8,
-    name: 'Grivita',
+    name: 'Grivița',
   },
   {
     id: 5571,
     countyId: 34,
-    name: 'Grivita',
+    name: 'Grivița',
   },
   {
     id: 5572,
     countyId: 41,
-    name: 'Groapa Radaii',
+    name: 'Groapa Rădăii',
   },
   {
     id: 5573,
@@ -27852,7 +27852,7 @@ export const CITIES = [
   {
     id: 5574,
     countyId: 48,
-    name: 'Groapa Vladichii',
+    name: 'Groapa Vlădichii',
   },
   {
     id: 5575,
@@ -27867,7 +27867,7 @@ export const CITIES = [
   {
     id: 5577,
     countyId: 33,
-    name: 'Grohotele',
+    name: 'Grohoțele',
   },
   {
     id: 5578,
@@ -27897,127 +27897,127 @@ export const CITIES = [
   {
     id: 5583,
     countyId: 35,
-    name: 'Gropnita',
+    name: 'Gropnița',
   },
   {
     id: 5584,
     countyId: 43,
-    name: 'Gropsani',
+    name: 'Gropșani',
   },
   {
     id: 5585,
     countyId: 33,
-    name: 'Gros',
+    name: 'Groș',
   },
   {
     id: 5586,
     countyId: 18,
-    name: 'Grosani',
+    name: 'Groșani',
   },
   {
     id: 5587,
     countyId: 3,
-    name: 'Grosani',
+    name: 'Groșani',
   },
   {
     id: 5588,
     countyId: 44,
-    name: 'Grosani',
+    name: 'Groșani',
   },
   {
     id: 5589,
     countyId: 2,
-    name: 'Groseni',
+    name: 'Groșeni',
   },
   {
     id: 5590,
     countyId: 30,
-    name: 'Groserea',
+    name: 'Groșerea',
   },
   {
     id: 5591,
     countyId: 1,
-    name: 'Grosi',
+    name: 'Groși',
   },
   {
     id: 5592,
     countyId: 2,
-    name: 'Grosi',
+    name: 'Groși',
   },
   {
     id: 5593,
     countyId: 39,
-    name: 'Grosi',
+    name: 'Groși',
   },
   {
     id: 5594,
     countyId: 50,
-    name: 'Grosi',
+    name: 'Groși',
   },
   {
     id: 5595,
     countyId: 3,
-    name: 'Grosi',
+    name: 'Groși',
   },
   {
     id: 5596,
     countyId: 6,
-    name: 'Grosi',
+    name: 'Groși',
   },
   {
     id: 5597,
     countyId: 42,
-    name: 'Grosi',
+    name: 'Groși',
   },
   {
     id: 5598,
     countyId: 52,
-    name: 'Grosi',
+    name: 'Groși',
   },
   {
     id: 5599,
     countyId: 2,
-    name: 'Grosii Noi',
+    name: 'Groșii Noi',
   },
   {
     id: 5600,
     countyId: 39,
-    name: 'Grosii tiblesului',
+    name: 'Groșii țibleșului',
   },
   {
     id: 5601,
     countyId: 33,
-    name: 'Grosuri',
+    name: 'Groșuri',
   },
   {
     id: 5602,
     countyId: 28,
-    name: 'Grozavesti',
+    name: 'Grozăvești',
   },
   {
     id: 5603,
     countyId: 43,
-    name: 'Grozavesti',
+    name: 'Grozăvești',
   },
   {
     id: 5604,
     countyId: 24,
-    name: 'Grozavesti',
+    name: 'Grozăvești',
   },
   {
     id: 5605,
     countyId: 42,
-    name: 'Grozavesti',
+    name: 'Grozăvești',
   },
   {
     id: 5606,
     countyId: 40,
-    name: 'Grozesti',
+    name: 'Grozești',
   },
   {
     id: 5607,
     countyId: 35,
-    name: 'Grozesti',
+    name: 'Grozești',
   },
   {
     id: 5608,
@@ -28042,12 +28042,12 @@ export const CITIES = [
   {
     id: 5612,
     countyId: 41,
-    name: 'Gruisor',
+    name: 'Gruișor',
   },
   {
     id: 5613,
     countyId: 25,
-    name: 'Gruita',
+    name: 'Gruița',
   },
   {
     id: 5614,
@@ -28072,12 +28072,12 @@ export const CITIES = [
   {
     id: 5618,
     countyId: 3,
-    name: 'Gruiu (Cateasca)',
+    name: 'Gruiu (Căteasca)',
   },
   {
     id: 5619,
     countyId: 3,
-    name: 'Gruiu (Nucsoara)',
+    name: 'Gruiu (Nucșoara)',
   },
   {
     id: 5620,
@@ -28087,7 +28087,7 @@ export const CITIES = [
   {
     id: 5621,
     countyId: 42,
-    name: 'Grumazesti',
+    name: 'Grumăzești',
   },
   {
     id: 5622,
@@ -28117,7 +28117,7 @@ export const CITIES = [
   {
     id: 5627,
     countyId: 43,
-    name: 'Guesti',
+    name: 'Guești',
   },
   {
     id: 5628,
@@ -28127,12 +28127,12 @@ export const CITIES = [
   {
     id: 5629,
     countyId: 54,
-    name: 'Gugesti',
+    name: 'Gugești',
   },
   {
     id: 5630,
     countyId: 53,
-    name: 'Gugesti',
+    name: 'Gugești',
   },
   {
     id: 5631,
@@ -28157,32 +28157,32 @@ export const CITIES = [
   {
     id: 5635,
     countyId: 53,
-    name: 'Gura Albesti',
+    name: 'Gura Albești',
   },
   {
     id: 5636,
     countyId: 1,
-    name: 'Gura Ariesului',
+    name: 'Gura Arieșului',
   },
   {
     id: 5637,
     countyId: 18,
-    name: 'Gura Badicului',
+    name: 'Gura Bădicului',
   },
   {
     id: 5638,
     countyId: 35,
-    name: 'Gura Badilitei',
+    name: 'Gura Bâdiliței',
   },
   {
     id: 5639,
     countyId: 24,
-    name: 'Gura Barbuletului',
+    name: 'Gura Bărbulețului',
   },
   {
     id: 5640,
     countyId: 18,
-    name: 'Gura Bascei',
+    name: 'Gura Bâscei',
   },
   {
     id: 5641,
@@ -28202,22 +28202,22 @@ export const CITIES = [
   {
     id: 5644,
     countyId: 54,
-    name: 'Gura Calitei',
+    name: 'Gura Caliței',
   },
   {
     id: 5645,
     countyId: 9,
-    name: 'Gura Calmatui',
+    name: 'Gura Călmățui',
   },
   {
     id: 5646,
     countyId: 18,
-    name: 'Gura Calnaului',
+    name: 'Gura Câlnăului',
   },
   {
     id: 5647,
     countyId: 43,
-    name: 'Gura Caluiu',
+    name: 'Gura Căluiu',
   },
   {
     id: 5648,
@@ -28227,12 +28227,12 @@ export const CITIES = [
   {
     id: 5649,
     countyId: 5,
-    name: 'Gura Craiesti',
+    name: 'Gura Crăiești',
   },
   {
     id: 5650,
     countyId: 44,
-    name: 'Gura Crivatului',
+    name: 'Gura Crivățului',
   },
   {
     id: 5651,
@@ -28242,7 +28242,7 @@ export const CITIES = [
   {
     id: 5652,
     countyId: 1,
-    name: 'Gura Cutului',
+    name: 'Gura Cuțului',
   },
   {
     id: 5653,
@@ -28257,7 +28257,7 @@ export const CITIES = [
   {
     id: 5655,
     countyId: 18,
-    name: 'Gura Fagetului',
+    name: 'Gura Făgetului',
   },
   {
     id: 5656,
@@ -28267,12 +28267,12 @@ export const CITIES = [
   {
     id: 5657,
     countyId: 28,
-    name: 'Gura Garbovatului',
+    name: 'Gura Gârbovățului',
   },
   {
     id: 5658,
     countyId: 9,
-    name: 'Gura Garlutei',
+    name: 'Gura Gârluței',
   },
   {
     id: 5659,
@@ -28287,7 +28287,7 @@ export const CITIES = [
   {
     id: 5661,
     countyId: 34,
-    name: 'Gura Ialomitei',
+    name: 'Gura Ialomiței',
   },
   {
     id: 5662,
@@ -28307,7 +28307,7 @@ export const CITIES = [
   {
     id: 5665,
     countyId: 24,
-    name: 'Gura Ocnitei',
+    name: 'Gura Ocniței',
   },
   {
     id: 5666,
@@ -28317,7 +28317,7 @@ export const CITIES = [
   {
     id: 5667,
     countyId: 3,
-    name: 'Gura Pravat',
+    name: 'Gura Pravăț',
   },
   {
     id: 5668,
@@ -28332,17 +28332,17 @@ export const CITIES = [
   {
     id: 5670,
     countyId: 47,
-    name: 'Gura Raului',
+    name: 'Gura Râului',
   },
   {
     id: 5671,
     countyId: 1,
-    name: 'Gura Rosiei',
+    name: 'Gura Roșiei',
   },
   {
     id: 5672,
     countyId: 18,
-    name: 'Gura Saratii',
+    name: 'Gura Sărății',
   },
   {
     id: 5673,
@@ -28362,17 +28362,17 @@ export const CITIES = [
   {
     id: 5676,
     countyId: 52,
-    name: 'Gura Suhasului',
+    name: 'Gura Suhașului',
   },
   {
     id: 5677,
     countyId: 30,
-    name: 'Gura Susitei',
+    name: 'Gura Șușiței',
   },
   {
     id: 5678,
     countyId: 24,
-    name: 'Gura Sutii',
+    name: 'Gura Șuții',
   },
   {
     id: 5679,
@@ -28387,72 +28387,72 @@ export const CITIES = [
   {
     id: 5681,
     countyId: 3,
-    name: 'Gura Vaii',
+    name: 'Gura Văii',
   },
   {
     id: 5682,
     countyId: 5,
-    name: 'Gura Vaii',
+    name: 'Gura Văii',
   },
   {
     id: 5683,
     countyId: 18,
-    name: 'Gura Vaii',
+    name: 'Gura Văii',
   },
   {
     id: 5684,
     countyId: 34,
-    name: 'Gura Vaii',
+    name: 'Gura Văii',
   },
   {
     id: 5685,
     countyId: 40,
-    name: 'Gura Vaii',
+    name: 'Gura Văii',
   },
   {
     id: 5686,
     countyId: 52,
-    name: 'Gura Vaii',
+    name: 'Gura Văii',
   },
   {
     id: 5687,
     countyId: 53,
-    name: 'Gura Vaii',
+    name: 'Gura Văii',
   },
   {
     id: 5688,
     countyId: 2,
-    name: 'Gura Vaii',
+    name: 'Gura Văii',
   },
   {
     id: 5689,
     countyId: 10,
-    name: 'Gura Vaii',
+    name: 'Gura Văii',
   },
   {
     id: 5690,
     countyId: 25,
-    name: 'Gura Vaii',
+    name: 'Gura Văii',
   },
   {
     id: 5691,
     countyId: 35,
-    name: 'Gura Vaii',
+    name: 'Gura Văii',
   },
   {
     id: 5692,
     countyId: 42,
-    name: 'Gura Vaii',
+    name: 'Gura Văii',
   },
   {
     id: 5693,
     countyId: 54,
-    name: 'Gura Vaii',
+    name: 'Gura Văii',
   },
   {
     id: 5694,
     countyId: 5,
-    name: 'Gura Vaii (Racova)',
+    name: 'Gura Văii (Racova)',
   },
   {
     id: 5695,
@@ -28462,7 +28462,7 @@ export const CITIES = [
   {
     id: 5696,
     countyId: 45,
-    name: 'Gura Vladesei',
+    name: 'Gura Vlădesei',
   },
   {
     id: 5697,
@@ -28472,12 +28472,12 @@ export const CITIES = [
   {
     id: 5698,
     countyId: 30,
-    name: 'Gura-Menti',
+    name: 'Gura-Menți',
   },
   {
     id: 5699,
     countyId: 2,
-    name: 'Gurahont',
+    name: 'Gurahonț',
   },
   {
     id: 5700,
@@ -28502,7 +28502,7 @@ export const CITIES = [
   {
     id: 5704,
     countyId: 19,
-    name: 'Gurbanesti',
+    name: 'Gurbănești',
   },
   {
     id: 5705,
@@ -28512,12 +28512,12 @@ export const CITIES = [
   {
     id: 5706,
     countyId: 6,
-    name: 'Gurbesti (Cabesti)',
+    name: 'Gurbești (Căbești)',
   },
   {
     id: 5707,
     countyId: 6,
-    name: 'Gurbesti (Spinus)',
+    name: 'Gurbești (Spinuș)',
   },
   {
     id: 5708,
@@ -28537,12 +28537,12 @@ export const CITIES = [
   {
     id: 5711,
     countyId: 9,
-    name: 'Gurguieti',
+    name: 'Gurguieți',
   },
   {
     id: 5712,
     countyId: 52,
-    name: 'Gurisoara',
+    name: 'Gurișoara',
   },
   {
     id: 5713,
@@ -28552,27 +28552,27 @@ export const CITIES = [
   {
     id: 5714,
     countyId: 45,
-    name: 'Guruslau',
+    name: 'Guruslău',
   },
   {
     id: 5715,
     countyId: 53,
-    name: 'Gusitei',
+    name: 'Gușiței',
   },
   {
     id: 5716,
     countyId: 52,
-    name: 'Gusoeni',
+    name: 'Gușoeni',
   },
   {
     id: 5717,
     countyId: 52,
-    name: 'Gusoianca',
+    name: 'Gușoianca',
   },
   {
     id: 5718,
     countyId: 24,
-    name: 'Gusoiu',
+    name: 'Gușoiu',
   },
   {
     id: 5719,
@@ -28582,7 +28582,7 @@ export const CITIES = [
   {
     id: 5720,
     countyId: 5,
-    name: 'Gutinas',
+    name: 'Gutinaș',
   },
   {
     id: 5721,
@@ -28592,17 +28592,17 @@ export const CITIES = [
   {
     id: 5722,
     countyId: 40,
-    name: 'Gvardinita',
+    name: 'Gvardinița',
   },
   {
     id: 5723,
     countyId: 35,
-    name: 'Habasesti',
+    name: 'Hăbășești',
   },
   {
     id: 5724,
     countyId: 24,
-    name: 'Habeni',
+    name: 'Hăbeni',
   },
   {
     id: 5725,
@@ -28612,47 +28612,47 @@ export const CITIES = [
   {
     id: 5726,
     countyId: 44,
-    name: 'Habud',
+    name: 'Hăbud',
   },
   {
     id: 5727,
     countyId: 35,
-    name: 'Hadambu',
+    name: 'Hadâmbu',
   },
   {
     id: 5728,
     countyId: 1,
-    name: 'Hadarau',
+    name: 'Hădărău',
   },
   {
     id: 5729,
     countyId: 41,
-    name: 'Hadareni',
+    name: 'Hădăreni',
   },
   {
     id: 5730,
     countyId: 41,
-    name: 'Hagau',
+    name: 'Hagău',
   },
   {
     id: 5731,
     countyId: 21,
-    name: 'Hagau',
+    name: 'Hagău',
   },
   {
     id: 5732,
     countyId: 5,
-    name: 'Haghiac (Dofteana)',
+    name: 'Hăghiac (Dofteana)',
   },
   {
     id: 5733,
     countyId: 5,
-    name: 'Haghiac (Rachitoasa)',
+    name: 'Hăghiac (Răchitoasa)',
   },
   {
     id: 5734,
     countyId: 23,
-    name: 'Haghig',
+    name: 'Hăghig',
   },
   {
     id: 5735,
@@ -28667,7 +28667,7 @@ export const CITIES = [
   {
     id: 5737,
     countyId: 34,
-    name: 'Hagiesti',
+    name: 'Hagiești',
   },
   {
     id: 5738,
@@ -28687,12 +28687,12 @@ export const CITIES = [
   {
     id: 5741,
     countyId: 1,
-    name: 'Haiducesti',
+    name: 'Haiducești',
   },
   {
     id: 5742,
     countyId: 30,
-    name: 'Haiesti',
+    name: 'Hăiești',
   },
   {
     id: 5743,
@@ -28702,82 +28702,82 @@ export const CITIES = [
   {
     id: 5744,
     countyId: 5,
-    name: 'Haineala',
+    name: 'Hăineala',
   },
   {
     id: 5745,
     countyId: 2,
-    name: 'Halalis',
+    name: 'Hălăliș',
   },
   {
     id: 5746,
     countyId: 40,
-    name: 'Halanga',
+    name: 'Halânga',
   },
   {
     id: 5747,
     countyId: 30,
-    name: 'Halangesti',
+    name: 'Hălăngești',
   },
   {
     id: 5748,
     countyId: 53,
-    name: 'Halaresti',
+    name: 'Hălărești',
   },
   {
     id: 5749,
     countyId: 35,
-    name: 'Halaucesti',
+    name: 'Hălăucești',
   },
   {
     id: 5750,
     countyId: 35,
-    name: 'Halceni',
+    name: 'Hălceni',
   },
   {
     id: 5751,
     countyId: 10,
-    name: 'Halchiu',
+    name: 'Hălchiu',
   },
   {
     id: 5752,
     countyId: 48,
-    name: 'Haleasa',
+    name: 'Hăleasa',
   },
   {
     id: 5753,
     countyId: 18,
-    name: 'Hales',
+    name: 'Haleș',
   },
   {
     id: 5754,
     countyId: 5,
-    name: 'Halmacioaia',
+    name: 'Hălmăcioaia',
   },
   {
     id: 5755,
     countyId: 2,
-    name: 'Halmagel',
+    name: 'Hălmăgel',
   },
   {
     id: 5756,
     countyId: 2,
-    name: 'Halmagiu',
+    name: 'Hălmagiu',
   },
   {
     id: 5757,
     countyId: 7,
-    name: 'Halmasau',
+    name: 'Hălmăsău',
   },
   {
     id: 5758,
     countyId: 45,
-    name: 'Halmasd',
+    name: 'Halmășd',
   },
   {
     id: 5759,
     countyId: 10,
-    name: 'Halmeag',
+    name: 'Hălmeag',
   },
   {
     id: 5760,
@@ -28792,7 +28792,7 @@ export const CITIES = [
   {
     id: 5762,
     countyId: 53,
-    name: 'Halta Dodesti',
+    name: 'Halta Dodești',
   },
   {
     id: 5763,
@@ -28812,12 +28812,12 @@ export const CITIES = [
   {
     id: 5766,
     countyId: 1,
-    name: 'Hanasesti (Garda de Sus)',
+    name: 'Hanășești (Gârda de Sus)',
   },
   {
     id: 5767,
     countyId: 1,
-    name: 'Hanasesti (Poiana Vadului)',
+    name: 'Hănășești (Poiana Vadului)',
   },
   {
     id: 5768,
@@ -28832,7 +28832,7 @@ export const CITIES = [
   {
     id: 5770,
     countyId: 35,
-    name: 'Handresti',
+    name: 'Hândrești',
   },
   {
     id: 5771,
@@ -28842,12 +28842,12 @@ export const CITIES = [
   {
     id: 5772,
     countyId: 8,
-    name: 'Hanesti',
+    name: 'Hănești',
   },
   {
     id: 5773,
     countyId: 5,
-    name: 'Hanganesti',
+    name: 'Hângănești',
   },
   {
     id: 5774,
@@ -28857,22 +28857,22 @@ export const CITIES = [
   {
     id: 5775,
     countyId: 54,
-    name: 'Hangulesti',
+    name: 'Hângulești',
   },
   {
     id: 5776,
     countyId: 5,
-    name: 'Hanta',
+    name: 'Hanța',
   },
   {
     id: 5777,
     countyId: 28,
-    name: 'Hantesti',
+    name: 'Hănțești',
   },
   {
     id: 5778,
     countyId: 48,
-    name: 'Hantesti',
+    name: 'Hănțești',
   },
   {
     id: 5779,
@@ -28882,17 +28882,17 @@ export const CITIES = [
   {
     id: 5780,
     countyId: 24,
-    name: 'Hanu lui Pala',
+    name: 'Hanu lui Pală',
   },
   {
     id: 5781,
     countyId: 42,
-    name: 'Hanul Ancutei',
+    name: 'Hanul Ancuței',
   },
   {
     id: 5782,
     countyId: 1,
-    name: 'Hapria',
+    name: 'Hăpria',
   },
   {
     id: 5783,
@@ -28902,17 +28902,17 @@ export const CITIES = [
   {
     id: 5784,
     countyId: 41,
-    name: 'Haranglab',
+    name: 'Hărănglab',
   },
   {
     id: 5785,
     countyId: 1,
-    name: 'Harasti',
+    name: 'Hărăști',
   },
   {
     id: 5786,
     countyId: 33,
-    name: 'Harau',
+    name: 'Hărău',
   },
   {
     id: 5787,
@@ -28922,212 +28922,212 @@ export const CITIES = [
   {
     id: 5788,
     countyId: 31,
-    name: 'Harghita-Bai',
+    name: 'Harghita-Băi',
   },
   {
     id: 5789,
     countyId: 5,
-    name: 'Harja',
+    name: 'Hârja',
   },
   {
     id: 5790,
     countyId: 35,
-    name: 'Harlau',
+    name: 'Hârlău',
   },
   {
     id: 5791,
     countyId: 5,
-    name: 'Harlesti',
+    name: 'Hârlești',
   },
   {
     id: 5792,
     countyId: 10,
-    name: 'Harman',
+    name: 'Hărman',
   },
   {
     id: 5793,
     countyId: 35,
-    name: 'Harmaneasa',
+    name: 'Hărmăneasa',
   },
   {
     id: 5794,
     countyId: 35,
-    name: 'Harmanestii Noi',
+    name: 'Hărmăneștii Noi',
   },
   {
     id: 5795,
     countyId: 35,
-    name: 'Harmanestii Vechi',
+    name: 'Hărmăneștii Vechi',
   },
   {
     id: 5796,
     countyId: 39,
-    name: 'Harnicesti',
+    name: 'Hărnicești',
   },
   {
     id: 5797,
     countyId: 35,
-    name: 'Harpasesti',
+    name: 'Hărpășești',
   },
   {
     id: 5798,
     countyId: 44,
-    name: 'Harsa',
+    name: 'Hârsa',
   },
   {
     id: 5799,
     countyId: 10,
-    name: 'Harseni',
+    name: 'Hârseni',
   },
   {
     id: 5800,
     countyId: 6,
-    name: 'Harsesti',
+    name: 'Hârsești',
   },
   {
     id: 5801,
     countyId: 3,
-    name: 'Harsesti',
+    name: 'Hârsești',
   },
   {
     id: 5802,
     countyId: 22,
-    name: 'Harsova',
+    name: 'Hârșova',
   },
   {
     id: 5803,
     countyId: 53,
-    name: 'Harsova',
+    name: 'Hârsova',
   },
   {
     id: 5804,
     countyId: 53,
-    name: 'Harsoveni',
+    name: 'Hârșoveni',
   },
   {
     id: 5805,
     countyId: 33,
-    name: 'Hartagani',
+    name: 'Hărțăgani',
   },
   {
     id: 5806,
     countyId: 41,
-    name: 'Hartau',
+    name: 'Hărțău',
   },
   {
     id: 5807,
     countyId: 42,
-    name: 'Hartesti',
+    name: 'Hârțești',
   },
   {
     id: 5808,
     countyId: 3,
-    name: 'Hartiesti',
+    name: 'Hârtiești',
   },
   {
     id: 5809,
     countyId: 35,
-    name: 'Hartoape',
+    name: 'Hârtoape',
   },
   {
     id: 5810,
     countyId: 48,
-    name: 'Hartop',
+    name: 'Hârtop',
   },
   {
     id: 5811,
     countyId: 42,
-    name: 'Hartop',
+    name: 'Hârtop',
   },
   {
     id: 5812,
     countyId: 47,
-    name: 'Hasag',
+    name: 'Hașag',
   },
   {
     id: 5813,
     countyId: 33,
-    name: 'Hasdat',
+    name: 'Hășdat',
   },
   {
     id: 5814,
     countyId: 21,
-    name: 'Hasdate (Gherla)',
+    name: 'Hășdate (Gherla)',
   },
   {
     id: 5815,
     countyId: 21,
-    name: 'Hasdate (Savadisla)',
+    name: 'Hășdate (Săvădisla)',
   },
   {
     id: 5816,
     countyId: 33,
-    name: 'Hasdau',
+    name: 'Hășdău',
   },
   {
     id: 5817,
     countyId: 2,
-    name: 'Hasmas',
+    name: 'Hășmaș',
   },
   {
     id: 5818,
     countyId: 45,
-    name: 'Hasmas',
+    name: 'Hășmaș',
   },
   {
     id: 5819,
     countyId: 7,
-    name: 'Hasmasu Ciceului',
+    name: 'Hășmașu Ciceului',
   },
   {
     id: 5820,
     countyId: 33,
-    name: 'Hatagel',
+    name: 'Hățăgel',
   },
   {
     id: 5821,
     countyId: 44,
-    name: 'Hatcarau',
+    name: 'Hătcărău',
   },
   {
     id: 5822,
     countyId: 33,
-    name: 'Hateg',
+    name: 'Hațeg',
   },
   {
     id: 5823,
     countyId: 22,
-    name: 'Hateg',
+    name: 'Hațeg',
   },
   {
     id: 5824,
     countyId: 1,
-    name: 'Hategana',
+    name: 'Hațegana',
   },
   {
     id: 5825,
     countyId: 23,
-    name: 'Hatuica',
+    name: 'Hătuica',
   },
   {
     id: 5826,
     countyId: 6,
-    name: 'Haucesti',
+    name: 'Hăucești',
   },
   {
     id: 5827,
     countyId: 54,
-    name: 'Haulisca',
+    name: 'Hăulișca',
   },
   {
     id: 5828,
     countyId: 50,
-    name: 'Hauzesti',
+    name: 'Hăuzești',
   },
   {
     id: 5829,
     countyId: 8,
-    name: 'Havarna',
+    name: 'Havârna',
   },
   {
     id: 5830,
@@ -29142,27 +29142,27 @@ export const CITIES = [
   {
     id: 5832,
     countyId: 1,
-    name: 'Heleresti',
+    name: 'Helerești',
   },
   {
     id: 5833,
     countyId: 35,
-    name: 'Helesteni',
+    name: 'Heleșteni',
   },
   {
     id: 5834,
     countyId: 24,
-    name: 'Helesteu',
+    name: 'Heleșteu',
   },
   {
     id: 5835,
     countyId: 1,
-    name: 'Helesti',
+    name: 'Helești',
   },
   {
     id: 5836,
     countyId: 18,
-    name: 'Heliade Radulescu',
+    name: 'Heliade Rădulescu',
   },
   {
     id: 5837,
@@ -29172,7 +29172,7 @@ export const CITIES = [
   {
     id: 5838,
     countyId: 5,
-    name: 'Hemeius',
+    name: 'Hemeiuș',
   },
   {
     id: 5839,
@@ -29182,12 +29182,12 @@ export const CITIES = [
   {
     id: 5840,
     countyId: 52,
-    name: 'Herasti',
+    name: 'Herăști',
   },
   {
     id: 5841,
     countyId: 29,
-    name: 'Herasti',
+    name: 'Herăști',
   },
   {
     id: 5842,
@@ -29202,7 +29202,7 @@ export const CITIES = [
   {
     id: 5844,
     countyId: 50,
-    name: 'Herendesti',
+    name: 'Herendești',
   },
   {
     id: 5845,
@@ -29252,7 +29252,7 @@ export const CITIES = [
   {
     id: 5854,
     countyId: 5,
-    name: 'Hertioana-Razesi',
+    name: 'Hertioana-Răzeși',
   },
   {
     id: 5855,
@@ -29267,7 +29267,7 @@ export const CITIES = [
   {
     id: 5857,
     countyId: 50,
-    name: 'Hezeris',
+    name: 'Hezeriș',
   },
   {
     id: 5858,
@@ -29282,22 +29282,22 @@ export const CITIES = [
   {
     id: 5860,
     countyId: 6,
-    name: 'Hidis',
+    name: 'Hidiș',
   },
   {
     id: 5861,
     countyId: 6,
-    name: 'Hidisel',
+    name: 'Hidișel',
   },
   {
     id: 5862,
     countyId: 6,
-    name: 'Hidiselu de Jos',
+    name: 'Hidișelu de Jos',
   },
   {
     id: 5863,
     countyId: 6,
-    name: 'Hidiselu de Sus',
+    name: 'Hidișelu de Sus',
   },
   {
     id: 5864,
@@ -29312,27 +29312,27 @@ export const CITIES = [
   {
     id: 5866,
     countyId: 8,
-    name: 'Hiliseu-Closca',
+    name: 'Hilișeu-Cloșca',
   },
   {
     id: 5867,
     countyId: 8,
-    name: 'Hiliseu-Crisan',
+    name: 'Hilișeu-Crișan',
   },
   {
     id: 5868,
     countyId: 8,
-    name: 'Hiliseu-Horia',
+    name: 'Hilișeu-Horia',
   },
   {
     id: 5869,
     countyId: 35,
-    name: 'Hilita',
+    name: 'Hilița',
   },
   {
     id: 5870,
     countyId: 6,
-    name: 'Hinchiris',
+    name: 'Hinchiriș',
   },
   {
     id: 5871,
@@ -29342,7 +29342,7 @@ export const CITIES = [
   {
     id: 5872,
     countyId: 3,
-    name: 'Hintesti',
+    name: 'Hințești',
   },
   {
     id: 5873,
@@ -29352,22 +29352,22 @@ export const CITIES = [
   {
     id: 5874,
     countyId: 30,
-    name: 'Hirisesti',
+    name: 'Hirișești',
   },
   {
     id: 5875,
     countyId: 50,
-    name: 'Hisias',
+    name: 'Hisiaș',
   },
   {
     id: 5876,
     countyId: 50,
-    name: 'Hitias',
+    name: 'Hitiaș',
   },
   {
     id: 5877,
     countyId: 42,
-    name: 'Hlapesti',
+    name: 'Hlăpești',
   },
   {
     id: 5878,
@@ -29382,12 +29382,12 @@ export const CITIES = [
   {
     id: 5880,
     countyId: 1,
-    name: 'Hoanca (Sohodol)',
+    name: 'Hoancă (Sohodol)',
   },
   {
     id: 5881,
     countyId: 1,
-    name: 'Hoanca (Vidra)',
+    name: 'Hoancă (Vidra)',
   },
   {
     id: 5882,
@@ -29397,17 +29397,17 @@ export const CITIES = [
   {
     id: 5883,
     countyId: 30,
-    name: 'Hobita',
+    name: 'Hobița',
   },
   {
     id: 5884,
     countyId: 33,
-    name: 'Hobita',
+    name: 'Hobița',
   },
   {
     id: 5885,
     countyId: 33,
-    name: 'Hobita-Gradiste',
+    name: 'Hobița-Grădiște',
   },
   {
     id: 5886,
@@ -29427,7 +29427,7 @@ export const CITIES = [
   {
     id: 5889,
     countyId: 21,
-    name: 'Hodai-Boian',
+    name: 'Hodăi-Boian',
   },
   {
     id: 5890,
@@ -29442,37 +29442,37 @@ export const CITIES = [
   {
     id: 5892,
     countyId: 24,
-    name: 'Hodarasti',
+    name: 'Hodărăști',
   },
   {
     id: 5893,
     countyId: 2,
-    name: 'Hodis',
+    name: 'Hodiș',
   },
   {
     id: 5894,
     countyId: 6,
-    name: 'Hodis',
+    name: 'Hodiș',
   },
   {
     id: 5895,
     countyId: 46,
-    name: 'Hodisa',
+    name: 'Hodișa',
   },
   {
     id: 5896,
     countyId: 6,
-    name: 'Hodisel',
+    name: 'Hodișel',
   },
   {
     id: 5897,
     countyId: 1,
-    name: 'Hodisesti',
+    name: 'Hodișești',
   },
   {
     id: 5898,
     countyId: 21,
-    name: 'Hodisu',
+    name: 'Hodișu',
   },
   {
     id: 5899,
@@ -29507,27 +29507,27 @@ export const CITIES = [
   {
     id: 5905,
     countyId: 6,
-    name: 'Hodos',
+    name: 'Hodoș',
   },
   {
     id: 5906,
     countyId: 50,
-    name: 'Hodos (Brestovat)',
+    name: 'Hodoș (Brestovăț)',
   },
   {
     id: 5907,
     countyId: 50,
-    name: 'Hodos (Darova)',
+    name: 'Hodoș (Darova)',
   },
   {
     id: 5908,
     countyId: 41,
-    name: 'Hodosa',
+    name: 'Hodoșa',
   },
   {
     id: 5909,
     countyId: 31,
-    name: 'Hodosa',
+    name: 'Hodoșa',
   },
   {
     id: 5910,
@@ -29547,17 +29547,17 @@ export const CITIES = [
   {
     id: 5913,
     countyId: 35,
-    name: 'Hoisesti',
+    name: 'Hoisești',
   },
   {
     id: 5914,
     countyId: 42,
-    name: 'Hoisesti',
+    name: 'Hoisești',
   },
   {
     id: 5915,
     countyId: 54,
-    name: 'Holbanesti',
+    name: 'Holbănești',
   },
   {
     id: 5916,
@@ -29582,7 +29582,7 @@ export const CITIES = [
   {
     id: 5920,
     countyId: 48,
-    name: 'Holdita',
+    name: 'Holdița',
   },
   {
     id: 5921,
@@ -29612,7 +29612,7 @@ export const CITIES = [
   {
     id: 5926,
     countyId: 18,
-    name: 'Homesti',
+    name: 'Homești',
   },
   {
     id: 5927,
@@ -29622,7 +29622,7 @@ export const CITIES = [
   {
     id: 5928,
     countyId: 35,
-    name: 'Homita',
+    name: 'Homița',
   },
   {
     id: 5929,
@@ -29637,7 +29637,7 @@ export const CITIES = [
   {
     id: 5931,
     countyId: 44,
-    name: 'Homoraciu',
+    name: 'Homorâciu',
   },
   {
     id: 5932,
@@ -29687,12 +29687,12 @@ export const CITIES = [
   {
     id: 5941,
     countyId: 2,
-    name: 'Hontisor',
+    name: 'Honțișor',
   },
   {
     id: 5942,
     countyId: 1,
-    name: 'Hoparta',
+    name: 'Hopârta',
   },
   {
     id: 5943,
@@ -29702,12 +29702,12 @@ export const CITIES = [
   {
     id: 5944,
     countyId: 20,
-    name: 'Hora Mica',
+    name: 'Hora Mică',
   },
   {
     id: 5945,
     countyId: 30,
-    name: 'Horasti',
+    name: 'Horăști',
   },
   {
     id: 5946,
@@ -29717,7 +29717,7 @@ export const CITIES = [
   {
     id: 5947,
     countyId: 53,
-    name: 'Hordilesti',
+    name: 'Hordilești',
   },
   {
     id: 5948,
@@ -29757,7 +29757,7 @@ export const CITIES = [
   {
     id: 5955,
     countyId: 5,
-    name: 'Horgesti',
+    name: 'Horgești',
   },
   {
     id: 5956,
@@ -29802,17 +29802,17 @@ export const CITIES = [
   {
     id: 5964,
     countyId: 8,
-    name: 'Horlaceni',
+    name: 'Horlăceni',
   },
   {
     id: 5965,
     countyId: 35,
-    name: 'Horlesti',
+    name: 'Horlești',
   },
   {
     id: 5966,
     countyId: 35,
-    name: 'Horlesti (Rediu)',
+    name: 'Horlești (Rediu)',
   },
   {
     id: 5967,
@@ -29827,12 +29827,12 @@ export const CITIES = [
   {
     id: 5969,
     countyId: 8,
-    name: 'Horodistea',
+    name: 'Horodiștea',
   },
   {
     id: 5970,
     countyId: 35,
-    name: 'Horodistea',
+    name: 'Horodiștea',
   },
   {
     id: 5971,
@@ -29867,7 +29867,7 @@ export const CITIES = [
   {
     id: 5977,
     countyId: 31,
-    name: 'Hosasau',
+    name: 'Hosasău',
   },
   {
     id: 5978,
@@ -29882,22 +29882,22 @@ export const CITIES = [
   {
     id: 5980,
     countyId: 43,
-    name: 'Hotarani',
+    name: 'Hotărani',
   },
   {
     id: 5981,
     countyId: 40,
-    name: 'Hotarani',
+    name: 'Hotărani',
   },
   {
     id: 5982,
     countyId: 52,
-    name: 'Hotarasa',
+    name: 'Hotărasa',
   },
   {
     id: 5983,
     countyId: 6,
-    name: 'Hotarel',
+    name: 'Hotărel',
   },
   {
     id: 5984,
@@ -29912,12 +29912,12 @@ export const CITIES = [
   {
     id: 5986,
     countyId: 52,
-    name: 'Hotaroaia',
+    name: 'Hotăroaia',
   },
   {
     id: 5987,
     countyId: 30,
-    name: 'Hotaroasa',
+    name: 'Hotăroasa',
   },
   {
     id: 5988,
@@ -29952,7 +29952,7 @@ export const CITIES = [
   {
     id: 5994,
     countyId: 48,
-    name: 'Hreatca',
+    name: 'Hreațca',
   },
   {
     id: 5995,
@@ -29962,7 +29962,7 @@ export const CITIES = [
   {
     id: 5996,
     countyId: 8,
-    name: 'Hriscani',
+    name: 'Hrișcani',
   },
   {
     id: 5997,
@@ -29977,12 +29977,12 @@ export const CITIES = [
   {
     id: 5999,
     countyId: 8,
-    name: 'Hudesti',
+    name: 'Hudești',
   },
   {
     id: 6000,
     countyId: 1,
-    name: 'Hudricesti',
+    name: 'Hudricești',
   },
   {
     id: 6001,
@@ -30012,17 +30012,17 @@ export const CITIES = [
   {
     id: 6006,
     countyId: 24,
-    name: 'Hulubesti',
+    name: 'Hulubești',
   },
   {
     id: 6007,
     countyId: 8,
-    name: 'Hulubesti',
+    name: 'Hulubești',
   },
   {
     id: 6008,
     countyId: 29,
-    name: 'Hulubesti',
+    name: 'Hulubești',
   },
   {
     id: 6009,
@@ -30042,12 +30042,12 @@ export const CITIES = [
   {
     id: 6012,
     countyId: 42,
-    name: 'Humulesti',
+    name: 'Humulești',
   },
   {
     id: 6013,
     countyId: 42,
-    name: 'Humulestii Noi',
+    name: 'Humuleștii Noi',
   },
   {
     id: 6014,
@@ -30057,7 +30057,7 @@ export const CITIES = [
   {
     id: 6015,
     countyId: 2,
-    name: 'Hunedoara Timisana',
+    name: 'Hunedoara Timișană',
   },
   {
     id: 6016,
@@ -30072,7 +30072,7 @@ export const CITIES = [
   {
     id: 6018,
     countyId: 40,
-    name: 'Hurducesti',
+    name: 'Hurducești',
   },
   {
     id: 6019,
@@ -30107,17 +30107,17 @@ export const CITIES = [
   {
     id: 6025,
     countyId: 5,
-    name: 'Huruiesti',
+    name: 'Huruiești',
   },
   {
     id: 6026,
     countyId: 6,
-    name: 'Husasau de Cris',
+    name: 'Husasău de Criș',
   },
   {
     id: 6027,
     countyId: 6,
-    name: 'Husasau de Tinca',
+    name: 'Husasău de Tinca',
   },
   {
     id: 6028,
@@ -30127,12 +30127,12 @@ export const CITIES = [
   {
     id: 6029,
     countyId: 48,
-    name: 'Husi',
+    name: 'Huși',
   },
   {
     id: 6030,
     countyId: 53,
-    name: 'Husi',
+    name: 'Huși',
   },
   {
     id: 6031,
@@ -30147,7 +30147,7 @@ export const CITIES = [
   {
     id: 6033,
     countyId: 28,
-    name: 'Hustiu',
+    name: 'Huștiu',
   },
   {
     id: 6034,
@@ -30177,17 +30177,17 @@ export const CITIES = [
   {
     id: 6039,
     countyId: 8,
-    name: 'Hutani',
+    name: 'Huțani',
   },
   {
     id: 6040,
     countyId: 5,
-    name: 'Hutu',
+    name: 'Huțu',
   },
   {
     id: 6041,
     countyId: 1,
-    name: 'Huzaresti',
+    name: 'Huzărești',
   },
   {
     id: 6042,
@@ -30207,12 +30207,12 @@ export const CITIES = [
   {
     id: 6045,
     countyId: 20,
-    name: 'Iablanita',
+    name: 'Iablanița',
   },
   {
     id: 6046,
     countyId: 40,
-    name: 'Iablanita',
+    name: 'Iablanița',
   },
   {
     id: 6047,
@@ -30247,12 +30247,12 @@ export const CITIES = [
   {
     id: 6053,
     countyId: 1,
-    name: 'Iacobesti',
+    name: 'Iacobești',
   },
   {
     id: 6054,
     countyId: 48,
-    name: 'Iacobesti',
+    name: 'Iacobești',
   },
   {
     id: 6055,
@@ -30267,7 +30267,7 @@ export const CITIES = [
   {
     id: 6057,
     countyId: 39,
-    name: 'Iadara',
+    name: 'Iadăra',
   },
   {
     id: 6058,
@@ -30297,7 +30297,7 @@ export const CITIES = [
   {
     id: 6063,
     countyId: 43,
-    name: 'Ianca Noua',
+    name: 'Ianca Nouă',
   },
   {
     id: 6064,
@@ -30307,22 +30307,22 @@ export const CITIES = [
   {
     id: 6065,
     countyId: 3,
-    name: 'Ianculesti',
+    name: 'Ianculești',
   },
   {
     id: 6066,
     countyId: 46,
-    name: 'Ianculesti',
+    name: 'Ianculești',
   },
   {
     id: 6067,
     countyId: 29,
-    name: 'Ianculesti',
+    name: 'Ianculești',
   },
   {
     id: 6068,
     countyId: 6,
-    name: 'Ianosda',
+    name: 'Ianoșda',
   },
   {
     id: 6069,
@@ -30342,37 +30342,37 @@ export const CITIES = [
   {
     id: 6072,
     countyId: 41,
-    name: 'Iara de Mures',
+    name: 'Iara de Mureș',
   },
   {
     id: 6073,
     countyId: 23,
-    name: 'Iaras',
+    name: 'Iarăș',
   },
   {
     id: 6074,
     countyId: 35,
-    name: 'Iasi',
+    name: 'Iași',
   },
   {
     id: 6075,
     countyId: 10,
-    name: 'Iasi',
+    name: 'Iași',
   },
   {
     id: 6076,
     countyId: 30,
-    name: 'Iasi-Gorj',
+    name: 'Iași-Gorj',
   },
   {
     id: 6077,
     countyId: 48,
-    name: 'Iaslovat',
+    name: 'Iaslovăț',
   },
   {
     id: 6078,
     countyId: 31,
-    name: 'Iasu',
+    name: 'Iașu',
   },
   {
     id: 6079,
@@ -30432,32 +30432,32 @@ export const CITIES = [
   {
     id: 6090,
     countyId: 8,
-    name: 'Ibaneasa',
+    name: 'Ibăneasa',
   },
   {
     id: 6091,
     countyId: 8,
-    name: 'Ibanesti',
+    name: 'Ibănești',
   },
   {
     id: 6092,
     countyId: 43,
-    name: 'Ibanesti',
+    name: 'Ibănești',
   },
   {
     id: 6093,
     countyId: 41,
-    name: 'Ibanesti',
+    name: 'Ibănești',
   },
   {
     id: 6094,
     countyId: 53,
-    name: 'Ibanesti',
+    name: 'Ibănești',
   },
   {
     id: 6095,
     countyId: 41,
-    name: 'Ibanesti-Padure',
+    name: 'Ibănești-Pădure',
   },
   {
     id: 6096,
@@ -30477,7 +30477,7 @@ export const CITIES = [
   {
     id: 6099,
     countyId: 23,
-    name: 'Icafalau',
+    name: 'Icafalău',
   },
   {
     id: 6100,
@@ -30497,7 +30497,7 @@ export const CITIES = [
   {
     id: 6103,
     countyId: 41,
-    name: 'Iclanzel',
+    name: 'Iclănzel',
   },
   {
     id: 6104,
@@ -30532,22 +30532,22 @@ export const CITIES = [
   {
     id: 6110,
     countyId: 50,
-    name: 'Ictar-Budinti',
+    name: 'Ictar-Budinți',
   },
   {
     id: 6111,
     countyId: 8,
-    name: 'Icuseni',
+    name: 'Icușeni',
   },
   {
     id: 6112,
     countyId: 35,
-    name: 'Icuseni',
+    name: 'Icușeni',
   },
   {
     id: 6113,
     countyId: 42,
-    name: 'Icusesti',
+    name: 'Icușești',
   },
   {
     id: 6114,
@@ -30567,7 +30567,7 @@ export const CITIES = [
   {
     id: 6117,
     countyId: 41,
-    name: 'Idicel-Padure',
+    name: 'Idicel-Pădure',
   },
   {
     id: 6118,
@@ -30592,7 +30592,7 @@ export const CITIES = [
   {
     id: 6122,
     countyId: 50,
-    name: 'Iecea Mica',
+    name: 'Iecea Mică',
   },
   {
     id: 6123,
@@ -30617,12 +30617,12 @@ export const CITIES = [
   {
     id: 6127,
     countyId: 46,
-    name: 'Iegheriste',
+    name: 'Iegheriște',
   },
   {
     id: 6128,
     countyId: 35,
-    name: 'Iepureni (Andrieseni)',
+    name: 'Iepureni (Andrieșeni)',
   },
   {
     id: 6129,
@@ -30632,12 +30632,12 @@ export const CITIES = [
   {
     id: 6130,
     countyId: 29,
-    name: 'Iepuresti',
+    name: 'Iepurești',
   },
   {
     id: 6131,
     countyId: 2,
-    name: 'Iercoseni',
+    name: 'Iercoșeni',
   },
   {
     id: 6132,
@@ -30647,7 +30647,7 @@ export const CITIES = [
   {
     id: 6133,
     countyId: 2,
-    name: 'Iermata Neagra',
+    name: 'Iermata Neagră',
   },
   {
     id: 6134,
@@ -30657,12 +30657,12 @@ export const CITIES = [
   {
     id: 6135,
     countyId: 41,
-    name: 'Iernuteni',
+    name: 'Iernuțeni',
   },
   {
     id: 6136,
     countyId: 50,
-    name: 'Iersnic',
+    name: 'Ierșnic',
   },
   {
     id: 6137,
@@ -30707,17 +30707,17 @@ export const CITIES = [
   {
     id: 6145,
     countyId: 52,
-    name: 'Ifrimesti',
+    name: 'Ifrimești',
   },
   {
     id: 6146,
     countyId: 53,
-    name: 'Igesti',
+    name: 'Igești',
   },
   {
     id: 6147,
     countyId: 54,
-    name: 'Igesti',
+    name: 'Igești',
   },
   {
     id: 6148,
@@ -30727,12 +30727,12 @@ export const CITIES = [
   {
     id: 6149,
     countyId: 47,
-    name: 'Ighisu Nou',
+    name: 'Ighișu Nou',
   },
   {
     id: 6150,
     countyId: 47,
-    name: 'Ighisu Vechi',
+    name: 'Ighișu Vechi',
   },
   {
     id: 6151,
@@ -30757,12 +30757,12 @@ export const CITIES = [
   {
     id: 6155,
     countyId: 1,
-    name: 'Ignatesti',
+    name: 'Ignățești',
   },
   {
     id: 6156,
     countyId: 2,
-    name: 'Ignesti',
+    name: 'Ignești',
   },
   {
     id: 6157,
@@ -30772,12 +30772,12 @@ export const CITIES = [
   {
     id: 6158,
     countyId: 50,
-    name: 'Igris',
+    name: 'Igriș',
   },
   {
     id: 6159,
     countyId: 21,
-    name: 'Igritia',
+    name: 'Igriția',
   },
   {
     id: 6160,
@@ -30857,22 +30857,22 @@ export const CITIES = [
   {
     id: 6176,
     countyId: 41,
-    name: 'Iliesi',
+    name: 'Ilieși',
   },
   {
     id: 6177,
     countyId: 5,
-    name: 'Iliesi',
+    name: 'Ilieși',
   },
   {
     id: 6178,
     countyId: 30,
-    name: 'Iliesti',
+    name: 'Iliești',
   },
   {
     id: 6179,
     countyId: 1,
-    name: 'Iliesti',
+    name: 'Iliești',
   },
   {
     id: 6180,
@@ -30887,22 +30887,22 @@ export const CITIES = [
   {
     id: 6182,
     countyId: 8,
-    name: 'Iliseni',
+    name: 'Ilișeni',
   },
   {
     id: 6183,
     countyId: 48,
-    name: 'Ilisesti',
+    name: 'Ilișești',
   },
   {
     id: 6184,
     countyId: 45,
-    name: 'Ilisua',
+    name: 'Ilișua',
   },
   {
     id: 6185,
     countyId: 7,
-    name: 'Ilisua',
+    name: 'Ilișua',
   },
   {
     id: 6186,
@@ -30912,12 +30912,12 @@ export const CITIES = [
   {
     id: 6187,
     countyId: 40,
-    name: 'Ilovat',
+    name: 'Ilovăț',
   },
   {
     id: 6188,
     countyId: 40,
-    name: 'Ilovita',
+    name: 'Ilovița',
   },
   {
     id: 6189,
@@ -30962,52 +30962,52 @@ export const CITIES = [
   {
     id: 6197,
     countyId: 39,
-    name: 'Inau',
+    name: 'Inău',
   },
   {
     id: 6198,
     countyId: 45,
-    name: 'Inau',
+    name: 'Inău',
   },
   {
     id: 6199,
     countyId: 6,
-    name: 'Incesti',
+    name: 'Incești',
   },
   {
     id: 6200,
     countyId: 1,
-    name: 'Incesti (Avram Iancu)',
+    name: 'Incești (Avram Iancu)',
   },
   {
     id: 6201,
     countyId: 1,
-    name: 'Incesti (Posaga)',
+    name: 'Incești (Poșaga)',
   },
   {
     id: 6202,
     countyId: 22,
-    name: 'Independenta',
+    name: 'Independența',
   },
   {
     id: 6203,
     countyId: 44,
-    name: 'Independenta',
+    name: 'Independența',
   },
   {
     id: 6204,
     countyId: 19,
-    name: 'Independenta',
+    name: 'Independența',
   },
   {
     id: 6205,
     countyId: 28,
-    name: 'Independenta',
+    name: 'Independența',
   },
   {
     id: 6206,
     countyId: 20,
-    name: 'Inelet',
+    name: 'Ineleț',
   },
   {
     id: 6207,
@@ -31027,22 +31027,22 @@ export const CITIES = [
   {
     id: 6210,
     countyId: 25,
-    name: 'Infratirea',
+    name: 'Înfrățirea',
   },
   {
     id: 6211,
     countyId: 19,
-    name: 'Infratirea',
+    name: 'Înfrățirea',
   },
   {
     id: 6212,
     countyId: 42,
-    name: 'Ingaresti',
+    name: 'Ingărești',
   },
   {
     id: 6213,
     countyId: 31,
-    name: 'Inlaceni',
+    name: 'Inlăceni',
   },
   {
     id: 6214,
@@ -31052,42 +31052,42 @@ export const CITIES = [
   {
     id: 6215,
     countyId: 44,
-    name: 'Inotesti',
+    name: 'Inotești',
   },
   {
     id: 6216,
     countyId: 30,
-    name: 'Insuratei',
+    name: 'Însurăței',
   },
   {
     id: 6217,
     countyId: 9,
-    name: 'Insuratei',
+    name: 'Însurăței',
   },
   {
     id: 6218,
     countyId: 49,
-    name: 'Insuratei',
+    name: 'Însurăței',
   },
   {
     id: 6219,
     countyId: 25,
-    name: 'Intorsura',
+    name: 'Întorsura',
   },
   {
     id: 6220,
     countyId: 23,
-    name: 'Intorsura Buzaului',
+    name: 'Întorsura Buzăului',
   },
   {
     id: 6221,
     countyId: 1,
-    name: 'Intregalde',
+    name: 'Întregalde',
   },
   {
     id: 6222,
     countyId: 39,
-    name: 'Intrerauri',
+    name: 'Întrerâuri',
   },
   {
     id: 6223,
@@ -31102,12 +31102,12 @@ export const CITIES = [
   {
     id: 6225,
     countyId: 3,
-    name: 'Ioanicesti',
+    name: 'Ioanicești',
   },
   {
     id: 6226,
     countyId: 6,
-    name: 'Ioanis',
+    name: 'Ioaniș',
   },
   {
     id: 6227,
@@ -31132,7 +31132,7 @@ export const CITIES = [
   {
     id: 6231,
     countyId: 42,
-    name: 'Ion Creanga',
+    name: 'Ion Creangă',
   },
   {
     id: 6232,
@@ -31147,27 +31147,27 @@ export const CITIES = [
   {
     id: 6234,
     countyId: 34,
-    name: 'Ion Roata',
+    name: 'Ion Roată',
   },
   {
     id: 6235,
     countyId: 49,
-    name: 'Ionascu',
+    name: 'Ionașcu',
   },
   {
     id: 6236,
     countyId: 8,
-    name: 'Ionaseni (Trusesti)',
+    name: 'Ionășeni (Trușești)',
   },
   {
     id: 6237,
     countyId: 8,
-    name: 'Ionaseni (Varfu Campului)',
+    name: 'Ionășeni (Vârfu Câmpului)',
   },
   {
     id: 6238,
     countyId: 28,
-    name: 'Ionasesti',
+    name: 'Ionășești',
   },
   {
     id: 6239,
@@ -31177,42 +31177,42 @@ export const CITIES = [
   {
     id: 6240,
     countyId: 2,
-    name: 'Ionesti',
+    name: 'Ionești',
   },
   {
     id: 6241,
     countyId: 10,
-    name: 'Ionesti',
+    name: 'Ionești',
   },
   {
     id: 6242,
     countyId: 30,
-    name: 'Ionesti',
+    name: 'Ionești',
   },
   {
     id: 6243,
     countyId: 3,
-    name: 'Ionesti',
+    name: 'Ionești',
   },
   {
     id: 6244,
     countyId: 9,
-    name: 'Ionesti',
+    name: 'Ionești',
   },
   {
     id: 6245,
     countyId: 24,
-    name: 'Ionesti',
+    name: 'Ionești',
   },
   {
     id: 6246,
     countyId: 52,
-    name: 'Ionesti',
+    name: 'Ionești',
   },
   {
     id: 6247,
     countyId: 43,
-    name: 'Ionicesti',
+    name: 'Ionicești',
   },
   {
     id: 6248,
@@ -31222,12 +31222,12 @@ export const CITIES = [
   {
     id: 6249,
     countyId: 44,
-    name: 'Iordacheanu',
+    name: 'Iordăcheanu',
   },
   {
     id: 6250,
     countyId: 25,
-    name: 'Iordachesti',
+    name: 'Iordăchești',
   },
   {
     id: 6251,
@@ -31237,12 +31237,12 @@ export const CITIES = [
   {
     id: 6252,
     countyId: 30,
-    name: 'Iormanesti',
+    name: 'Iormănești',
   },
   {
     id: 6253,
     countyId: 2,
-    name: 'Iosas',
+    name: 'Iosaș',
   },
   {
     id: 6254,
@@ -31252,7 +31252,7 @@ export const CITIES = [
   {
     id: 6255,
     countyId: 50,
-    name: 'Iosifalau',
+    name: 'Iosifalău',
   },
   {
     id: 6256,
@@ -31272,22 +31272,22 @@ export const CITIES = [
   {
     id: 6259,
     countyId: 8,
-    name: 'Ipotesti',
+    name: 'Ipotești',
   },
   {
     id: 6260,
     countyId: 48,
-    name: 'Ipotesti',
+    name: 'Ipotești',
   },
   {
     id: 6261,
     countyId: 43,
-    name: 'Ipotesti',
+    name: 'Ipotești',
   },
   {
     id: 6262,
     countyId: 2,
-    name: 'Iratosu',
+    name: 'Iratoșu',
   },
   {
     id: 6263,
@@ -31297,17 +31297,17 @@ export const CITIES = [
   {
     id: 6264,
     countyId: 54,
-    name: 'Iresti',
+    name: 'Irești',
   },
   {
     id: 6265,
     countyId: 44,
-    name: 'Irimesti',
+    name: 'Irimești',
   },
   {
     id: 6266,
     countyId: 52,
-    name: 'Irimesti',
+    name: 'Irimești',
   },
   {
     id: 6267,
@@ -31332,7 +31332,7 @@ export const CITIES = [
   {
     id: 6271,
     countyId: 25,
-    name: 'Isalnita',
+    name: 'Ișalnița',
   },
   {
     id: 6272,
@@ -31362,17 +31362,17 @@ export const CITIES = [
   {
     id: 6277,
     countyId: 41,
-    name: 'Istan-Tau',
+    name: 'Iștan-Tău',
   },
   {
     id: 6278,
     countyId: 41,
-    name: 'Istihaza',
+    name: 'Iștihaza',
   },
   {
     id: 6279,
     countyId: 46,
-    name: 'Istrau',
+    name: 'Istrău',
   },
   {
     id: 6280,
@@ -31382,7 +31382,7 @@ export const CITIES = [
   {
     id: 6281,
     countyId: 18,
-    name: 'Istrita de Jos',
+    name: 'Istrița de Jos',
   },
   {
     id: 6282,
@@ -31402,12 +31402,12 @@ export const CITIES = [
   {
     id: 6285,
     countyId: 5,
-    name: 'Itcani',
+    name: 'Ițcani',
   },
   {
     id: 6286,
     countyId: 5,
-    name: 'Itesti',
+    name: 'Itești',
   },
   {
     id: 6287,
@@ -31422,12 +31422,12 @@ export const CITIES = [
   {
     id: 6289,
     countyId: 42,
-    name: 'Itrinesti',
+    name: 'Itrinești',
   },
   {
     id: 6290,
     countyId: 42,
-    name: 'Iucsa',
+    name: 'Iucșa',
   },
   {
     id: 6291,
@@ -31452,17 +31452,17 @@ export const CITIES = [
   {
     id: 6295,
     countyId: 8,
-    name: 'Iuresti',
+    name: 'Iurești',
   },
   {
     id: 6296,
     countyId: 21,
-    name: 'Iuriu de Campie',
+    name: 'Iuriu de Câmpie',
   },
   {
     id: 6297,
     countyId: 54,
-    name: 'Ivancesti',
+    name: 'Ivăncești',
   },
   {
     id: 6298,
@@ -31472,52 +31472,52 @@ export const CITIES = [
   {
     id: 6299,
     countyId: 7,
-    name: 'Ivaneasa',
+    name: 'Ivăneasa',
   },
   {
     id: 6300,
     countyId: 42,
-    name: 'Ivanes',
+    name: 'Ivaneș',
   },
   {
     id: 6301,
     countyId: 34,
-    name: 'Ivanesti',
+    name: 'Ivănești',
   },
   {
     id: 6302,
     countyId: 53,
-    name: 'Ivanesti',
+    name: 'Ivănești',
   },
   {
     id: 6303,
     countyId: 41,
-    name: 'Ivanesti',
+    name: 'Ivănești',
   },
   {
     id: 6304,
     countyId: 53,
-    name: 'Ivanesti (Padureni)',
+    name: 'Ivănești (Pădureni)',
   },
   {
     id: 6305,
     countyId: 18,
-    name: 'Ivanetu',
+    name: 'Ivănețu',
   },
   {
     id: 6306,
     countyId: 1,
-    name: 'Ivanis',
+    name: 'Ivăniș',
   },
   {
     id: 6307,
     countyId: 28,
-    name: 'Ivesti',
+    name: 'Ivești',
   },
   {
     id: 6308,
     countyId: 53,
-    name: 'Ivesti',
+    name: 'Ivești',
   },
   {
     id: 6309,
@@ -31532,12 +31532,12 @@ export const CITIES = [
   {
     id: 6311,
     countyId: 3,
-    name: 'Izbasesti',
+    name: 'Izbășești',
   },
   {
     id: 6312,
     countyId: 52,
-    name: 'Izbasesti',
+    name: 'Izbăsești',
   },
   {
     id: 6313,
@@ -31562,7 +31562,7 @@ export const CITIES = [
   {
     id: 6317,
     countyId: 44,
-    name: 'Izesti',
+    name: 'Izești',
   },
   {
     id: 6318,
@@ -31572,7 +31572,7 @@ export const CITIES = [
   {
     id: 6319,
     countyId: 40,
-    name: 'Izimsa',
+    name: 'Izimșa',
   },
   {
     id: 6320,
@@ -31607,7 +31607,7 @@ export const CITIES = [
   {
     id: 6326,
     countyId: 42,
-    name: 'Izvoare (Dumbrava Rosie)',
+    name: 'Izvoare (Dumbrava Roșie)',
   },
   {
     id: 6327,
@@ -31697,7 +31697,7 @@ export const CITIES = [
   {
     id: 6344,
     countyId: 1,
-    name: 'Izvoarele (Garda de Sus)',
+    name: 'Izvoarele (Gârda de Sus)',
   },
   {
     id: 6345,
@@ -31727,12 +31727,12 @@ export const CITIES = [
   {
     id: 6350,
     countyId: 40,
-    name: 'Izvoralu',
+    name: 'Izvorălu',
   },
   {
     id: 6351,
     countyId: 40,
-    name: 'Izvoralu de Jos',
+    name: 'Izvorălu de Jos',
   },
   {
     id: 6352,
@@ -31752,7 +31752,7 @@ export const CITIES = [
   {
     id: 6355,
     countyId: 52,
-    name: 'Izvorasu',
+    name: 'Izvorașu',
   },
   {
     id: 6356,
@@ -31787,27 +31787,27 @@ export const CITIES = [
   {
     id: 6362,
     countyId: 29,
-    name: 'Izvoru (Gogosari)',
+    name: 'Izvoru (Gogoșari)',
   },
   {
     id: 6363,
     countyId: 18,
-    name: 'Izvoru (Tisau)',
+    name: 'Izvoru (Tisău)',
   },
   {
     id: 6364,
     countyId: 24,
-    name: 'Izvoru (Valea Lunga)',
+    name: 'Izvoru (Valea Lungă)',
   },
   {
     id: 6365,
     countyId: 29,
-    name: 'Izvoru (Vanatorii Mici)',
+    name: 'Izvoru (Vânătorii Mici)',
   },
   {
     id: 6366,
     countyId: 24,
-    name: 'Izvoru (Visina)',
+    name: 'Izvoru (Vișina)',
   },
   {
     id: 6367,
@@ -31822,12 +31822,12 @@ export const CITIES = [
   {
     id: 6369,
     countyId: 40,
-    name: 'Izvoru Anestilor',
+    name: 'Izvoru Aneștilor',
   },
   {
     id: 6370,
     countyId: 40,
-    name: 'Izvoru Barzii',
+    name: 'Izvoru Bârzii',
   },
   {
     id: 6371,
@@ -31837,7 +31837,7 @@ export const CITIES = [
   {
     id: 6372,
     countyId: 21,
-    name: 'Izvoru Crisului',
+    name: 'Izvoru Crișului',
   },
   {
     id: 6373,
@@ -31877,12 +31877,12 @@ export const CITIES = [
   {
     id: 6380,
     countyId: 31,
-    name: 'Izvoru Muresului',
+    name: 'Izvoru Mureșului',
   },
   {
     id: 6381,
     countyId: 52,
-    name: 'Izvoru Rece (Stoilesti)',
+    name: 'Izvoru Rece (Stoilești)',
   },
   {
     id: 6382,
@@ -31892,17 +31892,17 @@ export const CITIES = [
   {
     id: 6383,
     countyId: 31,
-    name: 'Izvorul Trotusului',
+    name: 'Izvorul Trotușului',
   },
   {
     id: 6384,
     countyId: 50,
-    name: 'Jabar',
+    name: 'Jabăr',
   },
   {
     id: 6385,
     countyId: 41,
-    name: 'Jabenita',
+    name: 'Jabenița',
   },
   {
     id: 6386,
@@ -31937,12 +31937,12 @@ export const CITIES = [
   {
     id: 6392,
     countyId: 54,
-    name: 'Jaristea',
+    name: 'Jariștea',
   },
   {
     id: 6393,
     countyId: 52,
-    name: 'Jarostea',
+    name: 'Jaroștea',
   },
   {
     id: 6394,
@@ -31962,12 +31962,12 @@ export const CITIES = [
   {
     id: 6397,
     countyId: 1,
-    name: 'Jeflesti',
+    name: 'Jeflești',
   },
   {
     id: 6398,
     countyId: 19,
-    name: 'Jegalia',
+    name: 'Jegălia',
   },
   {
     id: 6399,
@@ -31977,7 +31977,7 @@ export const CITIES = [
   {
     id: 6400,
     countyId: 33,
-    name: 'Jeledinti',
+    name: 'Jeledinți',
   },
   {
     id: 6401,
@@ -31992,12 +31992,12 @@ export const CITIES = [
   {
     id: 6403,
     countyId: 44,
-    name: 'Jercalai',
+    name: 'Jercălăi',
   },
   {
     id: 6404,
     countyId: 30,
-    name: 'Jeristea',
+    name: 'Jeriștea',
   },
   {
     id: 6405,
@@ -32037,7 +32037,7 @@ export const CITIES = [
   {
     id: 6412,
     countyId: 52,
-    name: 'Jiblea Noua',
+    name: 'Jiblea Nouă',
   },
   {
     id: 6413,
@@ -32052,22 +32052,22 @@ export const CITIES = [
   {
     id: 6415,
     countyId: 21,
-    name: 'Jichisu de Jos',
+    name: 'Jichișu de Jos',
   },
   {
     id: 6416,
     countyId: 21,
-    name: 'Jichisu de Sus',
+    name: 'Jichișu de Sus',
   },
   {
     id: 6417,
     countyId: 1,
-    name: 'Jidostina',
+    name: 'Jidoștina',
   },
   {
     id: 6418,
     countyId: 40,
-    name: 'Jidostita',
+    name: 'Jidoștița',
   },
   {
     id: 6419,
@@ -32087,22 +32087,22 @@ export const CITIES = [
   {
     id: 6422,
     countyId: 33,
-    name: 'Jiet',
+    name: 'Jieț',
   },
   {
     id: 6423,
     countyId: 53,
-    name: 'Jigalia',
+    name: 'Jigălia',
   },
   {
     id: 6424,
     countyId: 40,
-    name: 'Jignita',
+    name: 'Jignița',
   },
   {
     id: 6425,
     countyId: 31,
-    name: 'Jigodin-Bai',
+    name: 'Jigodin-Băi',
   },
   {
     id: 6426,
@@ -32132,12 +32132,12 @@ export const CITIES = [
   {
     id: 6431,
     countyId: 54,
-    name: 'Jiliste',
+    name: 'Jiliște',
   },
   {
     id: 6432,
     countyId: 30,
-    name: 'Jiltu',
+    name: 'Jilțu',
   },
   {
     id: 6433,
@@ -32162,7 +32162,7 @@ export const CITIES = [
   {
     id: 6437,
     countyId: 9,
-    name: 'Jirlau',
+    name: 'Jirlău',
   },
   {
     id: 6438,
@@ -32192,7 +32192,7 @@ export const CITIES = [
   {
     id: 6443,
     countyId: 33,
-    name: 'Jiu-Paroseni',
+    name: 'Jiu-Paroșeni',
   },
   {
     id: 6444,
@@ -32207,7 +32207,7 @@ export const CITIES = [
   {
     id: 6446,
     countyId: 29,
-    name: 'Joita',
+    name: 'Joița',
   },
   {
     id: 6447,
@@ -32217,12 +32217,12 @@ export const CITIES = [
   {
     id: 6448,
     countyId: 8,
-    name: 'Joldesti',
+    name: 'Joldești',
   },
   {
     id: 6449,
     countyId: 1,
-    name: 'Joldisesti',
+    name: 'Joldișești',
   },
   {
     id: 6450,
@@ -32232,12 +32232,12 @@ export const CITIES = [
   {
     id: 6451,
     countyId: 28,
-    name: 'Jorasti',
+    name: 'Jorăști',
   },
   {
     id: 6452,
     countyId: 54,
-    name: 'Jorasti',
+    name: 'Jorăști',
   },
   {
     id: 6453,
@@ -32247,12 +32247,12 @@ export const CITIES = [
   {
     id: 6454,
     countyId: 6,
-    name: 'Josani (Cabesti)',
+    name: 'Josani (Căbești)',
   },
   {
     id: 6455,
     countyId: 6,
-    name: 'Josani (Magesti)',
+    name: 'Josani (Măgești)',
   },
   {
     id: 6456,
@@ -32267,7 +32267,7 @@ export const CITIES = [
   {
     id: 6458,
     countyId: 7,
-    name: 'Josenii Bargaului',
+    name: 'Josenii Bârgăului',
   },
   {
     id: 6459,
@@ -32292,7 +32292,7 @@ export const CITIES = [
   {
     id: 6463,
     countyId: 39,
-    name: 'Jugastreni',
+    name: 'Jugăstreni',
   },
   {
     id: 6464,
@@ -32322,7 +32322,7 @@ export const CITIES = [
   {
     id: 6469,
     countyId: 2,
-    name: 'Julita',
+    name: 'Julița',
   },
   {
     id: 6470,
@@ -32332,22 +32332,22 @@ export const CITIES = [
   {
     id: 6471,
     countyId: 3,
-    name: 'Jupanesti',
+    name: 'Jupânești',
   },
   {
     id: 6472,
     countyId: 40,
-    name: 'Jupanesti',
+    name: 'Jupânești',
   },
   {
     id: 6473,
     countyId: 30,
-    name: 'Jupanesti',
+    name: 'Jupânești',
   },
   {
     id: 6474,
     countyId: 50,
-    name: 'Jupanesti',
+    name: 'Jupânești',
   },
   {
     id: 6475,
@@ -32367,12 +32367,12 @@ export const CITIES = [
   {
     id: 6478,
     countyId: 1,
-    name: 'Jurcuiesti',
+    name: 'Jurcuiești',
   },
   {
     id: 6479,
     countyId: 50,
-    name: 'Juresti',
+    name: 'Jurești',
   },
   {
     id: 6480,
@@ -32382,7 +32382,7 @@ export const CITIES = [
   {
     id: 6481,
     countyId: 35,
-    name: 'Kogalniceni',
+    name: 'Kogălniceni',
   },
   {
     id: 6482,
@@ -32392,7 +32392,7 @@ export const CITIES = [
   {
     id: 6483,
     countyId: 2,
-    name: 'Labasint',
+    name: 'Labașinț',
   },
   {
     id: 6484,
@@ -32402,22 +32402,22 @@ export const CITIES = [
   {
     id: 6485,
     countyId: 3,
-    name: 'Laceni',
+    name: 'Lăceni',
   },
   {
     id: 6486,
     countyId: 49,
-    name: 'Laceni',
+    name: 'Lăceni',
   },
   {
     id: 6487,
     countyId: 25,
-    name: 'Lacrita Mare',
+    name: 'Lăcrița Mare',
   },
   {
     id: 6488,
     countyId: 25,
-    name: 'Lacrita Mica',
+    name: 'Lăcrița Mică',
   },
   {
     id: 6489,
@@ -32452,17 +32452,17 @@ export const CITIES = [
   {
     id: 6495,
     countyId: 31,
-    name: 'Lacu Rosu',
+    name: 'Lacu Roșu',
   },
   {
     id: 6496,
     countyId: 9,
-    name: 'Lacu Sarat',
+    name: 'Lacu Sărat',
   },
   {
     id: 6497,
     countyId: 6,
-    name: 'Lacu Sarat',
+    name: 'Lacu Sărat',
   },
   {
     id: 6498,
@@ -32477,12 +32477,12 @@ export const CITIES = [
   {
     id: 6500,
     countyId: 24,
-    name: 'Laculete',
+    name: 'Lăculețe',
   },
   {
     id: 6501,
     countyId: 24,
-    name: 'Laculete-Gara',
+    name: 'Lăculețe-Gară',
   },
   {
     id: 6502,
@@ -32497,22 +32497,22 @@ export const CITIES = [
   {
     id: 6504,
     countyId: 52,
-    name: 'Lacusteni',
+    name: 'Lăcusteni',
   },
   {
     id: 6505,
     countyId: 34,
-    name: 'Lacusteni',
+    name: 'Lăcusteni',
   },
   {
     id: 6506,
     countyId: 52,
-    name: 'Lacustenii de Jos',
+    name: 'Lăcustenii de Jos',
   },
   {
     id: 6507,
     countyId: 52,
-    name: 'Lacustenii de Sus',
+    name: 'Lăcustenii de Sus',
   },
   {
     id: 6508,
@@ -32522,57 +32522,57 @@ export const CITIES = [
   {
     id: 6509,
     countyId: 23,
-    name: 'Ladauti',
+    name: 'Lădăuți',
   },
   {
     id: 6510,
     countyId: 52,
-    name: 'Ladesti',
+    name: 'Lădești',
   },
   {
     id: 6511,
     countyId: 3,
-    name: 'Laicai',
+    name: 'Lăicăi',
   },
   {
     id: 6512,
     countyId: 2,
-    name: 'Lalasint',
+    name: 'Lalașinț',
   },
   {
     id: 6513,
     countyId: 53,
-    name: 'Lalesti',
+    name: 'Lălești',
   },
   {
     id: 6514,
     countyId: 52,
-    name: 'Lalosu',
+    name: 'Laloșu',
   },
   {
     id: 6515,
     countyId: 48,
-    name: 'Lamaseni',
+    name: 'Lămășeni',
   },
   {
     id: 6516,
     countyId: 54,
-    name: 'Lamotesti',
+    name: 'Lămotești',
   },
   {
     id: 6517,
     countyId: 1,
-    name: 'Lancram',
+    name: 'Lancrăm',
   },
   {
     id: 6518,
     countyId: 25,
-    name: 'Langa',
+    name: 'Lânga',
   },
   {
     id: 6519,
     countyId: 3,
-    name: 'Langesti',
+    name: 'Lăngești',
   },
   {
     id: 6520,
@@ -32592,77 +32592,77 @@ export const CITIES = [
   {
     id: 6523,
     countyId: 5,
-    name: 'Lapos',
+    name: 'Lapoș',
   },
   {
     id: 6524,
     countyId: 44,
-    name: 'Lapos',
+    name: 'Lapoș',
   },
   {
     id: 6525,
     countyId: 44,
-    name: 'Laposel',
+    name: 'Lăpoșel',
   },
   {
     id: 6526,
     countyId: 33,
-    name: 'Lapugiu de Jos',
+    name: 'Lăpugiu de Jos',
   },
   {
     id: 6527,
     countyId: 33,
-    name: 'Lapugiu de Sus',
+    name: 'Lăpugiu de Sus',
   },
   {
     id: 6528,
     countyId: 39,
-    name: 'Lapus',
+    name: 'Lăpuș',
   },
   {
     id: 6529,
     countyId: 3,
-    name: 'Lapusani',
+    name: 'Lăpușani',
   },
   {
     id: 6530,
     countyId: 52,
-    name: 'Lapusata',
+    name: 'Lăpușata',
   },
   {
     id: 6531,
     countyId: 39,
-    name: 'Lapusel',
+    name: 'Lăpușel',
   },
   {
     id: 6532,
     countyId: 41,
-    name: 'Lapusna',
+    name: 'Lăpușna',
   },
   {
     id: 6533,
     countyId: 33,
-    name: 'Lapusnic',
+    name: 'Lăpușnic',
   },
   {
     id: 6534,
     countyId: 50,
-    name: 'Lapusnic',
+    name: 'Lăpușnic',
   },
   {
     id: 6535,
     countyId: 20,
-    name: 'Lapusnicel',
+    name: 'Lăpușnicel',
   },
   {
     id: 6536,
     countyId: 20,
-    name: 'Lapusnicu Mare',
+    name: 'Lăpușnicu Mare',
   },
   {
     id: 6537,
     countyId: 21,
-    name: 'Lapustesti',
+    name: 'Lăpuștești',
   },
   {
     id: 6538,
@@ -32687,7 +32687,7 @@ export const CITIES = [
   {
     id: 6542,
     countyId: 41,
-    name: 'Larga (Sarmasu)',
+    name: 'Larga (Sărmașu)',
   },
   {
     id: 6543,
@@ -32697,7 +32697,7 @@ export const CITIES = [
   {
     id: 6544,
     countyId: 54,
-    name: 'Largaseni',
+    name: 'Lărgășeni',
   },
   {
     id: 6545,
@@ -32707,32 +32707,32 @@ export const CITIES = [
   {
     id: 6546,
     countyId: 5,
-    name: 'Larguta',
+    name: 'Lărguța',
   },
   {
     id: 6547,
     countyId: 33,
-    name: 'Lasau',
+    name: 'Lăsău',
   },
   {
     id: 6548,
     countyId: 39,
-    name: 'Laschia',
+    name: 'Lăschia',
   },
   {
     id: 6549,
     countyId: 41,
-    name: 'Lascud',
+    name: 'Lăscud',
   },
   {
     id: 6550,
     countyId: 41,
-    name: 'Laslau Mare',
+    name: 'Laslău Mare',
   },
   {
     id: 6551,
     countyId: 41,
-    name: 'Laslau Mic',
+    name: 'Laslău Mic',
   },
   {
     id: 6552,
@@ -32742,17 +32742,17 @@ export const CITIES = [
   {
     id: 6553,
     countyId: 51,
-    name: 'Lastuni',
+    name: 'Lăstuni',
   },
   {
     id: 6554,
     countyId: 54,
-    name: 'Lastuni',
+    name: 'Lăstuni',
   },
   {
     id: 6555,
     countyId: 53,
-    name: 'Latesti',
+    name: 'Lățești',
   },
   {
     id: 6556,
@@ -32762,27 +32762,27 @@ export const CITIES = [
   {
     id: 6557,
     countyId: 50,
-    name: 'Latunas',
+    name: 'Lățunaș',
   },
   {
     id: 6558,
     countyId: 43,
-    name: 'Launele',
+    name: 'Lăunele',
   },
   {
     id: 6559,
     countyId: 52,
-    name: 'Launele de Jos',
+    name: 'Lăunele de Jos',
   },
   {
     id: 6560,
     countyId: 3,
-    name: 'Launele de Sus',
+    name: 'Lăunele de Sus',
   },
   {
     id: 6561,
     countyId: 41,
-    name: 'Laureni',
+    name: 'Lăureni',
   },
   {
     id: 6562,
@@ -32792,22 +32792,22 @@ export const CITIES = [
   {
     id: 6563,
     countyId: 1,
-    name: 'Laz (Sasciori)',
+    name: 'Laz (Săsciori)',
   },
   {
     id: 6564,
     countyId: 1,
-    name: 'Laz (Vintu de Jos)',
+    name: 'Laz (Vințu de Jos)',
   },
   {
     id: 6565,
     countyId: 31,
-    name: 'Laz-Firtanus',
+    name: 'Laz-Firtănuș',
   },
   {
     id: 6566,
     countyId: 31,
-    name: 'Laz-Soimus',
+    name: 'Laz-Șoimuș',
   },
   {
     id: 6567,
@@ -32817,37 +32817,37 @@ export const CITIES = [
   {
     id: 6568,
     countyId: 31,
-    name: 'Lazarea',
+    name: 'Lăzarea',
   },
   {
     id: 6569,
     countyId: 6,
-    name: 'Lazareni',
+    name: 'Lăzăreni',
   },
   {
     id: 6570,
     countyId: 31,
-    name: 'Lazaresti',
+    name: 'Lăzărești',
   },
   {
     id: 6571,
     countyId: 30,
-    name: 'Lazaresti',
+    name: 'Lăzărești',
   },
   {
     id: 6572,
     countyId: 43,
-    name: 'Lazaresti',
+    name: 'Lăzărești',
   },
   {
     id: 6573,
     countyId: 3,
-    name: 'Lazaresti (Mosoaia)',
+    name: 'Lăzărești (Moșoaia)',
   },
   {
     id: 6574,
     countyId: 3,
-    name: 'Lazaresti (Schitu Golesti)',
+    name: 'Lăzărești (Schitu Golești)',
   },
   {
     id: 6575,
@@ -32857,12 +32857,12 @@ export const CITIES = [
   {
     id: 6576,
     countyId: 1,
-    name: 'Lazesti (Scarisoara)',
+    name: 'Lăzești (Scărișoara)',
   },
   {
     id: 6577,
     countyId: 1,
-    name: 'Lazesti (Vadu Motilor)',
+    name: 'Lăzești (Vadu Moților)',
   },
   {
     id: 6578,
@@ -32922,7 +32922,7 @@ export const CITIES = [
   {
     id: 6589,
     countyId: 1,
-    name: 'Lazuri (Lupsa)',
+    name: 'Lazuri (Lupșa)',
   },
   {
     id: 6590,
@@ -32932,7 +32932,7 @@ export const CITIES = [
   {
     id: 6591,
     countyId: 6,
-    name: 'Lazuri de Beius',
+    name: 'Lazuri de Beiuș',
   },
   {
     id: 6592,
@@ -32957,7 +32957,7 @@ export const CITIES = [
   {
     id: 6596,
     countyId: 33,
-    name: 'Leaut',
+    name: 'Leauț',
   },
   {
     id: 6597,
@@ -32967,17 +32967,17 @@ export const CITIES = [
   {
     id: 6598,
     countyId: 41,
-    name: 'Lechinta',
+    name: 'Lechința',
   },
   {
     id: 6599,
     countyId: 7,
-    name: 'Lechinta',
+    name: 'Lechința',
   },
   {
     id: 6600,
     countyId: 46,
-    name: 'Lechinta',
+    name: 'Lechința',
   },
   {
     id: 6601,
@@ -33012,7 +33012,7 @@ export const CITIES = [
   {
     id: 6607,
     countyId: 1,
-    name: 'Lehesti',
+    name: 'Lehești',
   },
   {
     id: 6608,
@@ -33022,22 +33022,22 @@ export const CITIES = [
   {
     id: 6609,
     countyId: 19,
-    name: 'Lehliu-Gara',
+    name: 'Lehliu-Gară',
   },
   {
     id: 6610,
     countyId: 8,
-    name: 'Lehnesti',
+    name: 'Lehnești',
   },
   {
     id: 6611,
     countyId: 3,
-    name: 'Leicesti',
+    name: 'Leicești',
   },
   {
     id: 6612,
     countyId: 18,
-    name: 'Leiculesti',
+    name: 'Leiculești',
   },
   {
     id: 6613,
@@ -33057,17 +33057,17 @@ export const CITIES = [
   {
     id: 6616,
     countyId: 7,
-    name: 'Lelesti',
+    name: 'Lelești',
   },
   {
     id: 6617,
     countyId: 6,
-    name: 'Lelesti',
+    name: 'Lelești',
   },
   {
     id: 6618,
     countyId: 30,
-    name: 'Lelesti',
+    name: 'Lelești',
   },
   {
     id: 6619,
@@ -33092,17 +33092,17 @@ export const CITIES = [
   {
     id: 6623,
     countyId: 41,
-    name: 'Lenis',
+    name: 'Leniș',
   },
   {
     id: 6624,
     countyId: 3,
-    name: 'Lentea',
+    name: 'Lențea',
   },
   {
     id: 6625,
     countyId: 5,
-    name: 'Leontinesti',
+    name: 'Leontinești',
   },
   {
     id: 6626,
@@ -33132,32 +33132,32 @@ export const CITIES = [
   {
     id: 6631,
     countyId: 1,
-    name: 'Leorint',
+    name: 'Leorinț',
   },
   {
     id: 6632,
     countyId: 41,
-    name: 'Leorinta',
+    name: 'Leorința',
   },
   {
     id: 6633,
     countyId: 41,
-    name: 'Leorinta-Saulia',
+    name: 'Leorința-Șăulia',
   },
   {
     id: 6634,
     countyId: 53,
-    name: 'Leosti (Padureni)',
+    name: 'Leoști (Pădureni)',
   },
   {
     id: 6635,
     countyId: 53,
-    name: 'Leosti (Tatarani)',
+    name: 'Leoști (Tătărăni)',
   },
   {
     id: 6636,
     countyId: 43,
-    name: 'Leotesti',
+    name: 'Leotești',
   },
   {
     id: 6637,
@@ -33167,7 +33167,7 @@ export const CITIES = [
   {
     id: 6638,
     countyId: 54,
-    name: 'Lepsa',
+    name: 'Lepșa',
   },
   {
     id: 6639,
@@ -33177,37 +33177,37 @@ export const CITIES = [
   {
     id: 6640,
     countyId: 3,
-    name: 'Leresti',
+    name: 'Lerești',
   },
   {
     id: 6641,
     countyId: 6,
-    name: 'Les',
+    name: 'Leș',
   },
   {
     id: 6642,
     countyId: 20,
-    name: 'Lescovita',
+    name: 'Lescovița',
   },
   {
     id: 6643,
     countyId: 3,
-    name: 'Lesile',
+    name: 'Leșile',
   },
   {
     id: 6644,
     countyId: 25,
-    name: 'Lesile',
+    name: 'Leșile',
   },
   {
     id: 6645,
     countyId: 45,
-    name: 'Lesmir',
+    name: 'Leșmir',
   },
   {
     id: 6646,
     countyId: 33,
-    name: 'Lesnic',
+    name: 'Leșnic',
   },
   {
     id: 6647,
@@ -33242,17 +33242,17 @@ export const CITIES = [
   {
     id: 6653,
     countyId: 2,
-    name: 'Lestioara',
+    name: 'Leștioara',
   },
   {
     id: 6654,
     countyId: 7,
-    name: 'Lesu',
+    name: 'Leșu',
   },
   {
     id: 6655,
     countyId: 23,
-    name: 'Let',
+    name: 'Leț',
   },
   {
     id: 6656,
@@ -33262,7 +33262,7 @@ export const CITIES = [
   {
     id: 6657,
     countyId: 29,
-    name: 'Letca Noua',
+    name: 'Letca Nouă',
   },
   {
     id: 6658,
@@ -33272,7 +33272,7 @@ export const CITIES = [
   {
     id: 6659,
     countyId: 35,
-    name: 'Letcani',
+    name: 'Lețcani',
   },
   {
     id: 6660,
@@ -33292,12 +33292,12 @@ export const CITIES = [
   {
     id: 6663,
     countyId: 48,
-    name: 'Leucusesti',
+    name: 'Leucușești',
   },
   {
     id: 6664,
     countyId: 50,
-    name: 'Leucusesti',
+    name: 'Leucușești',
   },
   {
     id: 6665,
@@ -33337,7 +33337,7 @@ export const CITIES = [
   {
     id: 6672,
     countyId: 5,
-    name: 'Lichitiseni',
+    name: 'Lichitișeni',
   },
   {
     id: 6673,
@@ -33357,22 +33357,22 @@ export const CITIES = [
   {
     id: 6676,
     countyId: 54,
-    name: 'Liesti',
+    name: 'Liești',
   },
   {
     id: 6677,
     countyId: 28,
-    name: 'Liesti',
+    name: 'Liești',
   },
   {
     id: 6678,
     countyId: 28,
-    name: 'Liesti (Priponesti)',
+    name: 'Liești (Priponești)',
   },
   {
     id: 6679,
     countyId: 30,
-    name: 'Lihulesti',
+    name: 'Lihulești',
   },
   {
     id: 6680,
@@ -33397,7 +33397,7 @@ export const CITIES = [
   {
     id: 6684,
     countyId: 44,
-    name: 'Liliesti',
+    name: 'Liliești',
   },
   {
     id: 6685,
@@ -33407,7 +33407,7 @@ export const CITIES = [
   {
     id: 6686,
     countyId: 18,
-    name: 'Limpezis',
+    name: 'Limpeziș',
   },
   {
     id: 6687,
@@ -33417,12 +33417,12 @@ export const CITIES = [
   {
     id: 6688,
     countyId: 52,
-    name: 'Linia (Budesti)',
+    name: 'Linia (Budești)',
   },
   {
     id: 6689,
     countyId: 52,
-    name: 'Linia (Gradistea)',
+    name: 'Linia (Grădiștea)',
   },
   {
     id: 6690,
@@ -33452,12 +33452,12 @@ export const CITIES = [
   {
     id: 6695,
     countyId: 42,
-    name: 'Linsesti',
+    name: 'Linsești',
   },
   {
     id: 6696,
     countyId: 41,
-    name: 'Lint',
+    name: 'Linț',
   },
   {
     id: 6697,
@@ -33467,7 +33467,7 @@ export const CITIES = [
   {
     id: 6698,
     countyId: 3,
-    name: 'Lintesti',
+    name: 'Lintești',
   },
   {
     id: 6699,
@@ -33477,17 +33477,17 @@ export const CITIES = [
   {
     id: 6700,
     countyId: 18,
-    name: 'Lipanescu',
+    name: 'Lipănescu',
   },
   {
     id: 6701,
     countyId: 44,
-    name: 'Lipanesti',
+    name: 'Lipănești',
   },
   {
     id: 6702,
     countyId: 46,
-    name: 'Lipau',
+    name: 'Lipău',
   },
   {
     id: 6703,
@@ -33507,7 +33507,7 @@ export const CITIES = [
   {
     id: 6706,
     countyId: 22,
-    name: 'Lipnita',
+    name: 'Lipnița',
   },
   {
     id: 6707,
@@ -33522,7 +33522,7 @@ export const CITIES = [
   {
     id: 6709,
     countyId: 53,
-    name: 'Lipovat',
+    name: 'Lipovăț',
   },
   {
     id: 6710,
@@ -33562,32 +33562,32 @@ export const CITIES = [
   {
     id: 6717,
     countyId: 9,
-    name: 'Liscoteanca',
+    name: 'Lișcoteanca',
   },
   {
     id: 6718,
     countyId: 8,
-    name: 'Lismanita',
+    name: 'Lismănița',
   },
   {
     id: 6719,
     countyId: 8,
-    name: 'Lisna',
+    name: 'Lișna',
   },
   {
     id: 6720,
     countyId: 23,
-    name: 'Lisnau',
+    name: 'Lisnău',
   },
   {
     id: 6721,
     countyId: 23,
-    name: 'Lisnau-Vale',
+    name: 'Lisnău-Vale',
   },
   {
     id: 6722,
     countyId: 25,
-    name: 'Listeava',
+    name: 'Lișteava',
   },
   {
     id: 6723,
@@ -33597,7 +33597,7 @@ export const CITIES = [
   {
     id: 6724,
     countyId: 49,
-    name: 'Lita',
+    name: 'Lița',
   },
   {
     id: 6725,
@@ -33662,12 +33662,12 @@ export const CITIES = [
   {
     id: 6737,
     countyId: 21,
-    name: 'Livada (Petrestii de Jos)',
+    name: 'Livada (Petreștii de Jos)',
   },
   {
     id: 6738,
     countyId: 6,
-    name: 'Livada Beiusului',
+    name: 'Livada Beiușului',
   },
   {
     id: 6739,
@@ -33677,12 +33677,12 @@ export const CITIES = [
   {
     id: 6740,
     countyId: 46,
-    name: 'Livada Mica',
+    name: 'Livada Mică',
   },
   {
     id: 6741,
     countyId: 18,
-    name: 'Livada Mica',
+    name: 'Livada Mică',
   },
   {
     id: 6742,
@@ -33792,12 +33792,12 @@ export const CITIES = [
   {
     id: 6763,
     countyId: 47,
-    name: 'Loamnes',
+    name: 'Loamneș',
   },
   {
     id: 6764,
     countyId: 21,
-    name: 'Lobodas',
+    name: 'Lobodaș',
   },
   {
     id: 6765,
@@ -33822,17 +33822,17 @@ export const CITIES = [
   {
     id: 6769,
     countyId: 30,
-    name: 'Logresti',
+    name: 'Logrești',
   },
   {
     id: 6770,
     countyId: 30,
-    name: 'Logresti-Mosteni',
+    name: 'Logrești-Moșteni',
   },
   {
     id: 6771,
     countyId: 54,
-    name: 'Lojnita',
+    name: 'Lojnița',
   },
   {
     id: 6772,
@@ -33852,7 +33852,7 @@ export const CITIES = [
   {
     id: 6775,
     countyId: 1,
-    name: 'Lopadea Noua',
+    name: 'Lopadea Nouă',
   },
   {
     id: 6776,
@@ -33862,17 +33862,17 @@ export const CITIES = [
   {
     id: 6777,
     countyId: 18,
-    name: 'Lopatareasa',
+    name: 'Lopătăreasa',
   },
   {
     id: 6778,
     countyId: 18,
-    name: 'Lopatari',
+    name: 'Lopătari',
   },
   {
     id: 6779,
     countyId: 44,
-    name: 'Lopatnita',
+    name: 'Lopatnița',
   },
   {
     id: 6780,
@@ -33882,7 +33882,7 @@ export const CITIES = [
   {
     id: 6781,
     countyId: 6,
-    name: 'Lorau',
+    name: 'Lorău',
   },
   {
     id: 6782,
@@ -33892,7 +33892,7 @@ export const CITIES = [
   {
     id: 6783,
     countyId: 41,
-    name: 'Lotu',
+    name: 'Loțu',
   },
   {
     id: 6784,
@@ -33937,27 +33937,27 @@ export const CITIES = [
   {
     id: 6792,
     countyId: 46,
-    name: 'Lucaceni',
+    name: 'Lucăceni',
   },
   {
     id: 6793,
     countyId: 39,
-    name: 'Lucacesti',
+    name: 'Lucăcești',
   },
   {
     id: 6794,
     countyId: 48,
-    name: 'Lucacesti',
+    name: 'Lucăcești',
   },
   {
     id: 6795,
     countyId: 20,
-    name: 'Lucacevat',
+    name: 'Lucacevăț',
   },
   {
     id: 6796,
     countyId: 50,
-    name: 'Lucaret',
+    name: 'Lucareț',
   },
   {
     id: 6797,
@@ -33992,37 +33992,37 @@ export const CITIES = [
   {
     id: 6803,
     countyId: 49,
-    name: 'Ludaneasca',
+    name: 'Ludăneasca',
   },
   {
     id: 6804,
     countyId: 5,
-    name: 'Ludasi',
+    name: 'Ludași',
   },
   {
     id: 6805,
     countyId: 24,
-    name: 'Ludesti',
+    name: 'Ludești',
   },
   {
     id: 6806,
     countyId: 33,
-    name: 'Ludestii de Jos',
+    name: 'Ludeștii de Jos',
   },
   {
     id: 6807,
     countyId: 33,
-    name: 'Ludestii de Sus',
+    name: 'Ludeștii de Sus',
   },
   {
     id: 6808,
     countyId: 10,
-    name: 'Ludisor',
+    name: 'Ludișor',
   },
   {
     id: 6809,
     countyId: 47,
-    name: 'Ludos',
+    name: 'Ludoș',
   },
   {
     id: 6810,
@@ -34032,7 +34032,7 @@ export const CITIES = [
   {
     id: 6811,
     countyId: 41,
-    name: 'Ludus',
+    name: 'Luduș',
   },
   {
     id: 6812,
@@ -34042,12 +34042,12 @@ export const CITIES = [
   {
     id: 6813,
     countyId: 6,
-    name: 'Lugasu de Jos',
+    name: 'Lugașu de Jos',
   },
   {
     id: 6814,
     countyId: 6,
-    name: 'Lugasu de Sus',
+    name: 'Lugașu de Sus',
   },
   {
     id: 6815,
@@ -34062,7 +34062,7 @@ export const CITIES = [
   {
     id: 6817,
     countyId: 2,
-    name: 'Luguzau',
+    name: 'Luguzău',
   },
   {
     id: 6818,
@@ -34077,7 +34077,7 @@ export const CITIES = [
   {
     id: 6820,
     countyId: 5,
-    name: 'Luizi-Calugara',
+    name: 'Luizi-Călugăra',
   },
   {
     id: 6821,
@@ -34092,7 +34092,7 @@ export const CITIES = [
   {
     id: 6823,
     countyId: 1,
-    name: 'Luminesti',
+    name: 'Luminești',
   },
   {
     id: 6824,
@@ -34102,22 +34102,22 @@ export const CITIES = [
   {
     id: 6825,
     countyId: 42,
-    name: 'Luminis',
+    name: 'Luminiș',
   },
   {
     id: 6826,
     countyId: 45,
-    name: 'Luminisu',
+    name: 'Luminișu',
   },
   {
     id: 6827,
     countyId: 22,
-    name: 'Luminita',
+    name: 'Luminița',
   },
   {
     id: 6828,
     countyId: 51,
-    name: 'Luminita',
+    name: 'Luminița',
   },
   {
     id: 6829,
@@ -34207,12 +34207,12 @@ export const CITIES = [
   {
     id: 6846,
     countyId: 33,
-    name: 'Lunca (Baia de Cris)',
+    name: 'Lunca (Baia de Criș)',
   },
   {
     id: 6847,
     countyId: 33,
-    name: 'Lunca (Baita)',
+    name: 'Lunca (Băița)',
   },
   {
     id: 6848,
@@ -34237,12 +34237,12 @@ export const CITIES = [
   {
     id: 6852,
     countyId: 1,
-    name: 'Lunca (Lupsa)',
+    name: 'Lunca (Lupșa)',
   },
   {
     id: 6853,
     countyId: 48,
-    name: 'Lunca (Milisauti)',
+    name: 'Lunca (Milișăuți)',
   },
   {
     id: 6854,
@@ -34262,37 +34262,37 @@ export const CITIES = [
   {
     id: 6857,
     countyId: 35,
-    name: 'Lunca (Pascani)',
+    name: 'Lunca (Pașcani)',
   },
   {
     id: 6858,
     countyId: 18,
-    name: 'Lunca (Patarlagele)',
+    name: 'Lunca (Pătârlagele)',
   },
   {
     id: 6859,
     countyId: 1,
-    name: 'Lunca (Posaga)',
+    name: 'Lunca (Poșaga)',
   },
   {
     id: 6860,
     countyId: 18,
-    name: 'Lunca (Puiesti)',
+    name: 'Lunca (Puiești)',
   },
   {
     id: 6861,
     countyId: 1,
-    name: 'Lunca (Valea Lunga)',
+    name: 'Lunca (Valea Lungă)',
   },
   {
     id: 6862,
     countyId: 42,
-    name: 'Lunca (Vanatori-Neamt)',
+    name: 'Lunca (Vânători-Neamț)',
   },
   {
     id: 6863,
     countyId: 8,
-    name: 'Lunca (Varfu Campului)',
+    name: 'Lunca (Vârfu Câmpului)',
   },
   {
     id: 6864,
@@ -34302,7 +34302,7 @@ export const CITIES = [
   {
     id: 6865,
     countyId: 24,
-    name: 'Lunca (Voinesti)',
+    name: 'Lunca (Voinești)',
   },
   {
     id: 6866,
@@ -34312,7 +34312,7 @@ export const CITIES = [
   {
     id: 6867,
     countyId: 1,
-    name: 'Lunca Ampoitei',
+    name: 'Lunca Ampoiței',
   },
   {
     id: 6868,
@@ -34322,7 +34322,7 @@ export const CITIES = [
   {
     id: 6869,
     countyId: 5,
-    name: 'Lunca Asau',
+    name: 'Lunca Asău',
   },
   {
     id: 6870,
@@ -34342,7 +34342,7 @@ export const CITIES = [
   {
     id: 6873,
     countyId: 21,
-    name: 'Lunca Bontului',
+    name: 'Lunca Bonțului',
   },
   {
     id: 6874,
@@ -34372,7 +34372,7 @@ export const CITIES = [
   {
     id: 6879,
     countyId: 35,
-    name: 'Lunca Cetatuii',
+    name: 'Lunca Cetățuii',
   },
   {
     id: 6880,
@@ -34407,17 +34407,17 @@ export const CITIES = [
   {
     id: 6886,
     countyId: 18,
-    name: 'Lunca Frumoasa',
+    name: 'Lunca Frumoasă',
   },
   {
     id: 6887,
     countyId: 3,
-    name: 'Lunca Gartii',
+    name: 'Lunca Gârtii',
   },
   {
     id: 6888,
     countyId: 1,
-    name: 'Lunca Goiesti',
+    name: 'Lunca Goiești',
   },
   {
     id: 6889,
@@ -34427,7 +34427,7 @@ export const CITIES = [
   {
     id: 6890,
     countyId: 18,
-    name: 'Lunca Jaristei',
+    name: 'Lunca Jariștei',
   },
   {
     id: 6891,
@@ -34437,22 +34437,22 @@ export const CITIES = [
   {
     id: 6892,
     countyId: 1,
-    name: 'Lunca Larga (Bistra)',
+    name: 'Lunca Largă (Bistra)',
   },
   {
     id: 6893,
     countyId: 1,
-    name: 'Lunca Larga (Ocolis)',
+    name: 'Lunca Largă (Ocoliș)',
   },
   {
     id: 6894,
     countyId: 7,
-    name: 'Lunca Lesului',
+    name: 'Lunca Leșului',
   },
   {
     id: 6895,
     countyId: 23,
-    name: 'Lunca Marcusului',
+    name: 'Lunca Mărcușului',
   },
   {
     id: 6896,
@@ -34467,7 +34467,7 @@ export const CITIES = [
   {
     id: 6898,
     countyId: 1,
-    name: 'Lunca Metesului',
+    name: 'Lunca Meteșului',
   },
   {
     id: 6899,
@@ -34477,12 +34477,12 @@ export const CITIES = [
   {
     id: 6900,
     countyId: 41,
-    name: 'Lunca Muresului',
+    name: 'Lunca Mureșului',
   },
   {
     id: 6901,
     countyId: 1,
-    name: 'Lunca Muresului',
+    name: 'Lunca Mureșului',
   },
   {
     id: 6902,
@@ -34502,17 +34502,17 @@ export const CITIES = [
   {
     id: 6905,
     countyId: 35,
-    name: 'Lunca Rates',
+    name: 'Lunca Rateș',
   },
   {
     id: 6906,
     countyId: 7,
-    name: 'Lunca Sateasca',
+    name: 'Lunca Săteasca',
   },
   {
     id: 6907,
     countyId: 1,
-    name: 'Lunca Tarnavei',
+    name: 'Lunca Târnavei',
   },
   {
     id: 6908,
@@ -34522,12 +34522,12 @@ export const CITIES = [
   {
     id: 6909,
     countyId: 1,
-    name: 'Lunca Vesesti',
+    name: 'Lunca Vesești',
   },
   {
     id: 6910,
     countyId: 21,
-    name: 'Lunca Visagului',
+    name: 'Lunca Vișagului',
   },
   {
     id: 6911,
@@ -34567,7 +34567,7 @@ export const CITIES = [
   {
     id: 6918,
     countyId: 35,
-    name: 'Luncasi',
+    name: 'Luncași',
   },
   {
     id: 6919,
@@ -34577,12 +34577,12 @@ export const CITIES = [
   {
     id: 6920,
     countyId: 51,
-    name: 'Luncavita',
+    name: 'Luncavița',
   },
   {
     id: 6921,
     countyId: 20,
-    name: 'Luncavita',
+    name: 'Luncavița',
   },
   {
     id: 6922,
@@ -34607,32 +34607,32 @@ export const CITIES = [
   {
     id: 6926,
     countyId: 6,
-    name: 'Luncsoara',
+    name: 'Luncșoara',
   },
   {
     id: 6927,
     countyId: 40,
-    name: 'Luncsoara',
+    name: 'Luncșoara',
   },
   {
     id: 6928,
     countyId: 2,
-    name: 'Luncsoara',
+    name: 'Luncșoara',
   },
   {
     id: 6929,
     countyId: 33,
-    name: 'Luncsoara',
+    name: 'Luncșoara',
   },
   {
     id: 6930,
     countyId: 25,
-    name: 'Luncsoru',
+    name: 'Luncșoru',
   },
   {
     id: 6931,
     countyId: 48,
-    name: 'Luncusoara',
+    name: 'Luncușoara',
   },
   {
     id: 6932,
@@ -34657,7 +34657,7 @@ export const CITIES = [
   {
     id: 6936,
     countyId: 35,
-    name: 'Lungani (Voinesti)',
+    name: 'Lungani (Voinești)',
   },
   {
     id: 6937,
@@ -34667,22 +34667,22 @@ export const CITIES = [
   {
     id: 6938,
     countyId: 21,
-    name: 'Lungesti',
+    name: 'Lungești',
   },
   {
     id: 6939,
     countyId: 52,
-    name: 'Lungesti',
+    name: 'Lungești',
   },
   {
     id: 6940,
     countyId: 18,
-    name: 'Lungesti',
+    name: 'Lungești',
   },
   {
     id: 6941,
     countyId: 28,
-    name: 'Lungesti',
+    name: 'Lungești',
   },
   {
     id: 6942,
@@ -34692,12 +34692,12 @@ export const CITIES = [
   {
     id: 6943,
     countyId: 3,
-    name: 'Lungulesti',
+    name: 'Lungulești',
   },
   {
     id: 6944,
     countyId: 24,
-    name: 'Lunguletu',
+    name: 'Lungulețu',
   },
   {
     id: 6945,
@@ -34707,22 +34707,22 @@ export const CITIES = [
   {
     id: 6946,
     countyId: 1,
-    name: 'Lupaiesti',
+    name: 'Lupăiești',
   },
   {
     id: 6947,
     countyId: 8,
-    name: 'Luparia',
+    name: 'Lupăria',
   },
   {
     id: 6948,
     countyId: 35,
-    name: 'Luparia',
+    name: 'Lupăria',
   },
   {
     id: 6949,
     countyId: 36,
-    name: 'Luparia',
+    name: 'Lupăria',
   },
   {
     id: 6950,
@@ -34747,17 +34747,17 @@ export const CITIES = [
   {
     id: 6954,
     countyId: 5,
-    name: 'Lupesti',
+    name: 'Lupești',
   },
   {
     id: 6955,
     countyId: 2,
-    name: 'Lupesti',
+    name: 'Lupești',
   },
   {
     id: 6956,
     countyId: 53,
-    name: 'Lupesti',
+    name: 'Lupești',
   },
   {
     id: 6957,
@@ -34787,42 +34787,42 @@ export const CITIES = [
   {
     id: 6962,
     countyId: 30,
-    name: 'Lupoita',
+    name: 'Lupoița',
   },
   {
     id: 6963,
     countyId: 1,
-    name: 'Lupsa',
+    name: 'Lupșa',
   },
   {
     id: 6964,
     countyId: 10,
-    name: 'Lupsa',
+    name: 'Lupșa',
   },
   {
     id: 6965,
     countyId: 40,
-    name: 'Lupsa de Jos',
+    name: 'Lupșa de Jos',
   },
   {
     id: 6966,
     countyId: 40,
-    name: 'Lupsa de Sus',
+    name: 'Lupșa de Sus',
   },
   {
     id: 6967,
     countyId: 19,
-    name: 'Lupsanu',
+    name: 'Lupșanu',
   },
   {
     id: 6968,
     countyId: 1,
-    name: 'Lupseni',
+    name: 'Lupșeni',
   },
   {
     id: 6969,
     countyId: 19,
-    name: 'Luptatori',
+    name: 'Luptători',
   },
   {
     id: 6970,
@@ -34837,32 +34837,32 @@ export const CITIES = [
   {
     id: 6972,
     countyId: 52,
-    name: 'Lupuiesti',
+    name: 'Lupuiești',
   },
   {
     id: 6973,
     countyId: 1,
-    name: 'Lupulesti',
+    name: 'Lupulești',
   },
   {
     id: 6974,
     countyId: 7,
-    name: 'Lusca',
+    name: 'Lușca',
   },
   {
     id: 6975,
     countyId: 10,
-    name: 'Luta',
+    name: 'Luța',
   },
   {
     id: 6976,
     countyId: 42,
-    name: 'Lutca',
+    name: 'Luțca',
   },
   {
     id: 6977,
     countyId: 31,
-    name: 'Lutita',
+    name: 'Lutița',
   },
   {
     id: 6978,
@@ -34872,27 +34872,27 @@ export const CITIES = [
   {
     id: 6979,
     countyId: 44,
-    name: 'Lutu Rosu',
+    name: 'Lutu Roșu',
   },
   {
     id: 6980,
     countyId: 3,
-    name: 'Macai',
+    name: 'Măcăi',
   },
   {
     id: 6981,
     countyId: 1,
-    name: 'Macaresti',
+    name: 'Măcărești',
   },
   {
     id: 6982,
     countyId: 35,
-    name: 'Macaresti',
+    name: 'Măcărești',
   },
   {
     id: 6983,
     countyId: 21,
-    name: 'Macau',
+    name: 'Macău',
   },
   {
     id: 6984,
@@ -34907,42 +34907,42 @@ export const CITIES = [
   {
     id: 6986,
     countyId: 20,
-    name: 'Macesti',
+    name: 'Măcești',
   },
   {
     id: 6987,
     countyId: 30,
-    name: 'Macesu',
+    name: 'Măceșu',
   },
   {
     id: 6988,
     countyId: 25,
-    name: 'Macesu de Jos',
+    name: 'Măceșu de Jos',
   },
   {
     id: 6989,
     countyId: 25,
-    name: 'Macesu de Sus',
+    name: 'Măceșu de Sus',
   },
   {
     id: 6990,
     countyId: 33,
-    name: 'Maceu',
+    name: 'Măceu',
   },
   {
     id: 6991,
     countyId: 41,
-    name: 'Macicasesti',
+    name: 'Măcicășești',
   },
   {
     id: 6992,
     countyId: 21,
-    name: 'Macicasu',
+    name: 'Măcicașu',
   },
   {
     id: 6993,
     countyId: 51,
-    name: 'Macin',
+    name: 'Măcin',
   },
   {
     id: 6994,
@@ -34952,42 +34952,42 @@ export const CITIES = [
   {
     id: 6995,
     countyId: 28,
-    name: 'Maciseni',
+    name: 'Măcișeni',
   },
   {
     id: 6996,
     countyId: 52,
-    name: 'Maciuca',
+    name: 'Măciuca',
   },
   {
     id: 6997,
     countyId: 52,
-    name: 'Maciuceni',
+    name: 'Măciuceni',
   },
   {
     id: 6998,
     countyId: 20,
-    name: 'Macoviste (Ciuchici)',
+    name: 'Macoviște (Ciuchici)',
   },
   {
     id: 6999,
     countyId: 20,
-    name: 'Macoviste (Cornea)',
+    name: 'Macoviște (Cornea)',
   },
   {
     id: 7000,
     countyId: 53,
-    name: 'Macresti (Rebricea)',
+    name: 'Măcrești (Rebricea)',
   },
   {
     id: 7001,
     countyId: 53,
-    name: 'Macresti (Zapodeni)',
+    name: 'Măcrești (Zăpodeni)',
   },
   {
     id: 7002,
     countyId: 18,
-    name: 'Macrina',
+    name: 'Măcrina',
   },
   {
     id: 7003,
@@ -34997,67 +34997,67 @@ export const CITIES = [
   {
     id: 7004,
     countyId: 46,
-    name: 'Madaras',
+    name: 'Mădăras',
   },
   {
     id: 7005,
     countyId: 41,
-    name: 'Madaras',
+    name: 'Mădăraș',
   },
   {
     id: 7006,
     countyId: 6,
-    name: 'Madaras',
+    name: 'Mădăras',
   },
   {
     id: 7007,
     countyId: 31,
-    name: 'Madaras',
+    name: 'Mădăraș',
   },
   {
     id: 7008,
     countyId: 41,
-    name: 'Madaraseni',
+    name: 'Mădărășeni',
   },
   {
     id: 7009,
     countyId: 35,
-    name: 'Madarjac',
+    name: 'Mădârjac',
   },
   {
     id: 7010,
     countyId: 35,
-    name: 'Madarjesti',
+    name: 'Mădârjești',
   },
   {
     id: 7011,
     countyId: 42,
-    name: 'Madei',
+    name: 'Mădei',
   },
   {
     id: 7012,
     countyId: 2,
-    name: 'Maderat',
+    name: 'Măderat',
   },
   {
     id: 7013,
     countyId: 2,
-    name: 'Madrigesti',
+    name: 'Mădrigești',
   },
   {
     id: 7014,
     countyId: 52,
-    name: 'Madulari',
+    name: 'Mădulari',
   },
   {
     id: 7015,
     countyId: 52,
-    name: 'Madulari (Cernisoara)',
+    name: 'Mădulari (Cernișoara)',
   },
   {
     id: 7016,
     countyId: 45,
-    name: 'Maeriste',
+    name: 'Măeriște',
   },
   {
     id: 7017,
@@ -35077,17 +35077,17 @@ export const CITIES = [
   {
     id: 7020,
     countyId: 6,
-    name: 'Magesti',
+    name: 'Măgești',
   },
   {
     id: 7021,
     countyId: 41,
-    name: 'Magherani',
+    name: 'Măgherani',
   },
   {
     id: 7022,
     countyId: 30,
-    name: 'Magheresti',
+    name: 'Magherești',
   },
   {
     id: 7023,
@@ -35097,37 +35097,37 @@ export const CITIES = [
   {
     id: 7024,
     countyId: 31,
-    name: 'Magherus',
+    name: 'Măgheruș',
   },
   {
     id: 7025,
     countyId: 23,
-    name: 'Magherus',
+    name: 'Măgheruș',
   },
   {
     id: 7026,
     countyId: 41,
-    name: 'Magherus',
+    name: 'Măgheruș',
   },
   {
     id: 7027,
     countyId: 1,
-    name: 'Maghierat',
+    name: 'Măghierat',
   },
   {
     id: 7028,
     countyId: 1,
-    name: 'Magina',
+    name: 'Măgina',
   },
   {
     id: 7029,
     countyId: 5,
-    name: 'Magiresti',
+    name: 'Măgirești',
   },
   {
     id: 7030,
     countyId: 5,
-    name: 'Magla',
+    name: 'Mâgla',
   },
   {
     id: 7031,
@@ -35137,7 +35137,7 @@ export const CITIES = [
   {
     id: 7032,
     countyId: 21,
-    name: 'Magoaja',
+    name: 'Măgoaja',
   },
   {
     id: 7033,
@@ -35147,207 +35147,207 @@ export const CITIES = [
   {
     id: 7034,
     countyId: 2,
-    name: 'Magulicea',
+    name: 'Măgulicea',
   },
   {
     id: 7035,
     countyId: 5,
-    name: 'Magura',
+    name: 'Măgura',
   },
   {
     id: 7036,
     countyId: 10,
-    name: 'Magura',
+    name: 'Măgura',
   },
   {
     id: 7037,
     countyId: 20,
-    name: 'Magura',
+    name: 'Măgura',
   },
   {
     id: 7038,
     countyId: 33,
-    name: 'Magura',
+    name: 'Măgura',
   },
   {
     id: 7039,
     countyId: 45,
-    name: 'Magura',
+    name: 'Măgura',
   },
   {
     id: 7040,
     countyId: 49,
-    name: 'Magura',
+    name: 'Măgura',
   },
   {
     id: 7041,
     countyId: 54,
-    name: 'Magura',
+    name: 'Măgura',
   },
   {
     id: 7042,
     countyId: 6,
-    name: 'Magura',
+    name: 'Măgura',
   },
   {
     id: 7043,
     countyId: 18,
-    name: 'Magura',
+    name: 'Măgura',
   },
   {
     id: 7044,
     countyId: 22,
-    name: 'Magura',
+    name: 'Măgura',
   },
   {
     id: 7045,
     countyId: 44,
-    name: 'Magura',
+    name: 'Măgura',
   },
   {
     id: 7046,
     countyId: 48,
-    name: 'Magura',
+    name: 'Măgura',
   },
   {
     id: 7047,
     countyId: 52,
-    name: 'Magura',
+    name: 'Măgura',
   },
   {
     id: 7048,
     countyId: 24,
-    name: 'Magura (Bezdead)',
+    name: 'Măgura (Bezdead)',
   },
   {
     id: 7049,
     countyId: 1,
-    name: 'Magura (Bucium)',
+    name: 'Măgura (Bucium)',
   },
   {
     id: 7050,
     countyId: 1,
-    name: 'Magura (Galda de Jos)',
+    name: 'Măgura (Galda de Jos)',
   },
   {
     id: 7051,
     countyId: 24,
-    name: 'Magura (Hulubesti)',
+    name: 'Măgura (Hulubești)',
   },
   {
     id: 7052,
     countyId: 43,
-    name: 'Magura (Perieti)',
+    name: 'Măgura (Perieți)',
   },
   {
     id: 7053,
     countyId: 43,
-    name: 'Magura (Tatulesti)',
+    name: 'Măgura (Tătulești)',
   },
   {
     id: 7054,
     countyId: 49,
-    name: 'Magura cu Liliac',
+    name: 'Măgura cu Liliac',
   },
   {
     id: 7055,
     countyId: 21,
-    name: 'Magura Ierii',
+    name: 'Măgura Ierii',
   },
   {
     id: 7056,
     countyId: 7,
-    name: 'Magura Ilvei',
+    name: 'Măgura Ilvei',
   },
   {
     id: 7057,
     countyId: 33,
-    name: 'Magura-Toplita',
+    name: 'Măgura-Toplița',
   },
   {
     id: 7058,
     countyId: 36,
-    name: 'Magurele',
+    name: 'Măgurele',
   },
   {
     id: 7059,
     countyId: 44,
-    name: 'Magurele',
+    name: 'Măgurele',
   },
   {
     id: 7060,
     countyId: 7,
-    name: 'Magurele',
+    name: 'Măgurele',
   },
   {
     id: 7061,
     countyId: 40,
-    name: 'Magurele',
+    name: 'Măgurele',
   },
   {
     id: 7062,
     countyId: 51,
-    name: 'Magurele',
+    name: 'Măgurele',
   },
   {
     id: 7063,
     countyId: 9,
-    name: 'Magureni',
+    name: 'Măgureni',
   },
   {
     id: 7064,
     countyId: 33,
-    name: 'Magureni',
+    name: 'Măgureni',
   },
   {
     id: 7065,
     countyId: 44,
-    name: 'Magureni',
+    name: 'Măgureni',
   },
   {
     id: 7066,
     countyId: 19,
-    name: 'Magureni',
+    name: 'Măgureni',
   },
   {
     id: 7067,
     countyId: 39,
-    name: 'Magureni',
+    name: 'Măgureni',
   },
   {
     id: 7068,
     countyId: 52,
-    name: 'Magureni',
+    name: 'Măgureni',
   },
   {
     id: 7069,
     countyId: 21,
-    name: 'Maguri',
+    name: 'Măguri',
   },
   {
     id: 7070,
     countyId: 50,
-    name: 'Maguri',
+    name: 'Măguri',
   },
   {
     id: 7071,
     countyId: 21,
-    name: 'Maguri-Racatau',
+    name: 'Măguri-Răcătău',
   },
   {
     id: 7072,
     countyId: 18,
-    name: 'Maguricea',
+    name: 'Măguricea',
   },
   {
     id: 7073,
     countyId: 1,
-    name: 'Mahaceni',
+    name: 'Măhăceni',
   },
   {
     id: 7074,
     countyId: 21,
-    name: 'Mahal',
+    name: 'Măhal',
   },
   {
     id: 7075,
@@ -35382,12 +35382,12 @@ export const CITIES = [
   {
     id: 7081,
     countyId: 30,
-    name: 'Maiag',
+    name: 'Măiag',
   },
   {
     id: 7082,
     countyId: 54,
-    name: 'Maicanesti',
+    name: 'Măicănești',
   },
   {
     id: 7083,
@@ -35402,7 +35402,7 @@ export const CITIES = [
   {
     id: 7085,
     countyId: 10,
-    name: 'Maierus',
+    name: 'Măieruș',
   },
   {
     id: 7086,
@@ -35412,12 +35412,12 @@ export const CITIES = [
   {
     id: 7087,
     countyId: 36,
-    name: 'Maineasca',
+    name: 'Măineasca',
   },
   {
     id: 7088,
     countyId: 41,
-    name: 'Maioresti',
+    name: 'Maiorești',
   },
   {
     id: 7089,
@@ -35432,32 +35432,32 @@ export const CITIES = [
   {
     id: 7091,
     countyId: 45,
-    name: 'Maladia',
+    name: 'Mălădia',
   },
   {
     id: 7092,
     countyId: 35,
-    name: 'Malaesti',
+    name: 'Mălăești',
   },
   {
     id: 7093,
     countyId: 25,
-    name: 'Malaesti',
+    name: 'Mălăești',
   },
   {
     id: 7094,
     countyId: 41,
-    name: 'Malaesti',
+    name: 'Mălăești',
   },
   {
     id: 7095,
     countyId: 44,
-    name: 'Malaestii de Jos',
+    name: 'Mălăeștii de Jos',
   },
   {
     id: 7096,
     countyId: 44,
-    name: 'Malaestii de Sus',
+    name: 'Mălăeștii de Sus',
   },
   {
     id: 7097,
@@ -35472,17 +35472,17 @@ export const CITIES = [
   {
     id: 7099,
     countyId: 33,
-    name: 'Malaiesti',
+    name: 'Mălăiești',
   },
   {
     id: 7100,
     countyId: 53,
-    name: 'Malaiesti',
+    name: 'Mălăiești',
   },
   {
     id: 7101,
     countyId: 44,
-    name: 'Malaiesti',
+    name: 'Mălăiești',
   },
   {
     id: 7102,
@@ -35492,12 +35492,12 @@ export const CITIES = [
   {
     id: 7103,
     countyId: 47,
-    name: 'Malancrav',
+    name: 'Mălâncrav',
   },
   {
     id: 7104,
     countyId: 40,
-    name: 'Malarisca',
+    name: 'Mălărișca',
   },
   {
     id: 7105,
@@ -35507,7 +35507,7 @@ export const CITIES = [
   {
     id: 7106,
     countyId: 49,
-    name: 'Maldaeni',
+    name: 'Măldăeni',
   },
   {
     id: 7107,
@@ -35517,22 +35517,22 @@ export const CITIES = [
   {
     id: 7108,
     countyId: 52,
-    name: 'Maldaresti',
+    name: 'Măldărești',
   },
   {
     id: 7109,
     countyId: 52,
-    name: 'Maldaresti (Ladesti)',
+    name: 'Măldărești (Lădești)',
   },
   {
     id: 7110,
     countyId: 52,
-    name: 'Maldaresti (Maciuca)',
+    name: 'Măldărești (Măciuca)',
   },
   {
     id: 7111,
     countyId: 52,
-    name: 'Maldarestii de Jos',
+    name: 'Măldăreștii de Jos',
   },
   {
     id: 7112,
@@ -35542,7 +35542,7 @@ export const CITIES = [
   {
     id: 7113,
     countyId: 45,
-    name: 'Maleni',
+    name: 'Măleni',
   },
   {
     id: 7114,
@@ -35552,12 +35552,12 @@ export const CITIES = [
   {
     id: 7115,
     countyId: 48,
-    name: 'Malini',
+    name: 'Mălini',
   },
   {
     id: 7116,
     countyId: 10,
-    name: 'Malinis',
+    name: 'Măliniș',
   },
   {
     id: 7117,
@@ -35567,22 +35567,22 @@ export const CITIES = [
   {
     id: 7118,
     countyId: 23,
-    name: 'Malnas',
+    name: 'Malnaș',
   },
   {
     id: 7119,
     countyId: 23,
-    name: 'Malnas-Bai',
+    name: 'Malnaș-Băi',
   },
   {
     id: 7120,
     countyId: 5,
-    name: 'Malosu',
+    name: 'Mâlosu',
   },
   {
     id: 7121,
     countyId: 40,
-    name: 'Malovat',
+    name: 'Malovăț',
   },
   {
     id: 7122,
@@ -35607,7 +35607,7 @@ export const CITIES = [
   {
     id: 7126,
     countyId: 3,
-    name: 'Malu (Barla)',
+    name: 'Malu (Bârla)',
   },
   {
     id: 7127,
@@ -35642,17 +35642,17 @@ export const CITIES = [
   {
     id: 7133,
     countyId: 34,
-    name: 'Malu Rosu',
+    name: 'Malu Roșu',
   },
   {
     id: 7134,
     countyId: 44,
-    name: 'Malu Rosu',
+    name: 'Malu Roșu',
   },
   {
     id: 7135,
     countyId: 43,
-    name: 'Malu Rosu',
+    name: 'Malu Roșu',
   },
   {
     id: 7136,
@@ -35662,17 +35662,17 @@ export const CITIES = [
   {
     id: 7137,
     countyId: 3,
-    name: 'Malu Vanat',
+    name: 'Malu Vânăt',
   },
   {
     id: 7138,
     countyId: 44,
-    name: 'Malu Vanat',
+    name: 'Malu Vânăt',
   },
   {
     id: 7139,
     countyId: 52,
-    name: 'Malu Vartop',
+    name: 'Malu Vârtop',
   },
   {
     id: 7140,
@@ -35682,12 +35682,12 @@ export const CITIES = [
   {
     id: 7141,
     countyId: 3,
-    name: 'Malureni',
+    name: 'Mălureni',
   },
   {
     id: 7142,
     countyId: 28,
-    name: 'Malureni',
+    name: 'Mălureni',
   },
   {
     id: 7143,
@@ -35702,12 +35702,12 @@ export const CITIES = [
   {
     id: 7145,
     countyId: 53,
-    name: 'Malusteni',
+    name: 'Mălușteni',
   },
   {
     id: 7146,
     countyId: 7,
-    name: 'Malut',
+    name: 'Măluț',
   },
   {
     id: 7147,
@@ -35722,7 +35722,7 @@ export const CITIES = [
   {
     id: 7149,
     countyId: 1,
-    name: 'Mamaligani',
+    name: 'Mămăligani',
   },
   {
     id: 7150,
@@ -35737,12 +35737,12 @@ export const CITIES = [
   {
     id: 7152,
     countyId: 52,
-    name: 'Manailesti',
+    name: 'Mănăilești',
   },
   {
     id: 7153,
     countyId: 1,
-    name: 'Manarade',
+    name: 'Mănărade',
   },
   {
     id: 7154,
@@ -35757,52 +35757,52 @@ export const CITIES = [
   {
     id: 7156,
     countyId: 24,
-    name: 'Manastioara',
+    name: 'Mânăstioara',
   },
   {
     id: 7157,
     countyId: 54,
-    name: 'Manastioara',
+    name: 'Mănăstioara',
   },
   {
     id: 7158,
     countyId: 48,
-    name: 'Manastioara (Siret)',
+    name: 'Mănăstioara (Siret)',
   },
   {
     id: 7159,
     countyId: 48,
-    name: 'Manastioara (Udesti)',
+    name: 'Mănăstioara (Udești)',
   },
   {
     id: 7160,
     countyId: 50,
-    name: 'Manastire',
+    name: 'Mânăstire',
   },
   {
     id: 7161,
     countyId: 1,
-    name: 'Manastire',
+    name: 'Mănăstire',
   },
   {
     id: 7162,
     countyId: 21,
-    name: 'Manastirea',
+    name: 'Mănăstirea',
   },
   {
     id: 7163,
     countyId: 35,
-    name: 'Manastirea',
+    name: 'Mănăstirea',
   },
   {
     id: 7164,
     countyId: 19,
-    name: 'Manastirea',
+    name: 'Mânăstirea',
   },
   {
     id: 7165,
     countyId: 18,
-    name: 'Manastirea',
+    name: 'Mănăstirea',
   },
   {
     id: 7166,
@@ -35812,7 +35812,7 @@ export const CITIES = [
   {
     id: 7167,
     countyId: 39,
-    name: 'Manastirea',
+    name: 'Mănăstirea',
   },
   {
     id: 7168,
@@ -35822,97 +35822,97 @@ export const CITIES = [
   {
     id: 7169,
     countyId: 53,
-    name: 'Manastirea (Delesti)',
+    name: 'Mânăstirea (Delești)',
   },
   {
     id: 7170,
     countyId: 53,
-    name: 'Manastirea (Malusteni)',
+    name: 'Mânăstirea (Mălușteni)',
   },
   {
     id: 7171,
     countyId: 5,
-    name: 'Manastirea Casin',
+    name: 'Mănăstirea Cașin',
   },
   {
     id: 7172,
     countyId: 8,
-    name: 'Manastirea Doamnei',
+    name: 'Mănăstirea Doamnei',
   },
   {
     id: 7173,
     countyId: 48,
-    name: 'Manastirea Humorului',
+    name: 'Mănăstirea Humorului',
   },
   {
     id: 7174,
     countyId: 42,
-    name: 'Manastirea Neamt',
+    name: 'Mănăstirea Neamț',
   },
   {
     id: 7175,
     countyId: 18,
-    name: 'Manastirea Ratesti',
+    name: 'Mânăstirea Rătești',
   },
   {
     id: 7176,
     countyId: 44,
-    name: 'Manastirea Suzana',
+    name: 'Mânăstirea Suzana',
   },
   {
     id: 7177,
     countyId: 21,
-    name: 'Manastireni',
+    name: 'Mănăstireni',
   },
   {
     id: 7178,
     countyId: 8,
-    name: 'Manastireni',
+    name: 'Mânăstireni',
   },
   {
     id: 7179,
     countyId: 50,
-    name: 'Manastiur',
+    name: 'Mănăștiur',
   },
   {
     id: 7180,
     countyId: 2,
-    name: 'Manastur',
+    name: 'Mănăștur',
   },
   {
     id: 7181,
     countyId: 21,
-    name: 'Manasturel',
+    name: 'Mănășturel',
   },
   {
     id: 7182,
     countyId: 21,
-    name: 'Manasturu Romanesc',
+    name: 'Mănășturu Românesc',
   },
   {
     id: 7183,
     countyId: 39,
-    name: 'Manau',
+    name: 'Mânău',
   },
   {
     id: 7184,
     countyId: 1,
-    name: 'Mancesti',
+    name: 'Măncești',
   },
   {
     id: 7185,
     countyId: 3,
-    name: 'Mancioiu',
+    name: 'Măncioiu',
   },
   {
     id: 7186,
     countyId: 3,
-    name: 'Mandra',
+    name: 'Mândra',
   },
   {
     id: 7187,
     countyId: 47,
-    name: 'Mandra',
+    name: 'Mândra',
   },
   {
     id: 7188,
@@ -35922,87 +35922,87 @@ export const CITIES = [
   {
     id: 7189,
     countyId: 10,
-    name: 'Mandra',
+    name: 'Mândra',
   },
   {
     id: 7190,
     countyId: 28,
-    name: 'Mandresti',
+    name: 'Mândrești',
   },
   {
     id: 7191,
     countyId: 8,
-    name: 'Mandresti (Ungureni)',
+    name: 'Mândrești (Ungureni)',
   },
   {
     id: 7192,
     countyId: 8,
-    name: 'Mandresti (Vladeni)',
+    name: 'Mândrești (Vlădeni)',
   },
   {
     id: 7193,
     countyId: 54,
-    name: 'Mandresti-Moldova',
+    name: 'Mândrești-Moldova',
   },
   {
     id: 7194,
     countyId: 54,
-    name: 'Mandresti-Munteni',
+    name: 'Mândrești-Munteni',
   },
   {
     id: 7195,
     countyId: 2,
-    name: 'Mandruloc',
+    name: 'Mândruloc',
   },
   {
     id: 7196,
     countyId: 52,
-    name: 'Maneasa',
+    name: 'Măneasa',
   },
   {
     id: 7197,
     countyId: 44,
-    name: 'Maneciu',
+    name: 'Măneciu',
   },
   {
     id: 7198,
     countyId: 44,
-    name: 'Maneciu-Pamanteni',
+    name: 'Măneciu-Pământeni',
   },
   {
     id: 7199,
     countyId: 44,
-    name: 'Maneciu-Ungureni',
+    name: 'Măneciu-Ungureni',
   },
   {
     id: 7200,
     countyId: 2,
-    name: 'Manerau',
+    name: 'Mânerău',
   },
   {
     id: 7201,
     countyId: 33,
-    name: 'Manerau',
+    name: 'Mănerău',
   },
   {
     id: 7202,
     countyId: 24,
-    name: 'Manesti',
+    name: 'Mănești',
   },
   {
     id: 7203,
     countyId: 3,
-    name: 'Manesti',
+    name: 'Mănești',
   },
   {
     id: 7204,
     countyId: 44,
-    name: 'Manesti',
+    name: 'Mănești',
   },
   {
     id: 7205,
     countyId: 48,
-    name: 'Maneuti',
+    name: 'Măneuți',
   },
   {
     id: 7206,
@@ -36017,7 +36017,7 @@ export const CITIES = [
   {
     id: 7208,
     countyId: 52,
-    name: 'Mangureni',
+    name: 'Mângureni',
   },
   {
     id: 7209,
@@ -36027,32 +36027,32 @@ export const CITIES = [
   {
     id: 7210,
     countyId: 52,
-    name: 'Manicea',
+    name: 'Mănicea',
   },
   {
     id: 7211,
     countyId: 3,
-    name: 'Manicesti',
+    name: 'Mănicești',
   },
   {
     id: 7212,
     countyId: 53,
-    name: 'Manjesti',
+    name: 'Mânjești',
   },
   {
     id: 7213,
     countyId: 35,
-    name: 'Manjesti',
+    name: 'Mânjești',
   },
   {
     id: 7214,
     countyId: 24,
-    name: 'Manjina',
+    name: 'Mânjina',
   },
   {
     id: 7215,
     countyId: 42,
-    name: 'Manoaia',
+    name: 'Mănoaia',
   },
   {
     id: 7216,
@@ -36077,7 +36077,7 @@ export const CITIES = [
   {
     id: 7220,
     countyId: 8,
-    name: 'Manolesti',
+    name: 'Manolești',
   },
   {
     id: 7221,
@@ -36092,32 +36092,32 @@ export const CITIES = [
   {
     id: 7223,
     countyId: 43,
-    name: 'Manulesti',
+    name: 'Mănulești',
   },
   {
     id: 7224,
     countyId: 18,
-    name: 'Manzalesti',
+    name: 'Mânzălești',
   },
   {
     id: 7225,
     countyId: 35,
-    name: 'Manzatesti',
+    name: 'Mânzătești',
   },
   {
     id: 7226,
     countyId: 53,
-    name: 'Manzatesti',
+    name: 'Mânzătești',
   },
   {
     id: 7227,
     countyId: 53,
-    name: 'Manzati',
+    name: 'Mânzați',
   },
   {
     id: 7228,
     countyId: 18,
-    name: 'Manzu',
+    name: 'Mânzu',
   },
   {
     id: 7229,
@@ -36127,22 +36127,22 @@ export const CITIES = [
   {
     id: 7230,
     countyId: 25,
-    name: 'Maracinele',
+    name: 'Mărăcinele',
   },
   {
     id: 7231,
     countyId: 3,
-    name: 'Maracineni',
+    name: 'Mărăcineni',
   },
   {
     id: 7232,
     countyId: 18,
-    name: 'Maracineni',
+    name: 'Mărăcineni',
   },
   {
     id: 7233,
     countyId: 54,
-    name: 'Maracini',
+    name: 'Mărăcini',
   },
   {
     id: 7234,
@@ -36152,52 +36152,52 @@ export const CITIES = [
   {
     id: 7235,
     countyId: 5,
-    name: 'Marascu',
+    name: 'Mărăscu',
   },
   {
     id: 7236,
     countyId: 53,
-    name: 'Maraseni',
+    name: 'Mărășeni',
   },
   {
     id: 7237,
     countyId: 40,
-    name: 'Marasesti',
+    name: 'Mărășești',
   },
   {
     id: 7238,
     countyId: 54,
-    name: 'Marasesti',
+    name: 'Mărășești',
   },
   {
     id: 7239,
     countyId: 41,
-    name: 'Marasesti',
+    name: 'Mărășești',
   },
   {
     id: 7240,
     countyId: 53,
-    name: 'Marasesti',
+    name: 'Mărășești',
   },
   {
     id: 7241,
     countyId: 5,
-    name: 'Marasti',
+    name: 'Mărăști',
   },
   {
     id: 7242,
     countyId: 54,
-    name: 'Marasti',
+    name: 'Mărăști',
   },
   {
     id: 7243,
     countyId: 9,
-    name: 'Marasu',
+    name: 'Mărașu',
   },
   {
     id: 7244,
     countyId: 2,
-    name: 'Maraus',
+    name: 'Mărăuș',
   },
   {
     id: 7245,
@@ -36217,47 +36217,47 @@ export const CITIES = [
   {
     id: 7248,
     countyId: 21,
-    name: 'Marcesti',
+    name: 'Mărcești',
   },
   {
     id: 7249,
     countyId: 5,
-    name: 'Marcesti',
+    name: 'Mărcești',
   },
   {
     id: 7250,
     countyId: 24,
-    name: 'Marcesti',
+    name: 'Mărcești',
   },
   {
     id: 7251,
     countyId: 41,
-    name: 'Marculeni',
+    name: 'Mărculeni',
   },
   {
     id: 7252,
     countyId: 34,
-    name: 'Marculesti',
+    name: 'Mărculești',
   },
   {
     id: 7253,
     countyId: 19,
-    name: 'Marculesti-Gara',
+    name: 'Mărculești-Gară',
   },
   {
     id: 7254,
     countyId: 23,
-    name: 'Marcus',
+    name: 'Mărcuș',
   },
   {
     id: 7255,
     countyId: 23,
-    name: 'Marcusa',
+    name: 'Mărcușa',
   },
   {
     id: 7256,
     countyId: 52,
-    name: 'Marcusu',
+    name: 'Mărcușu',
   },
   {
     id: 7257,
@@ -36267,7 +36267,7 @@ export const CITIES = [
   {
     id: 7258,
     countyId: 3,
-    name: 'Mares',
+    name: 'Mareș',
   },
   {
     id: 7259,
@@ -36282,42 +36282,42 @@ export const CITIES = [
   {
     id: 7261,
     countyId: 1,
-    name: 'Margaia',
+    name: 'Mărgaia',
   },
   {
     id: 7262,
     countyId: 43,
-    name: 'Margaritesti',
+    name: 'Mărgăritești',
   },
   {
     id: 7263,
     countyId: 18,
-    name: 'Margaritesti',
+    name: 'Mărgăritești',
   },
   {
     id: 7264,
     countyId: 18,
-    name: 'Margariti',
+    name: 'Mărgăriți',
   },
   {
     id: 7265,
     countyId: 21,
-    name: 'Margau',
+    name: 'Mărgău',
   },
   {
     id: 7266,
     countyId: 43,
-    name: 'Margheni',
+    name: 'Mărgheni',
   },
   {
     id: 7267,
     countyId: 3,
-    name: 'Marghia de Jos',
+    name: 'Mârghia de Jos',
   },
   {
     id: 7268,
     countyId: 3,
-    name: 'Marghia de Sus',
+    name: 'Mârghia de Sus',
   },
   {
     id: 7269,
@@ -36342,7 +36342,7 @@ export const CITIES = [
   {
     id: 7273,
     countyId: 5,
-    name: 'Marginea (Buhusi)',
+    name: 'Marginea (Buhuși)',
   },
   {
     id: 7274,
@@ -36352,57 +36352,57 @@ export const CITIES = [
   {
     id: 7275,
     countyId: 44,
-    name: 'Marginea Padurii',
+    name: 'Marginea Pădurii',
   },
   {
     id: 7276,
     countyId: 18,
-    name: 'Margineanu',
+    name: 'Mărgineanu',
   },
   {
     id: 7277,
     countyId: 1,
-    name: 'Margineni',
+    name: 'Mărgineni',
   },
   {
     id: 7278,
     countyId: 10,
-    name: 'Margineni',
+    name: 'Mărgineni',
   },
   {
     id: 7279,
     countyId: 52,
-    name: 'Margineni',
+    name: 'Mărgineni',
   },
   {
     id: 7280,
     countyId: 5,
-    name: 'Margineni',
+    name: 'Mărgineni',
   },
   {
     id: 7281,
     countyId: 42,
-    name: 'Margineni',
+    name: 'Mărgineni',
   },
   {
     id: 7282,
     countyId: 43,
-    name: 'Margineni-Slobozia',
+    name: 'Mărgineni-Slobozia',
   },
   {
     id: 7283,
     countyId: 44,
-    name: 'Marginenii de Jos',
+    name: 'Mărginenii de Jos',
   },
   {
     id: 7284,
     countyId: 24,
-    name: 'Marginenii de Sus',
+    name: 'Mărginenii de Sus',
   },
   {
     id: 7285,
     countyId: 52,
-    name: 'Maricesti',
+    name: 'Măricești',
   },
   {
     id: 7286,
@@ -36417,57 +36417,57 @@ export const CITIES = [
   {
     id: 7288,
     countyId: 1,
-    name: 'Marinesti',
+    name: 'Mărinești',
   },
   {
     id: 7289,
     countyId: 30,
-    name: 'Marinesti',
+    name: 'Marinești',
   },
   {
     id: 7290,
     countyId: 21,
-    name: 'Marisel',
+    name: 'Mărișel',
   },
   {
     id: 7291,
     countyId: 7,
-    name: 'Mariselu',
+    name: 'Mărișelu',
   },
   {
     id: 7292,
     countyId: 52,
-    name: 'Marita',
+    name: 'Marița',
   },
   {
     id: 7293,
     countyId: 49,
-    name: 'Marita',
+    name: 'Marița',
   },
   {
     id: 7294,
     countyId: 48,
-    name: 'Maritei',
+    name: 'Măriței',
   },
   {
     id: 7295,
     countyId: 48,
-    name: 'Mariteia Mica',
+    name: 'Mărițeia Mică',
   },
   {
     id: 7296,
     countyId: 46,
-    name: 'Marius',
+    name: 'Măriuș',
   },
   {
     id: 7297,
     countyId: 19,
-    name: 'Mariuta',
+    name: 'Măriuța',
   },
   {
     id: 7298,
     countyId: 44,
-    name: 'Marlogea',
+    name: 'Mârlogea',
   },
   {
     id: 7299,
@@ -36477,12 +36477,12 @@ export const CITIES = [
   {
     id: 7300,
     countyId: 42,
-    name: 'Marmureni',
+    name: 'Mărmureni',
   },
   {
     id: 7301,
     countyId: 46,
-    name: 'Marna Noua',
+    name: 'Marna Nouă',
   },
   {
     id: 7302,
@@ -36502,17 +36502,17 @@ export const CITIES = [
   {
     id: 7305,
     countyId: 29,
-    name: 'Marsa',
+    name: 'Mârșa',
   },
   {
     id: 7306,
     countyId: 47,
-    name: 'Marsa',
+    name: 'Mârșa',
   },
   {
     id: 7307,
     countyId: 25,
-    name: 'Marsani',
+    name: 'Mârșani',
   },
   {
     id: 7308,
@@ -36522,7 +36522,7 @@ export const CITIES = [
   {
     id: 7309,
     countyId: 9,
-    name: 'Martacesti',
+    name: 'Mărtăcești',
   },
   {
     id: 7310,
@@ -36532,62 +36532,62 @@ export const CITIES = [
   {
     id: 7311,
     countyId: 23,
-    name: 'Martanus',
+    name: 'Mărtănuș',
   },
   {
     id: 7312,
     countyId: 3,
-    name: 'Martesti',
+    name: 'Mârțești',
   },
   {
     id: 7313,
     countyId: 1,
-    name: 'Martesti',
+    name: 'Mărtești',
   },
   {
     id: 7314,
     countyId: 6,
-    name: 'Martihaz',
+    name: 'Marțihaz',
   },
   {
     id: 7315,
     countyId: 23,
-    name: 'Martineni',
+    name: 'Mărtineni',
   },
   {
     id: 7316,
     countyId: 33,
-    name: 'Martinesti',
+    name: 'Mărtinești',
   },
   {
     id: 7317,
     countyId: 54,
-    name: 'Martinesti',
+    name: 'Mărtinești',
   },
   {
     id: 7318,
     countyId: 21,
-    name: 'Martinesti',
+    name: 'Mărtinești',
   },
   {
     id: 7319,
     countyId: 46,
-    name: 'Martinesti',
+    name: 'Mărtinești',
   },
   {
     id: 7320,
     countyId: 1,
-    name: 'Martinie',
+    name: 'Mărtinie',
   },
   {
     id: 7321,
     countyId: 31,
-    name: 'Martinis',
+    name: 'Mărtiniș',
   },
   {
     id: 7322,
     countyId: 20,
-    name: 'Martinovat',
+    name: 'Martinovăț',
   },
   {
     id: 7323,
@@ -36597,47 +36597,47 @@ export const CITIES = [
   {
     id: 7324,
     countyId: 30,
-    name: 'Maru',
+    name: 'Măru',
   },
   {
     id: 7325,
     countyId: 20,
-    name: 'Maru',
+    name: 'Măru',
   },
   {
     id: 7326,
     countyId: 40,
-    name: 'Maru Rosu',
+    name: 'Măru Roșu',
   },
   {
     id: 7327,
     countyId: 9,
-    name: 'Maru Rosu',
+    name: 'Măru Roșu',
   },
   {
     id: 7328,
     countyId: 43,
-    name: 'Maruntei',
+    name: 'Mărunței',
   },
   {
     id: 7329,
     countyId: 43,
-    name: 'Maruntei (Colonesti)',
+    name: 'Mărunței (Colonești)',
   },
   {
     id: 7330,
     countyId: 44,
-    name: 'Maruntis',
+    name: 'Mărunțiș',
   },
   {
     id: 7331,
     countyId: 18,
-    name: 'Maruntisu',
+    name: 'Mărunțișu',
   },
   {
     id: 7332,
     countyId: 24,
-    name: 'Maruntisu',
+    name: 'Mărunțișu',
   },
   {
     id: 7333,
@@ -36647,62 +36647,62 @@ export const CITIES = [
   {
     id: 7334,
     countyId: 25,
-    name: 'Marza',
+    name: 'Mârza',
   },
   {
     id: 7335,
     countyId: 49,
-    name: 'Marzanesti',
+    name: 'Mârzănești',
   },
   {
     id: 7336,
     countyId: 2,
-    name: 'Masca',
+    name: 'Mâsca',
   },
   {
     id: 7337,
     countyId: 21,
-    name: 'Masca',
+    name: 'Mașca',
   },
   {
     id: 7338,
     countyId: 8,
-    name: 'Mascateni',
+    name: 'Mășcăteni',
   },
   {
     id: 7339,
     countyId: 53,
-    name: 'Mascurei',
+    name: 'Măscurei',
   },
   {
     id: 7340,
     countyId: 50,
-    name: 'Masloc',
+    name: 'Mașloc',
   },
   {
     id: 7341,
     countyId: 42,
-    name: 'Mastacan (Borlesti)',
+    name: 'Mastacăn (Borlești)',
   },
   {
     id: 7342,
     countyId: 42,
-    name: 'Mastacan (Dragomiresti)',
+    name: 'Mastacăn (Dragomirești)',
   },
   {
     id: 7343,
     countyId: 28,
-    name: 'Mastacani',
+    name: 'Măstăcani',
   },
   {
     id: 7344,
     countyId: 54,
-    name: 'Matacina',
+    name: 'Mătăcina',
   },
   {
     id: 7345,
     countyId: 1,
-    name: 'Matacina',
+    name: 'Mătăcina',
   },
   {
     id: 7346,
@@ -36712,17 +36712,17 @@ export const CITIES = [
   {
     id: 7347,
     countyId: 30,
-    name: 'Matasari',
+    name: 'Mătăsari',
   },
   {
     id: 7348,
     countyId: 24,
-    name: 'Matasaru',
+    name: 'Mătăsaru',
   },
   {
     id: 7349,
     countyId: 3,
-    name: 'Matau',
+    name: 'Mățău',
   },
   {
     id: 7350,
@@ -36732,12 +36732,12 @@ export const CITIES = [
   {
     id: 7351,
     countyId: 52,
-    name: 'Mateesti',
+    name: 'Mateești',
   },
   {
     id: 7352,
     countyId: 1,
-    name: 'Matei',
+    name: 'Maței',
   },
   {
     id: 7353,
@@ -36747,7 +36747,7 @@ export const CITIES = [
   {
     id: 7354,
     countyId: 10,
-    name: 'Mateias',
+    name: 'Mateiaș',
   },
   {
     id: 7355,
@@ -36757,42 +36757,42 @@ export const CITIES = [
   {
     id: 7356,
     countyId: 5,
-    name: 'Mateiesti',
+    name: 'Mateiești',
   },
   {
     id: 7357,
     countyId: 18,
-    name: 'Matesti',
+    name: 'Mătești',
   },
   {
     id: 7358,
     countyId: 31,
-    name: 'Matiseni',
+    name: 'Mătișeni',
   },
   {
     id: 7359,
     countyId: 1,
-    name: 'Matisesti (Ciuruleasa)',
+    name: 'Mătișești (Ciuruleasa)',
   },
   {
     id: 7360,
     countyId: 1,
-    name: 'Matisesti (Horea)',
+    name: 'Mătișești (Horea)',
   },
   {
     id: 7361,
     countyId: 44,
-    name: 'Matita',
+    name: 'Matița',
   },
   {
     id: 7362,
     countyId: 20,
-    name: 'Matnicu Mare',
+    name: 'Mâtnicu Mare',
   },
   {
     id: 7363,
     countyId: 50,
-    name: 'Matnicu Mic',
+    name: 'Mâtnicu Mic',
   },
   {
     id: 7364,
@@ -36802,12 +36802,12 @@ export const CITIES = [
   {
     id: 7365,
     countyId: 41,
-    name: 'Matrici',
+    name: 'Mătrici',
   },
   {
     id: 7366,
     countyId: 20,
-    name: 'Maureni',
+    name: 'Măureni',
   },
   {
     id: 7367,
@@ -36832,7 +36832,7 @@ export const CITIES = [
   {
     id: 7371,
     countyId: 9,
-    name: 'Maxineni',
+    name: 'Măxineni',
   },
   {
     id: 7372,
@@ -36842,22 +36842,22 @@ export const CITIES = [
   {
     id: 7373,
     countyId: 48,
-    name: 'Mazanaesti',
+    name: 'Măzănăești',
   },
   {
     id: 7374,
     countyId: 52,
-    name: 'Mazararu',
+    name: 'Măzăraru',
   },
   {
     id: 7375,
     countyId: 30,
-    name: 'Mazaroi',
+    name: 'Măzăroi',
   },
   {
     id: 7376,
     countyId: 52,
-    name: 'Mazili',
+    name: 'Măzili',
   },
   {
     id: 7377,
@@ -36882,47 +36882,47 @@ export const CITIES = [
   {
     id: 7381,
     countyId: 47,
-    name: 'Medias',
+    name: 'Mediaș',
   },
   {
     id: 7382,
     countyId: 46,
-    name: 'Medies-Raturi',
+    name: 'Medieș-Râturi',
   },
   {
     id: 7383,
     countyId: 46,
-    name: 'Medies-Vii',
+    name: 'Medieș-Vii',
   },
   {
     id: 7384,
     countyId: 46,
-    name: 'Mediesu Aurit',
+    name: 'Medieșu Aurit',
   },
   {
     id: 7385,
     countyId: 46,
-    name: 'Medisa',
+    name: 'Medișa',
   },
   {
     id: 7386,
     countyId: 31,
-    name: 'Medisoru Mare',
+    name: 'Medișoru Mare',
   },
   {
     id: 7387,
     countyId: 31,
-    name: 'Medisoru Mic',
+    name: 'Medișoru Mic',
   },
   {
     id: 7388,
     countyId: 1,
-    name: 'Medresti',
+    name: 'Medrești',
   },
   {
     id: 7389,
     countyId: 1,
-    name: 'Medves',
+    name: 'Medveș',
   },
   {
     id: 7390,
@@ -36937,7 +36937,7 @@ export const CITIES = [
   {
     id: 7392,
     countyId: 44,
-    name: 'Mehedinta',
+    name: 'Mehedința',
   },
   {
     id: 7393,
@@ -36947,27 +36947,27 @@ export const CITIES = [
   {
     id: 7394,
     countyId: 24,
-    name: 'Meisoare',
+    name: 'Meișoare',
   },
   {
     id: 7395,
     countyId: 44,
-    name: 'Melicesti',
+    name: 'Melicești',
   },
   {
     id: 7396,
     countyId: 25,
-    name: 'Melinesti',
+    name: 'Melinești',
   },
   {
     id: 7397,
     countyId: 40,
-    name: 'Menti',
+    name: 'Menți',
   },
   {
     id: 7398,
     countyId: 30,
-    name: 'Mentii din Dos',
+    name: 'Menții din Dos',
   },
   {
     id: 7399,
@@ -36982,7 +36982,7 @@ export const CITIES = [
   {
     id: 7401,
     countyId: 10,
-    name: 'Mercheasa',
+    name: 'Mercheașa',
   },
   {
     id: 7402,
@@ -37027,7 +37027,7 @@ export const CITIES = [
   {
     id: 7410,
     countyId: 24,
-    name: 'Mereni (Contesti)',
+    name: 'Mereni (Conțești)',
   },
   {
     id: 7411,
@@ -37047,17 +37047,17 @@ export const CITIES = [
   {
     id: 7414,
     countyId: 52,
-    name: 'Meresesti',
+    name: 'Mereșești',
   },
   {
     id: 7415,
     countyId: 31,
-    name: 'Meresti',
+    name: 'Merești',
   },
   {
     id: 7416,
     countyId: 48,
-    name: 'Meresti',
+    name: 'Merești',
   },
   {
     id: 7417,
@@ -37067,7 +37067,7 @@ export const CITIES = [
   {
     id: 7418,
     countyId: 30,
-    name: 'Merfulesti',
+    name: 'Merfulești',
   },
   {
     id: 7419,
@@ -37102,82 +37102,82 @@ export const CITIES = [
   {
     id: 7425,
     countyId: 40,
-    name: 'Meris',
+    name: 'Meriș',
   },
   {
     id: 7426,
     countyId: 3,
-    name: 'Merisani',
+    name: 'Merișani',
   },
   {
     id: 7427,
     countyId: 49,
-    name: 'Merisani (Babaita)',
+    name: 'Merișani (Băbăița)',
   },
   {
     id: 7428,
     countyId: 49,
-    name: 'Merisani (Dobrotesti)',
+    name: 'Merișani (Dobrotești)',
   },
   {
     id: 7429,
     countyId: 23,
-    name: 'Merisor',
+    name: 'Merișor',
   },
   {
     id: 7430,
     countyId: 41,
-    name: 'Merisor',
+    name: 'Merișor',
   },
   {
     id: 7431,
     countyId: 39,
-    name: 'Merisor',
+    name: 'Merișor',
   },
   {
     id: 7432,
     countyId: 33,
-    name: 'Merisor (Banita)',
+    name: 'Merișor (Bănița)',
   },
   {
     id: 7433,
     countyId: 33,
-    name: 'Merisor (Bucuresci)',
+    name: 'Merișor (Bucureșci)',
   },
   {
     id: 7434,
     countyId: 41,
-    name: 'Merisoru',
+    name: 'Merișoru',
   },
   {
     id: 7435,
     countyId: 24,
-    name: 'Merisoru',
+    name: 'Merișoru',
   },
   {
     id: 7436,
     countyId: 33,
-    name: 'Merisoru de Munte',
+    name: 'Merișoru de Munte',
   },
   {
     id: 7437,
     countyId: 2,
-    name: 'Mermesti',
+    name: 'Mermești',
   },
   {
     id: 7438,
     countyId: 33,
-    name: 'Mermezeu-Valeni',
+    name: 'Mermezeu-Văleni',
   },
   {
     id: 7439,
     countyId: 1,
-    name: 'Mescreac',
+    name: 'Meșcreac',
   },
   {
     id: 7440,
     countyId: 10,
-    name: 'Mesendorf',
+    name: 'Meșendorf',
   },
   {
     id: 7441,
@@ -37187,67 +37187,67 @@ export const CITIES = [
   {
     id: 7442,
     countyId: 45,
-    name: 'Mesesenii de Jos',
+    name: 'Meseșenii de Jos',
   },
   {
     id: 7443,
     countyId: 45,
-    name: 'Mesesenii de Sus',
+    name: 'Meseșenii de Sus',
   },
   {
     id: 7444,
     countyId: 20,
-    name: 'Mesteacan',
+    name: 'Mesteacăn',
   },
   {
     id: 7445,
     countyId: 39,
-    name: 'Mesteacan',
+    name: 'Mesteacăn',
   },
   {
     id: 7446,
     countyId: 46,
-    name: 'Mesteacan',
+    name: 'Mesteacăn',
   },
   {
     id: 7447,
     countyId: 8,
-    name: 'Mesteacan',
+    name: 'Mesteacăn',
   },
   {
     id: 7448,
     countyId: 24,
-    name: 'Mesteacan',
+    name: 'Mesteacăn',
   },
   {
     id: 7449,
     countyId: 42,
-    name: 'Mesteacan',
+    name: 'Mesteacăn',
   },
   {
     id: 7450,
     countyId: 33,
-    name: 'Mesteacan (Brad)',
+    name: 'Mesteacăn (Brad)',
   },
   {
     id: 7451,
     countyId: 33,
-    name: 'Mesteacan (Rachitova)',
+    name: 'Mesteacăn (Răchitova)',
   },
   {
     id: 7452,
     countyId: 54,
-    name: 'Mesteacanu',
+    name: 'Mesteacănu',
   },
   {
     id: 7453,
     countyId: 45,
-    name: 'Mesteacanu',
+    name: 'Mesteacănu',
   },
   {
     id: 7454,
     countyId: 48,
-    name: 'Mestecanis',
+    name: 'Mestecăniș',
   },
   {
     id: 7455,
@@ -37257,17 +37257,17 @@ export const CITIES = [
   {
     id: 7456,
     countyId: 41,
-    name: 'Mestera',
+    name: 'Meștera',
   },
   {
     id: 7457,
     countyId: 51,
-    name: 'Mesteru',
+    name: 'Meșteru',
   },
   {
     id: 7458,
     countyId: 1,
-    name: 'Metes',
+    name: 'Meteș',
   },
   {
     id: 7459,
@@ -37277,7 +37277,7 @@ export const CITIES = [
   {
     id: 7460,
     countyId: 47,
-    name: 'Metis',
+    name: 'Metiș',
   },
   {
     id: 7461,
@@ -37307,67 +37307,67 @@ export const CITIES = [
   {
     id: 7466,
     countyId: 33,
-    name: 'Micanesti',
+    name: 'Micănești',
   },
   {
     id: 7467,
     countyId: 47,
-    name: 'Micasasa',
+    name: 'Micăsasa',
   },
   {
     id: 7468,
     countyId: 3,
-    name: 'Micesti',
+    name: 'Micești',
   },
   {
     id: 7469,
     countyId: 1,
-    name: 'Micesti',
+    name: 'Micești',
   },
   {
     id: 7470,
     countyId: 21,
-    name: 'Micesti',
+    name: 'Micești',
   },
   {
     id: 7471,
     countyId: 7,
-    name: 'Micestii de Campie',
+    name: 'Miceștii de Câmpie',
   },
   {
     id: 7472,
     countyId: 23,
-    name: 'Micfalau',
+    name: 'Micfalău',
   },
   {
     id: 7473,
     countyId: 35,
-    name: 'Miclauseni',
+    name: 'Miclăușeni',
   },
   {
     id: 7474,
     countyId: 53,
-    name: 'Miclesti',
+    name: 'Miclești',
   },
   {
     id: 7475,
     countyId: 53,
-    name: 'Miclesti (Banca)',
+    name: 'Miclești (Banca)',
   },
   {
     id: 7476,
     countyId: 24,
-    name: 'Miclosanii Mari',
+    name: 'Micloșanii Mari',
   },
   {
     id: 7477,
     countyId: 24,
-    name: 'Miclosanii Mici',
+    name: 'Micloșanii Mici',
   },
   {
     id: 7478,
     countyId: 23,
-    name: 'Miclosoara',
+    name: 'Micloșoara',
   },
   {
     id: 7479,
@@ -37377,12 +37377,12 @@ export const CITIES = [
   {
     id: 7480,
     countyId: 1,
-    name: 'Micoslaca',
+    name: 'Micoșlaca',
   },
   {
     id: 7481,
     countyId: 42,
-    name: 'Micsunesti',
+    name: 'Micșunești',
   },
   {
     id: 7482,
@@ -37392,7 +37392,7 @@ export const CITIES = [
   {
     id: 7483,
     countyId: 36,
-    name: 'Micsunestii Mari',
+    name: 'Micșuneștii Mari',
   },
   {
     id: 7484,
@@ -37402,22 +37402,22 @@ export const CITIES = [
   {
     id: 7485,
     countyId: 46,
-    name: 'Micula Noua',
+    name: 'Micula Nouă',
   },
   {
     id: 7486,
     countyId: 30,
-    name: 'Miculesti',
+    name: 'Miculești',
   },
   {
     id: 7487,
     countyId: 24,
-    name: 'Miculesti',
+    name: 'Miculești',
   },
   {
     id: 7488,
     countyId: 30,
-    name: 'Mielusei',
+    name: 'Mielușei',
   },
   {
     id: 7489,
@@ -37467,17 +37467,17 @@ export const CITIES = [
   {
     id: 7498,
     countyId: 6,
-    name: 'Mierlau',
+    name: 'Mierlău',
   },
   {
     id: 7499,
     countyId: 43,
-    name: 'Mierlestii de Sus',
+    name: 'Mierleștii de Sus',
   },
   {
     id: 7500,
     countyId: 43,
-    name: 'Mierlicesti',
+    name: 'Mierlicești',
   },
   {
     id: 7501,
@@ -37487,12 +37487,12 @@ export const CITIES = [
   {
     id: 7502,
     countyId: 45,
-    name: 'Mierta',
+    name: 'Mierța',
   },
   {
     id: 7503,
     countyId: 43,
-    name: 'Miesti',
+    name: 'Miești',
   },
   {
     id: 7504,
@@ -37502,17 +37502,17 @@ export const CITIES = [
   {
     id: 7505,
     countyId: 3,
-    name: 'Mihaesti',
+    name: 'Mihăești',
   },
   {
     id: 7506,
     countyId: 52,
-    name: 'Mihaesti',
+    name: 'Mihăești',
   },
   {
     id: 7507,
     countyId: 43,
-    name: 'Mihaesti',
+    name: 'Mihăești',
   },
   {
     id: 7508,
@@ -37542,7 +37542,7 @@ export const CITIES = [
   {
     id: 7513,
     countyId: 8,
-    name: 'Mihai Eminescu (Gorbanesti)',
+    name: 'Mihai Eminescu (Gorbănești)',
   },
   {
     id: 7514,
@@ -37572,137 +37572,137 @@ export const CITIES = [
   {
     id: 7519,
     countyId: 29,
-    name: 'Mihai Voda',
+    name: 'Mihai Vodă',
   },
   {
     id: 7520,
     countyId: 46,
-    name: 'Mihaieni',
+    name: 'Mihăieni',
   },
   {
     id: 7521,
     countyId: 1,
-    name: 'Mihaiesti',
+    name: 'Mihăiești',
   },
   {
     id: 7522,
     countyId: 33,
-    name: 'Mihaiesti',
+    name: 'Mihăiești',
   },
   {
     id: 7523,
     countyId: 21,
-    name: 'Mihaiesti',
+    name: 'Mihăiești',
   },
   {
     id: 7524,
     countyId: 48,
-    name: 'Mihaiesti',
+    name: 'Mihăiești',
   },
   {
     id: 7525,
     countyId: 8,
-    name: 'Mihail Kogalniceanu',
+    name: 'Mihail Kogălniceanu',
   },
   {
     id: 7526,
     countyId: 28,
-    name: 'Mihail Kogalniceanu',
+    name: 'Mihail Kogălniceanu',
   },
   {
     id: 7527,
     countyId: 35,
-    name: 'Mihail Kogalniceanu',
+    name: 'Mihail Kogălniceanu',
   },
   {
     id: 7528,
     countyId: 53,
-    name: 'Mihail Kogalniceanu',
+    name: 'Mihail Kogălniceanu',
   },
   {
     id: 7529,
     countyId: 22,
-    name: 'Mihail Kogalniceanu',
+    name: 'Mihail Kogălniceanu',
   },
   {
     id: 7530,
     countyId: 34,
-    name: 'Mihail Kogalniceanu',
+    name: 'Mihail Kogălniceanu',
   },
   {
     id: 7531,
     countyId: 51,
-    name: 'Mihail Kogalniceanu',
+    name: 'Mihail Kogălniceanu',
   },
   {
     id: 7532,
     countyId: 9,
-    name: 'Mihail Kogalniceanu (Ramnicelu)',
+    name: 'Mihail Kogălniceanu (Râmnicelu)',
   },
   {
     id: 7533,
     countyId: 9,
-    name: 'Mihail Kogalniceanu (Sutesti)',
+    name: 'Mihail Kogălniceanu (Șuțești)',
   },
   {
     id: 7534,
     countyId: 33,
-    name: 'Mihaileni',
+    name: 'Mihăileni',
   },
   {
     id: 7535,
     countyId: 47,
-    name: 'Mihaileni',
+    name: 'Mihăileni',
   },
   {
     id: 7536,
     countyId: 8,
-    name: 'Mihaileni',
+    name: 'Mihăileni',
   },
   {
     id: 7537,
     countyId: 31,
-    name: 'Mihaileni',
+    name: 'Mihăileni',
   },
   {
     id: 7538,
     countyId: 31,
-    name: 'Mihaileni (Simonesti)',
+    name: 'Mihăileni (Șimonești)',
   },
   {
     id: 7539,
     countyId: 18,
-    name: 'Mihailesti',
+    name: 'Mihăilești',
   },
   {
     id: 7540,
     countyId: 29,
-    name: 'Mihailesti',
+    name: 'Mihăilești',
   },
   {
     id: 7541,
     countyId: 43,
-    name: 'Mihailesti-Popesti',
+    name: 'Mihăilești-Popești',
   },
   {
     id: 7542,
     countyId: 25,
-    name: 'Mihaita',
+    name: 'Mihăița',
   },
   {
     id: 7543,
     countyId: 8,
-    name: 'Mihalaseni',
+    name: 'Mihălășeni',
   },
   {
     id: 7544,
     countyId: 54,
-    name: 'Mihalceni',
+    name: 'Mihălceni',
   },
   {
     id: 7545,
     countyId: 1,
-    name: 'Mihalt',
+    name: 'Mihalț',
   },
   {
     id: 7546,
@@ -37712,12 +37712,12 @@ export const CITIES = [
   {
     id: 7547,
     countyId: 41,
-    name: 'Mihesu de Campie',
+    name: 'Miheșu de Câmpie',
   },
   {
     id: 7548,
     countyId: 1,
-    name: 'Mihoesti',
+    name: 'Mihoești',
   },
   {
     id: 7549,
@@ -37737,12 +37737,12 @@ export const CITIES = [
   {
     id: 7552,
     countyId: 52,
-    name: 'Mijati',
+    name: 'Mijați',
   },
   {
     id: 7553,
     countyId: 7,
-    name: 'Mijlocenii Bargaului',
+    name: 'Mijlocenii Bârgăului',
   },
   {
     id: 7554,
@@ -37757,12 +37757,12 @@ export const CITIES = [
   {
     id: 7556,
     countyId: 7,
-    name: 'Milas',
+    name: 'Milaș',
   },
   {
     id: 7557,
     countyId: 41,
-    name: 'Milasel',
+    name: 'Milășel',
   },
   {
     id: 7558,
@@ -37777,7 +37777,7 @@ export const CITIES = [
   {
     id: 7560,
     countyId: 29,
-    name: 'Milcovatu',
+    name: 'Milcovățu',
   },
   {
     id: 7561,
@@ -37817,22 +37817,22 @@ export const CITIES = [
   {
     id: 7568,
     countyId: 52,
-    name: 'Milesti',
+    name: 'Milești',
   },
   {
     id: 7569,
     countyId: 25,
-    name: 'Milesti',
+    name: 'Milești',
   },
   {
     id: 7570,
     countyId: 5,
-    name: 'Milestii de Jos',
+    name: 'Mileștii de Jos',
   },
   {
     id: 7571,
     countyId: 5,
-    name: 'Milestii de Sus',
+    name: 'Mileștii de Sus',
   },
   {
     id: 7572,
@@ -37842,22 +37842,22 @@ export const CITIES = [
   {
     id: 7573,
     countyId: 48,
-    name: 'Milisauti',
+    name: 'Milișăuți',
   },
   {
     id: 7574,
     countyId: 24,
-    name: 'Milosari',
+    name: 'Miloșari',
   },
   {
     id: 7575,
     countyId: 29,
-    name: 'Milosesti',
+    name: 'Miloșești',
   },
   {
     id: 7576,
     countyId: 34,
-    name: 'Milosesti',
+    name: 'Miloșești',
   },
   {
     id: 7577,
@@ -37887,7 +37887,7 @@ export const CITIES = [
   {
     id: 7582,
     countyId: 51,
-    name: 'Mina Altan Tepe',
+    name: 'Mina Altân Tepe',
   },
   {
     id: 7583,
@@ -37917,17 +37917,17 @@ export const CITIES = [
   {
     id: 7588,
     countyId: 2,
-    name: 'Minis',
+    name: 'Miniș',
   },
   {
     id: 7589,
     countyId: 2,
-    name: 'Minisel',
+    name: 'Minișel',
   },
   {
     id: 7590,
     countyId: 2,
-    name: 'Minisu de Sus',
+    name: 'Minișu de Sus',
   },
   {
     id: 7591,
@@ -37952,7 +37952,7 @@ export const CITIES = [
   {
     id: 7595,
     countyId: 3,
-    name: 'Mioarele (Cicanesti)',
+    name: 'Mioarele (Cicănești)',
   },
   {
     id: 7596,
@@ -37962,7 +37962,7 @@ export const CITIES = [
   {
     id: 7597,
     countyId: 22,
-    name: 'Miorita',
+    name: 'Miorița',
   },
   {
     id: 7598,
@@ -37972,62 +37972,62 @@ export const CITIES = [
   {
     id: 7599,
     countyId: 1,
-    name: 'Miraslau',
+    name: 'Mirăslău',
   },
   {
     id: 7600,
     countyId: 29,
-    name: 'Mirau',
+    name: 'Mirău',
   },
   {
     id: 7601,
     countyId: 34,
-    name: 'Mircea cel Batran',
+    name: 'Mircea cel Bătrân',
   },
   {
     id: 7602,
     countyId: 22,
-    name: 'Mircea Voda',
+    name: 'Mircea Vodă',
   },
   {
     id: 7603,
     countyId: 51,
-    name: 'Mircea Voda',
+    name: 'Mircea Vodă',
   },
   {
     id: 7604,
     countyId: 9,
-    name: 'Mircea Voda',
+    name: 'Mircea Vodă',
   },
   {
     id: 7605,
     countyId: 24,
-    name: 'Mircea Voda',
+    name: 'Mircea Vodă',
   },
   {
     id: 7606,
     countyId: 43,
-    name: 'Mircesti',
+    name: 'Mircești',
   },
   {
     id: 7607,
     countyId: 35,
-    name: 'Mircesti',
+    name: 'Mircești',
   },
   {
     id: 7608,
     countyId: 53,
-    name: 'Mircesti',
+    name: 'Mircești',
   },
   {
     id: 7609,
     countyId: 54,
-    name: 'Mircestii Noi',
+    name: 'Mirceștii Noi',
   },
   {
     id: 7610,
     countyId: 54,
-    name: 'Mircestii Vechi',
+    name: 'Mirceștii Vechi',
   },
   {
     id: 7611,
@@ -38042,27 +38042,27 @@ export const CITIES = [
   {
     id: 7613,
     countyId: 7,
-    name: 'Mires',
+    name: 'Mireș',
   },
   {
     id: 7614,
     countyId: 52,
-    name: 'Miresti',
+    name: 'Mirești',
   },
   {
     id: 7615,
     countyId: 39,
-    name: 'Miresu Mare',
+    name: 'Mireșu Mare',
   },
   {
     id: 7616,
     countyId: 44,
-    name: 'Miresu Mare',
+    name: 'Mireșu Mare',
   },
   {
     id: 7617,
     countyId: 44,
-    name: 'Miresu Mic',
+    name: 'Mireșu Mic',
   },
   {
     id: 7618,
@@ -38077,7 +38077,7 @@ export const CITIES = [
   {
     id: 7620,
     countyId: 22,
-    name: 'Miristea',
+    name: 'Miriștea',
   },
   {
     id: 7621,
@@ -38097,7 +38097,7 @@ export const CITIES = [
   {
     id: 7624,
     countyId: 29,
-    name: 'Mironesti',
+    name: 'Mironești',
   },
   {
     id: 7625,
@@ -38107,7 +38107,7 @@ export const CITIES = [
   {
     id: 7626,
     countyId: 3,
-    name: 'Mirosi',
+    name: 'Miroși',
   },
   {
     id: 7627,
@@ -38117,7 +38117,7 @@ export const CITIES = [
   {
     id: 7628,
     countyId: 44,
-    name: 'Miroslavesti',
+    name: 'Miroslăvești',
   },
   {
     id: 7629,
@@ -38127,22 +38127,22 @@ export const CITIES = [
   {
     id: 7630,
     countyId: 35,
-    name: 'Miroslovesti',
+    name: 'Miroslovești',
   },
   {
     id: 7631,
     countyId: 45,
-    name: 'Mirsid',
+    name: 'Mirșid',
   },
   {
     id: 7632,
     countyId: 6,
-    name: 'Misca',
+    name: 'Mișca',
   },
   {
     id: 7633,
     countyId: 2,
-    name: 'Misca',
+    name: 'Mișca',
   },
   {
     id: 7634,
@@ -38157,7 +38157,7 @@ export const CITIES = [
   {
     id: 7636,
     countyId: 5,
-    name: 'Misihanesti',
+    name: 'Misihănești',
   },
   {
     id: 7637,
@@ -38177,7 +38177,7 @@ export const CITIES = [
   {
     id: 7640,
     countyId: 35,
-    name: 'Mitesti',
+    name: 'Mitești',
   },
   {
     id: 7641,
@@ -38207,12 +38207,12 @@ export const CITIES = [
   {
     id: 7646,
     countyId: 48,
-    name: 'Mitocasi',
+    name: 'Mitocași',
   },
   {
     id: 7647,
     countyId: 42,
-    name: 'Mitocu Balan',
+    name: 'Mitocu Bălan',
   },
   {
     id: 7648,
@@ -38227,7 +38227,7 @@ export const CITIES = [
   {
     id: 7650,
     countyId: 41,
-    name: 'Mitresti',
+    name: 'Mitrești',
   },
   {
     id: 7651,
@@ -38242,12 +38242,12 @@ export const CITIES = [
   {
     id: 7653,
     countyId: 24,
-    name: 'Miulesti',
+    name: 'Miulești',
   },
   {
     id: 7654,
     countyId: 6,
-    name: 'Mizies',
+    name: 'Mizieș',
   },
   {
     id: 7655,
@@ -38257,27 +38257,27 @@ export const CITIES = [
   {
     id: 7656,
     countyId: 52,
-    name: 'Mlaceni',
+    name: 'Mlăceni',
   },
   {
     id: 7657,
     countyId: 18,
-    name: 'Mlajet',
+    name: 'Mlăjet',
   },
   {
     id: 7658,
     countyId: 25,
-    name: 'Mlecanesti',
+    name: 'Mlecănești',
   },
   {
     id: 7659,
     countyId: 8,
-    name: 'Mlenauti',
+    name: 'Mlenăuți',
   },
   {
     id: 7660,
     countyId: 23,
-    name: 'Moacsa',
+    name: 'Moacșa',
   },
   {
     id: 7661,
@@ -38307,27 +38307,27 @@ export const CITIES = [
   {
     id: 7666,
     countyId: 21,
-    name: 'Moara de Padure',
+    name: 'Moara de Pădure',
   },
   {
     id: 7667,
     countyId: 24,
-    name: 'Moara din Groapa',
+    name: 'Moara din Groapă',
   },
   {
     id: 7668,
     countyId: 44,
-    name: 'Moara Domneasca',
+    name: 'Moara Domnească',
   },
   {
     id: 7669,
     countyId: 36,
-    name: 'Moara Domneasca',
+    name: 'Moara Domnească',
   },
   {
     id: 7670,
     countyId: 53,
-    name: 'Moara Domneasca',
+    name: 'Moara Domnească',
   },
   {
     id: 7671,
@@ -38352,32 +38352,32 @@ export const CITIES = [
   {
     id: 7675,
     countyId: 24,
-    name: 'Moara Noua',
+    name: 'Moara Nouă',
   },
   {
     id: 7676,
     countyId: 44,
-    name: 'Moara Noua',
+    name: 'Moara Nouă',
   },
   {
     id: 7677,
     countyId: 36,
-    name: 'Moara Vlasiei',
+    name: 'Moara Vlăsiei',
   },
   {
     id: 7678,
     countyId: 47,
-    name: 'Moardas',
+    name: 'Moardăș',
   },
   {
     id: 7679,
     countyId: 20,
-    name: 'Moceris',
+    name: 'Moceriș',
   },
   {
     id: 7680,
     countyId: 44,
-    name: 'Mocesti',
+    name: 'Mocești',
   },
   {
     id: 7681,
@@ -38412,12 +38412,12 @@ export const CITIES = [
   {
     id: 7687,
     countyId: 1,
-    name: 'Modolesti (Intregalde)',
+    name: 'Modolești (Întregalde)',
   },
   {
     id: 7688,
     countyId: 1,
-    name: 'Modolesti (Vidra)',
+    name: 'Modolești (Vidra)',
   },
   {
     id: 7689,
@@ -38437,7 +38437,7 @@ export const CITIES = [
   {
     id: 7692,
     countyId: 25,
-    name: 'Moflesti',
+    name: 'Moflești',
   },
   {
     id: 7693,
@@ -38457,12 +38457,12 @@ export const CITIES = [
   {
     id: 7696,
     countyId: 52,
-    name: 'Mogesti',
+    name: 'Mogești',
   },
   {
     id: 7697,
     countyId: 31,
-    name: 'Moglanesti',
+    name: 'Moglănești',
   },
   {
     id: 7698,
@@ -38472,72 +38472,72 @@ export const CITIES = [
   {
     id: 7699,
     countyId: 1,
-    name: 'Mogos',
+    name: 'Mogoș',
   },
   {
     id: 7700,
     countyId: 30,
-    name: 'Mogosani',
+    name: 'Mogoșani',
   },
   {
     id: 7701,
     countyId: 24,
-    name: 'Mogosani',
+    name: 'Mogoșani',
   },
   {
     id: 7702,
     countyId: 7,
-    name: 'Mogoseni',
+    name: 'Mogoșeni',
   },
   {
     id: 7703,
     countyId: 3,
-    name: 'Mogosesti',
+    name: 'Mogoșești',
   },
   {
     id: 7704,
     countyId: 25,
-    name: 'Mogosesti',
+    name: 'Mogoșești',
   },
   {
     id: 7705,
     countyId: 35,
-    name: 'Mogosesti',
+    name: 'Mogoșești',
   },
   {
     id: 7706,
     countyId: 43,
-    name: 'Mogosesti',
+    name: 'Mogoșești',
   },
   {
     id: 7707,
     countyId: 24,
-    name: 'Mogosesti',
+    name: 'Mogoșești',
   },
   {
     id: 7708,
     countyId: 29,
-    name: 'Mogosesti',
+    name: 'Mogoșești',
   },
   {
     id: 7709,
     countyId: 39,
-    name: 'Mogosesti',
+    name: 'Mogoșești',
   },
   {
     id: 7710,
     countyId: 52,
-    name: 'Mogosesti',
+    name: 'Mogoșești',
   },
   {
     id: 7711,
     countyId: 35,
-    name: 'Mogosesti-Siret',
+    name: 'Mogoșești-Siret',
   },
   {
     id: 7712,
     countyId: 36,
-    name: 'Mogosoaia',
+    name: 'Mogoșoaia',
   },
   {
     id: 7713,
@@ -38577,22 +38577,22 @@ export const CITIES = [
   {
     id: 7720,
     countyId: 35,
-    name: 'Moimesti',
+    name: 'Moimești',
   },
   {
     id: 7721,
     countyId: 5,
-    name: 'Moinesti',
+    name: 'Moinești',
   },
   {
     id: 7722,
     countyId: 48,
-    name: 'Moisa',
+    name: 'Moișa',
   },
   {
     id: 7723,
     countyId: 41,
-    name: 'Moisa',
+    name: 'Moișa',
   },
   {
     id: 7724,
@@ -38602,12 +38602,12 @@ export const CITIES = [
   {
     id: 7725,
     countyId: 46,
-    name: 'Moiseni',
+    name: 'Moișeni',
   },
   {
     id: 7726,
     countyId: 40,
-    name: 'Moisesti',
+    name: 'Moisești',
   },
   {
     id: 7727,
@@ -38622,7 +38622,7 @@ export const CITIES = [
   {
     id: 7729,
     countyId: 20,
-    name: 'Moldova Noua',
+    name: 'Moldova Nouă',
   },
   {
     id: 7730,
@@ -38632,12 +38632,12 @@ export const CITIES = [
   {
     id: 7731,
     countyId: 48,
-    name: 'Moldova-Sulita',
+    name: 'Moldova-Sulița',
   },
   {
     id: 7732,
     countyId: 21,
-    name: 'Moldovenesti',
+    name: 'Moldovenești',
   },
   {
     id: 7733,
@@ -38657,12 +38657,12 @@ export const CITIES = [
   {
     id: 7736,
     countyId: 48,
-    name: 'Moldovita',
+    name: 'Moldovița',
   },
   {
     id: 7737,
     countyId: 20,
-    name: 'Moldovita',
+    name: 'Moldovița',
   },
   {
     id: 7738,
@@ -38672,12 +38672,12 @@ export const CITIES = [
   {
     id: 7739,
     countyId: 7,
-    name: 'Moliset',
+    name: 'Molișet',
   },
   {
     id: 7740,
     countyId: 52,
-    name: 'Mologesti',
+    name: 'Mologești',
   },
   {
     id: 7741,
@@ -38707,62 +38707,62 @@ export const CITIES = [
   {
     id: 7746,
     countyId: 2,
-    name: 'Monorostia',
+    name: 'Monoroștia',
   },
   {
     id: 7747,
     countyId: 31,
-    name: 'Morareni',
+    name: 'Morăreni',
   },
   {
     id: 7748,
     countyId: 53,
-    name: 'Morareni',
+    name: 'Morăreni',
   },
   {
     id: 7749,
     countyId: 41,
-    name: 'Morareni',
+    name: 'Morăreni',
   },
   {
     id: 7750,
     countyId: 54,
-    name: 'Moraresti',
+    name: 'Morărești',
   },
   {
     id: 7751,
     countyId: 3,
-    name: 'Moraresti',
+    name: 'Morărești',
   },
   {
     id: 7752,
     countyId: 1,
-    name: 'Moraresti (Ciuruleasa)',
+    name: 'Morărești (Ciuruleasa)',
   },
   {
     id: 7753,
     countyId: 1,
-    name: 'Moraresti (Sohodol)',
+    name: 'Morărești (Sohodol)',
   },
   {
     id: 7754,
     countyId: 3,
-    name: 'Morasti',
+    name: 'Morăști',
   },
   {
     id: 7755,
     countyId: 21,
-    name: 'Morau',
+    name: 'Morău',
   },
   {
     id: 7756,
     countyId: 50,
-    name: 'Moravita',
+    name: 'Moravița',
   },
   {
     id: 7757,
     countyId: 1,
-    name: 'Morcanesti',
+    name: 'Morcănești',
   },
   {
     id: 7758,
@@ -38792,12 +38792,12 @@ export const CITIES = [
   {
     id: 7763,
     countyId: 41,
-    name: 'Moresti',
+    name: 'Morești',
   },
   {
     id: 7764,
     countyId: 21,
-    name: 'Moristi',
+    name: 'Moriști',
   },
   {
     id: 7765,
@@ -38817,7 +38817,7 @@ export const CITIES = [
   {
     id: 7768,
     countyId: 9,
-    name: 'Morotesti',
+    name: 'Morotești',
   },
   {
     id: 7769,
@@ -38827,12 +38827,12 @@ export const CITIES = [
   {
     id: 7770,
     countyId: 21,
-    name: 'Mortesti',
+    name: 'Morțești',
   },
   {
     id: 7771,
     countyId: 43,
-    name: 'Morunesti',
+    name: 'Morunești',
   },
   {
     id: 7772,
@@ -38842,12 +38842,12 @@ export const CITIES = [
   {
     id: 7773,
     countyId: 7,
-    name: 'Morut',
+    name: 'Moruț',
   },
   {
     id: 7774,
     countyId: 41,
-    name: 'Morut',
+    name: 'Moruț',
   },
   {
     id: 7775,
@@ -38857,17 +38857,17 @@ export const CITIES = [
   {
     id: 7776,
     countyId: 18,
-    name: 'Mosesti',
+    name: 'Moșești',
   },
   {
     id: 7777,
     countyId: 24,
-    name: 'Mosia Mica',
+    name: 'Moșia Mică',
   },
   {
     id: 7778,
     countyId: 35,
-    name: 'Mosna',
+    name: 'Moșna',
   },
   {
     id: 7779,
@@ -38877,42 +38877,42 @@ export const CITIES = [
   {
     id: 7780,
     countyId: 47,
-    name: 'Mosna',
+    name: 'Moșna',
   },
   {
     id: 7781,
     countyId: 22,
-    name: 'Mosneni',
+    name: 'Moșneni',
   },
   {
     id: 7782,
     countyId: 40,
-    name: 'Mosneni',
+    name: 'Moșneni',
   },
   {
     id: 7783,
     countyId: 25,
-    name: 'Mosneni',
+    name: 'Moșneni',
   },
   {
     id: 7784,
     countyId: 50,
-    name: 'Mosnita Noua',
+    name: 'Moșnița Nouă',
   },
   {
     id: 7785,
     countyId: 50,
-    name: 'Mosnita Veche',
+    name: 'Moșnița Veche',
   },
   {
     id: 7786,
     countyId: 3,
-    name: 'Mosoaia',
+    name: 'Moșoaia',
   },
   {
     id: 7787,
     countyId: 52,
-    name: 'Mosoroasa',
+    name: 'Moșoroașa',
   },
   {
     id: 7788,
@@ -38922,82 +38922,82 @@ export const CITIES = [
   {
     id: 7789,
     countyId: 29,
-    name: 'Mosteni',
+    name: 'Moșteni',
   },
   {
     id: 7790,
     countyId: 49,
-    name: 'Mosteni',
+    name: 'Moșteni',
   },
   {
     id: 7791,
     countyId: 43,
-    name: 'Mosteni',
+    name: 'Moșteni',
   },
   {
     id: 7792,
     countyId: 52,
-    name: 'Mosteni',
+    name: 'Moșteni',
   },
   {
     id: 7793,
     countyId: 49,
-    name: 'Mosteni (Furculesti)',
+    name: 'Moșteni (Furculești)',
   },
   {
     id: 7794,
     countyId: 3,
-    name: 'Mosteni-Greci',
+    name: 'Moșteni-Greci',
   },
   {
     id: 7795,
     countyId: 41,
-    name: 'Mosuni',
+    name: 'Moșuni',
   },
   {
     id: 7796,
     countyId: 24,
-    name: 'Motaieni',
+    name: 'Moțăieni',
   },
   {
     id: 7797,
     countyId: 25,
-    name: 'Motatei',
+    name: 'Moțăței',
   },
   {
     id: 7798,
     countyId: 25,
-    name: 'Motatei-Gara',
+    name: 'Moțăței-Gară',
   },
   {
     id: 7799,
     countyId: 35,
-    name: 'Motca',
+    name: 'Moțca',
   },
   {
     id: 7800,
     countyId: 6,
-    name: 'Motesti',
+    name: 'Moțești',
   },
   {
     id: 7801,
     countyId: 2,
-    name: 'Motiori',
+    name: 'Moțiori',
   },
   {
     id: 7802,
     countyId: 45,
-    name: 'Motis',
+    name: 'Motiș',
   },
   {
     id: 7803,
     countyId: 47,
-    name: 'Motis',
+    name: 'Motiș',
   },
   {
     id: 7804,
     countyId: 54,
-    name: 'Motnau',
+    name: 'Motnău',
   },
   {
     id: 7805,
@@ -39007,7 +39007,7 @@ export const CITIES = [
   {
     id: 7806,
     countyId: 5,
-    name: 'Motocesti',
+    name: 'Motocești',
   },
   {
     id: 7807,
@@ -39017,12 +39017,12 @@ export const CITIES = [
   {
     id: 7808,
     countyId: 43,
-    name: 'Motoesti',
+    name: 'Moțoești',
   },
   {
     id: 7809,
     countyId: 1,
-    name: 'Motorasti',
+    name: 'Motorăști',
   },
   {
     id: 7810,
@@ -39032,7 +39032,7 @@ export const CITIES = [
   {
     id: 7811,
     countyId: 5,
-    name: 'Motoseni',
+    name: 'Motoșeni',
   },
   {
     id: 7812,
@@ -39057,12 +39057,12 @@ export const CITIES = [
   {
     id: 7816,
     countyId: 24,
-    name: 'Movila (Niculesti)',
+    name: 'Movila (Niculești)',
   },
   {
     id: 7817,
     countyId: 24,
-    name: 'Movila (Salcioara)',
+    name: 'Movila (Sălcioara)',
   },
   {
     id: 7818,
@@ -39082,7 +39082,7 @@ export const CITIES = [
   {
     id: 7821,
     countyId: 8,
-    name: 'Movila Rupta',
+    name: 'Movila Ruptă',
   },
   {
     id: 7822,
@@ -39132,47 +39132,47 @@ export const CITIES = [
   {
     id: 7831,
     countyId: 35,
-    name: 'Movileni (Helesteni)',
+    name: 'Movileni (Heleșteni)',
   },
   {
     id: 7832,
     countyId: 28,
-    name: 'Movileni (Sendreni)',
+    name: 'Movileni (Șendreni)',
   },
   {
     id: 7833,
     countyId: 5,
-    name: 'Movilita',
+    name: 'Movilița',
   },
   {
     id: 7834,
     countyId: 22,
-    name: 'Movilita',
+    name: 'Movilița',
   },
   {
     id: 7835,
     countyId: 54,
-    name: 'Movilita',
+    name: 'Movilița',
   },
   {
     id: 7836,
     countyId: 18,
-    name: 'Movilita',
+    name: 'Movilița',
   },
   {
     id: 7837,
     countyId: 34,
-    name: 'Movilita',
+    name: 'Movilița',
   },
   {
     id: 7838,
     countyId: 3,
-    name: 'Mozaceni',
+    name: 'Mozăceni',
   },
   {
     id: 7839,
     countyId: 3,
-    name: 'Mozacenii-Vale',
+    name: 'Mozăcenii-Vale',
   },
   {
     id: 7840,
@@ -39182,12 +39182,12 @@ export const CITIES = [
   {
     id: 7841,
     countyId: 52,
-    name: 'Mrenesti',
+    name: 'Mrenești',
   },
   {
     id: 7842,
     countyId: 18,
-    name: 'Mucesti-Danulesti',
+    name: 'Mucești-Dănulești',
   },
   {
     id: 7843,
@@ -39217,12 +39217,12 @@ export const CITIES = [
   {
     id: 7848,
     countyId: 1,
-    name: 'Mugesti',
+    name: 'Mugești',
   },
   {
     id: 7849,
     countyId: 25,
-    name: 'Muierusu',
+    name: 'Muierușu',
   },
   {
     id: 7850,
@@ -39292,7 +39292,7 @@ export const CITIES = [
   {
     id: 7863,
     countyId: 1,
-    name: 'Munesti',
+    name: 'Munești',
   },
   {
     id: 7864,
@@ -39302,7 +39302,7 @@ export const CITIES = [
   {
     id: 7865,
     countyId: 21,
-    name: 'Muntele Baisorii',
+    name: 'Muntele Băișorii',
   },
   {
     id: 7866,
@@ -39327,12 +39327,12 @@ export const CITIES = [
   {
     id: 7870,
     countyId: 21,
-    name: 'Muntele Sacelului',
+    name: 'Muntele Săcelului',
   },
   {
     id: 7871,
     countyId: 53,
-    name: 'Muntenesti',
+    name: 'Muntenești',
   },
   {
     id: 7872,
@@ -39362,7 +39362,7 @@ export const CITIES = [
   {
     id: 7877,
     countyId: 34,
-    name: 'Munteni-Buzau',
+    name: 'Munteni-Buzău',
   },
   {
     id: 7878,
@@ -39377,7 +39377,7 @@ export const CITIES = [
   {
     id: 7880,
     countyId: 1,
-    name: 'Mununa',
+    name: 'Munună',
   },
   {
     id: 7881,
@@ -39387,7 +39387,7 @@ export const CITIES = [
   {
     id: 7882,
     countyId: 41,
-    name: 'Mura Mica',
+    name: 'Mura Mică',
   },
   {
     id: 7883,
@@ -39402,17 +39402,17 @@ export const CITIES = [
   {
     id: 7885,
     countyId: 41,
-    name: 'Mureseni',
+    name: 'Mureșeni',
   },
   {
     id: 7886,
     countyId: 7,
-    name: 'Muresenii Bargaului',
+    name: 'Mureșenii Bârgăului',
   },
   {
     id: 7887,
     countyId: 21,
-    name: 'Muresenii de Campie',
+    name: 'Mureșenii de Câmpie',
   },
   {
     id: 7888,
@@ -39422,7 +39422,7 @@ export const CITIES = [
   {
     id: 7889,
     countyId: 25,
-    name: 'Murgasi',
+    name: 'Murgași',
   },
   {
     id: 7890,
@@ -39437,27 +39437,27 @@ export const CITIES = [
   {
     id: 7892,
     countyId: 30,
-    name: 'Murgesti',
+    name: 'Murgești',
   },
   {
     id: 7893,
     countyId: 18,
-    name: 'Murgesti',
+    name: 'Murgești',
   },
   {
     id: 7894,
     countyId: 41,
-    name: 'Murgesti',
+    name: 'Murgești',
   },
   {
     id: 7895,
     countyId: 30,
-    name: 'Murgilesti',
+    name: 'Murgilești',
   },
   {
     id: 7896,
     countyId: 8,
-    name: 'Murguta',
+    name: 'Murguța',
   },
   {
     id: 7897,
@@ -39472,7 +39472,7 @@ export const CITIES = [
   {
     id: 7899,
     countyId: 53,
-    name: 'Musata',
+    name: 'Mușata',
   },
   {
     id: 7900,
@@ -39482,17 +39482,17 @@ export const CITIES = [
   {
     id: 7901,
     countyId: 1,
-    name: 'Musca',
+    name: 'Mușca',
   },
   {
     id: 7902,
     countyId: 3,
-    name: 'Muscel',
+    name: 'Mușcel',
   },
   {
     id: 7903,
     countyId: 24,
-    name: 'Muscel',
+    name: 'Mușcel',
   },
   {
     id: 7904,
@@ -39507,47 +39507,47 @@ export const CITIES = [
   {
     id: 7906,
     countyId: 18,
-    name: 'Muscelu Caramanesti',
+    name: 'Muscelu Cărămănești',
   },
   {
     id: 7907,
     countyId: 18,
-    name: 'Muscelusa',
+    name: 'Mușcelușa',
   },
   {
     id: 7908,
     countyId: 30,
-    name: 'Musculesti',
+    name: 'Musculești',
   },
   {
     id: 7909,
     countyId: 48,
-    name: 'Musenita',
+    name: 'Mușenița',
   },
   {
     id: 7910,
     countyId: 30,
-    name: 'Musetesti',
+    name: 'Mușetești',
   },
   {
     id: 7911,
     countyId: 3,
-    name: 'Mustatesti',
+    name: 'Mustățești',
   },
   {
     id: 7912,
     countyId: 2,
-    name: 'Mustesti',
+    name: 'Mustești',
   },
   {
     id: 7913,
     countyId: 2,
-    name: 'Nadab',
+    name: 'Nădab',
   },
   {
     id: 7914,
     countyId: 2,
-    name: 'Nadalbesti',
+    name: 'Nădălbești',
   },
   {
     id: 7915,
@@ -39557,92 +39557,92 @@ export const CITIES = [
   {
     id: 7916,
     countyId: 6,
-    name: 'Nadar',
+    name: 'Nădar',
   },
   {
     id: 7917,
     countyId: 2,
-    name: 'Nadas',
+    name: 'Nadăș',
   },
   {
     id: 7918,
     countyId: 50,
-    name: 'Nadas',
+    name: 'Nadăș',
   },
   {
     id: 7919,
     countyId: 41,
-    name: 'Nadasa',
+    name: 'Nadășa',
   },
   {
     id: 7920,
     countyId: 21,
-    name: 'Nadaselu',
+    name: 'Nădășelu',
   },
   {
     id: 7921,
     countyId: 1,
-    name: 'Nadastia',
+    name: 'Nădăștia',
   },
   {
     id: 7922,
     countyId: 33,
-    name: 'Nadastia de Jos',
+    name: 'Nădăștia de Jos',
   },
   {
     id: 7923,
     countyId: 33,
-    name: 'Nadastia de Sus',
+    name: 'Nădăștia de Sus',
   },
   {
     id: 7924,
     countyId: 21,
-    name: 'Nadasu',
+    name: 'Nadășu',
   },
   {
     id: 7925,
     countyId: 31,
-    name: 'Nadejdea',
+    name: 'Nădejdea',
   },
   {
     id: 7926,
     countyId: 41,
-    name: 'Nades',
+    name: 'Nadeș',
   },
   {
     id: 7927,
     countyId: 45,
-    name: 'Nadis',
+    name: 'Nadiș',
   },
   {
     id: 7928,
     countyId: 5,
-    name: 'Nadisa',
+    name: 'Nadișa',
   },
   {
     id: 7929,
     countyId: 46,
-    name: 'Nadisu Hododului',
+    name: 'Nadișu Hododului',
   },
   {
     id: 7930,
     countyId: 2,
-    name: 'Nadlac',
+    name: 'Nădlac',
   },
   {
     id: 7931,
     countyId: 50,
-    name: 'Nadrag',
+    name: 'Nădrag',
   },
   {
     id: 7932,
     countyId: 18,
-    name: 'Naeni',
+    name: 'Năeni',
   },
   {
     id: 7933,
     countyId: 20,
-    name: 'Naidas',
+    name: 'Naidăș',
   },
   {
     id: 7934,
@@ -39657,7 +39657,7 @@ export const CITIES = [
   {
     id: 7936,
     countyId: 33,
-    name: 'Nalatvad',
+    name: 'Nălațvad',
   },
   {
     id: 7937,
@@ -39667,27 +39667,27 @@ export const CITIES = [
   {
     id: 7938,
     countyId: 3,
-    name: 'Namaesti',
+    name: 'Nămăești',
   },
   {
     id: 7939,
     countyId: 1,
-    name: 'Namas',
+    name: 'Nămaș',
   },
   {
     id: 7940,
     countyId: 30,
-    name: 'Namete',
+    name: 'Nămete',
   },
   {
     id: 7941,
     countyId: 28,
-    name: 'Namoloasa',
+    name: 'Nămoloasa',
   },
   {
     id: 7942,
     countyId: 28,
-    name: 'Namoloasa-Sat',
+    name: 'Nămoloasa-Sat',
   },
   {
     id: 7943,
@@ -39707,22 +39707,22 @@ export const CITIES = [
   {
     id: 7946,
     countyId: 39,
-    name: 'Nanesti',
+    name: 'Nănești',
   },
   {
     id: 7947,
     countyId: 5,
-    name: 'Nanesti',
+    name: 'Nănești',
   },
   {
     id: 7948,
     countyId: 54,
-    name: 'Nanesti',
+    name: 'Nănești',
   },
   {
     id: 7949,
     countyId: 54,
-    name: 'Nanesti (Tanasoaia)',
+    name: 'Nănești (Tănăsoaia)',
   },
   {
     id: 7950,
@@ -39732,67 +39732,67 @@ export const CITIES = [
   {
     id: 7951,
     countyId: 21,
-    name: 'Naoiu',
+    name: 'Năoiu',
   },
   {
     id: 7952,
     countyId: 1,
-    name: 'Napaiesti',
+    name: 'Năpăiești',
   },
   {
     id: 7953,
     countyId: 45,
-    name: 'Napradea',
+    name: 'Năpradea',
   },
   {
     id: 7954,
     countyId: 28,
-    name: 'Nartesti',
+    name: 'Nărtești',
   },
   {
     id: 7955,
     countyId: 54,
-    name: 'Naruja',
+    name: 'Năruja',
   },
   {
     id: 7956,
     countyId: 21,
-    name: 'Nasal',
+    name: 'Năsal',
   },
   {
     id: 7957,
     countyId: 7,
-    name: 'Nasaud',
+    name: 'Năsăud',
   },
   {
     id: 7958,
     countyId: 8,
-    name: 'Nastase',
+    name: 'Năstase',
   },
   {
     id: 7959,
     countyId: 5,
-    name: 'Nastaseni',
+    name: 'Năstăseni',
   },
   {
     id: 7960,
     countyId: 49,
-    name: 'Nasturelu',
+    name: 'Năsturelu',
   },
   {
     id: 7961,
     countyId: 43,
-    name: 'Navargeni',
+    name: 'Năvârgeni',
   },
   {
     id: 7962,
     countyId: 49,
-    name: 'Navodari',
+    name: 'Năvodari',
   },
   {
     id: 7963,
     countyId: 22,
-    name: 'Navodari',
+    name: 'Năvodari',
   },
   {
     id: 7964,
@@ -39807,7 +39807,7 @@ export const CITIES = [
   {
     id: 7966,
     countyId: 5,
-    name: 'Nazarioaia',
+    name: 'Năzărioaia',
   },
   {
     id: 7967,
@@ -39837,7 +39837,7 @@ export const CITIES = [
   {
     id: 7972,
     countyId: 48,
-    name: 'Neagra Sarului',
+    name: 'Neagra Șarului',
   },
   {
     id: 7973,
@@ -39852,12 +39852,12 @@ export const CITIES = [
   {
     id: 7975,
     countyId: 21,
-    name: 'Nearsova',
+    name: 'Nearșova',
   },
   {
     id: 7976,
     countyId: 51,
-    name: 'Neatarnarea',
+    name: 'Neatârnarea',
   },
   {
     id: 7977,
@@ -39877,17 +39877,17 @@ export const CITIES = [
   {
     id: 7980,
     countyId: 1,
-    name: 'Necrilesti',
+    name: 'Necrilești',
   },
   {
     id: 7981,
     countyId: 1,
-    name: 'Necsesti',
+    name: 'Necșești',
   },
   {
     id: 7982,
     countyId: 49,
-    name: 'Necsesti',
+    name: 'Necșești',
   },
   {
     id: 7983,
@@ -39912,17 +39912,17 @@ export const CITIES = [
   {
     id: 7987,
     countyId: 1,
-    name: 'Negesti',
+    name: 'Negești',
   },
   {
     id: 7988,
     countyId: 3,
-    name: 'Negesti',
+    name: 'Negești',
   },
   {
     id: 7989,
     countyId: 52,
-    name: 'Neghinesti',
+    name: 'Neghinești',
   },
   {
     id: 7990,
@@ -39932,12 +39932,12 @@ export const CITIES = [
   {
     id: 7991,
     countyId: 19,
-    name: 'Negoesti',
+    name: 'Negoești',
   },
   {
     id: 7992,
     countyId: 40,
-    name: 'Negoesti',
+    name: 'Negoești',
   },
   {
     id: 7993,
@@ -39947,22 +39947,22 @@ export const CITIES = [
   {
     id: 7994,
     countyId: 25,
-    name: 'Negoiesti',
+    name: 'Negoiești',
   },
   {
     id: 7995,
     countyId: 44,
-    name: 'Negoiesti',
+    name: 'Negoiești',
   },
   {
     id: 7996,
     countyId: 5,
-    name: 'Negoiesti',
+    name: 'Negoiești',
   },
   {
     id: 7997,
     countyId: 30,
-    name: 'Negoiesti',
+    name: 'Negoiești',
   },
   {
     id: 7998,
@@ -39977,7 +39977,7 @@ export const CITIES = [
   {
     id: 8000,
     countyId: 18,
-    name: 'Negosina',
+    name: 'Negoșina',
   },
   {
     id: 8001,
@@ -39992,7 +39992,7 @@ export const CITIES = [
   {
     id: 8003,
     countyId: 3,
-    name: 'Negrasi',
+    name: 'Negrași',
   },
   {
     id: 8004,
@@ -40052,7 +40052,7 @@ export const CITIES = [
   {
     id: 8015,
     countyId: 41,
-    name: 'Negrenii de Campie',
+    name: 'Negrenii de Câmpie',
   },
   {
     id: 8016,
@@ -40062,37 +40062,37 @@ export const CITIES = [
   {
     id: 8017,
     countyId: 49,
-    name: 'Negrenii-Osebiti',
+    name: 'Negrenii-Osebiți',
   },
   {
     id: 8018,
     countyId: 3,
-    name: 'Negresti',
+    name: 'Negrești',
   },
   {
     id: 8019,
     countyId: 22,
-    name: 'Negresti',
+    name: 'Negrești',
   },
   {
     id: 8020,
     countyId: 53,
-    name: 'Negresti',
+    name: 'Negrești',
   },
   {
     id: 8021,
     countyId: 1,
-    name: 'Negresti',
+    name: 'Negrești',
   },
   {
     id: 8022,
     countyId: 8,
-    name: 'Negresti',
+    name: 'Negrești',
   },
   {
     id: 8023,
     countyId: 40,
-    name: 'Negresti',
+    name: 'Negrești',
   },
   {
     id: 8024,
@@ -40107,7 +40107,7 @@ export const CITIES = [
   {
     id: 8026,
     countyId: 46,
-    name: 'Negresti-Oas',
+    name: 'Negrești-Oaș',
   },
   {
     id: 8027,
@@ -40122,52 +40122,52 @@ export const CITIES = [
   {
     id: 8029,
     countyId: 7,
-    name: 'Negrilesti',
+    name: 'Negrilești',
   },
   {
     id: 8030,
     countyId: 49,
-    name: 'Negrilesti',
+    name: 'Negrilești',
   },
   {
     id: 8031,
     countyId: 28,
-    name: 'Negrilesti',
+    name: 'Negrilești',
   },
   {
     id: 8032,
     countyId: 54,
-    name: 'Negrilesti',
+    name: 'Negrilești',
   },
   {
     id: 8033,
     countyId: 42,
-    name: 'Negritesti',
+    name: 'Negritești',
   },
   {
     id: 8034,
     countyId: 22,
-    name: 'Negru Voda',
+    name: 'Negru Vodă',
   },
   {
     id: 8035,
     countyId: 52,
-    name: 'Negrulesti',
+    name: 'Negrulești',
   },
   {
     id: 8036,
     countyId: 40,
-    name: 'Negrusa',
+    name: 'Negrușa',
   },
   {
     id: 8037,
     countyId: 5,
-    name: 'Negulesti',
+    name: 'Negulești',
   },
   {
     id: 8038,
     countyId: 42,
-    name: 'Negulesti',
+    name: 'Negulești',
   },
   {
     id: 8039,
@@ -40177,12 +40177,12 @@ export const CITIES = [
   {
     id: 8040,
     countyId: 5,
-    name: 'Neguseni',
+    name: 'Negușeni',
   },
   {
     id: 8041,
     countyId: 18,
-    name: 'Nehoiasu',
+    name: 'Nehoiașu',
   },
   {
     id: 8042,
@@ -40202,7 +40202,7 @@ export const CITIES = [
   {
     id: 8045,
     countyId: 1,
-    name: 'Nelegesti',
+    name: 'Nelegești',
   },
   {
     id: 8046,
@@ -40212,12 +40212,12 @@ export const CITIES = [
   {
     id: 8047,
     countyId: 50,
-    name: 'Nemesesti',
+    name: 'Nemeșești',
   },
   {
     id: 8048,
     countyId: 1,
-    name: 'Nemesi',
+    name: 'Nemeși',
   },
   {
     id: 8049,
@@ -40227,12 +40227,12 @@ export const CITIES = [
   {
     id: 8050,
     countyId: 47,
-    name: 'Nemsa',
+    name: 'Nemșa',
   },
   {
     id: 8051,
     countyId: 42,
-    name: 'Nemtisor',
+    name: 'Nemțișor',
   },
   {
     id: 8052,
@@ -40242,22 +40242,22 @@ export const CITIES = [
   {
     id: 8053,
     countyId: 18,
-    name: 'Nenciulesti',
+    name: 'Nenciulești',
   },
   {
     id: 8054,
     countyId: 52,
-    name: 'Nenciulesti',
+    name: 'Nenciulești',
   },
   {
     id: 8055,
     countyId: 49,
-    name: 'Nenciulesti',
+    name: 'Nenciulești',
   },
   {
     id: 8056,
     countyId: 34,
-    name: 'Nenisori',
+    name: 'Nenișori',
   },
   {
     id: 8057,
@@ -40272,7 +40272,7 @@ export const CITIES = [
   {
     id: 8059,
     countyId: 50,
-    name: 'Nerau',
+    name: 'Nerău',
   },
   {
     id: 8060,
@@ -40292,17 +40292,17 @@ export const CITIES = [
   {
     id: 8063,
     countyId: 2,
-    name: 'Nermis',
+    name: 'Nermiș',
   },
   {
     id: 8064,
     countyId: 7,
-    name: 'Neteni',
+    name: 'Nețeni',
   },
   {
     id: 8065,
     countyId: 52,
-    name: 'Netesti',
+    name: 'Nețești',
   },
   {
     id: 8066,
@@ -40312,7 +40312,7 @@ export const CITIES = [
   {
     id: 8067,
     countyId: 47,
-    name: 'Netus',
+    name: 'Netuș',
   },
   {
     id: 8068,
@@ -40322,7 +40322,7 @@ export const CITIES = [
   {
     id: 8070,
     countyId: 40,
-    name: 'Nevatu',
+    name: 'Nevățu',
   },
   {
     id: 8071,
@@ -40347,62 +40347,62 @@ export const CITIES = [
   {
     id: 8075,
     countyId: 2,
-    name: 'Nicolae Balcescu',
+    name: 'Nicolae Bălcescu',
   },
   {
     id: 8076,
     countyId: 9,
-    name: 'Nicolae Balcescu',
+    name: 'Nicolae Bălcescu',
   },
   {
     id: 8077,
     countyId: 22,
-    name: 'Nicolae Balcescu',
+    name: 'Nicolae Bălcescu',
   },
   {
     id: 8078,
     countyId: 51,
-    name: 'Nicolae Balcescu',
+    name: 'Nicolae Bălcescu',
   },
   {
     id: 8079,
     countyId: 52,
-    name: 'Nicolae Balcescu',
+    name: 'Nicolae Bălcescu',
   },
   {
     id: 8080,
     countyId: 5,
-    name: 'Nicolae Balcescu',
+    name: 'Nicolae Bălcescu',
   },
   {
     id: 8081,
     countyId: 19,
-    name: 'Nicolae Balcescu',
+    name: 'Nicolae Bălcescu',
   },
   {
     id: 8082,
     countyId: 40,
-    name: 'Nicolae Balcescu',
+    name: 'Nicolae Bălcescu',
   },
   {
     id: 8083,
     countyId: 49,
-    name: 'Nicolae Balcescu',
+    name: 'Nicolae Bălcescu',
   },
   {
     id: 8084,
     countyId: 19,
-    name: 'Nicolae Balcescu (Alexandru Odobescu)',
+    name: 'Nicolae Bălcescu (Alexandru Odobescu)',
   },
   {
     id: 8085,
     countyId: 8,
-    name: 'Nicolae Balcescu (Cotusca)',
+    name: 'Nicolae Bălcescu (Coțușca)',
   },
   {
     id: 8086,
     countyId: 8,
-    name: 'Nicolae Balcescu (Flamanzi)',
+    name: 'Nicolae Bălcescu (Flămânzi)',
   },
   {
     id: 8087,
@@ -40412,7 +40412,7 @@ export const CITIES = [
   {
     id: 8088,
     countyId: 24,
-    name: 'Nicolaesti',
+    name: 'Nicolaești',
   },
   {
     id: 8089,
@@ -40422,37 +40422,37 @@ export const CITIES = [
   {
     id: 8090,
     countyId: 18,
-    name: 'Nicolesti',
+    name: 'Nicolești',
   },
   {
     id: 8091,
     countyId: 52,
-    name: 'Nicolesti',
+    name: 'Nicolești',
   },
   {
     id: 8092,
     countyId: 9,
-    name: 'Nicolesti',
+    name: 'Nicolești',
   },
   {
     id: 8093,
     countyId: 34,
-    name: 'Nicolesti',
+    name: 'Nicolești',
   },
   {
     id: 8094,
     countyId: 31,
-    name: 'Nicolesti (Frumoasa)',
+    name: 'Nicolești (Frumoasa)',
   },
   {
     id: 8095,
     countyId: 31,
-    name: 'Nicolesti (Ulies)',
+    name: 'Nicolești (Ulieș)',
   },
   {
     id: 8096,
     countyId: 20,
-    name: 'Nicolint',
+    name: 'Nicolinț',
   },
   {
     id: 8097,
@@ -40462,22 +40462,22 @@ export const CITIES = [
   {
     id: 8098,
     countyId: 5,
-    name: 'Nicoresti',
+    name: 'Nicorești',
   },
   {
     id: 8099,
     countyId: 1,
-    name: 'Nicoresti',
+    name: 'Nicorești',
   },
   {
     id: 8100,
     countyId: 28,
-    name: 'Nicoresti',
+    name: 'Nicorești',
   },
   {
     id: 8101,
     countyId: 8,
-    name: 'Nicseni',
+    name: 'Nicșeni',
   },
   {
     id: 8102,
@@ -40492,22 +40492,22 @@ export const CITIES = [
   {
     id: 8104,
     countyId: 18,
-    name: 'Niculesti',
+    name: 'Niculești',
   },
   {
     id: 8105,
     countyId: 1,
-    name: 'Niculesti',
+    name: 'Niculești',
   },
   {
     id: 8106,
     countyId: 24,
-    name: 'Niculesti',
+    name: 'Niculești',
   },
   {
     id: 8107,
     countyId: 51,
-    name: 'Niculitel',
+    name: 'Niculițel',
   },
   {
     id: 8108,
@@ -40517,12 +40517,12 @@ export const CITIES = [
   {
     id: 8109,
     countyId: 48,
-    name: 'Nigotesti',
+    name: 'Nigotești',
   },
   {
     id: 8110,
     countyId: 3,
-    name: 'Nigrisoara',
+    name: 'Nigrișoara',
   },
   {
     id: 8111,
@@ -40532,17 +40532,17 @@ export const CITIES = [
   {
     id: 8112,
     countyId: 41,
-    name: 'Nima Milaselului',
+    name: 'Nima Milășelului',
   },
   {
     id: 8113,
     countyId: 41,
-    name: 'Nima Raciului',
+    name: 'Nima Râciului',
   },
   {
     id: 8114,
     countyId: 6,
-    name: 'Nimaiesti',
+    name: 'Nimăiești',
   },
   {
     id: 8115,
@@ -40562,12 +40562,12 @@ export const CITIES = [
   {
     id: 8118,
     countyId: 21,
-    name: 'Nires',
+    name: 'Nireș',
   },
   {
     id: 8119,
     countyId: 18,
-    name: 'Niscov',
+    name: 'Nișcov',
   },
   {
     id: 8120,
@@ -40597,7 +40597,7 @@ export const CITIES = [
   {
     id: 8125,
     countyId: 42,
-    name: 'Nisiporesti',
+    name: 'Nisiporești',
   },
   {
     id: 8126,
@@ -40617,27 +40617,27 @@ export const CITIES = [
   {
     id: 8129,
     countyId: 18,
-    name: 'Nistoresti',
+    name: 'Nistorești',
   },
   {
     id: 8130,
     countyId: 30,
-    name: 'Nistoresti',
+    name: 'Nistorești',
   },
   {
     id: 8131,
     countyId: 54,
-    name: 'Nistoresti',
+    name: 'Nistorești',
   },
   {
     id: 8132,
     countyId: 22,
-    name: 'Nistoresti',
+    name: 'Nistorești',
   },
   {
     id: 8133,
     countyId: 44,
-    name: 'Nistoresti',
+    name: 'Nistorești',
   },
   {
     id: 8134,
@@ -40652,7 +40652,7 @@ export const CITIES = [
   {
     id: 8136,
     countyId: 50,
-    name: 'Nitchidorf',
+    name: 'Nițchidorf',
   },
   {
     id: 8137,
@@ -40662,12 +40662,12 @@ export const CITIES = [
   {
     id: 8138,
     countyId: 3,
-    name: 'Noaptes',
+    name: 'Noapteș',
   },
   {
     id: 8139,
     countyId: 40,
-    name: 'Noaptesa',
+    name: 'Noapteșa',
   },
   {
     id: 8140,
@@ -40677,7 +40677,7 @@ export const CITIES = [
   {
     id: 8141,
     countyId: 47,
-    name: 'Noistat',
+    name: 'Noiștat',
   },
   {
     id: 8142,
@@ -40702,12 +40702,12 @@ export const CITIES = [
   {
     id: 8146,
     countyId: 1,
-    name: 'Noslac',
+    name: 'Noșlac',
   },
   {
     id: 8147,
     countyId: 45,
-    name: 'Notig',
+    name: 'Noțig',
   },
   {
     id: 8148,
@@ -40722,7 +40722,7 @@ export const CITIES = [
   {
     id: 8150,
     countyId: 47,
-    name: 'Nou Sasesc',
+    name: 'Nou Săsesc',
   },
   {
     id: 8151,
@@ -40732,12 +40732,12 @@ export const CITIES = [
   {
     id: 8152,
     countyId: 44,
-    name: 'Novacesti',
+    name: 'Novăcești',
   },
   {
     id: 8153,
     countyId: 1,
-    name: 'Novacesti',
+    name: 'Novăcești',
   },
   {
     id: 8154,
@@ -40797,22 +40797,22 @@ export const CITIES = [
   {
     id: 8165,
     countyId: 3,
-    name: 'Nucsoara',
+    name: 'Nucșoara',
   },
   {
     id: 8166,
     countyId: 33,
-    name: 'Nucsoara',
+    name: 'Nucșoara',
   },
   {
     id: 8167,
     countyId: 44,
-    name: 'Nucsoara de Jos',
+    name: 'Nucșoara de Jos',
   },
   {
     id: 8168,
     countyId: 44,
-    name: 'Nucsoara de Sus',
+    name: 'Nucșoara de Sus',
   },
   {
     id: 8169,
@@ -40822,27 +40822,27 @@ export const CITIES = [
   {
     id: 8170,
     countyId: 51,
-    name: 'Nufaru',
+    name: 'Nufăru',
   },
   {
     id: 8172,
     countyId: 22,
-    name: 'Nuntasi',
+    name: 'Nuntași',
   },
   {
     id: 8173,
     countyId: 7,
-    name: 'Nuseni',
+    name: 'Nușeni',
   },
   {
     id: 8174,
     countyId: 45,
-    name: 'Nusfalau',
+    name: 'Nușfalău',
   },
   {
     id: 8175,
     countyId: 31,
-    name: 'Nuteni',
+    name: 'Nuțeni',
   },
   {
     id: 8176,
@@ -40857,7 +40857,7 @@ export const CITIES = [
   {
     id: 8178,
     countyId: 42,
-    name: 'Oantu',
+    name: 'Oanțu',
   },
   {
     id: 8179,
@@ -40867,7 +40867,7 @@ export const CITIES = [
   {
     id: 8180,
     countyId: 41,
-    name: 'Oarba de Mures',
+    name: 'Oarba de Mureș',
   },
   {
     id: 8181,
@@ -40882,12 +40882,12 @@ export const CITIES = [
   {
     id: 8183,
     countyId: 39,
-    name: 'Oarta de Jos',
+    name: 'Oarța de Jos',
   },
   {
     id: 8184,
     countyId: 39,
-    name: 'Oarta de Sus',
+    name: 'Oarța de Sus',
   },
   {
     id: 8185,
@@ -40897,7 +40897,7 @@ export const CITIES = [
   {
     id: 8186,
     countyId: 21,
-    name: 'Oas',
+    name: 'Oaș',
   },
   {
     id: 8187,
@@ -40907,72 +40907,72 @@ export const CITIES = [
   {
     id: 8188,
     countyId: 33,
-    name: 'Obarsa',
+    name: 'Obârșa',
   },
   {
     id: 8189,
     countyId: 53,
-    name: 'Obarseni (Vinderei)',
+    name: 'Obârșeni (Vinderei)',
   },
   {
     id: 8190,
     countyId: 53,
-    name: 'Obarseni (Voinesti)',
+    name: 'Obârșeni (Voinești)',
   },
   {
     id: 8191,
     countyId: 53,
-    name: 'Obarsenii Lingurari',
+    name: 'Obârșenii Lingurari',
   },
   {
     id: 8192,
     countyId: 2,
-    name: 'Obarsia',
+    name: 'Obârșia',
   },
   {
     id: 8193,
     countyId: 30,
-    name: 'Obarsia',
+    name: 'Obârșia',
   },
   {
     id: 8194,
     countyId: 52,
-    name: 'Obarsia',
+    name: 'Obârșia',
   },
   {
     id: 8195,
     countyId: 5,
-    name: 'Obarsia',
+    name: 'Obârșia',
   },
   {
     id: 8196,
     countyId: 43,
-    name: 'Obarsia',
+    name: 'Obârșia',
   },
   {
     id: 8197,
     countyId: 40,
-    name: 'Obarsia de Camp',
+    name: 'Obârșia de Câmp',
   },
   {
     id: 8198,
     countyId: 43,
-    name: 'Obarsia Noua',
+    name: 'Obârșia Nouă',
   },
   {
     id: 8199,
     countyId: 40,
-    name: 'Obarsia-Closani',
+    name: 'Obârșia-Cloșani',
   },
   {
     id: 8200,
     countyId: 41,
-    name: 'Obarsie',
+    name: 'Obârșie',
   },
   {
     id: 8201,
     countyId: 49,
-    name: 'Obartu',
+    name: 'Obârtu',
   },
   {
     id: 8202,
@@ -40997,7 +40997,7 @@ export const CITIES = [
   {
     id: 8206,
     countyId: 20,
-    name: 'Obita',
+    name: 'Obița',
   },
   {
     id: 8207,
@@ -41017,7 +41017,7 @@ export const CITIES = [
   {
     id: 8210,
     countyId: 31,
-    name: 'Obranesti',
+    name: 'Obrănești',
   },
   {
     id: 8211,
@@ -41037,7 +41037,7 @@ export const CITIES = [
   {
     id: 8214,
     countyId: 54,
-    name: 'Obrejita',
+    name: 'Obrejița',
   },
   {
     id: 8215,
@@ -41047,7 +41047,7 @@ export const CITIES = [
   {
     id: 8216,
     countyId: 52,
-    name: 'Obrocesti',
+    name: 'Obrocești',
   },
   {
     id: 8217,
@@ -41057,7 +41057,7 @@ export const CITIES = [
   {
     id: 8218,
     countyId: 54,
-    name: 'Ochesesti',
+    name: 'Ocheșești',
   },
   {
     id: 8219,
@@ -41082,7 +41082,7 @@ export const CITIES = [
   {
     id: 8223,
     countyId: 33,
-    name: 'Ocisor',
+    name: 'Ocișor',
   },
   {
     id: 8224,
@@ -41117,7 +41117,7 @@ export const CITIES = [
   {
     id: 8230,
     countyId: 1,
-    name: 'Ocna Mures',
+    name: 'Ocna Mureș',
   },
   {
     id: 8231,
@@ -41127,7 +41127,7 @@ export const CITIES = [
   {
     id: 8232,
     countyId: 39,
-    name: 'Ocna Sugatag',
+    name: 'Ocna Șugatag',
   },
   {
     id: 8233,
@@ -41137,22 +41137,22 @@ export const CITIES = [
   {
     id: 8234,
     countyId: 1,
-    name: 'Ocnisoara',
+    name: 'Ocnișoara',
   },
   {
     id: 8235,
     countyId: 24,
-    name: 'Ocnita',
+    name: 'Ocnița',
   },
   {
     id: 8236,
     countyId: 7,
-    name: 'Ocnita',
+    name: 'Ocnița',
   },
   {
     id: 8237,
     countyId: 52,
-    name: 'Ocnita',
+    name: 'Ocnița',
   },
   {
     id: 8238,
@@ -41162,27 +41162,27 @@ export const CITIES = [
   {
     id: 8239,
     countyId: 39,
-    name: 'Ocolis',
+    name: 'Ocoliș',
   },
   {
     id: 8240,
     countyId: 1,
-    name: 'Ocolis',
+    name: 'Ocoliș',
   },
   {
     id: 8241,
     countyId: 21,
-    name: 'Ocolisel',
+    name: 'Ocolișel',
   },
   {
     id: 8242,
     countyId: 33,
-    name: 'Ocolisu Mare',
+    name: 'Ocolișu Mare',
   },
   {
     id: 8243,
     countyId: 33,
-    name: 'Ocolisu Mic',
+    name: 'Ocolișu Mic',
   },
   {
     id: 8244,
@@ -41197,7 +41197,7 @@ export const CITIES = [
   {
     id: 8246,
     countyId: 3,
-    name: 'Odaeni',
+    name: 'Odăeni',
   },
   {
     id: 8247,
@@ -41227,27 +41227,27 @@ export const CITIES = [
   {
     id: 8252,
     countyId: 9,
-    name: 'Odaieni',
+    name: 'Odăieni',
   },
   {
     id: 8253,
     countyId: 36,
-    name: 'Odaile',
+    name: 'Odăile',
   },
   {
     id: 8254,
     countyId: 18,
-    name: 'Odaile',
+    name: 'Odăile',
   },
   {
     id: 8255,
     countyId: 44,
-    name: 'Odaile',
+    name: 'Odăile',
   },
   {
     id: 8256,
     countyId: 39,
-    name: 'Odesti',
+    name: 'Odești',
   },
   {
     id: 8257,
@@ -41262,17 +41262,17 @@ export const CITIES = [
   {
     id: 8259,
     countyId: 24,
-    name: 'Odobesti',
+    name: 'Odobești',
   },
   {
     id: 8260,
     countyId: 5,
-    name: 'Odobesti',
+    name: 'Odobești',
   },
   {
     id: 8261,
     countyId: 54,
-    name: 'Odobesti',
+    name: 'Odobești',
   },
   {
     id: 8262,
@@ -41302,32 +41302,32 @@ export const CITIES = [
   {
     id: 8267,
     countyId: 2,
-    name: 'Odvos',
+    name: 'Odvoș',
   },
   {
     id: 8268,
     countyId: 3,
-    name: 'Oestii Pamanteni',
+    name: 'Oeștii Pamânteni',
   },
   {
     id: 8269,
     countyId: 3,
-    name: 'Oestii Ungureni',
+    name: 'Oeștii Ungureni',
   },
   {
     id: 8270,
     countyId: 50,
-    name: 'Ofsenita',
+    name: 'Ofsenița',
   },
   {
     id: 8271,
     countyId: 20,
-    name: 'Ogasu Podului',
+    name: 'Ogașu Podului',
   },
   {
     id: 8272,
     countyId: 6,
-    name: 'Ogesti',
+    name: 'Ogești',
   },
   {
     id: 8273,
@@ -41352,7 +41352,7 @@ export const CITIES = [
   {
     id: 8277,
     countyId: 18,
-    name: 'Ograzile',
+    name: 'Ogrăzile',
   },
   {
     id: 8278,
@@ -41402,17 +41402,17 @@ export const CITIES = [
   {
     id: 8287,
     countyId: 33,
-    name: 'Ohaba de sub Piatra',
+    name: 'Ohaba de sub Piatră',
   },
   {
     id: 8288,
     countyId: 50,
-    name: 'Ohaba Lunga',
+    name: 'Ohaba Lungă',
   },
   {
     id: 8289,
     countyId: 50,
-    name: 'Ohaba Romana',
+    name: 'Ohaba Română',
   },
   {
     id: 8290,
@@ -41432,7 +41432,7 @@ export const CITIES = [
   {
     id: 8293,
     countyId: 20,
-    name: 'Ohaba-Matnic',
+    name: 'Ohaba-Mâtnic',
   },
   {
     id: 8294,
@@ -41442,17 +41442,17 @@ export const CITIES = [
   {
     id: 8295,
     countyId: 33,
-    name: 'Ohaba-Sibisel',
+    name: 'Ohaba-Sibișel',
   },
   {
     id: 8296,
     countyId: 20,
-    name: 'Ohabita',
+    name: 'Ohabița',
   },
   {
     id: 8297,
     countyId: 1,
-    name: 'Oidesti',
+    name: 'Oidești',
   },
   {
     id: 8298,
@@ -41487,12 +41487,12 @@ export const CITIES = [
   {
     id: 8304,
     countyId: 9,
-    name: 'Olaneasca',
+    name: 'Olăneasca',
   },
   {
     id: 8305,
     countyId: 52,
-    name: 'Olanesti',
+    name: 'Olănești',
   },
   {
     id: 8306,
@@ -41502,7 +41502,7 @@ export const CITIES = [
   {
     id: 8307,
     countyId: 54,
-    name: 'Olareni',
+    name: 'Olăreni',
   },
   {
     id: 8308,
@@ -41547,12 +41547,12 @@ export const CITIES = [
   {
     id: 8316,
     countyId: 18,
-    name: 'Olesesti',
+    name: 'Oleșești',
   },
   {
     id: 8317,
     countyId: 54,
-    name: 'Olesesti',
+    name: 'Oleșești',
   },
   {
     id: 8318,
@@ -41567,7 +41567,7 @@ export const CITIES = [
   {
     id: 8320,
     countyId: 50,
-    name: 'Olosag',
+    name: 'Oloșag',
   },
   {
     id: 8321,
@@ -41587,12 +41587,12 @@ export const CITIES = [
   {
     id: 8324,
     countyId: 52,
-    name: 'Olteanca (Glavile)',
+    name: 'Olteanca (Glăvile)',
   },
   {
     id: 8325,
     countyId: 52,
-    name: 'Olteanca (Ladesti)',
+    name: 'Olteanca (Lădești)',
   },
   {
     id: 8326,
@@ -41602,7 +41602,7 @@ export const CITIES = [
   {
     id: 8327,
     countyId: 53,
-    name: 'Oltenesti',
+    name: 'Oltenești',
   },
   {
     id: 8328,
@@ -41652,27 +41652,27 @@ export const CITIES = [
   {
     id: 8337,
     countyId: 24,
-    name: 'Olteni (Uliesti)',
+    name: 'Olteni (Uliești)',
   },
   {
     id: 8338,
     countyId: 19,
-    name: 'Oltenita',
+    name: 'Oltenița',
   },
   {
     id: 8339,
     countyId: 10,
-    name: 'Oltet',
+    name: 'Olteț',
   },
   {
     id: 8340,
     countyId: 52,
-    name: 'Oltetani',
+    name: 'Oltețani',
   },
   {
     id: 8341,
     countyId: 52,
-    name: 'Oltetu',
+    name: 'Oltețu',
   },
   {
     id: 8342,
@@ -41687,37 +41687,37 @@ export const CITIES = [
   {
     id: 8344,
     countyId: 43,
-    name: 'Oltisoru',
+    name: 'Oltișoru',
   },
   {
     id: 8345,
     countyId: 5,
-    name: 'Oncesti',
+    name: 'Oncești',
   },
   {
     id: 8346,
     countyId: 29,
-    name: 'Oncesti',
+    name: 'Oncești',
   },
   {
     id: 8347,
     countyId: 1,
-    name: 'Oncesti',
+    name: 'Oncești',
   },
   {
     id: 8348,
     countyId: 24,
-    name: 'Oncesti',
+    name: 'Oncești',
   },
   {
     id: 8349,
     countyId: 39,
-    name: 'Oncesti',
+    name: 'Oncești',
   },
   {
     id: 8350,
     countyId: 5,
-    name: 'Oncestii Vechi',
+    name: 'Onceștii Vechi',
   },
   {
     id: 8351,
@@ -41732,12 +41732,12 @@ export const CITIES = [
   {
     id: 8353,
     countyId: 35,
-    name: 'Onesti',
+    name: 'Onești',
   },
   {
     id: 8354,
     countyId: 5,
-    name: 'Onesti',
+    name: 'Onești',
   },
   {
     id: 8355,
@@ -41752,7 +41752,7 @@ export const CITIES = [
   {
     id: 8357,
     countyId: 5,
-    name: 'Oniscani',
+    name: 'Onișcani',
   },
   {
     id: 8358,
@@ -41762,12 +41762,12 @@ export const CITIES = [
   {
     id: 8359,
     countyId: 52,
-    name: 'Opatesti',
+    name: 'Opătești',
   },
   {
     id: 8360,
     countyId: 50,
-    name: 'Opatita',
+    name: 'Opatița',
   },
   {
     id: 8361,
@@ -41777,42 +41777,42 @@ export const CITIES = [
   {
     id: 8362,
     countyId: 40,
-    name: 'Opranesti',
+    name: 'Oprănești',
   },
   {
     id: 8363,
     countyId: 3,
-    name: 'Opresti',
+    name: 'Oprești',
   },
   {
     id: 8364,
     countyId: 9,
-    name: 'Oprisenesti',
+    name: 'Oprișenești',
   },
   {
     id: 8365,
     countyId: 35,
-    name: 'Opriseni',
+    name: 'Oprișeni',
   },
   {
     id: 8366,
     countyId: 5,
-    name: 'Oprisesti',
+    name: 'Oprișești',
   },
   {
     id: 8367,
     countyId: 33,
-    name: 'Oprisesti',
+    name: 'Oprișești',
   },
   {
     id: 8368,
     countyId: 53,
-    name: 'Oprisita',
+    name: 'Oprișița',
   },
   {
     id: 8369,
     countyId: 40,
-    name: 'Oprisor',
+    name: 'Oprișor',
   },
   {
     id: 8370,
@@ -41822,17 +41822,17 @@ export const CITIES = [
   {
     id: 8371,
     countyId: 43,
-    name: 'Optasani',
+    name: 'Optășani',
   },
   {
     id: 8372,
     countyId: 43,
-    name: 'Optasi',
+    name: 'Optași',
   },
   {
     id: 8373,
     countyId: 43,
-    name: 'Optasi-Magura',
+    name: 'Optași-Măgura',
   },
   {
     id: 8374,
@@ -41842,57 +41842,57 @@ export const CITIES = [
   {
     id: 8375,
     countyId: 5,
-    name: 'Orasa',
+    name: 'Orășa',
   },
   {
     id: 8376,
     countyId: 31,
-    name: 'Oraseni',
+    name: 'Orășeni',
   },
   {
     id: 8377,
     countyId: 8,
-    name: 'Oraseni-Deal',
+    name: 'Orășeni-Deal',
   },
   {
     id: 8378,
     countyId: 8,
-    name: 'Oraseni-Vale',
+    name: 'Orășeni-Vale',
   },
   {
     id: 8379,
     countyId: 19,
-    name: 'Orasti',
+    name: 'Orăști',
   },
   {
     id: 8380,
     countyId: 1,
-    name: 'Orasti',
+    name: 'Orăști',
   },
   {
     id: 8381,
     countyId: 33,
-    name: 'Orastie',
+    name: 'Orăștie',
   },
   {
     id: 8382,
     countyId: 33,
-    name: 'Orastioara de Jos',
+    name: 'Orăștioara de Jos',
   },
   {
     id: 8383,
     countyId: 33,
-    name: 'Orastioara de Sus',
+    name: 'Orăștioara de Sus',
   },
   {
     id: 8384,
     countyId: 46,
-    name: 'Orasu Nou',
+    name: 'Orașu Nou',
   },
   {
     id: 8385,
     countyId: 46,
-    name: 'Orasu Nou-Vii',
+    name: 'Orașu Nou-Vii',
   },
   {
     id: 8386,
@@ -41902,12 +41902,12 @@ export const CITIES = [
   {
     id: 8387,
     countyId: 20,
-    name: 'Oravita',
+    name: 'Oravița',
   },
   {
     id: 8388,
     countyId: 46,
-    name: 'Orbau',
+    name: 'Orbău',
   },
   {
     id: 8389,
@@ -41932,7 +41932,7 @@ export const CITIES = [
   {
     id: 8393,
     countyId: 34,
-    name: 'Orboesti',
+    name: 'Orboești',
   },
   {
     id: 8394,
@@ -41957,7 +41957,7 @@ export const CITIES = [
   {
     id: 8398,
     countyId: 40,
-    name: 'Orevita Mare',
+    name: 'Orevița Mare',
   },
   {
     id: 8399,
@@ -41967,17 +41967,17 @@ export const CITIES = [
   {
     id: 8400,
     countyId: 1,
-    name: 'Orgesti',
+    name: 'Orgești',
   },
   {
     id: 8401,
     countyId: 53,
-    name: 'Orgoiesti',
+    name: 'Orgoiești',
   },
   {
     id: 8402,
     countyId: 7,
-    name: 'Orheiu Bistritei',
+    name: 'Orheiu Bistriței',
   },
   {
     id: 8403,
@@ -41992,12 +41992,12 @@ export const CITIES = [
   {
     id: 8405,
     countyId: 43,
-    name: 'Orlea Noua',
+    name: 'Orlea Nouă',
   },
   {
     id: 8406,
     countyId: 52,
-    name: 'Orlesti',
+    name: 'Orlești',
   },
   {
     id: 8407,
@@ -42007,17 +42007,17 @@ export const CITIES = [
   {
     id: 8408,
     countyId: 1,
-    name: 'Ormenis',
+    name: 'Ormeniș',
   },
   {
     id: 8409,
     countyId: 41,
-    name: 'Ormenis',
+    name: 'Ormeniș',
   },
   {
     id: 8410,
     countyId: 10,
-    name: 'Ormenis',
+    name: 'Ormeniș',
   },
   {
     id: 8411,
@@ -42057,22 +42057,22 @@ export const CITIES = [
   {
     id: 8418,
     countyId: 40,
-    name: 'Orsova',
+    name: 'Orșova',
   },
   {
     id: 8419,
     countyId: 41,
-    name: 'Orsova',
+    name: 'Orșova',
   },
   {
     id: 8420,
     countyId: 41,
-    name: 'Orsova-Padure',
+    name: 'Orșova-Pădure',
   },
   {
     id: 8421,
     countyId: 42,
-    name: 'Ortasti',
+    name: 'Orțăști',
   },
   {
     id: 8422,
@@ -42082,12 +42082,12 @@ export const CITIES = [
   {
     id: 8423,
     countyId: 50,
-    name: 'Ortisoara',
+    name: 'Orțișoara',
   },
   {
     id: 8424,
     countyId: 39,
-    name: 'Ortita',
+    name: 'Orțița',
   },
   {
     id: 8425,
@@ -42102,7 +42102,7 @@ export const CITIES = [
   {
     id: 8427,
     countyId: 6,
-    name: 'Orvisele',
+    name: 'Orvișele',
   },
   {
     id: 8428,
@@ -42112,7 +42112,7 @@ export const CITIES = [
   {
     id: 8429,
     countyId: 30,
-    name: 'Orzesti',
+    name: 'Orzești',
   },
   {
     id: 8430,
@@ -42132,17 +42132,17 @@ export const CITIES = [
   {
     id: 8433,
     countyId: 6,
-    name: 'Osand',
+    name: 'Oșand',
   },
   {
     id: 8434,
     countyId: 5,
-    name: 'Osebiti',
+    name: 'Osebiți',
   },
   {
     id: 8435,
     countyId: 53,
-    name: 'Osesti',
+    name: 'Oșești',
   },
   {
     id: 8436,
@@ -42157,7 +42157,7 @@ export const CITIES = [
   {
     id: 8438,
     countyId: 42,
-    name: 'Oslobeni',
+    name: 'Oșlobeni',
   },
   {
     id: 8439,
@@ -42182,17 +42182,17 @@ export const CITIES = [
   {
     id: 8443,
     countyId: 35,
-    name: 'Osoi (Sinesti)',
+    name: 'Osoi (Sinești)',
   },
   {
     id: 8444,
     countyId: 6,
-    name: 'Osorhei',
+    name: 'Oșorhei',
   },
   {
     id: 8445,
     countyId: 21,
-    name: 'Osorhel',
+    name: 'Oșorhel',
   },
   {
     id: 8446,
@@ -42282,57 +42282,57 @@ export const CITIES = [
   {
     id: 8463,
     countyId: 53,
-    name: 'Oteleni',
+    name: 'Oțeleni',
   },
   {
     id: 8464,
     countyId: 35,
-    name: 'Oteleni',
+    name: 'Oțeleni',
   },
   {
     id: 8465,
     countyId: 5,
-    name: 'Otelesti',
+    name: 'Oțelești',
   },
   {
     id: 8466,
     countyId: 3,
-    name: 'Otelu',
+    name: 'Oțelu',
   },
   {
     id: 8467,
     countyId: 20,
-    name: 'Otelu Rosu',
+    name: 'Oțelu Roșu',
   },
   {
     id: 8468,
     countyId: 31,
-    name: 'Oteni',
+    name: 'Oțeni',
   },
   {
     id: 8469,
     countyId: 52,
-    name: 'Otesani',
+    name: 'Oteșani',
   },
   {
     id: 8470,
     countyId: 43,
-    name: 'Otestii de Jos',
+    name: 'Oteștii de Jos',
   },
   {
     id: 8471,
     countyId: 43,
-    name: 'Otestii de Sus',
+    name: 'Oteștii de Sus',
   },
   {
     id: 8472,
     countyId: 52,
-    name: 'Otetelisu',
+    name: 'Otetelișu',
   },
   {
     id: 8473,
     countyId: 53,
-    name: 'Otetoaia',
+    name: 'Oțetoaia',
   },
   {
     id: 8474,
@@ -42347,7 +42347,7 @@ export const CITIES = [
   {
     id: 8476,
     countyId: 50,
-    name: 'Otvesti',
+    name: 'Otvești',
   },
   {
     id: 8477,
@@ -42372,7 +42372,7 @@ export const CITIES = [
   {
     id: 8481,
     countyId: 23,
-    name: 'Ozunca-Bai',
+    name: 'Ozunca-Băi',
   },
   {
     id: 8482,
@@ -42382,47 +42382,47 @@ export const CITIES = [
   {
     id: 8483,
     countyId: 3,
-    name: 'Pacioiu',
+    name: 'Păcioiu',
   },
   {
     id: 8484,
     countyId: 18,
-    name: 'Paclele',
+    name: 'Pâclele',
   },
   {
     id: 8485,
     countyId: 1,
-    name: 'Paclisa',
+    name: 'Pâclișa',
   },
   {
     id: 8486,
     countyId: 33,
-    name: 'Paclisa',
+    name: 'Păclișa',
   },
   {
     id: 8487,
     countyId: 53,
-    name: 'Pacuraresti',
+    name: 'Păcurărești',
   },
   {
     id: 8488,
     countyId: 41,
-    name: 'Pacureni',
+    name: 'Păcureni',
   },
   {
     id: 8489,
     countyId: 44,
-    name: 'Pacureti',
+    name: 'Păcureți',
   },
   {
     id: 8490,
     countyId: 44,
-    name: 'Pacuri',
+    name: 'Păcuri',
   },
   {
     id: 8491,
     countyId: 18,
-    name: 'Pacurile',
+    name: 'Păcurile',
   },
   {
     id: 8492,
@@ -42432,7 +42432,7 @@ export const CITIES = [
   {
     id: 8493,
     countyId: 30,
-    name: 'Pades',
+    name: 'Padeș',
   },
   {
     id: 8494,
@@ -42442,7 +42442,7 @@ export const CITIES = [
   {
     id: 8495,
     countyId: 40,
-    name: 'Padina',
+    name: 'Pădina',
   },
   {
     id: 8496,
@@ -42452,7 +42452,7 @@ export const CITIES = [
   {
     id: 8497,
     countyId: 40,
-    name: 'Padina Mare',
+    name: 'Pădina Mare',
   },
   {
     id: 8498,
@@ -42462,112 +42462,112 @@ export const CITIES = [
   {
     id: 8499,
     countyId: 40,
-    name: 'Padina Mica',
+    name: 'Pădina Mică',
   },
   {
     id: 8500,
     countyId: 50,
-    name: 'Padurani',
+    name: 'Pădurani',
   },
   {
     id: 8501,
     countyId: 1,
-    name: 'Padure',
+    name: 'Pădure',
   },
   {
     id: 8502,
     countyId: 1,
-    name: 'Padurea',
+    name: 'Pădurea',
   },
   {
     id: 8503,
     countyId: 41,
-    name: 'Padurea',
+    name: 'Pădurea',
   },
   {
     id: 8504,
     countyId: 21,
-    name: 'Padurea Iacobeni',
+    name: 'Pădurea Iacobeni',
   },
   {
     id: 8505,
     countyId: 6,
-    name: 'Padurea Neagra',
+    name: 'Pădurea Neagră',
   },
   {
     id: 8506,
     countyId: 3,
-    name: 'Padureni',
+    name: 'Pădureni',
   },
   {
     id: 8507,
     countyId: 22,
-    name: 'Padureni',
+    name: 'Pădureni',
   },
   {
     id: 8508,
     countyId: 24,
-    name: 'Padureni',
+    name: 'Pădureni',
   },
   {
     id: 8509,
     countyId: 41,
-    name: 'Padureni',
+    name: 'Pădureni',
   },
   {
     id: 8510,
     countyId: 47,
-    name: 'Padureni',
+    name: 'Pădureni',
   },
   {
     id: 8511,
     countyId: 48,
-    name: 'Padureni',
+    name: 'Pădureni',
   },
   {
     id: 8512,
     countyId: 6,
-    name: 'Padureni',
+    name: 'Pădureni',
   },
   {
     id: 8513,
     countyId: 23,
-    name: 'Padureni',
+    name: 'Pădureni',
   },
   {
     id: 8514,
     countyId: 29,
-    name: 'Padureni',
+    name: 'Pădureni',
   },
   {
     id: 8515,
     countyId: 42,
-    name: 'Padureni',
+    name: 'Pădureni',
   },
   {
     id: 8516,
     countyId: 45,
-    name: 'Padureni',
+    name: 'Pădureni',
   },
   {
     id: 8517,
     countyId: 53,
-    name: 'Padureni',
+    name: 'Pădureni',
   },
   {
     id: 8518,
     countyId: 5,
-    name: 'Padureni (Beresti-Bistrita)',
+    name: 'Pădureni (Berești-Bistrița)',
   },
   {
     id: 8519,
     countyId: 21,
-    name: 'Padureni (Chinteni)',
+    name: 'Pădureni (Chinteni)',
   },
   {
     id: 8520,
     countyId: 21,
-    name: 'Padureni (Ciurila)',
+    name: 'Pădureni (Ciurila)',
   },
   {
     id: 8521,
@@ -42577,27 +42577,27 @@ export const CITIES = [
   {
     id: 8522,
     countyId: 5,
-    name: 'Padureni (Damienesti)',
+    name: 'Pădureni (Dămienești)',
   },
   {
     id: 8523,
     countyId: 5,
-    name: 'Padureni (Filipeni)',
+    name: 'Pădureni (Filipeni)',
   },
   {
     id: 8524,
     countyId: 35,
-    name: 'Padureni (Grajduri)',
+    name: 'Pădureni (Grajduri)',
   },
   {
     id: 8525,
     countyId: 5,
-    name: 'Padureni (Izvoru Berheciului)',
+    name: 'Pădureni (Izvoru Berheciului)',
   },
   {
     id: 8526,
     countyId: 54,
-    name: 'Padureni (Jaristea)',
+    name: 'Pădureni (Jariștea)',
   },
   {
     id: 8527,
@@ -42607,47 +42607,47 @@ export const CITIES = [
   {
     id: 8528,
     countyId: 54,
-    name: 'Padureni (Marasesti)',
+    name: 'Pădureni (Mărășești)',
   },
   {
     id: 8529,
     countyId: 5,
-    name: 'Padureni (Margineni)',
+    name: 'Pădureni (Mărgineni)',
   },
   {
     id: 8530,
     countyId: 53,
-    name: 'Padureni (Osesti)',
+    name: 'Pădureni (Oșești)',
   },
   {
     id: 8531,
     countyId: 35,
-    name: 'Padureni (Popesti)',
+    name: 'Pădureni (Popești)',
   },
   {
     id: 8532,
     countyId: 8,
-    name: 'Padureni (Sendriceni)',
+    name: 'Pădureni (Șendriceni)',
   },
   {
     id: 8533,
     countyId: 54,
-    name: 'Padureni (Tamboesti)',
+    name: 'Pădureni (Tâmboești)',
   },
   {
     id: 8534,
     countyId: 50,
-    name: 'Padureni (Victor Vlad Delamarina)',
+    name: 'Pădureni (Victor Vlad Delamarina)',
   },
   {
     id: 8535,
     countyId: 18,
-    name: 'Padurenii',
+    name: 'Pădurenii',
   },
   {
     id: 8536,
     countyId: 21,
-    name: 'Padurenii (Mintiu Gherlii)',
+    name: 'Pădurenii (Mintiu Gherlii)',
   },
   {
     id: 8537,
@@ -42657,62 +42657,62 @@ export const CITIES = [
   {
     id: 8538,
     countyId: 3,
-    name: 'Padureti',
+    name: 'Pădureți',
   },
   {
     id: 8539,
     countyId: 52,
-    name: 'Paduretu',
+    name: 'Pădurețu',
   },
   {
     id: 8540,
     countyId: 45,
-    name: 'Paduris',
+    name: 'Păduriș',
   },
   {
     id: 8541,
     countyId: 19,
-    name: 'Padurisu',
+    name: 'Pădurișu',
   },
   {
     id: 8542,
     countyId: 3,
-    name: 'Paduroiu din Deal',
+    name: 'Păduroiu din Deal',
   },
   {
     id: 8543,
     countyId: 3,
-    name: 'Paduroiu din Vale',
+    name: 'Păduroiu din Vale',
   },
   {
     id: 8544,
     countyId: 6,
-    name: 'Pagaia',
+    name: 'Păgaia',
   },
   {
     id: 8545,
     countyId: 1,
-    name: 'Pagida',
+    name: 'Păgida',
   },
   {
     id: 8546,
     countyId: 21,
-    name: 'Paglisa',
+    name: 'Pâglișa',
   },
   {
     id: 8547,
     countyId: 5,
-    name: 'Pagubeni',
+    name: 'Păgubeni',
   },
   {
     id: 8548,
     countyId: 53,
-    name: 'Pahna',
+    name: 'Pâhna',
   },
   {
     id: 8549,
     countyId: 53,
-    name: 'Pahnesti',
+    name: 'Pâhnești',
   },
   {
     id: 8550,
@@ -42722,32 +42722,32 @@ export const CITIES = [
   {
     id: 8551,
     countyId: 41,
-    name: 'Paingeni',
+    name: 'Păingeni',
   },
   {
     id: 8552,
     countyId: 30,
-    name: 'Paisani',
+    name: 'Păișani',
   },
   {
     id: 8553,
     countyId: 48,
-    name: 'Paiseni',
+    name: 'Păiseni',
   },
   {
     id: 8554,
     countyId: 2,
-    name: 'Paiuseni',
+    name: 'Păiușeni',
   },
   {
     id: 8555,
     countyId: 5,
-    name: 'Pajistea',
+    name: 'Pajiștea',
   },
   {
     id: 8556,
     countyId: 30,
-    name: 'Pajistele',
+    name: 'Păjiștele',
   },
   {
     id: 8557,
@@ -42777,7 +42777,7 @@ export const CITIES = [
   {
     id: 8562,
     countyId: 21,
-    name: 'Palatca',
+    name: 'Pălatca',
   },
   {
     id: 8563,
@@ -42797,7 +42797,7 @@ export const CITIES = [
   {
     id: 8566,
     countyId: 18,
-    name: 'Palici',
+    name: 'Pălici',
   },
   {
     id: 8567,
@@ -42807,7 +42807,7 @@ export const CITIES = [
   {
     id: 8568,
     countyId: 10,
-    name: 'Palos',
+    name: 'Paloș',
   },
   {
     id: 8569,
@@ -42842,77 +42842,77 @@ export const CITIES = [
   {
     id: 8575,
     countyId: 5,
-    name: 'Paltinata',
+    name: 'Păltinata',
   },
   {
     id: 8576,
     countyId: 7,
-    name: 'Paltineasa',
+    name: 'Păltineasa',
   },
   {
     id: 8577,
     countyId: 18,
-    name: 'Paltineni',
+    name: 'Păltineni',
   },
   {
     id: 8578,
     countyId: 5,
-    name: 'Paltinis',
+    name: 'Păltiniș',
   },
   {
     id: 8579,
     countyId: 18,
-    name: 'Paltinis',
+    name: 'Păltiniș',
   },
   {
     id: 8580,
     countyId: 31,
-    name: 'Paltinis',
+    name: 'Păltiniș',
   },
   {
     id: 8581,
     countyId: 48,
-    name: 'Paltinis',
+    name: 'Păltiniș',
   },
   {
     id: 8582,
     countyId: 8,
-    name: 'Paltinis',
+    name: 'Păltiniș',
   },
   {
     id: 8583,
     countyId: 20,
-    name: 'Paltinis',
+    name: 'Păltiniș',
   },
   {
     id: 8584,
     countyId: 47,
-    name: 'Paltinis',
+    name: 'Păltiniș',
   },
   {
     id: 8585,
     countyId: 53,
-    name: 'Paltinis',
+    name: 'Păltiniș',
   },
   {
     id: 8586,
     countyId: 31,
-    name: 'Paltinis-Ciuc',
+    name: 'Păltiniș-Ciuc',
   },
   {
     id: 8587,
     countyId: 40,
-    name: 'Paltinisu',
+    name: 'Păltinișu',
   },
   {
     id: 8588,
     countyId: 34,
-    name: 'Paltinisu',
+    name: 'Păltinișu',
   },
   {
     id: 8589,
     countyId: 48,
-    name: 'Paltinoasa',
+    name: 'Păltinoasa',
   },
   {
     id: 8590,
@@ -42932,7 +42932,7 @@ export const CITIES = [
   {
     id: 8593,
     countyId: 1,
-    name: 'Panade',
+    name: 'Pănade',
   },
   {
     id: 8594,
@@ -42947,7 +42947,7 @@ export const CITIES = [
   {
     id: 8596,
     countyId: 18,
-    name: 'Panatau',
+    name: 'Pănătău',
   },
   {
     id: 8597,
@@ -42957,12 +42957,12 @@ export const CITIES = [
   {
     id: 8598,
     countyId: 33,
-    name: 'Panc-Saliste',
+    name: 'Panc-Săliște',
   },
   {
     id: 8599,
     countyId: 1,
-    name: 'Panca',
+    name: 'Pânca',
   },
   {
     id: 8600,
@@ -42977,7 +42977,7 @@ export const CITIES = [
   {
     id: 8602,
     countyId: 42,
-    name: 'Pancesti',
+    name: 'Pâncești',
   },
   {
     id: 8603,
@@ -42987,7 +42987,7 @@ export const CITIES = [
   {
     id: 8604,
     countyId: 2,
-    name: 'Pancota',
+    name: 'Pâncota',
   },
   {
     id: 8605,
@@ -42997,17 +42997,17 @@ export const CITIES = [
   {
     id: 8606,
     countyId: 41,
-    name: 'Panet',
+    name: 'Pănet',
   },
   {
     id: 8607,
     countyId: 42,
-    name: 'Pangaracior',
+    name: 'Pângărăcior',
   },
   {
     id: 8608,
     countyId: 42,
-    name: 'Pangarati',
+    name: 'Pângărați',
   },
   {
     id: 8609,
@@ -43017,7 +43017,7 @@ export const CITIES = [
   {
     id: 8610,
     countyId: 21,
-    name: 'Paniceni',
+    name: 'Păniceni',
   },
   {
     id: 8611,
@@ -43027,7 +43027,7 @@ export const CITIES = [
   {
     id: 8612,
     countyId: 6,
-    name: 'Pantasesti',
+    name: 'Păntășești',
   },
   {
     id: 8613,
@@ -43037,7 +43037,7 @@ export const CITIES = [
   {
     id: 8614,
     countyId: 9,
-    name: 'Pantecani',
+    name: 'Pântecani',
   },
   {
     id: 8615,
@@ -43057,7 +43057,7 @@ export const CITIES = [
   {
     id: 8618,
     countyId: 1,
-    name: 'Pantesti',
+    name: 'Păntești',
   },
   {
     id: 8619,
@@ -43067,7 +43067,7 @@ export const CITIES = [
   {
     id: 8620,
     countyId: 23,
-    name: 'Papauti',
+    name: 'Păpăuți',
   },
   {
     id: 8621,
@@ -43077,132 +43077,132 @@ export const CITIES = [
   {
     id: 8622,
     countyId: 48,
-    name: 'Paraie',
+    name: 'Pâraie',
   },
   {
     id: 8623,
     countyId: 52,
-    name: 'Paraienii de Jos',
+    name: 'Pârâienii de Jos',
   },
   {
     id: 8624,
     countyId: 52,
-    name: 'Paraienii de Mijloc',
+    name: 'Pârâienii de Mijloc',
   },
   {
     id: 8625,
     countyId: 52,
-    name: 'Paraienii de Sus',
+    name: 'Pârâienii de Sus',
   },
   {
     id: 8626,
     countyId: 3,
-    name: 'Paraschivesti',
+    name: 'Paraschivești',
   },
   {
     id: 8627,
     countyId: 30,
-    name: 'Parau',
+    name: 'Pârâu',
   },
   {
     id: 8628,
     countyId: 10,
-    name: 'Parau',
+    name: 'Părău',
   },
   {
     id: 8629,
     countyId: 5,
-    name: 'Parau Boghii',
+    name: 'Pârâu Boghii',
   },
   {
     id: 8630,
     countyId: 30,
-    name: 'Parau Boia',
+    name: 'Pârâu Boia',
   },
   {
     id: 8631,
     countyId: 41,
-    name: 'Parau Crucii (Pogaceaua)',
+    name: 'Pârâu Crucii (Pogăceaua)',
   },
   {
     id: 8632,
     countyId: 41,
-    name: 'Parau Crucii (Raciu)',
+    name: 'Pârâu Crucii (Râciu)',
   },
   {
     id: 8633,
     countyId: 30,
-    name: 'Parau de Pripor',
+    name: 'Pârâu de Pripor',
   },
   {
     id: 8634,
     countyId: 30,
-    name: 'Parau de Vale',
+    name: 'Pârâu de Vale',
   },
   {
     id: 8635,
     countyId: 1,
-    name: 'Parau Gruiului',
+    name: 'Pârău Gruiului',
   },
   {
     id: 8636,
     countyId: 1,
-    name: 'Parau lui Mihai',
+    name: 'Pârău lui Mihai',
   },
   {
     id: 8637,
     countyId: 41,
-    name: 'Parau Mare',
+    name: 'Pârâu Mare',
   },
   {
     id: 8638,
     countyId: 48,
-    name: 'Parau Negrei',
+    name: 'Pârâu Negrei',
   },
   {
     id: 8639,
     countyId: 8,
-    name: 'Parau Negru',
+    name: 'Pârâu Negru',
   },
   {
     id: 8640,
     countyId: 30,
-    name: 'Parau Viu',
+    name: 'Pârâu Viu',
   },
   {
     id: 8641,
     countyId: 1,
-    name: 'Parau-Carbunari',
+    name: 'Pârâu-Cărbunări',
   },
   {
     id: 8642,
     countyId: 42,
-    name: 'Paraul Carjei',
+    name: 'Pârâul Cârjei',
   },
   {
     id: 8643,
     countyId: 42,
-    name: 'Paraul Fagului',
+    name: 'Pârâul Fagului',
   },
   {
     id: 8644,
     countyId: 42,
-    name: 'Paraul Mare',
+    name: 'Pârâul Mare',
   },
   {
     id: 8645,
     countyId: 42,
-    name: 'Paraul Pantei',
+    name: 'Pârâul Pântei',
   },
   {
     id: 8646,
     countyId: 10,
-    name: 'Paraul Rece',
+    name: 'Pârâul Rece',
   },
   {
     id: 8647,
     countyId: 52,
-    name: 'Parausani',
+    name: 'Părăușani',
   },
   {
     id: 8648,
@@ -43212,12 +43212,12 @@ export const CITIES = [
   {
     id: 8649,
     countyId: 51,
-    name: 'Parches',
+    name: 'Parcheș',
   },
   {
     id: 8650,
     countyId: 35,
-    name: 'Parcovaci',
+    name: 'Pârcovaci',
   },
   {
     id: 8651,
@@ -43227,22 +43227,22 @@ export const CITIES = [
   {
     id: 8652,
     countyId: 18,
-    name: 'Pardosi',
+    name: 'Pardoși',
   },
   {
     id: 8653,
     countyId: 44,
-    name: 'Parepa-Rusani',
+    name: 'Parepa-Rușani',
   },
   {
     id: 8654,
     countyId: 5,
-    name: 'Pargaresti',
+    name: 'Pârgărești',
   },
   {
     id: 8655,
     countyId: 48,
-    name: 'Parhauti',
+    name: 'Părhăuți',
   },
   {
     id: 8656,
@@ -43257,67 +43257,67 @@ export const CITIES = [
   {
     id: 8658,
     countyId: 5,
-    name: 'Parjol',
+    name: 'Pârjol',
   },
   {
     id: 8659,
     countyId: 18,
-    name: 'Parjolesti',
+    name: 'Pârjolești',
   },
   {
     id: 8660,
     countyId: 40,
-    name: 'Parlagele',
+    name: 'Pârlagele',
   },
   {
     id: 8661,
     countyId: 20,
-    name: 'Parneaura',
+    name: 'Pârneaura',
   },
   {
     id: 8662,
     countyId: 2,
-    name: 'Parnesti',
+    name: 'Pârnești',
   },
   {
     id: 8663,
     countyId: 33,
-    name: 'Paros',
+    name: 'Paroș',
   },
   {
     id: 8664,
     countyId: 53,
-    name: 'Parpanita',
+    name: 'Parpanița',
   },
   {
     id: 8665,
     countyId: 18,
-    name: 'Parscov',
+    name: 'Pârscov',
   },
   {
     id: 8666,
     countyId: 18,
-    name: 'Parscovelu',
+    name: 'Pârscovelu',
   },
   {
     id: 8667,
     countyId: 43,
-    name: 'Parscoveni',
+    name: 'Pârșcoveni',
   },
   {
     id: 8668,
     countyId: 50,
-    name: 'Parta',
+    name: 'Parța',
   },
   {
     id: 8669,
     countyId: 48,
-    name: 'Partestii de Jos',
+    name: 'Pârteștii de Jos',
   },
   {
     id: 8670,
     countyId: 48,
-    name: 'Partestii de Sus',
+    name: 'Pârteștii de Sus',
   },
   {
     id: 8671,
@@ -43327,17 +43327,17 @@ export const CITIES = [
   {
     id: 8672,
     countyId: 50,
-    name: 'Partos',
+    name: 'Partoș',
   },
   {
     id: 8673,
     countyId: 50,
-    name: 'Paru',
+    name: 'Păru',
   },
   {
     id: 8674,
     countyId: 49,
-    name: 'Paru Rotund',
+    name: 'Păru Rotund',
   },
   {
     id: 8675,
@@ -43347,92 +43347,92 @@ export const CITIES = [
   {
     id: 8676,
     countyId: 53,
-    name: 'Parvesti',
+    name: 'Pârvești',
   },
   {
     id: 8677,
     countyId: 20,
-    name: 'Parvova',
+    name: 'Pârvova',
   },
   {
     id: 8678,
     countyId: 3,
-    name: 'Parvu Rosu',
+    name: 'Pârvu Roșu',
   },
   {
     id: 8679,
     countyId: 30,
-    name: 'Parvulesti',
+    name: 'Pârvulești',
   },
   {
     id: 8680,
     countyId: 5,
-    name: 'Parvulesti',
+    name: 'Pârvulești',
   },
   {
     id: 8681,
     countyId: 40,
-    name: 'Parvulesti',
+    name: 'Pârvulești',
   },
   {
     id: 8682,
     countyId: 40,
-    name: 'Pasarani',
+    name: 'Păsărani',
   },
   {
     id: 8683,
     countyId: 36,
-    name: 'Pasarea',
+    name: 'Pasărea',
   },
   {
     id: 8684,
     countyId: 19,
-    name: 'Pasarea',
+    name: 'Pasărea',
   },
   {
     id: 8685,
     countyId: 52,
-    name: 'Pasarei',
+    name: 'Păsărei',
   },
   {
     id: 8686,
     countyId: 41,
-    name: 'Pasareni',
+    name: 'Păsăreni',
   },
   {
     id: 8687,
     countyId: 8,
-    name: 'Pasateni',
+    name: 'Păsăteni',
   },
   {
     id: 8688,
     countyId: 35,
-    name: 'Pascani',
+    name: 'Pașcani',
   },
   {
     id: 8689,
     countyId: 52,
-    name: 'Pascoaia',
+    name: 'Păscoaia',
   },
   {
     id: 8690,
     countyId: 52,
-    name: 'Pasculesti',
+    name: 'Păsculești',
   },
   {
     id: 8691,
     countyId: 1,
-    name: 'Pastesti',
+    name: 'Păștești',
   },
   {
     id: 8692,
     countyId: 42,
-    name: 'Pastraveni',
+    name: 'Păstrăveni',
   },
   {
     id: 8693,
     countyId: 46,
-    name: 'Pasunea Mare',
+    name: 'Pășunea Mare',
   },
   {
     id: 8694,
@@ -43442,52 +43442,52 @@ export const CITIES = [
   {
     id: 8695,
     countyId: 42,
-    name: 'Pataligeni',
+    name: 'Pâțâligeni',
   },
   {
     id: 8696,
     countyId: 18,
-    name: 'Patarlagele',
+    name: 'Pătârlagele',
   },
   {
     id: 8697,
     countyId: 2,
-    name: 'Patars',
+    name: 'Pătârș',
   },
   {
     id: 8698,
     countyId: 20,
-    name: 'Patas',
+    name: 'Pătaș',
   },
   {
     id: 8699,
     countyId: 52,
-    name: 'Patesti',
+    name: 'Pătești',
   },
   {
     id: 8700,
     countyId: 51,
-    name: 'Patlageanca',
+    name: 'Pătlăgeanca',
   },
   {
     id: 8701,
     countyId: 1,
-    name: 'Patrahaitesti',
+    name: 'Pătrăhăițești',
   },
   {
     id: 8702,
     countyId: 1,
-    name: 'Patrangeni',
+    name: 'Pătrângeni',
   },
   {
     id: 8703,
     countyId: 54,
-    name: 'Patrascani',
+    name: 'Pătrășcani',
   },
   {
     id: 8704,
     countyId: 48,
-    name: 'Patrauti',
+    name: 'Pătrăuți',
   },
   {
     id: 8705,
@@ -43497,122 +43497,122 @@ export const CITIES = [
   {
     id: 8706,
     countyId: 24,
-    name: 'Patroaia-Deal',
+    name: 'Pătroaia-Deal',
   },
   {
     id: 8707,
     countyId: 24,
-    name: 'Patroaia-Vale',
+    name: 'Pătroaia-Vale',
   },
   {
     id: 8708,
     countyId: 34,
-    name: 'Patru Frati',
+    name: 'Patru Frați',
   },
   {
     id: 8709,
     countyId: 1,
-    name: 'Patrusesti',
+    name: 'Pătrușești',
   },
   {
     id: 8710,
     countyId: 1,
-    name: 'Patrutesti',
+    name: 'Pătruțești',
   },
   {
     id: 8711,
     countyId: 40,
-    name: 'Patulele',
+    name: 'Pătulele',
   },
   {
     id: 8712,
     countyId: 3,
-    name: 'Patuleni',
+    name: 'Pătuleni',
   },
   {
     id: 8713,
     countyId: 47,
-    name: 'Pauca',
+    name: 'Păuca',
   },
   {
     id: 8714,
     countyId: 47,
-    name: 'Paucea',
+    name: 'Păucea',
   },
   {
     id: 8715,
     countyId: 33,
-    name: 'Paucinesti',
+    name: 'Păucinești',
   },
   {
     id: 8716,
     countyId: 41,
-    name: 'Paucisoara',
+    name: 'Păucișoara',
   },
   {
     id: 8717,
     countyId: 49,
-    name: 'Pauleasca',
+    name: 'Păuleasca',
   },
   {
     id: 8718,
     countyId: 3,
-    name: 'Pauleasca (Malureni)',
+    name: 'Păuleasca (Mălureni)',
   },
   {
     id: 8719,
     countyId: 3,
-    name: 'Pauleasca (Micesti)',
+    name: 'Păuleasca (Micești)',
   },
   {
     id: 8720,
     countyId: 3,
-    name: 'Pauleni',
+    name: 'Păuleni',
   },
   {
     id: 8721,
     countyId: 31,
-    name: 'Pauleni',
+    name: 'Păuleni',
   },
   {
     id: 8722,
     countyId: 31,
-    name: 'Pauleni-Ciuc',
+    name: 'Păuleni-Ciuc',
   },
   {
     id: 8723,
     countyId: 33,
-    name: 'Paulesti',
+    name: 'Păulești',
   },
   {
     id: 8724,
     countyId: 46,
-    name: 'Paulesti',
+    name: 'Păulești',
   },
   {
     id: 8725,
     countyId: 6,
-    name: 'Paulesti',
+    name: 'Păulești',
   },
   {
     id: 8726,
     countyId: 44,
-    name: 'Paulesti',
+    name: 'Păulești',
   },
   {
     id: 8727,
     countyId: 54,
-    name: 'Paulesti',
+    name: 'Păulești',
   },
   {
     id: 8728,
     countyId: 44,
-    name: 'Paulestii Noi',
+    name: 'Păuleștii Noi',
   },
   {
     id: 8729,
     countyId: 2,
-    name: 'Paulian',
+    name: 'Păulian',
   },
   {
     id: 8730,
@@ -43622,87 +43622,87 @@ export const CITIES = [
   {
     id: 8731,
     countyId: 33,
-    name: 'Paulis',
+    name: 'Păuliș',
   },
   {
     id: 8732,
     countyId: 2,
-    name: 'Paulis',
+    name: 'Păuliș',
   },
   {
     id: 8733,
     countyId: 41,
-    name: 'Pauloaia',
+    name: 'Păuloaia',
   },
   {
     id: 8734,
     countyId: 8,
-    name: 'Paun',
+    name: 'Păun',
   },
   {
     id: 8735,
     countyId: 35,
-    name: 'Paun',
+    name: 'Păun',
   },
   {
     id: 8736,
     countyId: 3,
-    name: 'Paunesti',
+    name: 'Păunești',
   },
   {
     id: 8737,
     countyId: 54,
-    name: 'Paunesti',
+    name: 'Păunești',
   },
   {
     id: 8738,
     countyId: 40,
-    name: 'Paunesti',
+    name: 'Păunești',
   },
   {
     id: 8739,
     countyId: 45,
-    name: 'Pausa',
+    name: 'Păușa',
   },
   {
     id: 8740,
     countyId: 6,
-    name: 'Pausa',
+    name: 'Păușa',
   },
   {
     id: 8741,
     countyId: 52,
-    name: 'Pausa',
+    name: 'Păușa',
   },
   {
     id: 8742,
     countyId: 35,
-    name: 'Pausesti',
+    name: 'Păușești',
   },
   {
     id: 8743,
     countyId: 52,
-    name: 'Pausesti',
+    name: 'Păușești',
   },
   {
     id: 8744,
     countyId: 52,
-    name: 'Pausesti-Maglasi',
+    name: 'Păușești-Măglași',
   },
   {
     id: 8745,
     countyId: 52,
-    name: 'Pausesti-Otasau',
+    name: 'Păusești-Otăsău',
   },
   {
     id: 8746,
     countyId: 54,
-    name: 'Pavalari',
+    name: 'Păvălari',
   },
   {
     id: 8747,
     countyId: 40,
-    name: 'Pavat',
+    name: 'Pavăț',
   },
   {
     id: 8748,
@@ -43732,7 +43732,7 @@ export const CITIES = [
   {
     id: 8753,
     countyId: 20,
-    name: 'Pecinisca',
+    name: 'Pecinișca',
   },
   {
     id: 8754,
@@ -43752,12 +43752,12 @@ export const CITIES = [
   {
     id: 8757,
     countyId: 46,
-    name: 'Peles',
+    name: 'Peleș',
   },
   {
     id: 8758,
     countyId: 1,
-    name: 'Peles',
+    name: 'Peleș',
   },
   {
     id: 8759,
@@ -43772,12 +43772,12 @@ export const CITIES = [
   {
     id: 8761,
     countyId: 46,
-    name: 'Pelisor',
+    name: 'Pelișor',
   },
   {
     id: 8762,
     countyId: 47,
-    name: 'Pelisor',
+    name: 'Pelișor',
   },
   {
     id: 8763,
@@ -43847,17 +43847,17 @@ export const CITIES = [
   {
     id: 8776,
     countyId: 34,
-    name: 'Perieti',
+    name: 'Perieți',
   },
   {
     id: 8777,
     countyId: 43,
-    name: 'Perieti',
+    name: 'Perieți',
   },
   {
     id: 8778,
     countyId: 49,
-    name: 'Perii Brosteni',
+    name: 'Perii Broșteni',
   },
   {
     id: 8779,
@@ -43872,57 +43872,57 @@ export const CITIES = [
   {
     id: 8781,
     countyId: 41,
-    name: 'Peris',
+    name: 'Periș',
   },
   {
     id: 8782,
     countyId: 36,
-    name: 'Peris',
+    name: 'Periș',
   },
   {
     id: 8783,
     countyId: 52,
-    name: 'Perisani',
+    name: 'Perișani',
   },
   {
     id: 8784,
     countyId: 7,
-    name: 'Perisor',
+    name: 'Perișor',
   },
   {
     id: 8785,
     countyId: 25,
-    name: 'Perisor',
+    name: 'Perișor',
   },
   {
     id: 8786,
     countyId: 9,
-    name: 'Perisoru',
+    name: 'Perișoru',
   },
   {
     id: 8787,
     countyId: 19,
-    name: 'Perisoru',
+    name: 'Perișoru',
   },
   {
     id: 8788,
     countyId: 1,
-    name: 'Perjesti',
+    name: 'Perjești',
   },
   {
     id: 8789,
     countyId: 10,
-    name: 'Persani',
+    name: 'Perșani',
   },
   {
     id: 8790,
     countyId: 24,
-    name: 'Persinari',
+    name: 'Perșinari',
   },
   {
     id: 8791,
     countyId: 44,
-    name: 'Persunari (Gura Vadului)',
+    name: 'Perșunari (Gura Vadului)',
   },
   {
     id: 8792,
@@ -43932,7 +43932,7 @@ export const CITIES = [
   {
     id: 8793,
     countyId: 52,
-    name: 'Pertesti',
+    name: 'Pertești',
   },
   {
     id: 8794,
@@ -43942,7 +43942,7 @@ export const CITIES = [
   {
     id: 8795,
     countyId: 43,
-    name: 'Pescaresti',
+    name: 'Pescărești',
   },
   {
     id: 8796,
@@ -43962,97 +43962,97 @@ export const CITIES = [
   {
     id: 8799,
     countyId: 40,
-    name: 'Pesteana',
+    name: 'Peșteana',
   },
   {
     id: 8800,
     countyId: 33,
-    name: 'Pesteana',
+    name: 'Peșteana',
   },
   {
     id: 8801,
     countyId: 30,
-    name: 'Pesteana de Jos',
+    name: 'Peșteana de Jos',
   },
   {
     id: 8802,
     countyId: 30,
-    name: 'Pesteana-Jiu',
+    name: 'Peșteana-Jiu',
   },
   {
     id: 8803,
     countyId: 30,
-    name: 'Pesteana-Vulcan',
+    name: 'Peșteana-Vulcan',
   },
   {
     id: 8804,
     countyId: 33,
-    name: 'Pestenita',
+    name: 'Peștenița',
   },
   {
     id: 8805,
     countyId: 40,
-    name: 'Pestenuta',
+    name: 'Peștenuța',
   },
   {
     id: 8806,
     countyId: 10,
-    name: 'Pestera',
+    name: 'Peștera',
   },
   {
     id: 8807,
     countyId: 22,
-    name: 'Pestera',
+    name: 'Peștera',
   },
   {
     id: 8808,
     countyId: 21,
-    name: 'Pestera',
+    name: 'Peștera',
   },
   {
     id: 8809,
     countyId: 33,
-    name: 'Pestera (Baita)',
+    name: 'Peștera (Băița)',
   },
   {
     id: 8810,
     countyId: 33,
-    name: 'Pestera (Petrosani)',
+    name: 'Peștera (Petroșani)',
   },
   {
     id: 8811,
     countyId: 33,
-    name: 'Pestera (Salasu de Sus)',
+    name: 'Peștera (Sălașu de Sus)',
   },
   {
     id: 8812,
     countyId: 6,
-    name: 'Pestere',
+    name: 'Peștere',
   },
   {
     id: 8813,
     countyId: 20,
-    name: 'Pestere',
+    name: 'Peștere',
   },
   {
     id: 8814,
     countyId: 6,
-    name: 'Pestis',
+    name: 'Peștiș',
   },
   {
     id: 8815,
     countyId: 30,
-    name: 'Pestisani',
+    name: 'Peștișani',
   },
   {
     id: 8816,
     countyId: 33,
-    name: 'Pestisu Mare',
+    name: 'Peștișu Mare',
   },
   {
     id: 8817,
     countyId: 33,
-    name: 'Pestisu Mic',
+    name: 'Pestișu Mic',
   },
   {
     id: 8818,
@@ -44062,12 +44062,12 @@ export const CITIES = [
   {
     id: 8819,
     countyId: 18,
-    name: 'Pestritu',
+    name: 'Pestrițu',
   },
   {
     id: 8820,
     countyId: 43,
-    name: 'Petculesti',
+    name: 'Petculești',
   },
   {
     id: 8821,
@@ -44092,7 +44092,7 @@ export const CITIES = [
   {
     id: 8825,
     countyId: 1,
-    name: 'Petelca',
+    name: 'Pețelca',
   },
   {
     id: 8826,
@@ -44132,7 +44132,7 @@ export const CITIES = [
   {
     id: 8833,
     countyId: 47,
-    name: 'Petis',
+    name: 'Petiș',
   },
   {
     id: 8834,
@@ -44147,17 +44147,17 @@ export const CITIES = [
   {
     id: 8836,
     countyId: 30,
-    name: 'Petrachei',
+    name: 'Petrăchei',
   },
   {
     id: 8837,
     countyId: 18,
-    name: 'Petrachesti',
+    name: 'Petrăchești',
   },
   {
     id: 8838,
     countyId: 36,
-    name: 'Petrachioaia',
+    name: 'Petrăchioaia',
   },
   {
     id: 8839,
@@ -44197,77 +44197,77 @@ export const CITIES = [
   {
     id: 8846,
     countyId: 1,
-    name: 'Petresti',
+    name: 'Petrești',
   },
   {
     id: 8847,
     countyId: 5,
-    name: 'Petresti',
+    name: 'Petrești',
   },
   {
     id: 8848,
     countyId: 24,
-    name: 'Petresti',
+    name: 'Petrești',
   },
   {
     id: 8849,
     countyId: 33,
-    name: 'Petresti',
+    name: 'Petrești',
   },
   {
     id: 8850,
     countyId: 35,
-    name: 'Petresti',
+    name: 'Petrești',
   },
   {
     id: 8851,
     countyId: 54,
-    name: 'Petresti',
+    name: 'Petrești',
   },
   {
     id: 8852,
     countyId: 3,
-    name: 'Petresti',
+    name: 'Petrești',
   },
   {
     id: 8853,
     countyId: 21,
-    name: 'Petresti',
+    name: 'Petrești',
   },
   {
     id: 8854,
     countyId: 30,
-    name: 'Petresti',
+    name: 'Petrești',
   },
   {
     id: 8855,
     countyId: 36,
-    name: 'Petresti',
+    name: 'Petrești',
   },
   {
     id: 8856,
     countyId: 46,
-    name: 'Petresti',
+    name: 'Petrești',
   },
   {
     id: 8857,
     countyId: 24,
-    name: 'Petresti (Corbii Mari)',
+    name: 'Petrești (Corbii Mari)',
   },
   {
     id: 8858,
     countyId: 21,
-    name: 'Petrestii de Jos',
+    name: 'Petreștii de Jos',
   },
   {
     id: 8859,
     countyId: 21,
-    name: 'Petrestii de Mijloc',
+    name: 'Petreștii de Mijloc',
   },
   {
     id: 8860,
     countyId: 21,
-    name: 'Petrestii de Sus',
+    name: 'Petreștii de Sus',
   },
   {
     id: 8861,
@@ -44307,7 +44307,7 @@ export const CITIES = [
   {
     id: 8868,
     countyId: 41,
-    name: 'Petrilaca de Mures',
+    name: 'Petrilaca de Mureș',
   },
   {
     id: 8869,
@@ -44332,17 +44332,17 @@ export const CITIES = [
   {
     id: 8873,
     countyId: 7,
-    name: 'Petris',
+    name: 'Petriș',
   },
   {
     id: 8874,
     countyId: 2,
-    name: 'Petris',
+    name: 'Petriș',
   },
   {
     id: 8875,
     countyId: 40,
-    name: 'Petris',
+    name: 'Petriș',
   },
   {
     id: 8876,
@@ -44352,7 +44352,7 @@ export const CITIES = [
   {
     id: 8877,
     countyId: 18,
-    name: 'Petrisoru',
+    name: 'Petrișoru',
   },
   {
     id: 8878,
@@ -44372,22 +44372,22 @@ export const CITIES = [
   {
     id: 8881,
     countyId: 33,
-    name: 'Petrosani',
+    name: 'Petroșani',
   },
   {
     id: 8882,
     countyId: 22,
-    name: 'Petrosani',
+    name: 'Petroșani',
   },
   {
     id: 8883,
     countyId: 35,
-    name: 'Petrosica',
+    name: 'Petroșica',
   },
   {
     id: 8884,
     countyId: 20,
-    name: 'Petrosnita',
+    name: 'Petroșnița',
   },
   {
     id: 8885,
@@ -44402,17 +44402,17 @@ export const CITIES = [
   {
     id: 8887,
     countyId: 29,
-    name: 'Petru Rares',
+    name: 'Petru Rareș',
   },
   {
     id: 8888,
     countyId: 7,
-    name: 'Petru Rares',
+    name: 'Petru Rareș',
   },
   {
     id: 8889,
     countyId: 42,
-    name: 'Petru Voda',
+    name: 'Petru Vodă',
   },
   {
     id: 8890,
@@ -44472,12 +44472,12 @@ export const CITIES = [
   {
     id: 8901,
     countyId: 3,
-    name: 'Piatra (Bradulet)',
+    name: 'Piatra (Brăduleț)',
   },
   {
     id: 8902,
     countyId: 3,
-    name: 'Piatra (Ciofrangeni)',
+    name: 'Piatra (Ciofrângeni)',
   },
   {
     id: 8903,
@@ -44492,42 +44492,42 @@ export const CITIES = [
   {
     id: 8905,
     countyId: 44,
-    name: 'Piatra (Provita de Jos)',
+    name: 'Piatra (Provița de Jos)',
   },
   {
     id: 8906,
     countyId: 3,
-    name: 'Piatra (Stoenesti)',
+    name: 'Piatra (Stoenești)',
   },
   {
     id: 8907,
     countyId: 18,
-    name: 'Piatra Alba',
+    name: 'Piatra Albă',
   },
   {
     id: 8908,
     countyId: 7,
-    name: 'Piatra Fantanele',
+    name: 'Piatra Fântânele',
   },
   {
     id: 8909,
     countyId: 44,
-    name: 'Piatra Mica',
+    name: 'Piatra Mică',
   },
   {
     id: 8910,
     countyId: 42,
-    name: 'Piatra-Neamt',
+    name: 'Piatra-Neamț',
   },
   {
     id: 8911,
     countyId: 42,
-    name: 'Piatra Soimului',
+    name: 'Piatra Șoimului',
   },
   {
     id: 8912,
     countyId: 42,
-    name: 'Piatra-Neamt',
+    name: 'Piatra-Neamț',
   },
   {
     id: 8913,
@@ -44537,7 +44537,7 @@ export const CITIES = [
   {
     id: 8914,
     countyId: 25,
-    name: 'Picaturile',
+    name: 'Picăturile',
   },
   {
     id: 8915,
@@ -44567,12 +44567,12 @@ export const CITIES = [
   {
     id: 8920,
     countyId: 3,
-    name: 'Pielesti',
+    name: 'Pielești',
   },
   {
     id: 8921,
     countyId: 25,
-    name: 'Pielesti',
+    name: 'Pielești',
   },
   {
     id: 8922,
@@ -44597,12 +44597,12 @@ export const CITIES = [
   {
     id: 8926,
     countyId: 52,
-    name: 'Pietrari (Pausesti-Maglasi)',
+    name: 'Pietrari (Păușești-Măglași)',
   },
   {
     id: 8927,
     countyId: 35,
-    name: 'Pietraria',
+    name: 'Pietrăria',
   },
   {
     id: 8928,
@@ -44642,37 +44642,37 @@ export const CITIES = [
   {
     id: 8935,
     countyId: 41,
-    name: 'Pietris',
+    name: 'Pietriș',
   },
   {
     id: 8936,
     countyId: 35,
-    name: 'Pietris',
+    name: 'Pietriș',
   },
   {
     id: 8937,
     countyId: 43,
-    name: 'Pietris',
+    name: 'Pietriș',
   },
   {
     id: 8938,
     countyId: 43,
-    name: 'Pietrisu',
+    name: 'Pietrișu',
   },
   {
     id: 8939,
     countyId: 52,
-    name: 'Pietrisu',
+    name: 'Pietrișu',
   },
   {
     id: 8940,
     countyId: 29,
-    name: 'Pietrisu',
+    name: 'Pietrișu',
   },
   {
     id: 8941,
     countyId: 44,
-    name: 'Pietrisu',
+    name: 'Pietrișu',
   },
   {
     id: 8942,
@@ -44712,27 +44712,27 @@ export const CITIES = [
   {
     id: 8949,
     countyId: 54,
-    name: 'Pietroasa (Bolotesti)',
+    name: 'Pietroasa (Bolotești)',
   },
   {
     id: 8950,
     countyId: 54,
-    name: 'Pietroasa (Campineanca)',
+    name: 'Pietroasa (Câmpineanca)',
   },
   {
     id: 8951,
     countyId: 54,
-    name: 'Pietroasa (Tamboesti)',
+    name: 'Pietroasa (Tâmboești)',
   },
   {
     id: 8952,
     countyId: 54,
-    name: 'Pietroasa (Vartescoiu)',
+    name: 'Pietroasa (Vârteșcoiu)',
   },
   {
     id: 8953,
     countyId: 18,
-    name: 'Pietroasa Mica',
+    name: 'Pietroasa Mică',
   },
   {
     id: 8954,
@@ -44747,22 +44747,22 @@ export const CITIES = [
   {
     id: 8956,
     countyId: 44,
-    name: 'Pietrosani',
+    name: 'Pietroșani',
   },
   {
     id: 8957,
     countyId: 3,
-    name: 'Pietrosani',
+    name: 'Pietroșani',
   },
   {
     id: 8958,
     countyId: 49,
-    name: 'Pietrosani',
+    name: 'Pietroșani',
   },
   {
     id: 8959,
     countyId: 24,
-    name: 'Pietrosita',
+    name: 'Pietroșița',
   },
   {
     id: 8960,
@@ -44782,7 +44782,7 @@ export const CITIES = [
   {
     id: 8963,
     countyId: 42,
-    name: 'Pildesti',
+    name: 'Pildești',
   },
   {
     id: 8964,
@@ -44827,12 +44827,12 @@ export const CITIES = [
   {
     id: 8972,
     countyId: 44,
-    name: 'Pioresti',
+    name: 'Piorești',
   },
   {
     id: 8973,
     countyId: 25,
-    name: 'Pioresti',
+    name: 'Piorești',
   },
   {
     id: 8974,
@@ -44867,7 +44867,7 @@ export const CITIES = [
   {
     id: 8980,
     countyId: 45,
-    name: 'Pirosa',
+    name: 'Piroșa',
   },
   {
     id: 8981,
@@ -44892,17 +44892,17 @@ export const CITIES = [
   {
     id: 8985,
     countyId: 46,
-    name: 'Piscari',
+    name: 'Pișcari',
   },
   {
     id: 8986,
     countyId: 50,
-    name: 'Pischia',
+    name: 'Pișchia',
   },
   {
     id: 8987,
     countyId: 33,
-    name: 'Pischinti',
+    name: 'Pișchinți',
   },
   {
     id: 8988,
@@ -44912,7 +44912,7 @@ export const CITIES = [
   {
     id: 8989,
     countyId: 46,
-    name: 'Piscolt',
+    name: 'Pișcolt',
   },
   {
     id: 8990,
@@ -44972,7 +44972,7 @@ export const CITIES = [
   {
     id: 9001,
     countyId: 52,
-    name: 'Piscu Scoartei',
+    name: 'Piscu Scoarței',
   },
   {
     id: 9002,
@@ -44982,12 +44982,12 @@ export const CITIES = [
   {
     id: 9003,
     countyId: 44,
-    name: 'Pisculesti',
+    name: 'Pisculești',
   },
   {
     id: 9004,
     countyId: 25,
-    name: 'Pisculet',
+    name: 'Pisculeț',
   },
   {
     id: 9005,
@@ -44997,17 +44997,17 @@ export const CITIES = [
   {
     id: 9006,
     countyId: 30,
-    name: 'Pistestii din Deal',
+    name: 'Pișteștii din Deal',
   },
   {
     id: 9007,
     countyId: 40,
-    name: 'Pistrita',
+    name: 'Pistrița',
   },
   {
     id: 9008,
     countyId: 1,
-    name: 'Pitarcesti',
+    name: 'Pitărcești',
   },
   {
     id: 9009,
@@ -45022,27 +45022,27 @@ export const CITIES = [
   {
     id: 9011,
     countyId: 3,
-    name: 'Pitesti',
+    name: 'Pitești',
   },
   {
     id: 9012,
     countyId: 1,
-    name: 'Pitiga',
+    name: 'Pițiga',
   },
   {
     id: 9013,
     countyId: 3,
-    name: 'Pitigaia',
+    name: 'Pițigaia',
   },
   {
     id: 9014,
     countyId: 19,
-    name: 'Pitigaia',
+    name: 'Pițigaia',
   },
   {
     id: 9015,
     countyId: 44,
-    name: 'Pitigoi',
+    name: 'Pițigoi',
   },
   {
     id: 9016,
@@ -45052,7 +45052,7 @@ export const CITIES = [
   {
     id: 9017,
     countyId: 9,
-    name: 'Pitulati',
+    name: 'Pitulați',
   },
   {
     id: 9018,
@@ -45062,12 +45062,12 @@ export const CITIES = [
   {
     id: 9019,
     countyId: 54,
-    name: 'Pitulusa',
+    name: 'Pitulușa',
   },
   {
     id: 9020,
     countyId: 54,
-    name: 'Placinteni',
+    name: 'Plăcințeni',
   },
   {
     id: 9021,
@@ -45097,42 +45097,42 @@ export const CITIES = [
   {
     id: 9026,
     countyId: 1,
-    name: 'Plai (Garda de Sus)',
+    name: 'Plai (Gârda de Sus)',
   },
   {
     id: 9027,
     countyId: 31,
-    name: 'Plaiesii de Jos',
+    name: 'Plăieșii de Jos',
   },
   {
     id: 9028,
     countyId: 31,
-    name: 'Plaiesii de Sus',
+    name: 'Plăieșii de Sus',
   },
   {
     id: 9029,
     countyId: 21,
-    name: 'Plaiesti',
+    name: 'Plăiești',
   },
   {
     id: 9030,
     countyId: 42,
-    name: 'Plaiesu',
+    name: 'Plăieșu',
   },
   {
     id: 9031,
     countyId: 44,
-    name: 'Plaietu',
+    name: 'Plăiețu',
   },
   {
     id: 9032,
     countyId: 18,
-    name: 'Plaisor',
+    name: 'Plăișor',
   },
   {
     id: 9033,
     countyId: 44,
-    name: 'Plaiu (Provita de Sus)',
+    name: 'Plaiu (Provița de Sus)',
   },
   {
     id: 9034,
@@ -45142,7 +45142,7 @@ export const CITIES = [
   {
     id: 9035,
     countyId: 44,
-    name: 'Plaiu Campinei',
+    name: 'Plaiu Câmpinei',
   },
   {
     id: 9036,
@@ -45157,7 +45157,7 @@ export const CITIES = [
   {
     id: 9038,
     countyId: 48,
-    name: 'Plaiu Sarului',
+    name: 'Plaiu Șarului',
   },
   {
     id: 9039,
@@ -45172,22 +45172,22 @@ export const CITIES = [
   {
     id: 9041,
     countyId: 9,
-    name: 'Plasoiu',
+    name: 'Plăsoiu',
   },
   {
     id: 9042,
     countyId: 19,
-    name: 'Plataresti',
+    name: 'Plătărești',
   },
   {
     id: 9043,
     countyId: 31,
-    name: 'Platonesti',
+    name: 'Platonești',
   },
   {
     id: 9044,
     countyId: 34,
-    name: 'Platonesti',
+    name: 'Platonești',
   },
   {
     id: 9045,
@@ -45197,12 +45197,12 @@ export const CITIES = [
   {
     id: 9046,
     countyId: 48,
-    name: 'Plavalari',
+    name: 'Plăvălari',
   },
   {
     id: 9047,
     countyId: 18,
-    name: 'Plavatu',
+    name: 'Plavățu',
   },
   {
     id: 9048,
@@ -45212,52 +45212,52 @@ export const CITIES = [
   {
     id: 9049,
     countyId: 43,
-    name: 'Plaviceanca',
+    name: 'Plăviceanca',
   },
   {
     id: 9050,
     countyId: 43,
-    name: 'Plaviceni',
+    name: 'Plăviceni',
   },
   {
     id: 9051,
     countyId: 44,
-    name: 'Pleasa',
+    name: 'Pleașa',
   },
   {
     id: 9052,
     countyId: 52,
-    name: 'Pleasa',
+    name: 'Pleașa',
   },
   {
     id: 9053,
     countyId: 49,
-    name: 'Pleasov',
+    name: 'Pleașov',
   },
   {
     id: 9054,
     countyId: 25,
-    name: 'Plenita',
+    name: 'Plenița',
   },
   {
     id: 9055,
     countyId: 30,
-    name: 'Plesa',
+    name: 'Pleșa',
   },
   {
     id: 9056,
     countyId: 48,
-    name: 'Plesa',
+    name: 'Pleșa',
   },
   {
     id: 9057,
     countyId: 28,
-    name: 'Plesa',
+    name: 'Pleșa',
   },
   {
     id: 9058,
     countyId: 8,
-    name: 'Plesani',
+    name: 'Pleșani',
   },
   {
     id: 9059,
@@ -45272,77 +45272,77 @@ export const CITIES = [
   {
     id: 9061,
     countyId: 18,
-    name: 'Plescoi',
+    name: 'Pleșcoi',
   },
   {
     id: 9062,
     countyId: 2,
-    name: 'Plescuta',
+    name: 'Pleșcuța',
   },
   {
     id: 9063,
     countyId: 1,
-    name: 'Plescuta',
+    name: 'Pleșcuța',
   },
   {
     id: 9064,
     countyId: 48,
-    name: 'Plesesti',
+    name: 'Pleșești',
   },
   {
     id: 9065,
     countyId: 54,
-    name: 'Plesesti',
+    name: 'Pleșești',
   },
   {
     id: 9066,
     countyId: 1,
-    name: 'Plesesti',
+    name: 'Pleșești',
   },
   {
     id: 9067,
     countyId: 52,
-    name: 'Plesesti',
+    name: 'Plesești',
   },
   {
     id: 9068,
     countyId: 18,
-    name: 'Plesesti (Berca)',
+    name: 'Pleșești (Berca)',
   },
   {
     id: 9069,
     countyId: 18,
-    name: 'Plesesti (Podgoria)',
+    name: 'Pleșești (Podgoria)',
   },
   {
     id: 9070,
     countyId: 18,
-    name: 'Plesi',
+    name: 'Pleși',
   },
   {
     id: 9071,
     countyId: 1,
-    name: 'Plesi',
+    name: 'Pleși',
   },
   {
     id: 9072,
     countyId: 25,
-    name: 'Plesoi',
+    name: 'Pleșoi',
   },
   {
     id: 9073,
     countyId: 43,
-    name: 'Plesoiu',
+    name: 'Pleșoiu',
   },
   {
     id: 9074,
     countyId: 52,
-    name: 'Plesoiu (Livezi)',
+    name: 'Pleșoiu (Livezi)',
   },
   {
     id: 9075,
     countyId: 52,
-    name: 'Plesoiu (Nicolae Balcescu)',
+    name: 'Pleșoiu (Nicolae Bălcescu)',
   },
   {
     id: 9076,
@@ -45367,17 +45367,17 @@ export const CITIES = [
   {
     id: 9080,
     countyId: 1,
-    name: 'Plisti',
+    name: 'Pliști',
   },
   {
     id: 9081,
     countyId: 44,
-    name: 'Ploiesti',
+    name: 'Ploiești',
   },
   {
     id: 9082,
     countyId: 44,
-    name: 'Ploiestiori',
+    name: 'Ploieștiori',
   },
   {
     id: 9083,
@@ -45417,7 +45417,7 @@ export const CITIES = [
   {
     id: 9090,
     countyId: 44,
-    name: 'Plopeni (Dumbravesti)',
+    name: 'Plopeni (Dumbrăvești)',
   },
   {
     id: 9091,
@@ -45467,22 +45467,22 @@ export const CITIES = [
   {
     id: 9100,
     countyId: 49,
-    name: 'Plopii-Slavitesti',
+    name: 'Plopii-Slăvitești',
   },
   {
     id: 9101,
     countyId: 31,
-    name: 'Plopis',
+    name: 'Plopiș',
   },
   {
     id: 9102,
     countyId: 45,
-    name: 'Plopis',
+    name: 'Plopiș',
   },
   {
     id: 9103,
     countyId: 39,
-    name: 'Plopis',
+    name: 'Plopiș',
   },
   {
     id: 9104,
@@ -45492,22 +45492,22 @@ export const CITIES = [
   {
     id: 9105,
     countyId: 25,
-    name: 'Plopsor',
+    name: 'Plopșor',
   },
   {
     id: 9106,
     countyId: 43,
-    name: 'Plopsorelu',
+    name: 'Plopșorelu',
   },
   {
     id: 9107,
     countyId: 30,
-    name: 'Plopsoru',
+    name: 'Plopșoru',
   },
   {
     id: 9108,
     countyId: 29,
-    name: 'Plopsoru',
+    name: 'Plopșoru',
   },
   {
     id: 9109,
@@ -45542,7 +45542,7 @@ export const CITIES = [
   {
     id: 9115,
     countyId: 5,
-    name: 'Plopu (Darmanesti)',
+    name: 'Plopu (Dărmănești)',
   },
   {
     id: 9116,
@@ -45552,7 +45552,7 @@ export const CITIES = [
   {
     id: 9117,
     countyId: 25,
-    name: 'Plopu-Amarasti',
+    name: 'Plopu-Amărăști',
   },
   {
     id: 9118,
@@ -45572,37 +45572,37 @@ export const CITIES = [
   {
     id: 9121,
     countyId: 21,
-    name: 'Ploscos',
+    name: 'Ploscoș',
   },
   {
     id: 9122,
     countyId: 54,
-    name: 'Ploscuteni',
+    name: 'Ploscuțeni',
   },
   {
     id: 9123,
     countyId: 18,
-    name: 'Plostina',
+    name: 'Ploștina',
   },
   {
     id: 9124,
     countyId: 30,
-    name: 'Plostina',
+    name: 'Ploștina',
   },
   {
     id: 9125,
     countyId: 25,
-    name: 'Plostina',
+    name: 'Ploștina',
   },
   {
     id: 9126,
     countyId: 54,
-    name: 'Plostina',
+    name: 'Ploștina',
   },
   {
     id: 9127,
     countyId: 53,
-    name: 'Plotonesti',
+    name: 'Plotonești',
   },
   {
     id: 9128,
@@ -45637,7 +45637,7 @@ export const CITIES = [
   {
     id: 9134,
     countyId: 48,
-    name: 'Plutonita',
+    name: 'Plutonița',
   },
   {
     id: 9135,
@@ -45647,12 +45647,12 @@ export const CITIES = [
   {
     id: 9136,
     countyId: 22,
-    name: 'Poarta Alba',
+    name: 'Poarta Albă',
   },
   {
     id: 9137,
     countyId: 45,
-    name: 'Poarta Salajului',
+    name: 'Poarta Sălajului',
   },
   {
     id: 9138,
@@ -45667,22 +45667,22 @@ export const CITIES = [
   {
     id: 9140,
     countyId: 30,
-    name: 'Pociovalistea',
+    name: 'Pociovaliștea',
   },
   {
     id: 9141,
     countyId: 6,
-    name: 'Pocioveliste',
+    name: 'Pocioveliște',
   },
   {
     id: 9142,
     countyId: 6,
-    name: 'Poclusa de Barcau',
+    name: 'Poclușa de Barcău',
   },
   {
     id: 9143,
     countyId: 6,
-    name: 'Poclusa de Beius',
+    name: 'Poclușa de Beiuș',
   },
   {
     id: 9144,
@@ -45797,27 +45797,27 @@ export const CITIES = [
   {
     id: 9166,
     countyId: 5,
-    name: 'Podis',
+    name: 'Podiș',
   },
   {
     id: 9167,
     countyId: 29,
-    name: 'Podisor',
+    name: 'Podișor',
   },
   {
     id: 9168,
     countyId: 3,
-    name: 'Podisoru',
+    name: 'Podișoru',
   },
   {
     id: 9169,
     countyId: 35,
-    name: 'Podisu',
+    name: 'Podișu',
   },
   {
     id: 9170,
     countyId: 45,
-    name: 'Podisu',
+    name: 'Podișu',
   },
   {
     id: 9171,
@@ -45847,7 +45847,7 @@ export const CITIES = [
   {
     id: 9176,
     countyId: 3,
-    name: 'Podu Brosteni',
+    name: 'Podu Broșteni',
   },
   {
     id: 9177,
@@ -45867,7 +45867,7 @@ export const CITIES = [
   {
     id: 9180,
     countyId: 48,
-    name: 'Podu Cosnei',
+    name: 'Podu Coșnei',
   },
   {
     id: 9181,
@@ -45877,7 +45877,7 @@ export const CITIES = [
   {
     id: 9182,
     countyId: 3,
-    name: 'Podu Dambovitei',
+    name: 'Podu Dâmboviței',
   },
   {
     id: 9183,
@@ -45897,7 +45897,7 @@ export const CITIES = [
   {
     id: 9186,
     countyId: 29,
-    name: 'Podu Ilfovatului',
+    name: 'Podu Ilfovățului',
   },
   {
     id: 9187,
@@ -45937,7 +45937,7 @@ export const CITIES = [
   {
     id: 9194,
     countyId: 54,
-    name: 'Podu Narujei',
+    name: 'Podu Nărujei',
   },
   {
     id: 9195,
@@ -45952,7 +45952,7 @@ export const CITIES = [
   {
     id: 9197,
     countyId: 53,
-    name: 'Podu Petris',
+    name: 'Podu Petriș',
   },
   {
     id: 9198,
@@ -45972,7 +45972,7 @@ export const CITIES = [
   {
     id: 9201,
     countyId: 54,
-    name: 'Podu Schiopului',
+    name: 'Podu Șchiopului',
   },
   {
     id: 9202,
@@ -45997,7 +45997,7 @@ export const CITIES = [
   {
     id: 9206,
     countyId: 44,
-    name: 'Podu Valeni',
+    name: 'Podu Văleni',
   },
   {
     id: 9207,
@@ -46027,7 +46027,7 @@ export const CITIES = [
   {
     id: 9212,
     countyId: 1,
-    name: 'Poduri-Bricesti',
+    name: 'Poduri-Bricești',
   },
   {
     id: 9213,
@@ -46062,17 +46062,17 @@ export const CITIES = [
   {
     id: 9219,
     countyId: 52,
-    name: 'Poenita',
+    name: 'Poenița',
   },
   {
     id: 9220,
     countyId: 18,
-    name: 'Poenitele',
+    name: 'Poenițele',
   },
   {
     id: 9221,
     countyId: 41,
-    name: 'Pogaceaua',
+    name: 'Pogăceaua',
   },
   {
     id: 9222,
@@ -46082,17 +46082,17 @@ export const CITIES = [
   {
     id: 9223,
     countyId: 33,
-    name: 'Poganesti',
+    name: 'Pogănești',
   },
   {
     id: 9224,
     countyId: 53,
-    name: 'Poganesti',
+    name: 'Pogănești',
   },
   {
     id: 9225,
     countyId: 50,
-    name: 'Poganesti',
+    name: 'Pogănești',
   },
   {
     id: 9226,
@@ -46112,7 +46112,7 @@ export const CITIES = [
   {
     id: 9229,
     countyId: 5,
-    name: 'Poglet',
+    name: 'Pogleț',
   },
   {
     id: 9230,
@@ -46127,12 +46127,12 @@ export const CITIES = [
   {
     id: 9232,
     countyId: 53,
-    name: 'Pogonesti',
+    name: 'Pogonești',
   },
   {
     id: 9233,
     countyId: 8,
-    name: 'Pogorasti',
+    name: 'Pogorăști',
   },
   {
     id: 9234,
@@ -46222,7 +46222,7 @@ export const CITIES = [
   {
     id: 9251,
     countyId: 8,
-    name: 'Poiana (Braesti)',
+    name: 'Poiana (Brăești)',
   },
   {
     id: 9252,
@@ -46237,17 +46237,17 @@ export const CITIES = [
   {
     id: 9254,
     countyId: 5,
-    name: 'Poiana (Colonesti)',
+    name: 'Poiana (Colonești)',
   },
   {
     id: 9255,
     countyId: 8,
-    name: 'Poiana (Cristinesti)',
+    name: 'Poiana (Cristinești)',
   },
   {
     id: 9256,
     countyId: 6,
-    name: 'Poiana (Cristioru de Jos)',
+    name: 'Poiana (Criștioru de Jos)',
   },
   {
     id: 9257,
@@ -46267,17 +46267,17 @@ export const CITIES = [
   {
     id: 9260,
     countyId: 42,
-    name: 'Poiana (Dulcesti)',
+    name: 'Poiana (Dulcești)',
   },
   {
     id: 9261,
     countyId: 8,
-    name: 'Poiana (Flamanzi)',
+    name: 'Poiana (Flămânzi)',
   },
   {
     id: 9262,
     countyId: 42,
-    name: 'Poiana (Grinties)',
+    name: 'Poiana (Grințieș)',
   },
   {
     id: 9263,
@@ -46287,12 +46287,12 @@ export const CITIES = [
   {
     id: 9264,
     countyId: 5,
-    name: 'Poiana (Margineni)',
+    name: 'Poiana (Mărgineni)',
   },
   {
     id: 9265,
     countyId: 5,
-    name: 'Poiana (Motoseni)',
+    name: 'Poiana (Motoșeni)',
   },
   {
     id: 9266,
@@ -46302,7 +46302,7 @@ export const CITIES = [
   {
     id: 9267,
     countyId: 42,
-    name: 'Poiana (Pangarati)',
+    name: 'Poiana (Pângărați)',
   },
   {
     id: 9268,
@@ -46317,7 +46317,7 @@ export const CITIES = [
   {
     id: 9270,
     countyId: 6,
-    name: 'Poiana (Tauteu)',
+    name: 'Poiana (Tăuteu)',
   },
   {
     id: 9271,
@@ -46327,7 +46327,7 @@ export const CITIES = [
   {
     id: 9272,
     countyId: 48,
-    name: 'Poiana (Zvoristea)',
+    name: 'Poiana (Zvoriștea)',
   },
   {
     id: 9273,
@@ -46352,12 +46352,12 @@ export const CITIES = [
   {
     id: 9277,
     countyId: 10,
-    name: 'Poiana Brasov',
+    name: 'Poiana Brașov',
   },
   {
     id: 9278,
     countyId: 44,
-    name: 'Poiana Campina',
+    name: 'Poiana Câmpina',
   },
   {
     id: 9279,
@@ -46367,12 +46367,12 @@ export const CITIES = [
   {
     id: 9280,
     countyId: 44,
-    name: 'Poiana Copaceni',
+    name: 'Poiana Copăceni',
   },
   {
     id: 9281,
     countyId: 42,
-    name: 'Poiana Cracaoani',
+    name: 'Poiana Crăcăoani',
   },
   {
     id: 9282,
@@ -46402,12 +46402,12 @@ export const CITIES = [
   {
     id: 9287,
     countyId: 25,
-    name: 'Poiana Fantanii',
+    name: 'Poiana Fântânii',
   },
   {
     id: 9288,
     countyId: 21,
-    name: 'Poiana Fratii',
+    name: 'Poiana Frății',
   },
   {
     id: 9289,
@@ -46452,22 +46452,22 @@ export const CITIES = [
   {
     id: 9297,
     countyId: 29,
-    name: 'Poiana lui Stanga',
+    name: 'Poiana lui Stângă',
   },
   {
     id: 9298,
     countyId: 20,
-    name: 'Poiana Lunga',
+    name: 'Poiana Lungă',
   },
   {
     id: 9299,
     countyId: 45,
-    name: 'Poiana Magura',
+    name: 'Poiana Măgura',
   },
   {
     id: 9300,
     countyId: 35,
-    name: 'Poiana Manastirii',
+    name: 'Poiana Mănăstirii',
   },
   {
     id: 9301,
@@ -46487,22 +46487,22 @@ export const CITIES = [
   {
     id: 9304,
     countyId: 20,
-    name: 'Poiana Marului',
+    name: 'Poiana Mărului',
   },
   {
     id: 9305,
     countyId: 48,
-    name: 'Poiana Marului',
+    name: 'Poiana Mărului',
   },
   {
     id: 9306,
     countyId: 10,
-    name: 'Poiana Marului',
+    name: 'Poiana Mărului',
   },
   {
     id: 9307,
     countyId: 35,
-    name: 'Poiana Marului',
+    name: 'Poiana Mărului',
   },
   {
     id: 9308,
@@ -46527,7 +46527,7 @@ export const CITIES = [
   {
     id: 9312,
     countyId: 45,
-    name: 'Poiana Ontii',
+    name: 'Poiana Onții',
   },
   {
     id: 9313,
@@ -46542,17 +46542,17 @@ export const CITIES = [
   {
     id: 9315,
     countyId: 33,
-    name: 'Poiana Rachitelii',
+    name: 'Poiana Răchițelii',
   },
   {
     id: 9316,
     countyId: 5,
-    name: 'Poiana Sarata',
+    name: 'Poiana Sărată',
   },
   {
     id: 9317,
     countyId: 35,
-    name: 'Poiana Scheii',
+    name: 'Poiana Șcheii',
   },
   {
     id: 9318,
@@ -46572,17 +46572,17 @@ export const CITIES = [
   {
     id: 9321,
     countyId: 44,
-    name: 'Poiana tapului',
+    name: 'Poiana țapului',
   },
   {
     id: 9322,
     countyId: 31,
-    name: 'Poiana Tarnavei',
+    name: 'Poiana Târnavei',
   },
   {
     id: 9323,
     countyId: 6,
-    name: 'Poiana Tasad',
+    name: 'Poiana Tășad',
   },
   {
     id: 9324,
@@ -46607,12 +46607,12 @@ export const CITIES = [
   {
     id: 9328,
     countyId: 18,
-    name: 'Poiana Valcului',
+    name: 'Poiana Vâlcului',
   },
   {
     id: 9329,
     countyId: 44,
-    name: 'Poiana Varbilau',
+    name: 'Poiana Vărbilău',
   },
   {
     id: 9330,
@@ -46622,7 +46622,7 @@ export const CITIES = [
   {
     id: 9331,
     countyId: 3,
-    name: 'Poienarei',
+    name: 'Poienărei',
   },
   {
     id: 9332,
@@ -46657,7 +46657,7 @@ export const CITIES = [
   {
     id: 9338,
     countyId: 3,
-    name: 'Poienari (Poienarii de Arges)',
+    name: 'Poienari (Poienarii de Argeș)',
   },
   {
     id: 9339,
@@ -46677,7 +46677,7 @@ export const CITIES = [
   {
     id: 9342,
     countyId: 3,
-    name: 'Poienarii de Arges',
+    name: 'Poienarii de Argeș',
   },
   {
     id: 9343,
@@ -46697,12 +46697,12 @@ export const CITIES = [
   {
     id: 9346,
     countyId: 53,
-    name: 'Poienesti',
+    name: 'Poienești',
   },
   {
     id: 9347,
     countyId: 53,
-    name: 'Poienesti-Deal',
+    name: 'Poienești-Deal',
   },
   {
     id: 9348,
@@ -46742,7 +46742,7 @@ export const CITIES = [
   {
     id: 9355,
     countyId: 33,
-    name: 'Poieni (Densus)',
+    name: 'Poieni (Densuș)',
   },
   {
     id: 9356,
@@ -46752,12 +46752,12 @@ export const CITIES = [
   {
     id: 9357,
     countyId: 5,
-    name: 'Poieni (Rosiori)',
+    name: 'Poieni (Roșiori)',
   },
   {
     id: 9358,
     countyId: 5,
-    name: 'Poieni (Targu Ocna)',
+    name: 'Poieni (Târgu Ocna)',
   },
   {
     id: 9359,
@@ -46832,67 +46832,67 @@ export const CITIES = [
   {
     id: 9373,
     countyId: 1,
-    name: 'Poienile-Mogos',
+    name: 'Poienile-Mogoș',
   },
   {
     id: 9374,
     countyId: 24,
-    name: 'Poienita',
+    name: 'Poienița',
   },
   {
     id: 9375,
     countyId: 33,
-    name: 'Poienita',
+    name: 'Poienița',
   },
   {
     id: 9376,
     countyId: 47,
-    name: 'Poienita',
+    name: 'Poienița',
   },
   {
     id: 9377,
     countyId: 54,
-    name: 'Poienita',
+    name: 'Poienița',
   },
   {
     id: 9378,
     countyId: 3,
-    name: 'Poienita',
+    name: 'Poienița',
   },
   {
     id: 9379,
     countyId: 30,
-    name: 'Poienita',
+    name: 'Poienița',
   },
   {
     id: 9380,
     countyId: 41,
-    name: 'Poienita',
+    name: 'Poienița',
   },
   {
     id: 9381,
     countyId: 45,
-    name: 'Poienita',
+    name: 'Poienița',
   },
   {
     id: 9382,
     countyId: 1,
-    name: 'Poienita (Arieseni)',
+    name: 'Poienița (Arieșeni)',
   },
   {
     id: 9383,
     countyId: 1,
-    name: 'Poienita (Vintu de Jos)',
+    name: 'Poienița (Vințu de Jos)',
   },
   {
     id: 9384,
     countyId: 33,
-    name: 'Poienita Tomii',
+    name: 'Poienița Tomii',
   },
   {
     id: 9385,
     countyId: 33,
-    name: 'Poienita Voinii',
+    name: 'Poienița Voinii',
   },
   {
     id: 9386,
@@ -46932,12 +46932,12 @@ export const CITIES = [
   {
     id: 9393,
     countyId: 3,
-    name: 'Pojorata',
+    name: 'Pojorâta',
   },
   {
     id: 9394,
     countyId: 48,
-    name: 'Pojorata',
+    name: 'Pojorâta',
   },
   {
     id: 9395,
@@ -46952,7 +46952,7 @@ export const CITIES = [
   {
     id: 9397,
     countyId: 19,
-    name: 'Polcesti',
+    name: 'Polcești',
   },
   {
     id: 9398,
@@ -46962,7 +46962,7 @@ export const CITIES = [
   {
     id: 9399,
     countyId: 9,
-    name: 'Polizesti',
+    name: 'Polizești',
   },
   {
     id: 9400,
@@ -46977,7 +46977,7 @@ export const CITIES = [
   {
     id: 9402,
     countyId: 31,
-    name: 'Polonita',
+    name: 'Polonița',
   },
   {
     id: 9403,
@@ -46987,12 +46987,12 @@ export const CITIES = [
   {
     id: 9404,
     countyId: 8,
-    name: 'Pomarla',
+    name: 'Pomârla',
   },
   {
     id: 9405,
     countyId: 25,
-    name: 'Pometesti',
+    name: 'Pometești',
   },
   {
     id: 9406,
@@ -47012,7 +47012,7 @@ export const CITIES = [
   {
     id: 9409,
     countyId: 6,
-    name: 'Ponoara',
+    name: 'Ponoară',
   },
   {
     id: 9410,
@@ -47037,7 +47037,7 @@ export const CITIES = [
   {
     id: 9414,
     countyId: 25,
-    name: 'Popanzalesti',
+    name: 'Popânzălești',
   },
   {
     id: 9415,
@@ -47057,12 +47057,12 @@ export const CITIES = [
   {
     id: 9418,
     countyId: 8,
-    name: 'Popeni (Braesti)',
+    name: 'Popeni (Brăești)',
   },
   {
     id: 9419,
     countyId: 53,
-    name: 'Popeni (Gagesti)',
+    name: 'Popeni (Găgești)',
   },
   {
     id: 9420,
@@ -47077,177 +47077,177 @@ export const CITIES = [
   {
     id: 9422,
     countyId: 3,
-    name: 'Popesti',
+    name: 'Popești',
   },
   {
     id: 9423,
     countyId: 6,
-    name: 'Popesti',
+    name: 'Popești',
   },
   {
     id: 9424,
     countyId: 19,
-    name: 'Popesti',
+    name: 'Popești',
   },
   {
     id: 9425,
     countyId: 30,
-    name: 'Popesti',
+    name: 'Popești',
   },
   {
     id: 9426,
     countyId: 33,
-    name: 'Popesti',
+    name: 'Popești',
   },
   {
     id: 9427,
     countyId: 52,
-    name: 'Popesti',
+    name: 'Popești',
   },
   {
     id: 9428,
     countyId: 1,
-    name: 'Popesti',
+    name: 'Popești',
   },
   {
     id: 9429,
     countyId: 5,
-    name: 'Popesti',
+    name: 'Popești',
   },
   {
     id: 9430,
     countyId: 21,
-    name: 'Popesti',
+    name: 'Popești',
   },
   {
     id: 9431,
     countyId: 25,
-    name: 'Popesti',
+    name: 'Popești',
   },
   {
     id: 9432,
     countyId: 29,
-    name: 'Popesti',
+    name: 'Popești',
   },
   {
     id: 9433,
     countyId: 35,
-    name: 'Popesti',
+    name: 'Popești',
   },
   {
     id: 9434,
     countyId: 54,
-    name: 'Popesti',
+    name: 'Popești',
   },
   {
     id: 9435,
     countyId: 43,
-    name: 'Popesti (Barasti)',
+    name: 'Popești (Bărăști)',
   },
   {
     id: 9436,
     countyId: 44,
-    name: 'Popesti (Brazi)',
+    name: 'Popești (Brazi)',
   },
   {
     id: 9437,
     countyId: 3,
-    name: 'Popesti (Cocu)',
+    name: 'Popești (Cocu)',
   },
   {
     id: 9438,
     countyId: 53,
-    name: 'Popesti (Dragomiresti)',
+    name: 'Popești (Dragomirești)',
   },
   {
     id: 9439,
     countyId: 42,
-    name: 'Popesti (Farcasa)',
+    name: 'Popești (Farcașa)',
   },
   {
     id: 9440,
     countyId: 52,
-    name: 'Popesti (Fartatesti)',
+    name: 'Popești (Fârtățești)',
   },
   {
     id: 9441,
     countyId: 42,
-    name: 'Popesti (Girov)',
+    name: 'Popești (Girov)',
   },
   {
     id: 9442,
     countyId: 52,
-    name: 'Popesti (Golesti)',
+    name: 'Popești (Golești)',
   },
   {
     id: 9443,
     countyId: 52,
-    name: 'Popesti (Ladesti)',
+    name: 'Popești (Lădești)',
   },
   {
     id: 9444,
     countyId: 52,
-    name: 'Popesti (Maciuca)',
+    name: 'Popești (Măciuca)',
   },
   {
     id: 9445,
     countyId: 53,
-    name: 'Popesti (Miclesti)',
+    name: 'Popești (Miclești)',
   },
   {
     id: 9446,
     countyId: 52,
-    name: 'Popesti (Nicolae Balcescu)',
+    name: 'Popești (Nicolae Bălcescu)',
   },
   {
     id: 9447,
     countyId: 44,
-    name: 'Popesti (Podenii Noi)',
+    name: 'Popești (Podenii Noi)',
   },
   {
     id: 9448,
     countyId: 3,
-    name: 'Popesti (Sapata)',
+    name: 'Popești (Săpata)',
   },
   {
     id: 9449,
     countyId: 52,
-    name: 'Popesti (Sinesti)',
+    name: 'Popești (Sinești)',
   },
   {
     id: 9450,
     countyId: 52,
-    name: 'Popesti (Stoenesti)',
+    name: 'Popești (Stoenești)',
   },
   {
     id: 9451,
     countyId: 52,
-    name: 'Popesti (Tetoiu)',
+    name: 'Popești (Tetoiu)',
   },
   {
     id: 9452,
     countyId: 43,
-    name: 'Popesti (Valeni)',
+    name: 'Popești (Văleni)',
   },
   {
     id: 9453,
     countyId: 36,
-    name: 'Popesti-Leordeni',
+    name: 'Popești-Leordeni',
   },
   {
     id: 9454,
     countyId: 30,
-    name: 'Popesti-Stejari',
+    name: 'Popești-Stejari',
   },
   {
     id: 9455,
     countyId: 1,
-    name: 'Popestii de Jos',
+    name: 'Popeștii de Jos',
   },
   {
     id: 9456,
     countyId: 1,
-    name: 'Popestii de Sus',
+    name: 'Popeștii de Sus',
   },
   {
     id: 9457,
@@ -47302,7 +47302,7 @@ export const CITIES = [
   {
     id: 9467,
     countyId: 40,
-    name: 'Poroinita',
+    name: 'Poroinița',
   },
   {
     id: 9468,
@@ -47312,12 +47312,12 @@ export const CITIES = [
   {
     id: 9469,
     countyId: 45,
-    name: 'Port',
+    name: 'Porț',
   },
   {
     id: 9470,
     countyId: 52,
-    name: 'Portaresti',
+    name: 'Portărești',
   },
   {
     id: 9471,
@@ -47332,7 +47332,7 @@ export const CITIES = [
   {
     id: 9473,
     countyId: 46,
-    name: 'Portita',
+    name: 'Portița',
   },
   {
     id: 9474,
@@ -47372,7 +47372,7 @@ export const CITIES = [
   {
     id: 9481,
     countyId: 46,
-    name: 'Porumbesti',
+    name: 'Porumbești',
   },
   {
     id: 9482,
@@ -47382,52 +47382,52 @@ export const CITIES = [
   {
     id: 9483,
     countyId: 1,
-    name: 'Posaga',
+    name: 'Poșaga',
   },
   {
     id: 9484,
     countyId: 1,
-    name: 'Posaga de Jos',
+    name: 'Poșaga de Jos',
   },
   {
     id: 9485,
     countyId: 1,
-    name: 'Posaga de Sus',
+    name: 'Poșaga de Sus',
   },
   {
     id: 9486,
     countyId: 44,
-    name: 'Posesti',
+    name: 'Posești',
   },
   {
     id: 9487,
     countyId: 44,
-    name: 'Posestii-Pamanteni',
+    name: 'Poseștii-Pământeni',
   },
   {
     id: 9488,
     countyId: 44,
-    name: 'Posestii-Ungureni',
+    name: 'Poseștii-Ungureni',
   },
   {
     id: 9489,
     countyId: 7,
-    name: 'Posmus',
+    name: 'Posmuș',
   },
   {
     id: 9490,
     countyId: 18,
-    name: 'Posobesti',
+    name: 'Posobești',
   },
   {
     id: 9491,
     countyId: 1,
-    name: 'Posogani',
+    name: 'Poșogani',
   },
   {
     id: 9492,
     countyId: 6,
-    name: 'Posoloaca',
+    name: 'Poșoloaca',
   },
   {
     id: 9493,
@@ -47437,77 +47437,77 @@ export const CITIES = [
   {
     id: 9494,
     countyId: 29,
-    name: 'Posta',
+    name: 'Poșta',
   },
   {
     id: 9495,
     countyId: 51,
-    name: 'Posta',
+    name: 'Poșta',
   },
   {
     id: 9496,
     countyId: 28,
-    name: 'Posta',
+    name: 'Poșta',
   },
   {
     id: 9497,
     countyId: 36,
-    name: 'Posta',
+    name: 'Poșta',
   },
   {
     id: 9498,
     countyId: 18,
-    name: 'Posta (Cilibia)',
+    name: 'Poșta (Cilibia)',
   },
   {
     id: 9499,
     countyId: 18,
-    name: 'Posta (Topliceni)',
+    name: 'Poșta (Topliceni)',
   },
   {
     id: 9500,
     countyId: 18,
-    name: 'Posta Calnau',
+    name: 'Poșta Câlnău',
   },
   {
     id: 9501,
     countyId: 53,
-    name: 'Posta Elan',
+    name: 'Poșta Elan',
   },
   {
     id: 9502,
     countyId: 40,
-    name: 'Posta Veche',
+    name: 'Poșta Veche',
   },
   {
     id: 9503,
     countyId: 24,
-    name: 'Postarnacu',
+    name: 'Postârnacu',
   },
   {
     id: 9504,
     countyId: 19,
-    name: 'Postavari',
+    name: 'Postăvari',
   },
   {
     id: 9505,
     countyId: 35,
-    name: 'Potangeni',
+    name: 'Potângeni',
   },
   {
     id: 9506,
     countyId: 22,
-    name: 'Potarnichea',
+    name: 'Potârnichea',
   },
   {
     id: 9507,
     countyId: 18,
-    name: 'Potarnichesti',
+    name: 'Potârnichești',
   },
   {
     id: 9508,
     countyId: 46,
-    name: 'Potau',
+    name: 'Potău',
   },
   {
     id: 9509,
@@ -47522,7 +47522,7 @@ export const CITIES = [
   {
     id: 9511,
     countyId: 43,
-    name: 'Potcoava-Falcoeni',
+    name: 'Potcoava-Fălcoeni',
   },
   {
     id: 9512,
@@ -47577,7 +47577,7 @@ export const CITIES = [
   {
     id: 9522,
     countyId: 25,
-    name: 'Potmeltu',
+    name: 'Potmelțu',
   },
   {
     id: 9523,
@@ -47607,12 +47607,12 @@ export const CITIES = [
   {
     id: 9528,
     countyId: 50,
-    name: 'Povargina',
+    name: 'Povârgina',
   },
   {
     id: 9529,
     countyId: 5,
-    name: 'Pradais',
+    name: 'Prădaiș',
   },
   {
     id: 9530,
@@ -47632,22 +47632,22 @@ export const CITIES = [
   {
     id: 9533,
     countyId: 44,
-    name: 'Prajani',
+    name: 'Prăjani',
   },
   {
     id: 9534,
     countyId: 8,
-    name: 'Prajeni',
+    name: 'Prăjeni',
   },
   {
     id: 9535,
     countyId: 42,
-    name: 'Prajesti',
+    name: 'Prăjești',
   },
   {
     id: 9536,
     countyId: 5,
-    name: 'Prajesti (Magiresti)',
+    name: 'Prăjești (Măgirești)',
   },
   {
     id: 9537,
@@ -47662,7 +47662,7 @@ export const CITIES = [
   {
     id: 9539,
     countyId: 5,
-    name: 'Prajoaia',
+    name: 'Prăjoaia',
   },
   {
     id: 9540,
@@ -47672,7 +47672,7 @@ export const CITIES = [
   {
     id: 9541,
     countyId: 48,
-    name: 'Praleni',
+    name: 'Prăleni',
   },
   {
     id: 9542,
@@ -47682,7 +47682,7 @@ export const CITIES = [
   {
     id: 9543,
     countyId: 33,
-    name: 'Pravaleni',
+    name: 'Prăvăleni',
   },
   {
     id: 9544,
@@ -47707,7 +47707,7 @@ export const CITIES = [
   {
     id: 9548,
     countyId: 25,
-    name: 'Preajba de Padure',
+    name: 'Preajba de Pădure',
   },
   {
     id: 9549,
@@ -47742,32 +47742,32 @@ export const CITIES = [
   {
     id: 9555,
     countyId: 44,
-    name: 'Predeal-Sarari',
+    name: 'Predeal-Sărari',
   },
   {
     id: 9556,
     countyId: 10,
-    name: 'Predelut',
+    name: 'Predeluț',
   },
   {
     id: 9557,
     countyId: 25,
-    name: 'Predesti',
+    name: 'Predești',
   },
   {
     id: 9558,
     countyId: 52,
-    name: 'Predesti',
+    name: 'Predești',
   },
   {
     id: 9559,
     countyId: 44,
-    name: 'Predesti',
+    name: 'Predești',
   },
   {
     id: 9560,
     countyId: 25,
-    name: 'Predestii Mici',
+    name: 'Predeștii Mici',
   },
   {
     id: 9561,
@@ -47812,7 +47812,7 @@ export const CITIES = [
   {
     id: 9569,
     countyId: 39,
-    name: 'Preluca Noua',
+    name: 'Preluca Nouă',
   },
   {
     id: 9570,
@@ -47842,12 +47842,12 @@ export const CITIES = [
   {
     id: 9575,
     countyId: 43,
-    name: 'Preotesti',
+    name: 'Preotești',
   },
   {
     id: 9576,
     countyId: 52,
-    name: 'Preotesti',
+    name: 'Preotești',
   },
   {
     id: 9577,
@@ -47862,12 +47862,12 @@ export const CITIES = [
   {
     id: 9579,
     countyId: 42,
-    name: 'Preutesti',
+    name: 'Preutești',
   },
   {
     id: 9580,
     countyId: 48,
-    name: 'Preutesti',
+    name: 'Preutești',
   },
   {
     id: 9581,
@@ -47892,12 +47892,12 @@ export const CITIES = [
   {
     id: 9585,
     countyId: 53,
-    name: 'Pribesti',
+    name: 'Pribești',
   },
   {
     id: 9586,
     countyId: 39,
-    name: 'Pribilesti',
+    name: 'Pribilești',
   },
   {
     id: 9587,
@@ -47912,7 +47912,7 @@ export const CITIES = [
   {
     id: 9589,
     countyId: 40,
-    name: 'Priboiesti',
+    name: 'Priboiești',
   },
   {
     id: 9590,
@@ -47922,12 +47922,12 @@ export const CITIES = [
   {
     id: 9591,
     countyId: 24,
-    name: 'Priboiu (Branesti)',
+    name: 'Priboiu (Brănești)',
   },
   {
     id: 9592,
     countyId: 24,
-    name: 'Priboiu (Tatarani)',
+    name: 'Priboiu (Tătărani)',
   },
   {
     id: 9593,
@@ -47952,17 +47952,17 @@ export const CITIES = [
   {
     id: 9597,
     countyId: 33,
-    name: 'Prihodiste (Bosorod)',
+    name: 'Prihodiște (Boșorod)',
   },
   {
     id: 9598,
     countyId: 33,
-    name: 'Prihodiste (Vata de Jos)',
+    name: 'Prihodiște (Vața de Jos)',
   },
   {
     id: 9599,
     countyId: 20,
-    name: 'Prilipet',
+    name: 'Prilipeț',
   },
   {
     id: 9600,
@@ -47997,12 +47997,12 @@ export const CITIES = [
   {
     id: 9606,
     countyId: 28,
-    name: 'Priponesti',
+    name: 'Priponești',
   },
   {
     id: 9607,
     countyId: 28,
-    name: 'Priponestii de Jos',
+    name: 'Priponeștii de Jos',
   },
   {
     id: 9608,
@@ -48047,17 +48047,17 @@ export const CITIES = [
   {
     id: 9616,
     countyId: 35,
-    name: 'Prisacani',
+    name: 'Prisăcani',
   },
   {
     id: 9617,
     countyId: 8,
-    name: 'Prisacani',
+    name: 'Prisăcani',
   },
   {
     id: 9618,
     countyId: 40,
-    name: 'Prisaceaua',
+    name: 'Prisăceaua',
   },
   {
     id: 9619,
@@ -48112,7 +48112,7 @@ export const CITIES = [
   {
     id: 9629,
     countyId: 20,
-    name: 'Prislop (Dalboset)',
+    name: 'Prislop (Dalboșeț)',
   },
   {
     id: 9630,
@@ -48132,7 +48132,7 @@ export const CITIES = [
   {
     id: 9633,
     countyId: 43,
-    name: 'Proaspeti',
+    name: 'Proaspeți',
   },
   {
     id: 9634,
@@ -48157,17 +48157,17 @@ export const CITIES = [
   {
     id: 9638,
     countyId: 45,
-    name: 'Prodanesti',
+    name: 'Prodănești',
   },
   {
     id: 9639,
     countyId: 28,
-    name: 'Prodanesti',
+    name: 'Prodănești',
   },
   {
     id: 9640,
     countyId: 52,
-    name: 'Prodanesti',
+    name: 'Prodănești',
   },
   {
     id: 9641,
@@ -48177,7 +48177,7 @@ export const CITIES = [
   {
     id: 9642,
     countyId: 24,
-    name: 'Produlesti',
+    name: 'Produlești',
   },
   {
     id: 9643,
@@ -48202,7 +48202,7 @@ export const CITIES = [
   {
     id: 9647,
     countyId: 5,
-    name: 'Prohozesti',
+    name: 'Prohozești',
   },
   {
     id: 9648,
@@ -48212,12 +48212,12 @@ export const CITIES = [
   {
     id: 9649,
     countyId: 40,
-    name: 'Proitesti',
+    name: 'Proitești',
   },
   {
     id: 9650,
     countyId: 18,
-    name: 'Prosca',
+    name: 'Proșca',
   },
   {
     id: 9651,
@@ -48232,17 +48232,17 @@ export const CITIES = [
   {
     id: 9653,
     countyId: 53,
-    name: 'Protopopesti',
+    name: 'Protopopești',
   },
   {
     id: 9654,
     countyId: 44,
-    name: 'Provita de Jos',
+    name: 'Provița de Jos',
   },
   {
     id: 9655,
     countyId: 44,
-    name: 'Provita de Sus',
+    name: 'Provița de Sus',
   },
   {
     id: 9656,
@@ -48272,7 +48272,7 @@ export const CITIES = [
   {
     id: 9661,
     countyId: 7,
-    name: 'Prundu Bargaului',
+    name: 'Prundu Bârgăului',
   },
   {
     id: 9662,
@@ -48287,7 +48287,7 @@ export const CITIES = [
   {
     id: 9664,
     countyId: 30,
-    name: 'Prunesti',
+    name: 'Prunești',
   },
   {
     id: 9665,
@@ -48307,17 +48307,17 @@ export const CITIES = [
   {
     id: 9668,
     countyId: 21,
-    name: 'Prunis',
+    name: 'Pruniș',
   },
   {
     id: 9669,
     countyId: 2,
-    name: 'Prunisor',
+    name: 'Prunișor',
   },
   {
     id: 9670,
     countyId: 40,
-    name: 'Prunisor',
+    name: 'Prunișor',
   },
   {
     id: 9671,
@@ -48342,7 +48342,7 @@ export const CITIES = [
   {
     id: 9675,
     countyId: 44,
-    name: 'Puchenii-Mosneni',
+    name: 'Puchenii-Moșneni',
   },
   {
     id: 9676,
@@ -48357,7 +48357,7 @@ export const CITIES = [
   {
     id: 9678,
     countyId: 54,
-    name: 'Pufesti',
+    name: 'Pufești',
   },
   {
     id: 9679,
@@ -48372,22 +48372,22 @@ export const CITIES = [
   {
     id: 9681,
     countyId: 18,
-    name: 'Puiesti',
+    name: 'Puiești',
   },
   {
     id: 9682,
     countyId: 53,
-    name: 'Puiesti',
+    name: 'Puiești',
   },
   {
     id: 9683,
     countyId: 18,
-    name: 'Puiestii de Jos',
+    name: 'Puieștii de Jos',
   },
   {
     id: 9684,
     countyId: 18,
-    name: 'Puiestii de Sus',
+    name: 'Puieștii de Sus',
   },
   {
     id: 9685,
@@ -48397,7 +48397,7 @@ export const CITIES = [
   {
     id: 9686,
     countyId: 1,
-    name: 'Puiuletesti',
+    name: 'Puiulețești',
   },
   {
     id: 9687,
@@ -48407,7 +48407,7 @@ export const CITIES = [
   {
     id: 9688,
     countyId: 53,
-    name: 'Pungesti',
+    name: 'Pungești',
   },
   {
     id: 9689,
@@ -48427,7 +48427,7 @@ export const CITIES = [
   {
     id: 9692,
     countyId: 53,
-    name: 'Puntiseni',
+    name: 'Puntișeni',
   },
   {
     id: 9693,
@@ -48442,7 +48442,7 @@ export const CITIES = [
   {
     id: 9695,
     countyId: 49,
-    name: 'Purani (Vitanesti)',
+    name: 'Purani (Vitănești)',
   },
   {
     id: 9696,
@@ -48452,32 +48452,32 @@ export const CITIES = [
   {
     id: 9697,
     countyId: 10,
-    name: 'Purcareni',
+    name: 'Purcăreni',
   },
   {
     id: 9698,
     countyId: 3,
-    name: 'Purcareni (Micesti)',
+    name: 'Purcăreni (Micești)',
   },
   {
     id: 9699,
     countyId: 3,
-    name: 'Purcareni (Popesti)',
+    name: 'Purcăreni (Popești)',
   },
   {
     id: 9700,
     countyId: 45,
-    name: 'Purcaret',
+    name: 'Purcăreț',
   },
   {
     id: 9701,
     countyId: 7,
-    name: 'Purcarete',
+    name: 'Purcărete',
   },
   {
     id: 9702,
     countyId: 1,
-    name: 'Purcareti',
+    name: 'Purcăreți',
   },
   {
     id: 9703,
@@ -48492,22 +48492,22 @@ export const CITIES = [
   {
     id: 9705,
     countyId: 44,
-    name: 'Puscasi',
+    name: 'Pușcași',
   },
   {
     id: 9706,
     countyId: 53,
-    name: 'Puscasi',
+    name: 'Pușcași',
   },
   {
     id: 9707,
     countyId: 40,
-    name: 'Puscasu',
+    name: 'Pușcașu',
   },
   {
     id: 9708,
     countyId: 1,
-    name: 'Puselesti',
+    name: 'Pușelești',
   },
   {
     id: 9709,
@@ -48532,12 +48532,12 @@ export const CITIES = [
   {
     id: 9713,
     countyId: 50,
-    name: 'Pustinis',
+    name: 'Pustiniș',
   },
   {
     id: 9714,
     countyId: 21,
-    name: 'Pustuta',
+    name: 'Pustuța',
   },
   {
     id: 9715,
@@ -48547,12 +48547,12 @@ export const CITIES = [
   {
     id: 9716,
     countyId: 40,
-    name: 'Putinei',
+    name: 'Puținei',
   },
   {
     id: 9717,
     countyId: 25,
-    name: 'Putinei',
+    name: 'Puținei',
   },
   {
     id: 9718,
@@ -48592,52 +48592,52 @@ export const CITIES = [
   {
     id: 9725,
     countyId: 24,
-    name: 'Putu cu Salcie',
+    name: 'Puțu cu Salcie',
   },
   {
     id: 9726,
     countyId: 29,
-    name: 'Putu Greci',
+    name: 'Puțu Greci',
   },
   {
     id: 9727,
     countyId: 53,
-    name: 'Putu Olarului',
+    name: 'Puțu Olarului',
   },
   {
     id: 9728,
     countyId: 8,
-    name: 'Putureni',
+    name: 'Puțureni',
   },
   {
     id: 9729,
     countyId: 25,
-    name: 'Puturi',
+    name: 'Puțuri',
   },
   {
     id: 9730,
     countyId: 6,
-    name: 'Rabagani',
+    name: 'Răbăgani',
   },
   {
     id: 9731,
     countyId: 3,
-    name: 'Raca',
+    name: 'Râca',
   },
   {
     id: 9732,
     countyId: 5,
-    name: 'Racaciuni',
+    name: 'Răcăciuni',
   },
   {
     id: 9733,
     countyId: 41,
-    name: 'Racamet',
+    name: 'Racameț',
   },
   {
     id: 9734,
     countyId: 24,
-    name: 'Racari',
+    name: 'Răcari',
   },
   {
     id: 9735,
@@ -48647,52 +48647,52 @@ export const CITIES = [
   {
     id: 9736,
     countyId: 25,
-    name: 'Racarii de Sus',
+    name: 'Răcarii de Sus',
   },
   {
     id: 9737,
     countyId: 45,
-    name: 'Racas',
+    name: 'Racâș',
   },
   {
     id: 9738,
     countyId: 6,
-    name: 'Racas',
+    name: 'Răcaș',
   },
   {
     id: 9739,
     countyId: 20,
-    name: 'Racasdia',
+    name: 'Răcășdia',
   },
   {
     id: 9740,
     countyId: 33,
-    name: 'Racastia',
+    name: 'Răcăștia',
   },
   {
     id: 9741,
     countyId: 1,
-    name: 'Racatau',
+    name: 'Răcătău',
   },
   {
     id: 9742,
     countyId: 5,
-    name: 'Racatau de Jos',
+    name: 'Răcătău de Jos',
   },
   {
     id: 9743,
     countyId: 5,
-    name: 'Racatau-Razesi',
+    name: 'Răcătău-Răzeși',
   },
   {
     id: 9744,
     countyId: 7,
-    name: 'Racatesu',
+    name: 'Răcăteșu',
   },
   {
     id: 9745,
     countyId: 5,
-    name: 'Racauti',
+    name: 'Răcăuți',
   },
   {
     id: 9746,
@@ -48707,107 +48707,107 @@ export const CITIES = [
   {
     id: 9748,
     countyId: 1,
-    name: 'Rachis',
+    name: 'Rachiș',
   },
   {
     id: 9749,
     countyId: 1,
-    name: 'Rachita',
+    name: 'Răchita',
   },
   {
     id: 9750,
     countyId: 50,
-    name: 'Rachita',
+    name: 'Răchita',
   },
   {
     id: 9751,
     countyId: 20,
-    name: 'Rachita',
+    name: 'Răchita',
   },
   {
     id: 9752,
     countyId: 25,
-    name: 'Rachita de Jos',
+    name: 'Răchita de Jos',
   },
   {
     id: 9753,
     countyId: 25,
-    name: 'Rachita de Sus',
+    name: 'Răchita de Sus',
   },
   {
     id: 9754,
     countyId: 54,
-    name: 'Rachitasu',
+    name: 'Răchitașu',
   },
   {
     id: 9755,
     countyId: 33,
-    name: 'Rachitaua',
+    name: 'Răchițaua',
   },
   {
     id: 9756,
     countyId: 21,
-    name: 'Rachitele',
+    name: 'Răchițele',
   },
   {
     id: 9757,
     countyId: 3,
-    name: 'Rachitele de Jos',
+    name: 'Răchițele de Jos',
   },
   {
     id: 9758,
     countyId: 3,
-    name: 'Rachitele de Sus',
+    name: 'Răchițele de Sus',
   },
   {
     id: 9759,
     countyId: 35,
-    name: 'Rachiteni',
+    name: 'Răchiteni',
   },
   {
     id: 9760,
     countyId: 30,
-    name: 'Rachiti',
+    name: 'Răchiți',
   },
   {
     id: 9761,
     countyId: 8,
-    name: 'Rachiti',
+    name: 'Răchiți',
   },
   {
     id: 9762,
     countyId: 31,
-    name: 'Rachitis',
+    name: 'Răchitiș',
   },
   {
     id: 9763,
     countyId: 5,
-    name: 'Rachitis',
+    name: 'Răchitiș',
   },
   {
     id: 9764,
     countyId: 5,
-    name: 'Rachitisu',
+    name: 'Răchitișu',
   },
   {
     id: 9765,
     countyId: 5,
-    name: 'Rachitoasa',
+    name: 'Răchitoasa',
   },
   {
     id: 9766,
     countyId: 54,
-    name: 'Rachitosu',
+    name: 'Răchitosu',
   },
   {
     id: 9767,
     countyId: 20,
-    name: 'Rachitova',
+    name: 'Răchitova',
   },
   {
     id: 9768,
     countyId: 33,
-    name: 'Rachitova',
+    name: 'Răchitova',
   },
   {
     id: 9769,
@@ -48817,7 +48817,7 @@ export const CITIES = [
   {
     id: 9770,
     countyId: 41,
-    name: 'Raciu',
+    name: 'Râciu',
   },
   {
     id: 9771,
@@ -48827,22 +48827,22 @@ export const CITIES = [
   {
     id: 9772,
     countyId: 54,
-    name: 'Racoasa',
+    name: 'Răcoasa',
   },
   {
     id: 9773,
     countyId: 10,
-    name: 'Racos',
+    name: 'Racoș',
   },
   {
     id: 9774,
     countyId: 23,
-    name: 'Racosul de Sus',
+    name: 'Racoșul de Sus',
   },
   {
     id: 9775,
     countyId: 30,
-    name: 'Racoti',
+    name: 'Racoți',
   },
   {
     id: 9776,
@@ -48872,77 +48872,77 @@ export const CITIES = [
   {
     id: 9781,
     countyId: 8,
-    name: 'Racovat',
+    name: 'Racovăț',
   },
   {
     id: 9782,
     countyId: 9,
-    name: 'Racovita',
+    name: 'Racoviță',
   },
   {
     id: 9783,
     countyId: 25,
-    name: 'Racovita',
+    name: 'Racovița',
   },
   {
     id: 9784,
     countyId: 43,
-    name: 'Racovita',
+    name: 'Racovița',
   },
   {
     id: 9785,
     countyId: 50,
-    name: 'Racovita',
+    name: 'Racovița',
   },
   {
     id: 9786,
     countyId: 53,
-    name: 'Racovita',
+    name: 'Racovița',
   },
   {
     id: 9787,
     countyId: 3,
-    name: 'Racovita',
+    name: 'Racovița',
   },
   {
     id: 9788,
     countyId: 24,
-    name: 'Racovita',
+    name: 'Racovița',
   },
   {
     id: 9789,
     countyId: 30,
-    name: 'Racovita',
+    name: 'Racovița',
   },
   {
     id: 9790,
     countyId: 47,
-    name: 'Racovita',
+    name: 'Racovița',
   },
   {
     id: 9791,
     countyId: 52,
-    name: 'Racovita',
+    name: 'Racovița',
   },
   {
     id: 9792,
     countyId: 52,
-    name: 'Racovita (Budesti)',
+    name: 'Racovița (Budești)',
   },
   {
     id: 9793,
     countyId: 18,
-    name: 'Racoviteni',
+    name: 'Racovițeni',
   },
   {
     id: 9794,
     countyId: 46,
-    name: 'Racsa',
+    name: 'Racșa',
   },
   {
     id: 9795,
     countyId: 46,
-    name: 'Racsa-Vii',
+    name: 'Racșa-Vii',
   },
   {
     id: 9796,
@@ -48957,97 +48957,97 @@ export const CITIES = [
   {
     id: 9798,
     countyId: 5,
-    name: 'Racusana',
+    name: 'Răcușana',
   },
   {
     id: 9799,
     countyId: 52,
-    name: 'Radacinesti',
+    name: 'Rădăcinești',
   },
   {
     id: 9800,
     countyId: 54,
-    name: 'Radacinesti',
+    name: 'Rădăcinești',
   },
   {
     id: 9801,
     countyId: 53,
-    name: 'Radaesti',
+    name: 'Rădăești',
   },
   {
     id: 9802,
     countyId: 21,
-    name: 'Radaia',
+    name: 'Rădaia',
   },
   {
     id: 9803,
     countyId: 48,
-    name: 'Radaseni',
+    name: 'Rădășeni',
   },
   {
     id: 9804,
     countyId: 48,
-    name: 'Radauti',
+    name: 'Rădăuți',
   },
   {
     id: 9805,
     countyId: 8,
-    name: 'Radauti-Prut',
+    name: 'Rădăuți-Prut',
   },
   {
     id: 9806,
     countyId: 5,
-    name: 'Radeana',
+    name: 'Rădeana',
   },
   {
     id: 9807,
     countyId: 8,
-    name: 'Radeni',
+    name: 'Rădeni',
   },
   {
     id: 9808,
     countyId: 42,
-    name: 'Radeni',
+    name: 'Rădeni',
   },
   {
     id: 9809,
     countyId: 35,
-    name: 'Radeni',
+    name: 'Rădeni',
   },
   {
     id: 9810,
     countyId: 53,
-    name: 'Radeni',
+    name: 'Rădeni',
   },
   {
     id: 9811,
     countyId: 1,
-    name: 'Radesti',
+    name: 'Rădești',
   },
   {
     id: 9812,
     countyId: 2,
-    name: 'Radesti',
+    name: 'Rădești',
   },
   {
     id: 9813,
     countyId: 43,
-    name: 'Radesti',
+    name: 'Rădești',
   },
   {
     id: 9814,
     countyId: 3,
-    name: 'Radesti',
+    name: 'Rădești',
   },
   {
     id: 9815,
     countyId: 28,
-    name: 'Radesti',
+    name: 'Rădești',
   },
   {
     id: 9816,
     countyId: 53,
-    name: 'Radesti',
+    name: 'Rădești',
   },
   {
     id: 9817,
@@ -49062,12 +49062,12 @@ export const CITIES = [
   {
     id: 9819,
     countyId: 30,
-    name: 'Radinesti',
+    name: 'Rădinești',
   },
   {
     id: 9820,
     countyId: 50,
-    name: 'Radmanesti',
+    name: 'Rădmănești',
   },
   {
     id: 9821,
@@ -49077,22 +49077,22 @@ export const CITIES = [
   {
     id: 9822,
     countyId: 5,
-    name: 'Radoaia',
+    name: 'Rădoaia',
   },
   {
     id: 9823,
     countyId: 49,
-    name: 'Radoiesti',
+    name: 'Rădoiești',
   },
   {
     id: 9824,
     countyId: 49,
-    name: 'Radoiesti-Deal',
+    name: 'Rădoiești-Deal',
   },
   {
     id: 9825,
     countyId: 49,
-    name: 'Radoiesti-Vale',
+    name: 'Rădoiești-Vale',
   },
   {
     id: 9826,
@@ -49102,17 +49102,17 @@ export const CITIES = [
   {
     id: 9827,
     countyId: 5,
-    name: 'Radomiresti',
+    name: 'Radomirești',
   },
   {
     id: 9828,
     countyId: 43,
-    name: 'Radomiresti',
+    name: 'Radomirești',
   },
   {
     id: 9829,
     countyId: 30,
-    name: 'Radosi',
+    name: 'Radoși',
   },
   {
     id: 9830,
@@ -49137,62 +49137,62 @@ export const CITIES = [
   {
     id: 9834,
     countyId: 29,
-    name: 'Radu Voda',
+    name: 'Radu Vodă',
   },
   {
     id: 9835,
     countyId: 19,
-    name: 'Radu Voda',
+    name: 'Radu Vodă',
   },
   {
     id: 9836,
     countyId: 35,
-    name: 'Raducaneni',
+    name: 'Răducăneni',
   },
   {
     id: 9837,
     countyId: 53,
-    name: 'Raducani',
+    name: 'Răducani',
   },
   {
     id: 9838,
     countyId: 18,
-    name: 'Raducesti',
+    name: 'Răducești',
   },
   {
     id: 9839,
     countyId: 53,
-    name: 'Raduiesti',
+    name: 'Răduiești',
   },
   {
     id: 9840,
     countyId: 46,
-    name: 'Radulesti',
+    name: 'Rădulești',
   },
   {
     id: 9841,
     countyId: 54,
-    name: 'Radulesti',
+    name: 'Rădulești',
   },
   {
     id: 9842,
     countyId: 33,
-    name: 'Radulesti',
+    name: 'Rădulești',
   },
   {
     id: 9843,
     countyId: 49,
-    name: 'Radulesti',
+    name: 'Rădulești',
   },
   {
     id: 9844,
     countyId: 40,
-    name: 'Radutesti',
+    name: 'Răduțești',
   },
   {
     id: 9845,
     countyId: 3,
-    name: 'Radutesti',
+    name: 'Răduțești',
   },
   {
     id: 9846,
@@ -49207,7 +49207,7 @@ export const CITIES = [
   {
     id: 9848,
     countyId: 44,
-    name: 'Rafov',
+    name: 'Râfov',
   },
   {
     id: 9849,
@@ -49217,7 +49217,7 @@ export const CITIES = [
   {
     id: 9850,
     countyId: 44,
-    name: 'Ragman',
+    name: 'Răgman',
   },
   {
     id: 9851,
@@ -49227,7 +49227,7 @@ export const CITIES = [
   {
     id: 9852,
     countyId: 1,
-    name: 'Rahau',
+    name: 'Răhău',
   },
   {
     id: 9853,
@@ -49242,17 +49242,17 @@ export const CITIES = [
   {
     id: 9855,
     countyId: 1,
-    name: 'Raicani',
+    name: 'Răicani',
   },
   {
     id: 9856,
     countyId: 40,
-    name: 'Raiculesti',
+    name: 'Răiculești',
   },
   {
     id: 9857,
     countyId: 43,
-    name: 'Raitiu',
+    name: 'Raițiu',
   },
   {
     id: 9858,
@@ -49262,32 +49262,32 @@ export const CITIES = [
   {
     id: 9859,
     countyId: 54,
-    name: 'Raiuti',
+    name: 'Răiuți',
   },
   {
     id: 9860,
     countyId: 3,
-    name: 'Rajletu-Govora',
+    name: 'Râjlețu-Govora',
   },
   {
     id: 9861,
     countyId: 29,
-    name: 'Ralesti',
+    name: 'Rălești',
   },
   {
     id: 9862,
     countyId: 52,
-    name: 'Ramesti (Horezu)',
+    name: 'Râmești (Horezu)',
   },
   {
     id: 9863,
     countyId: 52,
-    name: 'Ramesti (Susani)',
+    name: 'Râmești (Șușani)',
   },
   {
     id: 9864,
     countyId: 1,
-    name: 'Ramet',
+    name: 'Râmeț',
   },
   {
     id: 9865,
@@ -49297,72 +49297,72 @@ export const CITIES = [
   {
     id: 9866,
     countyId: 54,
-    name: 'Ramniceanca',
+    name: 'Râmniceanca',
   },
   {
     id: 9867,
     countyId: 9,
-    name: 'Ramnicelu',
+    name: 'Râmnicelu',
   },
   {
     id: 9868,
     countyId: 18,
-    name: 'Ramnicelu',
+    name: 'Râmnicelu',
   },
   {
     id: 9869,
     countyId: 54,
-    name: 'Ramniceni',
+    name: 'Râmniceni',
   },
   {
     id: 9870,
     countyId: 22,
-    name: 'Ramnicu de Jos',
+    name: 'Râmnicu de Jos',
   },
   {
     id: 9871,
     countyId: 22,
-    name: 'Ramnicu de Sus',
+    name: 'Râmnicu de Sus',
   },
   {
     id: 9872,
     countyId: 18,
-    name: 'Ramnicu Sarat',
+    name: 'Râmnicu Sărat',
   },
   {
     id: 9873,
     countyId: 52,
-    name: 'Ramnicu Valcea',
+    name: 'Râmnicu Vâlcea',
   },
   {
     id: 9874,
     countyId: 24,
-    name: 'Rancaciov',
+    name: 'Râncăciov',
   },
   {
     id: 9875,
     countyId: 3,
-    name: 'Rancaciov',
+    name: 'Râncăciov',
   },
   {
     id: 9876,
     countyId: 53,
-    name: 'Ranceni',
+    name: 'Rânceni',
   },
   {
     id: 9877,
     countyId: 51,
-    name: 'Randunica',
+    name: 'Rândunica',
   },
   {
     id: 9878,
     countyId: 8,
-    name: 'Ranghilesti',
+    name: 'Rânghilești',
   },
   {
     id: 9879,
     countyId: 8,
-    name: 'Ranghilesti-Deal',
+    name: 'Rânghilești-Deal',
   },
   {
     id: 9880,
@@ -49372,52 +49372,52 @@ export const CITIES = [
   {
     id: 9881,
     countyId: 2,
-    name: 'Ranusa',
+    name: 'Rănușa',
   },
   {
     id: 9882,
     countyId: 53,
-    name: 'Ranzesti',
+    name: 'Rânzești',
   },
   {
     id: 9883,
     countyId: 6,
-    name: 'Rapa',
+    name: 'Râpa',
   },
   {
     id: 9884,
     countyId: 30,
-    name: 'Rapa',
+    name: 'Râpa',
   },
   {
     id: 9885,
     countyId: 52,
-    name: 'Rapa Caramizii',
+    name: 'Râpa Cărămizii',
   },
   {
     id: 9886,
     countyId: 41,
-    name: 'Rapa de Jos',
+    name: 'Râpa de Jos',
   },
   {
     id: 9887,
     countyId: 52,
-    name: 'Rapanesti',
+    name: 'Râpănești',
   },
   {
     id: 9888,
     countyId: 33,
-    name: 'Rapas',
+    name: 'Râpaș',
   },
   {
     id: 9889,
     countyId: 18,
-    name: 'Rapile',
+    name: 'Râpile',
   },
   {
     id: 9890,
     countyId: 33,
-    name: 'Rapoltel',
+    name: 'Rapolțel',
   },
   {
     id: 9891,
@@ -49427,22 +49427,22 @@ export const CITIES = [
   {
     id: 9892,
     countyId: 53,
-    name: 'Rapsa',
+    name: 'Rapșa',
   },
   {
     id: 9893,
     countyId: 2,
-    name: 'Rapsig',
+    name: 'Răpsig',
   },
   {
     id: 9894,
     countyId: 31,
-    name: 'Rares',
+    name: 'Rareș',
   },
   {
     id: 9895,
     countyId: 22,
-    name: 'Raristea',
+    name: 'Rariștea',
   },
   {
     id: 9896,
@@ -49452,17 +49452,17 @@ export const CITIES = [
   {
     id: 9897,
     countyId: 35,
-    name: 'Rasboieni',
+    name: 'Răsboieni',
   },
   {
     id: 9898,
     countyId: 54,
-    name: 'Rasca',
+    name: 'Rașca',
   },
   {
     id: 9899,
     countyId: 42,
-    name: 'Rasca',
+    name: 'Râșca',
   },
   {
     id: 9900,
@@ -49472,7 +49472,7 @@ export const CITIES = [
   {
     id: 9901,
     countyId: 8,
-    name: 'Rasca',
+    name: 'Râșca',
   },
   {
     id: 9902,
@@ -49482,62 +49482,62 @@ export const CITIES = [
   {
     id: 9903,
     countyId: 24,
-    name: 'Rascaeti',
+    name: 'Răscăeți',
   },
   {
     id: 9904,
     countyId: 53,
-    name: 'Rascani (Danesti)',
+    name: 'Rășcani (Dănești)',
   },
   {
     id: 9905,
     countyId: 53,
-    name: 'Rascani (Suletea)',
+    name: 'Rășcani (Șuletea)',
   },
   {
     id: 9906,
     countyId: 33,
-    name: 'Rascoala',
+    name: 'Răscoala',
   },
   {
     id: 9907,
     countyId: 40,
-    name: 'Rascolesti',
+    name: 'Răscolești',
   },
   {
     id: 9908,
     countyId: 21,
-    name: 'Rascruci',
+    name: 'Răscruci',
   },
   {
     id: 9909,
     countyId: 53,
-    name: 'Rasesti',
+    name: 'Râșești',
   },
   {
     id: 9910,
     countyId: 34,
-    name: 'Rasi',
+    name: 'Rași',
   },
   {
     id: 9911,
     countyId: 34,
-    name: 'Rasimnicea',
+    name: 'Răsimnicea',
   },
   {
     id: 9912,
     countyId: 47,
-    name: 'Rasinari',
+    name: 'Rășinari',
   },
   {
     id: 9913,
     countyId: 49,
-    name: 'Rasmiresti',
+    name: 'Răsmirești',
   },
   {
     id: 9914,
     countyId: 25,
-    name: 'Rasnicu Batran',
+    name: 'Rasnicu Bătrân',
   },
   {
     id: 9915,
@@ -49547,12 +49547,12 @@ export const CITIES = [
   {
     id: 9916,
     countyId: 53,
-    name: 'Rasnita',
+    name: 'Râșnița',
   },
   {
     id: 9917,
     countyId: 10,
-    name: 'Rasnov',
+    name: 'Râșnov',
   },
   {
     id: 9918,
@@ -49572,7 +49572,7 @@ export const CITIES = [
   {
     id: 9921,
     countyId: 30,
-    name: 'Rasovita',
+    name: 'Rasovița',
   },
   {
     id: 9922,
@@ -49582,77 +49582,77 @@ export const CITIES = [
   {
     id: 9923,
     countyId: 5,
-    name: 'Rastoaca',
+    name: 'Răstoaca',
   },
   {
     id: 9924,
     countyId: 54,
-    name: 'Rastoaca',
+    name: 'Răstoaca',
   },
   {
     id: 9925,
     countyId: 45,
-    name: 'Rastoci',
+    name: 'Răstoci',
   },
   {
     id: 9926,
     countyId: 41,
-    name: 'Rastolita',
+    name: 'Răstolița',
   },
   {
     id: 9927,
     countyId: 45,
-    name: 'Rastolt',
+    name: 'Răstolț',
   },
   {
     id: 9928,
     countyId: 45,
-    name: 'Rastoltu Desert',
+    name: 'Răstolțu Deșert',
   },
   {
     id: 9929,
     countyId: 29,
-    name: 'Rasuceni',
+    name: 'Răsuceni',
   },
   {
     id: 9930,
     countyId: 19,
-    name: 'Rasurile',
+    name: 'Răsurile',
   },
   {
     id: 9931,
     countyId: 52,
-    name: 'Ratalesti',
+    name: 'Rățălești',
   },
   {
     id: 9932,
     countyId: 18,
-    name: 'Ratesti',
+    name: 'Rătești',
   },
   {
     id: 9933,
     countyId: 24,
-    name: 'Ratesti',
+    name: 'Rățești',
   },
   {
     id: 9934,
     countyId: 3,
-    name: 'Ratesti',
+    name: 'Rătești',
   },
   {
     id: 9935,
     countyId: 46,
-    name: 'Ratesti',
+    name: 'Rătești',
   },
   {
     id: 9936,
     countyId: 53,
-    name: 'Ratesu Cuzei',
+    name: 'Rateșu Cuzei',
   },
   {
     id: 9937,
     countyId: 30,
-    name: 'Ratez',
+    name: 'Rătez',
   },
   {
     id: 9938,
@@ -49662,22 +49662,22 @@ export const CITIES = [
   {
     id: 9939,
     countyId: 1,
-    name: 'Ratitis',
+    name: 'Rătitiș',
   },
   {
     id: 9940,
     countyId: 46,
-    name: 'Ratiu',
+    name: 'Rațiu',
   },
   {
     id: 9941,
     countyId: 24,
-    name: 'Ratoaia',
+    name: 'Rățoaia',
   },
   {
     id: 9942,
     countyId: 3,
-    name: 'Ratoi',
+    name: 'Rățoi',
   },
   {
     id: 9943,
@@ -49687,77 +49687,77 @@ export const CITIES = [
   {
     id: 9944,
     countyId: 33,
-    name: 'Rau Alb',
+    name: 'Râu Alb',
   },
   {
     id: 9945,
     countyId: 24,
-    name: 'Rau Alb de Jos',
+    name: 'Râu Alb de Jos',
   },
   {
     id: 9946,
     countyId: 24,
-    name: 'Rau Alb de Sus',
+    name: 'Râu Alb de Sus',
   },
   {
     id: 9947,
     countyId: 33,
-    name: 'Rau Barbat',
+    name: 'Râu Bărbat',
   },
   {
     id: 9948,
     countyId: 33,
-    name: 'Rau de Mori',
+    name: 'Râu de Mori',
   },
   {
     id: 9949,
     countyId: 33,
-    name: 'Rau Mic',
+    name: 'Râu Mic',
   },
   {
     id: 9950,
     countyId: 47,
-    name: 'Rau Sadului',
+    name: 'Râu Sadului',
   },
   {
     id: 9951,
     countyId: 52,
-    name: 'Rau Vadului',
+    name: 'Râu Vadului',
   },
   {
     id: 9952,
     countyId: 42,
-    name: 'Raucesti',
+    name: 'Răucești',
   },
   {
     id: 9953,
     countyId: 52,
-    name: 'Raureni',
+    name: 'Râureni',
   },
   {
     id: 9954,
     countyId: 8,
-    name: 'Rauseni',
+    name: 'Răuseni',
   },
   {
     id: 9955,
     countyId: 10,
-    name: 'Rausor',
+    name: 'Râușor',
   },
   {
     id: 9956,
     countyId: 48,
-    name: 'Rauteni',
+    name: 'Răuțeni',
   },
   {
     id: 9957,
     countyId: 50,
-    name: 'Rauti',
+    name: 'Răuți',
   },
   {
     id: 9958,
     countyId: 47,
-    name: 'Ravasel',
+    name: 'Răvășel',
   },
   {
     id: 9959,
@@ -49767,77 +49767,77 @@ export const CITIES = [
   {
     id: 9960,
     countyId: 1,
-    name: 'Ravicesti',
+    name: 'Ravicești',
   },
   {
     id: 9961,
     countyId: 35,
-    name: 'Razboieni',
+    name: 'Războieni',
   },
   {
     id: 9962,
     countyId: 51,
-    name: 'Razboieni',
+    name: 'Războieni',
   },
   {
     id: 9963,
     countyId: 42,
-    name: 'Razboieni',
+    name: 'Războieni',
   },
   {
     id: 9964,
     countyId: 1,
-    name: 'Razboieni-Cetate',
+    name: 'Războieni-Cetate',
   },
   {
     id: 9965,
     countyId: 42,
-    name: 'Razboienii de Jos',
+    name: 'Războienii de Jos',
   },
   {
     id: 9966,
     countyId: 21,
-    name: 'Razbuneni',
+    name: 'Răzbuneni',
   },
   {
     id: 9967,
     countyId: 5,
-    name: 'Razesu',
+    name: 'Răzeșu',
   },
   {
     id: 9968,
     countyId: 39,
-    name: 'Razoare',
+    name: 'Răzoare',
   },
   {
     id: 9969,
     countyId: 21,
-    name: 'Razoare',
+    name: 'Răzoare',
   },
   {
     id: 9970,
     countyId: 41,
-    name: 'Razoare',
+    name: 'Răzoare',
   },
   {
     id: 9971,
     countyId: 19,
-    name: 'Razoarele',
+    name: 'Răzoarele',
   },
   {
     id: 9972,
     countyId: 22,
-    name: 'Razoarele',
+    name: 'Răzoarele',
   },
   {
     id: 9973,
     countyId: 24,
-    name: 'Razvad',
+    name: 'Răzvad',
   },
   {
     id: 9974,
     countyId: 19,
-    name: 'Razvani',
+    name: 'Răzvani',
   },
   {
     id: 9975,
@@ -49857,12 +49857,12 @@ export const CITIES = [
   {
     id: 9978,
     countyId: 7,
-    name: 'Rebrisoara',
+    name: 'Rebrișoara',
   },
   {
     id: 9979,
     countyId: 50,
-    name: 'Recas',
+    name: 'Recaș',
   },
   {
     id: 9980,
@@ -49932,12 +49932,12 @@ export const CITIES = [
   {
     id: 9993,
     countyId: 3,
-    name: 'Recea (Cateasca)',
+    name: 'Recea (Căteasca)',
   },
   {
     id: 9994,
     countyId: 45,
-    name: 'Recea Mica',
+    name: 'Recea Mică',
   },
   {
     id: 9995,
@@ -49972,7 +49972,7 @@ export const CITIES = [
   {
     id: 10001,
     countyId: 43,
-    name: 'Redisoara',
+    name: 'Redișoara',
   },
   {
     id: 10002,
@@ -50002,7 +50002,7 @@ export const CITIES = [
   {
     id: 10007,
     countyId: 35,
-    name: 'Rediu (Braesti)',
+    name: 'Rediu (Brăești)',
   },
   {
     id: 10008,
@@ -50012,17 +50012,17 @@ export const CITIES = [
   {
     id: 10009,
     countyId: 8,
-    name: 'Rediu (Radauti-Prut)',
+    name: 'Rediu (Rădăuți-Prut)',
   },
   {
     id: 10010,
     countyId: 8,
-    name: 'Rediu (Rauseni)',
+    name: 'Rediu (Răuseni)',
   },
   {
     id: 10011,
     countyId: 53,
-    name: 'Rediu (Rosiesti)',
+    name: 'Rediu (Roșiești)',
   },
   {
     id: 10012,
@@ -50032,7 +50032,7 @@ export const CITIES = [
   {
     id: 10013,
     countyId: 35,
-    name: 'Rediu (Scanteia)',
+    name: 'Rediu (Scânteia)',
   },
   {
     id: 10014,
@@ -50112,42 +50112,42 @@ export const CITIES = [
   {
     id: 10029,
     countyId: 50,
-    name: 'Remetea Mica',
+    name: 'Remetea Mică',
   },
   {
     id: 10030,
     countyId: 46,
-    name: 'Remetea Oasului',
+    name: 'Remetea Oașului',
   },
   {
     id: 10031,
     countyId: 50,
-    name: 'Remetea-Lunca',
+    name: 'Remetea-Luncă',
   },
   {
     id: 10032,
     countyId: 20,
-    name: 'Remetea-Poganici',
+    name: 'Remetea-Pogănici',
   },
   {
     id: 10033,
     countyId: 6,
-    name: 'Remeti',
+    name: 'Remeți',
   },
   {
     id: 10034,
     countyId: 39,
-    name: 'Remeti',
+    name: 'Remeți',
   },
   {
     id: 10035,
     countyId: 39,
-    name: 'Remeti pe Somes',
+    name: 'Remeți pe Someș',
   },
   {
     id: 10036,
     countyId: 29,
-    name: 'Remus',
+    name: 'Remuș',
   },
   {
     id: 10037,
@@ -50172,17 +50172,17 @@ export const CITIES = [
   {
     id: 10041,
     countyId: 5,
-    name: 'Reprivat',
+    name: 'Reprivăț',
   },
   {
     id: 10042,
     countyId: 43,
-    name: 'Resca',
+    name: 'Reșca',
   },
   {
     id: 10043,
     countyId: 43,
-    name: 'Rescuta',
+    name: 'Reșcuța',
   },
   {
     id: 10044,
@@ -50192,17 +50192,17 @@ export const CITIES = [
   {
     id: 10045,
     countyId: 20,
-    name: 'Resita',
+    name: 'Reșița',
   },
   {
     id: 10046,
     countyId: 20,
-    name: 'Resita Mica',
+    name: 'Reșița Mică',
   },
   {
     id: 10047,
     countyId: 33,
-    name: 'Ret',
+    name: 'Reț',
   },
   {
     id: 10048,
@@ -50212,7 +50212,7 @@ export const CITIES = [
   {
     id: 10049,
     countyId: 3,
-    name: 'Retevoiesti',
+    name: 'Retevoiești',
   },
   {
     id: 10050,
@@ -50222,7 +50222,7 @@ export const CITIES = [
   {
     id: 10051,
     countyId: 47,
-    name: 'Retis',
+    name: 'Retiș',
   },
   {
     id: 10052,
@@ -50232,12 +50232,12 @@ export const CITIES = [
   {
     id: 10053,
     countyId: 51,
-    name: 'Revarsarea',
+    name: 'Revărsarea',
   },
   {
     id: 10054,
     countyId: 2,
-    name: 'Revetis',
+    name: 'Revetiș',
   },
   {
     id: 10055,
@@ -50252,12 +50252,12 @@ export const CITIES = [
   {
     id: 10057,
     countyId: 33,
-    name: 'Ribita',
+    name: 'Ribița',
   },
   {
     id: 10058,
     countyId: 47,
-    name: 'Richis',
+    name: 'Richiș',
   },
   {
     id: 10059,
@@ -50287,22 +50287,22 @@ export const CITIES = [
   {
     id: 10064,
     countyId: 33,
-    name: 'Risca',
+    name: 'Rișca',
   },
   {
     id: 10065,
     countyId: 21,
-    name: 'Risca',
+    name: 'Rișca',
   },
   {
     id: 10066,
     countyId: 33,
-    name: 'Risculita',
+    name: 'Rișculița',
   },
   {
     id: 10067,
     countyId: 10,
-    name: 'Roades',
+    name: 'Roadeș',
   },
   {
     id: 10068,
@@ -50317,7 +50317,7 @@ export const CITIES = [
   {
     id: 10070,
     countyId: 29,
-    name: 'Roata Mica',
+    name: 'Roata Mică',
   },
   {
     id: 10071,
@@ -50332,17 +50332,17 @@ export const CITIES = [
   {
     id: 10073,
     countyId: 25,
-    name: 'Robanesti',
+    name: 'Robănești',
   },
   {
     id: 10074,
     countyId: 25,
-    name: 'Robanestii de Jos',
+    name: 'Robăneștii de Jos',
   },
   {
     id: 10075,
     countyId: 25,
-    name: 'Robanestii de Sus',
+    name: 'Robăneștii de Sus',
   },
   {
     id: 10076,
@@ -50352,17 +50352,17 @@ export const CITIES = [
   {
     id: 10077,
     countyId: 1,
-    name: 'Robesti',
+    name: 'Robești',
   },
   {
     id: 10078,
     countyId: 52,
-    name: 'Robesti',
+    name: 'Robești',
   },
   {
     id: 10079,
     countyId: 18,
-    name: 'Robesti',
+    name: 'Robești',
   },
   {
     id: 10080,
@@ -50377,7 +50377,7 @@ export const CITIES = [
   {
     id: 10082,
     countyId: 40,
-    name: 'Rocsoreni',
+    name: 'Rocșoreni',
   },
   {
     id: 10083,
@@ -50402,12 +50402,12 @@ export const CITIES = [
   {
     id: 10087,
     countyId: 52,
-    name: 'Roesti',
+    name: 'Roești',
   },
   {
     id: 10088,
     countyId: 52,
-    name: 'Roesti (Pesceana)',
+    name: 'Roești (Pesceana)',
   },
   {
     id: 10089,
@@ -50442,7 +50442,7 @@ export const CITIES = [
   {
     id: 10095,
     countyId: 8,
-    name: 'Rogojesti',
+    name: 'Rogojești',
   },
   {
     id: 10096,
@@ -50492,7 +50492,7 @@ export const CITIES = [
   {
     id: 10105,
     countyId: 25,
-    name: 'Rojiste',
+    name: 'Rojiște',
   },
   {
     id: 10106,
@@ -50507,7 +50507,7 @@ export const CITIES = [
   {
     id: 10108,
     countyId: 43,
-    name: 'Romana',
+    name: 'Româna',
   },
   {
     id: 10109,
@@ -50517,72 +50517,72 @@ export const CITIES = [
   {
     id: 10110,
     countyId: 45,
-    name: 'Romanasi',
+    name: 'Românași',
   },
   {
     id: 10111,
     countyId: 30,
-    name: 'Romanesti',
+    name: 'Romanești',
   },
   {
     id: 10112,
     countyId: 52,
-    name: 'Romanesti',
+    name: 'Românești',
   },
   {
     id: 10113,
     countyId: 8,
-    name: 'Romanesti',
+    name: 'Românești',
   },
   {
     id: 10114,
     countyId: 25,
-    name: 'Romanesti',
+    name: 'Românești',
   },
   {
     id: 10115,
     countyId: 39,
-    name: 'Romanesti',
+    name: 'Românești',
   },
   {
     id: 10116,
     countyId: 46,
-    name: 'Romanesti',
+    name: 'Românești',
   },
   {
     id: 10117,
     countyId: 54,
-    name: 'Romanesti',
+    name: 'Romănești',
   },
   {
     id: 10118,
     countyId: 47,
-    name: 'Romanesti',
+    name: 'Romanești',
   },
   {
     id: 10119,
     countyId: 5,
-    name: 'Romanesti',
+    name: 'Românești',
   },
   {
     id: 10120,
     countyId: 24,
-    name: 'Romanesti',
+    name: 'Românești',
   },
   {
     id: 10121,
     countyId: 35,
-    name: 'Romanesti',
+    name: 'Românești',
   },
   {
     id: 10122,
     countyId: 44,
-    name: 'Romanesti',
+    name: 'Românești',
   },
   {
     id: 10123,
     countyId: 50,
-    name: 'Romanesti',
+    name: 'Românești',
   },
   {
     id: 10124,
@@ -50592,22 +50592,22 @@ export const CITIES = [
   {
     id: 10125,
     countyId: 48,
-    name: 'Romanesti (Granicesti)',
+    name: 'Românești (Grănicești)',
   },
   {
     id: 10126,
     countyId: 8,
-    name: 'Romanesti-Vale',
+    name: 'Românești-Vale',
   },
   {
     id: 10127,
     countyId: 42,
-    name: 'Romani',
+    name: 'Români',
   },
   {
     id: 10128,
     countyId: 52,
-    name: 'Romani',
+    name: 'Români',
   },
   {
     id: 10129,
@@ -50637,7 +50637,7 @@ export const CITIES = [
   {
     id: 10134,
     countyId: 33,
-    name: 'Romosel',
+    name: 'Romoșel',
   },
   {
     id: 10135,
@@ -50662,7 +50662,7 @@ export const CITIES = [
   {
     id: 10139,
     countyId: 6,
-    name: 'Rontau',
+    name: 'Rontău',
   },
   {
     id: 10140,
@@ -50672,192 +50672,192 @@ export const CITIES = [
   {
     id: 10141,
     countyId: 28,
-    name: 'Roscani',
+    name: 'Roșcani',
   },
   {
     id: 10142,
     countyId: 35,
-    name: 'Roscani',
+    name: 'Roșcani',
   },
   {
     id: 10143,
     countyId: 33,
-    name: 'Roscani',
+    name: 'Roșcani',
   },
   {
     id: 10144,
     countyId: 48,
-    name: 'Roscani',
+    name: 'Roșcani',
   },
   {
     id: 10145,
     countyId: 54,
-    name: 'Roscari',
+    name: 'Roșcari',
   },
   {
     id: 10146,
     countyId: 42,
-    name: 'Roseni',
+    name: 'Roșeni',
   },
   {
     id: 10147,
     countyId: 1,
-    name: 'Rosesti',
+    name: 'Roșești',
   },
   {
     id: 10148,
     countyId: 19,
-    name: 'Roseti',
+    name: 'Roseți',
   },
   {
     id: 10149,
     countyId: 2,
-    name: 'Rosia',
+    name: 'Roșia',
   },
   {
     id: 10150,
     countyId: 33,
-    name: 'Rosia',
+    name: 'Roșia',
   },
   {
     id: 10151,
     countyId: 47,
-    name: 'Rosia',
+    name: 'Roșia',
   },
   {
     id: 10152,
     countyId: 6,
-    name: 'Rosia',
+    name: 'Roșia',
   },
   {
     id: 10153,
     countyId: 40,
-    name: 'Rosia',
+    name: 'Roșia',
   },
   {
     id: 10154,
     countyId: 52,
-    name: 'Rosia',
+    name: 'Roșia',
   },
   {
     id: 10155,
     countyId: 30,
-    name: 'Rosia de Amaradia',
+    name: 'Roșia de Amaradia',
   },
   {
     id: 10156,
     countyId: 1,
-    name: 'Rosia de Secas',
+    name: 'Roșia de Secaș',
   },
   {
     id: 10157,
     countyId: 1,
-    name: 'Rosia Montana',
+    name: 'Roșia Montană',
   },
   {
     id: 10158,
     countyId: 2,
-    name: 'Rosia Noua',
+    name: 'Roșia Nouă',
   },
   {
     id: 10159,
     countyId: 30,
-    name: 'Rosia-Jiu',
+    name: 'Roșia-Jiu',
   },
   {
     id: 10160,
     countyId: 25,
-    name: 'Rosieni',
+    name: 'Roșieni',
   },
   {
     id: 10161,
     countyId: 21,
-    name: 'Rosieni',
+    name: 'Roșieni',
   },
   {
     id: 10162,
     countyId: 43,
-    name: 'Rosienii Mari',
+    name: 'Roșienii Mari',
   },
   {
     id: 10163,
     countyId: 43,
-    name: 'Rosienii Mici',
+    name: 'Roșienii Mici',
   },
   {
     id: 10164,
     countyId: 53,
-    name: 'Rosiesti',
+    name: 'Roșiești',
   },
   {
     id: 10165,
     countyId: 52,
-    name: 'Rosiile',
+    name: 'Roșiile',
   },
   {
     id: 10166,
     countyId: 54,
-    name: 'Rosioara',
+    name: 'Roșioara',
   },
   {
     id: 10167,
     countyId: 52,
-    name: 'Rosioara',
+    name: 'Roșioara',
   },
   {
     id: 10168,
     countyId: 6,
-    name: 'Rosiori',
+    name: 'Roșiori',
   },
   {
     id: 10169,
     countyId: 8,
-    name: 'Rosiori',
+    name: 'Roșiori',
   },
   {
     id: 10170,
     countyId: 40,
-    name: 'Rosiori',
+    name: 'Roșiori',
   },
   {
     id: 10171,
     countyId: 42,
-    name: 'Rosiori',
+    name: 'Roșiori',
   },
   {
     id: 10172,
     countyId: 48,
-    name: 'Rosiori',
+    name: 'Roșiori',
   },
   {
     id: 10173,
     countyId: 5,
-    name: 'Rosiori',
+    name: 'Roșiori',
   },
   {
     id: 10174,
     countyId: 9,
-    name: 'Rosiori',
+    name: 'Roșiori',
   },
   {
     id: 10175,
     countyId: 34,
-    name: 'Rosiori',
+    name: 'Roșiori',
   },
   {
     id: 10176,
     countyId: 41,
-    name: 'Rosiori',
+    name: 'Roșiori',
   },
   {
     id: 10177,
     countyId: 46,
-    name: 'Rosiori',
+    name: 'Roșiori',
   },
   {
     id: 10178,
     countyId: 53,
-    name: 'Rosiori',
+    name: 'Roșiori',
   },
   {
     id: 10179,
@@ -50867,17 +50867,17 @@ export const CITIES = [
   {
     id: 10180,
     countyId: 18,
-    name: 'Rosioru',
+    name: 'Roșioru',
   },
   {
     id: 10181,
     countyId: 30,
-    name: 'Rosiuta',
+    name: 'Roșiuța',
   },
   {
     id: 10182,
     countyId: 52,
-    name: 'Rosoveni',
+    name: 'Roșoveni',
   },
   {
     id: 10183,
@@ -50887,22 +50887,22 @@ export const CITIES = [
   {
     id: 10184,
     countyId: 35,
-    name: 'Rosu',
+    name: 'Roșu',
   },
   {
     id: 10185,
     countyId: 36,
-    name: 'Rosu',
+    name: 'Roșu',
   },
   {
     id: 10186,
     countyId: 48,
-    name: 'Rosu',
+    name: 'Roșu',
   },
   {
     id: 10187,
     countyId: 52,
-    name: 'Rotarasti',
+    name: 'Rotărăști',
   },
   {
     id: 10188,
@@ -50912,12 +50912,12 @@ export const CITIES = [
   {
     id: 10189,
     countyId: 6,
-    name: 'Rotaresti',
+    name: 'Rotărești',
   },
   {
     id: 10190,
     countyId: 49,
-    name: 'Rotaresti',
+    name: 'Rotărești',
   },
   {
     id: 10191,
@@ -50932,12 +50932,12 @@ export const CITIES = [
   {
     id: 10193,
     countyId: 5,
-    name: 'Rotaria',
+    name: 'Rotăria',
   },
   {
     id: 10194,
     countyId: 35,
-    name: 'Rotaria',
+    name: 'Rotăria',
   },
   {
     id: 10195,
@@ -50952,17 +50952,17 @@ export const CITIES = [
   {
     id: 10197,
     countyId: 54,
-    name: 'Rotilestii Mari',
+    name: 'Rotileștii Mari',
   },
   {
     id: 10198,
     countyId: 54,
-    name: 'Rotilestii Mici',
+    name: 'Rotileștii Mici',
   },
   {
     id: 10199,
     countyId: 48,
-    name: 'Rotopanesti',
+    name: 'Rotopănești',
   },
   {
     id: 10200,
@@ -50997,12 +50997,12 @@ export const CITIES = [
   {
     id: 10206,
     countyId: 33,
-    name: 'Rovina (Branisca)',
+    name: 'Rovina (Brănișca)',
   },
   {
     id: 10207,
     countyId: 33,
-    name: 'Rovina (Bucuresci)',
+    name: 'Rovina (Bucureșci)',
   },
   {
     id: 10208,
@@ -51017,12 +51017,12 @@ export const CITIES = [
   {
     id: 10210,
     countyId: 50,
-    name: 'Rovinita Mare',
+    name: 'Rovinița Mare',
   },
   {
     id: 10211,
     countyId: 50,
-    name: 'Rovinita Mica',
+    name: 'Rovinița Mică',
   },
   {
     id: 10212,
@@ -51042,17 +51042,17 @@ export const CITIES = [
   {
     id: 10215,
     countyId: 3,
-    name: 'Rucar',
+    name: 'Rucăr',
   },
   {
     id: 10216,
     countyId: 10,
-    name: 'Rucar',
+    name: 'Rucăr',
   },
   {
     id: 10217,
     countyId: 54,
-    name: 'Rucareni',
+    name: 'Rucăreni',
   },
   {
     id: 10218,
@@ -51082,17 +51082,17 @@ export const CITIES = [
   {
     id: 10223,
     countyId: 3,
-    name: 'Rudeni (Mihaesti)',
+    name: 'Rudeni (Mihăești)',
   },
   {
     id: 10224,
     countyId: 3,
-    name: 'Rudeni (Suici)',
+    name: 'Rudeni (Șuici)',
   },
   {
     id: 10225,
     countyId: 48,
-    name: 'Rudesti',
+    name: 'Rudești',
   },
   {
     id: 10226,
@@ -51112,17 +51112,17 @@ export const CITIES = [
   {
     id: 10229,
     countyId: 31,
-    name: 'Ruganesti',
+    name: 'Rugănești',
   },
   {
     id: 10230,
     countyId: 53,
-    name: 'Rugaria',
+    name: 'Rugăria',
   },
   {
     id: 10231,
     countyId: 21,
-    name: 'Rugasesti',
+    name: 'Rugășești',
   },
   {
     id: 10232,
@@ -51142,12 +51142,12 @@ export const CITIES = [
   {
     id: 10235,
     countyId: 52,
-    name: 'Rugetu (Mihaesti)',
+    name: 'Rugetu (Mihăești)',
   },
   {
     id: 10236,
     countyId: 52,
-    name: 'Rugetu (Slatioara)',
+    name: 'Rugetu (Slătioara)',
   },
   {
     id: 10237,
@@ -51162,12 +51162,12 @@ export const CITIES = [
   {
     id: 10239,
     countyId: 42,
-    name: 'Ruginesti',
+    name: 'Ruginești',
   },
   {
     id: 10240,
     countyId: 54,
-    name: 'Ruginesti',
+    name: 'Ruginești',
   },
   {
     id: 10241,
@@ -51212,12 +51212,12 @@ export const CITIES = [
   {
     id: 10249,
     countyId: 1,
-    name: 'Runc (Ocolis)',
+    name: 'Runc (Ocoliș)',
   },
   {
     id: 10250,
     countyId: 1,
-    name: 'Runc (Scarisoara)',
+    name: 'Runc (Scărișoara)',
   },
   {
     id: 10251,
@@ -51232,7 +51232,7 @@ export const CITIES = [
   {
     id: 10253,
     countyId: 33,
-    name: 'Runcsor',
+    name: 'Runcșor',
   },
   {
     id: 10254,
@@ -51312,7 +51312,7 @@ export const CITIES = [
   {
     id: 10269,
     countyId: 40,
-    name: 'Runcusoru',
+    name: 'Runcușoru',
   },
   {
     id: 10270,
@@ -51342,22 +51342,22 @@ export const CITIES = [
   {
     id: 10275,
     countyId: 43,
-    name: 'Rusanesti',
+    name: 'Rusănești',
   },
   {
     id: 10276,
     countyId: 52,
-    name: 'Rusanesti',
+    name: 'Rusănești',
   },
   {
     id: 10277,
     countyId: 43,
-    name: 'Rusanestii de Sus',
+    name: 'Rusăneștii de Sus',
   },
   {
     id: 10278,
     countyId: 18,
-    name: 'Rusavat',
+    name: 'Rușavăț',
   },
   {
     id: 10279,
@@ -51377,12 +51377,12 @@ export const CITIES = [
   {
     id: 10282,
     countyId: 20,
-    name: 'Rusca Montana',
+    name: 'Rusca Montană',
   },
   {
     id: 10283,
     countyId: 20,
-    name: 'Ruschita',
+    name: 'Rușchița',
   },
   {
     id: 10284,
@@ -51402,12 +51402,12 @@ export const CITIES = [
   {
     id: 10287,
     countyId: 46,
-    name: 'Ruseni',
+    name: 'Rușeni',
   },
   {
     id: 10288,
     countyId: 42,
-    name: 'Ruseni (Borlesti)',
+    name: 'Ruseni (Borlești)',
   },
   {
     id: 10289,
@@ -51427,7 +51427,7 @@ export const CITIES = [
   {
     id: 10292,
     countyId: 5,
-    name: 'Rusenii Razesi',
+    name: 'Rusenii Răzeși',
   },
   {
     id: 10293,
@@ -51437,72 +51437,72 @@ export const CITIES = [
   {
     id: 10294,
     countyId: 33,
-    name: 'Rusesti',
+    name: 'Rusești',
   },
   {
     id: 10295,
     countyId: 1,
-    name: 'Rusesti',
+    name: 'Rusești',
   },
   {
     id: 10296,
     countyId: 18,
-    name: 'Rusetu',
+    name: 'Rușețu',
   },
   {
     id: 10297,
     countyId: 1,
-    name: 'Rusi',
+    name: 'Ruși',
   },
   {
     id: 10298,
     countyId: 47,
-    name: 'Rusi',
+    name: 'Ruși',
   },
   {
     id: 10299,
     countyId: 53,
-    name: 'Rusi',
+    name: 'Ruși',
   },
   {
     id: 10300,
     countyId: 33,
-    name: 'Rusi',
+    name: 'Ruși',
   },
   {
     id: 10301,
     countyId: 48,
-    name: 'Rusi',
+    name: 'Ruși',
   },
   {
     id: 10302,
     countyId: 5,
-    name: 'Rusi-Ciutea',
+    name: 'Ruși-Ciutea',
   },
   {
     id: 10303,
     countyId: 48,
-    name: 'Rusii-Manastioara',
+    name: 'Rușii-Mănăstioara',
   },
   {
     id: 10304,
     countyId: 41,
-    name: 'Rusii-Munti',
+    name: 'Rușii-Munți',
   },
   {
     id: 10305,
     countyId: 33,
-    name: 'Rusor',
+    name: 'Rușor',
   },
   {
     id: 10306,
     countyId: 39,
-    name: 'Rusor',
+    name: 'Rușor',
   },
   {
     id: 10307,
     countyId: 20,
-    name: 'Rusova Noua',
+    name: 'Rusova Nouă',
   },
   {
     id: 10308,
@@ -51512,17 +51512,17 @@ export const CITIES = [
   {
     id: 10309,
     countyId: 20,
-    name: 'Rustin',
+    name: 'Ruștin',
   },
   {
     id: 10310,
     countyId: 7,
-    name: 'Rustior',
+    name: 'Ruștior',
   },
   {
     id: 10311,
     countyId: 7,
-    name: 'Rusu Bargaului',
+    name: 'Rusu Bârgăului',
   },
   {
     id: 10312,
@@ -51542,12 +51542,12 @@ export const CITIES = [
   {
     id: 10315,
     countyId: 42,
-    name: 'Sabaoani',
+    name: 'Săbăoani',
   },
   {
     id: 10316,
     countyId: 29,
-    name: 'Sabareni',
+    name: 'Săbăreni',
   },
   {
     id: 10317,
@@ -51557,22 +51557,22 @@ export const CITIES = [
   {
     id: 10318,
     countyId: 41,
-    name: 'Sabed',
+    name: 'Săbed',
   },
   {
     id: 10319,
     countyId: 24,
-    name: 'Sabiesti',
+    name: 'Săbiești',
   },
   {
     id: 10320,
     countyId: 39,
-    name: 'Sabisa',
+    name: 'Săbișa',
   },
   {
     id: 10321,
     countyId: 6,
-    name: 'Sabolciu',
+    name: 'Săbolciu',
   },
   {
     id: 10322,
@@ -51582,137 +51582,137 @@ export const CITIES = [
   {
     id: 10323,
     countyId: 6,
-    name: 'Sacadat',
+    name: 'Săcădat',
   },
   {
     id: 10324,
     countyId: 41,
-    name: 'Sacadat',
+    name: 'Săcădat',
   },
   {
     id: 10325,
     countyId: 47,
-    name: 'Sacadate',
+    name: 'Săcădate',
   },
   {
     id: 10326,
     countyId: 21,
-    name: 'Sacalaia',
+    name: 'Săcălaia',
   },
   {
     id: 10327,
     countyId: 6,
-    name: 'Sacalasau',
+    name: 'Sacalasău',
   },
   {
     id: 10328,
     countyId: 6,
-    name: 'Sacalasau Nou',
+    name: 'Sacalasău Nou',
   },
   {
     id: 10329,
     countyId: 39,
-    name: 'Sacalaseni',
+    name: 'Săcălășeni',
   },
   {
     id: 10330,
     countyId: 50,
-    name: 'Sacalaz',
+    name: 'Săcălaz',
   },
   {
     id: 10331,
     countyId: 42,
-    name: 'Sacaleni',
+    name: 'Săcăleni',
   },
   {
     id: 10332,
     countyId: 41,
-    name: 'Sacalu de Padure',
+    name: 'Săcalu de Pădure',
   },
   {
     id: 10333,
     countyId: 42,
-    name: 'Sacalusesti',
+    name: 'Săcălușești',
   },
   {
     id: 10334,
     countyId: 33,
-    name: 'Sacamas',
+    name: 'Săcămaș',
   },
   {
     id: 10335,
     countyId: 33,
-    name: 'Sacaramb',
+    name: 'Săcărâmb',
   },
   {
     id: 10336,
     countyId: 41,
-    name: 'Sacareni',
+    name: 'Săcăreni',
   },
   {
     id: 10337,
     countyId: 35,
-    name: 'Sacaresti',
+    name: 'Săcărești',
   },
   {
     id: 10338,
     countyId: 46,
-    name: 'Sacaseni',
+    name: 'Săcășeni',
   },
   {
     id: 10339,
     countyId: 21,
-    name: 'Sacel',
+    name: 'Săcel',
   },
   {
     id: 10340,
     countyId: 31,
-    name: 'Sacel',
+    name: 'Săcel',
   },
   {
     id: 10341,
     countyId: 47,
-    name: 'Sacel',
+    name: 'Săcel',
   },
   {
     id: 10342,
     countyId: 33,
-    name: 'Sacel',
+    name: 'Săcel',
   },
   {
     id: 10343,
     countyId: 39,
-    name: 'Sacel',
+    name: 'Săcel',
   },
   {
     id: 10344,
     countyId: 19,
-    name: 'Sacele',
+    name: 'Săcele',
   },
   {
     id: 10345,
     countyId: 10,
-    name: 'Sacele',
+    name: 'Săcele',
   },
   {
     id: 10346,
     countyId: 22,
-    name: 'Sacele',
+    name: 'Săcele',
   },
   {
     id: 10347,
     countyId: 30,
-    name: 'Sacelu',
+    name: 'Săcelu',
   },
   {
     id: 10348,
     countyId: 49,
-    name: 'Saceni',
+    name: 'Săceni',
   },
   {
     id: 10349,
     countyId: 50,
-    name: 'Saceni',
+    name: 'Săceni',
   },
   {
     id: 10350,
@@ -51722,12 +51722,12 @@ export const CITIES = [
   {
     id: 10351,
     countyId: 50,
-    name: 'Sacosu Mare',
+    name: 'Sacoșu Mare',
   },
   {
     id: 10352,
     countyId: 50,
-    name: 'Sacosu Turcesc',
+    name: 'Sacoșu Turcesc',
   },
   {
     id: 10353,
@@ -51737,27 +51737,27 @@ export const CITIES = [
   {
     id: 10354,
     countyId: 24,
-    name: 'Sacueni',
+    name: 'Săcueni',
   },
   {
     id: 10355,
     countyId: 6,
-    name: 'Sacueni',
+    name: 'Săcueni',
   },
   {
     id: 10356,
     countyId: 21,
-    name: 'Sacuieu',
+    name: 'Săcuieu',
   },
   {
     id: 10357,
     countyId: 48,
-    name: 'Sacuta',
+    name: 'Săcuța',
   },
   {
     id: 10358,
     countyId: 48,
-    name: 'Sadau',
+    name: 'Sadău',
   },
   {
     id: 10359,
@@ -51767,7 +51767,7 @@ export const CITIES = [
   {
     id: 10360,
     countyId: 47,
-    name: 'Sadinca',
+    name: 'Sădinca',
   },
   {
     id: 10361,
@@ -51782,7 +51782,7 @@ export const CITIES = [
   {
     id: 10363,
     countyId: 20,
-    name: 'Sadova Noua',
+    name: 'Sadova Nouă',
   },
   {
     id: 10364,
@@ -51807,32 +51807,32 @@ export const CITIES = [
   {
     id: 10368,
     countyId: 41,
-    name: 'Saes',
+    name: 'Șaeș',
   },
   {
     id: 10369,
     countyId: 36,
-    name: 'Saftica',
+    name: 'Săftica',
   },
   {
     id: 10370,
     countyId: 50,
-    name: 'Sag',
+    name: 'Șag',
   },
   {
     id: 10371,
     countyId: 45,
-    name: 'Sag',
+    name: 'Sâg',
   },
   {
     id: 10372,
     countyId: 1,
-    name: 'Sagagea',
+    name: 'Săgagea',
   },
   {
     id: 10373,
     countyId: 18,
-    name: 'Sageata',
+    name: 'Săgeata',
   },
   {
     id: 10374,
@@ -51842,7 +51842,7 @@ export const CITIES = [
   {
     id: 10375,
     countyId: 2,
-    name: 'Sagu',
+    name: 'Șagu',
   },
   {
     id: 10376,
@@ -51852,12 +51852,12 @@ export const CITIES = [
   {
     id: 10377,
     countyId: 18,
-    name: 'Sahateni',
+    name: 'Săhăteni',
   },
   {
     id: 10378,
     countyId: 46,
-    name: 'Sai',
+    name: 'Sâi',
   },
   {
     id: 10379,
@@ -51867,62 +51867,62 @@ export const CITIES = [
   {
     id: 10380,
     countyId: 6,
-    name: 'Salacea',
+    name: 'Sălacea',
   },
   {
     id: 10381,
     countyId: 35,
-    name: 'Salageni',
+    name: 'Sălăgeni',
   },
   {
     id: 10382,
     countyId: 48,
-    name: 'Salageni',
+    name: 'Sălăgeni',
   },
   {
     id: 10383,
     countyId: 1,
-    name: 'Salagesti',
+    name: 'Sălăgești',
   },
   {
     id: 10384,
     countyId: 45,
-    name: 'Salajeni',
+    name: 'Sălăjeni',
   },
   {
     id: 10385,
     countyId: 2,
-    name: 'Salajeni',
+    name: 'Sălăjeni',
   },
   {
     id: 10386,
     countyId: 41,
-    name: 'Salard',
+    name: 'Sălard',
   },
   {
     id: 10387,
     countyId: 6,
-    name: 'Salard',
+    name: 'Sălard',
   },
   {
     id: 10388,
     countyId: 33,
-    name: 'Salasu de Jos',
+    name: 'Sălașu de Jos',
   },
   {
     id: 10389,
     countyId: 33,
-    name: 'Salasu de Sus',
+    name: 'Sălașu de Sus',
   },
   {
     id: 10390,
     countyId: 41,
-    name: 'Salasuri',
+    name: 'Sălașuri',
   },
   {
     id: 10391,
     countyId: 45,
-    name: 'Salatig',
+    name: 'Sălățig',
   },
   {
     id: 10392,
@@ -51932,47 +51932,47 @@ export const CITIES = [
   {
     id: 10393,
     countyId: 5,
-    name: 'Salatruc',
+    name: 'Sălătruc',
   },
   {
     id: 10394,
     countyId: 33,
-    name: 'Salatruc',
+    name: 'Sălătruc',
   },
   {
     id: 10395,
     countyId: 21,
-    name: 'Salatruc',
+    name: 'Sălătruc',
   },
   {
     id: 10396,
     countyId: 40,
-    name: 'Salatruc',
+    name: 'Sălătruc',
   },
   {
     id: 10397,
     countyId: 52,
-    name: 'Salatrucel',
+    name: 'Sălătrucel',
   },
   {
     id: 10398,
     countyId: 3,
-    name: 'Salatrucu',
+    name: 'Sălătrucu',
   },
   {
     id: 10399,
     countyId: 50,
-    name: 'Salbagel',
+    name: 'Sălbăgel',
   },
   {
     id: 10400,
     countyId: 20,
-    name: 'Salbagelu Nou',
+    name: 'Sălbăgelu Nou',
   },
   {
     id: 10401,
     countyId: 47,
-    name: 'Salcau',
+    name: 'Șalcău',
   },
   {
     id: 10402,
@@ -51982,12 +51982,12 @@ export const CITIES = [
   {
     id: 10403,
     countyId: 51,
-    name: 'Salceni',
+    name: 'Sălceni',
   },
   {
     id: 10404,
     countyId: 53,
-    name: 'Salceni',
+    name: 'Sălceni',
   },
   {
     id: 10405,
@@ -52032,7 +52032,7 @@ export const CITIES = [
   {
     id: 10413,
     countyId: 54,
-    name: 'Salcia Noua',
+    name: 'Salcia Nouă',
   },
   {
     id: 10414,
@@ -52047,117 +52047,117 @@ export const CITIES = [
   {
     id: 10416,
     countyId: 44,
-    name: 'Salciile',
+    name: 'Sălciile',
   },
   {
     id: 10417,
     countyId: 18,
-    name: 'Salcioara',
+    name: 'Sălcioara',
   },
   {
     id: 10418,
     countyId: 24,
-    name: 'Salcioara',
+    name: 'Sălcioara',
   },
   {
     id: 10419,
     countyId: 44,
-    name: 'Salcioara',
+    name: 'Sălcioara',
   },
   {
     id: 10420,
     countyId: 53,
-    name: 'Salcioara',
+    name: 'Sălcioara',
   },
   {
     id: 10421,
     countyId: 19,
-    name: 'Salcioara',
+    name: 'Sălcioara',
   },
   {
     id: 10422,
     countyId: 34,
-    name: 'Salcioara',
+    name: 'Sălcioara',
   },
   {
     id: 10423,
     countyId: 51,
-    name: 'Salcioara',
+    name: 'Sălcioara',
   },
   {
     id: 10424,
     countyId: 24,
-    name: 'Salcioara (Matasaru)',
+    name: 'Sălcioara (Mătăsaru)',
   },
   {
     id: 10425,
     countyId: 1,
-    name: 'Salciua',
+    name: 'Sălciua',
   },
   {
     id: 10426,
     countyId: 1,
-    name: 'Salciua de Jos',
+    name: 'Sălciua de Jos',
   },
   {
     id: 10427,
     countyId: 1,
-    name: 'Salciua de Sus',
+    name: 'Sălciua de Sus',
   },
   {
     id: 10428,
     countyId: 50,
-    name: 'Salciua Noua',
+    name: 'Sălciua Nouă',
   },
   {
     id: 10429,
     countyId: 33,
-    name: 'Salciva',
+    name: 'Sălciva',
   },
   {
     id: 10430,
     countyId: 41,
-    name: 'Salcud',
+    name: 'Sălcud',
   },
   {
     id: 10431,
     countyId: 7,
-    name: 'Salcuta',
+    name: 'Sălcuța',
   },
   {
     id: 10432,
     countyId: 25,
-    name: 'Salcuta',
+    name: 'Sălcuța',
   },
   {
     id: 10433,
     countyId: 24,
-    name: 'Salcuta',
+    name: 'Sălcuța',
   },
   {
     id: 10434,
     countyId: 25,
-    name: 'Salcuta (Calopar)',
+    name: 'Sălcuța (Calopăr)',
   },
   {
     id: 10435,
     countyId: 6,
-    name: 'Saldabagiu de Barcau',
+    name: 'Săldăbagiu de Barcău',
   },
   {
     id: 10436,
     countyId: 6,
-    name: 'Saldabagiu de Munte',
+    name: 'Săldăbagiu de Munte',
   },
   {
     id: 10437,
     countyId: 6,
-    name: 'Saldabagiu Mic',
+    name: 'Săldăbagiu Mic',
   },
   {
     id: 10438,
     countyId: 21,
-    name: 'Salicea',
+    name: 'Sălicea',
   },
   {
     id: 10439,
@@ -52167,97 +52167,97 @@ export const CITIES = [
   {
     id: 10440,
     countyId: 21,
-    name: 'Salisca',
+    name: 'Sălișca',
   },
   {
     id: 10441,
     countyId: 6,
-    name: 'Saliste',
+    name: 'Săliște',
   },
   {
     id: 10442,
     countyId: 25,
-    name: 'Saliste',
+    name: 'Săliște',
   },
   {
     id: 10443,
     countyId: 39,
-    name: 'Saliste',
+    name: 'Săliște',
   },
   {
     id: 10444,
     countyId: 21,
-    name: 'Saliste',
+    name: 'Săliște',
   },
   {
     id: 10445,
     countyId: 33,
-    name: 'Saliste',
+    name: 'Săliște',
   },
   {
     id: 10446,
     countyId: 47,
-    name: 'Saliste',
+    name: 'Săliște',
   },
   {
     id: 10447,
     countyId: 6,
-    name: 'Saliste de Beius',
+    name: 'Săliște de Beiuș',
   },
   {
     id: 10448,
     countyId: 6,
-    name: 'Saliste de Pomezeu',
+    name: 'Saliște de Pomezeu',
   },
   {
     id: 10449,
     countyId: 6,
-    name: 'Saliste de Vascau',
+    name: 'Săliște de Vașcău',
   },
   {
     id: 10450,
     countyId: 3,
-    name: 'Salistea',
+    name: 'Săliștea',
   },
   {
     id: 10451,
     countyId: 1,
-    name: 'Salistea',
+    name: 'Săliștea',
   },
   {
     id: 10452,
     countyId: 52,
-    name: 'Salistea',
+    name: 'Săliștea',
   },
   {
     id: 10453,
     countyId: 39,
-    name: 'Salistea de Sus',
+    name: 'Săliștea de Sus',
   },
   {
     id: 10454,
     countyId: 21,
-    name: 'Salistea Noua',
+    name: 'Săliștea Nouă',
   },
   {
     id: 10455,
     countyId: 21,
-    name: 'Salistea Veche',
+    name: 'Săliștea Veche',
   },
   {
     id: 10456,
     countyId: 1,
-    name: 'Salistea-Deal',
+    name: 'Săliștea-Deal',
   },
   {
     id: 10457,
     countyId: 33,
-    name: 'Salistioara',
+    name: 'Săliștioara',
   },
   {
     id: 10458,
     countyId: 39,
-    name: 'Salnita',
+    name: 'Sălnița',
   },
   {
     id: 10459,
@@ -52267,12 +52267,12 @@ export const CITIES = [
   {
     id: 10460,
     countyId: 39,
-    name: 'Salsig',
+    name: 'Sălsig',
   },
   {
     id: 10461,
     countyId: 43,
-    name: 'Saltanesti',
+    name: 'Săltănești',
   },
   {
     id: 10462,
@@ -52282,87 +52282,87 @@ export const CITIES = [
   {
     id: 10463,
     countyId: 3,
-    name: 'Samaila',
+    name: 'Sămăila',
   },
   {
     id: 10464,
     countyId: 3,
-    name: 'Samara',
+    name: 'Sămara',
   },
   {
     id: 10465,
     countyId: 30,
-    name: 'Samarinesti',
+    name: 'Samarinești',
   },
   {
     id: 10466,
     countyId: 6,
-    name: 'Sambata',
+    name: 'Sâmbăta',
   },
   {
     id: 10467,
     countyId: 10,
-    name: 'Sambata de Jos',
+    name: 'Sâmbăta de Jos',
   },
   {
     id: 10468,
     countyId: 10,
-    name: 'Sambata de Sus',
+    name: 'Sâmbăta de Sus',
   },
   {
     id: 10469,
     countyId: 51,
-    name: 'Sambata Noua',
+    name: 'Sâmbăta Nouă',
   },
   {
     id: 10470,
     countyId: 2,
-    name: 'Sambateni',
+    name: 'Sâmbăteni',
   },
   {
     id: 10471,
     countyId: 21,
-    name: 'Samboieni',
+    name: 'Sâmboieni',
   },
   {
     id: 10472,
     countyId: 21,
-    name: 'Samboleni',
+    name: 'Sâmboleni',
   },
   {
     id: 10473,
     countyId: 30,
-    name: 'Sambotin',
+    name: 'Sâmbotin',
   },
   {
     id: 10474,
     countyId: 41,
-    name: 'Sambrias',
+    name: 'Sâmbriaș',
   },
   {
     id: 10475,
     countyId: 43,
-    name: 'Samburesti',
+    name: 'Sâmburești',
   },
   {
     id: 10476,
     countyId: 45,
-    name: 'Samsud',
+    name: 'Șamșud',
   },
   {
     id: 10477,
     countyId: 24,
-    name: 'Samurcasi',
+    name: 'Samurcași',
   },
   {
     id: 10478,
     countyId: 50,
-    name: 'Sanandrei',
+    name: 'Sânandrei',
   },
   {
     id: 10479,
     countyId: 30,
-    name: 'Sanatesti',
+    name: 'Sănătești',
   },
   {
     id: 10480,
@@ -52372,397 +52372,397 @@ export const CITIES = [
   {
     id: 10481,
     countyId: 1,
-    name: 'Sanbenedic',
+    name: 'Sânbenedic',
   },
   {
     id: 10482,
     countyId: 52,
-    name: 'Sanbotin',
+    name: 'Sânbotin',
   },
   {
     id: 10483,
     countyId: 1,
-    name: 'Sancel',
+    name: 'Sâncel',
   },
   {
     id: 10484,
     countyId: 31,
-    name: 'Sancel',
+    name: 'Sâncel',
   },
   {
     id: 10485,
     countyId: 1,
-    name: 'Sancrai',
+    name: 'Sâncrai',
   },
   {
     id: 10486,
     countyId: 31,
-    name: 'Sancrai',
+    name: 'Sâncrai',
   },
   {
     id: 10487,
     countyId: 33,
-    name: 'Sancrai',
+    name: 'Sâncrai',
   },
   {
     id: 10488,
     countyId: 31,
-    name: 'Sancraieni',
+    name: 'Sâncrăieni',
   },
   {
     id: 10489,
     countyId: 21,
-    name: 'Sancraiu',
+    name: 'Sâncraiu',
   },
   {
     id: 10490,
     countyId: 23,
-    name: 'Sancraiu',
+    name: 'Sâncraiu',
   },
   {
     id: 10491,
     countyId: 45,
-    name: 'Sancraiu Almasului',
+    name: 'Sâncraiu Almașului',
   },
   {
     id: 10492,
     countyId: 41,
-    name: 'Sancraiu de Mures',
+    name: 'Sâncraiu de Mureș',
   },
   {
     id: 10493,
     countyId: 45,
-    name: 'Sancraiu Silvaniei',
+    name: 'Sâncraiu Silvaniei',
   },
   {
     id: 10494,
     countyId: 31,
-    name: 'Sandominic',
+    name: 'Sândominic',
   },
   {
     id: 10495,
     countyId: 46,
-    name: 'Sandra',
+    name: 'Șandra',
   },
   {
     id: 10496,
     countyId: 50,
-    name: 'Sandra',
+    name: 'Șandra',
   },
   {
     id: 10497,
     countyId: 41,
-    name: 'Sandru',
+    name: 'Șandru',
   },
   {
     id: 10498,
     countyId: 5,
-    name: 'Sanduleni',
+    name: 'Sănduleni',
   },
   {
     id: 10499,
     countyId: 3,
-    name: 'Sandulesti',
+    name: 'Săndulești',
   },
   {
     id: 10500,
     countyId: 21,
-    name: 'Sandulesti',
+    name: 'Săndulești',
   },
   {
     id: 10501,
     countyId: 19,
-    name: 'Sandulita',
+    name: 'Săndulița',
   },
   {
     id: 10502,
     countyId: 47,
-    name: 'Sangatin',
+    name: 'Sângătin',
   },
   {
     id: 10503,
     countyId: 50,
-    name: 'Sangeorge',
+    name: 'Sângeorge',
   },
   {
     id: 10504,
     countyId: 41,
-    name: 'Sangeorgiu de Campie',
+    name: 'Sângeorgiu de Câmpie',
   },
   {
     id: 10505,
     countyId: 45,
-    name: 'Sangeorgiu de Meses',
+    name: 'Sângeorgiu de Meseș',
   },
   {
     id: 10506,
     countyId: 41,
-    name: 'Sangeorgiu de Mures',
+    name: 'Sângeorgiu de Mureș',
   },
   {
     id: 10507,
     countyId: 41,
-    name: 'Sangeorgiu de Padure',
+    name: 'Sângeorgiu de Pădure',
   },
   {
     id: 10508,
     countyId: 7,
-    name: 'Sangeorz-Bai',
+    name: 'Sângeorz-Băi',
   },
   {
     id: 10509,
     countyId: 7,
-    name: 'Sangeorzu Nou',
+    name: 'Sângeorzu Nou',
   },
   {
     id: 10510,
     countyId: 41,
-    name: 'Sanger',
+    name: 'Sânger',
   },
   {
     id: 10511,
     countyId: 35,
-    name: 'Sangeri',
+    name: 'Sângeri',
   },
   {
     id: 10512,
     countyId: 44,
-    name: 'Sangeru',
+    name: 'Sângeru',
   },
   {
     id: 10513,
     countyId: 41,
-    name: 'Sangeru de Padure',
+    name: 'Sângeru de Pădure',
   },
   {
     id: 10514,
     countyId: 41,
-    name: 'Saniacob',
+    name: 'Sâniacob',
   },
   {
     id: 10515,
     countyId: 7,
-    name: 'Saniacob',
+    name: 'Sâniacob',
   },
   {
     id: 10516,
     countyId: 6,
-    name: 'Saniob',
+    name: 'Sâniob',
   },
   {
     id: 10517,
     countyId: 46,
-    name: 'Sanislau',
+    name: 'Sanislău',
   },
   {
     id: 10518,
     countyId: 41,
-    name: 'Sanisor',
+    name: 'Sânișor',
   },
   {
     id: 10519,
     countyId: 6,
-    name: 'Sanlazar',
+    name: 'Sânlazăr',
   },
   {
     id: 10520,
     countyId: 2,
-    name: 'Sanleani',
+    name: 'Sânleani',
   },
   {
     id: 10521,
     countyId: 21,
-    name: 'Sanmarghita',
+    name: 'Sânmărghita',
   },
   {
     id: 10522,
     countyId: 41,
-    name: 'Sanmarghita',
+    name: 'Sânmărghita',
   },
   {
     id: 10523,
     countyId: 2,
-    name: 'Sanmartin',
+    name: 'Sânmartin',
   },
   {
     id: 10524,
     countyId: 21,
-    name: 'Sanmartin',
+    name: 'Sânmărtin',
   },
   {
     id: 10525,
     countyId: 21,
-    name: 'Sanmartin',
+    name: 'Sânmărtin',
   },
   {
     id: 10526,
     countyId: 6,
-    name: 'Sanmartin',
+    name: 'Sânmartin',
   },
   {
     id: 10527,
     countyId: 31,
-    name: 'Sanmartin',
+    name: 'Sânmartin',
   },
   {
     id: 10528,
     countyId: 6,
-    name: 'Sanmartin de Beius',
+    name: 'Sânmartin de Beiuș',
   },
   {
     id: 10529,
     countyId: 41,
-    name: 'Sanmartinu de Campie',
+    name: 'Sânmărtinu de Câmpie',
   },
   {
     id: 10530,
     countyId: 50,
-    name: 'Sanmartinu Maghiar',
+    name: 'Sânmartinu Maghiar',
   },
   {
     id: 10531,
     countyId: 50,
-    name: 'Sanmartinu Sarbesc',
+    name: 'Sânmartinu Sârbesc',
   },
   {
     id: 10532,
     countyId: 46,
-    name: 'Sanmiclaus',
+    name: 'Sânmiclăuș',
   },
   {
     id: 10533,
     countyId: 1,
-    name: 'Sanmiclaus',
+    name: 'Sânmiclăuș',
   },
   {
     id: 10534,
     countyId: 41,
-    name: 'Sanmihai de Padure',
+    name: 'Sânmihai de Pădure',
   },
   {
     id: 10535,
     countyId: 45,
-    name: 'Sanmihaiu Almasului',
+    name: 'Sânmihaiu Almașului',
   },
   {
     id: 10536,
     countyId: 7,
-    name: 'Sanmihaiu de Campie',
+    name: 'Sânmihaiu de Câmpie',
   },
   {
     id: 10537,
     countyId: 50,
-    name: 'Sanmihaiu German',
+    name: 'Sânmihaiu German',
   },
   {
     id: 10538,
     countyId: 50,
-    name: 'Sanmihaiu Roman',
+    name: 'Sânmihaiu Român',
   },
   {
     id: 10539,
     countyId: 7,
-    name: 'Sannicoara',
+    name: 'Sânnicoară',
   },
   {
     id: 10540,
     countyId: 21,
-    name: 'Sannicoara',
+    name: 'Sânnicoară',
   },
   {
     id: 10541,
     countyId: 6,
-    name: 'Sannicolau de Beius',
+    name: 'Sânnicolau de Beiuș',
   },
   {
     id: 10542,
     countyId: 6,
-    name: 'Sannicolau de Munte',
+    name: 'Sânnicolau de Munte',
   },
   {
     id: 10543,
     countyId: 50,
-    name: 'Sannicolau Mare',
+    name: 'Sânnicolau Mare',
   },
   {
     id: 10544,
     countyId: 6,
-    name: 'Sannicolau Roman',
+    name: 'Sânnicolau Român',
   },
   {
     id: 10545,
     countyId: 50,
-    name: 'Sanovita',
+    name: 'Șanovița',
   },
   {
     id: 10546,
     countyId: 21,
-    name: 'Sanpaul',
+    name: 'Sânpaul',
   },
   {
     id: 10547,
     countyId: 41,
-    name: 'Sanpaul',
+    name: 'Sânpaul',
   },
   {
     id: 10548,
     countyId: 2,
-    name: 'Sanpaul',
+    name: 'Sânpaul',
   },
   {
     id: 10549,
     countyId: 31,
-    name: 'Sanpaul',
+    name: 'Sânpaul',
   },
   {
     id: 10550,
     countyId: 33,
-    name: 'Sanpetru',
+    name: 'Sânpetru',
   },
   {
     id: 10551,
     countyId: 10,
-    name: 'Sanpetru',
+    name: 'Sânpetru',
   },
   {
     id: 10552,
     countyId: 45,
-    name: 'Sanpetru Almasului',
+    name: 'Sânpetru Almașului',
   },
   {
     id: 10553,
     countyId: 41,
-    name: 'Sanpetru de Campie',
+    name: 'Sânpetru de Câmpie',
   },
   {
     id: 10554,
     countyId: 2,
-    name: 'Sanpetru German',
+    name: 'Sânpetru German',
   },
   {
     id: 10555,
     countyId: 50,
-    name: 'Sanpetru Mare',
+    name: 'Sânpetru Mare',
   },
   {
     id: 10556,
     countyId: 50,
-    name: 'Sanpetru Mic',
+    name: 'Sânpetru Mic',
   },
   {
     id: 10557,
     countyId: 31,
-    name: 'Sansimion',
+    name: 'Sânsimion',
   },
   {
     id: 10558,
     countyId: 41,
-    name: 'Sansimion',
+    name: 'Sânsimion',
   },
   {
     id: 10559,
     countyId: 7,
-    name: 'Sant',
+    name: 'Șanț',
   },
   {
     id: 10560,
@@ -52772,192 +52772,192 @@ export const CITIES = [
   {
     id: 10561,
     countyId: 45,
-    name: 'Santa Maria',
+    name: 'Sântă Măria',
   },
   {
     id: 10562,
     countyId: 33,
-    name: 'Santamaria de Piatra',
+    name: 'Sântămăria de Piatră',
   },
   {
     id: 10563,
     countyId: 33,
-    name: 'Santamaria-Orlea',
+    name: 'Sântămăria-Orlea',
   },
   {
     id: 10564,
     countyId: 1,
-    name: 'Santamarie',
+    name: 'Sântămărie',
   },
   {
     id: 10565,
     countyId: 2,
-    name: 'Santana',
+    name: 'Sântana',
   },
   {
     id: 10566,
     countyId: 41,
-    name: 'Santana de Mures',
+    name: 'Sântana de Mureș',
   },
   {
     id: 10567,
     countyId: 6,
-    name: 'Santandrei',
+    name: 'Sântandrei',
   },
   {
     id: 10568,
     countyId: 33,
-    name: 'Santandrei',
+    name: 'Sântandrei',
   },
   {
     id: 10569,
     countyId: 46,
-    name: 'Santau',
+    name: 'Santău',
   },
   {
     id: 10570,
     countyId: 6,
-    name: 'Santaul Mare',
+    name: 'Santăul Mare',
   },
   {
     id: 10571,
     countyId: 6,
-    name: 'Santaul Mic',
+    name: 'Santăul Mic',
   },
   {
     id: 10572,
     countyId: 21,
-    name: 'Santejude',
+    name: 'Sântejude',
   },
   {
     id: 10573,
     countyId: 21,
-    name: 'Santejude-Vale',
+    name: 'Sântejude-Vale',
   },
   {
     id: 10574,
     countyId: 6,
-    name: 'Santelec',
+    name: 'Sântelec',
   },
   {
     id: 10575,
     countyId: 1,
-    name: 'Santimbru',
+    name: 'Sântimbru',
   },
   {
     id: 10576,
     countyId: 31,
-    name: 'Santimbru',
+    name: 'Sântimbru',
   },
   {
     id: 10577,
     countyId: 31,
-    name: 'Santimbru-Bai',
+    name: 'Sântimbru-Băi',
   },
   {
     id: 10578,
     countyId: 6,
-    name: 'Santimreu',
+    name: 'Sântimreu',
   },
   {
     id: 10579,
     countyId: 7,
-    name: 'Santioana',
+    name: 'Sântioana',
   },
   {
     id: 10580,
     countyId: 41,
-    name: 'Santioana',
+    name: 'Sântioana',
   },
   {
     id: 10581,
     countyId: 21,
-    name: 'Santioana',
+    name: 'Sântioana',
   },
   {
     id: 10582,
     countyId: 41,
-    name: 'Santioana de Mures',
+    name: 'Sântioana de Mureș',
   },
   {
     id: 10583,
     countyId: 6,
-    name: 'Santion',
+    name: 'Sântion',
   },
   {
     id: 10584,
     countyId: 23,
-    name: 'Santionlunca',
+    name: 'Sântionlunca',
   },
   {
     id: 10585,
     countyId: 41,
-    name: 'Santu',
+    name: 'Sântu',
   },
   {
     id: 10586,
     countyId: 36,
-    name: 'Santu-Floresti',
+    name: 'Șanțu-Florești',
   },
   {
     id: 10587,
     countyId: 33,
-    name: 'Santuhalm',
+    name: 'Sântuhalm',
   },
   {
     id: 10588,
     countyId: 23,
-    name: 'Sanzieni',
+    name: 'Sânzieni',
   },
   {
     id: 10589,
     countyId: 39,
-    name: 'Sapanta',
+    name: 'Săpânța',
   },
   {
     id: 10590,
     countyId: 41,
-    name: 'Sapartoc',
+    name: 'Șapartoc',
   },
   {
     id: 10591,
     countyId: 3,
-    name: 'Sapata',
+    name: 'Săpata',
   },
   {
     id: 10592,
     countyId: 25,
-    name: 'Sapata',
+    name: 'Săpata',
   },
   {
     id: 10593,
     countyId: 18,
-    name: 'Sapoca',
+    name: 'Săpoca',
   },
   {
     id: 10594,
     countyId: 19,
-    name: 'Sapunari',
+    name: 'Săpunari',
   },
   {
     id: 10595,
     countyId: 3,
-    name: 'Sapunari',
+    name: 'Săpunari',
   },
   {
     id: 10596,
     countyId: 1,
-    name: 'Saracsau',
+    name: 'Sărăcsău',
   },
   {
     id: 10597,
     countyId: 21,
-    name: 'Saradis',
+    name: 'Sărădiș',
   },
   {
     id: 10598,
     countyId: 8,
-    name: 'Sarafinesti',
+    name: 'Sarafinești',
   },
   {
     id: 10599,
@@ -52967,27 +52967,27 @@ export const CITIES = [
   {
     id: 10600,
     countyId: 23,
-    name: 'Saramas',
+    name: 'Sărămăș',
   },
   {
     id: 10601,
     countyId: 6,
-    name: 'Sarand',
+    name: 'Sărand',
   },
   {
     id: 10602,
     countyId: 18,
-    name: 'Saranga',
+    name: 'Șarânga',
   },
   {
     id: 10603,
     countyId: 44,
-    name: 'Sarari',
+    name: 'Sărari',
   },
   {
     id: 10604,
     countyId: 39,
-    name: 'Sarasau',
+    name: 'Sarasău',
   },
   {
     id: 10605,
@@ -53002,32 +53002,32 @@ export const CITIES = [
   {
     id: 10607,
     countyId: 21,
-    name: 'Sarata',
+    name: 'Sărata',
   },
   {
     id: 10608,
     countyId: 42,
-    name: 'Sarata',
+    name: 'Sărata',
   },
   {
     id: 10609,
     countyId: 7,
-    name: 'Sarata',
+    name: 'Sărata',
   },
   {
     id: 10610,
     countyId: 18,
-    name: 'Sarata',
+    name: 'Sărata',
   },
   {
     id: 10611,
     countyId: 25,
-    name: 'Sarata',
+    name: 'Sărata',
   },
   {
     id: 10612,
     countyId: 47,
-    name: 'Sarata',
+    name: 'Sărata',
   },
   {
     id: 10613,
@@ -53037,7 +53037,7 @@ export const CITIES = [
   {
     id: 10614,
     countyId: 5,
-    name: 'Sarata (Solont)',
+    name: 'Sărata (Solonț)',
   },
   {
     id: 10615,
@@ -53047,52 +53047,52 @@ export const CITIES = [
   {
     id: 10616,
     countyId: 8,
-    name: 'Sarata-Draguseni',
+    name: 'Sarata-Drăgușeni',
   },
   {
     id: 10617,
     countyId: 18,
-    name: 'Sarata-Monteoru',
+    name: 'Sărata-Monteoru',
   },
   {
     id: 10618,
     countyId: 44,
-    name: 'Saratel',
+    name: 'Sărățel',
   },
   {
     id: 10619,
     countyId: 7,
-    name: 'Saratel',
+    name: 'Sărățel',
   },
   {
     id: 10620,
     countyId: 41,
-    name: 'Sarateni',
+    name: 'Sărățeni',
   },
   {
     id: 10621,
     countyId: 34,
-    name: 'Sarateni',
+    name: 'Sărățeni',
   },
   {
     id: 10622,
     countyId: 53,
-    name: 'Sarateni',
+    name: 'Sărățeni',
   },
   {
     id: 10623,
     countyId: 53,
-    name: 'Saratu',
+    name: 'Săratu',
   },
   {
     id: 10624,
     countyId: 46,
-    name: 'Saratura',
+    name: 'Sărătura',
   },
   {
     id: 10625,
     countyId: 46,
-    name: 'Sarauad',
+    name: 'Sărăuad',
   },
   {
     id: 10626,
@@ -53102,152 +53102,152 @@ export const CITIES = [
   {
     id: 10627,
     countyId: 50,
-    name: 'Sarazani',
+    name: 'Sărăzani',
   },
   {
     id: 10628,
     countyId: 25,
-    name: 'Sarbatoarea',
+    name: 'Sărbătoarea',
   },
   {
     id: 10629,
     countyId: 49,
-    name: 'Sarbeni',
+    name: 'Sârbeni',
   },
   {
     id: 10630,
     countyId: 49,
-    name: 'Sarbenii de Jos',
+    name: 'Sârbenii de Jos',
   },
   {
     id: 10631,
     countyId: 6,
-    name: 'Sarbesti',
+    name: 'Sârbești',
   },
   {
     id: 10632,
     countyId: 30,
-    name: 'Sarbesti',
+    name: 'Sârbești',
   },
   {
     id: 10633,
     countyId: 18,
-    name: 'Sarbesti',
+    name: 'Sârbești',
   },
   {
     id: 10634,
     countyId: 5,
-    name: 'Sarbi',
+    name: 'Sârbi',
   },
   {
     id: 10635,
     countyId: 8,
-    name: 'Sarbi',
+    name: 'Sârbi',
   },
   {
     id: 10636,
     countyId: 33,
-    name: 'Sarbi',
+    name: 'Sârbi',
   },
   {
     id: 10637,
     countyId: 52,
-    name: 'Sarbi',
+    name: 'Sârbi',
   },
   {
     id: 10638,
     countyId: 53,
-    name: 'Sarbi',
+    name: 'Sârbi',
   },
   {
     id: 10639,
     countyId: 2,
-    name: 'Sarbi',
+    name: 'Sârbi',
   },
   {
     id: 10640,
     countyId: 6,
-    name: 'Sarbi',
+    name: 'Sârbi',
   },
   {
     id: 10641,
     countyId: 28,
-    name: 'Sarbi',
+    name: 'Sârbi',
   },
   {
     id: 10642,
     countyId: 45,
-    name: 'Sarbi',
+    name: 'Sârbi',
   },
   {
     id: 10643,
     countyId: 54,
-    name: 'Sarbi',
+    name: 'Sârbi',
   },
   {
     id: 10644,
     countyId: 39,
-    name: 'Sarbi (Budesti)',
+    name: 'Sârbi (Budești)',
   },
   {
     id: 10645,
     countyId: 39,
-    name: 'Sarbi (Farcasa)',
+    name: 'Sârbi (Fărcașa)',
   },
   {
     id: 10646,
     countyId: 50,
-    name: 'Sarbova',
+    name: 'Sârbova',
   },
   {
     id: 10647,
     countyId: 35,
-    name: 'Sarca',
+    name: 'Sârca',
   },
   {
     id: 10648,
     countyId: 44,
-    name: 'Sarca',
+    name: 'Sârca',
   },
   {
     id: 10649,
     countyId: 6,
-    name: 'Sarcau',
+    name: 'Sarcău',
   },
   {
     id: 10650,
     countyId: 1,
-    name: 'Sard',
+    name: 'Șard',
   },
   {
     id: 10651,
     countyId: 30,
-    name: 'Sardanesti',
+    name: 'Sărdănești',
   },
   {
     id: 10652,
     countyId: 40,
-    name: 'Sardanesti',
+    name: 'Sărdănești',
   },
   {
     id: 10653,
     countyId: 21,
-    name: 'Sardu',
+    name: 'Șardu',
   },
   {
     id: 10654,
     countyId: 41,
-    name: 'Sardu Nirajului',
+    name: 'Șardu Nirajului',
   },
   {
     id: 10655,
     countyId: 18,
-    name: 'Sareni',
+    name: 'Săreni',
   },
   {
     id: 10656,
     countyId: 48,
-    name: 'Sarghiesti',
+    name: 'Sârghiești',
   },
   {
     id: 10657,
@@ -53262,12 +53262,12 @@ export const CITIES = [
   {
     id: 10659,
     countyId: 18,
-    name: 'Sarile',
+    name: 'Sările',
   },
   {
     id: 10660,
     countyId: 18,
-    name: 'Sarile-Catun',
+    name: 'Sările-Cătun',
   },
   {
     id: 10661,
@@ -53277,32 +53277,32 @@ export const CITIES = [
   {
     id: 10662,
     countyId: 48,
-    name: 'Sarisor',
+    name: 'Sărișor',
   },
   {
     id: 10663,
     countyId: 48,
-    name: 'Sarisoru Mare',
+    name: 'Sărișoru Mare',
   },
   {
     id: 10664,
     countyId: 31,
-    name: 'Sarmas',
+    name: 'Sărmaș',
   },
   {
     id: 10665,
     countyId: 45,
-    name: 'Sarmasag',
+    name: 'Șărmășag',
   },
   {
     id: 10666,
     countyId: 41,
-    name: 'Sarmasel',
+    name: 'Sărmășel',
   },
   {
     id: 10667,
     countyId: 41,
-    name: 'Sarmasel-Gara',
+    name: 'Sărmășel-Gară',
   },
   {
     id: 10668,
@@ -53317,27 +53317,27 @@ export const CITIES = [
   {
     id: 10670,
     countyId: 47,
-    name: 'Saros pe Tarnave',
+    name: 'Șaroș pe Târnave',
   },
   {
     id: 10671,
     countyId: 52,
-    name: 'Sarsanesti',
+    name: 'Sărsănești',
   },
   {
     id: 10672,
     countyId: 25,
-    name: 'Sarsca',
+    name: 'Sârsca',
   },
   {
     id: 10673,
     countyId: 6,
-    name: 'Sarsig',
+    name: 'Sărsig',
   },
   {
     id: 10674,
     countyId: 1,
-    name: 'Sartas',
+    name: 'Sartăș',
   },
   {
     id: 10675,
@@ -53347,67 +53347,67 @@ export const CITIES = [
   {
     id: 10676,
     countyId: 48,
-    name: 'Saru Bucovinei',
+    name: 'Șaru Bucovinei',
   },
   {
     id: 10677,
     countyId: 48,
-    name: 'Saru Dornei',
+    name: 'Șaru Dornei',
   },
   {
     id: 10678,
     countyId: 19,
-    name: 'Sarulesti',
+    name: 'Sărulești',
   },
   {
     id: 10679,
     countyId: 18,
-    name: 'Sarulesti',
+    name: 'Sărulești',
   },
   {
     id: 10680,
     countyId: 52,
-    name: 'Sarulesti',
+    name: 'Sărulești',
   },
   {
     id: 10681,
     countyId: 19,
-    name: 'Sarulesti-Gara',
+    name: 'Sărulești-Gară',
   },
   {
     id: 10682,
     countyId: 46,
-    name: 'Sarvazel',
+    name: 'Sărvăzel',
   },
   {
     id: 10683,
     countyId: 1,
-    name: 'Sasa',
+    name: 'Șasa',
   },
   {
     id: 10684,
     countyId: 45,
-    name: 'Sasa',
+    name: 'Șasa',
   },
   {
     id: 10685,
     countyId: 30,
-    name: 'Sasa',
+    name: 'Șasa',
   },
   {
     id: 10686,
     countyId: 39,
-    name: 'Sasar',
+    name: 'Săsar',
   },
   {
     id: 10687,
     countyId: 7,
-    name: 'Sasarm',
+    name: 'Săsarm',
   },
   {
     id: 10688,
     countyId: 47,
-    name: 'Sasaus',
+    name: 'Săsăuș',
   },
   {
     id: 10689,
@@ -53417,22 +53417,22 @@ export const CITIES = [
   {
     id: 10690,
     countyId: 48,
-    name: 'Sasca Mica',
+    name: 'Sasca Mică',
   },
   {
     id: 10691,
     countyId: 20,
-    name: 'Sasca Montana',
+    name: 'Sasca Montană',
   },
   {
     id: 10692,
     countyId: 48,
-    name: 'Sasca Noua',
+    name: 'Sasca Nouă',
   },
   {
     id: 10693,
     countyId: 20,
-    name: 'Sasca Romana',
+    name: 'Sasca Română',
   },
   {
     id: 10694,
@@ -53442,17 +53442,17 @@ export const CITIES = [
   {
     id: 10695,
     countyId: 52,
-    name: 'Sascioara',
+    name: 'Sășcioara',
   },
   {
     id: 10696,
     countyId: 10,
-    name: 'Sasciori',
+    name: 'Săsciori',
   },
   {
     id: 10697,
     countyId: 1,
-    name: 'Sasciori',
+    name: 'Săsciori',
   },
   {
     id: 10698,
@@ -53467,22 +53467,22 @@ export const CITIES = [
   {
     id: 10700,
     countyId: 28,
-    name: 'Saseni',
+    name: 'Săseni',
   },
   {
     id: 10701,
     countyId: 18,
-    name: 'Sasenii Noi',
+    name: 'Săsenii Noi',
   },
   {
     id: 10702,
     countyId: 18,
-    name: 'Sasenii pe Vale',
+    name: 'Săsenii pe Vale',
   },
   {
     id: 10703,
     countyId: 18,
-    name: 'Sasenii Vechi',
+    name: 'Săsenii Vechi',
   },
   {
     id: 10704,
@@ -53492,12 +53492,12 @@ export const CITIES = [
   {
     id: 10705,
     countyId: 31,
-    name: 'Sasveres',
+    name: 'Șașvereș',
   },
   {
     id: 10706,
     countyId: 20,
-    name: 'Sat Batran',
+    name: 'Sat Bătrân',
   },
   {
     id: 10707,
@@ -53507,7 +53507,7 @@ export const CITIES = [
   {
     id: 10708,
     countyId: 39,
-    name: 'Sat-Sugatag',
+    name: 'Sat-Șugatag',
   },
   {
     id: 10709,
@@ -53517,17 +53517,17 @@ export const CITIES = [
   {
     id: 10710,
     countyId: 24,
-    name: 'Sateni',
+    name: 'Săteni',
   },
   {
     id: 10711,
     countyId: 3,
-    name: 'Satic',
+    name: 'Sătic',
   },
   {
     id: 10712,
     countyId: 46,
-    name: 'Satmarel',
+    name: 'Sătmărel',
   },
   {
     id: 10713,
@@ -53537,7 +53537,7 @@ export const CITIES = [
   {
     id: 10714,
     countyId: 6,
-    name: 'Satu Barba',
+    name: 'Satu Barbă',
   },
   {
     id: 10715,
@@ -53672,7 +53672,7 @@ export const CITIES = [
   {
     id: 10741,
     countyId: 35,
-    name: 'Satu Nou (Belcesti)',
+    name: 'Satu Nou (Belcești)',
   },
   {
     id: 10742,
@@ -53682,17 +53682,17 @@ export const CITIES = [
   {
     id: 10743,
     countyId: 54,
-    name: 'Satu Nou (Ciorasti)',
+    name: 'Satu Nou (Ciorăști)',
   },
   {
     id: 10744,
     countyId: 5,
-    name: 'Satu Nou (Colonesti)',
+    name: 'Satu Nou (Colonești)',
   },
   {
     id: 10745,
     countyId: 53,
-    name: 'Satu Nou (Cretesti)',
+    name: 'Satu Nou (Crețești)',
   },
   {
     id: 10746,
@@ -53702,17 +53702,17 @@ export const CITIES = [
   {
     id: 10747,
     countyId: 18,
-    name: 'Satu Nou (Glodeanu-Silistea)',
+    name: 'Satu Nou (Glodeanu-Siliștea)',
   },
   {
     id: 10748,
     countyId: 43,
-    name: 'Satu Nou (Gradinari)',
+    name: 'Satu Nou (Grădinari)',
   },
   {
     id: 10749,
     countyId: 44,
-    name: 'Satu Nou (Lipanesti)',
+    name: 'Satu Nou (Lipănești)',
   },
   {
     id: 10750,
@@ -53722,12 +53722,12 @@ export const CITIES = [
   {
     id: 10751,
     countyId: 18,
-    name: 'Satu Nou (Mihailesti)',
+    name: 'Satu Nou (Mihăilești)',
   },
   {
     id: 10752,
     countyId: 22,
-    name: 'Satu Nou (Mircea Voda)',
+    name: 'Satu Nou (Mircea Vodă)',
   },
   {
     id: 10753,
@@ -53742,7 +53742,7 @@ export const CITIES = [
   {
     id: 10755,
     countyId: 5,
-    name: 'Satu Nou (Oncesti)',
+    name: 'Satu Nou (Oncești)',
   },
   {
     id: 10756,
@@ -53757,7 +53757,7 @@ export const CITIES = [
   {
     id: 10758,
     countyId: 5,
-    name: 'Satu Nou (Pargaresti)',
+    name: 'Satu Nou (Pârgărești)',
   },
   {
     id: 10759,
@@ -53767,12 +53767,12 @@ export const CITIES = [
   {
     id: 10760,
     countyId: 41,
-    name: 'Satu Nou (Sanpetru de Campie)',
+    name: 'Satu Nou (Sânpetru de Câmpie)',
   },
   {
     id: 10761,
     countyId: 35,
-    name: 'Satu Nou (Scheia)',
+    name: 'Satu Nou (Șcheia)',
   },
   {
     id: 10762,
@@ -53787,12 +53787,12 @@ export const CITIES = [
   {
     id: 10764,
     countyId: 35,
-    name: 'Satu Nou (Siretel)',
+    name: 'Satu Nou (Sirețel)',
   },
   {
     id: 10765,
     countyId: 53,
-    name: 'Satu Nou (Solesti)',
+    name: 'Satu Nou (Solești)',
   },
   {
     id: 10766,
@@ -53807,7 +53807,7 @@ export const CITIES = [
   {
     id: 10768,
     countyId: 5,
-    name: 'Satu Nou (Urechesti)',
+    name: 'Satu Nou (Urechești)',
   },
   {
     id: 10769,
@@ -53832,22 +53832,22 @@ export const CITIES = [
   {
     id: 10773,
     countyId: 9,
-    name: 'Satuc',
+    name: 'Sătuc',
   },
   {
     id: 10774,
     countyId: 18,
-    name: 'Satuc',
+    name: 'Sătuc',
   },
   {
     id: 10775,
     countyId: 19,
-    name: 'Satucu',
+    name: 'Sătucu',
   },
   {
     id: 10776,
     countyId: 44,
-    name: 'Satucu',
+    name: 'Sătucu',
   },
   {
     id: 10777,
@@ -53867,7 +53867,7 @@ export const CITIES = [
   {
     id: 10780,
     countyId: 6,
-    name: 'Sauaieu',
+    name: 'Șauaieu',
   },
   {
     id: 10781,
@@ -53877,57 +53877,57 @@ export const CITIES = [
   {
     id: 10782,
     countyId: 46,
-    name: 'Sauca',
+    name: 'Săuca',
   },
   {
     id: 10783,
     countyId: 6,
-    name: 'Saucani',
+    name: 'Săucani',
   },
   {
     id: 10784,
     countyId: 8,
-    name: 'Saucenita',
+    name: 'Saucenița',
   },
   {
     id: 10785,
     countyId: 5,
-    name: 'Saucesti',
+    name: 'Săucești',
   },
   {
     id: 10786,
     countyId: 6,
-    name: 'Saud',
+    name: 'Săud',
   },
   {
     id: 10787,
     countyId: 21,
-    name: 'Saula',
+    name: 'Șaula',
   },
   {
     id: 10788,
     countyId: 33,
-    name: 'Saulesti',
+    name: 'Șăulești',
   },
   {
     id: 10789,
     countyId: 30,
-    name: 'Saulesti',
+    name: 'Săulești',
   },
   {
     id: 10790,
     countyId: 41,
-    name: 'Saulia',
+    name: 'Șăulia',
   },
   {
     id: 10791,
     countyId: 41,
-    name: 'Saulita',
+    name: 'Șăulița',
   },
   {
     id: 10792,
     countyId: 41,
-    name: 'Sausa',
+    name: 'Șăușa',
   },
   {
     id: 10793,
@@ -53937,67 +53937,67 @@ export const CITIES = [
   {
     id: 10794,
     countyId: 21,
-    name: 'Savadisla',
+    name: 'Săvădisla',
   },
   {
     id: 10795,
     countyId: 2,
-    name: 'Savarsin',
+    name: 'Săvârșin',
   },
   {
     id: 10796,
     countyId: 10,
-    name: 'Savastreni',
+    name: 'Săvăstreni',
   },
   {
     id: 10797,
     countyId: 8,
-    name: 'Saveni',
+    name: 'Săveni',
   },
   {
     id: 10798,
     countyId: 35,
-    name: 'Saveni',
+    name: 'Săveni',
   },
   {
     id: 10799,
     countyId: 34,
-    name: 'Saveni',
+    name: 'Săveni',
   },
   {
     id: 10800,
     countyId: 42,
-    name: 'Savesti',
+    name: 'Săvești',
   },
   {
     id: 10801,
     countyId: 24,
-    name: 'Savesti',
+    name: 'Săvești',
   },
   {
     id: 10802,
     countyId: 42,
-    name: 'Savinesti',
+    name: 'Săvinești',
   },
   {
     id: 10803,
     countyId: 42,
-    name: 'Savinesti (Poiana Teiului)',
+    name: 'Săvinești (Poiana Teiului)',
   },
   {
     id: 10804,
     countyId: 3,
-    name: 'Sboghitesti',
+    name: 'Sboghițești',
   },
   {
     id: 10805,
     countyId: 18,
-    name: 'Scaeni',
+    name: 'Scăeni',
   },
   {
     id: 10806,
     countyId: 25,
-    name: 'Scaesti',
+    name: 'Scăești',
   },
   {
     id: 10807,
@@ -54007,97 +54007,97 @@ export const CITIES = [
   {
     id: 10808,
     countyId: 52,
-    name: 'Scaiosi',
+    name: 'Scaioși',
   },
   {
     id: 10809,
     countyId: 20,
-    name: 'Scaius',
+    name: 'Scăiuș',
   },
   {
     id: 10810,
     countyId: 35,
-    name: 'Scanteia',
+    name: 'Scânteia',
   },
   {
     id: 10811,
     countyId: 34,
-    name: 'Scanteia',
+    name: 'Scânteia',
   },
   {
     id: 10812,
     countyId: 54,
-    name: 'Scanteia',
+    name: 'Scânteia',
   },
   {
     id: 10813,
     countyId: 28,
-    name: 'Scanteiesti',
+    name: 'Scânteiești',
   },
   {
     id: 10814,
     countyId: 40,
-    name: 'Scapau',
+    name: 'Scăpău',
   },
   {
     id: 10815,
     countyId: 42,
-    name: 'Scaricica',
+    name: 'Scăricica',
   },
   {
     id: 10816,
     countyId: 5,
-    name: 'Scariga',
+    name: 'Scăriga',
   },
   {
     id: 10817,
     countyId: 1,
-    name: 'Scarisoara',
+    name: 'Scărișoara',
   },
   {
     id: 10818,
     countyId: 18,
-    name: 'Scarisoara',
+    name: 'Scărișoara',
   },
   {
     id: 10819,
     countyId: 43,
-    name: 'Scarisoara',
+    name: 'Scărișoara',
   },
   {
     id: 10820,
     countyId: 5,
-    name: 'Scarisoara',
+    name: 'Scărișoara',
   },
   {
     id: 10821,
     countyId: 20,
-    name: 'Scarisoara',
+    name: 'Scărișoara',
   },
   {
     id: 10822,
     countyId: 52,
-    name: 'Scarisoara',
+    name: 'Scărișoara',
   },
   {
     id: 10823,
     countyId: 46,
-    name: 'Scarisoara Noua',
+    name: 'Scărișoara Nouă',
   },
   {
     id: 10824,
     countyId: 18,
-    name: 'Scarlatesti',
+    name: 'Scărlătești',
   },
   {
     id: 10825,
     countyId: 9,
-    name: 'Scarlatesti',
+    name: 'Scărlătești',
   },
   {
     id: 10826,
     countyId: 52,
-    name: 'Scaueni',
+    name: 'Scăueni',
   },
   {
     id: 10827,
@@ -54107,7 +54107,7 @@ export const CITIES = [
   {
     id: 10828,
     countyId: 48,
-    name: 'Scheia',
+    name: 'Șcheia',
   },
   {
     id: 10829,
@@ -54157,12 +54157,12 @@ export const CITIES = [
   {
     id: 10838,
     countyId: 44,
-    name: 'Schiau (Urlati)',
+    name: 'Schiau (Urlați)',
   },
   {
     id: 10839,
     countyId: 44,
-    name: 'Schiau (Valea Calugareasca)',
+    name: 'Schiau (Valea Călugărească)',
   },
   {
     id: 10840,
@@ -54177,7 +54177,7 @@ export const CITIES = [
   {
     id: 10842,
     countyId: 5,
-    name: 'Schineni (Saucesti)',
+    name: 'Schineni (Săucești)',
   },
   {
     id: 10843,
@@ -54187,12 +54187,12 @@ export const CITIES = [
   {
     id: 10844,
     countyId: 40,
-    name: 'Schinteiesti',
+    name: 'Schinteiești',
   },
   {
     id: 10845,
     countyId: 8,
-    name: 'Schit-Oraseni',
+    name: 'Schit-Orășeni',
   },
   {
     id: 10846,
@@ -54252,12 +54252,12 @@ export const CITIES = [
   {
     id: 10857,
     countyId: 3,
-    name: 'Schitu Golesti',
+    name: 'Schitu Golești',
   },
   {
     id: 10858,
     countyId: 35,
-    name: 'Schitu Hadambului',
+    name: 'Schitu Hadâmbului',
   },
   {
     id: 10859,
@@ -54267,7 +54267,7 @@ export const CITIES = [
   {
     id: 10860,
     countyId: 3,
-    name: 'Schitu Scoicesti',
+    name: 'Schitu Scoicești',
   },
   {
     id: 10861,
@@ -54277,12 +54277,12 @@ export const CITIES = [
   {
     id: 10862,
     countyId: 42,
-    name: 'Schitu Tarcau',
+    name: 'Schitu Tarcău',
   },
   {
     id: 10863,
     countyId: 40,
-    name: 'Schitu Topolnitei',
+    name: 'Schitu Topolniței',
   },
   {
     id: 10864,
@@ -54292,7 +54292,7 @@ export const CITIES = [
   {
     id: 10865,
     countyId: 44,
-    name: 'Schiulesti',
+    name: 'Schiulești',
   },
   {
     id: 10866,
@@ -54302,22 +54302,22 @@ export const CITIES = [
   {
     id: 10867,
     countyId: 1,
-    name: 'Scoarta',
+    name: 'Scoarța',
   },
   {
     id: 10868,
     countyId: 30,
-    name: 'Scoarta',
+    name: 'Scoarța',
   },
   {
     id: 10869,
     countyId: 35,
-    name: 'Scobalteni',
+    name: 'Scobâlțeni',
   },
   {
     id: 10870,
     countyId: 35,
-    name: 'Scobinti',
+    name: 'Scobinți',
   },
   {
     id: 10871,
@@ -54327,7 +54327,7 @@ export const CITIES = [
   {
     id: 10872,
     countyId: 35,
-    name: 'Scoposeni (Horlesti)',
+    name: 'Scoposeni (Horlești)',
   },
   {
     id: 10873,
@@ -54347,52 +54347,52 @@ export const CITIES = [
   {
     id: 10876,
     countyId: 43,
-    name: 'Scornicesti',
+    name: 'Scornicești',
   },
   {
     id: 10877,
     countyId: 18,
-    name: 'Scorosesti',
+    name: 'Scoroșești',
   },
   {
     id: 10878,
     countyId: 9,
-    name: 'Scortaru Nou',
+    name: 'Scorțaru Nou',
   },
   {
     id: 10879,
     countyId: 9,
-    name: 'Scortaru Vechi',
+    name: 'Scorțaru Vechi',
   },
   {
     id: 10880,
     countyId: 18,
-    name: 'Scorteanca',
+    name: 'Scorțeanca',
   },
   {
     id: 10881,
     countyId: 5,
-    name: 'Scorteni',
+    name: 'Scorțeni',
   },
   {
     id: 10882,
     countyId: 44,
-    name: 'Scorteni',
+    name: 'Scorțeni',
   },
   {
     id: 10883,
     countyId: 18,
-    name: 'Scortoasa',
+    name: 'Scorțoasa',
   },
   {
     id: 10884,
     countyId: 52,
-    name: 'Scorusu',
+    name: 'Scorușu',
   },
   {
     id: 10885,
     countyId: 30,
-    name: 'Scorusu',
+    name: 'Scorușu',
   },
   {
     id: 10886,
@@ -54402,17 +54402,17 @@ export const CITIES = [
   {
     id: 10887,
     countyId: 23,
-    name: 'Scradoasa',
+    name: 'Scrădoasa',
   },
   {
     id: 10888,
     countyId: 21,
-    name: 'Scrind-Frasinet',
+    name: 'Scrind-Frăsinet',
   },
   {
     id: 10889,
     countyId: 49,
-    name: 'Scrioastea',
+    name: 'Scrioaștea',
   },
   {
     id: 10890,
@@ -54442,12 +54442,12 @@ export const CITIES = [
   {
     id: 10895,
     countyId: 18,
-    name: 'Scurtesti',
+    name: 'Scurtești',
   },
   {
     id: 10896,
     countyId: 44,
-    name: 'Scurtesti',
+    name: 'Scurtești',
   },
   {
     id: 10897,
@@ -54462,7 +54462,7 @@ export const CITIES = [
   {
     id: 10899,
     countyId: 49,
-    name: 'Scurtu-Slavesti',
+    name: 'Scurtu-Slăvești',
   },
   {
     id: 10900,
@@ -54502,7 +54502,7 @@ export const CITIES = [
   {
     id: 10907,
     countyId: 52,
-    name: 'Seaca (Calimanesti)',
+    name: 'Seaca (Călimănești)',
   },
   {
     id: 10908,
@@ -54512,67 +54512,67 @@ export const CITIES = [
   {
     id: 10909,
     countyId: 52,
-    name: 'Seaca (Salatrucel)',
+    name: 'Seaca (Sălătrucel)',
   },
   {
     id: 10910,
     countyId: 25,
-    name: 'Seaca de Camp',
+    name: 'Seaca de Câmp',
   },
   {
     id: 10911,
     countyId: 25,
-    name: 'Seaca de Padure',
+    name: 'Seaca de Pădure',
   },
   {
     id: 10912,
     countyId: 10,
-    name: 'Sebes',
+    name: 'Sebeș',
   },
   {
     id: 10913,
     countyId: 1,
-    name: 'Sebes',
+    name: 'Sebeș',
   },
   {
     id: 10914,
     countyId: 41,
-    name: 'Sebes',
+    name: 'Sebeș',
   },
   {
     id: 10915,
     countyId: 1,
-    name: 'Sebesel',
+    name: 'Sebeșel',
   },
   {
     id: 10916,
     countyId: 47,
-    name: 'Sebesu de Jos',
+    name: 'Sebeșu de Jos',
   },
   {
     id: 10917,
     countyId: 47,
-    name: 'Sebesu de Sus',
+    name: 'Sebeșu de Sus',
   },
   {
     id: 10918,
     countyId: 6,
-    name: 'Sebis',
+    name: 'Șebiș',
   },
   {
     id: 10919,
     countyId: 2,
-    name: 'Sebis',
+    name: 'Sebiș',
   },
   {
     id: 10920,
     countyId: 7,
-    name: 'Sebis',
+    name: 'Sebiș',
   },
   {
     id: 10921,
     countyId: 1,
-    name: 'Sebisesti',
+    name: 'Sebișești',
   },
   {
     id: 10922,
@@ -54587,27 +54587,27 @@ export const CITIES = [
   {
     id: 10924,
     countyId: 44,
-    name: 'Secaria',
+    name: 'Secăria',
   },
   {
     id: 10925,
     countyId: 2,
-    name: 'Secas',
+    name: 'Secaș',
   },
   {
     id: 10926,
     countyId: 50,
-    name: 'Secas',
+    name: 'Secaș',
   },
   {
     id: 10927,
     countyId: 1,
-    name: 'Secasel',
+    name: 'Secășel',
   },
   {
     id: 10928,
     countyId: 20,
-    name: 'Secaseni',
+    name: 'Secășeni',
   },
   {
     id: 10929,
@@ -54617,7 +54617,7 @@ export const CITIES = [
   {
     id: 10930,
     countyId: 46,
-    name: 'Secheresa',
+    name: 'Sechereșa',
   },
   {
     id: 10931,
@@ -54702,7 +54702,7 @@ export const CITIES = [
   {
     id: 10947,
     countyId: 25,
-    name: 'Seculesti',
+    name: 'Seculești',
   },
   {
     id: 10948,
@@ -54742,22 +54742,22 @@ export const CITIES = [
   {
     id: 10955,
     countyId: 6,
-    name: 'Seghiste',
+    name: 'Seghiște',
   },
   {
     id: 10956,
     countyId: 25,
-    name: 'Seglet',
+    name: 'Segleț',
   },
   {
     id: 10957,
     countyId: 47,
-    name: 'Seica Mare',
+    name: 'Șeica Mare',
   },
   {
     id: 10958,
     countyId: 47,
-    name: 'Seica Mica',
+    name: 'Șeica Mică',
   },
   {
     id: 10959,
@@ -54777,82 +54777,82 @@ export const CITIES = [
   {
     id: 10962,
     countyId: 19,
-    name: 'Seinoiu',
+    name: 'Șeinoiu',
   },
   {
     id: 10963,
     countyId: 2,
-    name: 'Seitin',
+    name: 'Șeitin',
   },
   {
     id: 10964,
     countyId: 3,
-    name: 'Selareasca',
+    name: 'Șelăreasca',
   },
   {
     id: 10965,
     countyId: 3,
-    name: 'Selari',
+    name: 'Șelari',
   },
   {
     id: 10966,
     countyId: 24,
-    name: 'Selaru',
+    name: 'Șelaru',
   },
   {
     id: 10967,
     countyId: 2,
-    name: 'Seleus',
+    name: 'Seleuș',
   },
   {
     id: 10968,
     countyId: 41,
-    name: 'Seleus (Danes)',
+    name: 'Seleuș (Daneș)',
   },
   {
     id: 10969,
     countyId: 41,
-    name: 'Seleus (Zagar)',
+    name: 'Seleuș (Zagăr)',
   },
   {
     id: 10970,
     countyId: 47,
-    name: 'Selimbar',
+    name: 'Șelimbăr',
   },
   {
     id: 10971,
     countyId: 10,
-    name: 'Selistat',
+    name: 'Seliștat',
   },
   {
     id: 10972,
     countyId: 2,
-    name: 'Seliste',
+    name: 'Seliște',
   },
   {
     id: 10973,
     countyId: 2,
-    name: 'Selistea',
+    name: 'Seliștea',
   },
   {
     id: 10974,
     countyId: 40,
-    name: 'Selistea',
+    name: 'Seliștea',
   },
   {
     id: 10975,
     countyId: 8,
-    name: 'Selistea',
+    name: 'Seliștea',
   },
   {
     id: 10976,
     countyId: 40,
-    name: 'Selisteni',
+    name: 'Selișteni',
   },
   {
     id: 10977,
     countyId: 40,
-    name: 'Selistiuta',
+    name: 'Seliștiuța',
   },
   {
     id: 10978,
@@ -54867,52 +54867,52 @@ export const CITIES = [
   {
     id: 10980,
     countyId: 50,
-    name: 'Semlacu Mare',
+    name: 'Șemlacu Mare',
   },
   {
     id: 10981,
     countyId: 50,
-    name: 'Semlacu Mic',
+    name: 'Șemlacu Mic',
   },
   {
     id: 10982,
     countyId: 28,
-    name: 'Sendreni',
+    name: 'Șendreni',
   },
   {
     id: 10983,
     countyId: 8,
-    name: 'Sendreni',
+    name: 'Șendreni',
   },
   {
     id: 10984,
     countyId: 35,
-    name: 'Sendreni',
+    name: 'Șendreni',
   },
   {
     id: 10985,
     countyId: 5,
-    name: 'Sendresti',
+    name: 'Șendrești',
   },
   {
     id: 10986,
     countyId: 8,
-    name: 'Sendriceni',
+    name: 'Șendriceni',
   },
   {
     id: 10987,
     countyId: 7,
-    name: 'Sendroaia',
+    name: 'Șendroaia',
   },
   {
     id: 10988,
     countyId: 3,
-    name: 'Sendrulesti',
+    name: 'Șendrulești',
   },
   {
     id: 10989,
     countyId: 41,
-    name: 'Senereus',
+    name: 'Senereuș',
   },
   {
     id: 10990,
@@ -54922,7 +54922,7 @@ export const CITIES = [
   {
     id: 10991,
     countyId: 2,
-    name: 'Sepreus',
+    name: 'Șepreuș',
   },
   {
     id: 10992,
@@ -54932,117 +54932,117 @@ export const CITIES = [
   {
     id: 10993,
     countyId: 6,
-    name: 'Serani',
+    name: 'Șerani',
   },
   {
     id: 10994,
     countyId: 52,
-    name: 'Serbaneasa',
+    name: 'Șerbăneasa',
   },
   {
     id: 10995,
     countyId: 24,
-    name: 'Serbaneasa',
+    name: 'Șerbăneasa',
   },
   {
     id: 10996,
     countyId: 48,
-    name: 'Serbanesti',
+    name: 'Șerbănești',
   },
   {
     id: 10997,
     countyId: 43,
-    name: 'Serbanesti',
+    name: 'Șerbănești',
   },
   {
     id: 10998,
     countyId: 54,
-    name: 'Serbanesti',
+    name: 'Șerbănești',
   },
   {
     id: 10999,
     countyId: 52,
-    name: 'Serbanesti (Lapusata)',
+    name: 'Șerbănești (Lăpușata)',
   },
   {
     id: 11000,
     countyId: 52,
-    name: 'Serbanesti (Pausesti)',
+    name: 'Șerbănești (Păușești)',
   },
   {
     id: 11001,
     countyId: 3,
-    name: 'Serbanesti (Poienarii de Muscel)',
+    name: 'Șerbănești (Poienarii de Muscel)',
   },
   {
     id: 11002,
     countyId: 3,
-    name: 'Serbanesti (Rociu)',
+    name: 'Șerbănești (Rociu)',
   },
   {
     id: 11003,
     countyId: 52,
-    name: 'Serbanesti (Salatrucel)',
+    name: 'Șerbănești (Sălătrucel)',
   },
   {
     id: 11004,
     countyId: 52,
-    name: 'Serbanesti (Stefanesti)',
+    name: 'Șerbănești (Ștefănești)',
   },
   {
     id: 11005,
     countyId: 43,
-    name: 'Serbanestii de Sus',
+    name: 'Șerbăneștii de Sus',
   },
   {
     id: 11006,
     countyId: 48,
-    name: 'Serbauti',
+    name: 'Șerbăuți',
   },
   {
     id: 11007,
     countyId: 41,
-    name: 'Serbeni',
+    name: 'Șerbeni',
   },
   {
     id: 11008,
     countyId: 35,
-    name: 'Serbesti',
+    name: 'Șerbești',
   },
   {
     id: 11009,
     countyId: 5,
-    name: 'Serbesti',
+    name: 'Șerbești',
   },
   {
     id: 11010,
     countyId: 54,
-    name: 'Serbesti',
+    name: 'Șerbești',
   },
   {
     id: 11011,
     countyId: 28,
-    name: 'Serbestii Vechi',
+    name: 'Șerbeștii Vechi',
   },
   {
     id: 11012,
     countyId: 3,
-    name: 'Serboeni',
+    name: 'Șerboeni',
   },
   {
     id: 11013,
     countyId: 53,
-    name: 'Serbotesti',
+    name: 'Șerbotești',
   },
   {
     id: 11014,
     countyId: 10,
-    name: 'Sercaia',
+    name: 'Șercaia',
   },
   {
     id: 11015,
     countyId: 10,
-    name: 'Sercaita',
+    name: 'Șercăița',
   },
   {
     id: 11016,
@@ -55057,22 +55057,22 @@ export const CITIES = [
   {
     id: 11018,
     countyId: 45,
-    name: 'Seredeiu',
+    name: 'Șeredeiu',
   },
   {
     id: 11019,
     countyId: 33,
-    name: 'Serel',
+    name: 'Șerel',
   },
   {
     id: 11020,
     countyId: 18,
-    name: 'Sergent Ionel Stefan',
+    name: 'Sergent Ionel Ștefan',
   },
   {
     id: 11021,
     countyId: 6,
-    name: 'Serghis',
+    name: 'Șerghiș',
   },
   {
     id: 11022,
@@ -55082,37 +55082,37 @@ export const CITIES = [
   {
     id: 11023,
     countyId: 5,
-    name: 'Serpeni',
+    name: 'Șerpeni',
   },
   {
     id: 11024,
     countyId: 8,
-    name: 'Serpenita',
+    name: 'Șerpenița',
   },
   {
     id: 11025,
     countyId: 48,
-    name: 'Ses',
+    name: 'Șes',
   },
   {
     id: 11026,
     countyId: 33,
-    name: 'Sesuri',
+    name: 'Șesuri',
   },
   {
     id: 11027,
     countyId: 5,
-    name: 'Sesuri',
+    name: 'Șesuri',
   },
   {
     id: 11028,
     countyId: 48,
-    name: 'Sesuri',
+    name: 'Șesuri',
   },
   {
     id: 11029,
     countyId: 7,
-    name: 'Sesuri Spermezeu-Vale',
+    name: 'Șesuri Spermezeu-Vale',
   },
   {
     id: 11030,
@@ -55122,87 +55122,87 @@ export const CITIES = [
   {
     id: 11031,
     countyId: 41,
-    name: 'Seulia de Mures',
+    name: 'Șeulia de Mureș',
   },
   {
     id: 11032,
     countyId: 1,
-    name: 'Seusa',
+    name: 'Șeușa',
   },
   {
     id: 11033,
     countyId: 40,
-    name: 'Severinesti',
+    name: 'Severinești',
   },
   {
     id: 11034,
     countyId: 44,
-    name: 'Sfacaru',
+    name: 'Sfăcăru',
   },
   {
     id: 11035,
     countyId: 20,
-    name: 'Sfanta Elena',
+    name: 'Sfânta Elena',
   },
   {
     id: 11036,
     countyId: 34,
-    name: 'Sfantu Gheorghe',
+    name: 'Sfântu Gheorghe',
   },
   {
     id: 11037,
     countyId: 51,
-    name: 'Sfantu Gheorghe',
+    name: 'Sfântu Gheorghe',
   },
   {
     id: 11038,
     countyId: 23,
-    name: 'Sfantu Gheorghe',
+    name: 'Sfântu Gheorghe',
   },
   {
     id: 11039,
     countyId: 41,
-    name: 'Sfantu Gheorghe',
+    name: 'Sfântu Gheorghe',
   },
   {
     id: 11040,
     countyId: 29,
-    name: 'Sfantu Gheorghe (Baneasa)',
+    name: 'Sfântu Gheorghe (Băneasa)',
   },
   {
     id: 11041,
     countyId: 29,
-    name: 'Sfantu Gheorghe (Crevedia Mare)',
+    name: 'Sfântu Gheorghe (Crevedia Mare)',
   },
   {
     id: 11042,
     countyId: 48,
-    name: 'Sfantu Ilie',
+    name: 'Sfântu Ilie',
   },
   {
     id: 11043,
     countyId: 45,
-    name: 'Sfaras',
+    name: 'Sfăraș',
   },
   {
     id: 11044,
     countyId: 1,
-    name: 'Sfarcea',
+    name: 'Sfârcea',
   },
   {
     id: 11045,
     countyId: 44,
-    name: 'Sfarleanca',
+    name: 'Sfârleanca',
   },
   {
     id: 11046,
     countyId: 6,
-    name: 'Sfarnas',
+    name: 'Sfârnaș',
   },
   {
     id: 11047,
     countyId: 49,
-    name: 'Sfintesti',
+    name: 'Sfințești',
   },
   {
     id: 11048,
@@ -55212,7 +55212,7 @@ export const CITIES = [
   {
     id: 11049,
     countyId: 51,
-    name: 'Sfistofca',
+    name: 'Sfiștofca',
   },
   {
     id: 11050,
@@ -55227,12 +55227,12 @@ export const CITIES = [
   {
     id: 11052,
     countyId: 30,
-    name: 'Siacu',
+    name: 'Șiacu',
   },
   {
     id: 11053,
     countyId: 2,
-    name: 'Siad',
+    name: 'Șiad',
   },
   {
     id: 11054,
@@ -55257,12 +55257,12 @@ export const CITIES = [
   {
     id: 11058,
     countyId: 33,
-    name: 'Sibisel (Beriu)',
+    name: 'Sibișel (Beriu)',
   },
   {
     id: 11059,
     countyId: 33,
-    name: 'Sibisel (Rau de Mori)',
+    name: 'Sibișel (Râu de Mori)',
   },
   {
     id: 11060,
@@ -55272,7 +55272,7 @@ export const CITIES = [
   {
     id: 11061,
     countyId: 1,
-    name: 'Sibot',
+    name: 'Șibot',
   },
   {
     id: 11062,
@@ -55282,7 +55282,7 @@ export const CITIES = [
   {
     id: 11063,
     countyId: 31,
-    name: 'Sicasau',
+    name: 'Șicasău',
   },
   {
     id: 11064,
@@ -55297,7 +55297,7 @@ export const CITIES = [
   {
     id: 11066,
     countyId: 20,
-    name: 'Sichevita',
+    name: 'Sichevița',
   },
   {
     id: 11067,
@@ -55307,17 +55307,17 @@ export const CITIES = [
   {
     id: 11068,
     countyId: 2,
-    name: 'Siclau',
+    name: 'Șiclău',
   },
   {
     id: 11069,
     countyId: 31,
-    name: 'Siclod',
+    name: 'Șiclod',
   },
   {
     id: 11070,
     countyId: 1,
-    name: 'Sicoiesti',
+    name: 'Sicoiești',
   },
   {
     id: 11071,
@@ -55327,7 +55327,7 @@ export const CITIES = [
   {
     id: 11072,
     countyId: 2,
-    name: 'Sicula',
+    name: 'Șicula',
   },
   {
     id: 11073,
@@ -55337,42 +55337,42 @@ export const CITIES = [
   {
     id: 11074,
     countyId: 39,
-    name: 'Sieu',
+    name: 'Șieu',
   },
   {
     id: 11075,
     countyId: 7,
-    name: 'Sieu',
+    name: 'Șieu',
   },
   {
     id: 11076,
     countyId: 7,
-    name: 'Sieu-Magherus',
+    name: 'Șieu-Măgheruș',
   },
   {
     id: 11077,
     countyId: 7,
-    name: 'Sieu-Odorhei',
+    name: 'Șieu-Odorhei',
   },
   {
     id: 11078,
     countyId: 7,
-    name: 'Sieu-Sfantu',
+    name: 'Șieu-Sfântu',
   },
   {
     id: 11079,
     countyId: 7,
-    name: 'Sieut',
+    name: 'Șieuț',
   },
   {
     id: 11080,
     countyId: 21,
-    name: 'Sigau',
+    name: 'Șigău',
   },
   {
     id: 11081,
     countyId: 39,
-    name: 'Sighetu Marmatiei',
+    name: 'Sighetu Marmației',
   },
   {
     id: 11082,
@@ -55382,12 +55382,12 @@ export const CITIES = [
   {
     id: 11083,
     countyId: 41,
-    name: 'Sighisoara',
+    name: 'Sighișoara',
   },
   {
     id: 11084,
     countyId: 6,
-    name: 'Sighistel',
+    name: 'Sighiștel',
   },
   {
     id: 11085,
@@ -55417,82 +55417,82 @@ export const CITIES = [
   {
     id: 11090,
     countyId: 1,
-    name: 'Silea',
+    name: 'Șilea',
   },
   {
     id: 11091,
     countyId: 41,
-    name: 'Silea Nirajului',
+    name: 'Șilea Nirajului',
   },
   {
     id: 11092,
     countyId: 2,
-    name: 'Silindia',
+    name: 'Șilindia',
   },
   {
     id: 11093,
     countyId: 6,
-    name: 'Silindru',
+    name: 'Șilindru',
   },
   {
     id: 11094,
     countyId: 8,
-    name: 'Siliscani',
+    name: 'Silișcani',
   },
   {
     id: 11095,
     countyId: 3,
-    name: 'Silistea',
+    name: 'Siliștea',
   },
   {
     id: 11096,
     countyId: 8,
-    name: 'Silistea',
+    name: 'Siliștea',
   },
   {
     id: 11097,
     countyId: 22,
-    name: 'Silistea',
+    name: 'Siliștea',
   },
   {
     id: 11098,
     countyId: 42,
-    name: 'Silistea',
+    name: 'Siliștea',
   },
   {
     id: 11099,
     countyId: 48,
-    name: 'Silistea',
+    name: 'Siliștea',
   },
   {
     id: 11100,
     countyId: 9,
-    name: 'Silistea',
+    name: 'Siliștea',
   },
   {
     id: 11101,
     countyId: 19,
-    name: 'Silistea',
+    name: 'Siliștea',
   },
   {
     id: 11102,
     countyId: 28,
-    name: 'Silistea',
+    name: 'Siliștea',
   },
   {
     id: 11103,
     countyId: 44,
-    name: 'Silistea',
+    name: 'Siliștea',
   },
   {
     id: 11104,
     countyId: 49,
-    name: 'Silistea',
+    name: 'Siliștea',
   },
   {
     id: 11105,
     countyId: 53,
-    name: 'Silistea (Iana)',
+    name: 'Siliștea (Iana)',
   },
   {
     id: 11106,
@@ -55502,57 +55502,57 @@ export const CITIES = [
   {
     id: 11107,
     countyId: 53,
-    name: 'Silistea (Pungesti)',
+    name: 'Siliștea (Pungești)',
   },
   {
     id: 11108,
     countyId: 24,
-    name: 'Silistea (Runcu)',
+    name: 'Siliștea (Runcu)',
   },
   {
     id: 11109,
     countyId: 53,
-    name: 'Silistea (Todiresti)',
+    name: 'Siliștea (Todirești)',
   },
   {
     id: 11110,
     countyId: 49,
-    name: 'Silistea (Vitanesti)',
+    name: 'Siliștea (Vitănești)',
   },
   {
     id: 11111,
     countyId: 25,
-    name: 'Silistea Crucii',
+    name: 'Siliștea Crucii',
   },
   {
     id: 11112,
     countyId: 44,
-    name: 'Silistea Dealului',
+    name: 'Siliștea Dealului',
   },
   {
     id: 11113,
     countyId: 49,
-    name: 'Silistea Gumesti',
+    name: 'Siliștea Gumești',
   },
   {
     id: 11114,
     countyId: 49,
-    name: 'Silistea Mica',
+    name: 'Siliștea Mică',
   },
   {
     id: 11115,
     countyId: 48,
-    name: 'Silistea Noua',
+    name: 'Siliștea Nouă',
   },
   {
     id: 11116,
     countyId: 36,
-    name: 'Silistea Snagovului',
+    name: 'Siliștea Snagovului',
   },
   {
     id: 11117,
     countyId: 3,
-    name: 'Silisteni',
+    name: 'Silișteni',
   },
   {
     id: 11118,
@@ -55562,37 +55562,37 @@ export const CITIES = [
   {
     id: 11119,
     countyId: 1,
-    name: 'Silivas',
+    name: 'Silivaș',
   },
   {
     id: 11120,
     countyId: 21,
-    name: 'Silivas',
+    name: 'Silivaș',
   },
   {
     id: 11121,
     countyId: 7,
-    name: 'Silivasu de Campie',
+    name: 'Silivașu de Câmpie',
   },
   {
     id: 11122,
     countyId: 46,
-    name: 'Silvas',
+    name: 'Silvaș',
   },
   {
     id: 11123,
     countyId: 33,
-    name: 'Silvasu de Jos',
+    name: 'Silvașu de Jos',
   },
   {
     id: 11124,
     countyId: 33,
-    name: 'Silvasu de Sus',
+    name: 'Silvașu de Sus',
   },
   {
     id: 11125,
     countyId: 2,
-    name: 'Simand',
+    name: 'Șimand',
   },
   {
     id: 11126,
@@ -55607,12 +55607,12 @@ export const CITIES = [
   {
     id: 11128,
     countyId: 40,
-    name: 'Simian',
+    name: 'Șimian',
   },
   {
     id: 11129,
     countyId: 6,
-    name: 'Simian',
+    name: 'Șimian',
   },
   {
     id: 11130,
@@ -55622,7 +55622,7 @@ export const CITIES = [
   {
     id: 11131,
     countyId: 53,
-    name: 'Similisoara',
+    name: 'Similișoara',
   },
   {
     id: 11132,
@@ -55642,22 +55642,22 @@ export const CITIES = [
   {
     id: 11135,
     countyId: 7,
-    name: 'Simionesti',
+    name: 'Simionești',
   },
   {
     id: 11136,
     countyId: 42,
-    name: 'Simionesti',
+    name: 'Simionești',
   },
   {
     id: 11137,
     countyId: 45,
-    name: 'Simisna',
+    name: 'Șimișna',
   },
   {
     id: 11138,
     countyId: 45,
-    name: 'Simleu Silvaniei',
+    name: 'Șimleu Silvaniei',
   },
   {
     id: 11139,
@@ -55667,32 +55667,32 @@ export const CITIES = [
   {
     id: 11140,
     countyId: 25,
-    name: 'Simnicu de Jos',
+    name: 'Șimnicu de Jos',
   },
   {
     id: 11141,
     countyId: 25,
-    name: 'Simnicu de Sus',
+    name: 'Șimnicu de Sus',
   },
   {
     id: 11142,
     countyId: 1,
-    name: 'Simocesti',
+    name: 'Șimocești',
   },
   {
     id: 11143,
     countyId: 10,
-    name: 'Simon',
+    name: 'Șimon',
   },
   {
     id: 11144,
     countyId: 31,
-    name: 'Simonesti',
+    name: 'Șimonești',
   },
   {
     id: 11145,
     countyId: 1,
-    name: 'Simulesti',
+    name: 'Simulești',
   },
   {
     id: 11146,
@@ -55702,52 +55702,52 @@ export const CITIES = [
   {
     id: 11147,
     countyId: 10,
-    name: 'Sinca',
+    name: 'Șinca',
   },
   {
     id: 11148,
     countyId: 48,
-    name: 'Sinca',
+    name: 'Șinca',
   },
   {
     id: 11149,
     countyId: 10,
-    name: 'Sinca Noua',
+    name: 'Șinca Nouă',
   },
   {
     id: 11150,
     countyId: 10,
-    name: 'Sinca Veche',
+    name: 'Șinca Veche',
   },
   {
     id: 11151,
     countyId: 41,
-    name: 'Sincai',
+    name: 'Șincai',
   },
   {
     id: 11152,
     countyId: 41,
-    name: 'Sincai-Fanate',
+    name: 'Șincai-Fânațe',
   },
   {
     id: 11153,
     countyId: 39,
-    name: 'Sindresti',
+    name: 'Șindrești',
   },
   {
     id: 11154,
     countyId: 18,
-    name: 'Sindrila',
+    name: 'Șindrila',
   },
   {
     id: 11155,
     countyId: 54,
-    name: 'Sindrilari',
+    name: 'Șindrilari',
   },
   {
     id: 11156,
     countyId: 36,
-    name: 'Sindrilita',
+    name: 'Șindrilița',
   },
   {
     id: 11157,
@@ -55757,27 +55757,27 @@ export const CITIES = [
   {
     id: 11158,
     countyId: 34,
-    name: 'Sinesti',
+    name: 'Sinești',
   },
   {
     id: 11159,
     countyId: 43,
-    name: 'Sinesti',
+    name: 'Sinești',
   },
   {
     id: 11160,
     countyId: 3,
-    name: 'Sinesti',
+    name: 'Sinești',
   },
   {
     id: 11161,
     countyId: 35,
-    name: 'Sinesti',
+    name: 'Sinești',
   },
   {
     id: 11162,
     countyId: 52,
-    name: 'Sinesti',
+    name: 'Sinești',
   },
   {
     id: 11163,
@@ -55807,37 +55807,37 @@ export const CITIES = [
   {
     id: 11168,
     countyId: 2,
-    name: 'Sintea Mica',
+    name: 'Sintea Mică',
   },
   {
     id: 11169,
     countyId: 7,
-    name: 'Sintereag',
+    name: 'Șintereag',
   },
   {
     id: 11170,
     countyId: 7,
-    name: 'Sintereag-Gara',
+    name: 'Șintereag-Gară',
   },
   {
     id: 11171,
     countyId: 36,
-    name: 'Sintesti',
+    name: 'Sintești',
   },
   {
     id: 11172,
     countyId: 50,
-    name: 'Sintesti',
+    name: 'Sintești',
   },
   {
     id: 11173,
     countyId: 34,
-    name: 'Sintesti',
+    name: 'Sintești',
   },
   {
     id: 11174,
     countyId: 6,
-    name: 'Sinteu',
+    name: 'Șinteu',
   },
   {
     id: 11175,
@@ -55847,47 +55847,47 @@ export const CITIES = [
   {
     id: 11176,
     countyId: 50,
-    name: 'Sipet',
+    name: 'Șipet',
   },
   {
     id: 11177,
     countyId: 24,
-    name: 'Sipot',
+    name: 'Șipot',
   },
   {
     id: 11178,
     countyId: 35,
-    name: 'Sipote',
+    name: 'Șipote',
   },
   {
     id: 11179,
     countyId: 28,
-    name: 'Sipote',
+    name: 'Șipote',
   },
   {
     id: 11180,
     countyId: 22,
-    name: 'Sipotele',
+    name: 'Șipotele',
   },
   {
     id: 11181,
     countyId: 30,
-    name: 'Sipotu',
+    name: 'Șipotu',
   },
   {
     id: 11182,
     countyId: 44,
-    name: 'Sipotu',
+    name: 'Șipotu',
   },
   {
     id: 11183,
     countyId: 40,
-    name: 'Sipotu (Ponoarele)',
+    name: 'Șipotu (Ponoarele)',
   },
   {
     id: 11184,
     countyId: 40,
-    name: 'Sipotu (Poroina Mare)',
+    name: 'Șipotu (Poroina Mare)',
   },
   {
     id: 11185,
@@ -55897,7 +55897,7 @@ export const CITIES = [
   {
     id: 11186,
     countyId: 35,
-    name: 'Siretel',
+    name: 'Sirețel',
   },
   {
     id: 11187,
@@ -55912,22 +55912,22 @@ export const CITIES = [
   {
     id: 11189,
     countyId: 5,
-    name: 'Siretu (Saucesti)',
+    name: 'Siretu (Săucești)',
   },
   {
     id: 11190,
     countyId: 2,
-    name: 'Siria',
+    name: 'Șiria',
   },
   {
     id: 11191,
     countyId: 52,
-    name: 'Sirineasa',
+    name: 'Șirineasa',
   },
   {
     id: 11192,
     countyId: 7,
-    name: 'Sirioara',
+    name: 'Șirioara',
   },
   {
     id: 11193,
@@ -55937,42 +55937,42 @@ export const CITIES = [
   {
     id: 11194,
     countyId: 22,
-    name: 'Siriu',
+    name: 'Șiriu',
   },
   {
     id: 11195,
     countyId: 46,
-    name: 'Sirlau',
+    name: 'Șirlău',
   },
   {
     id: 11196,
     countyId: 44,
-    name: 'Sirna',
+    name: 'Șirna',
   },
   {
     id: 11197,
     countyId: 10,
-    name: 'Sirnea',
+    name: 'Șirnea',
   },
   {
     id: 11198,
     countyId: 40,
-    name: 'Siroca',
+    name: 'Șiroca',
   },
   {
     id: 11199,
     countyId: 54,
-    name: 'Siscani',
+    name: 'Șișcani',
   },
   {
     id: 11200,
     countyId: 53,
-    name: 'Siscani',
+    name: 'Șișcani',
   },
   {
     id: 11201,
     countyId: 40,
-    name: 'Sisesti',
+    name: 'Șișești',
   },
   {
     id: 11202,
@@ -55982,12 +55982,12 @@ export const CITIES = [
   {
     id: 11203,
     countyId: 2,
-    name: 'Sistarovat',
+    name: 'Șiștarovăț',
   },
   {
     id: 11204,
     countyId: 6,
-    name: 'Sisterea',
+    name: 'Șișterea',
   },
   {
     id: 11205,
@@ -55997,7 +55997,7 @@ export const CITIES = [
   {
     id: 11206,
     countyId: 23,
-    name: 'Sita Buzaului',
+    name: 'Sita Buzăului',
   },
   {
     id: 11207,
@@ -56012,7 +56012,7 @@ export const CITIES = [
   {
     id: 11209,
     countyId: 30,
-    name: 'Sitesti',
+    name: 'Sitești',
   },
   {
     id: 11210,
@@ -56022,47 +56022,47 @@ export const CITIES = [
   {
     id: 11211,
     countyId: 25,
-    name: 'Sitoaia',
+    name: 'Șitoaia',
   },
   {
     id: 11212,
     countyId: 30,
-    name: 'Sitoaia',
+    name: 'Șitoaia',
   },
   {
     id: 11213,
     countyId: 28,
-    name: 'Sivita',
+    name: 'Șivița',
   },
   {
     id: 11214,
     countyId: 30,
-    name: 'Slamnesti',
+    name: 'Slămnești',
   },
   {
     id: 11215,
     countyId: 3,
-    name: 'Slamnesti',
+    name: 'Slămnești',
   },
   {
     id: 11216,
     countyId: 44,
-    name: 'Slanic',
+    name: 'Slănic',
   },
   {
     id: 11217,
     countyId: 3,
-    name: 'Slanic',
+    name: 'Slănic',
   },
   {
     id: 11218,
     countyId: 5,
-    name: 'Slanic-Moldova',
+    name: 'Slănic-Moldova',
   },
   {
     id: 11219,
     countyId: 40,
-    name: 'Slasoma',
+    name: 'Slașoma',
   },
   {
     id: 11220,
@@ -56082,12 +56082,12 @@ export const CITIES = [
   {
     id: 11223,
     countyId: 2,
-    name: 'Slatina de Cris',
+    name: 'Slatina de Criș',
   },
   {
     id: 11224,
     countyId: 2,
-    name: 'Slatina de Mures',
+    name: 'Slatina de Mureș',
   },
   {
     id: 11225,
@@ -56097,92 +56097,92 @@ export const CITIES = [
   {
     id: 11226,
     countyId: 20,
-    name: 'Slatina-Timis',
+    name: 'Slatina-Timiș',
   },
   {
     id: 11227,
     countyId: 40,
-    name: 'Slatinicu Mare',
+    name: 'Slătinicu Mare',
   },
   {
     id: 11228,
     countyId: 40,
-    name: 'Slatinicu Mic',
+    name: 'Slătinicu Mic',
   },
   {
     id: 11229,
     countyId: 33,
-    name: 'Slatinioara',
+    name: 'Slătinioara',
   },
   {
     id: 11230,
     countyId: 7,
-    name: 'Slatinita',
+    name: 'Slătinița',
   },
   {
     id: 11231,
     countyId: 39,
-    name: 'Slatioara',
+    name: 'Slătioara',
   },
   {
     id: 11232,
     countyId: 52,
-    name: 'Slatioara',
+    name: 'Slătioara',
   },
   {
     id: 11233,
     countyId: 43,
-    name: 'Slatioara',
+    name: 'Slătioara',
   },
   {
     id: 11234,
     countyId: 48,
-    name: 'Slatioara (Rasca)',
+    name: 'Slătioara (Râșca)',
   },
   {
     id: 11235,
     countyId: 48,
-    name: 'Slatioara (Stulpicani)',
+    name: 'Slătioara (Stulpicani)',
   },
   {
     id: 11236,
     countyId: 34,
-    name: 'Slatioarele',
+    name: 'Slătioarele',
   },
   {
     id: 11237,
     countyId: 3,
-    name: 'Slatioarele',
+    name: 'Slătioarele',
   },
   {
     id: 11238,
     countyId: 52,
-    name: 'Slatioarele',
+    name: 'Slătioarele',
   },
   {
     id: 11239,
     countyId: 51,
-    name: 'Slava Cercheza',
+    name: 'Slava Cercheză',
   },
   {
     id: 11240,
     countyId: 51,
-    name: 'Slava Rusa',
+    name: 'Slava Rusă',
   },
   {
     id: 11241,
     countyId: 43,
-    name: 'Slaveni',
+    name: 'Slăveni',
   },
   {
     id: 11242,
     countyId: 49,
-    name: 'Slavesti',
+    name: 'Slăvești',
   },
   {
     id: 11243,
     countyId: 52,
-    name: 'Slavitesti',
+    name: 'Slăvitești',
   },
   {
     id: 11244,
@@ -56192,7 +56192,7 @@ export const CITIES = [
   {
     id: 11245,
     countyId: 30,
-    name: 'Slavuta',
+    name: 'Slăvuța',
   },
   {
     id: 11246,
@@ -56207,7 +56207,7 @@ export const CITIES = [
   {
     id: 11248,
     countyId: 30,
-    name: 'Slivilesti',
+    name: 'Slivilești',
   },
   {
     id: 11249,
@@ -56257,7 +56257,7 @@ export const CITIES = [
   {
     id: 11258,
     countyId: 8,
-    name: 'Slobozia (Broscauti)',
+    name: 'Slobozia (Broscăuți)',
   },
   {
     id: 11259,
@@ -56272,7 +56272,7 @@ export const CITIES = [
   {
     id: 11261,
     countyId: 48,
-    name: 'Slobozia (Fantanele)',
+    name: 'Slobozia (Fântânele)',
   },
   {
     id: 11262,
@@ -56282,17 +56282,17 @@ export const CITIES = [
   {
     id: 11263,
     countyId: 5,
-    name: 'Slobozia (Onesti)',
+    name: 'Slobozia (Onești)',
   },
   {
     id: 11264,
     countyId: 8,
-    name: 'Slobozia (Paltinis)',
+    name: 'Slobozia (Păltiniș)',
   },
   {
     id: 11265,
     countyId: 3,
-    name: 'Slobozia (Popesti)',
+    name: 'Slobozia (Popești)',
   },
   {
     id: 11266,
@@ -56307,42 +56307,42 @@ export const CITIES = [
   {
     id: 11268,
     countyId: 35,
-    name: 'Slobozia (Siretel)',
+    name: 'Slobozia (Sirețel)',
   },
   {
     id: 11269,
     countyId: 5,
-    name: 'Slobozia (Stanisesti)',
+    name: 'Slobozia (Stănișești)',
   },
   {
     id: 11270,
     countyId: 3,
-    name: 'Slobozia (Stoenesti)',
+    name: 'Slobozia (Stoenești)',
   },
   {
     id: 11271,
     countyId: 5,
-    name: 'Slobozia (Urechesti)',
+    name: 'Slobozia (Urechești)',
   },
   {
     id: 11272,
     countyId: 35,
-    name: 'Slobozia (Voinesti)',
+    name: 'Slobozia (Voinești)',
   },
   {
     id: 11273,
     countyId: 48,
-    name: 'Slobozia (Zvoristea)',
+    name: 'Slobozia (Zvoriștea)',
   },
   {
     id: 11274,
     countyId: 28,
-    name: 'Slobozia Blaneasa',
+    name: 'Slobozia Blăneasa',
   },
   {
     id: 11275,
     countyId: 54,
-    name: 'Slobozia Botesti',
+    name: 'Slobozia Botești',
   },
   {
     id: 11276,
@@ -56352,7 +56352,7 @@ export const CITIES = [
   {
     id: 11277,
     countyId: 54,
-    name: 'Slobozia Ciorasti',
+    name: 'Slobozia Ciorăști',
   },
   {
     id: 11278,
@@ -56367,27 +56367,27 @@ export const CITIES = [
   {
     id: 11280,
     countyId: 8,
-    name: 'Slobozia Hanesti',
+    name: 'Slobozia Hănești',
   },
   {
     id: 11281,
     countyId: 49,
-    name: 'Slobozia Mandra',
+    name: 'Slobozia Mândra',
   },
   {
     id: 11282,
     countyId: 24,
-    name: 'Slobozia Moara',
+    name: 'Slobozia Moară',
   },
   {
     id: 11283,
     countyId: 5,
-    name: 'Slobozia Noua',
+    name: 'Slobozia Nouă',
   },
   {
     id: 11284,
     countyId: 34,
-    name: 'Slobozia Noua',
+    name: 'Slobozia Nouă',
   },
   {
     id: 11285,
@@ -56397,7 +56397,7 @@ export const CITIES = [
   {
     id: 11286,
     countyId: 8,
-    name: 'Slobozia Siliscani',
+    name: 'Slobozia Silișcani',
   },
   {
     id: 11287,
@@ -56417,42 +56417,42 @@ export const CITIES = [
   {
     id: 11290,
     countyId: 40,
-    name: 'Smadovita',
+    name: 'Smadovița',
   },
   {
     id: 11291,
     countyId: 8,
-    name: 'Smardan',
+    name: 'Smârdan',
   },
   {
     id: 11292,
     countyId: 25,
-    name: 'Smardan',
+    name: 'Smârdan',
   },
   {
     id: 11293,
     countyId: 51,
-    name: 'Smardan',
+    name: 'Smârdan',
   },
   {
     id: 11294,
     countyId: 18,
-    name: 'Smardan',
+    name: 'Smârdan',
   },
   {
     id: 11295,
     countyId: 28,
-    name: 'Smardan',
+    name: 'Smârdan',
   },
   {
     id: 11296,
     countyId: 49,
-    name: 'Smardan',
+    name: 'Smârdan',
   },
   {
     id: 11297,
     countyId: 49,
-    name: 'Smardioasa',
+    name: 'Smârdioasa',
   },
   {
     id: 11298,
@@ -56462,7 +56462,7 @@ export const CITIES = [
   {
     id: 11299,
     countyId: 18,
-    name: 'Smeesti',
+    name: 'Smeești',
   },
   {
     id: 11300,
@@ -56487,7 +56487,7 @@ export const CITIES = [
   {
     id: 11304,
     countyId: 47,
-    name: 'Smig',
+    name: 'Șmig',
   },
   {
     id: 11305,
@@ -56497,7 +56497,7 @@ export const CITIES = [
   {
     id: 11306,
     countyId: 28,
-    name: 'Smulti',
+    name: 'Smulți',
   },
   {
     id: 11307,
@@ -56507,7 +56507,7 @@ export const CITIES = [
   {
     id: 11308,
     countyId: 52,
-    name: 'Snamana',
+    name: 'Snamăna',
   },
   {
     id: 11309,
@@ -56517,22 +56517,22 @@ export const CITIES = [
   {
     id: 11310,
     countyId: 1,
-    name: 'Soal',
+    name: 'Șoal',
   },
   {
     id: 11311,
     countyId: 47,
-    name: 'Soala',
+    name: 'Șoala',
   },
   {
     id: 11312,
     countyId: 41,
-    name: 'Soard',
+    name: 'Șoard',
   },
   {
     id: 11313,
     countyId: 10,
-    name: 'Soars',
+    name: 'Șoarș',
   },
   {
     id: 11314,
@@ -56592,7 +56592,7 @@ export const CITIES = [
   {
     id: 11325,
     countyId: 42,
-    name: 'Soci (Stefan cel Mare)',
+    name: 'Soci (Ștefan cel Mare)',
   },
   {
     id: 11326,
@@ -56617,7 +56617,7 @@ export const CITIES = [
   {
     id: 11330,
     countyId: 41,
-    name: 'Socolu de Campie',
+    name: 'Socolu de Câmpie',
   },
   {
     id: 11331,
@@ -56652,12 +56652,12 @@ export const CITIES = [
   {
     id: 11337,
     countyId: 2,
-    name: 'Sofronea',
+    name: 'Șofronea',
   },
   {
     id: 11338,
     countyId: 53,
-    name: 'Sofronesti',
+    name: 'Sofronești',
   },
   {
     id: 11339,
@@ -56712,92 +56712,92 @@ export const CITIES = [
   {
     id: 11349,
     countyId: 1,
-    name: 'Soicesti',
+    name: 'Șoicești',
   },
   {
     id: 11350,
     countyId: 42,
-    name: 'Soimaresti',
+    name: 'Șoimărești',
   },
   {
     id: 11351,
     countyId: 44,
-    name: 'Soimari',
+    name: 'Șoimari',
   },
   {
     id: 11352,
     countyId: 31,
-    name: 'Soimeni',
+    name: 'Șoimeni',
   },
   {
     id: 11353,
     countyId: 21,
-    name: 'Soimeni',
+    name: 'Șoimeni',
   },
   {
     id: 11354,
     countyId: 44,
-    name: 'Soimesti',
+    name: 'Șoimești',
   },
   {
     id: 11355,
     countyId: 6,
-    name: 'Soimi',
+    name: 'Șoimi',
   },
   {
     id: 11356,
     countyId: 2,
-    name: 'Soimos',
+    name: 'Șoimoș',
   },
   {
     id: 11357,
     countyId: 49,
-    name: 'Soimu',
+    name: 'Șoimu',
   },
   {
     id: 11358,
     countyId: 6,
-    name: 'Soimus',
+    name: 'Șoimuș',
   },
   {
     id: 11359,
     countyId: 33,
-    name: 'Soimus',
+    name: 'Șoimuș',
   },
   {
     id: 11360,
     countyId: 45,
-    name: 'Soimus',
+    name: 'Șoimuș',
   },
   {
     id: 11361,
     countyId: 1,
-    name: 'Soimus',
+    name: 'Șoimuș',
   },
   {
     id: 11362,
     countyId: 7,
-    name: 'Soimus',
+    name: 'Șoimuș',
   },
   {
     id: 11363,
     countyId: 41,
-    name: 'Soimus',
+    name: 'Șoimuș',
   },
   {
     id: 11364,
     countyId: 45,
-    name: 'Soimuseni',
+    name: 'Șoimușeni',
   },
   {
     id: 11365,
     countyId: 31,
-    name: 'Soimusu Mare',
+    name: 'Șoimușu Mare',
   },
   {
     id: 11366,
     countyId: 31,
-    name: 'Soimusu Mic',
+    name: 'Șoimușu Mic',
   },
   {
     id: 11367,
@@ -56817,17 +56817,17 @@ export const CITIES = [
   {
     id: 11370,
     countyId: 48,
-    name: 'Soldanesti',
+    name: 'Șoldănești',
   },
   {
     id: 11371,
     countyId: 8,
-    name: 'Soldanesti',
+    name: 'Șoldănești',
   },
   {
     id: 11372,
     countyId: 19,
-    name: 'Soldanu',
+    name: 'Șoldanu',
   },
   {
     id: 11373,
@@ -56837,12 +56837,12 @@ export const CITIES = [
   {
     id: 11374,
     countyId: 53,
-    name: 'Solesti',
+    name: 'Solești',
   },
   {
     id: 11375,
     countyId: 52,
-    name: 'Solicesti',
+    name: 'Șolicești',
   },
   {
     id: 11376,
@@ -56862,87 +56862,87 @@ export const CITIES = [
   {
     id: 11379,
     countyId: 35,
-    name: 'Solonet',
+    name: 'Soloneț',
   },
   {
     id: 11380,
     countyId: 48,
-    name: 'Solonet',
+    name: 'Soloneț',
   },
   {
     id: 11381,
     countyId: 48,
-    name: 'Solonetu Nou',
+    name: 'Solonețu Nou',
   },
   {
     id: 11382,
     countyId: 5,
-    name: 'Solont',
+    name: 'Solonț',
   },
   {
     id: 11383,
     countyId: 41,
-    name: 'Solovastru',
+    name: 'Solovăstru',
   },
   {
     id: 11384,
     countyId: 30,
-    name: 'Somanesti',
+    name: 'Șomănești',
   },
   {
     id: 11385,
     countyId: 47,
-    name: 'Somartin',
+    name: 'Șomartin',
   },
   {
     id: 11386,
     countyId: 39,
-    name: 'Somcuta Mare',
+    name: 'Șomcuta Mare',
   },
   {
     id: 11387,
     countyId: 21,
-    name: 'Somcutu Mic',
+    name: 'Șomcutu Mic',
   },
   {
     id: 11388,
     countyId: 45,
-    name: 'Somes-Guruslau',
+    name: 'Someș-Guruslău',
   },
   {
     id: 11389,
     countyId: 45,
-    name: 'Somes-Odorhei',
+    name: 'Someș-Odorhei',
   },
   {
     id: 11390,
     countyId: 39,
-    name: 'Somes-Uileac',
+    name: 'Someș-Uileac',
   },
   {
     id: 11391,
     countyId: 46,
-    name: 'Someseni',
+    name: 'Someșeni',
   },
   {
     id: 11392,
     countyId: 21,
-    name: 'Somesu Cald',
+    name: 'Someșu Cald',
   },
   {
     id: 11393,
     countyId: 21,
-    name: 'Somesu Rece',
+    name: 'Someșu Rece',
   },
   {
     id: 11394,
     countyId: 2,
-    name: 'Somosches',
+    name: 'Șomoșcheș',
   },
   {
     id: 11395,
     countyId: 41,
-    name: 'Somostelnic',
+    name: 'Șomoștelnic',
   },
   {
     id: 11396,
@@ -56952,17 +56952,17 @@ export const CITIES = [
   {
     id: 11397,
     countyId: 5,
-    name: 'Somusca',
+    name: 'Somușca',
   },
   {
     id: 11398,
     countyId: 10,
-    name: 'Sona',
+    name: 'Șona',
   },
   {
     id: 11399,
     countyId: 1,
-    name: 'Sona',
+    name: 'Șona',
   },
   {
     id: 11400,
@@ -56972,17 +56972,17 @@ export const CITIES = [
   {
     id: 11401,
     countyId: 53,
-    name: 'Soparleni',
+    name: 'Șopârleni',
   },
   {
     id: 11402,
     countyId: 43,
-    name: 'Soparlita',
+    name: 'Șopârlița',
   },
   {
     id: 11403,
     countyId: 21,
-    name: 'Soporu de Campie',
+    name: 'Soporu de Câmpie',
   },
   {
     id: 11404,
@@ -56992,17 +56992,17 @@ export const CITIES = [
   {
     id: 11405,
     countyId: 20,
-    name: 'Sopotu Nou',
+    name: 'Șopotu Nou',
   },
   {
     id: 11406,
     countyId: 20,
-    name: 'Sopotu Vechi',
+    name: 'Șopotu Vechi',
   },
   {
     id: 11407,
     countyId: 7,
-    name: 'Sopteriu',
+    name: 'Șopteriu',
   },
   {
     id: 11408,
@@ -57012,12 +57012,12 @@ export const CITIES = [
   {
     id: 11409,
     countyId: 18,
-    name: 'Soresti',
+    name: 'Sorești',
   },
   {
     id: 11410,
     countyId: 1,
-    name: 'Sorlita',
+    name: 'Sorlița',
   },
   {
     id: 11411,
@@ -57032,42 +57032,42 @@ export const CITIES = [
   {
     id: 11413,
     countyId: 41,
-    name: 'Soromiclea',
+    name: 'Șoromiclea',
   },
   {
     id: 11414,
     countyId: 47,
-    name: 'Sorostin',
+    name: 'Soroștin',
   },
   {
     id: 11415,
     countyId: 20,
-    name: 'Sosdea',
+    name: 'Șoșdea',
   },
   {
     id: 11416,
     countyId: 24,
-    name: 'Sotanga',
+    name: 'Șotânga',
   },
   {
     id: 11417,
     countyId: 52,
-    name: 'Sotani',
+    name: 'Șotani',
   },
   {
     id: 11418,
     countyId: 54,
-    name: 'Sotarcari',
+    name: 'Șotârcari',
   },
   {
     id: 11419,
     countyId: 44,
-    name: 'Sotrile',
+    name: 'Șotrile',
   },
   {
     id: 11420,
     countyId: 40,
-    name: 'Sovarna',
+    name: 'Șovarna',
   },
   {
     id: 11421,
@@ -57082,7 +57082,7 @@ export const CITIES = [
   {
     id: 11423,
     countyId: 42,
-    name: 'Sovoaia',
+    name: 'Șovoaia',
   },
   {
     id: 11424,
@@ -57092,17 +57092,17 @@ export const CITIES = [
   {
     id: 11425,
     countyId: 1,
-    name: 'Spalnaca',
+    name: 'Șpălnaca',
   },
   {
     id: 11426,
     countyId: 19,
-    name: 'Spantov',
+    name: 'Spanțov',
   },
   {
     id: 11427,
     countyId: 52,
-    name: 'Sparleni',
+    name: 'Spârleni',
   },
   {
     id: 11428,
@@ -57112,42 +57112,42 @@ export const CITIES = [
   {
     id: 11429,
     countyId: 1,
-    name: 'Spatac',
+    name: 'Spătac',
   },
   {
     id: 11430,
     countyId: 54,
-    name: 'Spatareasa',
+    name: 'Spătăreasa',
   },
   {
     id: 11431,
     countyId: 49,
-    name: 'Spatarei',
+    name: 'Spătărei',
   },
   {
     id: 11432,
     countyId: 48,
-    name: 'Spataresti',
+    name: 'Spătărești',
   },
   {
     id: 11433,
     countyId: 18,
-    name: 'Spataru',
+    name: 'Spătaru',
   },
   {
     id: 11434,
     countyId: 43,
-    name: 'Spataru',
+    name: 'Spătaru',
   },
   {
     id: 11435,
     countyId: 24,
-    name: 'Sperieteni',
+    name: 'Speriețeni',
   },
   {
     id: 11436,
     countyId: 40,
-    name: 'Sperlesti',
+    name: 'Sperlești',
   },
   {
     id: 11437,
@@ -57162,7 +57162,7 @@ export const CITIES = [
   {
     id: 11439,
     countyId: 42,
-    name: 'Spiesti',
+    name: 'Spiești',
   },
   {
     id: 11440,
@@ -57182,7 +57182,7 @@ export const CITIES = [
   {
     id: 11443,
     countyId: 54,
-    name: 'Spinesti',
+    name: 'Spinești',
   },
   {
     id: 11444,
@@ -57202,17 +57202,17 @@ export const CITIES = [
   {
     id: 11447,
     countyId: 6,
-    name: 'Spinus',
+    name: 'Spinuș',
   },
   {
     id: 11448,
     countyId: 6,
-    name: 'Spinus de Pomezeu',
+    name: 'Spinuș de Pomezeu',
   },
   {
     id: 11449,
     countyId: 42,
-    name: 'Spiridonesti',
+    name: 'Spiridonești',
   },
   {
     id: 11450,
@@ -57227,12 +57227,12 @@ export const CITIES = [
   {
     id: 11452,
     countyId: 35,
-    name: 'Spranceana',
+    name: 'Sprânceana',
   },
   {
     id: 11453,
     countyId: 43,
-    name: 'Sprancenata',
+    name: 'Sprâncenata',
   },
   {
     id: 11454,
@@ -57242,7 +57242,7 @@ export const CITIES = [
   {
     id: 11455,
     countyId: 1,
-    name: 'Spring',
+    name: 'Șpring',
   },
   {
     id: 11456,
@@ -57252,22 +57252,22 @@ export const CITIES = [
   {
     id: 11457,
     countyId: 1,
-    name: 'Stalnisoara',
+    name: 'Stâlnișoara',
   },
   {
     id: 11458,
     countyId: 3,
-    name: 'Stalpeni',
+    name: 'Stâlpeni',
   },
   {
     id: 11459,
     countyId: 18,
-    name: 'Stalpu',
+    name: 'Stâlpu',
   },
   {
     id: 11460,
     countyId: 29,
-    name: 'Stalpu',
+    name: 'Stâlpu',
   },
   {
     id: 11461,
@@ -57277,12 +57277,12 @@ export const CITIES = [
   {
     id: 11462,
     countyId: 50,
-    name: 'Stamora Germana',
+    name: 'Stamora Germană',
   },
   {
     id: 11463,
     countyId: 50,
-    name: 'Stamora Romana',
+    name: 'Stamora Română',
   },
   {
     id: 11464,
@@ -57297,22 +57297,22 @@ export const CITIES = [
   {
     id: 11466,
     countyId: 46,
-    name: 'Stana',
+    name: 'Stâna',
   },
   {
     id: 11467,
     countyId: 1,
-    name: 'Stana de Mures',
+    name: 'Stâna de Mureș',
   },
   {
     id: 11468,
     countyId: 42,
-    name: 'Stanca',
+    name: 'Stânca',
   },
   {
     id: 11469,
     countyId: 51,
-    name: 'Stanca',
+    name: 'Stânca',
   },
   {
     id: 11470,
@@ -57322,32 +57322,32 @@ export const CITIES = [
   {
     id: 11471,
     countyId: 48,
-    name: 'Stanca',
+    name: 'Stânca',
   },
   {
     id: 11472,
     countyId: 35,
-    name: 'Stanca (Comarna)',
+    name: 'Stânca (Comarna)',
   },
   {
     id: 11473,
     countyId: 8,
-    name: 'Stanca (George Enescu)',
+    name: 'Stânca (George Enescu)',
   },
   {
     id: 11474,
     countyId: 8,
-    name: 'Stanca (Stefanesti)',
+    name: 'Stânca (Ștefănești)',
   },
   {
     id: 11475,
     countyId: 35,
-    name: 'Stanca (Victoria)',
+    name: 'Stânca (Victoria)',
   },
   {
     id: 11476,
     countyId: 53,
-    name: 'Stancaseni',
+    name: 'Stâncășeni',
   },
   {
     id: 11477,
@@ -57357,57 +57357,57 @@ export const CITIES = [
   {
     id: 11478,
     countyId: 41,
-    name: 'Stanceni',
+    name: 'Stânceni',
   },
   {
     id: 11479,
     countyId: 18,
-    name: 'Stancesti',
+    name: 'Stăncești',
   },
   {
     id: 11480,
     countyId: 40,
-    name: 'Stancesti',
+    name: 'Stăncești',
   },
   {
     id: 11481,
     countyId: 6,
-    name: 'Stancesti',
+    name: 'Stâncești',
   },
   {
     id: 11482,
     countyId: 33,
-    name: 'Stancesti',
+    name: 'Stâncești',
   },
   {
     id: 11483,
     countyId: 30,
-    name: 'Stancesti',
+    name: 'Stăncești',
   },
   {
     id: 11484,
     countyId: 44,
-    name: 'Stancesti',
+    name: 'Stăncești',
   },
   {
     id: 11485,
     countyId: 8,
-    name: 'Stancesti',
+    name: 'Stâncești',
   },
   {
     id: 11486,
     countyId: 30,
-    name: 'Stancesti-Larga',
+    name: 'Stăncești-Larga',
   },
   {
     id: 11487,
     countyId: 33,
-    name: 'Stancesti-Ohaba',
+    name: 'Stâncești-Ohaba',
   },
   {
     id: 11488,
     countyId: 20,
-    name: 'Stancilova',
+    name: 'Stăncilova',
   },
   {
     id: 11489,
@@ -57417,107 +57417,107 @@ export const CITIES = [
   {
     id: 11490,
     countyId: 52,
-    name: 'Stanculesti',
+    name: 'Stănculești',
   },
   {
     id: 11491,
     countyId: 33,
-    name: 'Stanculesti',
+    name: 'Stănculești',
   },
   {
     id: 11492,
     countyId: 48,
-    name: 'Stancuta',
+    name: 'Stâncuța',
   },
   {
     id: 11493,
     countyId: 9,
-    name: 'Stancuta',
+    name: 'Stăncuța',
   },
   {
     id: 11494,
     countyId: 3,
-    name: 'Stanesti',
+    name: 'Stănești',
   },
   {
     id: 11495,
     countyId: 24,
-    name: 'Stanesti',
+    name: 'Stănești',
   },
   {
     id: 11496,
     countyId: 29,
-    name: 'Stanesti',
+    name: 'Stănești',
   },
   {
     id: 11497,
     countyId: 52,
-    name: 'Stanesti',
+    name: 'Stănești',
   },
   {
     id: 11498,
     countyId: 1,
-    name: 'Stanesti',
+    name: 'Stănești',
   },
   {
     id: 11499,
     countyId: 5,
-    name: 'Stanesti',
+    name: 'Stănești',
   },
   {
     id: 11500,
     countyId: 30,
-    name: 'Stanesti',
+    name: 'Stănești',
   },
   {
     id: 11501,
     countyId: 40,
-    name: 'Stanesti',
+    name: 'Stănești',
   },
   {
     id: 11502,
     countyId: 52,
-    name: 'Stanesti (Stoilesti)',
+    name: 'Stănești (Stoilești)',
   },
   {
     id: 11503,
     countyId: 52,
-    name: 'Stanesti-Lunca',
+    name: 'Stănești-Lunca',
   },
   {
     id: 11504,
     countyId: 40,
-    name: 'Stangaceaua',
+    name: 'Stângăceaua',
   },
   {
     id: 11505,
     countyId: 3,
-    name: 'Stanicei',
+    name: 'Stănicei',
   },
   {
     id: 11506,
     countyId: 33,
-    name: 'Stanija',
+    name: 'Stănija',
   },
   {
     id: 11507,
     countyId: 18,
-    name: 'Stanila',
+    name: 'Stănila',
   },
   {
     id: 11508,
     countyId: 53,
-    name: 'Stanilesti',
+    name: 'Stănilești',
   },
   {
     id: 11509,
     countyId: 5,
-    name: 'Stanisesti',
+    name: 'Stănișești',
   },
   {
     id: 11510,
     countyId: 42,
-    name: 'Stanita',
+    name: 'Stănița',
   },
   {
     id: 11511,
@@ -57527,12 +57527,12 @@ export const CITIES = [
   {
     id: 11512,
     countyId: 43,
-    name: 'Stanuleasa (Samburesti)',
+    name: 'Stănuleasa (Sâmburești)',
   },
   {
     id: 11513,
     countyId: 43,
-    name: 'Stanuleasa (Vitomiresti)',
+    name: 'Stănuleasa (Vitomirești)',
   },
   {
     id: 11514,
@@ -57542,57 +57542,57 @@ export const CITIES = [
   {
     id: 11515,
     countyId: 3,
-    name: 'Starci',
+    name: 'Stârci',
   },
   {
     id: 11516,
     countyId: 45,
-    name: 'Starciu',
+    name: 'Stârciu',
   },
   {
     id: 11517,
     countyId: 21,
-    name: 'Starcu',
+    name: 'Stârcu',
   },
   {
     id: 11518,
     countyId: 24,
-    name: 'Statesti',
+    name: 'Stătești',
   },
   {
     id: 11519,
     countyId: 10,
-    name: 'Statiunea Climaterica Sambata',
+    name: 'Stațiunea Climaterică Sâmbăta',
   },
   {
     id: 11520,
     countyId: 22,
-    name: 'Statiunea Zoologica Marina Agigea',
+    name: 'Stațiunea Zoologică Marină Agigea',
   },
   {
     id: 11521,
     countyId: 8,
-    name: 'Stauceni',
+    name: 'Stăuceni',
   },
   {
     id: 11522,
     countyId: 33,
-    name: 'Stauini',
+    name: 'Stăuini',
   },
   {
     id: 11523,
     countyId: 1,
-    name: 'Stauini',
+    name: 'Stăuini',
   },
   {
     id: 11524,
     countyId: 18,
-    name: 'Stavarasti',
+    name: 'Stăvărăști',
   },
   {
     id: 11525,
     countyId: 43,
-    name: 'Stavaru',
+    name: 'Stăvaru',
   },
   {
     id: 11526,
@@ -57602,77 +57602,77 @@ export const CITIES = [
   {
     id: 11527,
     countyId: 3,
-    name: 'Stefan cel Mare',
+    name: 'Ștefan cel Mare',
   },
   {
     id: 11528,
     countyId: 19,
-    name: 'Stefan cel Mare',
+    name: 'Ștefan cel Mare',
   },
   {
     id: 11529,
     countyId: 42,
-    name: 'Stefan cel Mare',
+    name: 'Ștefan cel Mare',
   },
   {
     id: 11530,
     countyId: 53,
-    name: 'Stefan cel Mare',
+    name: 'Ștefan cel Mare',
   },
   {
     id: 11531,
     countyId: 5,
-    name: 'Stefan cel Mare',
+    name: 'Ștefan cel Mare',
   },
   {
     id: 11532,
     countyId: 22,
-    name: 'Stefan cel Mare',
+    name: 'Ștefan cel Mare',
   },
   {
     id: 11533,
     countyId: 43,
-    name: 'Stefan cel Mare',
+    name: 'Ștefan cel Mare',
   },
   {
     id: 11534,
     countyId: 19,
-    name: 'Stefan Voda',
+    name: 'Ștefan Vodă',
   },
   {
     id: 11535,
     countyId: 5,
-    name: 'Stefan Voda',
+    name: 'Ștefan Vodă',
   },
   {
     id: 11536,
     countyId: 41,
-    name: 'Stefanca',
+    name: 'Ștefanca',
   },
   {
     id: 11537,
     countyId: 1,
-    name: 'Stefanca',
+    name: 'Ștefanca',
   },
   {
     id: 11538,
     countyId: 41,
-    name: 'Stefaneaca',
+    name: 'Ștefăneaca',
   },
   {
     id: 11539,
     countyId: 25,
-    name: 'Stefanel',
+    name: 'Ștefănel',
   },
   {
     id: 11540,
     countyId: 8,
-    name: 'Stefanesti',
+    name: 'Ștefănești',
   },
   {
     id: 11541,
     countyId: 30,
-    name: 'Stefanesti',
+    name: 'Ștefănești',
   },
   {
     id: 11542,
@@ -57682,72 +57682,72 @@ export const CITIES = [
   {
     id: 11543,
     countyId: 19,
-    name: 'Stefanesti',
+    name: 'Ștefănești',
   },
   {
     id: 11544,
     countyId: 52,
-    name: 'Stefanesti',
+    name: 'Ștefănești',
   },
   {
     id: 11545,
     countyId: 52,
-    name: 'Stefanesti (Maciuca)',
+    name: 'Ștefănești (Măciuca)',
   },
   {
     id: 11546,
     countyId: 3,
-    name: 'Stefanesti (Suseni)',
+    name: 'Stefănești (Suseni)',
   },
   {
     id: 11547,
     countyId: 8,
-    name: 'Stefanesti-Sat',
+    name: 'Ștefănești-Sat',
   },
   {
     id: 11548,
     countyId: 36,
-    name: 'Stefanestii de Jos',
+    name: 'Ștefăneștii de Jos',
   },
   {
     id: 11549,
     countyId: 36,
-    name: 'Stefanestii de Sus',
+    name: 'Ștefăneștii de Sus',
   },
   {
     id: 11550,
     countyId: 3,
-    name: 'Stefanestii Noi',
+    name: 'Ștefăneștii Noi',
   },
   {
     id: 11551,
     countyId: 49,
-    name: 'Stefeni',
+    name: 'Ștefeni',
   },
   {
     id: 11552,
     countyId: 44,
-    name: 'Stefesti',
+    name: 'Ștefești',
   },
   {
     id: 11553,
     countyId: 6,
-    name: 'Stei',
+    name: 'Ștei',
   },
   {
     id: 11554,
     countyId: 33,
-    name: 'Stei',
+    name: 'Ștei',
   },
   {
     id: 11555,
     countyId: 1,
-    name: 'Stei-Arieseni',
+    name: 'Ștei-Arieșeni',
   },
   {
     id: 11556,
     countyId: 33,
-    name: 'Steia',
+    name: 'Șteia',
   },
   {
     id: 11557,
@@ -57767,12 +57767,12 @@ export const CITIES = [
   {
     id: 11560,
     countyId: 33,
-    name: 'Stejarel',
+    name: 'Stejărel',
   },
   {
     id: 11561,
     countyId: 41,
-    name: 'Stejarenii',
+    name: 'Stejărenii',
   },
   {
     id: 11562,
@@ -57792,7 +57792,7 @@ export const CITIES = [
   {
     id: 11565,
     countyId: 47,
-    name: 'Stejarisu',
+    name: 'Stejărișu',
   },
   {
     id: 11566,
@@ -57852,22 +57852,22 @@ export const CITIES = [
   {
     id: 11577,
     countyId: 49,
-    name: 'Stejaru (Crangeni)',
+    name: 'Stejaru (Crângeni)',
   },
   {
     id: 11578,
     countyId: 42,
-    name: 'Stejaru (Farcasa)',
+    name: 'Stejaru (Farcașa)',
   },
   {
     id: 11579,
     countyId: 42,
-    name: 'Stejaru (Ion Creanga)',
+    name: 'Stejaru (Ion Creangă)',
   },
   {
     id: 11580,
     countyId: 42,
-    name: 'Stejaru (Pangarati)',
+    name: 'Stejaru (Pângărați)',
   },
   {
     id: 11581,
@@ -57882,12 +57882,12 @@ export const CITIES = [
   {
     id: 11583,
     countyId: 21,
-    name: 'Stejeris',
+    name: 'Stejeriș',
   },
   {
     id: 11584,
     countyId: 41,
-    name: 'Stejeris',
+    name: 'Stejeriș',
   },
   {
     id: 11585,
@@ -57897,7 +57897,7 @@ export const CITIES = [
   {
     id: 11586,
     countyId: 47,
-    name: 'Stenea',
+    name: 'Ștenea',
   },
   {
     id: 11587,
@@ -57912,82 +57912,82 @@ export const CITIES = [
   {
     id: 11589,
     countyId: 1,
-    name: 'Stertesti',
+    name: 'Ștertești',
   },
   {
     id: 11590,
     countyId: 35,
-    name: 'Sticlaria',
+    name: 'Sticlăria',
   },
   {
     id: 11591,
     countyId: 28,
-    name: 'Stietesti',
+    name: 'Știețești',
   },
   {
     id: 11592,
     countyId: 40,
-    name: 'Stignita',
+    name: 'Stignița',
   },
   {
     id: 11593,
     countyId: 20,
-    name: 'Stinapari',
+    name: 'Știnăpari',
   },
   {
     id: 11594,
     countyId: 53,
-    name: 'Stioborani',
+    name: 'Știoborăni',
   },
   {
     id: 11595,
     countyId: 48,
-    name: 'Stirbat',
+    name: 'Știrbăț',
   },
   {
     id: 11596,
     countyId: 52,
-    name: 'Stirbesti',
+    name: 'Știrbești',
   },
   {
     id: 11597,
     countyId: 40,
-    name: 'Stircovita',
+    name: 'Ștircovița',
   },
   {
     id: 11598,
     countyId: 25,
-    name: 'Stiubei',
+    name: 'Știubei',
   },
   {
     id: 11599,
     countyId: 18,
-    name: 'Stiubei',
+    name: 'Știubei',
   },
   {
     id: 11600,
     countyId: 8,
-    name: 'Stiubieni',
+    name: 'Știubieni',
   },
   {
     id: 11601,
     countyId: 50,
-    name: 'Stiuca',
+    name: 'Știuca',
   },
   {
     id: 11602,
     countyId: 30,
-    name: 'Stiucani',
+    name: 'Știucani',
   },
   {
     id: 11603,
     countyId: 1,
-    name: 'Stiuleti',
+    name: 'Știuleți',
   },
   {
     id: 11604,
     countyId: 43,
-    name: 'Stoborasti',
+    name: 'Stoborăști',
   },
   {
     id: 11605,
@@ -57997,42 +57997,42 @@ export const CITIES = [
   {
     id: 11606,
     countyId: 19,
-    name: 'Stoenesti',
+    name: 'Stoenești',
   },
   {
     id: 11607,
     countyId: 43,
-    name: 'Stoenesti',
+    name: 'Stoenești',
   },
   {
     id: 11608,
     countyId: 52,
-    name: 'Stoenesti',
+    name: 'Stoenești',
   },
   {
     id: 11609,
     countyId: 3,
-    name: 'Stoenesti',
+    name: 'Stoenești',
   },
   {
     id: 11610,
     countyId: 29,
-    name: 'Stoenesti',
+    name: 'Stoenești',
   },
   {
     id: 11611,
     countyId: 44,
-    name: 'Stoenesti',
+    name: 'Stoenești',
   },
   {
     id: 11612,
     countyId: 52,
-    name: 'Stoenesti (Berislavesti)',
+    name: 'Stoenești (Berislăvești)',
   },
   {
     id: 11613,
     countyId: 29,
-    name: 'Stoenesti (Floresti-Stoenesti)',
+    name: 'Stoenești (Florești-Stoenești)',
   },
   {
     id: 11614,
@@ -58042,12 +58042,12 @@ export const CITIES = [
   {
     id: 11615,
     countyId: 43,
-    name: 'Stoicanesti',
+    name: 'Stoicănești',
   },
   {
     id: 11616,
     countyId: 52,
-    name: 'Stoicanesti',
+    name: 'Stoicănești',
   },
   {
     id: 11617,
@@ -58062,12 +58062,12 @@ export const CITIES = [
   {
     id: 11619,
     countyId: 25,
-    name: 'Stoicesti',
+    name: 'Stoicești',
   },
   {
     id: 11620,
     countyId: 52,
-    name: 'Stoiculesti',
+    name: 'Stoiculești',
   },
   {
     id: 11621,
@@ -58077,12 +58077,12 @@ export const CITIES = [
   {
     id: 11622,
     countyId: 9,
-    name: 'Stoienesti',
+    name: 'Stoienești',
   },
   {
     id: 11623,
     countyId: 52,
-    name: 'Stoilesti',
+    name: 'Stoilești',
   },
   {
     id: 11624,
@@ -58092,12 +58092,12 @@ export const CITIES = [
   {
     id: 11625,
     countyId: 2,
-    name: 'Stoinesti',
+    name: 'Stoinești',
   },
   {
     id: 11626,
     countyId: 53,
-    name: 'Stoisesti',
+    name: 'Stoișești',
   },
   {
     id: 11627,
@@ -58117,7 +58117,7 @@ export const CITIES = [
   {
     id: 11630,
     countyId: 35,
-    name: 'Stolniceni-Prajescu',
+    name: 'Stolniceni-Prăjescu',
   },
   {
     id: 11631,
@@ -58132,27 +58132,27 @@ export const CITIES = [
   {
     id: 11633,
     countyId: 8,
-    name: 'Storesti',
+    name: 'Storești',
   },
   {
     id: 11634,
     countyId: 35,
-    name: 'Stornesti',
+    name: 'Stornești',
   },
   {
     id: 11635,
     countyId: 49,
-    name: 'Storobaneasa',
+    name: 'Ștorobăneasa',
   },
   {
     id: 11636,
     countyId: 52,
-    name: 'Strachinesti',
+    name: 'Străchinești',
   },
   {
     id: 11637,
     countyId: 6,
-    name: 'Stracos',
+    name: 'Stracoș',
   },
   {
     id: 11638,
@@ -58187,7 +58187,7 @@ export const CITIES = [
   {
     id: 11644,
     countyId: 21,
-    name: 'Straja (Capusu Mare)',
+    name: 'Straja (Căpușu Mare)',
   },
   {
     id: 11645,
@@ -58197,92 +58197,92 @@ export const CITIES = [
   {
     id: 11646,
     countyId: 54,
-    name: 'Strajescu',
+    name: 'Străjescu',
   },
   {
     id: 11647,
     countyId: 7,
-    name: 'Stramba',
+    name: 'Strâmba',
   },
   {
     id: 11648,
     countyId: 30,
-    name: 'Stramba-Jiu',
+    name: 'Strâmba-Jiu',
   },
   {
     id: 11649,
     countyId: 30,
-    name: 'Stramba-Vulcan',
+    name: 'Strâmba-Vulcan',
   },
   {
     id: 11650,
     countyId: 3,
-    name: 'Strambeni (Caldararu)',
+    name: 'Strâmbeni (Căldăraru)',
   },
   {
     id: 11651,
     countyId: 3,
-    name: 'Strambeni (Suseni)',
+    name: 'Strâmbeni (Suseni)',
   },
   {
     id: 11652,
     countyId: 21,
-    name: 'Strambu',
+    name: 'Strâmbu',
   },
   {
     id: 11653,
     countyId: 39,
-    name: 'Strambu-Baiut',
+    name: 'Strâmbu-Băiuț',
   },
   {
     id: 11654,
     countyId: 5,
-    name: 'Straminoasa',
+    name: 'Străminoasa',
   },
   {
     id: 11655,
     countyId: 30,
-    name: 'Stramtu',
+    name: 'Strâmtu',
   },
   {
     id: 11656,
     countyId: 48,
-    name: 'Stramtura',
+    name: 'Strâmtura',
   },
   {
     id: 11657,
     countyId: 39,
-    name: 'Stramtura',
+    name: 'Strâmtura',
   },
   {
     id: 11658,
     countyId: 53,
-    name: 'Stramtura-Mitoc',
+    name: 'Strâmtura-Mitoc',
   },
   {
     id: 11659,
     countyId: 54,
-    name: 'Straoane',
+    name: 'Străoane',
   },
   {
     id: 11660,
     countyId: 44,
-    name: 'Straosti',
+    name: 'Străoști',
   },
   {
     id: 11661,
     countyId: 24,
-    name: 'Straosti',
+    name: 'Străoști',
   },
   {
     id: 11662,
     countyId: 8,
-    name: 'Strateni',
+    name: 'Străteni',
   },
   {
     id: 11663,
     countyId: 24,
-    name: 'Stratonesti',
+    name: 'Stratonești',
   },
   {
     id: 11664,
@@ -58297,22 +58297,22 @@ export const CITIES = [
   {
     id: 11666,
     countyId: 33,
-    name: 'Strei-Sacel',
+    name: 'Strei-Săcel',
   },
   {
     id: 11667,
     countyId: 33,
-    name: 'Streisangeorgiu',
+    name: 'Streisângeorgiu',
   },
   {
     id: 11668,
     countyId: 43,
-    name: 'Strejesti',
+    name: 'Strejești',
   },
   {
     id: 11669,
     countyId: 43,
-    name: 'Strejestii de Sus',
+    name: 'Strejeștii de Sus',
   },
   {
     id: 11670,
@@ -58327,12 +58327,12 @@ export const CITIES = [
   {
     id: 11672,
     countyId: 39,
-    name: 'Stremt',
+    name: 'Stremț',
   },
   {
     id: 11673,
     countyId: 1,
-    name: 'Stremt',
+    name: 'Stremț',
   },
   {
     id: 11674,
@@ -58352,47 +58352,47 @@ export const CITIES = [
   {
     id: 11677,
     countyId: 3,
-    name: 'Stroesti',
+    name: 'Stroești',
   },
   {
     id: 11678,
     countyId: 35,
-    name: 'Stroesti',
+    name: 'Stroești',
   },
   {
     id: 11679,
     countyId: 52,
-    name: 'Stroesti',
+    name: 'Stroești',
   },
   {
     id: 11680,
     countyId: 18,
-    name: 'Stroesti',
+    name: 'Stroești',
   },
   {
     id: 11681,
     countyId: 40,
-    name: 'Stroesti',
+    name: 'Stroești',
   },
   {
     id: 11682,
     countyId: 30,
-    name: 'Stroiesti',
+    name: 'Stroiești',
   },
   {
     id: 11683,
     countyId: 53,
-    name: 'Stroiesti',
+    name: 'Stroiești',
   },
   {
     id: 11684,
     countyId: 8,
-    name: 'Stroiesti',
+    name: 'Stroiești',
   },
   {
     id: 11685,
     countyId: 48,
-    name: 'Stroiesti',
+    name: 'Stroiești',
   },
   {
     id: 11686,
@@ -58437,12 +58437,12 @@ export const CITIES = [
   {
     id: 11694,
     countyId: 24,
-    name: 'Stubeie Tisa',
+    name: 'Ștubeie Tisa',
   },
   {
     id: 11695,
     countyId: 44,
-    name: 'Stubeiu',
+    name: 'Ștubeiu',
   },
   {
     id: 11696,
@@ -58462,7 +58462,7 @@ export const CITIES = [
   {
     id: 11699,
     countyId: 43,
-    name: 'Studinita',
+    name: 'Studinița',
   },
   {
     id: 11700,
@@ -58472,7 +58472,7 @@ export const CITIES = [
   {
     id: 11701,
     countyId: 53,
-    name: 'Stuhulet',
+    name: 'Stuhuleț',
   },
   {
     id: 11702,
@@ -58482,7 +58482,7 @@ export const CITIES = [
   {
     id: 11703,
     countyId: 52,
-    name: 'Stuparei',
+    name: 'Stupărei',
   },
   {
     id: 11704,
@@ -58522,7 +58522,7 @@ export const CITIES = [
   {
     id: 11711,
     countyId: 21,
-    name: 'Suaras',
+    name: 'Suarăș',
   },
   {
     id: 11712,
@@ -58542,12 +58542,12 @@ export const CITIES = [
   {
     id: 11715,
     countyId: 21,
-    name: 'Sub Coasta',
+    name: 'Sub Coastă',
   },
   {
     id: 11716,
     countyId: 20,
-    name: 'Sub Crang',
+    name: 'Sub Crâng',
   },
   {
     id: 11717,
@@ -58562,12 +58562,12 @@ export const CITIES = [
   {
     id: 11719,
     countyId: 41,
-    name: 'Sub Padure',
+    name: 'Sub Pădure',
   },
   {
     id: 11720,
     countyId: 1,
-    name: 'Sub Piatra',
+    name: 'Sub Piatră',
   },
   {
     id: 11721,
@@ -58587,7 +58587,7 @@ export const CITIES = [
   {
     id: 11724,
     countyId: 6,
-    name: 'Subpiatra',
+    name: 'Subpiatră',
   },
   {
     id: 11725,
@@ -58602,7 +58602,7 @@ export const CITIES = [
   {
     id: 11727,
     countyId: 1,
-    name: 'Sucesti',
+    name: 'Sucești',
   },
   {
     id: 11728,
@@ -58617,12 +58617,12 @@ export const CITIES = [
   {
     id: 11730,
     countyId: 48,
-    name: 'Sucevita',
+    name: 'Sucevița',
   },
   {
     id: 11731,
     countyId: 18,
-    name: 'Suchea',
+    name: 'Șuchea',
   },
   {
     id: 11732,
@@ -58642,22 +58642,22 @@ export const CITIES = [
   {
     id: 11735,
     countyId: 34,
-    name: 'Suditi',
+    name: 'Sudiți',
   },
   {
     id: 11736,
     countyId: 18,
-    name: 'Suditi (Gheraseni)',
+    name: 'Sudiți (Gherăseni)',
   },
   {
     id: 11737,
     countyId: 18,
-    name: 'Suditi (Posta Calnau)',
+    name: 'Sudiți (Poșta Câlnău)',
   },
   {
     id: 11738,
     countyId: 50,
-    name: 'Sudrias',
+    name: 'Sudriaș',
   },
   {
     id: 11739,
@@ -58672,17 +58672,17 @@ export const CITIES = [
   {
     id: 11741,
     countyId: 46,
-    name: 'Sudurau',
+    name: 'Sudurău',
   },
   {
     id: 11742,
     countyId: 1,
-    name: 'Sugag',
+    name: 'Șugag',
   },
   {
     id: 11743,
     countyId: 39,
-    name: 'Sugau',
+    name: 'Șugău',
   },
   {
     id: 11744,
@@ -58692,7 +58692,7 @@ export const CITIES = [
   {
     id: 11745,
     countyId: 8,
-    name: 'Suharau',
+    name: 'Suharău',
   },
   {
     id: 11746,
@@ -58707,7 +58707,7 @@ export const CITIES = [
   {
     id: 11748,
     countyId: 35,
-    name: 'Suhulet',
+    name: 'Suhuleț',
   },
   {
     id: 11749,
@@ -58717,17 +58717,17 @@ export const CITIES = [
   {
     id: 11750,
     countyId: 43,
-    name: 'Suica',
+    name: 'Șuica',
   },
   {
     id: 11751,
     countyId: 3,
-    name: 'Suici',
+    name: 'Șuici',
   },
   {
     id: 11752,
     countyId: 52,
-    name: 'Suiesti',
+    name: 'Suiești',
   },
   {
     id: 11753,
@@ -58737,7 +58737,7 @@ export const CITIES = [
   {
     id: 11754,
     countyId: 53,
-    name: 'Suletea',
+    name: 'Șuletea',
   },
   {
     id: 11755,
@@ -58752,12 +58752,12 @@ export const CITIES = [
   {
     id: 11757,
     countyId: 8,
-    name: 'Sulita',
+    name: 'Sulița',
   },
   {
     id: 11758,
     countyId: 5,
-    name: 'Sulta',
+    name: 'Sulța',
   },
   {
     id: 11759,
@@ -58772,22 +58772,22 @@ export const CITIES = [
   {
     id: 11761,
     countyId: 45,
-    name: 'Sumal',
+    name: 'Șumal',
   },
   {
     id: 11762,
     countyId: 25,
-    name: 'Sumandra',
+    name: 'Șumandra',
   },
   {
     id: 11763,
     countyId: 20,
-    name: 'Sumita',
+    name: 'Șumița',
   },
   {
     id: 11764,
     countyId: 6,
-    name: 'Sumugiu',
+    name: 'Șumugiu',
   },
   {
     id: 11765,
@@ -58797,22 +58797,22 @@ export const CITIES = [
   {
     id: 11766,
     countyId: 48,
-    name: 'Sunatori',
+    name: 'Sunători',
   },
   {
     id: 11767,
     countyId: 6,
-    name: 'Suncuis',
+    name: 'Șuncuiș',
   },
   {
     id: 11768,
     countyId: 6,
-    name: 'Suncuius',
+    name: 'Șuncuiuș',
   },
   {
     id: 11769,
     countyId: 8,
-    name: 'Supitca',
+    name: 'Șupitca',
   },
   {
     id: 11770,
@@ -58822,7 +58822,7 @@ export const CITIES = [
   {
     id: 11771,
     countyId: 6,
-    name: 'Suplacu de Barcau',
+    name: 'Suplacu de Barcău',
   },
   {
     id: 11772,
@@ -58857,12 +58857,12 @@ export const CITIES = [
   {
     id: 11778,
     countyId: 47,
-    name: 'Sura Mare',
+    name: 'Șura Mare',
   },
   {
     id: 11779,
     countyId: 47,
-    name: 'Sura Mica',
+    name: 'Șura Mică',
   },
   {
     id: 11780,
@@ -58882,22 +58882,22 @@ export const CITIES = [
   {
     id: 11783,
     countyId: 1,
-    name: 'Surdesti',
+    name: 'Surdești',
   },
   {
     id: 11784,
     countyId: 39,
-    name: 'Surdesti',
+    name: 'Șurdești',
   },
   {
     id: 11785,
     countyId: 44,
-    name: 'Surdesti',
+    name: 'Surdești',
   },
   {
     id: 11786,
     countyId: 9,
-    name: 'Surdila-Gaiseanca',
+    name: 'Surdila-Găiseanca',
   },
   {
     id: 11787,
@@ -58942,17 +58942,17 @@ export const CITIES = [
   {
     id: 11795,
     countyId: 3,
-    name: 'Surdulesti',
+    name: 'Surdulești',
   },
   {
     id: 11796,
     countyId: 52,
-    name: 'Suricaru',
+    name: 'Șuricaru',
   },
   {
     id: 11797,
     countyId: 5,
-    name: 'Surina',
+    name: 'Șurina',
   },
   {
     id: 11798,
@@ -58967,7 +58967,7 @@ export const CITIES = [
   {
     id: 11800,
     countyId: 52,
-    name: 'Surpati',
+    name: 'Surpați',
   },
   {
     id: 11801,
@@ -58987,7 +58987,7 @@ export const CITIES = [
   {
     id: 11804,
     countyId: 52,
-    name: 'Susani',
+    name: 'Șușani',
   },
   {
     id: 11805,
@@ -58997,7 +58997,7 @@ export const CITIES = [
   {
     id: 11806,
     countyId: 20,
-    name: 'Susca',
+    name: 'Șușca',
   },
   {
     id: 11807,
@@ -59047,7 +59047,7 @@ export const CITIES = [
   {
     id: 11816,
     countyId: 3,
-    name: 'Suseni (Bogati)',
+    name: 'Suseni (Bogați)',
   },
   {
     id: 11817,
@@ -59057,57 +59057,57 @@ export const CITIES = [
   {
     id: 11818,
     countyId: 7,
-    name: 'Susenii Bargaului',
+    name: 'Susenii Bârgăului',
   },
   {
     id: 11819,
     countyId: 40,
-    name: 'Susita (Breznita-Ocol)',
+    name: 'Șușița (Breznița-Ocol)',
   },
   {
     id: 11820,
     countyId: 40,
-    name: 'Susita (Grozesti)',
+    name: 'Șușița (Grozești)',
   },
   {
     id: 11821,
     countyId: 3,
-    name: 'Suslanesti',
+    name: 'Suslănești',
   },
   {
     id: 11822,
     countyId: 6,
-    name: 'Sustiu',
+    name: 'Șuștiu',
   },
   {
     id: 11823,
     countyId: 50,
-    name: 'Sustra',
+    name: 'Suștra',
   },
   {
     id: 11824,
     countyId: 6,
-    name: 'Susturogi',
+    name: 'Șușturogi',
   },
   {
     id: 11825,
     countyId: 52,
-    name: 'Suta',
+    name: 'Șuta',
   },
   {
     id: 11826,
     countyId: 24,
-    name: 'Suta Seaca',
+    name: 'Șuța Seacă',
   },
   {
     id: 11827,
     countyId: 52,
-    name: 'Sutesti',
+    name: 'Sutești',
   },
   {
     id: 11828,
     countyId: 9,
-    name: 'Sutesti',
+    name: 'Șuțești',
   },
   {
     id: 11829,
@@ -59117,7 +59117,7 @@ export const CITIES = [
   {
     id: 11830,
     countyId: 21,
-    name: 'Sutu',
+    name: 'Șutu',
   },
   {
     id: 11831,
@@ -59127,17 +59127,17 @@ export const CITIES = [
   {
     id: 11832,
     countyId: 24,
-    name: 'Suvita',
+    name: 'Șuvița',
   },
   {
     id: 11833,
     countyId: 40,
-    name: 'Svinita',
+    name: 'Svinița',
   },
   {
     id: 11834,
     countyId: 18,
-    name: 'Tabacari',
+    name: 'Tăbăcari',
   },
   {
     id: 11835,
@@ -59152,22 +59152,22 @@ export const CITIES = [
   {
     id: 11837,
     countyId: 35,
-    name: 'Tabara',
+    name: 'Tabăra',
   },
   {
     id: 11838,
     countyId: 42,
-    name: 'Tabara',
+    name: 'Tabăra',
   },
   {
     id: 11839,
     countyId: 18,
-    name: 'Tabarasti',
+    name: 'Tăbărăști',
   },
   {
     id: 11840,
     countyId: 41,
-    name: 'Tablaseni',
+    name: 'Tăblășeni',
   },
   {
     id: 11841,
@@ -59177,57 +59177,57 @@ export const CITIES = [
   {
     id: 11842,
     countyId: 54,
-    name: 'Tabucesti',
+    name: 'Tăbucești',
   },
   {
     id: 11843,
     countyId: 9,
-    name: 'tacau',
+    name: 'țăcău',
   },
   {
     id: 11844,
     countyId: 53,
-    name: 'Tacuta',
+    name: 'Tăcuta',
   },
   {
     id: 11845,
     countyId: 21,
-    name: 'taga',
+    name: 'țaga',
   },
   {
     id: 11846,
     countyId: 2,
-    name: 'Tagadau',
+    name: 'Tăgădău',
   },
   {
     id: 11847,
     countyId: 5,
-    name: 'tagara',
+    name: 'țâgâra',
   },
   {
     id: 11848,
     countyId: 7,
-    name: 'tagsoru',
+    name: 'țăgșoru',
   },
   {
     id: 11849,
     countyId: 7,
-    name: 'tagu',
+    name: 'țagu',
   },
   {
     id: 11850,
     countyId: 31,
-    name: 'Taietura',
+    name: 'Tăietura',
   },
   {
     id: 11851,
     countyId: 2,
-    name: 'Talagiu',
+    name: 'Tălagiu',
   },
   {
     id: 11852,
     countyId: 40,
-    name: 'Talapanu',
+    name: 'Tălăpanu',
   },
   {
     id: 11853,
@@ -59237,22 +59237,22 @@ export const CITIES = [
   {
     id: 11854,
     countyId: 23,
-    name: 'Talisoara',
+    name: 'Tălișoara',
   },
   {
     id: 11855,
     countyId: 47,
-    name: 'Talmacel',
+    name: 'Tălmăcel',
   },
   {
     id: 11856,
     countyId: 2,
-    name: 'Talmaci',
+    name: 'Tălmaci',
   },
   {
     id: 11857,
     countyId: 47,
-    name: 'Talmaciu',
+    name: 'Tălmaciu',
   },
   {
     id: 11858,
@@ -59272,32 +59272,32 @@ export const CITIES = [
   {
     id: 11861,
     countyId: 49,
-    name: 'Talpa Postei',
+    name: 'Talpa Poștei',
   },
   {
     id: 11862,
     countyId: 49,
-    name: 'Talpa-Bascoveni',
+    name: 'Talpa-Bâscoveni',
   },
   {
     id: 11863,
     countyId: 49,
-    name: 'Talpa-Ograzile',
+    name: 'Talpa-Ogrăzile',
   },
   {
     id: 11864,
     countyId: 42,
-    name: 'Talpalai',
+    name: 'Tălpălăi',
   },
   {
     id: 11865,
     countyId: 25,
-    name: 'Talpas',
+    name: 'Tălpaș',
   },
   {
     id: 11866,
     countyId: 30,
-    name: 'Talpasesti',
+    name: 'Tălpășești',
   },
   {
     id: 11867,
@@ -59307,142 +59307,142 @@ export const CITIES = [
   {
     id: 11868,
     countyId: 53,
-    name: 'Talpigeni',
+    name: 'Tălpigeni',
   },
   {
     id: 11869,
     countyId: 28,
-    name: 'Talpigi',
+    name: 'Tălpigi',
   },
   {
     id: 11870,
     countyId: 6,
-    name: 'Talpos',
+    name: 'Talpoș',
   },
   {
     id: 11871,
     countyId: 30,
-    name: 'Talvesti',
+    name: 'Tâlvești',
   },
   {
     id: 11872,
     countyId: 19,
-    name: 'Tamadau Mare',
+    name: 'Tămădău Mare',
   },
   {
     id: 11873,
     countyId: 19,
-    name: 'Tamadau Mic',
+    name: 'Tămădău Mic',
   },
   {
     id: 11874,
     countyId: 39,
-    name: 'Tamaia',
+    name: 'Tămaia',
   },
   {
     id: 11875,
     countyId: 28,
-    name: 'Tamaoani',
+    name: 'Tămăoani',
   },
   {
     id: 11876,
     countyId: 45,
-    name: 'Tamasa',
+    name: 'Tămasa',
   },
   {
     id: 11877,
     countyId: 33,
-    name: 'Tamasasa',
+    name: 'Tămășasa',
   },
   {
     id: 11878,
     countyId: 6,
-    name: 'Tamasda',
+    name: 'Tămașda',
   },
   {
     id: 11879,
     countyId: 42,
-    name: 'Tamaseni',
+    name: 'Tămășeni',
   },
   {
     id: 11880,
     countyId: 46,
-    name: 'Tamaseni',
+    name: 'Tămășeni',
   },
   {
     id: 11881,
     countyId: 30,
-    name: 'Tamasesti',
+    name: 'Tămășești',
   },
   {
     id: 11882,
     countyId: 39,
-    name: 'Tamasesti',
+    name: 'Tămășești',
   },
   {
     id: 11883,
     countyId: 33,
-    name: 'Tamasesti',
+    name: 'Tămășești',
   },
   {
     id: 11884,
     countyId: 6,
-    name: 'Tamaseu',
+    name: 'Tămășeu',
   },
   {
     id: 11885,
     countyId: 23,
-    name: 'Tamasfalau',
+    name: 'Tamașfalău',
   },
   {
     id: 11886,
     countyId: 36,
-    name: 'Tamasi',
+    name: 'Tamași',
   },
   {
     id: 11887,
     countyId: 5,
-    name: 'Tamasi',
+    name: 'Tamași',
   },
   {
     id: 11888,
     countyId: 5,
-    name: 'Tamasoaia',
+    name: 'Tămășoaia',
   },
   {
     id: 11889,
     countyId: 31,
-    name: 'Tamasu',
+    name: 'Tămașu',
   },
   {
     id: 11890,
     countyId: 54,
-    name: 'Tamboesti',
+    name: 'Tâmboești',
   },
   {
     id: 11891,
     countyId: 1,
-    name: 'Tamboresti',
+    name: 'Tamborești',
   },
   {
     id: 11892,
     countyId: 25,
-    name: 'Tamburesti',
+    name: 'Tâmburești',
   },
   {
     id: 11893,
     countyId: 40,
-    name: 'Tamna',
+    name: 'Tâmna',
   },
   {
     id: 11894,
     countyId: 41,
-    name: 'Tampa',
+    name: 'Tâmpa',
   },
   {
     id: 11895,
     countyId: 33,
-    name: 'Tampa',
+    name: 'Tâmpa',
   },
   {
     id: 11896,
@@ -59452,37 +59452,37 @@ export const CITIES = [
   {
     id: 11897,
     countyId: 54,
-    name: 'Tanasari',
+    name: 'Tănăsari',
   },
   {
     id: 11898,
     countyId: 52,
-    name: 'Tanasesti',
+    name: 'Tănăsești',
   },
   {
     id: 11899,
     countyId: 54,
-    name: 'Tanasoaia',
+    name: 'Tănăsoaia',
   },
   {
     id: 11900,
     countyId: 36,
-    name: 'Tancabesti',
+    name: 'Tâncăbești',
   },
   {
     id: 11901,
     countyId: 25,
-    name: 'tandara',
+    name: 'țandăra',
   },
   {
     id: 11902,
     countyId: 34,
-    name: 'tandarei',
+    name: 'țăndărei',
   },
   {
     id: 11903,
     countyId: 36,
-    name: 'Tanganu',
+    name: 'Tânganu',
   },
   {
     id: 11904,
@@ -59497,27 +59497,27 @@ export const CITIES = [
   {
     id: 11906,
     countyId: 35,
-    name: 'Tansa (Belcesti)',
+    name: 'Tansa (Belcești)',
   },
   {
     id: 11907,
     countyId: 30,
-    name: 'Tantareni',
+    name: 'Țânțăreni',
   },
   {
     id: 11908,
     countyId: 44,
-    name: 'Tantareni',
+    name: 'Țânțăreni',
   },
   {
     id: 11909,
     countyId: 40,
-    name: 'Tantaru',
+    name: 'Tânțaru',
   },
   {
     id: 11910,
     countyId: 29,
-    name: 'Tantava',
+    name: 'Tântava',
   },
   {
     id: 11911,
@@ -59527,47 +59527,47 @@ export const CITIES = [
   {
     id: 11912,
     countyId: 28,
-    name: 'Taplau',
+    name: 'Tăplău',
   },
   {
     id: 11913,
     countyId: 47,
-    name: 'tapu',
+    name: 'țapu',
   },
   {
     id: 11914,
     countyId: 1,
-    name: 'taranesti',
+    name: 'țărănești',
   },
   {
     id: 11915,
     countyId: 5,
-    name: 'Tarata',
+    name: 'Tărâța',
   },
   {
     id: 11916,
     countyId: 33,
-    name: 'taratel',
+    name: 'țărățel',
   },
   {
     id: 11917,
     countyId: 54,
-    name: 'Taratu',
+    name: 'Târâtu',
   },
   {
     id: 11918,
     countyId: 6,
-    name: 'Tarcaia',
+    name: 'Tărcaia',
   },
   {
     id: 11919,
     countyId: 6,
-    name: 'Tarcaita',
+    name: 'Tărcăița',
   },
   {
     id: 11920,
     countyId: 42,
-    name: 'Tarcau',
+    name: 'Tarcău',
   },
   {
     id: 11921,
@@ -59577,152 +59577,152 @@ export const CITIES = [
   {
     id: 11922,
     countyId: 31,
-    name: 'Tarcesti',
+    name: 'Tărcești',
   },
   {
     id: 11923,
     countyId: 18,
-    name: 'Tarcov',
+    name: 'Târcov',
   },
   {
     id: 11924,
     countyId: 30,
-    name: 'tarculesti',
+    name: 'țârculești',
   },
   {
     id: 11925,
     countyId: 44,
-    name: 'tarculesti',
+    name: 'țărculești',
   },
   {
     id: 11926,
     countyId: 5,
-    name: 'tardenii Mari',
+    name: 'țârdenii Mari',
   },
   {
     id: 11927,
     countyId: 42,
-    name: 'tardenii Mici',
+    name: 'țârdenii Mici',
   },
   {
     id: 11928,
     countyId: 50,
-    name: 'Targoviste',
+    name: 'Târgoviște',
   },
   {
     id: 11929,
     countyId: 24,
-    name: 'Targoviste',
+    name: 'Târgoviște',
   },
   {
     id: 11930,
     countyId: 44,
-    name: 'Targsoru Nou',
+    name: 'Târgșoru Nou',
   },
   {
     id: 11931,
     countyId: 44,
-    name: 'Targsoru Vechi',
+    name: 'Târgșoru Vechi',
   },
   {
     id: 11932,
     countyId: 28,
-    name: 'Targu Bujor',
+    name: 'Târgu Bujor',
   },
   {
     id: 11933,
     countyId: 30,
-    name: 'Targu Carbunesti',
+    name: 'Târgu Cărbunești',
   },
   {
     id: 11934,
     countyId: 35,
-    name: 'Targu Frumos',
+    name: 'Târgu Frumos',
   },
   {
     id: 11935,
     countyId: 52,
-    name: 'Targu Gangulesti',
+    name: 'Târgu Gângulești',
   },
   {
     id: 11936,
     countyId: 30,
-    name: 'Targu Jiu',
+    name: 'Târgu Jiu',
   },
   {
     id: 11937,
     countyId: 39,
-    name: 'Targu Lapus',
+    name: 'Târgu Lăpuș',
   },
   {
     id: 11938,
     countyId: 30,
-    name: 'Targu Logresti',
+    name: 'Târgu Logrești',
   },
   {
     id: 11939,
     countyId: 41,
-    name: 'Targu Mures',
+    name: 'Târgu Mureș',
   },
   {
     id: 11940,
     countyId: 42,
-    name: 'Targu Neamt',
+    name: 'Târgu Neamț',
   },
   {
     id: 11941,
     countyId: 5,
-    name: 'Targu Ocna',
+    name: 'Târgu Ocna',
   },
   {
     id: 11942,
     countyId: 23,
-    name: 'Targu Secuiesc',
+    name: 'Târgu Secuiesc',
   },
   {
     id: 11943,
     countyId: 5,
-    name: 'Targu Trotus',
+    name: 'Târgu Trotuș',
   },
   {
     id: 11944,
     countyId: 21,
-    name: 'Targusor',
+    name: 'Târgușor',
   },
   {
     id: 11945,
     countyId: 6,
-    name: 'Targusor',
+    name: 'Târgușor',
   },
   {
     id: 11946,
     countyId: 22,
-    name: 'Targusor',
+    name: 'Târgușor',
   },
   {
     id: 11947,
     countyId: 5,
-    name: 'Tarhausi',
+    name: 'Tărhăuși',
   },
   {
     id: 11948,
     countyId: 6,
-    name: 'Tarian',
+    name: 'Tărian',
   },
   {
     id: 11949,
     countyId: 19,
-    name: 'Tariceni',
+    name: 'Tăriceni',
   },
   {
     id: 11950,
     countyId: 44,
-    name: 'Tariceni',
+    name: 'Tăriceni',
   },
   {
     id: 11951,
     countyId: 1,
-    name: 'tarina',
+    name: 'țarina',
   },
   {
     id: 11952,
@@ -59732,37 +59732,37 @@ export const CITIES = [
   {
     id: 11953,
     countyId: 18,
-    name: 'Tarlele',
+    name: 'Târlele',
   },
   {
     id: 11954,
     countyId: 9,
-    name: 'Tarlele Filiu',
+    name: 'Târlele Filiu',
   },
   {
     id: 11955,
     countyId: 44,
-    name: 'Tarlesti',
+    name: 'Târlești',
   },
   {
     id: 11956,
     countyId: 7,
-    name: 'Tarlisua',
+    name: 'Târlișua',
   },
   {
     id: 11957,
     countyId: 10,
-    name: 'Tarlungeni',
+    name: 'Tărlungeni',
   },
   {
     id: 11958,
     countyId: 45,
-    name: 'tarmure',
+    name: 'țărmure',
   },
   {
     id: 11959,
     countyId: 2,
-    name: 'tarmure',
+    name: 'țărmure',
   },
   {
     id: 11960,
@@ -59772,62 +59772,62 @@ export const CITIES = [
   {
     id: 11961,
     countyId: 48,
-    name: 'tarna Mare',
+    name: 'țarna Mare',
   },
   {
     id: 11962,
     countyId: 33,
-    name: 'Tarnava',
+    name: 'Târnava',
   },
   {
     id: 11963,
     countyId: 49,
-    name: 'Tarnava',
+    name: 'Târnava',
   },
   {
     id: 11964,
     countyId: 25,
-    name: 'Tarnava',
+    name: 'Târnava',
   },
   {
     id: 11965,
     countyId: 47,
-    name: 'Tarnava',
+    name: 'Târnava',
   },
   {
     id: 11966,
     countyId: 33,
-    name: 'Tarnava de Cris',
+    name: 'Târnava de Criș',
   },
   {
     id: 11967,
     countyId: 41,
-    name: 'Tarnaveni',
+    name: 'Târnăveni',
   },
   {
     id: 11968,
     countyId: 33,
-    name: 'Tarnavita',
+    name: 'Târnăvița',
   },
   {
     id: 11969,
     countyId: 2,
-    name: 'Tarnavita',
+    name: 'Târnăvița',
   },
   {
     id: 11970,
     countyId: 48,
-    name: 'Tarnicioara',
+    name: 'Tărnicioara',
   },
   {
     id: 11971,
     countyId: 5,
-    name: 'Tarnita',
+    name: 'Tarnița',
   },
   {
     id: 11972,
     countyId: 33,
-    name: 'Tarnita',
+    name: 'Tarnița',
   },
   {
     id: 11973,
@@ -59837,107 +59837,107 @@ export const CITIES = [
   {
     id: 11974,
     countyId: 35,
-    name: 'Tarnita',
+    name: 'Tarnița',
   },
   {
     id: 11975,
     countyId: 2,
-    name: 'Tarnova',
+    name: 'Târnova',
   },
   {
     id: 11976,
     countyId: 20,
-    name: 'Tarnova',
+    name: 'Târnova',
   },
   {
     id: 11977,
     countyId: 31,
-    name: 'Tarnovita',
+    name: 'Târnovița',
   },
   {
     id: 11978,
     countyId: 42,
-    name: 'Tarpesti',
+    name: 'Târpești',
   },
   {
     id: 11979,
     countyId: 7,
-    name: 'Tarpiu',
+    name: 'Tărpiu',
   },
   {
     id: 11980,
     countyId: 21,
-    name: 'Tarpiu',
+    name: 'Tărpiu',
   },
   {
     id: 11981,
     countyId: 1,
-    name: 'Tarsa',
+    name: 'Târsa',
   },
   {
     id: 11982,
     countyId: 40,
-    name: 'Tarsa',
+    name: 'Târsa',
   },
   {
     id: 11983,
     countyId: 33,
-    name: 'Tarsa',
+    name: 'Târsa',
   },
   {
     id: 11984,
     countyId: 1,
-    name: 'Tarsa-Plai',
+    name: 'Târsa-Plai',
   },
   {
     id: 11985,
     countyId: 46,
-    name: 'Tarsolt',
+    name: 'Târșolț',
   },
   {
     id: 11986,
     countyId: 44,
-    name: 'Tarsoreni',
+    name: 'Târșoreni',
   },
   {
     id: 11987,
     countyId: 25,
-    name: 'tartal',
+    name: 'țărțăl',
   },
   {
     id: 11988,
     countyId: 1,
-    name: 'Tartaria',
+    name: 'Tărtăria',
   },
   {
     id: 11989,
     countyId: 24,
-    name: 'Tartasesti',
+    name: 'Tărtășești',
   },
   {
     id: 11990,
     countyId: 42,
-    name: 'Tarzia',
+    name: 'Târzia',
   },
   {
     id: 11991,
     countyId: 53,
-    name: 'Tarzii',
+    name: 'Târzii',
   },
   {
     id: 11992,
     countyId: 6,
-    name: 'Tasad',
+    name: 'Tășad',
   },
   {
     id: 11993,
     countyId: 42,
-    name: 'Tasca',
+    name: 'Tașca',
   },
   {
     id: 11994,
     countyId: 46,
-    name: 'Tasnad',
+    name: 'Tășnad',
   },
   {
     id: 11995,
@@ -59947,162 +59947,162 @@ export const CITIES = [
   {
     id: 11996,
     countyId: 44,
-    name: 'Tatarai',
+    name: 'Tătărăi',
   },
   {
     id: 11997,
     countyId: 24,
-    name: 'Tatarani',
+    name: 'Tătărani',
   },
   {
     id: 11998,
     countyId: 52,
-    name: 'Tatarani',
+    name: 'Tătărani',
   },
   {
     id: 11999,
     countyId: 44,
-    name: 'Tatarani',
+    name: 'Tătărani',
   },
   {
     id: 12000,
     countyId: 53,
-    name: 'Tatarani',
+    name: 'Tătărăni',
   },
   {
     id: 12001,
     countyId: 53,
-    name: 'Tatarani (Danesti)',
+    name: 'Tătărăni (Dănești)',
   },
   {
     id: 12002,
     countyId: 54,
-    name: 'Tataranu',
+    name: 'Tătăranu',
   },
   {
     id: 12003,
     countyId: 8,
-    name: 'Tataraseni',
+    name: 'Tătărășeni',
   },
   {
     id: 12004,
     countyId: 33,
-    name: 'Tatarasti',
+    name: 'Tătărăști',
   },
   {
     id: 12005,
     countyId: 5,
-    name: 'Tatarasti',
+    name: 'Tătărăști',
   },
   {
     id: 12006,
     countyId: 33,
-    name: 'Tatarastii de Cris',
+    name: 'Tătărăștii de Criș',
   },
   {
     id: 12007,
     countyId: 49,
-    name: 'Tatarastii de Jos',
+    name: 'Tătărăștii de Jos',
   },
   {
     id: 12008,
     countyId: 49,
-    name: 'Tatarastii de Sus',
+    name: 'Tătărăștii de Sus',
   },
   {
     id: 12009,
     countyId: 28,
-    name: 'Tatarca',
+    name: 'Tătarca',
   },
   {
     id: 12010,
     countyId: 46,
-    name: 'Tataresti',
+    name: 'Tătărești',
   },
   {
     id: 12011,
     countyId: 1,
-    name: 'Tatarlaua',
+    name: 'Tătârlaua',
   },
   {
     id: 12012,
     countyId: 18,
-    name: 'Tatarligu',
+    name: 'Tâțârligu',
   },
   {
     id: 12013,
     countyId: 9,
-    name: 'Tataru',
+    name: 'Tătaru',
   },
   {
     id: 12014,
     countyId: 44,
-    name: 'Tataru',
+    name: 'Tătaru',
   },
   {
     id: 12015,
     countyId: 54,
-    name: 'Tataru',
+    name: 'Tătaru',
   },
   {
     id: 12016,
     countyId: 22,
-    name: 'Tataru',
+    name: 'Tătaru',
   },
   {
     id: 12017,
     countyId: 48,
-    name: 'Tataru',
+    name: 'Tătaru',
   },
   {
     id: 12018,
     countyId: 35,
-    name: 'Tatarusi',
+    name: 'Tătăruși',
   },
   {
     id: 12019,
     countyId: 25,
-    name: 'Tatomiresti',
+    name: 'Tatomirești',
   },
   {
     id: 12020,
     countyId: 53,
-    name: 'Tatomiresti',
+    name: 'Tatomirești',
   },
   {
     id: 12021,
     countyId: 20,
-    name: 'tatu',
+    name: 'țațu',
   },
   {
     id: 12022,
     countyId: 43,
-    name: 'Tatulesti',
+    name: 'Tătulești',
   },
   {
     id: 12023,
     countyId: 18,
-    name: 'Tatulesti',
+    name: 'Tătulești',
   },
   {
     id: 12024,
     countyId: 41,
-    name: 'Tau',
+    name: 'Tău',
   },
   {
     id: 12025,
     countyId: 1,
-    name: 'Tau',
+    name: 'Tău',
   },
   {
     id: 12026,
     countyId: 1,
-    name: 'Tau Bistra',
+    name: 'Tău Bistra',
   },
   {
     id: 12027,
     countyId: 45,
-    name: 'taudu',
+    name: 'țăudu',
   },
   {
     id: 12028,
@@ -60112,97 +60112,97 @@ export const CITIES = [
   {
     id: 12029,
     countyId: 1,
-    name: 'Tauni',
+    name: 'Tăuni',
   },
   {
     id: 12030,
     countyId: 7,
-    name: 'Taure',
+    name: 'Tăure',
   },
   {
     id: 12031,
     countyId: 31,
-    name: 'Taureni',
+    name: 'Tăureni',
   },
   {
     id: 12032,
     countyId: 41,
-    name: 'Taureni',
+    name: 'Tăureni',
   },
   {
     id: 12033,
     countyId: 21,
-    name: 'Tauseni',
+    name: 'Tăușeni',
   },
   {
     id: 12034,
     countyId: 6,
-    name: 'Taut',
+    name: 'Tăut',
   },
   {
     id: 12035,
     countyId: 2,
-    name: 'Taut',
+    name: 'Tauț',
   },
   {
     id: 12036,
     countyId: 6,
-    name: 'Tautelec',
+    name: 'Tăutelec',
   },
   {
     id: 12037,
     countyId: 8,
-    name: 'Tautesti',
+    name: 'Tăutești',
   },
   {
     id: 12038,
     countyId: 48,
-    name: 'Tautesti',
+    name: 'Tăutești',
   },
   {
     id: 12039,
     countyId: 35,
-    name: 'Tautesti',
+    name: 'Tăutești',
   },
   {
     id: 12040,
     countyId: 6,
-    name: 'Tauteu',
+    name: 'Tăuteu',
   },
   {
     id: 12041,
     countyId: 1,
-    name: 'Tauti',
+    name: 'Tăuți',
   },
   {
     id: 12042,
     countyId: 21,
-    name: 'Tauti',
+    name: 'Tăuți',
   },
   {
     id: 12043,
     countyId: 39,
-    name: 'Tautii de Sus',
+    name: 'Tăuții de Sus',
   },
   {
     id: 12044,
     countyId: 39,
-    name: 'Tautii-Magheraus',
+    name: 'Tăuții-Măgherăuș',
   },
   {
     id: 12045,
     countyId: 5,
-    name: 'Tavadaresti',
+    name: 'Tăvădărești',
   },
   {
     id: 12046,
     countyId: 49,
-    name: 'tavarlau',
+    name: 'țăvârlău',
   },
   {
     id: 12047,
     countyId: 42,
-    name: 'Tazlau',
+    name: 'Tazlău',
   },
   {
     id: 12048,
@@ -60222,7 +60222,7 @@ export const CITIES = [
   {
     id: 12051,
     countyId: 33,
-    name: 'tebea',
+    name: 'țebea',
   },
   {
     id: 12052,
@@ -60242,7 +60242,7 @@ export const CITIES = [
   {
     id: 12055,
     countyId: 1,
-    name: 'Tecsesti',
+    name: 'Tecșești',
   },
   {
     id: 12056,
@@ -60267,12 +60267,12 @@ export const CITIES = [
   {
     id: 12060,
     countyId: 46,
-    name: 'teghea',
+    name: 'țeghea',
   },
   {
     id: 12061,
     countyId: 36,
-    name: 'teghes',
+    name: 'țegheș',
   },
   {
     id: 12062,
@@ -60282,37 +60282,37 @@ export const CITIES = [
   {
     id: 12063,
     countyId: 52,
-    name: 'teica',
+    name: 'țeica',
   },
   {
     id: 12064,
     countyId: 43,
-    name: 'Teis',
+    name: 'Teiș',
   },
   {
     id: 12065,
     countyId: 24,
-    name: 'Teis',
+    name: 'Teiș',
   },
   {
     id: 12066,
     countyId: 44,
-    name: 'Teisani',
+    name: 'Teișani',
   },
   {
     id: 12067,
     countyId: 29,
-    name: 'Teisori',
+    name: 'Teișori',
   },
   {
     id: 12068,
     countyId: 53,
-    name: 'Teisoru',
+    name: 'Teișoru',
   },
   {
     id: 12069,
     countyId: 18,
-    name: 'Teisu',
+    name: 'Teișu',
   },
   {
     id: 12070,
@@ -60347,42 +60347,42 @@ export const CITIES = [
   {
     id: 12076,
     countyId: 5,
-    name: 'Teius',
+    name: 'Teiuș',
   },
   {
     id: 12077,
     countyId: 1,
-    name: 'Teius',
+    name: 'Teiuș',
   },
   {
     id: 12078,
     countyId: 43,
-    name: 'Teius',
+    name: 'Teiuș',
   },
   {
     id: 12079,
     countyId: 29,
-    name: 'Teiusu',
+    name: 'Teiușu',
   },
   {
     id: 12080,
     countyId: 52,
-    name: 'Teiusu',
+    name: 'Teiușu',
   },
   {
     id: 12081,
     countyId: 43,
-    name: 'Teiusu',
+    name: 'Teiușu',
   },
   {
     id: 12082,
     countyId: 2,
-    name: 'tela',
+    name: 'țela',
   },
   {
     id: 12083,
     countyId: 7,
-    name: 'Telcisor',
+    name: 'Telcișor',
   },
   {
     id: 12084,
@@ -60417,7 +60417,7 @@ export const CITIES = [
   {
     id: 12090,
     countyId: 52,
-    name: 'Telechesti',
+    name: 'Telechești',
   },
   {
     id: 12091,
@@ -60447,22 +60447,22 @@ export const CITIES = [
   {
     id: 12096,
     countyId: 30,
-    name: 'Telesti',
+    name: 'Telești',
   },
   {
     id: 12097,
     countyId: 24,
-    name: 'Telesti',
+    name: 'Telești',
   },
   {
     id: 12098,
     countyId: 47,
-    name: 'teline',
+    name: 'țeline',
   },
   {
     id: 12099,
     countyId: 51,
-    name: 'Telita',
+    name: 'Telița',
   },
   {
     id: 12100,
@@ -60482,7 +60482,7 @@ export const CITIES = [
   {
     id: 12103,
     countyId: 1,
-    name: 'telna',
+    name: 'țelna',
   },
   {
     id: 12104,
@@ -60492,72 +60492,72 @@ export const CITIES = [
   {
     id: 12105,
     countyId: 50,
-    name: 'Temeresti',
+    name: 'Temerești',
   },
   {
     id: 12106,
     countyId: 2,
-    name: 'Temesesti',
+    name: 'Temeșești',
   },
   {
     id: 12107,
     countyId: 25,
-    name: 'Tencanau',
+    name: 'Tencănău',
   },
   {
     id: 12108,
     countyId: 31,
-    name: 'tengheler',
+    name: 'țengheler',
   },
   {
     id: 12109,
     countyId: 7,
-    name: 'tentea',
+    name: 'țentea',
   },
   {
     id: 12110,
     countyId: 3,
-    name: 'Teodoresti',
+    name: 'Teodorești',
   },
   {
     id: 12111,
     countyId: 54,
-    name: 'tepa',
+    name: 'țepa',
   },
   {
     id: 12112,
     countyId: 22,
-    name: 'tepes Voda',
+    name: 'tepeș Vodă',
   },
   {
     id: 12113,
     countyId: 9,
-    name: 'tepes Voda',
+    name: 'țepeș Vodă',
   },
   {
     id: 12114,
     countyId: 52,
-    name: 'tepesti',
+    name: 'țepești',
   },
   {
     id: 12115,
     countyId: 5,
-    name: 'tepoaia',
+    name: 'țepoaia',
   },
   {
     id: 12116,
     countyId: 52,
-    name: 'Tepsenari',
+    name: 'Tepșenari',
   },
   {
     id: 12117,
     countyId: 28,
-    name: 'tepu',
+    name: 'țepu',
   },
   {
     id: 12118,
     countyId: 28,
-    name: 'tepu de Sus',
+    name: 'țepu de Sus',
   },
   {
     id: 12119,
@@ -60567,12 +60567,12 @@ export const CITIES = [
   {
     id: 12120,
     countyId: 54,
-    name: 'Terchesti',
+    name: 'Terchești',
   },
   {
     id: 12121,
     countyId: 46,
-    name: 'Terebesti',
+    name: 'Terebești',
   },
   {
     id: 12122,
@@ -60587,22 +60587,22 @@ export const CITIES = [
   {
     id: 12124,
     countyId: 50,
-    name: 'Teremia Mica',
+    name: 'Teremia Mică',
   },
   {
     id: 12125,
     countyId: 20,
-    name: 'terova',
+    name: 'țerova',
   },
   {
     id: 12126,
     countyId: 25,
-    name: 'Terpezita',
+    name: 'Terpezița',
   },
   {
     id: 12127,
     countyId: 50,
-    name: 'Tes',
+    name: 'Teș',
   },
   {
     id: 12128,
@@ -60612,7 +60612,7 @@ export const CITIES = [
   {
     id: 12129,
     countyId: 44,
-    name: 'Tesila',
+    name: 'Teșila',
   },
   {
     id: 12130,
@@ -60632,27 +60632,27 @@ export const CITIES = [
   {
     id: 12133,
     countyId: 48,
-    name: 'Tesna (Poiana Stampei)',
+    name: 'Teșna (Poiana Stampei)',
   },
   {
     id: 12134,
     countyId: 45,
-    name: 'Testioara',
+    name: 'Teștioara',
   },
   {
     id: 12135,
     countyId: 42,
-    name: 'Tetcani',
+    name: 'Tețcani',
   },
   {
     id: 12136,
     countyId: 6,
-    name: 'tetchea',
+    name: 'țețchea',
   },
   {
     id: 12137,
     countyId: 24,
-    name: 'Tetcoiu',
+    name: 'Tețcoiu',
   },
   {
     id: 12138,
@@ -60662,7 +60662,7 @@ export const CITIES = [
   {
     id: 12139,
     countyId: 45,
-    name: 'Tetisu',
+    name: 'Tetișu',
   },
   {
     id: 12140,
@@ -60677,27 +60677,27 @@ export const CITIES = [
   {
     id: 12142,
     countyId: 35,
-    name: 'tibana',
+    name: 'țibana',
   },
   {
     id: 12143,
     countyId: 35,
-    name: 'tibanesti',
+    name: 'țibănești',
   },
   {
     id: 12144,
     countyId: 53,
-    name: 'tibanestii Buhlii',
+    name: 'țibăneștii Buhlii',
   },
   {
     id: 12145,
     countyId: 48,
-    name: 'tibau',
+    name: 'țibău',
   },
   {
     id: 12146,
     countyId: 48,
-    name: 'tibeni',
+    name: 'țibeni',
   },
   {
     id: 12147,
@@ -60707,7 +60707,7 @@ export const CITIES = [
   {
     id: 12148,
     countyId: 22,
-    name: 'tibrinu',
+    name: 'țibrinu',
   },
   {
     id: 12149,
@@ -60717,17 +60717,17 @@ export const CITIES = [
   {
     id: 12150,
     countyId: 42,
-    name: 'tibucani',
+    name: 'țibucani',
   },
   {
     id: 12151,
     countyId: 42,
-    name: 'tibucanii de Jos',
+    name: 'țibucanii de Jos',
   },
   {
     id: 12152,
     countyId: 39,
-    name: 'ticau',
+    name: 'țicău',
   },
   {
     id: 12153,
@@ -60737,42 +60737,42 @@ export const CITIES = [
   {
     id: 12154,
     countyId: 22,
-    name: 'Tichilesti',
+    name: 'Tichilești',
   },
   {
     id: 12155,
     countyId: 9,
-    name: 'Tichilesti',
+    name: 'Tichilești',
   },
   {
     id: 12156,
     countyId: 51,
-    name: 'Tichilesti',
+    name: 'Tichilești',
   },
   {
     id: 12157,
     countyId: 47,
-    name: 'tichindeal',
+    name: 'țichindeal',
   },
   {
     id: 12158,
     countyId: 54,
-    name: 'Tichiris',
+    name: 'Tichiriș',
   },
   {
     id: 12159,
     countyId: 30,
-    name: 'ticleni',
+    name: 'țicleni',
   },
   {
     id: 12160,
     countyId: 42,
-    name: 'Ticos',
+    name: 'Ticoș',
   },
   {
     id: 12161,
     countyId: 42,
-    name: 'Ticos-Floarea',
+    name: 'Ticoș-Floarea',
   },
   {
     id: 12162,
@@ -60787,17 +60787,17 @@ export const CITIES = [
   {
     id: 12164,
     countyId: 10,
-    name: 'Ticusu',
+    name: 'Ticușu',
   },
   {
     id: 12165,
     countyId: 10,
-    name: 'Ticusu Nou',
+    name: 'Ticușu Nou',
   },
   {
     id: 12166,
     countyId: 10,
-    name: 'Ticusu Vechi',
+    name: 'Ticușu Vechi',
   },
   {
     id: 12167,
@@ -60812,62 +60812,62 @@ export const CITIES = [
   {
     id: 12169,
     countyId: 54,
-    name: 'tifesti',
+    name: 'țifești',
   },
   {
     id: 12170,
     countyId: 1,
-    name: 'tifra',
+    name: 'țifra',
   },
   {
     id: 12171,
     countyId: 53,
-    name: 'tifu',
+    name: 'țifu',
   },
   {
     id: 12172,
     countyId: 40,
-    name: 'tiganasi',
+    name: 'țigănași',
   },
   {
     id: 12173,
     countyId: 35,
-    name: 'tiganasi',
+    name: 'țigănăși',
   },
   {
     id: 12174,
     countyId: 5,
-    name: 'tiganesti',
+    name: 'țigănești',
   },
   {
     id: 12175,
     countyId: 49,
-    name: 'tiganesti',
+    name: 'țigănești',
   },
   {
     id: 12176,
     countyId: 3,
-    name: 'tiganesti',
+    name: 'țigănești',
   },
   {
     id: 12177,
     countyId: 28,
-    name: 'tiganesti',
+    name: 'țigănești',
   },
   {
     id: 12178,
     countyId: 6,
-    name: 'tiganestii de Beius',
+    name: 'țigăneștii de Beiuș',
   },
   {
     id: 12179,
     countyId: 6,
-    name: 'tiganestii de Cris',
+    name: 'țigăneștii de Criș',
   },
   {
     id: 12180,
     countyId: 7,
-    name: 'tigau',
+    name: 'țigău',
   },
   {
     id: 12181,
@@ -60877,7 +60877,7 @@ export const CITIES = [
   {
     id: 12182,
     countyId: 41,
-    name: 'tigmandru',
+    name: 'țigmandru',
   },
   {
     id: 12183,
@@ -60887,17 +60887,17 @@ export const CITIES = [
   {
     id: 12184,
     countyId: 3,
-    name: 'Tigveni (Ratesti)',
+    name: 'Tigveni (Rătești)',
   },
   {
     id: 12185,
     countyId: 7,
-    name: 'Tiha Bargaului',
+    name: 'Tiha Bârgăului',
   },
   {
     id: 12186,
     countyId: 45,
-    name: 'Tihau',
+    name: 'Tihău',
   },
   {
     id: 12187,
@@ -60907,42 +60907,42 @@ export const CITIES = [
   {
     id: 12188,
     countyId: 6,
-    name: 'Tilecus',
+    name: 'Tilecuș',
   },
   {
     id: 12189,
     countyId: 47,
-    name: 'Tilisca',
+    name: 'Tilișca',
   },
   {
     id: 12190,
     countyId: 30,
-    name: 'Timiseni',
+    name: 'Timișeni',
   },
   {
     id: 12191,
     countyId: 42,
-    name: 'Timisesti',
+    name: 'Timișești',
   },
   {
     id: 12192,
     countyId: 50,
-    name: 'Timisoara',
+    name: 'Timișoara',
   },
   {
     id: 12193,
     countyId: 10,
-    name: 'Timisu de Jos',
+    name: 'Timișu de Jos',
   },
   {
     id: 12194,
     countyId: 10,
-    name: 'Timisu de Sus',
+    name: 'Timișu de Sus',
   },
   {
     id: 12195,
     countyId: 8,
-    name: 'Timus',
+    name: 'Timuș',
   },
   {
     id: 12196,
@@ -60952,7 +60952,7 @@ export const CITIES = [
   {
     id: 12197,
     countyId: 6,
-    name: 'Tinaud',
+    name: 'Tinăud',
   },
   {
     id: 12198,
@@ -60977,12 +60977,12 @@ export const CITIES = [
   {
     id: 12202,
     countyId: 44,
-    name: 'tintea',
+    name: 'țintea',
   },
   {
     id: 12203,
     countyId: 18,
-    name: 'tintesti',
+    name: 'țintești',
   },
   {
     id: 12204,
@@ -61002,32 +61002,32 @@ export const CITIES = [
   {
     id: 12207,
     countyId: 2,
-    name: 'tipar',
+    name: 'țipar',
   },
   {
     id: 12208,
     countyId: 44,
-    name: 'tiparesti',
+    name: 'țipărești',
   },
   {
     id: 12209,
     countyId: 50,
-    name: 'tipari',
+    name: 'țipari',
   },
   {
     id: 12210,
     countyId: 54,
-    name: 'tipau',
+    name: 'țipău',
   },
   {
     id: 12211,
     countyId: 35,
-    name: 'tipilesti',
+    name: 'țipilești',
   },
   {
     id: 12212,
     countyId: 41,
-    name: 'tiptelnic',
+    name: 'țiptelnic',
   },
   {
     id: 12213,
@@ -61062,12 +61062,12 @@ export const CITIES = [
   {
     id: 12219,
     countyId: 30,
-    name: 'tirioi',
+    name: 'țirioi',
   },
   {
     id: 12220,
     countyId: 43,
-    name: 'Tirisneag',
+    name: 'Tirișneag',
   },
   {
     id: 12221,
@@ -61107,7 +61107,7 @@ export const CITIES = [
   {
     id: 12228,
     countyId: 2,
-    name: 'Tisa Noua',
+    name: 'Tisa Nouă',
   },
   {
     id: 12229,
@@ -61117,12 +61117,12 @@ export const CITIES = [
   {
     id: 12230,
     countyId: 18,
-    name: 'Tisau',
+    name: 'Tisău',
   },
   {
     id: 12231,
     countyId: 48,
-    name: 'Tisauti',
+    name: 'Tișăuți',
   },
   {
     id: 12232,
@@ -61132,7 +61132,7 @@ export const CITIES = [
   {
     id: 12233,
     countyId: 54,
-    name: 'Tisita',
+    name: 'Tișița',
   },
   {
     id: 12234,
@@ -61152,17 +61152,17 @@ export const CITIES = [
   {
     id: 12237,
     countyId: 40,
-    name: 'Titerlesti',
+    name: 'Titerlești',
   },
   {
     id: 12238,
     countyId: 52,
-    name: 'Titesti',
+    name: 'Titești',
   },
   {
     id: 12239,
     countyId: 3,
-    name: 'titesti',
+    name: 'țițești',
   },
   {
     id: 12240,
@@ -61182,7 +61182,7 @@ export const CITIES = [
   {
     id: 12243,
     countyId: 40,
-    name: 'titirigi',
+    name: 'țițirigi',
   },
   {
     id: 12244,
@@ -61192,12 +61192,12 @@ export const CITIES = [
   {
     id: 12245,
     countyId: 25,
-    name: 'tiu',
+    name: 'țiu',
   },
   {
     id: 12246,
     countyId: 33,
-    name: 'Tiulesti',
+    name: 'Tiulești',
   },
   {
     id: 12247,
@@ -61242,7 +61242,7 @@ export const CITIES = [
   {
     id: 12255,
     countyId: 1,
-    name: 'toci',
+    name: 'țoci',
   },
   {
     id: 12256,
@@ -61257,12 +61257,12 @@ export const CITIES = [
   {
     id: 12258,
     countyId: 24,
-    name: 'Toculesti',
+    name: 'Toculești',
   },
   {
     id: 12259,
     countyId: 10,
-    name: 'Toderita',
+    name: 'Toderița',
   },
   {
     id: 12260,
@@ -61292,22 +61292,22 @@ export const CITIES = [
   {
     id: 12265,
     countyId: 35,
-    name: 'Todiresti',
+    name: 'Todirești',
   },
   {
     id: 12266,
     countyId: 53,
-    name: 'Todiresti',
+    name: 'Todirești',
   },
   {
     id: 12267,
     countyId: 48,
-    name: 'Todiresti',
+    name: 'Todirești',
   },
   {
     id: 12268,
     countyId: 41,
-    name: 'Tofalau',
+    name: 'Tofalău',
   },
   {
     id: 12269,
@@ -61332,7 +61332,7 @@ export const CITIES = [
   {
     id: 12273,
     countyId: 2,
-    name: 'tohesti',
+    name: 'țohești',
   },
   {
     id: 12274,
@@ -61352,7 +61352,7 @@ export const CITIES = [
   {
     id: 12277,
     countyId: 1,
-    name: 'Tolacesti',
+    name: 'Tolăcești',
   },
   {
     id: 12278,
@@ -61362,17 +61362,17 @@ export const CITIES = [
   {
     id: 12279,
     countyId: 31,
-    name: 'Toleseni',
+    name: 'Toleșeni',
   },
   {
     id: 12280,
     countyId: 48,
-    name: 'tolesti',
+    name: 'țolești',
   },
   {
     id: 12281,
     countyId: 42,
-    name: 'tolici',
+    name: 'țolici',
   },
   {
     id: 12282,
@@ -61382,32 +61382,32 @@ export const CITIES = [
   {
     id: 12283,
     countyId: 1,
-    name: 'Tomesti',
+    name: 'Tomești',
   },
   {
     id: 12284,
     countyId: 31,
-    name: 'Tomesti',
+    name: 'Tomești',
   },
   {
     id: 12285,
     countyId: 50,
-    name: 'Tomesti',
+    name: 'Tomești',
   },
   {
     id: 12286,
     countyId: 33,
-    name: 'Tomesti',
+    name: 'Tomești',
   },
   {
     id: 12287,
     countyId: 35,
-    name: 'Tomesti',
+    name: 'Tomești',
   },
   {
     id: 12288,
     countyId: 53,
-    name: 'Tomesti',
+    name: 'Tomești',
   },
   {
     id: 12289,
@@ -61437,47 +61437,47 @@ export const CITIES = [
   {
     id: 12294,
     countyId: 53,
-    name: 'Tomsa',
+    name: 'Tomșa',
   },
   {
     id: 12295,
     countyId: 3,
-    name: 'Tomsanca',
+    name: 'Tomșanca',
   },
   {
     id: 12296,
     countyId: 44,
-    name: 'Tomsani',
+    name: 'Tomșani',
   },
   {
     id: 12297,
     countyId: 24,
-    name: 'Tomsani',
+    name: 'Tomșani',
   },
   {
     id: 12298,
     countyId: 52,
-    name: 'Tomsani',
+    name: 'Tomșani',
   },
   {
     id: 12299,
     countyId: 3,
-    name: 'Tomulesti',
+    name: 'Tomulești',
   },
   {
     id: 12300,
     countyId: 29,
-    name: 'Tomulesti',
+    name: 'Tomulești',
   },
   {
     id: 12301,
     countyId: 1,
-    name: 'Tomusesti',
+    name: 'Tomușești',
   },
   {
     id: 12302,
     countyId: 1,
-    name: 'Tomutesti',
+    name: 'Tomuțești',
   },
   {
     id: 12303,
@@ -61502,27 +61502,27 @@ export const CITIES = [
   {
     id: 12307,
     countyId: 43,
-    name: 'Tonesti (Leleasca)',
+    name: 'Tonești (Leleasca)',
   },
   {
     id: 12308,
     countyId: 43,
-    name: 'Tonesti (Samburesti)',
+    name: 'Tonești (Sâmburești)',
   },
   {
     id: 12309,
     countyId: 44,
-    name: 'tontesti',
+    name: 'țonțești',
   },
   {
     id: 12310,
     countyId: 41,
-    name: 'topa',
+    name: 'țopa',
   },
   {
     id: 12311,
     countyId: 6,
-    name: 'Topa de Cris',
+    name: 'Topa de Criș',
   },
   {
     id: 12312,
@@ -61537,7 +61537,7 @@ export const CITIES = [
   {
     id: 12314,
     countyId: 21,
-    name: 'Topa Mica',
+    name: 'Topa Mică',
   },
   {
     id: 12315,
@@ -61552,22 +61552,22 @@ export const CITIES = [
   {
     id: 12317,
     countyId: 47,
-    name: 'Toparcea',
+    name: 'Topârcea',
   },
   {
     id: 12318,
     countyId: 30,
-    name: 'Topesti',
+    name: 'Topești',
   },
   {
     id: 12319,
     countyId: 6,
-    name: 'Topesti',
+    name: 'Topești',
   },
   {
     id: 12320,
     countyId: 54,
-    name: 'Topesti',
+    name: 'Topești',
   },
   {
     id: 12321,
@@ -61587,7 +61587,7 @@ export const CITIES = [
   {
     id: 12324,
     countyId: 20,
-    name: 'Toplet',
+    name: 'Topleț',
   },
   {
     id: 12325,
@@ -61597,27 +61597,27 @@ export const CITIES = [
   {
     id: 12326,
     countyId: 33,
-    name: 'Toplita',
+    name: 'Toplița',
   },
   {
     id: 12327,
     countyId: 45,
-    name: 'Toplita',
+    name: 'Toplița',
   },
   {
     id: 12328,
     countyId: 3,
-    name: 'Toplita',
+    name: 'Toplița',
   },
   {
     id: 12329,
     countyId: 31,
-    name: 'Toplita',
+    name: 'Toplița',
   },
   {
     id: 12330,
     countyId: 33,
-    name: 'Toplita Muresului',
+    name: 'Toplița Mureșului',
   },
   {
     id: 12331,
@@ -61627,7 +61627,7 @@ export const CITIES = [
   {
     id: 12332,
     countyId: 42,
-    name: 'Topolita',
+    name: 'Topolița',
   },
   {
     id: 12333,
@@ -61637,12 +61637,12 @@ export const CITIES = [
   {
     id: 12334,
     countyId: 50,
-    name: 'Topolovatu Mare',
+    name: 'Topolovățu Mare',
   },
   {
     id: 12335,
     countyId: 50,
-    name: 'Topolovatu Mic',
+    name: 'Topolovățu Mic',
   },
   {
     id: 12336,
@@ -61652,7 +61652,7 @@ export const CITIES = [
   {
     id: 12337,
     countyId: 53,
-    name: 'Toporasti',
+    name: 'Toporăști',
   },
   {
     id: 12338,
@@ -61672,7 +61672,7 @@ export const CITIES = [
   {
     id: 12341,
     countyId: 28,
-    name: 'Torcesti',
+    name: 'Torcești',
   },
   {
     id: 12342,
@@ -61682,7 +61682,7 @@ export const CITIES = [
   {
     id: 12343,
     countyId: 18,
-    name: 'Toropalesti',
+    name: 'Toropălești',
   },
   {
     id: 12344,
@@ -61702,12 +61702,12 @@ export const CITIES = [
   {
     id: 12347,
     countyId: 33,
-    name: 'Totesti',
+    name: 'Totești',
   },
   {
     id: 12348,
     countyId: 1,
-    name: 'Totesti',
+    name: 'Toțești',
   },
   {
     id: 12349,
@@ -61717,7 +61717,7 @@ export const CITIES = [
   {
     id: 12350,
     countyId: 35,
-    name: 'Totoesti',
+    name: 'Totoești',
   },
   {
     id: 12351,
@@ -61727,7 +61727,7 @@ export const CITIES = [
   {
     id: 12352,
     countyId: 42,
-    name: 'Totoiesti',
+    name: 'Totoiești',
   },
   {
     id: 12353,
@@ -61737,7 +61737,7 @@ export const CITIES = [
   {
     id: 12354,
     countyId: 34,
-    name: 'Tovarasia',
+    name: 'Tovărășia',
   },
   {
     id: 12355,
@@ -61797,12 +61797,12 @@ export const CITIES = [
   {
     id: 12366,
     countyId: 42,
-    name: 'Traian (Sabaoani)',
+    name: 'Traian (Săbăoani)',
   },
   {
     id: 12367,
     countyId: 42,
-    name: 'Traian (Zanesti)',
+    name: 'Traian (Zănești)',
   },
   {
     id: 12368,
@@ -61812,37 +61812,37 @@ export const CITIES = [
   {
     id: 12369,
     countyId: 44,
-    name: 'Traisteni',
+    name: 'Trăisteni',
   },
   {
     id: 12370,
     countyId: 1,
-    name: 'Trampoiele',
+    name: 'Trâmpoiele',
   },
   {
     id: 12371,
     countyId: 1,
-    name: 'Trancesti',
+    name: 'Trâncești',
   },
   {
     id: 12372,
     countyId: 45,
-    name: 'Tranis',
+    name: 'Traniș',
   },
   {
     id: 12373,
     countyId: 21,
-    name: 'Tranisu',
+    name: 'Tranișu',
   },
   {
     id: 12374,
     countyId: 5,
-    name: 'Trebes',
+    name: 'Trebeș',
   },
   {
     id: 12375,
     countyId: 42,
-    name: 'Trei Fantani',
+    name: 'Trei Fântâni',
   },
   {
     id: 12376,
@@ -61942,7 +61942,7 @@ export const CITIES = [
   {
     id: 12395,
     countyId: 18,
-    name: 'Trestioara (Manzalesti)',
+    name: 'Trestioara (Mânzălești)',
   },
   {
     id: 12396,
@@ -61957,22 +61957,22 @@ export const CITIES = [
   {
     id: 12398,
     countyId: 42,
-    name: 'Trifesti',
+    name: 'Trifești',
   },
   {
     id: 12399,
     countyId: 35,
-    name: 'Trifesti',
+    name: 'Trifești',
   },
   {
     id: 12400,
     countyId: 1,
-    name: 'Trifesti (Horea)',
+    name: 'Trifești (Horea)',
   },
   {
     id: 12401,
     countyId: 1,
-    name: 'Trifesti (Lupsa)',
+    name: 'Trifești (Lupșa)',
   },
   {
     id: 12402,
@@ -61982,7 +61982,7 @@ export const CITIES = [
   {
     id: 12403,
     countyId: 1,
-    name: 'Trisoresti',
+    name: 'Trișorești',
   },
   {
     id: 12404,
@@ -62002,12 +62002,12 @@ export const CITIES = [
   {
     id: 12407,
     countyId: 49,
-    name: 'Trivalea-Mosteni',
+    name: 'Trivalea-Moșteni',
   },
   {
     id: 12408,
     countyId: 2,
-    name: 'Troas',
+    name: 'Troaș',
   },
   {
     id: 12409,
@@ -62032,7 +62032,7 @@ export const CITIES = [
   {
     id: 12413,
     countyId: 41,
-    name: 'Troita',
+    name: 'Troița',
   },
   {
     id: 12414,
@@ -62042,12 +62042,12 @@ export const CITIES = [
   {
     id: 12415,
     countyId: 54,
-    name: 'Trotusanu',
+    name: 'Trotușanu',
   },
   {
     id: 12416,
     countyId: 43,
-    name: 'Trufinesti',
+    name: 'Trufinești',
   },
   {
     id: 12417,
@@ -62057,7 +62057,7 @@ export const CITIES = [
   {
     id: 12418,
     countyId: 8,
-    name: 'Trusesti',
+    name: 'Trușești',
   },
   {
     id: 12419,
@@ -62102,12 +62102,12 @@ export const CITIES = [
   {
     id: 12427,
     countyId: 8,
-    name: 'Tudor Vladimirescu (Albesti)',
+    name: 'Tudor Vladimirescu (Albești)',
   },
   {
     id: 12428,
     countyId: 8,
-    name: 'Tudor Vladimirescu (Avrameni)',
+    name: 'Tudor Vladimirescu (Avrămeni)',
   },
   {
     id: 12429,
@@ -62117,7 +62117,7 @@ export const CITIES = [
   {
     id: 12430,
     countyId: 23,
-    name: 'tufalau',
+    name: 'țufalău',
   },
   {
     id: 12431,
@@ -62152,22 +62152,22 @@ export const CITIES = [
   {
     id: 12437,
     countyId: 9,
-    name: 'Tufesti',
+    name: 'Tufești',
   },
   {
     id: 12438,
     countyId: 53,
-    name: 'Tufestii de Jos',
+    name: 'Tufeștii de Jos',
   },
   {
     id: 12439,
     countyId: 35,
-    name: 'Tufestii de Sus',
+    name: 'Tufeștii de Sus',
   },
   {
     id: 12440,
     countyId: 25,
-    name: 'tuglui',
+    name: 'țuglui',
   },
   {
     id: 12441,
@@ -62187,7 +62187,7 @@ export const CITIES = [
   {
     id: 12444,
     countyId: 44,
-    name: 'Tulburea-Valeni',
+    name: 'Tulburea-Văleni',
   },
   {
     id: 12445,
@@ -62202,22 +62202,22 @@ export const CITIES = [
   {
     id: 12447,
     countyId: 52,
-    name: 'Tulei-Campeni',
+    name: 'Tulei-Câmpeni',
   },
   {
     id: 12448,
     countyId: 53,
-    name: 'Tulesti',
+    name: 'Tulești',
   },
   {
     id: 12449,
     countyId: 31,
-    name: 'Tulghes',
+    name: 'Tulgheș',
   },
   {
     id: 12450,
     countyId: 39,
-    name: 'Tulghies',
+    name: 'Tulghieș',
   },
   {
     id: 12451,
@@ -62227,7 +62227,7 @@ export const CITIES = [
   {
     id: 12452,
     countyId: 28,
-    name: 'Tulucesti',
+    name: 'Tulucești',
   },
   {
     id: 12453,
@@ -62262,17 +62262,17 @@ export const CITIES = [
   {
     id: 12459,
     countyId: 53,
-    name: 'Tunsesti',
+    name: 'Tunsești',
   },
   {
     id: 12460,
     countyId: 53,
-    name: 'Tupilati',
+    name: 'Tupilați',
   },
   {
     id: 12461,
     countyId: 42,
-    name: 'Tupilati',
+    name: 'Tupilați',
   },
   {
     id: 12462,
@@ -62297,7 +62297,7 @@ export const CITIES = [
   {
     id: 12466,
     countyId: 45,
-    name: 'Turbuta',
+    name: 'Turbuța',
   },
   {
     id: 12467,
@@ -62307,17 +62307,17 @@ export const CITIES = [
   {
     id: 12468,
     countyId: 52,
-    name: 'Turcesti',
+    name: 'Turcești',
   },
   {
     id: 12469,
     countyId: 3,
-    name: 'Turcesti',
+    name: 'Turcești',
   },
   {
     id: 12470,
     countyId: 30,
-    name: 'Turcinesti',
+    name: 'Turcinești',
   },
   {
     id: 12471,
@@ -62337,12 +62337,12 @@ export const CITIES = [
   {
     id: 12474,
     countyId: 33,
-    name: 'Turdas',
+    name: 'Turdaș',
   },
   {
     id: 12475,
     countyId: 1,
-    name: 'Turdas',
+    name: 'Turdaș',
   },
   {
     id: 12476,
@@ -62382,12 +62382,12 @@ export const CITIES = [
   {
     id: 12483,
     countyId: 33,
-    name: 'Turmas',
+    name: 'Turmaș',
   },
   {
     id: 12484,
     countyId: 21,
-    name: 'Turmasi',
+    name: 'Turmași',
   },
   {
     id: 12485,
@@ -62397,12 +62397,12 @@ export const CITIES = [
   {
     id: 12486,
     countyId: 49,
-    name: 'Turnu Magurele',
+    name: 'Turnu Măgurele',
   },
   {
     id: 12487,
     countyId: 47,
-    name: 'Turnu Rosu',
+    name: 'Turnu Roșu',
   },
   {
     id: 12488,
@@ -62412,12 +62412,12 @@ export const CITIES = [
   {
     id: 12489,
     countyId: 46,
-    name: 'Turt',
+    name: 'Turț',
   },
   {
     id: 12490,
     countyId: 46,
-    name: 'Turt-Bai',
+    name: 'Turț-Băi',
   },
   {
     id: 12491,
@@ -62427,7 +62427,7 @@ export const CITIES = [
   {
     id: 12492,
     countyId: 42,
-    name: 'Turturesti',
+    name: 'Turturești',
   },
   {
     id: 12493,
@@ -62447,22 +62447,22 @@ export const CITIES = [
   {
     id: 12496,
     countyId: 41,
-    name: 'Tusinu',
+    name: 'Tușinu',
   },
   {
     id: 12497,
     countyId: 31,
-    name: 'Tusnad',
+    name: 'Tușnad',
   },
   {
     id: 12498,
     countyId: 31,
-    name: 'Tusnadu Nou',
+    name: 'Tușnadu Nou',
   },
   {
     id: 12499,
     countyId: 33,
-    name: 'Tustea',
+    name: 'Tuștea',
   },
   {
     id: 12500,
@@ -62477,22 +62477,22 @@ export const CITIES = [
   {
     id: 12502,
     countyId: 53,
-    name: 'tutcani',
+    name: 'țuțcani',
   },
   {
     id: 12503,
     countyId: 42,
-    name: 'tutcanii din Deal',
+    name: 'țuțcanii din Deal',
   },
   {
     id: 12504,
     countyId: 42,
-    name: 'tutcanii din Vale',
+    name: 'țuțcanii din Vale',
   },
   {
     id: 12505,
     countyId: 35,
-    name: 'tutora',
+    name: 'țuțora',
   },
   {
     id: 12506,
@@ -62502,22 +62502,22 @@ export const CITIES = [
   {
     id: 12507,
     countyId: 54,
-    name: 'Tutu',
+    name: 'Tuțu',
   },
   {
     id: 12508,
     countyId: 52,
-    name: 'Tutulesti',
+    name: 'Tuțulești',
   },
   {
     id: 12509,
     countyId: 3,
-    name: 'tutulesti',
+    name: 'țuțulești',
   },
   {
     id: 12510,
     countyId: 52,
-    name: 'tuturu',
+    name: 'țuțuru',
   },
   {
     id: 12511,
@@ -62542,7 +62542,7 @@ export const CITIES = [
   {
     id: 12515,
     countyId: 6,
-    name: 'Ucuris',
+    name: 'Ucuriș',
   },
   {
     id: 12516,
@@ -62567,12 +62567,12 @@ export const CITIES = [
   {
     id: 12520,
     countyId: 18,
-    name: 'Udati-Lucieni',
+    name: 'Udați-Lucieni',
   },
   {
     id: 12521,
     countyId: 18,
-    name: 'Udati-Manzu',
+    name: 'Udați-Mânzu',
   },
   {
     id: 12522,
@@ -62582,27 +62582,27 @@ export const CITIES = [
   {
     id: 12523,
     countyId: 3,
-    name: 'Udeni-Zavoi',
+    name: 'Udeni-Zăvoi',
   },
   {
     id: 12524,
     countyId: 48,
-    name: 'Udesti',
+    name: 'Udești',
   },
   {
     id: 12525,
     countyId: 24,
-    name: 'Udresti',
+    name: 'Udrești',
   },
   {
     id: 12526,
     countyId: 52,
-    name: 'Udresti',
+    name: 'Udrești',
   },
   {
     id: 12527,
     countyId: 44,
-    name: 'Udresti',
+    name: 'Udrești',
   },
   {
     id: 12528,
@@ -62612,7 +62612,7 @@ export const CITIES = [
   {
     id: 12529,
     countyId: 45,
-    name: 'Ugrutiu',
+    name: 'Ugruțiu',
   },
   {
     id: 12530,
@@ -62622,17 +62622,17 @@ export const CITIES = [
   {
     id: 12531,
     countyId: 33,
-    name: 'Uibaresti',
+    name: 'Uibărești',
   },
   {
     id: 12532,
     countyId: 48,
-    name: 'Uidesti',
+    name: 'Uidești',
   },
   {
     id: 12533,
     countyId: 29,
-    name: 'Uiesti',
+    name: 'Uiești',
   },
   {
     id: 12534,
@@ -62652,12 +62652,12 @@ export const CITIES = [
   {
     id: 12537,
     countyId: 6,
-    name: 'Uileacu de Beius',
+    name: 'Uileacu de Beiuș',
   },
   {
     id: 12538,
     countyId: 6,
-    name: 'Uileacu de Cris',
+    name: 'Uileacu de Criș',
   },
   {
     id: 12539,
@@ -62667,7 +62667,7 @@ export const CITIES = [
   {
     id: 12540,
     countyId: 45,
-    name: 'Uileacu Simleului',
+    name: 'Uileacu Șimleului',
   },
   {
     id: 12541,
@@ -62707,22 +62707,22 @@ export const CITIES = [
   {
     id: 12548,
     countyId: 31,
-    name: 'Ulies',
+    name: 'Ulieș',
   },
   {
     id: 12549,
     countyId: 33,
-    name: 'Ulies',
+    name: 'Ulieș',
   },
   {
     id: 12550,
     countyId: 41,
-    name: 'Ulies',
+    name: 'Ulieș',
   },
   {
     id: 12551,
     countyId: 24,
-    name: 'Uliesti',
+    name: 'Uliești',
   },
   {
     id: 12552,
@@ -62782,7 +62782,7 @@ export const CITIES = [
   {
     id: 12563,
     countyId: 52,
-    name: 'Ulmetel',
+    name: 'Ulmețel',
   },
   {
     id: 12564,
@@ -62837,32 +62837,32 @@ export const CITIES = [
   {
     id: 12574,
     countyId: 28,
-    name: 'Umbraresti',
+    name: 'Umbrărești',
   },
   {
     id: 12575,
     countyId: 28,
-    name: 'Umbraresti (Targu Bujor)',
+    name: 'Umbrărești (Târgu Bujor)',
   },
   {
     id: 12576,
     countyId: 28,
-    name: 'Umbraresti-Deal',
+    name: 'Umbrărești-Deal',
   },
   {
     id: 12577,
     countyId: 42,
-    name: 'Uncesti',
+    name: 'Uncești',
   },
   {
     id: 12578,
     countyId: 53,
-    name: 'Uncesti',
+    name: 'Uncești',
   },
   {
     id: 12579,
     countyId: 48,
-    name: 'Uncesti',
+    name: 'Uncești',
   },
   {
     id: 12580,
@@ -62902,12 +62902,12 @@ export const CITIES = [
   {
     id: 12587,
     countyId: 21,
-    name: 'Unguras',
+    name: 'Unguraș',
   },
   {
     id: 12588,
     countyId: 39,
-    name: 'Unguras',
+    name: 'Unguraș',
   },
   {
     id: 12589,
@@ -62957,7 +62957,7 @@ export const CITIES = [
   {
     id: 12598,
     countyId: 3,
-    name: 'Ungureni (Bradulet)',
+    name: 'Ungureni (Brăduleț)',
   },
   {
     id: 12599,
@@ -62972,12 +62972,12 @@ export const CITIES = [
   {
     id: 12601,
     countyId: 24,
-    name: 'Ungureni (Cornesti)',
+    name: 'Ungureni (Cornești)',
   },
   {
     id: 12602,
     countyId: 24,
-    name: 'Ungureni (Dragomiresti)',
+    name: 'Ungureni (Dragomirești)',
   },
   {
     id: 12603,
@@ -62987,22 +62987,22 @@ export const CITIES = [
   {
     id: 12604,
     countyId: 44,
-    name: 'Ungureni (Filipestii de Targ)',
+    name: 'Ungureni (Filipeștii de Târg)',
   },
   {
     id: 12605,
     countyId: 44,
-    name: 'Ungureni (Gherghita)',
+    name: 'Ungureni (Gherghița)',
   },
   {
     id: 12606,
     countyId: 5,
-    name: 'Ungureni (Tatarasti)',
+    name: 'Ungureni (Tătărăști)',
   },
   {
     id: 12607,
     countyId: 3,
-    name: 'Ungureni (Valea Iasului)',
+    name: 'Ungureni (Valea Iașului)',
   },
   {
     id: 12608,
@@ -63022,7 +63022,7 @@ export const CITIES = [
   {
     id: 12611,
     countyId: 46,
-    name: 'Unimat',
+    name: 'Unimăt',
   },
   {
     id: 12612,
@@ -63062,12 +63062,12 @@ export const CITIES = [
   {
     id: 12619,
     countyId: 8,
-    name: 'Unteni',
+    name: 'Unțeni',
   },
   {
     id: 12620,
     countyId: 53,
-    name: 'Untesti',
+    name: 'Unțești',
   },
   {
     id: 12621,
@@ -63097,17 +63097,17 @@ export const CITIES = [
   {
     id: 12626,
     countyId: 1,
-    name: 'Urdes',
+    name: 'Urdeș',
   },
   {
     id: 12627,
     countyId: 53,
-    name: 'Urdesti',
+    name: 'Urdești',
   },
   {
     id: 12628,
     countyId: 25,
-    name: 'Urdinita',
+    name: 'Urdinița',
   },
   {
     id: 12629,
@@ -63117,27 +63117,27 @@ export const CITIES = [
   {
     id: 12630,
     countyId: 5,
-    name: 'Urechesti',
+    name: 'Urechești',
   },
   {
     id: 12631,
     countyId: 30,
-    name: 'Urechesti',
+    name: 'Urechești',
   },
   {
     id: 12632,
     countyId: 3,
-    name: 'Urechesti',
+    name: 'Urechești',
   },
   {
     id: 12633,
     countyId: 25,
-    name: 'Urechesti',
+    name: 'Urechești',
   },
   {
     id: 12634,
     countyId: 54,
-    name: 'Urechesti',
+    name: 'Urechești',
   },
   {
     id: 12635,
@@ -63187,7 +63187,7 @@ export const CITIES = [
   {
     id: 12644,
     countyId: 21,
-    name: 'Urisor',
+    name: 'Urișor',
   },
   {
     id: 12645,
@@ -63197,12 +63197,12 @@ export const CITIES = [
   {
     id: 12646,
     countyId: 53,
-    name: 'Urlati',
+    name: 'Urlați',
   },
   {
     id: 12647,
     countyId: 44,
-    name: 'Urlati',
+    name: 'Urlați',
   },
   {
     id: 12648,
@@ -63212,7 +63212,7 @@ export const CITIES = [
   {
     id: 12649,
     countyId: 28,
-    name: 'Urlesti',
+    name: 'Urlești',
   },
   {
     id: 12650,
@@ -63237,7 +63237,7 @@ export const CITIES = [
   {
     id: 12654,
     countyId: 3,
-    name: 'Urluiesti',
+    name: 'Urluiești',
   },
   {
     id: 12655,
@@ -63247,12 +63247,12 @@ export const CITIES = [
   {
     id: 12656,
     countyId: 39,
-    name: 'Urmenis',
+    name: 'Urmeniș',
   },
   {
     id: 12657,
     countyId: 7,
-    name: 'Urmenis',
+    name: 'Urmeniș',
   },
   {
     id: 12658,
@@ -63272,17 +63272,17 @@ export const CITIES = [
   {
     id: 12661,
     countyId: 52,
-    name: 'Ursani',
+    name: 'Urșani',
   },
   {
     id: 12662,
     countyId: 35,
-    name: 'Ursaresti',
+    name: 'Ursărești',
   },
   {
     id: 12663,
     countyId: 30,
-    name: 'Ursati',
+    name: 'Ursați',
   },
   {
     id: 12664,
@@ -63297,17 +63297,17 @@ export const CITIES = [
   {
     id: 12666,
     countyId: 43,
-    name: 'Ursi',
+    name: 'Urși',
   },
   {
     id: 12667,
     countyId: 52,
-    name: 'Ursi (Popesti)',
+    name: 'Urși (Popești)',
   },
   {
     id: 12668,
     countyId: 52,
-    name: 'Ursi (Stoilesti)',
+    name: 'Urși (Stoilești)',
   },
   {
     id: 12669,
@@ -63317,7 +63317,7 @@ export const CITIES = [
   {
     id: 12670,
     countyId: 35,
-    name: 'Ursita',
+    name: 'Urșița',
   },
   {
     id: 12671,
@@ -63382,12 +63382,12 @@ export const CITIES = [
   {
     id: 12683,
     countyId: 6,
-    name: 'Urvis de Beius',
+    name: 'Urviș de Beiuș',
   },
   {
     id: 12684,
     countyId: 2,
-    name: 'Urvisu de Beliu',
+    name: 'Urvișu de Beliu',
   },
   {
     id: 12685,
@@ -63422,27 +63422,27 @@ export const CITIES = [
   {
     id: 12691,
     countyId: 46,
-    name: 'Urziceni-Padure',
+    name: 'Urziceni-Pădure',
   },
   {
     id: 12692,
     countyId: 25,
-    name: 'Urzicuta',
+    name: 'Urzicuța',
   },
   {
     id: 12693,
     countyId: 25,
-    name: 'Uscaci',
+    name: 'Uscăci',
   },
   {
     id: 12694,
     countyId: 52,
-    name: 'Usurei',
+    name: 'Ușurei',
   },
   {
     id: 12695,
     countyId: 2,
-    name: 'Ususau',
+    name: 'Ususău',
   },
   {
     id: 12696,
@@ -63462,47 +63462,47 @@ export const CITIES = [
   {
     id: 12699,
     countyId: 3,
-    name: 'Vacarea',
+    name: 'Văcarea',
   },
   {
     id: 12700,
     countyId: 30,
-    name: 'Vacarea',
+    name: 'Văcarea',
   },
   {
     id: 12701,
     countyId: 18,
-    name: 'Vacareasca',
+    name: 'Văcăreasca',
   },
   {
     id: 12702,
     countyId: 51,
-    name: 'Vacareni',
+    name: 'Văcăreni',
   },
   {
     id: 12703,
     countyId: 24,
-    name: 'Vacaresti',
+    name: 'Văcărești',
   },
   {
     id: 12704,
     countyId: 49,
-    name: 'Vacaresti',
+    name: 'Văcărești',
   },
   {
     id: 12705,
     countyId: 31,
-    name: 'Vacaresti',
+    name: 'Văcărești',
   },
   {
     id: 12706,
     countyId: 49,
-    name: 'Vaceni',
+    name: 'Văceni',
   },
   {
     id: 12707,
     countyId: 8,
-    name: 'Vaculesti',
+    name: 'Văculești',
   },
   {
     id: 12708,
@@ -63527,27 +63527,27 @@ export const CITIES = [
   {
     id: 12712,
     countyId: 41,
-    name: 'Vadas',
+    name: 'Vădaș',
   },
   {
     id: 12713,
     countyId: 43,
-    name: 'Vadastra',
+    name: 'Vădastra',
   },
   {
     id: 12714,
     countyId: 43,
-    name: 'Vadastrita',
+    name: 'Vădăstrița',
   },
   {
     id: 12715,
     countyId: 9,
-    name: 'Vadeni',
+    name: 'Vădeni',
   },
   {
     id: 12716,
     countyId: 28,
-    name: 'Vadeni',
+    name: 'Vădeni',
   },
   {
     id: 12717,
@@ -63572,7 +63572,7 @@ export const CITIES = [
   {
     id: 12721,
     countyId: 6,
-    name: 'Vadu Crisului',
+    name: 'Vadu Crișului',
   },
   {
     id: 12722,
@@ -63597,7 +63597,7 @@ export const CITIES = [
   {
     id: 12726,
     countyId: 1,
-    name: 'Vadu Motilor',
+    name: 'Vadu Moților',
   },
   {
     id: 12727,
@@ -63617,27 +63617,27 @@ export const CITIES = [
   {
     id: 12730,
     countyId: 44,
-    name: 'Vadu Parului',
+    name: 'Vadu Părului',
   },
   {
     id: 12731,
     countyId: 18,
-    name: 'Vadu Pasii',
+    name: 'Vadu Pașii',
   },
   {
     id: 12732,
     countyId: 54,
-    name: 'Vadu Rosca',
+    name: 'Vadu Roșca',
   },
   {
     id: 12733,
     countyId: 44,
-    name: 'Vadu Sapat',
+    name: 'Vadu Săpat',
   },
   {
     id: 12734,
     countyId: 18,
-    name: 'Vadu Soresti',
+    name: 'Vadu Sorești',
   },
   {
     id: 12735,
@@ -63652,17 +63652,17 @@ export const CITIES = [
   {
     id: 12737,
     countyId: 45,
-    name: 'Vadurele',
+    name: 'Vădurele',
   },
   {
     id: 12738,
     countyId: 42,
-    name: 'Vadurele (Alexandru cel Bun)',
+    name: 'Vădurele (Alexandru cel Bun)',
   },
   {
     id: 12739,
     countyId: 42,
-    name: 'Vadurele (Candesti)',
+    name: 'Vădurele (Cândești)',
   },
   {
     id: 12740,
@@ -63677,22 +63677,22 @@ export const CITIES = [
   {
     id: 12742,
     countyId: 31,
-    name: 'Vagani',
+    name: 'Vâgani',
   },
   {
     id: 12743,
     countyId: 46,
-    name: 'Vagas',
+    name: 'Văgaș',
   },
   {
     id: 12744,
     countyId: 30,
-    name: 'Vagiulesti',
+    name: 'Văgiulești',
   },
   {
     id: 12745,
     countyId: 1,
-    name: 'Vai',
+    name: 'Văi',
   },
   {
     id: 12746,
@@ -63702,12 +63702,12 @@ export const CITIES = [
   {
     id: 12747,
     countyId: 21,
-    name: 'Vaida-Camaras',
+    name: 'Vaida-Cămăraș',
   },
   {
     id: 12748,
     countyId: 41,
-    name: 'Vaidacuta',
+    name: 'Vaidacuța',
   },
   {
     id: 12749,
@@ -63732,207 +63732,207 @@ export const CITIES = [
   {
     id: 12753,
     countyId: 30,
-    name: 'Vaieni',
+    name: 'Văieni',
   },
   {
     id: 12754,
     countyId: 54,
-    name: 'Vajaitoarea',
+    name: 'Vâjâitoarea',
   },
   {
     id: 12755,
     countyId: 6,
-    name: 'Valani de Pomezeu',
+    name: 'Vălani de Pomezeu',
   },
   {
     id: 12756,
     countyId: 6,
-    name: 'Valanii de Beius',
+    name: 'Vălanii de Beiuș',
   },
   {
     id: 12757,
     countyId: 30,
-    name: 'Valari',
+    name: 'Vălari',
   },
   {
     id: 12758,
     countyId: 33,
-    name: 'Valari',
+    name: 'Vălari',
   },
   {
     id: 12759,
     countyId: 1,
-    name: 'Valcaneasa',
+    name: 'Vâlcăneasa',
   },
   {
     id: 12760,
     countyId: 44,
-    name: 'Valcanesti',
+    name: 'Vâlcănești',
   },
   {
     id: 12761,
     countyId: 50,
-    name: 'Valcani',
+    name: 'Vălcani',
   },
   {
     id: 12762,
     countyId: 54,
-    name: 'Valcani',
+    name: 'Vâlcani',
   },
   {
     id: 12763,
     countyId: 45,
-    name: 'Valcau de Jos',
+    name: 'Valcău de Jos',
   },
   {
     id: 12764,
     countyId: 45,
-    name: 'Valcau de Sus',
+    name: 'Valcău de Sus',
   },
   {
     id: 12765,
     countyId: 1,
-    name: 'Valcea',
+    name: 'Vâlcea',
   },
   {
     id: 12766,
     countyId: 10,
-    name: 'Valcea',
+    name: 'Vâlcea',
   },
   {
     id: 12767,
     countyId: 30,
-    name: 'Valceaua',
+    name: 'Vâlceaua',
   },
   {
     id: 12768,
     countyId: 21,
-    name: 'Valcele',
+    name: 'Vâlcele',
   },
   {
     id: 12769,
     countyId: 30,
-    name: 'Valcele',
+    name: 'Vâlcele',
   },
   {
     id: 12770,
     countyId: 43,
-    name: 'Valcele',
+    name: 'Vâlcele',
   },
   {
     id: 12771,
     countyId: 53,
-    name: 'Valcele',
+    name: 'Vâlcele',
   },
   {
     id: 12772,
     countyId: 18,
-    name: 'Valcele',
+    name: 'Vâlcele',
   },
   {
     id: 12773,
     countyId: 23,
-    name: 'Valcele',
+    name: 'Vâlcele',
   },
   {
     id: 12774,
     countyId: 33,
-    name: 'Valcele',
+    name: 'Vâlcele',
   },
   {
     id: 12775,
     countyId: 54,
-    name: 'Valcele',
+    name: 'Vâlcele',
   },
   {
     id: 12776,
     countyId: 5,
-    name: 'Valcele (Corbasca)',
+    name: 'Vâlcele (Corbasca)',
   },
   {
     id: 12777,
     countyId: 5,
-    name: 'Valcele (Targu Ocna)',
+    name: 'Vâlcele (Târgu Ocna)',
   },
   {
     id: 12778,
     countyId: 6,
-    name: 'Valcelele',
+    name: 'Vâlcelele',
   },
   {
     id: 12779,
     countyId: 18,
-    name: 'Valcelele',
+    name: 'Vâlcelele',
   },
   {
     id: 12780,
     countyId: 19,
-    name: 'Valcelele',
+    name: 'Vâlcelele',
   },
   {
     id: 12781,
     countyId: 29,
-    name: 'Valcelele',
+    name: 'Vâlcelele',
   },
   {
     id: 12782,
     countyId: 44,
-    name: 'Valcelele',
+    name: 'Vâlcelele',
   },
   {
     id: 12783,
     countyId: 54,
-    name: 'Valcelele',
+    name: 'Vâlcelele',
   },
   {
     id: 12784,
     countyId: 3,
-    name: 'Valcelele',
+    name: 'Vâlcelele',
   },
   {
     id: 12785,
     countyId: 8,
-    name: 'Valcelele',
+    name: 'Vâlcelele',
   },
   {
     id: 12786,
     countyId: 21,
-    name: 'Valcelele',
+    name: 'Vâlcelele',
   },
   {
     id: 12787,
     countyId: 22,
-    name: 'Valcelele',
+    name: 'Vâlcelele',
   },
   {
     id: 12788,
     countyId: 35,
-    name: 'Valcelele',
+    name: 'Vâlcelele',
   },
   {
     id: 12789,
     countyId: 48,
-    name: 'Valcelele',
+    name: 'Vâlcelele',
   },
   {
     id: 12790,
     countyId: 33,
-    name: 'Valcelele Bune',
+    name: 'Vâlcelele Bune',
   },
   {
     id: 12791,
     countyId: 43,
-    name: 'Valcelele de Sus',
+    name: 'Vâlcelele de Sus',
   },
   {
     id: 12792,
     countyId: 33,
-    name: 'Valceluta',
+    name: 'Vâlceluța',
   },
   {
     id: 12793,
     countyId: 1,
-    name: 'Valcesti',
+    name: 'Vâlcești',
   },
   {
     id: 12794,
@@ -63942,7 +63942,7 @@ export const CITIES = [
   {
     id: 12795,
     countyId: 35,
-    name: 'Valcica',
+    name: 'Vâlcica',
   },
   {
     id: 12796,
@@ -63997,32 +63997,32 @@ export const CITIES = [
   {
     id: 12806,
     countyId: 35,
-    name: 'Valea Adanca',
+    name: 'Valea Adâncă',
   },
   {
     id: 12807,
     countyId: 21,
-    name: 'Valea Agrisului',
+    name: 'Valea Agrișului',
   },
   {
     id: 12808,
     countyId: 42,
-    name: 'Valea Alba',
+    name: 'Valea Albă',
   },
   {
     id: 12809,
     countyId: 1,
-    name: 'Valea Alba',
+    name: 'Valea Albă',
   },
   {
     id: 12810,
     countyId: 41,
-    name: 'Valea Albestiului',
+    name: 'Valea Albeștiului',
   },
   {
     id: 12811,
     countyId: 52,
-    name: 'Valea Alunisului',
+    name: 'Valea Alunișului',
   },
   {
     id: 12812,
@@ -64067,12 +64067,12 @@ export const CITIES = [
   {
     id: 12820,
     countyId: 3,
-    name: 'Valea Badenilor',
+    name: 'Valea Bădenilor',
   },
   {
     id: 12821,
     countyId: 52,
-    name: 'Valea Balceasca',
+    name: 'Valea Bălcească',
   },
   {
     id: 12822,
@@ -64087,7 +64087,7 @@ export const CITIES = [
   {
     id: 12824,
     countyId: 1,
-    name: 'Valea Barlutesti',
+    name: 'Valea Bârluțești',
   },
   {
     id: 12825,
@@ -64127,7 +64127,7 @@ export const CITIES = [
   {
     id: 12832,
     countyId: 20,
-    name: 'Valea Bolvasnita',
+    name: 'Valea Bolvașnița',
   },
   {
     id: 12833,
@@ -64137,7 +64137,7 @@ export const CITIES = [
   {
     id: 12834,
     countyId: 31,
-    name: 'Valea Boros',
+    name: 'Valea Boroș',
   },
   {
     id: 12835,
@@ -64147,7 +64147,7 @@ export const CITIES = [
   {
     id: 12836,
     countyId: 5,
-    name: 'Valea Botului',
+    name: 'Valea Boțului',
   },
   {
     id: 12837,
@@ -64157,7 +64157,7 @@ export const CITIES = [
   {
     id: 12838,
     countyId: 44,
-    name: 'Valea Bradetului',
+    name: 'Valea Brădetului',
   },
   {
     id: 12839,
@@ -64197,22 +64197,22 @@ export const CITIES = [
   {
     id: 12846,
     countyId: 40,
-    name: 'Valea Buna',
+    name: 'Valea Bună',
   },
   {
     id: 12847,
     countyId: 21,
-    name: 'Valea Calda',
+    name: 'Valea Caldă',
   },
   {
     id: 12848,
     countyId: 9,
-    name: 'Valea Calmatuiului',
+    name: 'Valea Călmățuiului',
   },
   {
     id: 12849,
     countyId: 44,
-    name: 'Valea Calugareasca',
+    name: 'Valea Călugărească',
   },
   {
     id: 12850,
@@ -64222,7 +64222,7 @@ export const CITIES = [
   {
     id: 12851,
     countyId: 9,
-    name: 'Valea Canepii',
+    name: 'Valea Cânepii',
   },
   {
     id: 12852,
@@ -64232,7 +64232,7 @@ export const CITIES = [
   {
     id: 12853,
     countyId: 21,
-    name: 'Valea Caseielului',
+    name: 'Valea Cășeielului',
   },
   {
     id: 12854,
@@ -64252,17 +64252,17 @@ export const CITIES = [
   {
     id: 12857,
     countyId: 52,
-    name: 'Valea Caselor (Dragasani)',
+    name: 'Valea Caselor (Drăgășani)',
   },
   {
     id: 12858,
     countyId: 52,
-    name: 'Valea Caselor (Popesti)',
+    name: 'Valea Caselor (Popești)',
   },
   {
     id: 12859,
     countyId: 18,
-    name: 'Valea Catinei',
+    name: 'Valea Cătinei',
   },
   {
     id: 12860,
@@ -64277,7 +64277,7 @@ export const CITIES = [
   {
     id: 12862,
     countyId: 3,
-    name: 'Valea Cetatuia',
+    name: 'Valea Cetățuia',
   },
   {
     id: 12863,
@@ -64297,12 +64297,12 @@ export const CITIES = [
   {
     id: 12866,
     countyId: 21,
-    name: 'Valea Ciresoii',
+    name: 'Valea Cireșoii',
   },
   {
     id: 12867,
     countyId: 49,
-    name: 'Valea Ciresului',
+    name: 'Valea Cireșului',
   },
   {
     id: 12868,
@@ -64317,7 +64317,7 @@ export const CITIES = [
   {
     id: 12870,
     countyId: 1,
-    name: 'Valea Cocesti',
+    name: 'Valea Cocești',
   },
   {
     id: 12871,
@@ -64332,12 +64332,12 @@ export const CITIES = [
   {
     id: 12873,
     countyId: 40,
-    name: 'Valea Cosustei',
+    name: 'Valea Coșuștei',
   },
   {
     id: 12874,
     countyId: 54,
-    name: 'Valea Cotesti',
+    name: 'Valea Cotești',
   },
   {
     id: 12875,
@@ -64347,7 +64347,7 @@ export const CITIES = [
   {
     id: 12876,
     countyId: 44,
-    name: 'Valea Crangului',
+    name: 'Valea Crângului',
   },
   {
     id: 12877,
@@ -64357,17 +64357,17 @@ export const CITIES = [
   {
     id: 12878,
     countyId: 23,
-    name: 'Valea Crisului',
+    name: 'Valea Crișului',
   },
   {
     id: 12879,
     countyId: 6,
-    name: 'Valea Crisului',
+    name: 'Valea Crișului',
   },
   {
     id: 12880,
     countyId: 30,
-    name: 'Valea cu Apa',
+    name: 'Valea cu Apă',
   },
   {
     id: 12881,
@@ -64382,7 +64382,7 @@ export const CITIES = [
   {
     id: 12883,
     countyId: 39,
-    name: 'Valea Cufundoasa',
+    name: 'Valea Cufundoasă',
   },
   {
     id: 12884,
@@ -64397,12 +64397,12 @@ export const CITIES = [
   {
     id: 12886,
     countyId: 41,
-    name: 'Valea Daii',
+    name: 'Valea Dăii',
   },
   {
     id: 12887,
     countyId: 33,
-    name: 'Valea Daljii',
+    name: 'Valea Dâljii',
   },
   {
     id: 12888,
@@ -64427,12 +64427,12 @@ export const CITIES = [
   {
     id: 12892,
     countyId: 30,
-    name: 'Valea Desului',
+    name: 'Valea Deșului',
   },
   {
     id: 12893,
     countyId: 23,
-    name: 'Valea Dobarlaului',
+    name: 'Valea Dobârlăului',
   },
   {
     id: 12894,
@@ -64442,7 +64442,7 @@ export const CITIES = [
   {
     id: 12895,
     countyId: 21,
-    name: 'Valea Draganului',
+    name: 'Valea Drăganului',
   },
   {
     id: 12896,
@@ -64462,22 +64462,22 @@ export const CITIES = [
   {
     id: 12899,
     countyId: 1,
-    name: 'Valea Fagetului',
+    name: 'Valea Făgetului',
   },
   {
     id: 12900,
     countyId: 5,
-    name: 'Valea Fanatului',
+    name: 'Valea Fânațului',
   },
   {
     id: 12901,
     countyId: 18,
-    name: 'Valea Fantanei',
+    name: 'Valea Fântânei',
   },
   {
     id: 12902,
     countyId: 25,
-    name: 'Valea Fantanilor',
+    name: 'Valea Fântânilor',
   },
   {
     id: 12903,
@@ -64497,22 +64497,22 @@ export const CITIES = [
   {
     id: 12906,
     countyId: 41,
-    name: 'Valea Fratiei',
+    name: 'Valea Frăției',
   },
   {
     id: 12907,
     countyId: 31,
-    name: 'Valea Garbea',
+    name: 'Valea Gârbea',
   },
   {
     id: 12908,
     countyId: 21,
-    name: 'Valea Garboului',
+    name: 'Valea Gârboului',
   },
   {
     id: 12909,
     countyId: 1,
-    name: 'Valea Giogesti',
+    name: 'Valea Giogești',
   },
   {
     id: 12910,
@@ -64532,7 +64532,7 @@ export const CITIES = [
   {
     id: 12913,
     countyId: 52,
-    name: 'Valea Gradistei',
+    name: 'Valea Grădiștei',
   },
   {
     id: 12914,
@@ -64547,7 +64547,7 @@ export const CITIES = [
   {
     id: 12916,
     countyId: 21,
-    name: 'Valea Grosilor',
+    name: 'Valea Groșilor',
   },
   {
     id: 12917,
@@ -64582,7 +64582,7 @@ export const CITIES = [
   {
     id: 12923,
     countyId: 3,
-    name: 'Valea Iasului',
+    name: 'Valea Iașului',
   },
   {
     id: 12924,
@@ -64597,12 +64597,12 @@ export const CITIES = [
   {
     id: 12926,
     countyId: 3,
-    name: 'Valea Indarat',
+    name: 'Valea Îndărăt',
   },
   {
     id: 12927,
     countyId: 31,
-    name: 'Valea Intunecoasa',
+    name: 'Valea Întunecoasă',
   },
   {
     id: 12928,
@@ -64622,32 +64622,32 @@ export const CITIES = [
   {
     id: 12931,
     countyId: 1,
-    name: 'Valea Larga',
+    name: 'Valea Largă',
   },
   {
     id: 12932,
     countyId: 24,
-    name: 'Valea Larga',
+    name: 'Valea Largă',
   },
   {
     id: 12933,
     countyId: 44,
-    name: 'Valea Larga',
+    name: 'Valea Largă',
   },
   {
     id: 12934,
     countyId: 18,
-    name: 'Valea Larga',
+    name: 'Valea Largă',
   },
   {
     id: 12935,
     countyId: 41,
-    name: 'Valea Larga',
+    name: 'Valea Largă',
   },
   {
     id: 12936,
     countyId: 18,
-    name: 'Valea Larga-Sarulesti',
+    name: 'Valea Largă-Sărulești',
   },
   {
     id: 12937,
@@ -64657,7 +64657,7 @@ export const CITIES = [
   {
     id: 12938,
     countyId: 45,
-    name: 'Valea Lesului',
+    name: 'Valea Leșului',
   },
   {
     id: 12939,
@@ -64717,7 +64717,7 @@ export const CITIES = [
   {
     id: 12950,
     countyId: 3,
-    name: 'Valea lui Mas',
+    name: 'Valea lui Maș',
   },
   {
     id: 12951,
@@ -64732,12 +64732,12 @@ export const CITIES = [
   {
     id: 12953,
     countyId: 21,
-    name: 'Valea lui Opris',
+    name: 'Valea lui Opriș',
   },
   {
     id: 12954,
     countyId: 25,
-    name: 'Valea lui Patru',
+    name: 'Valea lui Pătru',
   },
   {
     id: 12955,
@@ -64757,62 +64757,62 @@ export const CITIES = [
   {
     id: 12958,
     countyId: 24,
-    name: 'Valea Lunga',
+    name: 'Valea Lungă',
   },
   {
     id: 12959,
     countyId: 35,
-    name: 'Valea Lunga',
+    name: 'Valea Lungă',
   },
   {
     id: 12960,
     countyId: 45,
-    name: 'Valea Lunga',
+    name: 'Valea Lungă',
   },
   {
     id: 12961,
     countyId: 53,
-    name: 'Valea Lunga',
+    name: 'Valea Lungă',
   },
   {
     id: 12962,
     countyId: 1,
-    name: 'Valea Lunga',
+    name: 'Valea Lungă',
   },
   {
     id: 12963,
     countyId: 33,
-    name: 'Valea Lunga',
+    name: 'Valea Lungă',
   },
   {
     id: 12964,
     countyId: 47,
-    name: 'Valea Lunga',
+    name: 'Valea Lungă',
   },
   {
     id: 12965,
     countyId: 52,
-    name: 'Valea Lunga',
+    name: 'Valea Lungă',
   },
   {
     id: 12966,
     countyId: 50,
-    name: 'Valea Lunga Romana',
+    name: 'Valea Lungă Română',
   },
   {
     id: 12967,
     countyId: 24,
-    name: 'Valea Lunga-Cricov',
+    name: 'Valea Lungă-Cricov',
   },
   {
     id: 12968,
     countyId: 24,
-    name: 'Valea Lunga-Gorgota',
+    name: 'Valea Lungă-Gorgota',
   },
   {
     id: 12969,
     countyId: 24,
-    name: 'Valea Lunga-Ogrea',
+    name: 'Valea Lungă-Ogrea',
   },
   {
     id: 12970,
@@ -64822,7 +64822,7 @@ export const CITIES = [
   {
     id: 12971,
     countyId: 1,
-    name: 'Valea Lupsii',
+    name: 'Valea Lupșii',
   },
   {
     id: 12972,
@@ -64852,7 +64852,7 @@ export const CITIES = [
   {
     id: 12977,
     countyId: 52,
-    name: 'Valea Macesului',
+    name: 'Valea Măceșului',
   },
   {
     id: 12978,
@@ -64862,32 +64862,32 @@ export const CITIES = [
   {
     id: 12979,
     countyId: 34,
-    name: 'Valea Macrisului',
+    name: 'Valea Măcrișului',
   },
   {
     id: 12980,
     countyId: 7,
-    name: 'Valea Magherusului',
+    name: 'Valea Măgherușului',
   },
   {
     id: 12981,
     countyId: 3,
-    name: 'Valea Magurei',
+    name: 'Valea Măgurei',
   },
   {
     id: 12982,
     countyId: 3,
-    name: 'Valea Manastirii',
+    name: 'Valea Mănăstirii',
   },
   {
     id: 12983,
     countyId: 1,
-    name: 'Valea Manastirii',
+    name: 'Valea Mănăstirii',
   },
   {
     id: 12984,
     countyId: 30,
-    name: 'Valea Manastirii',
+    name: 'Valea Mânăstirii',
   },
   {
     id: 12985,
@@ -64957,67 +64957,67 @@ export const CITIES = [
   {
     id: 12998,
     countyId: 52,
-    name: 'Valea Mare (Babeni)',
+    name: 'Valea Mare (Băbeni)',
   },
   {
     id: 12999,
     countyId: 52,
-    name: 'Valea Mare (Berbesti)',
+    name: 'Valea Mare (Berbești)',
   },
   {
     id: 13000,
     countyId: 24,
-    name: 'Valea Mare (Candesti)',
+    name: 'Valea Mare (Cândești)',
   },
   {
     id: 13001,
     countyId: 5,
-    name: 'Valea Mare (Colonesti)',
+    name: 'Valea Mare (Colonești)',
   },
   {
     id: 13002,
     countyId: 53,
-    name: 'Valea Mare (Dumesti)',
+    name: 'Valea Mare (Dumești)',
   },
   {
     id: 13003,
     countyId: 2,
-    name: 'Valea Mare (Gurahont)',
+    name: 'Valea Mare (Gurahonț)',
   },
   {
     id: 13004,
     countyId: 53,
-    name: 'Valea Mare (Ivanesti)',
+    name: 'Valea Mare (Ivănești)',
   },
   {
     id: 13005,
     countyId: 53,
-    name: 'Valea Mare (Negresti)',
+    name: 'Valea Mare (Negrești)',
   },
   {
     id: 13006,
     countyId: 5,
-    name: 'Valea Mare (Rosiori)',
+    name: 'Valea Mare (Roșiori)',
   },
   {
     id: 13007,
     countyId: 7,
-    name: 'Valea Mare (Sant)',
+    name: 'Valea Mare (Șanț)',
   },
   {
     id: 13008,
     countyId: 2,
-    name: 'Valea Mare (Savarsin)',
+    name: 'Valea Mare (Săvârșin)',
   },
   {
     id: 13009,
     countyId: 7,
-    name: 'Valea Mare (Urmenis)',
+    name: 'Valea Mare (Urmeniș)',
   },
   {
     id: 13010,
     countyId: 24,
-    name: 'Valea Mare (Valea Lunga)',
+    name: 'Valea Mare (Valea Lungă)',
   },
   {
     id: 13011,
@@ -65027,12 +65027,12 @@ export const CITIES = [
   {
     id: 13012,
     countyId: 33,
-    name: 'Valea Mare de Cris',
+    name: 'Valea Mare de Criș',
   },
   {
     id: 13013,
     countyId: 6,
-    name: 'Valea Mare de Cris',
+    name: 'Valea Mare de Criș',
   },
   {
     id: 13014,
@@ -65047,22 +65047,22 @@ export const CITIES = [
   {
     id: 13016,
     countyId: 3,
-    name: 'Valea Mare-Pravat',
+    name: 'Valea Mare-Pravăț',
   },
   {
     id: 13017,
     countyId: 3,
-    name: 'Valea Marului',
+    name: 'Valea Mărului',
   },
   {
     id: 13018,
     countyId: 28,
-    name: 'Valea Marului',
+    name: 'Valea Mărului',
   },
   {
     id: 13019,
     countyId: 5,
-    name: 'Valea Marului',
+    name: 'Valea Mărului',
   },
   {
     id: 13020,
@@ -65077,32 +65077,32 @@ export const CITIES = [
   {
     id: 13022,
     countyId: 23,
-    name: 'Valea Mica',
+    name: 'Valea Mică',
   },
   {
     id: 13023,
     countyId: 54,
-    name: 'Valea Mica',
+    name: 'Valea Mică',
   },
   {
     id: 13024,
     countyId: 1,
-    name: 'Valea Mica',
+    name: 'Valea Mică',
   },
   {
     id: 13025,
     countyId: 30,
-    name: 'Valea Mica',
+    name: 'Valea Mică',
   },
   {
     id: 13026,
     countyId: 5,
-    name: 'Valea Mica (Cleja)',
+    name: 'Valea Mică (Cleja)',
   },
   {
     id: 13027,
     countyId: 5,
-    name: 'Valea Mica (Rosiori)',
+    name: 'Valea Mică (Roșiori)',
   },
   {
     id: 13028,
@@ -65117,7 +65117,7 @@ export const CITIES = [
   {
     id: 13030,
     countyId: 20,
-    name: 'Valea Minisului',
+    name: 'Valea Minișului',
   },
   {
     id: 13031,
@@ -65147,7 +65147,7 @@ export const CITIES = [
   {
     id: 13036,
     countyId: 5,
-    name: 'Valea Mosneagului',
+    name: 'Valea Moșneagului',
   },
   {
     id: 13037,
@@ -65182,12 +65182,12 @@ export const CITIES = [
   {
     id: 13043,
     countyId: 39,
-    name: 'Valea Neagra',
+    name: 'Valea Neagră',
   },
   {
     id: 13044,
     countyId: 54,
-    name: 'Valea Neagra',
+    name: 'Valea Neagră',
   },
   {
     id: 13045,
@@ -65237,7 +65237,7 @@ export const CITIES = [
   {
     id: 13054,
     countyId: 20,
-    name: 'Valea Orevita',
+    name: 'Valea Orevița',
   },
   {
     id: 13055,
@@ -65247,17 +65247,17 @@ export const CITIES = [
   {
     id: 13056,
     countyId: 41,
-    name: 'Valea Padurii',
+    name: 'Valea Pădurii',
   },
   {
     id: 13057,
     countyId: 18,
-    name: 'Valea Parului',
+    name: 'Valea Părului',
   },
   {
     id: 13058,
     countyId: 49,
-    name: 'Valea Parului',
+    name: 'Valea Părului',
   },
   {
     id: 13059,
@@ -65322,7 +65322,7 @@ export const CITIES = [
   {
     id: 13071,
     countyId: 1,
-    name: 'Valea Poienii (Ramet)',
+    name: 'Valea Poienii (Râmeț)',
   },
   {
     id: 13072,
@@ -65352,7 +65352,7 @@ export const CITIES = [
   {
     id: 13077,
     countyId: 3,
-    name: 'Valea Popii (Mihaesti)',
+    name: 'Valea Popii (Mihăești)',
   },
   {
     id: 13078,
@@ -65362,7 +65362,7 @@ export const CITIES = [
   {
     id: 13079,
     countyId: 49,
-    name: 'Valea Postei',
+    name: 'Valea Poștei',
   },
   {
     id: 13080,
@@ -65382,12 +65382,12 @@ export const CITIES = [
   {
     id: 13083,
     countyId: 18,
-    name: 'Valea Putului Merei',
+    name: 'Valea Puțului Merei',
   },
   {
     id: 13084,
     countyId: 20,
-    name: 'Valea Rachitei',
+    name: 'Valea Răchitei',
   },
   {
     id: 13085,
@@ -65402,7 +65402,7 @@ export const CITIES = [
   {
     id: 13087,
     countyId: 18,
-    name: 'Valea Ramnicului',
+    name: 'Valea Râmnicului',
   },
   {
     id: 13088,
@@ -65412,7 +65412,7 @@ export const CITIES = [
   {
     id: 13089,
     countyId: 52,
-    name: 'Valea Raului',
+    name: 'Valea Râului',
   },
   {
     id: 13090,
@@ -65442,22 +65442,22 @@ export const CITIES = [
   {
     id: 13095,
     countyId: 19,
-    name: 'Valea Rosie',
+    name: 'Valea Roșie',
   },
   {
     id: 13096,
     countyId: 20,
-    name: 'Valea Rosie',
+    name: 'Valea Roșie',
   },
   {
     id: 13097,
     countyId: 31,
-    name: 'Valea Rotunda',
+    name: 'Valea Rotundă',
   },
   {
     id: 13098,
     countyId: 3,
-    name: 'Valea Rumanestilor',
+    name: 'Valea Rumâneștilor',
   },
   {
     id: 13099,
@@ -65477,42 +65477,42 @@ export const CITIES = [
   {
     id: 13102,
     countyId: 18,
-    name: 'Valea Salciei-Catun',
+    name: 'Valea Salciei-Cătun',
   },
   {
     id: 13103,
     countyId: 18,
-    name: 'Valea Salciilor',
+    name: 'Valea Sălciilor',
   },
   {
     id: 13104,
     countyId: 33,
-    name: 'Valea Sangeorgiului',
+    name: 'Valea Sângeorgiului',
   },
   {
     id: 13105,
     countyId: 41,
-    name: 'Valea Sanmartinului',
+    name: 'Valea Sânmărtinului',
   },
   {
     id: 13106,
     countyId: 41,
-    name: 'Valea Sanpetrului (Grebenisu de Campie)',
+    name: 'Valea Sânpetrului (Grebenișu de Câmpie)',
   },
   {
     id: 13107,
     countyId: 41,
-    name: 'Valea Sanpetrului (Pogaceaua)',
+    name: 'Valea Sânpetrului (Pogăceaua)',
   },
   {
     id: 13108,
     countyId: 41,
-    name: 'Valea Sapartocului',
+    name: 'Valea Șapartocului',
   },
   {
     id: 13109,
     countyId: 54,
-    name: 'Valea Sarii',
+    name: 'Valea Sării',
   },
   {
     id: 13110,
@@ -65547,7 +65547,7 @@ export const CITIES = [
   {
     id: 13116,
     countyId: 18,
-    name: 'Valea Schiopului',
+    name: 'Valea Șchiopului',
   },
   {
     id: 13117,
@@ -65557,57 +65557,57 @@ export const CITIES = [
   {
     id: 13118,
     countyId: 23,
-    name: 'Valea Scurta',
+    name: 'Valea Scurtă',
   },
   {
     id: 13119,
     countyId: 5,
-    name: 'Valea Seaca',
+    name: 'Valea Seacă',
   },
   {
     id: 13120,
     countyId: 23,
-    name: 'Valea Seaca',
+    name: 'Valea Seacă',
   },
   {
     id: 13121,
     countyId: 41,
-    name: 'Valea Seaca',
+    name: 'Valea Seacă',
   },
   {
     id: 13122,
     countyId: 44,
-    name: 'Valea Seaca',
+    name: 'Valea Seacă',
   },
   {
     id: 13123,
     countyId: 53,
-    name: 'Valea Seaca',
+    name: 'Valea Seacă',
   },
   {
     id: 13124,
     countyId: 19,
-    name: 'Valea Seaca',
+    name: 'Valea Seacă',
   },
   {
     id: 13125,
     countyId: 35,
-    name: 'Valea Seaca',
+    name: 'Valea Seacă',
   },
   {
     id: 13126,
     countyId: 42,
-    name: 'Valea Seaca',
+    name: 'Valea Seacă',
   },
   {
     id: 13127,
     countyId: 46,
-    name: 'Valea Seaca',
+    name: 'Valea Seacă',
   },
   {
     id: 13128,
     countyId: 5,
-    name: 'Valea Seaca (Nicolae Balcescu)',
+    name: 'Valea Seacă (Nicolae Bălcescu)',
   },
   {
     id: 13129,
@@ -65617,12 +65617,12 @@ export const CITIES = [
   {
     id: 13130,
     countyId: 1,
-    name: 'Valea Sesii (Bucium)',
+    name: 'Valea Șesii (Bucium)',
   },
   {
     id: 13131,
     countyId: 1,
-    name: 'Valea Sesii (Lupsa)',
+    name: 'Valea Șesii (Lupșa)',
   },
   {
     id: 13132,
@@ -65632,17 +65632,17 @@ export const CITIES = [
   {
     id: 13133,
     countyId: 20,
-    name: 'Valea Sichevitei',
+    name: 'Valea Sicheviței',
   },
   {
     id: 13134,
     countyId: 53,
-    name: 'Valea Silistei',
+    name: 'Valea Siliștei',
   },
   {
     id: 13135,
     countyId: 3,
-    name: 'Valea Silistii',
+    name: 'Valea Siliștii',
   },
   {
     id: 13136,
@@ -65652,12 +65652,12 @@ export const CITIES = [
   {
     id: 13137,
     countyId: 5,
-    name: 'Valea Sosii',
+    name: 'Valea Șoșii',
   },
   {
     id: 13138,
     countyId: 44,
-    name: 'Valea Stalpului',
+    name: 'Valea Stâlpului',
   },
   {
     id: 13139,
@@ -65667,27 +65667,27 @@ export const CITIES = [
   {
     id: 13140,
     countyId: 48,
-    name: 'Valea Stanei',
+    name: 'Valea Stânei',
   },
   {
     id: 13141,
     countyId: 18,
-    name: 'Valea Stanei',
+    name: 'Valea Stânei',
   },
   {
     id: 13142,
     countyId: 19,
-    name: 'Valea Stanii',
+    name: 'Valea Stânii',
   },
   {
     id: 13143,
     countyId: 3,
-    name: 'Valea Stanii',
+    name: 'Valea Stânii',
   },
   {
     id: 13144,
     countyId: 18,
-    name: 'Valea Stefanului',
+    name: 'Valea Ștefanului',
   },
   {
     id: 13145,
@@ -65697,7 +65697,7 @@ export const CITIES = [
   {
     id: 13146,
     countyId: 31,
-    name: 'Valea Stramba',
+    name: 'Valea Strâmbă',
   },
   {
     id: 13147,
@@ -65707,22 +65707,22 @@ export const CITIES = [
   {
     id: 13148,
     countyId: 41,
-    name: 'Valea Surii',
+    name: 'Valea Șurii',
   },
   {
     id: 13149,
     countyId: 53,
-    name: 'Valea Targului',
+    name: 'Valea Târgului',
   },
   {
     id: 13150,
     countyId: 6,
-    name: 'Valea Tarnei',
+    name: 'Valea Târnei',
   },
   {
     id: 13151,
     countyId: 44,
-    name: 'Valea Tarsei',
+    name: 'Valea Târsei',
   },
   {
     id: 13152,
@@ -65737,7 +65737,7 @@ export const CITIES = [
   {
     id: 13154,
     countyId: 20,
-    name: 'Valea Timisului',
+    name: 'Valea Timișului',
   },
   {
     id: 13155,
@@ -65747,7 +65747,7 @@ export const CITIES = [
   {
     id: 13156,
     countyId: 1,
-    name: 'Valea tupilor',
+    name: 'Valea țupilor',
   },
   {
     id: 13157,
@@ -65762,7 +65762,7 @@ export const CITIES = [
   {
     id: 13159,
     countyId: 41,
-    name: 'Valea Uliesului',
+    name: 'Valea Ulieșului',
   },
   {
     id: 13160,
@@ -65772,7 +65772,7 @@ export const CITIES = [
   {
     id: 13161,
     countyId: 21,
-    name: 'Valea Ungurasului',
+    name: 'Valea Ungurașului',
   },
   {
     id: 13162,
@@ -65782,7 +65782,7 @@ export const CITIES = [
   {
     id: 13163,
     countyId: 41,
-    name: 'Valea Uriesului',
+    name: 'Valea Urieșului',
   },
   {
     id: 13164,
@@ -65827,12 +65827,12 @@ export const CITIES = [
   {
     id: 13172,
     countyId: 40,
-    name: 'Valea Ursului (Tamna)',
+    name: 'Valea Ursului (Tâmna)',
   },
   {
     id: 13173,
     countyId: 1,
-    name: 'Valea Utului',
+    name: 'Valea Uțului',
   },
   {
     id: 13174,
@@ -65852,7 +65852,7 @@ export const CITIES = [
   {
     id: 13177,
     countyId: 52,
-    name: 'Valea Valeni',
+    name: 'Valea Văleni',
   },
   {
     id: 13178,
@@ -65887,7 +65887,7 @@ export const CITIES = [
   {
     id: 13184,
     countyId: 1,
-    name: 'Valea Vintului',
+    name: 'Valea Vințului',
   },
   {
     id: 13185,
@@ -65902,7 +65902,7 @@ export const CITIES = [
   {
     id: 13187,
     countyId: 39,
-    name: 'Valea Viseului',
+    name: 'Valea Vișeului',
   },
   {
     id: 13188,
@@ -65912,7 +65912,7 @@ export const CITIES = [
   {
     id: 13189,
     countyId: 23,
-    name: 'Valea Zalanului',
+    name: 'Valea Zălanului',
   },
   {
     id: 13190,
@@ -65922,7 +65922,7 @@ export const CITIES = [
   {
     id: 13191,
     countyId: 18,
-    name: 'Valeanca-Vilanesti',
+    name: 'Văleanca-Vilănești',
   },
   {
     id: 13192,
@@ -65932,62 +65932,62 @@ export const CITIES = [
   {
     id: 13193,
     countyId: 3,
-    name: 'Valeni',
+    name: 'Văleni',
   },
   {
     id: 13194,
     countyId: 22,
-    name: 'Valeni',
+    name: 'Văleni',
   },
   {
     id: 13195,
     countyId: 31,
-    name: 'Valeni',
+    name: 'Văleni',
   },
   {
     id: 13196,
     countyId: 41,
-    name: 'Valeni',
+    name: 'Văleni',
   },
   {
     id: 13197,
     countyId: 47,
-    name: 'Valeni',
+    name: 'Văleni',
   },
   {
     id: 13198,
     countyId: 53,
-    name: 'Valeni',
+    name: 'Văleni',
   },
   {
     id: 13199,
     countyId: 10,
-    name: 'Valeni',
+    name: 'Văleni',
   },
   {
     id: 13200,
     countyId: 30,
-    name: 'Valeni',
+    name: 'Văleni',
   },
   {
     id: 13201,
     countyId: 39,
-    name: 'Valeni',
+    name: 'Văleni',
   },
   {
     id: 13202,
     countyId: 43,
-    name: 'Valeni',
+    name: 'Văleni',
   },
   {
     id: 13203,
     countyId: 45,
-    name: 'Valeni',
+    name: 'Văleni',
   },
   {
     id: 13204,
     countyId: 33,
-    name: 'Valeni (Baia de Cris)',
+    name: 'Văleni (Baia de Criș)',
   },
   {
     id: 13205,
@@ -65997,197 +65997,197 @@ export const CITIES = [
   {
     id: 13206,
     countyId: 43,
-    name: 'Valeni (Brancoveni)',
+    name: 'Văleni (Brâncoveni)',
   },
   {
     id: 13207,
     countyId: 1,
-    name: 'Valeni (Bucium)',
+    name: 'Văleni (Bucium)',
   },
   {
     id: 13208,
     countyId: 21,
-    name: 'Valeni (Caianu)',
+    name: 'Văleni (Căianu)',
   },
   {
     id: 13209,
     countyId: 21,
-    name: 'Valeni (Calatele)',
+    name: 'Văleni (Călățele)',
   },
   {
     id: 13210,
     countyId: 33,
-    name: 'Valeni (Geoagiu)',
+    name: 'Văleni (Geoagiu)',
   },
   {
     id: 13211,
     countyId: 1,
-    name: 'Valeni (Metes)',
+    name: 'Văleni (Meteș)',
   },
   {
     id: 13212,
     countyId: 54,
-    name: 'Valeni (Movilita)',
+    name: 'Văleni (Movilița)',
   },
   {
     id: 13213,
     countyId: 53,
-    name: 'Valeni (Padureni)',
+    name: 'Văleni (Pădureni)',
   },
   {
     id: 13214,
     countyId: 5,
-    name: 'Valeni (Parincea)',
+    name: 'Văleni (Parincea)',
   },
   {
     id: 13215,
     countyId: 52,
-    name: 'Valeni (Pausesti)',
+    name: 'Văleni (Păușești)',
   },
   {
     id: 13216,
     countyId: 42,
-    name: 'Valeni (Piatra-Neamt)',
+    name: 'Văleni (Piatra-Neamț)',
   },
   {
     id: 13217,
     countyId: 54,
-    name: 'Valeni (Ruginesti)',
+    name: 'Văleni (Ruginești)',
   },
   {
     id: 13218,
     countyId: 5,
-    name: 'Valeni (Secuieni)',
+    name: 'Văleni (Secuieni)',
   },
   {
     id: 13219,
     countyId: 5,
-    name: 'Valeni (Stanisesti)',
+    name: 'Văleni (Stănișești)',
   },
   {
     id: 13220,
     countyId: 54,
-    name: 'Valeni (Straoane)',
+    name: 'Văleni (Străoane)',
   },
   {
     id: 13221,
     countyId: 53,
-    name: 'Valeni (Viisoara)',
+    name: 'Văleni (Viișoara)',
   },
   {
     id: 13222,
     countyId: 52,
-    name: 'Valeni (Zatreni)',
+    name: 'Văleni (Zătreni)',
   },
   {
     id: 13223,
     countyId: 24,
-    name: 'Valeni-Dambovita',
+    name: 'Văleni-Dâmbovița',
   },
   {
     id: 13224,
     countyId: 3,
-    name: 'Valeni-Podgoria',
+    name: 'Văleni-Podgoria',
   },
   {
     id: 13225,
     countyId: 48,
-    name: 'Valeni-Stanisoara',
+    name: 'Văleni-Stânișoara',
   },
   {
     id: 13226,
     countyId: 41,
-    name: 'Valenii',
+    name: 'Vălenii',
   },
   {
     id: 13227,
     countyId: 35,
-    name: 'Valenii',
+    name: 'Vălenii',
   },
   {
     id: 13228,
     countyId: 44,
-    name: 'Valenii de Munte',
+    name: 'Vălenii de Munte',
   },
   {
     id: 13229,
     countyId: 41,
-    name: 'Valenii de Mures',
+    name: 'Vălenii de Mureș',
   },
   {
     id: 13230,
     countyId: 39,
-    name: 'Valenii Lapusului',
+    name: 'Vălenii Lăpușului',
   },
   {
     id: 13231,
     countyId: 39,
-    name: 'Valenii Somcutei',
+    name: 'Vălenii Șomcutei',
   },
   {
     id: 13232,
     countyId: 33,
-    name: 'Valioara',
+    name: 'Vălioara',
   },
   {
     id: 13233,
     countyId: 1,
-    name: 'Valisoara',
+    name: 'Vălișoara',
   },
   {
     id: 13234,
     countyId: 20,
-    name: 'Valisoara',
+    name: 'Vălișoara',
   },
   {
     id: 13235,
     countyId: 41,
-    name: 'Valisoara',
+    name: 'Vălișoara',
   },
   {
     id: 13236,
     countyId: 21,
-    name: 'Valisoara',
+    name: 'Vălișoara',
   },
   {
     id: 13237,
     countyId: 33,
-    name: 'Valisoara',
+    name: 'Vălișoara',
   },
   {
     id: 13238,
     countyId: 45,
-    name: 'Valisoara',
+    name: 'Vălișoara',
   },
   {
     id: 13239,
     countyId: 33,
-    name: 'Valisoara (Balsa)',
+    name: 'Vălișoara (Balșa)',
   },
   {
     id: 13240,
     countyId: 20,
-    name: 'Valiug',
+    name: 'Văliug',
   },
   {
     id: 13241,
     countyId: 3,
-    name: 'Valsanesti',
+    name: 'Vâlsănești',
   },
   {
     id: 13242,
     countyId: 29,
-    name: 'Valter Maracineanu',
+    name: 'Valter Mărăcineanu',
   },
   {
     id: 13243,
     countyId: 1,
-    name: 'Valtori (Vadu Motilor)',
+    name: 'Vâltori (Vadu Moților)',
   },
   {
     id: 13244,
     countyId: 1,
-    name: 'Valtori (Zlatna)',
+    name: 'Vâltori (Zlatna)',
   },
   {
     id: 13245,
@@ -66197,12 +66197,12 @@ export const CITIES = [
   {
     id: 13246,
     countyId: 41,
-    name: 'Valureni',
+    name: 'Vălureni',
   },
   {
     id: 13247,
     countyId: 30,
-    name: 'Valuta',
+    name: 'Văluța',
   },
   {
     id: 13248,
@@ -66222,7 +66222,7 @@ export const CITIES = [
   {
     id: 13251,
     countyId: 10,
-    name: 'Vama Buzaului',
+    name: 'Vama Buzăului',
   },
   {
     id: 13252,
@@ -66232,7 +66232,7 @@ export const CITIES = [
   {
     id: 13253,
     countyId: 1,
-    name: 'Vama Seaca',
+    name: 'Vama Seacă',
   },
   {
     id: 13254,
@@ -66242,117 +66242,117 @@ export const CITIES = [
   {
     id: 13255,
     countyId: 28,
-    name: 'Vames',
+    name: 'Vameș',
   },
   {
     id: 13256,
     countyId: 9,
-    name: 'Vamesu',
+    name: 'Vameșu',
   },
   {
     id: 13257,
     countyId: 30,
-    name: 'Vanata',
+    name: 'Vânata',
   },
   {
     id: 13258,
     countyId: 46,
-    name: 'Vanatoresti',
+    name: 'Vânătorești',
   },
   {
     id: 13259,
     countyId: 2,
-    name: 'Vanatori',
+    name: 'Vânători',
   },
   {
     id: 13260,
     countyId: 21,
-    name: 'Vanatori',
+    name: 'Vânători',
   },
   {
     id: 13261,
     countyId: 28,
-    name: 'Vanatori',
+    name: 'Vânători',
   },
   {
     id: 13262,
     countyId: 35,
-    name: 'Vanatori',
+    name: 'Vânători',
   },
   {
     id: 13263,
     countyId: 41,
-    name: 'Vanatori',
+    name: 'Vânători',
   },
   {
     id: 13264,
     countyId: 54,
-    name: 'Vanatori',
+    name: 'Vânători',
   },
   {
     id: 13265,
     countyId: 8,
-    name: 'Vanatori',
+    name: 'Vânători',
   },
   {
     id: 13266,
     countyId: 22,
-    name: 'Vanatori',
+    name: 'Vânători',
   },
   {
     id: 13267,
     countyId: 36,
-    name: 'Vanatori',
+    name: 'Vânători',
   },
   {
     id: 13268,
     countyId: 40,
-    name: 'Vanatori',
+    name: 'Vânători',
   },
   {
     id: 13269,
     countyId: 49,
-    name: 'Vanatori',
+    name: 'Vânători',
   },
   {
     id: 13270,
     countyId: 35,
-    name: 'Vanatori (Popricani)',
+    name: 'Vânători (Popricani)',
   },
   {
     id: 13271,
     countyId: 42,
-    name: 'Vanatori-Neamt',
+    name: 'Vânători-Neamț',
   },
   {
     id: 13272,
     countyId: 29,
-    name: 'Vanatorii Mari',
+    name: 'Vânătorii Mari',
   },
   {
     id: 13273,
     countyId: 29,
-    name: 'Vanatorii Mici',
+    name: 'Vânătorii Mici',
   },
   {
     id: 13274,
     countyId: 43,
-    name: 'Vanesti',
+    name: 'Vânești',
   },
   {
     id: 13275,
     countyId: 40,
-    name: 'Vanju Mare',
+    name: 'Vânju Mare',
   },
   {
     id: 13276,
     countyId: 40,
-    name: 'Vanjulet',
+    name: 'Vânjuleț',
   },
   {
     id: 13277,
     countyId: 1,
-    name: 'Vanvucesti',
+    name: 'Vanvucești',
   },
   {
     id: 13278,
@@ -66367,37 +66367,37 @@ export const CITIES = [
   {
     id: 13280,
     countyId: 20,
-    name: 'Varadia',
+    name: 'Vărădia',
   },
   {
     id: 13281,
     countyId: 2,
-    name: 'Varadia de Mures',
+    name: 'Vărădia de Mureș',
   },
   {
     id: 13282,
     countyId: 39,
-    name: 'Varai',
+    name: 'Vărai',
   },
   {
     id: 13283,
     countyId: 6,
-    name: 'Varasau',
+    name: 'Varasău',
   },
   {
     id: 13284,
     countyId: 6,
-    name: 'Varaseni',
+    name: 'Vărășeni',
   },
   {
     id: 13285,
     countyId: 19,
-    name: 'Varasti',
+    name: 'Vărăști',
   },
   {
     id: 13286,
     countyId: 29,
-    name: 'Varasti',
+    name: 'Vărăști',
   },
   {
     id: 13287,
@@ -66407,87 +66407,87 @@ export const CITIES = [
   {
     id: 13288,
     countyId: 48,
-    name: 'Varatec',
+    name: 'Văratec',
   },
   {
     id: 13289,
     countyId: 52,
-    name: 'Varateci',
+    name: 'Vărateci',
   },
   {
     id: 13290,
     countyId: 52,
-    name: 'Varatica',
+    name: 'Văratica',
   },
   {
     id: 13291,
     countyId: 52,
-    name: 'Varatici',
+    name: 'Văratici',
   },
   {
     id: 13292,
     countyId: 44,
-    name: 'Varbila',
+    name: 'Vărbila',
   },
   {
     id: 13293,
     countyId: 44,
-    name: 'Varbilau',
+    name: 'Vărbilău',
   },
   {
     id: 13294,
     countyId: 6,
-    name: 'Varciorog',
+    name: 'Vârciorog',
   },
   {
     id: 13295,
     countyId: 20,
-    name: 'Varciorova',
+    name: 'Vârciorova',
   },
   {
     id: 13296,
     countyId: 47,
-    name: 'Vard',
+    name: 'Vărd',
   },
   {
     id: 13297,
     countyId: 18,
-    name: 'Varf',
+    name: 'Vârf',
   },
   {
     id: 13298,
     countyId: 8,
-    name: 'Varfu Campului',
+    name: 'Vârfu Câmpului',
   },
   {
     id: 13299,
     countyId: 48,
-    name: 'Varfu Dealului',
+    name: 'Vârfu Dealului',
   },
   {
     id: 13300,
     countyId: 24,
-    name: 'Varfureni',
+    name: 'Vârfureni',
   },
   {
     id: 13301,
     countyId: 24,
-    name: 'Varfuri',
+    name: 'Vârfuri',
   },
   {
     id: 13302,
     countyId: 44,
-    name: 'Varfurile',
+    name: 'Vârfurile',
   },
   {
     id: 13303,
     countyId: 2,
-    name: 'Varfurile',
+    name: 'Vârfurile',
   },
   {
     id: 13304,
     countyId: 41,
-    name: 'Vargata',
+    name: 'Vărgata',
   },
   {
     id: 13305,
@@ -66497,22 +66497,22 @@ export const CITIES = [
   {
     id: 13306,
     countyId: 23,
-    name: 'Varghis',
+    name: 'Vârghiș',
   },
   {
     id: 13307,
     countyId: 50,
-    name: 'Varias',
+    name: 'Variaș',
   },
   {
     id: 13308,
     countyId: 2,
-    name: 'Variasu Mare',
+    name: 'Variașu Mare',
   },
   {
     id: 13309,
     countyId: 2,
-    name: 'Variasu Mic',
+    name: 'Variașu Mic',
   },
   {
     id: 13310,
@@ -66527,37 +66527,37 @@ export const CITIES = [
   {
     id: 13312,
     countyId: 52,
-    name: 'Varleni',
+    name: 'Vârleni',
   },
   {
     id: 13313,
     countyId: 28,
-    name: 'Varlezi',
+    name: 'Vârlezi',
   },
   {
     id: 13314,
     countyId: 3,
-    name: 'Varloveni',
+    name: 'Vârloveni',
   },
   {
     id: 13315,
     countyId: 33,
-    name: 'Varmaga',
+    name: 'Vărmaga',
   },
   {
     id: 13316,
     countyId: 44,
-    name: 'Varnita',
+    name: 'Varnița',
   },
   {
     id: 13317,
     countyId: 2,
-    name: 'Varnita',
+    name: 'Varnița',
   },
   {
     id: 13318,
     countyId: 54,
-    name: 'Varnita',
+    name: 'Varnița',
   },
   {
     id: 13319,
@@ -66567,117 +66567,117 @@ export const CITIES = [
   {
     id: 13320,
     countyId: 31,
-    name: 'Varsag',
+    name: 'Vărșag',
   },
   {
     id: 13321,
     countyId: 2,
-    name: 'Varsand',
+    name: 'Vărșand',
   },
   {
     id: 13322,
     countyId: 54,
-    name: 'Varsatura',
+    name: 'Vărsătura',
   },
   {
     id: 13323,
     countyId: 9,
-    name: 'Varsatura',
+    name: 'Vărsătura',
   },
   {
     id: 13324,
     countyId: 3,
-    name: 'Varsesti',
+    name: 'Vârșești',
   },
   {
     id: 13325,
     countyId: 1,
-    name: 'Varsi',
+    name: 'Vârși',
   },
   {
     id: 13326,
     countyId: 1,
-    name: 'Varsi-Rontu',
+    name: 'Vârși-Rontu',
   },
   {
     id: 13327,
     countyId: 1,
-    name: 'Varsii Mari',
+    name: 'Vârșii Mari',
   },
   {
     id: 13328,
     countyId: 1,
-    name: 'Varsii Mici',
+    name: 'Vârșii Mici',
   },
   {
     id: 13329,
     countyId: 45,
-    name: 'Varsolt',
+    name: 'Vârșolț',
   },
   {
     id: 13330,
     countyId: 1,
-    name: 'Vartanesti',
+    name: 'Vârtănești',
   },
   {
     id: 13331,
     countyId: 18,
-    name: 'Varteju',
+    name: 'Vârteju',
   },
   {
     id: 13332,
     countyId: 36,
-    name: 'Varteju',
+    name: 'Vârteju',
   },
   {
     id: 13333,
     countyId: 45,
-    name: 'Vartesca',
+    name: 'Vârteșca',
   },
   {
     id: 13334,
     countyId: 54,
-    name: 'Vartescoiu',
+    name: 'Vârteșcoiu',
   },
   {
     id: 13335,
     countyId: 49,
-    name: 'Vartoape',
+    name: 'Vârtoape',
   },
   {
     id: 13336,
     countyId: 49,
-    name: 'Vartoapele de Jos',
+    name: 'Vârtoapele de Jos',
   },
   {
     id: 13337,
     countyId: 49,
-    name: 'Vartoapele de Sus',
+    name: 'Vârtoapele de Sus',
   },
   {
     id: 13338,
     countyId: 22,
-    name: 'Vartop',
+    name: 'Vârtop',
   },
   {
     id: 13339,
     countyId: 1,
-    name: 'Vartop',
+    name: 'Vârtop',
   },
   {
     id: 13340,
     countyId: 25,
-    name: 'Vartop',
+    name: 'Vârtop',
   },
   {
     id: 13341,
     countyId: 30,
-    name: 'Vartopu',
+    name: 'Vârtopu',
   },
   {
     id: 13342,
     countyId: 43,
-    name: 'Vartopu',
+    name: 'Vârtopu',
   },
   {
     id: 13343,
@@ -66692,42 +66692,42 @@ export const CITIES = [
   {
     id: 13345,
     countyId: 25,
-    name: 'Varvor',
+    name: 'Vârvor',
   },
   {
     id: 13346,
     countyId: 25,
-    name: 'Varvoru de Jos',
+    name: 'Vârvoru de Jos',
   },
   {
     id: 13347,
     countyId: 6,
-    name: 'Varzari',
+    name: 'Vărzari',
   },
   {
     id: 13348,
     countyId: 6,
-    name: 'Varzarii de Jos',
+    name: 'Vărzarii de Jos',
   },
   {
     id: 13349,
     countyId: 6,
-    name: 'Varzarii de Sus',
+    name: 'Vărzarii de Sus',
   },
   {
     id: 13350,
     countyId: 3,
-    name: 'Varzaroaia',
+    name: 'Vărzăroaia',
   },
   {
     id: 13351,
     countyId: 3,
-    name: 'Varzaru',
+    name: 'Vărzaru',
   },
   {
     id: 13352,
     countyId: 6,
-    name: 'Vasad',
+    name: 'Vășad',
   },
   {
     id: 13353,
@@ -66737,22 +66737,22 @@ export const CITIES = [
   {
     id: 13354,
     countyId: 6,
-    name: 'Vascau',
+    name: 'Vașcău',
   },
   {
     id: 13355,
     countyId: 48,
-    name: 'Vascauti',
+    name: 'Vășcăuți',
   },
   {
     id: 13356,
     countyId: 1,
-    name: 'Vasesti',
+    name: 'Văsești',
   },
   {
     id: 13357,
     countyId: 19,
-    name: 'Vasilati',
+    name: 'Vasilați',
   },
   {
     id: 13358,
@@ -66767,7 +66767,7 @@ export const CITIES = [
   {
     id: 13360,
     countyId: 2,
-    name: 'Vasile Goldis',
+    name: 'Vasile Goldiș',
   },
   {
     id: 13361,
@@ -66782,37 +66782,37 @@ export const CITIES = [
   {
     id: 13363,
     countyId: 2,
-    name: 'Vasoaia',
+    name: 'Văsoaia',
   },
   {
     id: 13364,
     countyId: 3,
-    name: 'Vata',
+    name: 'Vața',
   },
   {
     id: 13365,
     countyId: 33,
-    name: 'Vata de Jos',
+    name: 'Vața de Jos',
   },
   {
     id: 13366,
     countyId: 33,
-    name: 'Vata de Sus',
+    name: 'Vața de Sus',
   },
   {
     id: 13367,
     countyId: 52,
-    name: 'Vatasesti',
+    name: 'Vătășești',
   },
   {
     id: 13368,
     countyId: 49,
-    name: 'Vatasi',
+    name: 'Vătași',
   },
   {
     id: 13369,
     countyId: 41,
-    name: 'Vatava',
+    name: 'Vătava',
   },
   {
     id: 13370,
@@ -66827,12 +66827,12 @@ export const CITIES = [
   {
     id: 13372,
     countyId: 48,
-    name: 'Vatra Moldovitei',
+    name: 'Vatra Moldoviței',
   },
   {
     id: 13373,
     countyId: 18,
-    name: 'Vavalucile',
+    name: 'Văvălucile',
   },
   {
     id: 13374,
@@ -66882,7 +66882,7 @@ export const CITIES = [
   {
     id: 13383,
     countyId: 47,
-    name: 'Velt',
+    name: 'Velț',
   },
   {
     id: 13384,
@@ -66892,12 +66892,12 @@ export const CITIES = [
   {
     id: 13385,
     countyId: 10,
-    name: 'Venetia de Jos',
+    name: 'Veneția de Jos',
   },
   {
     id: 13386,
     countyId: 10,
-    name: 'Venetia de Sus',
+    name: 'Veneția de Sus',
   },
   {
     id: 13387,
@@ -66917,7 +66917,7 @@ export const CITIES = [
   {
     id: 13390,
     countyId: 25,
-    name: 'Verbita',
+    name: 'Verbița',
   },
   {
     id: 13391,
@@ -66937,12 +66937,12 @@ export const CITIES = [
   {
     id: 13394,
     countyId: 53,
-    name: 'Verdes',
+    name: 'Verdeș',
   },
   {
     id: 13395,
     countyId: 1,
-    name: 'Verdesti',
+    name: 'Verdești',
   },
   {
     id: 13396,
@@ -66952,7 +66952,7 @@ export const CITIES = [
   {
     id: 13397,
     countyId: 48,
-    name: 'Veresti',
+    name: 'Verești',
   },
   {
     id: 13398,
@@ -66962,42 +66962,42 @@ export const CITIES = [
   {
     id: 13399,
     countyId: 7,
-    name: 'Vermes',
+    name: 'Vermeș',
   },
   {
     id: 13400,
     countyId: 20,
-    name: 'Vermes',
+    name: 'Vermeș',
   },
   {
     id: 13401,
     countyId: 5,
-    name: 'Vermesti',
+    name: 'Vermești',
   },
   {
     id: 13402,
     countyId: 18,
-    name: 'Vernesti',
+    name: 'Vernești',
   },
   {
     id: 13403,
     countyId: 3,
-    name: 'Vernesti',
+    name: 'Vernești',
   },
   {
     id: 13404,
     countyId: 35,
-    name: 'Verseni',
+    name: 'Verșeni',
   },
   {
     id: 13405,
     countyId: 5,
-    name: 'Versesti',
+    name: 'Verșești',
   },
   {
     id: 13406,
     countyId: 42,
-    name: 'Versesti',
+    name: 'Verșești',
   },
   {
     id: 13407,
@@ -67007,7 +67007,7 @@ export const CITIES = [
   {
     id: 13408,
     countyId: 47,
-    name: 'Veseud (Chirpar)',
+    name: 'Veseud (Chirpăr)',
   },
   {
     id: 13409,
@@ -67017,32 +67017,32 @@ export const CITIES = [
   {
     id: 13410,
     countyId: 1,
-    name: 'Veseus',
+    name: 'Veseuș',
   },
   {
     id: 13411,
     countyId: 47,
-    name: 'Vestem',
+    name: 'Veștem',
   },
   {
     id: 13412,
     countyId: 41,
-    name: 'Veta',
+    name: 'Veța',
   },
   {
     id: 13413,
     countyId: 41,
-    name: 'Vetca',
+    name: 'Vețca',
   },
   {
     id: 13414,
     countyId: 33,
-    name: 'Vetel',
+    name: 'Vețel',
   },
   {
     id: 13415,
     countyId: 52,
-    name: 'Vetelu',
+    name: 'Vețelu',
   },
   {
     id: 13416,
@@ -67052,22 +67052,22 @@ export const CITIES = [
   {
     id: 13417,
     countyId: 46,
-    name: 'Vetis',
+    name: 'Vetiș',
   },
   {
     id: 13418,
     countyId: 3,
-    name: 'Vetisoara',
+    name: 'Vețișoara',
   },
   {
     id: 13419,
     countyId: 54,
-    name: 'Vetresti-Herastrau',
+    name: 'Vetrești-Herăstrău',
   },
   {
     id: 13420,
     countyId: 53,
-    name: 'Vetrisoaia',
+    name: 'Vetrișoaia',
   },
   {
     id: 13421,
@@ -67082,7 +67082,7 @@ export const CITIES = [
   {
     id: 13423,
     countyId: 40,
-    name: 'Viasu',
+    name: 'Viașu',
   },
   {
     id: 13424,
@@ -67112,7 +67112,7 @@ export const CITIES = [
   {
     id: 13429,
     countyId: 48,
-    name: 'Vicsani',
+    name: 'Vicșani',
   },
   {
     id: 13430,
@@ -67147,7 +67147,7 @@ export const CITIES = [
   {
     id: 13436,
     countyId: 8,
-    name: 'Victoria (Stauceni)',
+    name: 'Victoria (Stăuceni)',
   },
   {
     id: 13437,
@@ -67162,7 +67162,7 @@ export const CITIES = [
   {
     id: 13439,
     countyId: 40,
-    name: 'Vidimiresti',
+    name: 'Vidimirești',
   },
   {
     id: 13440,
@@ -67197,17 +67197,17 @@ export const CITIES = [
   {
     id: 13446,
     countyId: 41,
-    name: 'Vidrasau',
+    name: 'Vidrasău',
   },
   {
     id: 13447,
     countyId: 1,
-    name: 'Vidrisoara',
+    name: 'Vidrișoara',
   },
   {
     id: 13448,
     countyId: 30,
-    name: 'Viersani',
+    name: 'Vierșani',
   },
   {
     id: 13449,
@@ -67222,12 +67222,12 @@ export const CITIES = [
   {
     id: 13451,
     countyId: 18,
-    name: 'Viforata',
+    name: 'Viforâta',
   },
   {
     id: 13452,
     countyId: 24,
-    name: 'Viforata',
+    name: 'Viforâta',
   },
   {
     id: 13453,
@@ -67287,117 +67287,117 @@ export const CITIES = [
   {
     id: 13464,
     countyId: 6,
-    name: 'Viisoara',
+    name: 'Viișoara',
   },
   {
     id: 13465,
     countyId: 8,
-    name: 'Viisoara',
+    name: 'Viișoara',
   },
   {
     id: 13466,
     countyId: 22,
-    name: 'Viisoara',
+    name: 'Viișoara',
   },
   {
     id: 13467,
     countyId: 24,
-    name: 'Viisoara',
+    name: 'Viișoara',
   },
   {
     id: 13468,
     countyId: 41,
-    name: 'Viisoara',
+    name: 'Viișoara',
   },
   {
     id: 13469,
     countyId: 49,
-    name: 'Viisoara',
+    name: 'Viișoara',
   },
   {
     id: 13470,
     countyId: 53,
-    name: 'Viisoara',
+    name: 'Viișoara',
   },
   {
     id: 13471,
     countyId: 3,
-    name: 'Viisoara',
+    name: 'Viișoara',
   },
   {
     id: 13472,
     countyId: 7,
-    name: 'Viisoara',
+    name: 'Viișoara',
   },
   {
     id: 13473,
     countyId: 21,
-    name: 'Viisoara',
+    name: 'Viișoara',
   },
   {
     id: 13474,
     countyId: 42,
-    name: 'Viisoara',
+    name: 'Viișoara',
   },
   {
     id: 13475,
     countyId: 25,
-    name: 'Viisoara',
+    name: 'Viișoara',
   },
   {
     id: 13476,
     countyId: 46,
-    name: 'Viisoara',
+    name: 'Viișoara',
   },
   {
     id: 13477,
     countyId: 52,
-    name: 'Viisoara',
+    name: 'Viișoara',
   },
   {
     id: 13478,
     countyId: 54,
-    name: 'Viisoara (Paunesti)',
+    name: 'Viișoara (Păunești)',
   },
   {
     id: 13479,
     countyId: 5,
-    name: 'Viisoara (Stefan cel Mare)',
+    name: 'Viișoara (Ștefan cel Mare)',
   },
   {
     id: 13480,
     countyId: 5,
-    name: 'Viisoara (Targu Trotus)',
+    name: 'Viișoara (Târgu Trotuș)',
   },
   {
     id: 13481,
     countyId: 53,
-    name: 'Viisoara (Todiresti)',
+    name: 'Viișoara (Todirești)',
   },
   {
     id: 13482,
     countyId: 53,
-    name: 'Viisoara (Vaslui)',
+    name: 'Viișoara (Vaslui)',
   },
   {
     id: 13483,
     countyId: 54,
-    name: 'Viisoara (Vidra)',
+    name: 'Viișoara (Vidra)',
   },
   {
     id: 13484,
     countyId: 8,
-    name: 'Viisoara Mica',
+    name: 'Viișoara Mică',
   },
   {
     id: 13485,
     countyId: 25,
-    name: 'Viisoara-Mosneni',
+    name: 'Viișoara-Moșneni',
   },
   {
     id: 13486,
     countyId: 53,
-    name: 'Viltotesti',
+    name: 'Viltotești',
   },
   {
     id: 13487,
@@ -67407,7 +67407,7 @@ export const CITIES = [
   {
     id: 13488,
     countyId: 39,
-    name: 'Vima Mica',
+    name: 'Vima Mică',
   },
   {
     id: 13489,
@@ -67422,17 +67422,17 @@ export const CITIES = [
   {
     id: 13491,
     countyId: 53,
-    name: 'Vinetesti',
+    name: 'Vinețești',
   },
   {
     id: 13492,
     countyId: 43,
-    name: 'Vineti',
+    name: 'Vineți',
   },
   {
     id: 13493,
     countyId: 18,
-    name: 'Vinetisu',
+    name: 'Vinețișu',
   },
   {
     id: 13494,
@@ -67447,7 +67447,7 @@ export const CITIES = [
   {
     id: 13496,
     countyId: 1,
-    name: 'Vinta',
+    name: 'Vința',
   },
   {
     id: 13497,
@@ -67457,7 +67457,7 @@ export const CITIES = [
   {
     id: 13498,
     countyId: 18,
-    name: 'Vintila Voda',
+    name: 'Vintilă Vodă',
   },
   {
     id: 13499,
@@ -67472,12 +67472,12 @@ export const CITIES = [
   {
     id: 13501,
     countyId: 1,
-    name: 'Vintu de Jos',
+    name: 'Vințu de Jos',
   },
   {
     id: 13502,
     countyId: 18,
-    name: 'Viperesti',
+    name: 'Viperești',
   },
   {
     id: 13503,
@@ -67497,22 +67497,22 @@ export const CITIES = [
   {
     id: 13506,
     countyId: 50,
-    name: 'Visag',
+    name: 'Vișag',
   },
   {
     id: 13507,
     countyId: 21,
-    name: 'Visagu',
+    name: 'Vișagu',
   },
   {
     id: 13508,
     countyId: 35,
-    name: 'Visan',
+    name: 'Vișan',
   },
   {
     id: 13509,
     countyId: 9,
-    name: 'Visani',
+    name: 'Vișani',
   },
   {
     id: 13510,
@@ -67527,97 +67527,97 @@ export const CITIES = [
   {
     id: 13512,
     countyId: 21,
-    name: 'Visea',
+    name: 'Vișea',
   },
   {
     id: 13513,
     countyId: 39,
-    name: 'Viseu de Jos',
+    name: 'Vișeu de Jos',
   },
   {
     id: 13514,
     countyId: 39,
-    name: 'Viseu de Mijloc',
+    name: 'Vișeu de Mijloc',
   },
   {
     id: 13515,
     countyId: 39,
-    name: 'Viseu de Sus',
+    name: 'Vișeu de Sus',
   },
   {
     id: 13516,
     countyId: 28,
-    name: 'Visina',
+    name: 'Vișina',
   },
   {
     id: 13517,
     countyId: 43,
-    name: 'Visina',
+    name: 'Vișina',
   },
   {
     id: 13518,
     countyId: 24,
-    name: 'Visina',
+    name: 'Vișina',
   },
   {
     id: 13519,
     countyId: 40,
-    name: 'Visina',
+    name: 'Vișina',
   },
   {
     id: 13520,
     countyId: 51,
-    name: 'Visina',
+    name: 'Vișina',
   },
   {
     id: 13521,
     countyId: 43,
-    name: 'Visina Noua',
+    name: 'Vișina Nouă',
   },
   {
     id: 13522,
     countyId: 53,
-    name: 'Visinari',
+    name: 'Vișinari',
   },
   {
     id: 13523,
     countyId: 41,
-    name: 'Visinelu',
+    name: 'Vișinelu',
   },
   {
     id: 13524,
     countyId: 24,
-    name: 'Visinesti',
+    name: 'Vișinești',
   },
   {
     id: 13525,
     countyId: 19,
-    name: 'Visinii',
+    name: 'Vișinii',
   },
   {
     id: 13526,
     countyId: 18,
-    name: 'Vispesti',
+    name: 'Vispești',
   },
   {
     id: 13527,
     countyId: 10,
-    name: 'Vistea',
+    name: 'Viștea',
   },
   {
     id: 13528,
     countyId: 21,
-    name: 'Vistea',
+    name: 'Viștea',
   },
   {
     id: 13529,
     countyId: 10,
-    name: 'Vistea de Jos',
+    name: 'Viștea de Jos',
   },
   {
     id: 13530,
     countyId: 10,
-    name: 'Vistea de Sus',
+    name: 'Viștea de Sus',
   },
   {
     id: 13531,
@@ -67632,7 +67632,7 @@ export const CITIES = [
   {
     id: 13533,
     countyId: 10,
-    name: 'Vistisoara',
+    name: 'Viștișoara',
   },
   {
     id: 13534,
@@ -67642,7 +67642,7 @@ export const CITIES = [
   {
     id: 13535,
     countyId: 7,
-    name: 'Vita',
+    name: 'Vița',
   },
   {
     id: 13536,
@@ -67652,22 +67652,22 @@ export const CITIES = [
   {
     id: 13537,
     countyId: 43,
-    name: 'Vitanesti',
+    name: 'Vitănești',
   },
   {
     id: 13538,
     countyId: 54,
-    name: 'Vitanesti',
+    name: 'Vitănești',
   },
   {
     id: 13539,
     countyId: 54,
-    name: 'Vitanestii de sub Magura',
+    name: 'Vităneștii de sub Măgură',
   },
   {
     id: 13540,
     countyId: 8,
-    name: 'Vitcani',
+    name: 'Vițcani',
   },
   {
     id: 13541,
@@ -67677,17 +67677,17 @@ export const CITIES = [
   {
     id: 13542,
     countyId: 43,
-    name: 'Vitomiresti',
+    name: 'Vitomirești',
   },
   {
     id: 13543,
     countyId: 54,
-    name: 'Vizantea Manastireasca',
+    name: 'Vizantea Mănăstirească',
   },
   {
     id: 13544,
     countyId: 54,
-    name: 'Vizantea Razaseasca',
+    name: 'Vizantea Răzășească',
   },
   {
     id: 13545,
@@ -67722,102 +67722,102 @@ export const CITIES = [
   {
     id: 13551,
     countyId: 24,
-    name: 'Vizuresti',
+    name: 'Vizurești',
   },
   {
     id: 13552,
     countyId: 28,
-    name: 'Vizuresti',
+    name: 'Vizurești',
   },
   {
     id: 13553,
     countyId: 19,
-    name: 'Vlad tepes',
+    name: 'Vlad țepeș',
   },
   {
     id: 13554,
     countyId: 29,
-    name: 'Vlad tepes',
+    name: 'Vlad țepeș',
   },
   {
     id: 13555,
     countyId: 40,
-    name: 'Vladaia',
+    name: 'Vlădaia',
   },
   {
     id: 13556,
     countyId: 40,
-    name: 'Vladasesti',
+    name: 'Vlădășești',
   },
   {
     id: 13557,
     countyId: 8,
-    name: 'Vladeni',
+    name: 'Vlădeni',
   },
   {
     id: 13558,
     countyId: 18,
-    name: 'Vladeni',
+    name: 'Vlădeni',
   },
   {
     id: 13559,
     countyId: 34,
-    name: 'Vladeni',
+    name: 'Vlădeni',
   },
   {
     id: 13560,
     countyId: 10,
-    name: 'Vladeni',
+    name: 'Vlădeni',
   },
   {
     id: 13561,
     countyId: 24,
-    name: 'Vladeni',
+    name: 'Vlădeni',
   },
   {
     id: 13562,
     countyId: 35,
-    name: 'Vladeni',
+    name: 'Vlădeni',
   },
   {
     id: 13563,
     countyId: 8,
-    name: 'Vladeni (Corlateni)',
+    name: 'Vlădeni (Corlăteni)',
   },
   {
     id: 13564,
     countyId: 8,
-    name: 'Vladeni-Deal',
+    name: 'Vlădeni-Deal',
   },
   {
     id: 13565,
     countyId: 1,
-    name: 'Vladesti',
+    name: 'Vlădești',
   },
   {
     id: 13566,
     countyId: 28,
-    name: 'Vladesti',
+    name: 'Vlădești',
   },
   {
     id: 13567,
     countyId: 53,
-    name: 'Vladesti',
+    name: 'Vlădești',
   },
   {
     id: 13568,
     countyId: 3,
-    name: 'Vladesti',
+    name: 'Vlădești',
   },
   {
     id: 13569,
     countyId: 52,
-    name: 'Vladesti',
+    name: 'Vlădești',
   },
   {
     id: 13570,
     countyId: 3,
-    name: 'Vladesti (Tigveni)',
+    name: 'Vlădești (Tigveni)',
   },
   {
     id: 13571,
@@ -67827,37 +67827,37 @@ export const CITIES = [
   {
     id: 13572,
     countyId: 40,
-    name: 'Vladica',
+    name: 'Vlădica',
   },
   {
     id: 13573,
     countyId: 19,
-    name: 'Vladiceasca',
+    name: 'Vlădiceasca',
   },
   {
     id: 13574,
     countyId: 36,
-    name: 'Vladiceasca',
+    name: 'Vlădiceasca',
   },
   {
     id: 13575,
     countyId: 35,
-    name: 'Vladiceni',
+    name: 'Vlădiceni',
   },
   {
     id: 13576,
     countyId: 42,
-    name: 'Vladiceni',
+    name: 'Vlădiceni',
   },
   {
     id: 13577,
     countyId: 43,
-    name: 'Vladila',
+    name: 'Vlădila',
   },
   {
     id: 13578,
     countyId: 43,
-    name: 'Vladila Noua',
+    name: 'Vlădila Nouă',
   },
   {
     id: 13579,
@@ -67882,7 +67882,7 @@ export const CITIES = [
   {
     id: 13583,
     countyId: 42,
-    name: 'Vladnicele',
+    name: 'Vlădnicele',
   },
   {
     id: 13584,
@@ -67897,7 +67897,7 @@ export const CITIES = [
   {
     id: 13586,
     countyId: 35,
-    name: 'Vladnicut',
+    name: 'Vlădnicuț',
   },
   {
     id: 13587,
@@ -67907,32 +67907,32 @@ export const CITIES = [
   {
     id: 13588,
     countyId: 1,
-    name: 'Vladosesti',
+    name: 'Vlădoșești',
   },
   {
     id: 13589,
     countyId: 52,
-    name: 'Vladuceni',
+    name: 'Vlăduceni',
   },
   {
     id: 13590,
     countyId: 43,
-    name: 'Vladuleni',
+    name: 'Vlăduleni',
   },
   {
     id: 13591,
     countyId: 30,
-    name: 'Vladuleni',
+    name: 'Vlăduleni',
   },
   {
     id: 13592,
     countyId: 52,
-    name: 'Vladulesti',
+    name: 'Vlădulești',
   },
   {
     id: 13593,
     countyId: 3,
-    name: 'Vladuta',
+    name: 'Vlăduța',
   },
   {
     id: 13594,
@@ -67947,7 +67947,7 @@ export const CITIES = [
   {
     id: 13596,
     countyId: 31,
-    name: 'Vlahita',
+    name: 'Vlăhița',
   },
   {
     id: 13597,
@@ -67957,42 +67957,42 @@ export const CITIES = [
   {
     id: 13598,
     countyId: 19,
-    name: 'Vlaiculesti',
+    name: 'Vlăiculești',
   },
   {
     id: 13599,
     countyId: 43,
-    name: 'Vlangaresti',
+    name: 'Vlăngărești',
   },
   {
     id: 13600,
     countyId: 34,
-    name: 'Vlasca',
+    name: 'Vlașca',
   },
   {
     id: 13601,
     countyId: 24,
-    name: 'Vlasceni',
+    name: 'Vlăsceni',
   },
   {
     id: 13602,
     countyId: 3,
-    name: 'Vlascuta',
+    name: 'Vlășcuța',
   },
   {
     id: 13603,
     countyId: 29,
-    name: 'Vlasin',
+    name: 'Vlașin',
   },
   {
     id: 13604,
     countyId: 8,
-    name: 'Vlasinesti',
+    name: 'Vlăsinești',
   },
   {
     id: 13605,
     countyId: 35,
-    name: 'Vocotesti',
+    name: 'Vocotești',
   },
   {
     id: 13606,
@@ -68017,12 +68017,12 @@ export const CITIES = [
   {
     id: 13610,
     countyId: 52,
-    name: 'Voicesti',
+    name: 'Voicești',
   },
   {
     id: 13611,
     countyId: 52,
-    name: 'Voicestii din Vale',
+    name: 'Voiceștii din Vale',
   },
   {
     id: 13612,
@@ -68057,37 +68057,37 @@ export const CITIES = [
   {
     id: 13618,
     countyId: 52,
-    name: 'Voinesita',
+    name: 'Voineșița',
   },
   {
     id: 13619,
     countyId: 3,
-    name: 'Voinesti',
+    name: 'Voinești',
   },
   {
     id: 13620,
     countyId: 24,
-    name: 'Voinesti',
+    name: 'Voinești',
   },
   {
     id: 13621,
     countyId: 53,
-    name: 'Voinesti',
+    name: 'Voinești',
   },
   {
     id: 13622,
     countyId: 9,
-    name: 'Voinesti',
+    name: 'Voinești',
   },
   {
     id: 13623,
     countyId: 35,
-    name: 'Voinesti',
+    name: 'Voinești',
   },
   {
     id: 13624,
     countyId: 53,
-    name: 'Voinesti (Vulturesti)',
+    name: 'Voinești (Vulturești)',
   },
   {
     id: 13625,
@@ -68097,7 +68097,7 @@ export const CITIES = [
   {
     id: 13626,
     countyId: 30,
-    name: 'Voinigesti',
+    name: 'Voinigești',
   },
   {
     id: 13627,
@@ -68117,12 +68117,12 @@ export const CITIES = [
   {
     id: 13630,
     countyId: 30,
-    name: 'Voitestii din Deal',
+    name: 'Voiteștii din Deal',
   },
   {
     id: 13631,
     countyId: 30,
-    name: 'Voitestii din Vale',
+    name: 'Voiteștii din Vale',
   },
   {
     id: 13632,
@@ -68152,17 +68152,17 @@ export const CITIES = [
   {
     id: 13637,
     countyId: 6,
-    name: 'Voivozi (Popesti)',
+    name: 'Voivozi (Popești)',
   },
   {
     id: 13638,
     countyId: 6,
-    name: 'Voivozi (Simian)',
+    name: 'Voivozi (Șimian)',
   },
   {
     id: 13639,
     countyId: 35,
-    name: 'Volintiresti',
+    name: 'Volintirești',
   },
   {
     id: 13640,
@@ -68177,12 +68177,12 @@ export const CITIES = [
   {
     id: 13642,
     countyId: 54,
-    name: 'Voloscani',
+    name: 'Voloșcani',
   },
   {
     id: 13643,
     countyId: 48,
-    name: 'Volovat',
+    name: 'Volovăț',
   },
   {
     id: 13644,
@@ -68227,7 +68227,7 @@ export const CITIES = [
   {
     id: 13652,
     countyId: 48,
-    name: 'Voronet',
+    name: 'Voroneț',
   },
   {
     id: 13653,
@@ -68237,22 +68237,22 @@ export const CITIES = [
   {
     id: 13654,
     countyId: 35,
-    name: 'Vorovesti',
+    name: 'Vorovești',
   },
   {
     id: 13655,
     countyId: 33,
-    name: 'Vorta',
+    name: 'Vorța',
   },
   {
     id: 13656,
     countyId: 31,
-    name: 'Voslabeni',
+    name: 'Voșlăbeni',
   },
   {
     id: 13657,
     countyId: 53,
-    name: 'Vovriesti',
+    name: 'Vovriești',
   },
   {
     id: 13658,
@@ -68267,17 +68267,17 @@ export const CITIES = [
   {
     id: 13660,
     countyId: 5,
-    name: 'Vranceni',
+    name: 'Vrânceni',
   },
   {
     id: 13661,
     countyId: 54,
-    name: 'Vrancioaia',
+    name: 'Vrâncioaia',
   },
   {
     id: 13662,
     countyId: 3,
-    name: 'Vranesti',
+    name: 'Vrănești',
   },
   {
     id: 13663,
@@ -68287,7 +68287,7 @@ export const CITIES = [
   {
     id: 13664,
     countyId: 20,
-    name: 'Vraniut',
+    name: 'Vrăniuț',
   },
   {
     id: 13665,
@@ -68327,7 +68327,7 @@ export const CITIES = [
   {
     id: 13672,
     countyId: 24,
-    name: 'Vulcana-Bai',
+    name: 'Vulcana-Băi',
   },
   {
     id: 13673,
@@ -68337,17 +68337,17 @@ export const CITIES = [
   {
     id: 13674,
     countyId: 54,
-    name: 'Vulcaneasa',
+    name: 'Vulcăneasa',
   },
   {
     id: 13675,
     countyId: 53,
-    name: 'Vulpaseni',
+    name: 'Vulpășeni',
   },
   {
     id: 13676,
     countyId: 42,
-    name: 'Vulpasesti',
+    name: 'Vulpășești',
   },
   {
     id: 13677,
@@ -68357,17 +68357,17 @@ export const CITIES = [
   {
     id: 13678,
     countyId: 43,
-    name: 'Vulpesti',
+    name: 'Vulpești',
   },
   {
     id: 13679,
     countyId: 3,
-    name: 'Vulpesti',
+    name: 'Vulpești',
   },
   {
     id: 13680,
     countyId: 52,
-    name: 'Vulpuesti',
+    name: 'Vulpuești',
   },
   {
     id: 13681,
@@ -68397,22 +68397,22 @@ export const CITIES = [
   {
     id: 13686,
     countyId: 43,
-    name: 'Vulturesti',
+    name: 'Vulturești',
   },
   {
     id: 13687,
     countyId: 53,
-    name: 'Vulturesti',
+    name: 'Vulturești',
   },
   {
     id: 13688,
     countyId: 3,
-    name: 'Vulturesti',
+    name: 'Vulturești',
   },
   {
     id: 13689,
     countyId: 48,
-    name: 'Vulturesti',
+    name: 'Vulturești',
   },
   {
     id: 13690,
@@ -68437,12 +68437,12 @@ export const CITIES = [
   {
     id: 13694,
     countyId: 47,
-    name: 'Vurpar',
+    name: 'Vurpăr',
   },
   {
     id: 13695,
     countyId: 1,
-    name: 'Vurpar',
+    name: 'Vurpăr',
   },
   {
     id: 13696,
@@ -68452,12 +68452,12 @@ export const CITIES = [
   {
     id: 13698,
     countyId: 23,
-    name: 'Zabala',
+    name: 'Zăbala',
   },
   {
     id: 13699,
     countyId: 2,
-    name: 'Zabalt',
+    name: 'Zăbalț',
   },
   {
     id: 13700,
@@ -68467,27 +68467,27 @@ export const CITIES = [
   {
     id: 13701,
     countyId: 2,
-    name: 'Zabrani',
+    name: 'Zăbrani',
   },
   {
     id: 13702,
     countyId: 23,
-    name: 'Zabratau',
+    name: 'Zăbrătău',
   },
   {
     id: 13703,
     countyId: 2,
-    name: 'Zadareni',
+    name: 'Zădăreni',
   },
   {
     id: 13704,
     countyId: 29,
-    name: 'Zadariciu',
+    name: 'Zădăriciu',
   },
   {
     id: 13705,
     countyId: 41,
-    name: 'Zagar',
+    name: 'Zagăr',
   },
   {
     id: 13706,
@@ -68507,12 +68507,12 @@ export const CITIES = [
   {
     id: 13709,
     countyId: 1,
-    name: 'Zagris',
+    name: 'Zăgriș',
   },
   {
     id: 13710,
     countyId: 20,
-    name: 'Zagujeni',
+    name: 'Zăgujeni',
   },
   {
     id: 13711,
@@ -68522,12 +68522,12 @@ export const CITIES = [
   {
     id: 13712,
     countyId: 48,
-    name: 'Zaharesti',
+    name: 'Zaharești',
   },
   {
     id: 13713,
     countyId: 18,
-    name: 'Zaharesti',
+    name: 'Zaharești',
   },
   {
     id: 13714,
@@ -68537,22 +68537,22 @@ export const CITIES = [
   {
     id: 13715,
     countyId: 8,
-    name: 'Zaicesti',
+    name: 'Zăicești',
   },
   {
     id: 13716,
     countyId: 30,
-    name: 'Zaicoiu',
+    name: 'Zăicoiu',
   },
   {
     id: 13717,
     countyId: 23,
-    name: 'Zalan',
+    name: 'Zălan',
   },
   {
     id: 13718,
     countyId: 45,
-    name: 'Zalau',
+    name: 'Zalău',
   },
   {
     id: 13719,
@@ -68582,12 +68582,12 @@ export const CITIES = [
   {
     id: 13724,
     countyId: 49,
-    name: 'Zambreasca',
+    name: 'Zâmbreasca',
   },
   {
     id: 13725,
     countyId: 44,
-    name: 'Zambroaia',
+    name: 'Zâmbroaia',
   },
   {
     id: 13726,
@@ -68597,17 +68597,17 @@ export const CITIES = [
   {
     id: 13727,
     countyId: 9,
-    name: 'Zamfiresti',
+    name: 'Zamfirești',
   },
   {
     id: 13728,
     countyId: 3,
-    name: 'Zamfiresti (Cepari)',
+    name: 'Zamfirești (Cepari)',
   },
   {
     id: 13729,
     countyId: 3,
-    name: 'Zamfiresti (Cotmeana)',
+    name: 'Zamfirești (Cotmeana)',
   },
   {
     id: 13730,
@@ -68617,192 +68617,192 @@ export const CITIES = [
   {
     id: 13731,
     countyId: 42,
-    name: 'Zanesti',
+    name: 'Zănești',
   },
   {
     id: 13732,
     countyId: 43,
-    name: 'Zanoaga',
+    name: 'Zănoaga',
   },
   {
     id: 13733,
     countyId: 25,
-    name: 'Zanoaga',
+    name: 'Zănoaga',
   },
   {
     id: 13734,
     countyId: 44,
-    name: 'Zanoaga',
+    name: 'Zănoaga',
   },
   {
     id: 13735,
     countyId: 20,
-    name: 'Zanogi',
+    name: 'Zănogi',
   },
   {
     id: 13736,
     countyId: 20,
-    name: 'Zanou',
+    name: 'Zănou',
   },
   {
     id: 13737,
     countyId: 1,
-    name: 'Zanzesti',
+    name: 'Zânzești',
   },
   {
     id: 13738,
     countyId: 18,
-    name: 'Zaplazi',
+    name: 'Zăplazi',
   },
   {
     id: 13739,
     countyId: 31,
-    name: 'Zapodea',
+    name: 'Zăpodea',
   },
   {
     id: 13740,
     countyId: 41,
-    name: 'Zapodea',
+    name: 'Zăpodea',
   },
   {
     id: 13741,
     countyId: 53,
-    name: 'Zapodeni',
+    name: 'Zăpodeni',
   },
   {
     id: 13742,
     countyId: 18,
-    name: 'Zapodia',
+    name: 'Zăpodia',
   },
   {
     id: 13743,
     countyId: 5,
-    name: 'Zapodia (Colonesti)',
+    name: 'Zăpodia (Colonești)',
   },
   {
     id: 13744,
     countyId: 5,
-    name: 'Zapodia (Traian)',
+    name: 'Zăpodia (Traian)',
   },
   {
     id: 13745,
     countyId: 2,
-    name: 'Zarand',
+    name: 'Zărand',
   },
   {
     id: 13746,
     countyId: 1,
-    name: 'Zaries',
+    name: 'Zărieș',
   },
   {
     id: 13747,
     countyId: 52,
-    name: 'Zarneni',
+    name: 'Zărneni',
   },
   {
     id: 13748,
     countyId: 10,
-    name: 'Zarnesti',
+    name: 'Zărnești',
   },
   {
     id: 13749,
     countyId: 28,
-    name: 'Zarnesti',
+    name: 'Zărnești',
   },
   {
     id: 13750,
     countyId: 3,
-    name: 'Zarnesti',
+    name: 'Zărnești',
   },
   {
     id: 13751,
     countyId: 18,
-    name: 'Zarnesti',
+    name: 'Zărnești',
   },
   {
     id: 13752,
     countyId: 52,
-    name: 'Zarnesti',
+    name: 'Zărnești',
   },
   {
     id: 13753,
     countyId: 18,
-    name: 'Zarnestii de Slanic',
+    name: 'Zărneștii de Slănic',
   },
   {
     id: 13754,
     countyId: 20,
-    name: 'Zasloane',
+    name: 'Zăsloane',
   },
   {
     id: 13755,
     countyId: 52,
-    name: 'Zatreni',
+    name: 'Zătreni',
   },
   {
     id: 13756,
     countyId: 52,
-    name: 'Zatrenii de Sus',
+    name: 'Zătrenii de Sus',
   },
   {
     id: 13757,
     countyId: 41,
-    name: 'Zau de Campie',
+    name: 'Zau de Câmpie',
   },
   {
     id: 13758,
     countyId: 45,
-    name: 'Zauan',
+    name: 'Zăuan',
   },
   {
     id: 13759,
     countyId: 45,
-    name: 'Zauan-Bai',
+    name: 'Zăuan-Băi',
   },
   {
     id: 13760,
     countyId: 25,
-    name: 'Zaval',
+    name: 'Zăval',
   },
   {
     id: 13761,
     countyId: 52,
-    name: 'Zavideni',
+    name: 'Zăvideni',
   },
   {
     id: 13762,
     countyId: 9,
-    name: 'Zavoaia',
+    name: 'Zăvoaia',
   },
   {
     id: 13763,
     countyId: 3,
-    name: 'Zavoi',
+    name: 'Zăvoi',
   },
   {
     id: 13764,
     countyId: 33,
-    name: 'Zavoi',
+    name: 'Zăvoi',
   },
   {
     id: 13765,
     countyId: 20,
-    name: 'Zavoi',
+    name: 'Zăvoi',
   },
   {
     id: 13766,
     countyId: 52,
-    name: 'Zavoieni',
+    name: 'Zăvoieni',
   },
   {
     id: 13767,
     countyId: 6,
-    name: 'Zavoiu',
+    name: 'Zăvoiu',
   },
   {
     id: 13768,
     countyId: 24,
-    name: 'Zavoiu',
+    name: 'Zăvoiu',
   },
   {
     id: 13769,
@@ -68827,7 +68827,7 @@ export const CITIES = [
   {
     id: 13773,
     countyId: 33,
-    name: 'Zdrapti',
+    name: 'Zdrapți',
   },
   {
     id: 13774,
@@ -68842,7 +68842,7 @@ export const CITIES = [
   {
     id: 13776,
     countyId: 35,
-    name: 'Zece Prajini',
+    name: 'Zece Prăjini',
   },
   {
     id: 13777,
@@ -68867,7 +68867,7 @@ export const CITIES = [
   {
     id: 13781,
     countyId: 5,
-    name: 'Zemes',
+    name: 'Zemeș',
   },
   {
     id: 13782,
@@ -68887,7 +68887,7 @@ export const CITIES = [
   {
     id: 13785,
     countyId: 20,
-    name: 'Zervesti',
+    name: 'Zervești',
   },
   {
     id: 13786,
@@ -68897,12 +68897,12 @@ export const CITIES = [
   {
     id: 13787,
     countyId: 50,
-    name: 'Zgribesti',
+    name: 'Zgribești',
   },
   {
     id: 13788,
     countyId: 3,
-    name: 'Zgripcesti',
+    name: 'Zgripcești',
   },
   {
     id: 13789,
@@ -68937,7 +68937,7 @@ export const CITIES = [
   {
     id: 13795,
     countyId: 18,
-    name: 'Zilisteanca',
+    name: 'Zilișteanca',
   },
   {
     id: 13796,
@@ -68987,7 +68987,7 @@ export const CITIES = [
   {
     id: 13805,
     countyId: 41,
-    name: 'Zimti',
+    name: 'Zimți',
   },
   {
     id: 13806,
@@ -69017,22 +69017,22 @@ export const CITIES = [
   {
     id: 13811,
     countyId: 52,
-    name: 'Zlatarei',
+    name: 'Zlătărei',
   },
   {
     id: 13812,
     countyId: 25,
-    name: 'Zlatari',
+    name: 'Zlătari',
   },
   {
     id: 13813,
     countyId: 5,
-    name: 'Zlatari',
+    name: 'Zlătari',
   },
   {
     id: 13814,
     countyId: 20,
-    name: 'Zlatita',
+    name: 'Zlatița',
   },
   {
     id: 13815,
@@ -69042,7 +69042,7 @@ export const CITIES = [
   {
     id: 13816,
     countyId: 8,
-    name: 'Zlatunoaia',
+    name: 'Zlătunoaia',
   },
   {
     id: 13817,
@@ -69057,7 +69057,7 @@ export const CITIES = [
   {
     id: 13819,
     countyId: 52,
-    name: 'Zmeuratu',
+    name: 'Zmeurătu',
   },
   {
     id: 13820,
@@ -69077,12 +69077,12 @@ export const CITIES = [
   {
     id: 13823,
     countyId: 18,
-    name: 'Zoita',
+    name: 'Zoița',
   },
   {
     id: 13824,
     countyId: 8,
-    name: 'Zoitani',
+    name: 'Zoițani',
   },
   {
     id: 13825,
@@ -69112,7 +69112,7 @@ export const CITIES = [
   {
     id: 13830,
     countyId: 18,
-    name: 'Zoresti',
+    name: 'Zorești',
   },
   {
     id: 13831,
@@ -69147,12 +69147,12 @@ export const CITIES = [
   {
     id: 13837,
     countyId: 20,
-    name: 'Zorlentu Mare',
+    name: 'Zorlențu Mare',
   },
   {
     id: 13838,
     countyId: 30,
-    name: 'Zorlesti',
+    name: 'Zorlești',
   },
   {
     id: 13839,
@@ -69167,17 +69167,17 @@ export const CITIES = [
   {
     id: 13841,
     countyId: 3,
-    name: 'Zuvelcati',
+    name: 'Zuvelcați',
   },
   {
     id: 13842,
     countyId: 42,
-    name: 'Zvoranesti',
+    name: 'Zvorănești',
   },
   {
     id: 13843,
     countyId: 48,
-    name: 'Zvoristea',
+    name: 'Zvoriștea',
   },
   {
     id: 13844,
@@ -69207,22 +69207,22 @@ export const CITIES = [
   {
     id: 13855,
     countyId: 44,
-    name: 'Ungureni (Vadu Sapat)',
+    name: 'Ungureni (Vadu Săpat)',
   },
   {
     id: 13856,
     countyId: 44,
-    name: 'Fanari (Olari)',
+    name: 'Fânari (Olari)',
   },
   {
     id: 13857,
     countyId: 44,
-    name: 'Persunari (Cocorastii Colt)',
+    name: 'Perșunari (Cocorăștii Colț)',
   },
   {
     id: 13858,
     countyId: 44,
-    name: 'Piatra (Cocorastii Colt)',
+    name: 'Piatra (Cocorăștii Colț)',
   },
   {
     id: 13859,
@@ -69232,12 +69232,12 @@ export const CITIES = [
   {
     id: 13860,
     countyId: 24,
-    name: 'Rau Alb',
+    name: 'Râu Alb',
   },
   {
     id: 13861,
     countyId: 24,
-    name: 'Silistea (Raciu)',
+    name: 'Siliștea (Raciu)',
   },
   {
     id: 13862,
@@ -69247,12 +69247,12 @@ export const CITIES = [
   {
     id: 13863,
     countyId: 40,
-    name: 'Stefan Odobleja',
+    name: 'Ștefan Odobleja',
   },
   {
     id: 13864,
     countyId: 43,
-    name: 'Sarbii-Magura',
+    name: 'Sârbii-Măgura',
   },
   {
     id: 13865,
@@ -69262,12 +69262,12 @@ export const CITIES = [
   {
     id: 13866,
     countyId: 52,
-    name: 'Budesti (Diculesti)',
+    name: 'Budești (Diculești)',
   },
   {
     id: 13867,
     countyId: 50,
-    name: 'Padureni',
+    name: 'Pădureni',
   },
   {
     id: 13868,
@@ -69277,22 +69277,22 @@ export const CITIES = [
   {
     id: 13869,
     countyId: 21,
-    name: 'Sanmartin (Chinteni)',
+    name: 'Sânmărtin (Chinteni)',
   },
   {
     id: 13870,
     countyId: 6,
-    name: 'Pacalesti',
+    name: 'Păcălești',
   },
   {
     id: 13871,
     countyId: 39,
-    name: 'Salta',
+    name: 'Sâlța',
   },
   {
     id: 13872,
     countyId: 45,
-    name: 'Dabaceni',
+    name: 'Dăbâceni',
   },
   {
     id: 13873,
@@ -69312,7 +69312,7 @@ export const CITIES = [
   {
     id: 13876,
     countyId: 31,
-    name: 'Garciu (Racu)',
+    name: 'Gârciu (Racu)',
   },
   {
     id: 13877,
@@ -69327,12 +69327,12 @@ export const CITIES = [
   {
     id: 13879,
     countyId: 41,
-    name: 'Nicolesti',
+    name: 'Nicolești',
   },
   {
     id: 13880,
     countyId: 41,
-    name: 'Sanvasii',
+    name: 'Sânvăsii',
   },
   {
     id: 13881,
@@ -69342,7 +69342,7 @@ export const CITIES = [
   {
     id: 13882,
     countyId: 5,
-    name: 'Dumbrava (Itesti)',
+    name: 'Dumbrava (Itești)',
   },
   {
     id: 13883,
@@ -69352,12 +69352,12 @@ export const CITIES = [
   {
     id: 13884,
     countyId: 5,
-    name: 'Pancesti (Sascut)',
+    name: 'Păncești (Sascut)',
   },
   {
     id: 13885,
     countyId: 5,
-    name: 'Prajesti',
+    name: 'Prăjești',
   },
   {
     id: 13886,
@@ -69367,7 +69367,7 @@ export const CITIES = [
   {
     id: 13887,
     countyId: 42,
-    name: 'Valeni',
+    name: 'Văleni',
   },
   {
     id: 13888,
@@ -69377,27 +69377,27 @@ export const CITIES = [
   {
     id: 13889,
     countyId: 42,
-    name: 'Negresti',
+    name: 'Negrești',
   },
   {
     id: 13890,
     countyId: 42,
-    name: 'Poiana (Negresti)',
+    name: 'Poiana (Negrești)',
   },
   {
     id: 13891,
     countyId: 42,
-    name: 'Balusesti (Dochia)',
+    name: 'Bălușești (Dochia)',
   },
   {
     id: 13892,
     countyId: 35,
-    name: 'Boureni (Bals)',
+    name: 'Boureni (Balș)',
   },
   {
     id: 13893,
     countyId: 35,
-    name: 'Fantanele',
+    name: 'Fântânele',
   },
   {
     id: 13894,
@@ -69407,27 +69407,27 @@ export const CITIES = [
   {
     id: 13895,
     countyId: 35,
-    name: 'Harmanesti',
+    name: 'Hărmănești',
   },
   {
     id: 13896,
     countyId: 8,
-    name: 'Padureni (Cosula)',
+    name: 'Pădureni (Coșula)',
   },
   {
     id: 13897,
     countyId: 8,
-    name: 'Slobozia (Cordareni)',
+    name: 'Slobozia (Cordăreni)',
   },
   {
     id: 13898,
     countyId: 8,
-    name: 'Damileni',
+    name: 'Dămileni',
   },
   {
     id: 13899,
     countyId: 8,
-    name: 'Baseu',
+    name: 'Bașeu',
   },
   {
     id: 13900,
@@ -69437,12 +69437,12 @@ export const CITIES = [
   {
     id: 13901,
     countyId: 8,
-    name: 'Calinesti (Candesti)',
+    name: 'Călinești (Cândești)',
   },
   {
     id: 13902,
     countyId: 8,
-    name: 'Dobrinauti-Hapai',
+    name: 'Dobrinăuți-Hapăi',
   },
   {
     id: 13903,
@@ -69457,17 +69457,17 @@ export const CITIES = [
   {
     id: 13905,
     countyId: 48,
-    name: 'Calinesti (Serbauti)',
+    name: 'Călinești (Șerbăuți)',
   },
   {
     id: 13906,
     countyId: 48,
-    name: 'Romanesti (Cosna)',
+    name: 'Românești (Coșna)',
   },
   {
     id: 13907,
     countyId: 48,
-    name: 'Tesna (Cosna)',
+    name: 'Teșna (Coșna)',
   },
   {
     id: 13908,
@@ -69507,12 +69507,12 @@ export const CITIES = [
   {
     id: 13915,
     countyId: 52,
-    name: 'Feteni',
+    name: 'Fețeni',
   },
   {
     id: 13916,
     countyId: 30,
-    name: 'Vart',
+    name: 'Vârț',
   },
   {
     id: 13917,
@@ -69537,12 +69537,12 @@ export const CITIES = [
   {
     id: 13921,
     countyId: 42,
-    name: 'Botesti (Girov)',
+    name: 'Boțești (Girov)',
   },
   {
     id: 13922,
     countyId: 45,
-    name: 'Stana (Zalau)',
+    name: 'Stâna (Zalău)',
   },
   {
     id: 13923,

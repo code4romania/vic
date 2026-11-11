@@ -50,7 +50,9 @@ export class LocationRepositoryService
       );
 
     if (search) {
-      query.andWhere(this.buildBracketSearchQuery(['city.name'], search));
+      query.andWhere(
+        this.buildAccentInsensitiveSearchQuery(['city.name'], search),
+      );
     }
 
     if (countyId) {
