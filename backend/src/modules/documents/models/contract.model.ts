@@ -15,6 +15,7 @@ import {
 import { addDays } from 'date-fns';
 import { bucharestDay } from 'src/common/helpers/bucharest-time';
 import { DocumentType } from '../enums/document-type.enum';
+import { sanitizeFileNamePart } from 'src/common/helpers/sanitize-file-name-part';
 
 export interface IContractDownloadModel {
   'Numar contract': string;
@@ -120,7 +121,7 @@ export class ContractTransformer {
       rejectedOn: entity.rejectedOn,
       fileName: `${
         entity.type === DocumentType.CERTIFICATE ? 'Adeverinta' : 'Contract'
-      }_${entity.contractNumber ?? entity.id.slice(0, 8)}.${
+      }_${sanitizeFileNamePart(entity.contractNumber ?? entity.id.slice(0, 8))}.${
         entity.path.split('.').pop() || 'pdf'
       }`,
       volunteer: VolunteerModelTransformer.fromEntity(entity.volunteer),
