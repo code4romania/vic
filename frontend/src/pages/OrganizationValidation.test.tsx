@@ -58,6 +58,31 @@ describe('OrganizationValidation', () => {
     expect(screen.getByText('3')).toBeInTheDocument();
   });
 
+  it('counts only validated active organizations', async () => {
+    const organizationParams: URLSearchParams[] = [];
+    server.use(
+      http.get(api('/admin/organizations/pending-validation'), () => HttpResponse.json(PENDING)),
+      http.get(api('/admin/organizations'), ({ request }) => {
+        const params = new URL(request.url).searchParams;
+        organizationParams.push(params);
+        const total =
+          params.get('status') === 'active'
+            ? params.get('awaitingValidation') === 'false'
+              ? 14
+              : 15
+            : 3;
+        return HttpResponse.json({ items: [], meta: meta(total) });
+      }),
+    );
+    renderPage(<OrganizationValidation />, { auth: { isSuperAdmin: true } });
+
+    const activeCard = screen.getByText(t('validation:stats.active')).parentElement!;
+    expect(await within(activeCard).findByText('14')).toBeInTheDocument();
+    const activeParams = organizationParams.find((params) => params.get('status') === 'active');
+    expect(activeParams?.get('status')).toBe('active');
+    expect(activeParams?.get('awaitingValidation')).toBe('false');
+  });
+
   it('says so when no organization waits', async () => {
     server.use(
       http.get(api('/admin/organizations/pending-validation'), () => HttpResponse.json([])),
