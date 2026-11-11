@@ -3,6 +3,9 @@ FROM --platform=linux/amd64 node:20-alpine AS build
 
 WORKDIR /usr/src/app
 
+# argon2 compiles from source when no prebuilt binary fits (node-gyp needs Python and a C++ toolchain).
+RUN apk add --no-cache python3 make g++
+
 COPY package*.json ./
 RUN npm ci
 
