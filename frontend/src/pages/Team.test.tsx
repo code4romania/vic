@@ -171,6 +171,7 @@ describe('Team', () => {
     await screen.findByText('Bogdan Sent');
     await userEvent.click(screen.getByText(t('team:add_admin')));
     const dialog = await screen.findByRole('dialog');
+    expect(within(dialog).getByLabelText(t('team:form.phone'))).toHaveAccessibleName(/\*$/);
     for (const [field, value] of [
       ['firstName', 'Maria'],
       ['lastName', 'Ionescu'],
