@@ -31,6 +31,7 @@ import {
   useValidateOrganizationMutation,
 } from '../services/admin/admin-organizations.service';
 import { useAdminOrganizationsQuery } from '../services/admin/admin-lists.service';
+import { filterOfDisplayStatus } from '../services/admin/admin-lists.api';
 import { formatDate } from '../common/utils/utils';
 
 type PendingAction = { kind: 'validate' | 'suspend'; organization: IPendingOrganization };
@@ -52,7 +53,10 @@ const OrganizationValidation = () => {
   const [action, setAction] = useState<PendingAction | null>(null);
 
   const { data, isLoading, error, refetch } = usePendingValidationQuery(isSuperAdmin);
-  const active = useAdminOrganizationsQuery({ page: 1, limit: 1, status: 'active' }, isSuperAdmin);
+  const active = useAdminOrganizationsQuery(
+    { page: 1, limit: 1, ...filterOfDisplayStatus('active') },
+    isSuperAdmin,
+  );
   const suspended = useAdminOrganizationsQuery(
     { page: 1, limit: 1, status: 'suspended' },
     isSuperAdmin,
