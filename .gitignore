@@ -1,2 +1,5 @@
 .idea/
 *.iml
+
+# Local keys and credentials (never committed)
+.secrets/

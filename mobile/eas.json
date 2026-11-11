@@ -91,7 +91,8 @@
     "staging": {
       "android": {
         "track": "internal",
-        "releaseStatus": "completed"
+        "releaseStatus": "completed",
+        "serviceAccountKeyPath": "../.secrets/play-service-account.json"
       },
       "ios": {
         "ascAppId": "6474194051"
@@ -100,7 +101,8 @@
     "production": {
       "android": {
         "track": "production",
-        "releaseStatus": "draft"
+        "releaseStatus": "draft",
+        "serviceAccountKeyPath": "../.secrets/play-service-account.json"
       },
       "ios": {
         "ascAppId": "6474194051"
