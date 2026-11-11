@@ -46,5 +46,26 @@
     "text-caption-2-font-weight": "500",
     "text-caption-2-font-family": "roboto-medium"
   },
-  "components": {}
+  "components": {
+    "CalendarCell": {
+      "meta": {
+        "scope": "all",
+        "parameters": {},
+        "appearances": {},
+        "variantGroups": {},
+        "states": {}
+      },
+      "appearances": {
+        "default": {
+          "mapping": {
+            "state": {
+              "disabled": {
+                "contentTextColor": "$cool-gray-400"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
