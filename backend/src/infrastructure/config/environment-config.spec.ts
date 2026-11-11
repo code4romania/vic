@@ -39,7 +39,6 @@ const PRODUCTION: Record<string, string> = {
   CORS_ORIGINS: 'https://vic.ro',
   MOBILE_MIN_VERSION: '1.1.0',
   MAINTENANCE_MODE: 'false',
-  TURNSTILE_SECRET: 'turnstile',
   GOOGLE_CLIENT_IDS: 'google',
   APPLE_BUNDLE_ID: 'org.commitglobal.vic',
   THROTTLE_TTL: '60000',

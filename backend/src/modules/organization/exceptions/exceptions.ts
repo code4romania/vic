@@ -6,7 +6,6 @@ export enum OrganizationExceptionCodes {
   ORG_003 = 'ORG_003',
   ORG_004 = 'ORG_004',
   ORG_005 = 'ORG_005',
-  ORG_006 = 'ORG_006',
   ORG_008 = 'ORG_008',
   ORG_009 = 'ORG_009',
   ORG_010 = 'ORG_010',
@@ -41,10 +40,6 @@ export const OrganizationExceptionMessages: Record<
   [OrganizationExceptionCodes.ORG_005]: {
     message: 'Organization not validated',
     code_error: OrganizationExceptionCodes.ORG_005,
-  },
-  [OrganizationExceptionCodes.ORG_006]: {
-    message: 'The anti-robot check failed, please try again',
-    code_error: OrganizationExceptionCodes.ORG_006,
   },
   // Team page
   [OrganizationExceptionCodes.ORG_008]: {

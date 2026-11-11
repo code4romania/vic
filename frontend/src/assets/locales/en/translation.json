@@ -462,7 +462,6 @@
       "no_data": "Organization data could not be uploaded",
       "ORG_004": "An organization with the same name, email, phone or tax ID already exists.",
       "ORG_005": "The organization is not validated yet. This will be possible after the VIC team validates it.",
-      "ORG_006": "The anti-robot check failed. Please try again.",
       "ORG_008": "This administrator is not in your organization.",
       "ORG_009": "Invites are only for admins who have not logged in yet.",
       "ORG_010": "You cannot change your own status.",
@@ -2089,7 +2088,6 @@
       }
     },
     "errors": {
-      "turnstile_missing": "Complete the anti-robot check.",
       "generic": "The registration failed. Check the fields and try again."
     },
     "organization_card_description": "The NGO's official details. The VIC team checks the tax ID (CUI).",

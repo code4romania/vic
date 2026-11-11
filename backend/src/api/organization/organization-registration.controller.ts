@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Post,
-  Req,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
@@ -13,7 +12,6 @@ import {
   ApiExtraModels,
 } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
-import { Request } from 'express';
 import { RegisterOrganizationUseCase } from 'src/usecases/organization/register-organization.usecase';
 import { RegisterOrganizationDto } from './dto/register-organization.dto';
 import {
@@ -55,7 +53,6 @@ export class OrganizationRegistrationController {
   async register(
     @Body() dto: RegisterOrganizationDto,
     @UploadedFiles() files: OrganizationUploads,
-    @Req() req: Request,
   ): Promise<MaskedEmailPresenter> {
     /* eslint-disable @typescript-eslint/no-unused-vars */
     const {
@@ -68,7 +65,6 @@ export class OrganizationRegistrationController {
     const { maskedEmail } = await this.registerOrganizationUseCase.execute(
       options,
       { logo: files?.logo?.[0] },
-      req.ip,
     );
     return new MaskedEmailPresenter(maskedEmail);
   }

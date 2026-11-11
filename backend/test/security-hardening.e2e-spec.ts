@@ -8,7 +8,7 @@ import { AuthRateLimitService } from 'src/modules/auth/services/auth-rate-limit.
 import { GetManyVolunteersUseCase } from 'src/usecases/volunteer/get-many-volunteers.usecase';
 import * as request from 'supertest';
 import { api } from './utils/http';
-import { createTestApp, TestApp, TURNSTILE_OK } from './utils/test-app';
+import { createTestApp, TestApp } from './utils/test-app';
 import { truncate } from './utils/test-data-source';
 
 // Audit fixes: sort columns, page size, error bodies, uploads, the validation gate, the app's sign-up limit.
@@ -379,7 +379,6 @@ describe('Security hardening (e2e)', () => {
           acceptedTerms: 'true',
           declaresRegisteredNgo: 'true',
           declaresRepresentative: 'true',
-          turnstileToken: TURNSTILE_OK,
         })) {
           req = req.field(key, value);
         }

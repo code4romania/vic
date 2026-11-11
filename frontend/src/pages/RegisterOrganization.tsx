@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import FormInput from '../components/FormInput';
 import Button from '../components/Button';
-import Turnstile from '../components/Turnstile';
 import AuthShell, { AuthNotice } from '../components/AuthShell';
 import { BuildingOffice2Icon, CheckBadgeIcon, EnvelopeOpenIcon } from '@heroicons/react/24/outline';
 import { OrganizationFields, organizationFieldsSchema } from '../components/OrganizationFields';
@@ -16,7 +15,7 @@ import { ORGANIZATION_ERRORS } from '../common/errors/entities/organization.erro
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { getAuthErrorCode } from '../common/utils/auth-error';
 
-type RegisterForm = Omit<IRegisterOrganization, 'turnstileToken'>;
+type RegisterForm = IRegisterOrganization;
 
 const DEFAULTS: RegisterForm = {
   name: '',
@@ -33,12 +32,10 @@ const DEFAULTS: RegisterForm = {
 };
 
 // /register: an NGO and its first admin. The admin confirms the email, then the NGO waits for a super
-// admin's validation (decision 1), on its CUI. Turnstile. #469: only name, CUI, email and phone; the
+// admin's validation (decision 1), on its CUI. #469: only name, CUI, email and phone; the
 // description, address, website and logo are filled in later from the Organization page.
 const RegisterOrganization = () => {
-  const { t, i18n } = useTranslation('register_organization');
-  const [turnstileToken, setTurnstileToken] = useState<string>('');
-  const [turnstileKey, setTurnstileKey] = useState<number>(0);
+  const { t } = useTranslation('register_organization');
   const [error, setError] = useState<string | null>(null);
   const [registered, setRegistered] = useState<{ name: string; maskedEmail: string } | null>(null);
   const register = useRegisterOrganizationMutation();
@@ -76,21 +73,13 @@ const RegisterOrganization = () => {
 
   const onSubmit = (form: RegisterForm) => {
     setError(null);
-    if (!turnstileToken) {
-      setError(t('errors.turnstile_missing'));
-      return;
-    }
-
     register.mutate(
-      { data: { ...form, turnstileToken }, files: {} },
+      { data: form, files: {} },
       {
         onSuccess: ({ maskedEmail }) => setRegistered({ name: form.name.trim(), maskedEmail }),
         onError: (err) => {
-          // A Turnstile token is single use: get a fresh one for the next try.
-          setTurnstileToken('');
-          setTurnstileKey((key) => key + 1);
           const code = err.response?.data?.code_error;
-          if (code === ORGANIZATION_ERRORS.ORG_004 || code === ORGANIZATION_ERRORS.ORG_006) {
+          if (code === ORGANIZATION_ERRORS.ORG_004) {
             setError(InternalErrors.ORGANIZATION_ERRORS.getError(code));
             return;
           }
@@ -257,7 +246,6 @@ const RegisterOrganization = () => {
           {errors.acceptedTerms && (
             <p className="text-red-500 text-sm">{errors.acceptedTerms.message}</p>
           )}
-          <Turnstile onToken={setTurnstileToken} resetKey={turnstileKey} language={i18n.language} />
           {error && <AuthNotice tone="error">{error}</AuthNotice>}
           <div className="flex items-start gap-3 rounded-lg bg-cool-gray-50 border border-cool-gray-200 p-4 text-sm text-cool-gray-700">
             <CheckBadgeIcon className="w-5 h-5 shrink-0 text-navy" aria-hidden="true" />

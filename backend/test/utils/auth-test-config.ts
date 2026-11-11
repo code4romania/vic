@@ -33,7 +33,6 @@ export const TEST_AUTH_SETTINGS: Record<string, string> = {
   CORS_ORIGINS: 'https://vic.test',
   MOBILE_MIN_VERSION: '1.1.0',
   MAINTENANCE_MODE: 'false',
-  TURNSTILE_SECRET: '1x0000000000000000000000000000000AA',
   GOOGLE_CLIENT_IDS: 'test-google-client',
   APPLE_BUNDLE_ID: 'org.commitglobal.vic',
 };

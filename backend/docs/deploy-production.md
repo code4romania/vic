@@ -47,7 +47,6 @@ The API refuses to start in `staging`/`production` when one of these is missing 
 - [ ] `NODE_ENV=production`
 - [ ] `JWT_PRIVATE_KEY`, `JWT_PUBLIC_KEY`, `JWT_KEY_ID`, `AUTH_TOKEN_KEY` — new, per environment (`docs/auth.md`)
 - [ ] `WEB_APP_URL` (production web app), `CORS_ORIGINS` (the same origin, comma separated if more)
-- [ ] `TURNSTILE_SECRET` (production site key on the web app)
 - [ ] `GOOGLE_CLIENT_IDS` (web, iOS and Android client ids)
 - [ ] `APPLE_BUNDLE_ID`, `APPLE_SERVICES_ID` — the Services ID's domain and return URL include the production domain
 - [ ] `MAIL_FROM` — an address on a domain **verified in SES** (production access, not sandbox); `MAIL_CONTACT`
@@ -103,7 +102,7 @@ Other one-off commands: `org:suspend:prod -- <id> [--reason "..."]`, `org:unsusp
 
 ## 7. Smoke tests (from an allow-listed IP)
 
-- [ ] Register an organization (CUI, Turnstile, confirmation email), validate it as super admin.
+- [ ] Register an organization (CUI, confirmation email), validate it as super admin.
 - [ ] Invite an admin; the invitation email arrives and the link logs in.
 - [ ] Magic link login on the web; email code login on mobile.
 - [ ] Google login and Apple login (web and mobile).
