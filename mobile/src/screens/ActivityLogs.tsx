@@ -4,6 +4,9 @@ import Animated from 'react-native-reanimated';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
+import { useFocusEffect } from '@react-navigation/native';
+import { useQueryClient } from 'react-query';
+import { queryKeys } from '../services/query-keys';
 import { isInactiveVolunteer } from '../common/interfaces/organization-list-item.interface';
 import {
   useActivityLogsCounters,
@@ -62,6 +65,7 @@ const ActivityLogs = ({ navigation, route }: any) => {
   const { userProfile } = useUserProfile();
   const organization = userProfile?.activeOrganization;
   const inactive = isInactiveVolunteer(organization);
+  const queryClient = useQueryClient();
 
   const {
     data,
@@ -81,6 +85,17 @@ const ActivityLogs = ({ navigation, route }: any) => {
     reloadActivityLogs();
     reloadCounters();
   }, [reloadActivityLogs, reloadCounters]);
+
+  useFocusEffect(
+    useCallback(() => {
+      // Mark every segment stale; reload only the current list and totals.
+      queryClient.invalidateQueries(queryKeys.activityLogsAll, {
+        refetchActive: false,
+        refetchInactive: false,
+      });
+      reload();
+    }, [queryClient, reload]),
+  );
 
   const items = useMemo(
     () => (data?.pages ?? []).flatMap((page) => page.items) as IActivityLogItem[],
