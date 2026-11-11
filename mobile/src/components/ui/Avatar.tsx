@@ -61,6 +61,7 @@ export const Avatar = ({ name, uri, size = 40, shape = 'circle', onCanvas }: Ava
         variant="h3"
         color={shape === 'circle' ? colors.yellow : colors.navy}
         style={initialsStyle(size)}
+        maxFontSizeMultiplier={1.2}
       >
         {initials(name)}
       </VText>

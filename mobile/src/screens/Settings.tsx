@@ -171,10 +171,10 @@ const Settings = ({ navigation }: any) => {
         <Enter index={1} style={[styles.me, shadows.card]}>
           <View style={styles.meText}>
             <Avatar name={name || '?'} uri={userProfile?.profilePicture} size={88} />
-            <VText variant="h2" numberOfLines={1} style={[styles.center, styles.name]}>
+            <VText variant="h2" style={[styles.center, styles.name]}>
               {userProfile?.firstName || name}
             </VText>
-            <VText variant="cap" numberOfLines={2} style={styles.center}>
+            <VText variant="cap" style={[styles.center, styles.email]}>
               {[userProfile?.email, place].filter(Boolean).join(' · ')}
             </VText>
           </View>
@@ -332,7 +332,8 @@ const styles = StyleSheet.create({
   },
   meText: { flex: 1, alignItems: 'center', gap: 6, minWidth: 0 },
   center: { textAlign: 'center' },
-  name: { fontSize: 24, lineHeight: 28 },
+  name: { fontSize: 24, lineHeight: 28, alignSelf: 'stretch' },
+  email: { alignSelf: 'stretch', lineHeight: 18, paddingBottom: 2 },
   statValue: { fontSize: 20, lineHeight: 24 },
   meDivider: {
     width: StyleSheet.hairlineWidth,
