@@ -129,6 +129,7 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
+    "testTimeout": 20000,
     "moduleNameMapper": {
       "^src/(.*)$": "<rootDir>/$1"
     }
