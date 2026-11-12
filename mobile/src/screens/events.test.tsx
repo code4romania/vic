@@ -130,17 +130,24 @@ describe('Evenimente', () => {
     expect(lastCall()[2]).toBe(EventType.OPEN);
     const card = screen.getByTestId('event-card-1');
     expect(within(card).getByText('22')).toBeTruthy();
+    expect(within(card).getByText('DUM')).toBeTruthy();
     expect(within(card).getByText(/Pădurea Băneasa/)).toBeTruthy();
-    expect(within(card).getByText('Asociația Exemplu · public')).toBeTruthy();
-    expect(within(screen.getByTestId('event-card-2')).getByText(/doar membri/)).toBeTruthy();
+    expect(within(card).getByText('Asociația Exemplu')).toBeTruthy();
+    expect(within(card).getByText('Public')).toBeTruthy();
+    expect(within(screen.getByTestId('event-card-2')).getByText('Doar membri')).toBeTruthy();
+    expect(within(screen.getByTestId('event-card-2')).queryByText('Public')).toBeNull();
     expect(screen.queryByText('Înscris')).toBeNull();
+    // the segment on screen shows how many events it has
+    expect(within(screen.getByTestId('events-tabs-OPEN')).getByText('3')).toBeTruthy();
   });
 
   it('"Particip" lists the events you go to, marked "Înscris"', async () => {
     await renderApp();
     await fireEvent.press(await screen.findByText('Particip'));
-    expect(lastCall()[2]).toBe(EventType.GOING);
+    // the old list fades out first, then the new one comes in
     expect(await screen.findByText('Eveniment 4')).toBeTruthy();
+    expect(lastCall()[2]).toBe(EventType.GOING);
+    expect(screen.queryByText('Eveniment 1')).toBeNull();
     expect(within(screen.getByTestId('event-card-4')).getByText('Înscris')).toBeTruthy();
     // the organization hasn't approved this one yet
     const pending = screen.getByTestId('event-card-5');
@@ -193,10 +200,36 @@ describe('Evenimente', () => {
     expect(screen.queryByTestId('events-filter-count')).toBeNull();
   });
 
-  it('opens the event page from a card', async () => {
+  it('filters sheet: a choice applies at once, the badge counts it and "Șterge tot" clears it', async () => {
+    await renderApp();
+    await fireEvent.press(await screen.findByTestId('events-filter-button'));
+    await fireEvent.press(screen.getByTestId('filter-when-month'));
+    let filters = lastCall()[3];
+    expect(filters.startFrom).toBeDefined();
+    expect(filters.organizationId).toBeUndefined();
+    expect(within(screen.getByTestId('events-filter-count')).getByText('1')).toBeTruthy();
+    expect(screen.getByTestId('events-filter-button').props.accessibilityLabel).toBe(
+      'Filtre, 1 activ',
+    );
+    expect(within(screen.getByTestId('events-search-pill')).getByText('Luna asta')).toBeTruthy();
+
+    await fireEvent.press(screen.getByTestId('filter-organization-org-1'));
+    filters = lastCall()[3];
+    expect(filters.organizationId).toBe('org-1');
+    expect(within(screen.getByTestId('events-filter-count')).getByText('2')).toBeTruthy();
+
+    await fireEvent.press(screen.getByTestId('filter-organization-all'));
+    await fireEvent.press(screen.getByTestId('filter-when-any'));
+    expect(lastCall()[3]).toEqual({});
+    expect(screen.queryByTestId('events-filter-count')).toBeNull();
+  });
+
+  it('opens the event page from a card, with a light haptic', async () => {
+    const Haptics = require('expo-haptics');
     await renderApp();
     useStore.setState({ event: { ...event('1'), description: 'Despre eveniment' } as any });
     await fireEvent.press(await screen.findByTestId('event-card-1'));
+    expect(Haptics.impactAsync).toHaveBeenCalled();
     expect(await screen.findByText('Despre eveniment')).toBeTruthy();
   });
 });
@@ -217,12 +250,19 @@ describe('Eveniment', () => {
     setEvent();
     await renderApp('event', { eventId: '9' });
     expect(await screen.findByText('Eveniment 9')).toBeTruthy();
-    expect(screen.getByText('Organizat de Asociația Exemplu')).toBeTruthy();
+    expect(screen.getByLabelText('Organizat de Asociația Exemplu')).toBeTruthy();
+    expect(
+      within(screen.getByTestId('event-organizer')).getByText('Asociația Exemplu'),
+    ).toBeTruthy();
     expect(screen.getByText('50 de locuri')).toBeTruthy();
     expect(screen.getByText('Deschide în Hărți')).toBeTruthy();
     expect(screen.getByText('Ne întâlnim la intrare.')).toBeTruthy();
     expect(screen.getAllByText(/42 de persoane participă/).length).toBeGreaterThan(0);
     expect(screen.getByTestId('event-going')).toBeTruthy();
+    // the glass bar: who the event is open to, and the two answers
+    expect(within(screen.getByTestId('event-bar')).getByText('Deschis tuturor')).toBeTruthy();
+    expect(screen.getByTestId('event-not-going')).toBeTruthy();
+    expect(screen.getByText('Eveniment public')).toBeTruthy();
   });
 
   it('"Particip" registers and asks for the registration status', async () => {
@@ -247,6 +287,7 @@ describe('Eveniment', () => {
     await renderApp('event', { eventId: '9' });
     expect(await screen.findByTestId('event-cancel')).toBeTruthy();
     expect(screen.getAllByText('Așteaptă aprobarea organizației').length).toBeGreaterThan(0);
+    expect(screen.queryByTestId('event-going')).toBeNull();
   });
 
   const rsvpFails = (code_error?: string) =>

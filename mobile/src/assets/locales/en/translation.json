@@ -483,7 +483,9 @@
       "clear": "Clear all",
       "show": "Show events",
       "show_one": "Show 1 event",
-      "show_count": "Show {{n}} events"
+      "show_count": "Show {{n}} events",
+      "filters_count": "Filters, {{n}} active",
+      "filters_count_one": "Filters, 1 active"
     },
     "tabs": {
       "going": "Particip",
@@ -502,7 +504,9 @@
       "going": "Going",
       "pending": "Pending",
       "rejected": "Rejected",
-      "finished": "Ended"
+      "finished": "Ended",
+      "public_tag": "Public",
+      "members_tag": "Members only"
     },
     "empty": {
       "filtered_title": "No events for these filters",
@@ -571,6 +575,13 @@
       "pending_title": "Request sent",
       "pending_description": "The organization confirms your registration. You'll get a notification when they decide.",
       "done": "Done"
+    },
+    "organized_by_caption": "Organized by",
+    "bar": {
+      "open": "Open to everyone",
+      "members": "Members only",
+      "going": "You are registered",
+      "not_going": "Not participating"
     }
   },
   "activity_logs": {

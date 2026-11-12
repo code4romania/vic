@@ -1,26 +1,37 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, RefreshControl, StyleSheet, View } from 'react-native';
+import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ActivityIndicator, RefreshControl, Text, View } from 'react-native';
 import Animated, {
-  Extrapolation,
-  interpolate,
+  SharedValue,
   useAnimatedStyle,
+  useReducedMotion,
   useSharedValue,
+  withTiming,
 } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { StyleSheet } from 'react-native-unistyles';
 import { useTranslation } from 'react-i18next';
 import { EventType } from '../common/enums/event-type.enum';
 import { OrderDirection } from '../common/enums/order-direction.enum';
-import { colors, fonts, spacing } from '../common/theme/tokens';
 import { useEventsInfiniteQuery } from '../services/event/event.service';
 import { useEvent } from '../store/event/event.selector';
 import useMyOrganizations from '../hooks/useMyOrganizations';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import { useTabBarScroll } from '../components/navigation/TabBarScroll';
 import { useGlassTabBarInset } from '../components/navigation/GlassTabBar';
-import { EmptyState, Enter, PressableScale, UnderlineTabs, VText } from '../components/ui';
+import {
+  EmptyState,
+  LargeTitleCompactBar,
+  LargeTitleHeader,
+  PressableScale,
+} from '../components/ui';
+import { AppText, SegmentedControl } from '../design/components';
+import { FiltersIcon, SearchIcon } from '../design/icons';
+import { fontScaleCap, palette } from '../design/tokens';
+import { duration, easing, enter, MAX_STAGGER } from '../design/motion';
+import { haptics } from '../design/haptics';
 import { EventCard, EventCardItem } from '../components/events/EventCard';
-import { EventIcon } from '../components/events/EventIcons';
 import { EventSearchModal } from '../components/events/EventSearchModal';
+import { EventFiltersSheet } from '../components/events/EventFiltersSheet';
 import {
   countActiveFilters,
   EMPTY_EVENT_FILTERS,
@@ -29,27 +40,83 @@ import {
 } from '../components/events/event-filters';
 import EventSkeletonListItem from '../components/skeleton/event-skeleton-item';
 
-const HEADER_HEIGHT = 158;
+/** the old list fades up and out before the new one staggers in (handbook: swap-out) */
+const SWAP_OUT_MS = 140;
+/** the header takes the first three entrance steps (title, search row, segmented control) */
+const HEADER_STEPS = 3;
 
-const tabIcon = (name: 'open' | 'going' | 'organizations') => (active: boolean) => (
-  <EventIcon name={name} color={active ? colors.navy : colors.muted} />
-);
+/** One list item: enters with the stagger (first screenful only) and follows the swap-out. */
+const ListItem = ({
+  index,
+  offset,
+  out,
+  reduced,
+  children,
+}: {
+  index: number;
+  offset: number;
+  out: SharedValue<number>;
+  reduced: boolean;
+  children: ReactNode;
+}) => {
+  const swapStyle = useAnimatedStyle(() => ({
+    opacity: 1 - out.value,
+    transform: [{ translateY: reduced ? 0 : -6 * out.value }],
+  }));
+  return (
+    <Animated.View
+      entering={index < MAX_STAGGER ? enter(index + offset, reduced) : undefined}
+      style={styles.item}
+    >
+      <Animated.View style={swapStyle}>{children}</Animated.View>
+    </Animated.View>
+  );
+};
 
 /**
- * VIC 2.0 Evenimente (canvas board "Evenimente"): a search pill that opens the full-screen
- * search, category tabs with a sliding underline, and the list, which re-staggers whenever the
- * tab or the filters change. The header gets a shadow once the list scrolls under it.
+ * Evenimente „Îndrăzneț”: a large title (the compact glass bar takes over after 48pt), a white
+ * search field that opens the search (the active filters show as a yellow token), a navy filters
+ * button that opens the filters sheet, the segmented control and the event cards. Changing the
+ * segment fades the old list up and out (140 ms), then the new one staggers in.
  */
 const Events = ({ navigation, route }: any) => {
   const { t } = useTranslation('events');
-  const insets = useSafeAreaInsets();
+  const reduced = useReducedMotion();
   const bottomInset = useGlassTabBarInset();
   useFocusedStatusBarStyle('dark');
   const { event } = useEvent();
 
+  // the segment shows the choice at once; the list follows after the swap-out
+  const [selectedFilter, setSelectedFilter] = useState<EventType>(EventType.OPEN);
   const [eventFilter, setEventFilter] = useState<EventType>(EventType.OPEN);
   const [filters, setFilters] = useState<EventFilters>(EMPTY_EVENT_FILTERS);
   const [searchOpen, setSearchOpen] = useState(false);
+  const filtersRef = useRef<BottomSheetModal>(null);
+
+  const listOut = useSharedValue(0);
+  const swapTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  useEffect(() => () => clearTimeout(swapTimer.current), []);
+
+  const showTab = useCallback(
+    (next: EventType) => {
+      clearTimeout(swapTimer.current);
+      listOut.value = 0;
+      setSelectedFilter(next);
+      setEventFilter(next);
+    },
+    [listOut],
+  );
+
+  const onChangeTab = (next: EventType) => {
+    setSelectedFilter(next);
+    clearTimeout(swapTimer.current);
+    const out = reduced ? duration.reduced : SWAP_OUT_MS;
+    listOut.value = withTiming(1, { duration: out, easing: easing.exit });
+    swapTimer.current = setTimeout(() => {
+      listOut.value = 0;
+      setEventFilter(next);
+    }, out);
+  };
 
   // "Vezi evenimente" on an organization's page and "Vezi toate" on Acasă open this tab already
   // filtered; the params are consumed once, so the tab keeps working as usual afterwards.
@@ -60,14 +127,14 @@ const Events = ({ navigation, route }: any) => {
       return;
     }
     if (requestedEventFilter) {
-      setEventFilter(requestedEventFilter);
+      showTab(requestedEventFilter);
     }
     if (requestedOrganizationId) {
-      setEventFilter(requestedEventFilter ?? EventType.OPEN);
+      showTab(requestedEventFilter ?? EventType.OPEN);
       setFilters({ ...EMPTY_EVENT_FILTERS, organizationId: requestedOrganizationId });
     }
     navigation.setParams({ organizationId: undefined, eventFilter: undefined });
-  }, [requestedOrganizationId, requestedEventFilter, navigation]);
+  }, [requestedOrganizationId, requestedEventFilter, navigation, showTab]);
 
   const scrollY = useSharedValue(0);
   const onScroll = useTabBarScroll(scrollY);
@@ -96,6 +163,7 @@ const Events = ({ navigation, route }: any) => {
     () => (events?.pages ?? []).flatMap((page) => page.items) as EventCardItem[],
     [events],
   );
+  const total: number | undefined = events?.pages?.[0]?.meta?.totalItems;
   const activeFilters = countActiveFilters(filters);
   const organizations = useMyOrganizations();
   const summary = useMemo(() => {
@@ -107,37 +175,46 @@ const Events = ({ navigation, route }: any) => {
     return parts.join(' · ');
   }, [filters, organizations, t]);
 
-  // restagger the list when the tab or the filters change
+  // a new tab or new filters remount the cards, so they stagger in again
   const listKey = `${eventFilter}:${JSON.stringify(filters)}`;
+  const initialListKey = useRef<string | null>(listKey);
+  if (initialListKey.current && listKey !== initialListKey.current) {
+    initialListKey.current = null;
+  }
+  // on the first screen the cards follow the header's steps; after a swap they start at once
+  const itemOffset = initialListKey.current ? HEADER_STEPS : 0;
   const isInitialLoading = isFetching && !isFetchingNextPage && !isRefetching && !items.length;
+  // the count of the list on screen (the API gives no count for the other segments)
+  const countFor = (key: EventType) =>
+    key === eventFilter && key === selectedFilter && !isInitialLoading ? total : undefined;
 
-  // measured (the tallest it gets: the pill shrinks while scrolling), so the first card always
-  // starts below the header whatever the text size
-  const [measuredHeader, setMeasuredHeader] = useState(0);
-  const headerHeight = measuredHeader || insets.top + HEADER_HEIGHT;
-  const headerShadow = useAnimatedStyle(() => ({
-    shadowOpacity: interpolate(scrollY.value, [0, 12], [0, 0.06], Extrapolation.CLAMP),
-  }));
+  const onOpenEvent = (eventId: string) => {
+    haptics.light();
+    navigation.navigate('event', { eventId });
+  };
 
-  const onOpenEvent = (eventId: string) => navigation.navigate('event', { eventId });
+  const openSearch = () => {
+    haptics.light();
+    setSearchOpen(true);
+  };
 
   const renderItem = ({ item, index }: { item: EventCardItem; index: number }) => (
-    <Enter index={index}>
+    <ListItem index={index} offset={itemOffset} out={listOut} reduced={reduced}>
       <EventCard
         event={item}
         onPress={onOpenEvent}
         going={eventFilter === EventType.GOING}
         variant="card"
       />
-    </Enter>
+    </ListItem>
   );
 
   const renderEmpty = () => {
+    let content: ReactNode;
     if (isInitialLoading) {
-      return <EventSkeletonListItem />;
-    }
-    if (error) {
-      return (
+      content = <EventSkeletonListItem />;
+    } else if (error) {
+      content = (
         <EmptyState
           title={`${t('errors.generic')}`}
           error
@@ -146,124 +223,131 @@ const Events = ({ navigation, route }: any) => {
           testID="events-error"
         />
       );
+    } else {
+      const filtered = activeFilters > 0 || !!filters.search;
+      content = (
+        <EmptyState
+          title={`${t(filtered ? 'empty.filtered_title' : `empty.${eventFilter.toLowerCase()}_title`)}`}
+          description={`${t(
+            filtered
+              ? 'empty.filtered_description'
+              : `empty.${eventFilter.toLowerCase()}_description`,
+          )}`}
+          actionLabel={filtered ? `${t('search.clear')}` : undefined}
+          onAction={filtered ? () => setFilters(EMPTY_EVENT_FILTERS) : undefined}
+          testID="events-empty"
+        />
+      );
     }
-    const filtered = activeFilters > 0 || !!filters.search;
     return (
-      <EmptyState
-        icon={<EventIcon name="calendar" size={36} color={colors.subtle} />}
-        title={`${t(filtered ? 'empty.filtered_title' : `empty.${eventFilter.toLowerCase()}_title`)}`}
-        description={`${t(
-          filtered
-            ? 'empty.filtered_description'
-            : `empty.${eventFilter.toLowerCase()}_description`,
-        )}`}
-        actionLabel={filtered ? `${t('search.clear')}` : undefined}
-        onAction={filtered ? () => setFilters(EMPTY_EVENT_FILTERS) : undefined}
-        testID="events-empty"
-      />
+      <ListItem key={listKey} index={0} offset={itemOffset} out={listOut} reduced={reduced}>
+        {content}
+      </ListItem>
     );
   };
+
+  const filtersLabel =
+    activeFilters === 0
+      ? `${t('search.filters')}`
+      : activeFilters === 1
+        ? `${t('search.filters_count_one')}`
+        : `${t('search.filters_count', { n: activeFilters })}`;
+
+  const header = (
+    <View style={styles.header}>
+      <Animated.View entering={enter(0, reduced)}>
+        <LargeTitleHeader title={`${t('header')}`} scrollY={scrollY} compact={false} />
+      </Animated.View>
+      <Animated.View entering={enter(1, reduced)} style={styles.searchRow}>
+        <PressableScale
+          onPress={openSearch}
+          style={styles.search}
+          accessibilityLabel={summary ? `${t('search.title')}. ${summary}` : t('search.title')}
+          testID="events-search-pill"
+        >
+          <SearchIcon size={22} color={palette.navy} />
+          <View style={styles.searchText}>
+            <AppText variant="bodyStrong" color={palette.ink2} numberOfLines={1}>
+              {t('search.title')}
+            </AppText>
+            {!!summary && (
+              <View style={styles.token}>
+                <Text
+                  numberOfLines={1}
+                  maxFontSizeMultiplier={fontScaleCap.text}
+                  style={styles.tokenText}
+                >
+                  {summary}
+                </Text>
+              </View>
+            )}
+          </View>
+        </PressableScale>
+        <PressableScale
+          onPress={() => filtersRef.current?.present()}
+          style={styles.filterButton}
+          accessibilityLabel={filtersLabel}
+          testID="events-filter-button"
+        >
+          <FiltersIcon size={22} color={palette.yellow} />
+          {activeFilters > 0 && (
+            <View style={styles.filterCount} testID="events-filter-count">
+              <Text maxFontSizeMultiplier={1.15} style={styles.filterCountText}>
+                {activeFilters}
+              </Text>
+            </View>
+          )}
+        </PressableScale>
+      </Animated.View>
+      <Animated.View entering={enter(2, reduced)} style={styles.segmented}>
+        <SegmentedControl<EventType>
+          value={selectedFilter}
+          onChange={onChangeTab}
+          testID="events-tabs"
+          options={[
+            { key: EventType.OPEN, label: t('tabs.open'), count: countFor(EventType.OPEN) },
+            { key: EventType.GOING, label: t('tabs.going'), count: countFor(EventType.GOING) },
+            {
+              key: EventType.ORGANIZATIONS,
+              label: t('tabs.organizations'),
+              count: countFor(EventType.ORGANIZATIONS),
+            },
+          ]}
+        />
+      </Animated.View>
+    </View>
+  );
 
   return (
     <View style={styles.screen}>
       <Animated.FlatList
-        key={listKey}
         data={items}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => `${listKey}:${item.id}`}
         renderItem={renderItem}
+        ListHeaderComponent={header}
         onScroll={onScroll}
         scrollEventThrottle={16}
         onEndReached={() => hasNextPage && !isFetching && fetchNextPage()}
         onEndReachedThreshold={0.4}
         ListEmptyComponent={renderEmpty}
         ListFooterComponent={
-          isFetchingNextPage ? <ActivityIndicator color={colors.navy} style={styles.more} /> : null
+          isFetchingNextPage ? <ActivityIndicator color={palette.navy} style={styles.more} /> : null
         }
-        refreshControl={
-          <RefreshControl
-            refreshing={isRefetching}
-            onRefresh={reload}
-            progressViewOffset={headerHeight}
-          />
-        }
-        contentContainerStyle={[
-          styles.list,
-          // room under the search bar and the tabs (Andrew, 9 Nov: the list sat too close to them)
-          { paddingTop: headerHeight + 16, paddingBottom: bottomInset },
-        ]}
+        refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={reload} />}
+        contentContainerStyle={[styles.list, { paddingBottom: bottomInset }]}
         showsVerticalScrollIndicator={false}
         testID="events-list"
       />
+      <LargeTitleCompactBar title={`${t('header')}`} scrollY={scrollY} />
 
-      <Animated.View
-        style={[styles.top, { paddingTop: insets.top + 12 }, headerShadow]}
-        onLayout={(e) => {
-          const height = Math.round(e.nativeEvent.layout.height);
-          setMeasuredHeader((current) => Math.max(current, height));
-        }}
-      >
-        <View style={styles.searchRow}>
-          <View style={styles.pillWrap}>
-            <PressableScale
-              onPress={() => setSearchOpen(true)}
-              style={styles.pill}
-              accessibilityLabel={summary ? `${t('search.title')}. ${summary}` : t('search.title')}
-              testID="events-search-pill"
-            >
-              <EventIcon name="search" size={20} />
-              <View style={styles.pillText}>
-                <VText variant="label" style={styles.pillTitle}>
-                  {t('search.title')}
-                </VText>
-                {!!summary && (
-                  <VText variant="cap" numberOfLines={1}>
-                    {summary}
-                  </VText>
-                )}
-              </View>
-            </PressableScale>
-          </View>
-          <PressableScale
-            onPress={() => setSearchOpen(true)}
-            style={styles.filterButton}
-            accessibilityLabel={`${t('search.filters')}${
-              activeFilters ? `, ${activeFilters}` : ''
-            }`}
-            testID="events-filter-button"
-          >
-            <EventIcon name="filters" size={18} />
-            {activeFilters > 0 && (
-              <View style={styles.filterCount} testID="events-filter-count">
-                <VText variant="cap" color={colors.white} style={styles.filterCountText}>
-                  {activeFilters}
-                </VText>
-              </View>
-            )}
-          </PressableScale>
-        </View>
-        <UnderlineTabs<EventType>
-          value={eventFilter}
-          onChange={setEventFilter}
-          testID="events-tabs"
-          tabs={[
-            {
-              key: EventType.OPEN,
-              label: t('tabs.open'),
-              icon: tabIcon('open'),
-            },
-            {
-              key: EventType.GOING,
-              label: t('tabs.going'),
-              icon: tabIcon('going'),
-            },
-            {
-              key: EventType.ORGANIZATIONS,
-              label: t('tabs.organizations'),
-              icon: tabIcon('organizations'),
-            },
-          ]}
-        />
-      </Animated.View>
+      <EventFiltersSheet
+        ref={filtersRef}
+        filters={filters}
+        organizations={organizations}
+        onChange={setFilters}
+        count={isInitialLoading ? undefined : total}
+        onClose={() => filtersRef.current?.dismiss()}
+      />
 
       <EventSearchModal
         visible={searchOpen}
@@ -282,65 +366,75 @@ const Events = ({ navigation, route }: any) => {
 
 export default Events;
 
-const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.canvas },
-  list: { paddingHorizontal: spacing.gutter, flexGrow: 1 },
+const SEARCH_HEIGHT = 58;
+
+const styles = StyleSheet.create((theme) => ({
+  screen: { flex: 1, backgroundColor: theme.colors.paper },
+  list: { flexGrow: 1 },
+  header: { paddingBottom: 4 },
+  item: { paddingHorizontal: theme.space.gutter, marginBottom: 10 },
   more: { paddingVertical: 20 },
-  top: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: colors.white,
-    paddingHorizontal: spacing.gutter,
-    shadowColor: '#000',
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 6 },
-    zIndex: 4,
+  searchRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingHorizontal: theme.space.gutter,
   },
-  searchRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: spacing.s },
-  // fixed size: the pill is a button that opens the search sheet, it doesn't grow or shrink on scroll
-  pillWrap: { flex: 1, height: 46 },
-  pill: {
+  search: {
     flex: 1,
-    borderRadius: 28,
-    backgroundColor: colors.white,
+    minHeight: SEARCH_HEIGHT,
+    borderRadius: 22,
+    backgroundColor: theme.colors.card,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    paddingLeft: 20,
-    paddingRight: 12,
-    borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.04)',
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 3 },
-    elevation: 3,
+    paddingHorizontal: 16,
+    paddingVertical: 6,
   },
-  pillText: { flex: 1 },
-  pillTitle: { fontFamily: fonts.bold },
+  searchText: { flex: 1, alignItems: 'flex-start' },
+  token: {
+    maxWidth: '100%',
+    marginTop: 2,
+    borderRadius: 8,
+    paddingHorizontal: 7,
+    paddingVertical: 1,
+    backgroundColor: theme.colors.yellow,
+  },
+  tokenText: {
+    fontFamily: theme.fontFamily.textHeavy,
+    fontSize: 12,
+    lineHeight: 16,
+    color: theme.colors.navy,
+  },
   filterButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: colors.grab,
-    backgroundColor: colors.white,
+    width: SEARCH_HEIGHT,
+    height: SEARCH_HEIGHT,
+    borderRadius: 22,
+    backgroundColor: theme.colors.navy,
     alignItems: 'center',
     justifyContent: 'center',
   },
   filterCount: {
     position: 'absolute',
-    right: -4,
-    top: -4,
-    minWidth: 18,
-    height: 18,
-    borderRadius: 9,
-    backgroundColor: colors.ink,
+    top: -6,
+    right: -6,
+    minWidth: 24,
+    height: 24,
+    borderRadius: 12,
+    paddingHorizontal: 5,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 4,
+    backgroundColor: theme.colors.yellow,
+    // the paper ring around the badge
+    borderWidth: 2,
+    borderColor: theme.colors.paper,
   },
-  filterCountText: { fontSize: 11, lineHeight: 13, fontFamily: fonts.bold },
-});
+  filterCountText: {
+    fontFamily: theme.fontFamily.textHeavy,
+    fontSize: 11,
+    lineHeight: 13,
+    color: theme.colors.navy,
+    fontVariant: ['tabular-nums'],
+  },
+  segmented: { paddingHorizontal: theme.space.gutter, marginTop: 14, marginBottom: 14 },
+}));
