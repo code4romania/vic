@@ -35,7 +35,23 @@ jest.mock('react-native-reanimated', () => ({
   ...require('react-native-reanimated/mock'),
   // missing from the official mock; the VIC 2.0 UI kit reads it to skip motion
   useReducedMotion: () => false,
+  // missing from the official mock too; the impact hexagon drives its waves with it
+  useFrameCallback: () => ({ setActive: () => undefined, isActive: false, callbackId: -1 }),
 }));
+
+// Skia has no native module in jest: canvases render as plain views, paths as stubs.
+jest.mock('@shopify/react-native-skia', () => {
+  const { View } = require('react-native');
+  const Stub = () => null;
+  const path = () => ({ toSVGString: () => '' });
+  return {
+    Canvas: View,
+    Group: View,
+    Path: Stub,
+    Rect: Stub,
+    Skia: { Path: { Make: path, MakeFromSVGString: path } },
+  };
+});
 
 jest.mock('react-native-keyboard-controller', () =>
   require('react-native-keyboard-controller/jest'),

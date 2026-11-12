@@ -779,6 +779,27 @@
                 "title": "Trimite orele de voluntariat",
                 "subtitle": "La {{name}}"
             }
+        },
+        "org": {
+            "overline": "Organizația ta",
+            "switch": "Schimbă organizația",
+            "sheet_title": "Organizațiile tale",
+            "active": "Activă"
+        },
+        "impact": {
+            "overline": "Impactul tău",
+            "label": "ore aprobate",
+            "label_singular": "oră aprobată",
+            "pending_chip": "{{n}}h în așteptare",
+            "rejected_chip": "{{n}}h respinse",
+            "rejected_chip_singular": "{{n}}h respinsă",
+            "a11y_approved": "{{n}} ore aprobate",
+            "a11y_approved_de": "{{n}} de ore aprobate",
+            "a11y_approved_singular": "1 oră aprobată",
+            "a11y_pending": "{{n}} în așteptare",
+            "a11y_rejected": "{{n}} respinse",
+            "a11y_open": "Deschide Ore",
+            "a11y_rejected_singular": "1 respinsă"
         }
     },
     "access_code": {

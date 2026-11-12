@@ -751,6 +751,27 @@
         "title": "Send your volunteering hours",
         "subtitle": "At {{name}}"
       }
+    },
+    "org": {
+      "overline": "Your organization",
+      "switch": "Switch organization",
+      "sheet_title": "Your organizations",
+      "active": "Active"
+    },
+    "impact": {
+      "overline": "Your impact",
+      "label": "approved hours",
+      "label_singular": "approved hour",
+      "pending_chip": "{{n}}h pending",
+      "rejected_chip": "{{n}}h rejected",
+      "rejected_chip_singular": "{{n}}h rejected",
+      "a11y_approved": "{{n}} approved hours",
+      "a11y_approved_de": "{{n}} approved hours",
+      "a11y_approved_singular": "1 approved hour",
+      "a11y_pending": "{{n}} pending",
+      "a11y_rejected": "{{n}} rejected",
+      "a11y_open": "Open Hours",
+      "a11y_rejected_singular": "1 rejected"
     }
   },
   "access_code": {
