@@ -5,11 +5,12 @@ import { KeyboardStickyView } from 'react-native-keyboard-controller';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { ButtonType } from '../common/enums/button-type.enum';
-import { colors, fonts, shadows, spacing } from '../common/theme/tokens';
+import { colors, fonts, spacing } from '../common/theme/tokens';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import { FormLayoutBottomOffsetContext } from './FormLayout';
-import { EventIcon } from '../components/events/EventIcons';
-import { PressableScale, VButton, VText } from '../components/ui';
+import { VButton, VText } from '../components/ui';
+import { BackButton } from '../components/ui/ScreenChrome';
+import { AppText } from '../design/components/Text';
 
 interface ActionsOptionsProps {
   primaryActionLabel: string;
@@ -45,7 +46,7 @@ const BUTTON_VARIANT = {
 } as const;
 
 /**
- * VIC 2.0 page: a round back button, the title, an optional edit link, the content, and the actions
+ * „Îndrăzneț” pushed page on paper: the 44pt round white back button, the title, an optional edit link, the content, and the actions
  * that stay above the keyboard.
  */
 export const PageLayout = ({
@@ -65,18 +66,15 @@ export const PageLayout = ({
     <View style={styles.screen}>
       <View style={[styles.header, headerStyle]}>
         {onBackButtonPress && (
-          <PressableScale
+          <BackButton
             onPress={onBackButtonPress}
-            style={[styles.back, shadows.back]}
             accessibilityLabel={`${t('back')}`}
             testID="page-back"
-          >
-            <EventIcon name="back" size={20} />
-          </PressableScale>
+          />
         )}
-        <VText variant="h2" numberOfLines={1} style={styles.title} accessibilityRole="header">
+        <AppText variant="title" numberOfLines={1} style={styles.title} accessibilityRole="header">
           {title}
-        </VText>
+        </AppText>
         {onEditButtonPress && (
           <VText
             variant="label"
@@ -142,7 +140,7 @@ export const PageLayout = ({
 export default PageLayout;
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.white },
+  screen: { flex: 1, backgroundColor: colors.canvas },
   header: {
     minHeight: 64,
     flexDirection: 'row',
@@ -151,14 +149,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.gutter,
     paddingVertical: 12,
   },
-  back: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.white,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   title: { flex: 1 },
   edit: { fontFamily: fonts.bold, textDecorationLine: 'underline' },
   childrenContainer: { flex: 1, paddingHorizontal: spacing.l, paddingVertical: spacing.s },
@@ -166,7 +156,7 @@ const styles = StyleSheet.create({
     gap: 12,
     paddingTop: 12,
     paddingHorizontal: spacing.gutter,
-    backgroundColor: colors.white,
+    backgroundColor: colors.canvas,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: colors.line,
   },

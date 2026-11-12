@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { IOrganizationListItemWithNumberOfVolunteers } from '../common/interfaces/organization-list-item.interface';
 import { MAX_FONT_SCALE } from '../common/constants/constants';
-import { colors, fonts, shadows, spacing } from '../common/theme/tokens';
+import { colors, fonts, spacing } from '../common/theme/tokens';
 import { useOrganizationsInfiniteQuery } from '../services/organization/organization.service';
 import { useOrganization } from '../store/organization/organization.selector';
 import { useUserProfile } from '../store/profile/profile.selector';
@@ -29,7 +29,6 @@ import { useGlassTabBarInset } from '../components/navigation/GlassTabBar';
 import { EventIcon } from '../components/events/EventIcons';
 import {
   Avatar,
-  Badge,
   Chevron,
   EmptyState,
   Enter,
@@ -38,6 +37,8 @@ import {
   StatusBarScrim,
   VText,
 } from '../components/ui';
+import { BackButton } from '../components/ui/ScreenChrome';
+import { StatusChip } from '../design/components';
 import OrganizationSkeleton from '../components/skeleton/organization-skeleton';
 
 const SEARCH_DEBOUNCE_MS = 300;
@@ -54,7 +55,7 @@ const Organizations = ({ navigation }: any) => {
   const scrollY = useSharedValue(0);
   const onScroll = useTabBarScroll(scrollY);
   const [measuredHeaderHeight, setMeasuredHeaderHeight] = useState(0);
-  const headerHeight = measuredHeaderHeight || insets.top + 12 + 40 + 6;
+  const headerHeight = measuredHeaderHeight || insets.top + 12 + 44 + 6;
   const headerShadow = useAnimatedStyle(() => ({
     shadowOpacity: interpolate(scrollY.value, [0, 12], [0, 0.06], Extrapolation.CLAMP),
   }));
@@ -124,7 +125,7 @@ const Organizations = ({ navigation }: any) => {
             <VText variant="cap">
               {t('organization_profile:volunteers', { count: item.numberOfVolunteers })}
             </VText>
-            {memberOf.has(item.id) && <Badge label={`${t('member')}`} tone="neutral" />}
+            {memberOf.has(item.id) && <StatusChip label={`${t('member')}`} kind="act" />}
           </View>
         </View>
         <Chevron />
@@ -230,14 +231,11 @@ const Organizations = ({ navigation }: any) => {
       >
         <View style={styles.topRow}>
           {navigation.canGoBack() && (
-            <PressableScale
+            <BackButton
               onPress={navigation.goBack}
-              style={[styles.back, shadows.back]}
               accessibilityLabel={`${t('general:back')}`}
               testID="organizations-back"
-            >
-              <EventIcon name="back" size={20} />
-            </PressableScale>
+            />
           )}
           <VText
             variant="h2"
@@ -280,22 +278,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    minHeight: 40,
-  },
-  back: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.white,
-    alignItems: 'center',
-    justifyContent: 'center',
+    minHeight: 44,
   },
   heading: { flex: 1 },
   subtitle: { marginBottom: 16 },
+  // a white field on paper (handbook .field), radius 18
   search: {
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: colors.soft,
+    height: 52,
+    borderRadius: 18,
+    backgroundColor: colors.white,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
