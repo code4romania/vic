@@ -106,6 +106,7 @@ const ActivityLogForm = ({ isLoading, control, errors }: ActivityLogFormProps) =
         min={ACTIVITY_LOG_DATE_MIN}
         max={endOfToday()}
         label={t('form.date.label')}
+        quickOptions
         placeholder={t('general:select')}
         required
         disabled={isLoading}
