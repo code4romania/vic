@@ -30,6 +30,8 @@ const DAYS = ['Dum', 'Lun', 'Mar', 'Mie', 'Joi', 'Vin', 'Sâm'];
 const MONTHS = ['ian', 'feb', 'mar', 'apr', 'mai', 'iun', 'iul', 'aug', 'sep', 'oct', 'nov', 'dec'];
 
 /** "Vin, 13 nov 2026" */
+
+const FOLD_GAP = 8;
 export const formatDateRo = (date: Date) =>
   `${DAYS[date.getDay()]}, ${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
 
@@ -104,7 +106,12 @@ export const DateField = ({
   }, [disabled]);
 
   const fold = useAnimatedStyle(
-    () => ({ height: calendarHeight * progress.value, opacity: Math.min(1, progress.value * 2) }),
+    () => ({
+      height: calendarHeight * progress.value,
+      // the gap above the menu folds with it, so a closed menu leaves no space
+      marginTop: FOLD_GAP * progress.value,
+      opacity: Math.min(1, progress.value * 2),
+    }),
     [calendarHeight],
   );
 
@@ -221,7 +228,6 @@ export default DateField;
 const styles = StyleSheet.create((theme) => ({
   quick: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: theme.space.xs },
   calendar: {
-    marginTop: theme.space.xs,
     borderRadius: theme.radius.control,
     backgroundColor: theme.colors.surface,
     overflow: 'hidden',

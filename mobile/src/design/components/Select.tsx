@@ -24,6 +24,7 @@ import {
   useFocusRing,
 } from './TextField';
 
+const FOLD_GAP = 8;
 export type SelectKey = string | number;
 
 export interface SelectOption<K extends SelectKey = SelectKey> {
@@ -98,7 +99,12 @@ export function Select<K extends SelectKey>({
   }, [disabled]);
 
   const menuStyle = useAnimatedStyle(
-    () => ({ height: menuHeight * progress.value, opacity: Math.min(1, progress.value * 2) }),
+    () => ({
+      height: menuHeight * progress.value,
+      // the gap above the menu folds with it, so a closed menu leaves no space
+      marginTop: FOLD_GAP * progress.value,
+      opacity: Math.min(1, progress.value * 2),
+    }),
     [menuHeight],
   );
   const chevronStyle = useAnimatedStyle(() => ({
@@ -211,7 +217,6 @@ export default Select;
 
 const styles = StyleSheet.create((theme) => ({
   menu: {
-    marginTop: theme.space.xs,
     borderRadius: theme.radius.control,
     backgroundColor: theme.colors.surface,
     overflow: 'hidden',
