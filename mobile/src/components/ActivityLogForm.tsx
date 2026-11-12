@@ -6,6 +6,7 @@ import EventSelect from '../containers/EventSelect';
 import ActivityTypeSelect from '../containers/ActivityTypeSelect';
 import FormDatePicker from './FormDatePicker';
 import FormInput from './FormInput';
+import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { Control, Controller, FieldErrors } from 'react-hook-form';
 import HoursStepper from './hours/HoursStepper';
 import { useTranslation } from 'react-i18next';
@@ -28,6 +29,11 @@ interface ActivityLogFormProps {
   isLoading?: boolean;
   control: Control<ActivityLogFormTypes, any>;
   errors: FieldErrors<ActivityLogFormTypes>;
+  /**
+   * Inside the „Adaugă ore” sheet: the fields only (the sheet scrolls them), no organization row,
+   * and the text field uses the sheet's keyboard-aware input.
+   */
+  inSheet?: boolean;
 }
 
 // The backend's rule (M12): whole hours, at least 1, at most 24 in a day
@@ -59,34 +65,21 @@ export const activityLogSchema = yup
   })
   .required();
 
-const ActivityLogForm = ({ isLoading, control, errors }: ActivityLogFormProps) => {
+const ActivityLogForm = ({ isLoading, control, errors, inSheet = false }: ActivityLogFormProps) => {
   const { userProfile } = useUserProfile();
 
   const { t } = useTranslation('activity_log');
 
-  return (
-    <FormLayout>
-      <View />
-      {userProfile?.activeOrganization && (
-        <View style={styles.organization}>
-          <Avatar
-            name={userProfile.activeOrganization.name}
-            uri={userProfile.activeOrganization.logo}
-            size={36}
-            shape="rounded"
-          />
-          <VText variant="label" numberOfLines={1} style={styles.organizationName}>
-            {userProfile.activeOrganization.name}
-          </VText>
-        </View>
-      )}
+  const fields = (
+    <>
       <EventSelect
         name="eventId"
         control={control as any}
         error={errors.eventId}
         label={t('form.event.label')}
-        placeholder={t('general:select')}
+        placeholder={t('form.event.placeholder')}
         organizationId={userProfile?.activeOrganization?.id as string}
+        optional
         disabled={isLoading}
       />
       <ActivityTypeSelect
@@ -133,8 +126,34 @@ const ActivityLogForm = ({ isLoading, control, errors }: ActivityLogFormProps) =
         multiline={true}
         label={t('form.mentions.label')}
         placeholder={t('form.mentions.placeholder')}
+        optional
         disabled={isLoading}
+        {...(inSheet ? { InputComponent: BottomSheetTextInput } : {})}
       />
+    </>
+  );
+
+  if (inSheet) {
+    return fields;
+  }
+
+  return (
+    <FormLayout>
+      <View />
+      {userProfile?.activeOrganization && (
+        <View style={styles.organization}>
+          <Avatar
+            name={userProfile.activeOrganization.name}
+            uri={userProfile.activeOrganization.logo}
+            size={36}
+            shape="rounded"
+          />
+          <VText variant="label" numberOfLines={1} style={styles.organizationName}>
+            {userProfile.activeOrganization.name}
+          </VText>
+        </View>
+      )}
+      {fields}
     </FormLayout>
   );
 };

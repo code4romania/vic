@@ -38,6 +38,8 @@ export interface FormSelectProps {
   placeholder: string;
   error: any;
   required?: boolean;
+  /** „opțional” beside the label */
+  optional?: boolean;
   disabled?: boolean;
   /** kept for older callers; the VIC 2.0 field has no leading icon */
   accessoryLeft?: unknown;
@@ -93,6 +95,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
   placeholder,
   error,
   required,
+  optional,
   disabled,
 }: FormSelectProps) => {
   const { t } = useTranslation('general');
@@ -114,6 +117,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
         <Select
           label={label}
           required={required}
+          optional={optional}
           options={options}
           value={value}
           onChange={onChange}

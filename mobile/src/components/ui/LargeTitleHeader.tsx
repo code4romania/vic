@@ -23,6 +23,11 @@ export interface LargeTitleHeaderProps {
    * away with the content: pass false and render `LargeTitleCompactBar` beside the list instead.
    */
   compact?: boolean;
+  /**
+   * Only the compact bar, for screens whose large title scrolls inside a list (the list header
+   * draws its own large title).
+   */
+  compactOnly?: boolean;
 }
 
 // the compact glass bar appears after 48pt of scroll (handbook: Antet)
@@ -85,6 +90,7 @@ export const LargeTitleHeader = ({
   right,
   left,
   compact = true,
+  compactOnly,
 }: LargeTitleHeaderProps) => {
   const insets = useSafeAreaInsets();
 
@@ -102,16 +108,20 @@ export const LargeTitleHeader = ({
 
   return (
     <>
-      {scrollY && compact && <LargeTitleCompactBar title={title} scrollY={scrollY} />}
-      <View style={[styles.large, { paddingTop: insets.top + spacing.m }]}>
-        {left}
-        <Animated.View style={[styles.titleWrap, largeStyle]}>
-          <VText variant="largeTitle" accessibilityRole="header" numberOfLines={1}>
-            {title}
-          </VText>
-        </Animated.View>
-        {right}
-      </View>
+      {scrollY && (compact || compactOnly) && (
+        <LargeTitleCompactBar title={title} scrollY={scrollY} />
+      )}
+      {!compactOnly && (
+        <View style={[styles.large, { paddingTop: insets.top + spacing.m }]}>
+          {left}
+          <Animated.View style={[styles.titleWrap, largeStyle]}>
+            <VText variant="largeTitle" accessibilityRole="header" numberOfLines={1}>
+              {title}
+            </VText>
+          </Animated.View>
+          {right}
+        </View>
+      )}
     </>
   );
 };

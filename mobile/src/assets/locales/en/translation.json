@@ -623,7 +623,8 @@
         "title": "Nothing rejected",
         "description": "If the organization rejects hours, you see the reason here."
       }
-    }
+    },
+    "switch_organization": "Switch organization"
   },
   "activity_log": {
     "title": "Log",
@@ -641,7 +642,8 @@
     },
     "form": {
       "event": {
-        "label": "Event"
+        "label": "Event",
+        "placeholder": "Choose an event"
       },
       "task": {
         "label": "Task",
@@ -662,7 +664,7 @@
       },
       "mentions": {
         "label": "Mentions",
-        "placeholder": "Add mention",
+        "placeholder": "What did you do? Anything the coordinator should know?",
         "min": "The mention can be a minimum of {{value}} characters",
         "max": "The mention can have a maximum of {{value}} characters"
       }
@@ -693,6 +695,12 @@
       "pending": "Pending",
       "approved": "Approved",
       "rejected": "Rejected"
+    },
+    "submit": "Send for approval",
+    "success": {
+      "title": "Sent for approval",
+      "description": "One hour at {{name}}. You will be notified when the coordinator approves it.",
+      "description_plural": "{{count}} hours at {{name}}. You will be notified when the coordinator approves them."
     }
   },
   "tabs": {
