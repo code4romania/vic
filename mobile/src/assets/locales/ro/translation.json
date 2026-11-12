@@ -499,7 +499,9 @@
             "clear": "Șterge tot",
             "show": "Arată evenimentele",
             "show_one": "Arată 1 eveniment",
-            "show_count": "Arată {{n}} evenimente"
+            "show_count": "Arată {{n}} evenimente",
+            "filters_count": "Filtre, {{n}} active",
+            "filters_count_one": "Filtre, 1 activ"
         },
         "tabs": {
             "going": "Particip",
@@ -518,7 +520,9 @@
             "going": "Înscris",
             "pending": "În așteptare",
             "rejected": "Respinsă",
-            "finished": "Încheiat"
+            "finished": "Încheiat",
+            "public_tag": "Public",
+            "members_tag": "Doar membri"
         },
         "empty": {
             "filtered_title": "Niciun eveniment pentru filtrele alese",
@@ -594,6 +598,13 @@
             "pending_title": "Cererea a fost trimisă",
             "pending_description": "Organizația îți confirmă înscrierea. Primești o notificare când decide.",
             "done": "Gata"
+        },
+        "organized_by_caption": "Organizat de",
+        "bar": {
+            "open": "Deschis tuturor",
+            "members": "Doar membri",
+            "going": "Ești înscris",
+            "not_going": "Nu participi"
         }
     },
     "activity_logs": {

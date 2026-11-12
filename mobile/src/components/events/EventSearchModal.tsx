@@ -5,17 +5,18 @@ import {
   Platform,
   Pressable,
   ScrollView,
-  StyleSheet,
   TextInput,
   View,
 } from 'react-native';
-import Animated, { FadeIn, FadeInDown, LinearTransition } from 'react-native-reanimated';
+import Animated, { FadeIn, LinearTransition, useReducedMotion } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import { colors, fonts, motion, shadows } from '../../common/theme/tokens';
-import { MAX_FONT_SCALE } from '../../common/constants/constants';
-import { Chip, PressableScale, VButton, VText } from '../ui';
-import { EventIcon } from './EventIcons';
+import { StyleSheet } from 'react-native-unistyles';
+import { AppText, Button, OptionChip } from '../../design/components';
+import { CloseIcon, ICON_STROKE, SearchIcon } from '../../design/icons';
+import { fontScaleCap, palette } from '../../design/tokens';
+import { duration, enter } from '../../design/motion';
+import { PressableScale } from '../ui';
 import { EMPTY_EVENT_FILTERS, EventFilters, EventWhen, toEventQueryFilters } from './event-filters';
 import { EventType } from '../../common/enums/event-type.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
@@ -36,28 +37,35 @@ export interface EventSearchModalProps {
 const WHEN_OPTIONS: EventWhen[] = ['any', 'week', 'month'];
 
 /**
- * Full-screen event search (Airbnb pattern): three cards, Ce / Când / Organizație, one open at a
- * time, and a bottom bar with "Șterge tot" and "Arată N evenimente".
+ * Full-screen event search on paper, with the keyboard up: three white cards, Ce / Când /
+ * Organizație, one open at a time, and a bar with "Șterge tot" and "Arată N evenimente".
+ * The content mounts each time it opens (a fresh draft, and no count request while hidden).
  */
-export const EventSearchModal = ({
-  visible,
+export const EventSearchModal = ({ visible, onClose, ...props }: EventSearchModalProps) => (
+  <Modal
+    visible={visible}
+    animationType="fade"
+    onRequestClose={onClose}
+    presentationStyle="overFullScreen"
+    transparent
+    statusBarTranslucent
+  >
+    <EventSearch {...props} onClose={onClose} />
+  </Modal>
+);
+
+const EventSearch = ({
   initialFilters,
   organizations,
   eventFilter,
   onApply,
   onClose,
-}: EventSearchModalProps) => {
+}: Omit<EventSearchModalProps, 'visible'>) => {
   const { t } = useTranslation('events');
   const insets = useSafeAreaInsets();
+  const reduced = useReducedMotion();
   const [draft, setDraft] = useState<EventFilters>(initialFilters);
   const [open, setOpen] = useState<Section>('what');
-
-  useEffect(() => {
-    if (visible) {
-      setDraft(initialFilters);
-      setOpen('what');
-    }
-  }, [visible, initialFilters]);
 
   // live count for "Arată N evenimente"; the text is debounced so typing doesn't fire a request per key
   const [countSearch, setCountSearch] = useState(draft.search);
@@ -76,6 +84,9 @@ export const EventSearchModal = ({
   const organizationLabel =
     organizations.find((org) => org.id === draft.organizationId)?.name ??
     t('search.all_organizations');
+  const layout = reduced
+    ? LinearTransition.duration(duration.reduced)
+    : LinearTransition.springify().stiffness(260).damping(30);
 
   const sectionHeader = (section: Section, label: string, value: string) => (
     <Pressable
@@ -85,30 +96,25 @@ export const EventSearchModal = ({
       accessibilityLabel={`${label}: ${value}`}
       testID={`search-section-${section}`}
     >
-      <VText variant="sub">{label}</VText>
-      <VText variant="label" numberOfLines={1} style={styles.sheadValue}>
+      <AppText variant="caption" color={palette.ink2}>
+        {label}
+      </AppText>
+      <AppText variant="bodyStrong" numberOfLines={1} style={styles.sheadValue}>
         {value}
-      </VText>
+      </AppText>
     </Pressable>
   );
 
   const sectionTitle = (title: string) => (
     <Animated.View entering={FadeIn.duration(200)} style={styles.sectionTitle}>
-      <VText variant="largeTitle" style={styles.sectionTitleText}>
+      <AppText variant="title" accessibilityRole="header" style={styles.sectionTitleText}>
         {title}
-      </VText>
+      </AppText>
     </Animated.View>
   );
 
   return (
-    <Modal
-      visible={visible}
-      animationType="fade"
-      onRequestClose={onClose}
-      presentationStyle="overFullScreen"
-      transparent
-      statusBarTranslucent
-    >
+    <>
       {/* the bottom bar (Șterge tot / Arată N evenimente) stays above the keyboard */}
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -119,15 +125,15 @@ export const EventSearchModal = ({
           <PressableScale
             onPress={onClose}
             accessibilityLabel={`${t('search.close')}`}
-            style={[styles.round, shadows.back]}
+            style={styles.round}
             testID="search-close"
           >
-            <EventIcon name="close" size={18} />
+            <CloseIcon size={20} color={palette.navy} strokeWidth={ICON_STROKE + 0.4} />
           </PressableScale>
-          <VText variant="h3" style={styles.headerTitle}>
+          <AppText variant="headline" accessibilityRole="header">
             {t('search.title')}
-          </VText>
-          {/* keeps the title centered; no background, unlike the close button */}
+          </AppText>
+          {/* keeps the title centered */}
           <View style={styles.spacer} />
         </View>
 
@@ -136,27 +142,24 @@ export const EventSearchModal = ({
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          <Animated.View
-            layout={LinearTransition.duration(motion.sheet.duration)}
-            entering={FadeInDown.duration(420)}
-            style={[styles.card, shadows.card]}
-          >
+          <Animated.View layout={layout} entering={enter(0, reduced)} style={styles.card}>
             {open === 'what' ? (
               <>
                 {sectionTitle(t('search.what_title'))}
                 <Animated.View entering={FadeIn.duration(240)} style={styles.sectionBody}>
                   <View style={styles.input}>
-                    <EventIcon name="search" size={18} color={colors.muted} />
+                    <SearchIcon size={20} color={palette.ink2} />
                     <TextInput
                       value={draft.search}
                       onChangeText={(search) => setDraft((d) => ({ ...d, search }))}
                       placeholder={`${t('search.what_placeholder')}`}
-                      placeholderTextColor={colors.muted}
+                      placeholderTextColor={palette.ink2}
                       allowFontScaling
-                      maxFontSizeMultiplier={MAX_FONT_SCALE.text}
+                      maxFontSizeMultiplier={fontScaleCap.text}
                       returnKeyType="search"
                       onSubmitEditing={() => setOpen('when')}
                       autoFocus
+                      selectionColor={palette.navy}
                       style={styles.inputText}
                       testID="search-input"
                     />
@@ -168,19 +171,15 @@ export const EventSearchModal = ({
             )}
           </Animated.View>
 
-          <Animated.View
-            layout={LinearTransition.duration(motion.sheet.duration)}
-            entering={FadeInDown.duration(420).delay(60)}
-            style={[styles.card, shadows.card]}
-          >
+          <Animated.View layout={layout} entering={enter(1, reduced)} style={styles.card}>
             {open === 'when' ? (
               <>
                 {sectionTitle(t('search.when_title'))}
                 <Animated.View entering={FadeIn.duration(240)} style={styles.chips}>
                   {WHEN_OPTIONS.map((when) => (
-                    <Chip
+                    <OptionChip
                       key={when}
-                      label={t(`search.when_options.${when}`)}
+                      label={`${t(`search.when_options.${when}`)}`}
                       selected={draft.when === when}
                       onPress={() => setDraft((d) => ({ ...d, when }))}
                       testID={`when-${when}`}
@@ -193,23 +192,19 @@ export const EventSearchModal = ({
             )}
           </Animated.View>
 
-          <Animated.View
-            layout={LinearTransition.duration(motion.sheet.duration)}
-            entering={FadeInDown.duration(420).delay(120)}
-            style={[styles.card, shadows.card]}
-          >
+          <Animated.View layout={layout} entering={enter(2, reduced)} style={styles.card}>
             {open === 'organization' ? (
               <>
                 {sectionTitle(t('search.organization_title'))}
                 <Animated.View entering={FadeIn.duration(240)} style={styles.chips}>
-                  <Chip
-                    label={t('search.all_organizations')}
+                  <OptionChip
+                    label={`${t('search.all_organizations')}`}
                     selected={!draft.organizationId}
                     onPress={() => setDraft((d) => ({ ...d, organizationId: undefined }))}
                     testID="organization-all"
                   />
                   {organizations.map((org) => (
-                    <Chip
+                    <OptionChip
                       key={org.id}
                       label={org.name}
                       selected={draft.organizationId === org.id}
@@ -226,82 +221,89 @@ export const EventSearchModal = ({
         </ScrollView>
 
         <Animated.View
-          entering={FadeInDown.duration(360).delay(120)}
+          entering={enter(3, reduced)}
           style={[styles.bar, { paddingBottom: Math.max(insets.bottom, 16) + 8 }]}
         >
           <Pressable
             onPress={() => setDraft(EMPTY_EVENT_FILTERS)}
-            hitSlop={8}
+            hitSlop={12}
             accessibilityRole="button"
             testID="search-clear"
           >
-            <VText variant="label" style={styles.clear}>
+            <AppText variant="bodyStrong" style={styles.clear}>
               {t('search.clear')}
-            </VText>
+            </AppText>
           </Pressable>
-          <VButton
+          <Button
             label={
               count === undefined
                 ? `${t('search.show')}`
                 : `${t(count === 1 ? 'search.show_one' : 'search.show_count', { n: count })}`
             }
-            icon={<EventIcon name="search" size={18} color={colors.navy} />}
+            icon={<SearchIcon size={18} color={palette.navy} strokeWidth={ICON_STROKE + 0.4} />}
             onPress={() => onApply(draft)}
+            style={styles.apply}
             testID="search-apply"
           />
         </Animated.View>
       </KeyboardAvoidingView>
-    </Modal>
+    </>
   );
 };
 
 export default EventSearchModal;
 
-const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.canvas },
+const styles = StyleSheet.create((theme) => ({
+  screen: { flex: 1, backgroundColor: theme.colors.paper },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingTop: 14,
+    paddingHorizontal: theme.space.gutter,
+    paddingTop: 10,
     paddingBottom: 8,
   },
-  headerTitle: { fontSize: 15 },
-  spacer: { width: 40, height: 40 },
+  spacer: { width: 46, height: 46 },
   round: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.white,
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    backgroundColor: theme.colors.card,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  cards: { gap: 12, paddingHorizontal: 12, paddingTop: 8, paddingBottom: 24 },
-  card: { backgroundColor: colors.white, borderRadius: 24, overflow: 'hidden' },
+  cards: { gap: 10, paddingHorizontal: 12, paddingTop: 8, paddingBottom: 24 },
+  card: { backgroundColor: theme.colors.card, borderRadius: theme.radius.card, overflow: 'hidden' },
   shead: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 18,
+    minHeight: 60,
+    paddingVertical: 16,
     paddingHorizontal: 20,
     gap: 16,
   },
-  sheadValue: { flexShrink: 1, fontFamily: fonts.medium },
-  sectionTitle: { paddingTop: 20, paddingHorizontal: 20, paddingBottom: 4 },
-  sectionTitleText: { fontSize: 26, lineHeight: 30 },
-  sectionBody: { paddingHorizontal: 20, paddingTop: 12, paddingBottom: 20 },
+  sheadValue: { flexShrink: 1 },
+  sectionTitle: { paddingTop: 20, paddingHorizontal: 20, paddingBottom: 2 },
+  sectionTitleText: { fontSize: 28, lineHeight: 31 },
+  sectionBody: { paddingHorizontal: 16, paddingTop: 12, paddingBottom: 16 },
+  // the field on paper inside the white card: a big, calm target
   input: {
-    height: 52,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: colors.subtle,
+    height: 58,
+    borderRadius: 22,
+    backgroundColor: theme.colors.paper,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
-    paddingHorizontal: 14,
+    gap: 12,
+    paddingHorizontal: 16,
   },
-  inputText: { flex: 1, fontFamily: fonts.regular, fontSize: 15, color: colors.ink, padding: 0 },
+  inputText: {
+    flex: 1,
+    fontFamily: theme.fontFamily.textBold,
+    fontSize: 15,
+    color: theme.colors.ink,
+    padding: 0,
+  },
   chips: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -312,14 +314,16 @@ const styles = StyleSheet.create({
   },
   bar: {
     marginTop: 'auto',
-    backgroundColor: colors.white,
+    backgroundColor: theme.colors.paper,
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: colors.line,
+    borderTopColor: theme.colors.line,
     paddingTop: 12,
-    paddingHorizontal: 20,
+    paddingHorizontal: theme.space.gutter,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    gap: 16,
   },
-  clear: { fontFamily: fonts.bold, textDecorationLine: 'underline' },
-});
+  clear: { textDecorationLine: 'underline' },
+  apply: { flexShrink: 1 },
+}));

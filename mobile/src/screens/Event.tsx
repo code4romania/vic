@@ -1,8 +1,10 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import React, { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import { Platform, Pressable, ScrollView, Text, View } from 'react-native';
 import * as Linking from 'expo-linking';
+import Animated, { useReducedMotion } from 'react-native-reanimated';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StyleSheet } from 'react-native-unistyles';
 import Toast from 'react-native-toast-message';
 import { useTranslation } from 'react-i18next';
 import {
@@ -20,8 +22,7 @@ import { romanianNeedsDe } from '../common/utils/plural';
 import { EventVolunteerStatus } from '../common/enums/event-volunteer-status.enum';
 import { EventRegistrationStatus } from '../common/enums/event-registration-status.enum';
 import { mapEventType } from '../common/utils/helpers';
-import { formatEventSpan, formatLongDay, formatShortDay } from '../common/utils/event-format';
-import { colors, fonts, shadows, spacing } from '../common/theme/tokens';
+import { formatEventSpan, formatEventWhen, formatLongDay } from '../common/utils/event-format';
 import { useEvent } from '../store/event/event.selector';
 import { useUserProfile } from '../store/profile/profile.selector';
 import useStore from '../store/store';
@@ -29,59 +30,102 @@ import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import EventSkeleton from '../components/skeleton/event-skeleton';
 import MissingEntity from './MissingEntity';
 import { TAB_ROUTES } from '../routes/tab-routes';
+import { Sheet, StatusBarScrim } from '../components/ui';
+import { GlassSurface } from '../components/navigation/GlassTabBar';
+import { DateBlock } from '../components/events/EventCard';
+import { AppText, Button, HexAvatar, StatusChip, statusKind } from '../design/components';
 import {
-  Avatar,
-  Badge,
-  Enter,
-  PressableScale,
-  Sheet,
-  StatusBarScrim,
-  VButton,
-  VText,
-} from '../components/ui';
-import { EventIcon } from '../components/events/EventIcons';
+  CalendarIcon,
+  CheckIcon,
+  ChevronLeftIcon,
+  GlobeIcon,
+  ICON_STROKE,
+  LockIcon,
+  LucideIcon,
+  PinIcon,
+  UsersIcon,
+} from '../design/icons';
+import { elevation, fontScaleCap, palette, tabBar } from '../design/tokens';
+import { enter } from '../design/motion';
+import { haptics } from '../design/haptics';
 
-const Fact = ({
-  icon,
+/** A fact on a white card: a yellow 44pt icon tile, a bold line and a caption. */
+const InfoRow = ({
+  icon: Icon,
+  leading,
   title,
-  subtitle,
-  action,
-  onAction,
+  caption,
+  captionUnderline,
+  onPress,
+  accessibilityLabel,
   testID,
 }: {
-  icon: React.ComponentProps<typeof EventIcon>['name'];
+  icon?: LucideIcon;
+  /** replaces the icon tile (the organization's hexagon) */
+  leading?: ReactNode;
   title: string;
-  subtitle?: string;
-  action?: string;
-  onAction?: () => void;
+  caption?: string;
+  /** the caption is the row's action ("Deschide în Hărți") */
+  captionUnderline?: boolean;
+  onPress?: () => void;
+  accessibilityLabel?: string;
   testID?: string;
-}) => (
-  <View style={styles.fact} testID={testID}>
-    <EventIcon name={icon} size={24} />
-    <View style={styles.factText}>
-      <VText variant="h3" style={styles.factTitle}>
-        {title}
-      </VText>
-      {(!!subtitle || !!action) && (
-        <VText variant="sub">
-          {subtitle}
-          {!!subtitle && !!action ? ' · ' : ''}
-          {!!action && (
-            <VText variant="sub" color={colors.ink} style={styles.underline} onPress={onAction}>
-              {action}
-            </VText>
-          )}
-        </VText>
-      )}
+}) => {
+  const content = (
+    <>
+      {leading ??
+        (Icon ? (
+          <View style={styles.iconTile}>
+            <Icon size={22} color={palette.navy} strokeWidth={ICON_STROKE} />
+          </View>
+        ) : null)}
+      <View style={styles.infoText}>
+        <AppText variant="bodyStrong" style={styles.infoTitle}>
+          {title}
+        </AppText>
+        {!!caption && (
+          <AppText
+            variant="caption"
+            color={captionUnderline ? palette.ink : palette.ink2}
+            style={captionUnderline ? styles.underline : styles.infoCaption}
+          >
+            {caption}
+          </AppText>
+        )}
+      </View>
+    </>
+  );
+  if (onPress) {
+    return (
+      <Pressable
+        onPress={onPress}
+        accessibilityRole="button"
+        accessibilityLabel={accessibilityLabel}
+        style={({ pressed }) => [styles.info, pressed ? styles.infoPressed : null]}
+        testID={testID}
+      >
+        {content}
+      </Pressable>
+    );
+  }
+  return (
+    <View
+      style={styles.info}
+      accessible={!!accessibilityLabel}
+      accessibilityLabel={accessibilityLabel}
+      testID={testID}
+    >
+      {content}
     </View>
-  </View>
-);
+  );
+};
 
 /**
- * VIC 2.0 event page (canvas "Evenimente" > detail): title, organizer, when, where (opens Maps),
- * places, who it is for, the volunteer's registration and the description. A bottom bar keeps
- * the date and "Particip" / "Anulează" in reach; joining shows a confirmation sheet, and #501
- * registrations that wait for the organization say so.
+ * Event page „Îndrăzneț”: a navy hero flush to the top (glass back button, the big date block,
+ * the title and chips entering one after the other), the facts on white cards (organizer, when,
+ * where (opens Maps), places, who it is for), the description, and a floating glass bar with the
+ * volunteer's status and "Particip" / "Retrage răspuns". Joining shows a confirmation sheet, and
+ * #501 registrations that wait for the organization say so.
  */
 const Event = ({ navigation, route }: any) => {
   const { t } = useTranslation('event');
@@ -93,7 +137,9 @@ const Event = ({ navigation, route }: any) => {
     return t(romanianNeedsDe(places) ? 'capacity_places_de' : 'capacity_places', { places });
   };
   const insets = useSafeAreaInsets();
-  useFocusedStatusBarStyle('dark');
+  const reduced = useReducedMotion();
+  // light text over the navy hero
+  useFocusedStatusBarStyle('light');
   const { userProfile } = useUserProfile();
   const { eventId } = route.params;
   const { event: storedEvent } = useEvent();
@@ -126,12 +172,15 @@ const Event = ({ navigation, route }: any) => {
   useEffect(() => {
     if (justJoined && !isLoadingEvent && event?.volunteerStatus === EventVolunteerStatus.JOINED) {
       setJustJoined(false);
+      haptics.success();
       confirmRef.current?.present();
     }
   }, [justJoined, isLoadingEvent, event?.volunteerStatus]);
 
-  const showRsvpError = (error: any) =>
+  const showRsvpError = (error: any) => {
+    haptics.error();
     Toast.show({ type: 'error', text1: rsvpErrorMessage(error) });
+  };
 
   // VIC 2.0 (#492): every event uses a simple registration (no mention)
   const onRsvp = (going: boolean) => {
@@ -205,13 +254,11 @@ const Event = ({ navigation, route }: any) => {
   const responded = event?.volunteerStatus !== EventVolunteerStatus.NO_RESPONSE;
   const finished = event?.displayStatus === 'finished';
   const registration = event?.registrationStatus;
-  const registrationTone =
-    registration === EventRegistrationStatus.APPROVED
-      ? 'ok'
-      : registration === EventRegistrationStatus.REJECTED
-        ? 'no'
-        : 'wait';
   const busy = isLoadingEvent || isResponding || isCancelingRsvp;
+
+  // the bar floats where the tab bar sits on the tab screens
+  const barBottom = insets.bottom > 0 ? tabBar.bottom : 16;
+  const barSpace = event && !finished ? barBottom + 64 + 24 : insets.bottom + 24;
 
   if (!event && !isLoadingEvent && getEventError) {
     return eventGone ? (
@@ -234,128 +281,179 @@ const Event = ({ navigation, route }: any) => {
     );
   }
 
+  const barStatus = !responded
+    ? event?.isPublic
+      ? t('bar.open')
+      : t('bar.members')
+    : joined
+      ? registration
+        ? t(`registration.${registration}`)
+        : t('bar.going')
+      : t('bar.not_going');
+
   return (
     <View style={styles.screen}>
       <ScrollView
-        contentContainerStyle={[
-          styles.content,
-          { paddingTop: insets.top + 64, paddingBottom: insets.bottom + 120 },
-        ]}
+        contentContainerStyle={{ paddingBottom: barSpace }}
         showsVerticalScrollIndicator={false}
+        testID="event-scroll"
       >
-        {isLoadingEvent && !event && <EventSkeleton />}
-        {event && (
-          <>
-            <Enter>
-              <VText variant="largeTitle" style={styles.title} accessibilityRole="header">
-                {event.name}
-              </VText>
-              <VText variant="sub" style={styles.subtitle}>
-                {/* a non-public event lists its departments under "Pentru" below */}
-                {[event.isPublic ? mapEventType(event) : '', attendees()]
-                  .filter(Boolean)
-                  .join(' · ')}
-              </VText>
-            </Enter>
-
-            {joined && registration && (
-              <Enter index={1} style={styles.registration}>
-                <Badge label={`${t(`registration.${registration}`)}`} tone={registrationTone} />
-                {registration === EventRegistrationStatus.REJECTED && !!event.rejectionReason && (
-                  <VText variant="sub">
-                    {t('registration.reason', { reason: event.rejectionReason })}
-                  </VText>
-                )}
-              </Enter>
-            )}
-
-            <Enter index={1} style={[styles.organizer, styles.hair]}>
-              <Avatar
-                name={event.organizationName || ''}
-                uri={event.organizationLogo}
-                size={48}
-                shape="rounded"
-              />
-              <View style={styles.factText}>
-                <VText variant="h3" style={styles.factTitle}>
-                  {t('organized_by', { name: event.organizationName })}
-                </VText>
+        <View style={[styles.hero, { paddingTop: insets.top + 8 }]}>
+          <Pressable
+            onPress={navigation.goBack}
+            accessibilityRole="button"
+            accessibilityLabel={`${t('general:back')}`}
+            hitSlop={4}
+            style={({ pressed }) => [styles.back, pressed ? styles.backPressed : null]}
+            testID="event-back"
+          >
+            <ChevronLeftIcon size={24} color={palette.white} strokeWidth={ICON_STROKE + 0.4} />
+          </Pressable>
+          {event && (
+            <>
+              <View style={styles.heroRow}>
+                <Animated.View entering={enter(0, reduced)}>
+                  <DateBlock date={event.startDate} tone="yellow" size="hero" />
+                </Animated.View>
+                <Animated.View entering={enter(1, reduced)} style={styles.heroTitle}>
+                  <Text
+                    accessibilityRole="header"
+                    maxFontSizeMultiplier={fontScaleCap.display}
+                    style={styles.title}
+                  >
+                    {event.name}
+                  </Text>
+                </Animated.View>
               </View>
-            </Enter>
-
-            <Enter index={2}>
-              <View style={styles.hair}>
-                <Fact
-                  icon="calendar"
-                  title={formatLongDay(event.startDate)}
-                  subtitle={formatEventSpan(event.startDate, event.endDate)}
-                  testID="event-when"
-                />
-              </View>
-              {!!event.location && (
-                <View style={styles.hair}>
-                  <Fact
-                    icon="pin"
-                    title={event.location}
-                    action={`${t('open_in_maps')}`}
-                    onAction={openInMaps}
+              <Animated.View entering={enter(2, reduced)} style={styles.heroChips}>
+                {event.isPublic ? (
+                  <StatusChip
+                    kind="glass"
+                    label={`${t('type.public')}`}
+                    icon={<GlobeIcon size={14} color={palette.white} />}
                   />
-                </View>
+                ) : (
+                  <StatusChip
+                    kind="glass"
+                    label={`${t('bar.members')}`}
+                    icon={<LockIcon size={14} color={palette.white} />}
+                  />
+                )}
+                {finished && <StatusChip kind="exp" label={`${t('events:card.finished')}`} />}
+                {!finished && joined && registration && (
+                  <StatusChip
+                    kind={statusKind(registration)}
+                    label={`${t(`registration.${registration}`)}`}
+                  />
+                )}
+                {!finished && joined && !registration && (
+                  <StatusChip kind="ok" label={`${t('events:card.going')}`} />
+                )}
+              </Animated.View>
+              {joined &&
+                registration === EventRegistrationStatus.REJECTED &&
+                !!event.rejectionReason && (
+                  <Animated.View entering={enter(3, reduced)}>
+                    <AppText variant="caption" color="rgba(255,255,255,0.8)" style={styles.reason}>
+                      {t('registration.reason', { reason: event.rejectionReason })}
+                    </AppText>
+                  </Animated.View>
+                )}
+            </>
+          )}
+        </View>
+
+        {isLoadingEvent && !event && (
+          <View style={styles.skeleton}>
+            <EventSkeleton />
+          </View>
+        )}
+
+        {event && (
+          <View style={styles.cards}>
+            <Animated.View entering={enter(3, reduced)} style={styles.card}>
+              <InfoRow
+                leading={<HexAvatar name={event.organizationName || ''} />}
+                title={event.organizationName || ''}
+                caption={`${t('organized_by_caption')}`}
+                accessibilityLabel={`${t('organized_by', { name: event.organizationName })}`}
+                testID="event-organizer"
+              />
+            </Animated.View>
+
+            <Animated.View entering={enter(4, reduced)} style={styles.card}>
+              <InfoRow
+                icon={CalendarIcon}
+                title={formatLongDay(event.startDate)}
+                caption={formatEventSpan(event.startDate, event.endDate)}
+                testID="event-when"
+              />
+              {!!event.location && (
+                <>
+                  <View style={styles.line} />
+                  <InfoRow
+                    icon={PinIcon}
+                    title={event.location}
+                    caption={`${t('open_in_maps')}`}
+                    captionUnderline
+                    onPress={openInMaps}
+                    accessibilityLabel={`${event.location}, ${t('open_in_maps')}`}
+                    testID="event-where"
+                  />
+                </>
               )}
-              <View style={styles.hair}>
-                <Fact
-                  icon="people"
-                  title={
-                    event.capacity
-                      ? `${capacityLabel(event.capacity)}`
-                      : `${t('capacity_unlimited')}`
-                  }
-                  subtitle={`${t('capacity')}`}
-                />
-              </View>
+              <View style={styles.line} />
+              <InfoRow
+                icon={UsersIcon}
+                title={
+                  event.capacity ? `${capacityLabel(event.capacity)}` : `${t('capacity_unlimited')}`
+                }
+                caption={attendees() || `${t('capacity')}`}
+                testID="event-capacity"
+              />
               {!event.isPublic && (
-                <View style={styles.hair}>
-                  <Fact icon="target" title={mapEventType(event)} subtitle={`${t('target')}`} />
-                </View>
+                <>
+                  <View style={styles.line} />
+                  <InfoRow icon={LockIcon} title={mapEventType(event)} caption={`${t('target')}`} />
+                </>
               )}
-            </Enter>
+            </Animated.View>
 
             {!!event.description && (
-              <Enter index={3} style={styles.about}>
-                <VText variant="h2">{t('about')}</VText>
-                <VText variant="body" style={styles.description}>
+              <Animated.View entering={enter(5, reduced)} style={[styles.card, styles.about]}>
+                <AppText variant="title" accessibilityRole="header" style={styles.aboutTitle}>
+                  {t('about')}
+                </AppText>
+                <AppText variant="body" color={palette.ink2}>
                   {event.description}
-                </VText>
-              </Enter>
+                </AppText>
+              </Animated.View>
             )}
-          </>
+          </View>
         )}
       </ScrollView>
-      {/* the content scrolls under the clock otherwise */}
-      <StatusBarScrim color={colors.white} />
-
-      <PressableScale
-        onPress={navigation.goBack}
-        accessibilityLabel={`${t('general:back')}`}
-        style={[styles.back, shadows.back, { top: insets.top + 12 }]}
-        testID="event-back"
-      >
-        <EventIcon name="back" size={20} />
-      </PressableScale>
+      {/* the content scrolls under the clock otherwise; navy, like the hero it continues */}
+      <StatusBarScrim color={palette.navy} />
 
       {event && !finished && (
-        <View style={[styles.bar, { paddingBottom: Math.max(insets.bottom, 16) + 8 }]}>
+        <Animated.View
+          entering={enter(4, reduced)}
+          style={[styles.bar, { bottom: barBottom }]}
+          testID="event-bar"
+        >
+          <GlassSurface radius={30} />
           <View style={styles.barText}>
-            <VText variant="h3" style={styles.factTitle}>
-              {formatShortDay(event.startDate)}
-            </VText>
-            <VText variant="cap" numberOfLines={1}>
-              {joined && registration ? `${t(`registration.${registration}`)}` : attendees()}
-            </VText>
+            <AppText variant="headline" numberOfLines={1} style={styles.barStatus}>
+              {barStatus}
+            </AppText>
+            <AppText variant="caption" color={palette.ink2} numberOfLines={1}>
+              {formatEventWhen(event.startDate, event.endDate)}
+            </AppText>
           </View>
           {responded ? (
-            <VButton
+            <Button
               variant="outline"
+              size="M"
               label={`${t('rsvp.cancel')}`}
               onPress={onCancelRsvp}
               loading={busy}
@@ -365,42 +463,44 @@ const Event = ({ navigation, route }: any) => {
             <View style={styles.barActions}>
               <Pressable
                 onPress={() => onRsvp(false)}
-                hitSlop={8}
+                hitSlop={12}
                 disabled={busy}
+                accessibilityRole="button"
                 testID="event-not-going"
               >
-                <VText variant="label" style={styles.underline}>
+                <AppText variant="bodyStrong" style={styles.underline}>
                   {t('rsvp.not_going')}
-                </VText>
+                </AppText>
               </Pressable>
-              <VButton
+              <Button
+                size="M"
                 label={`${t('rsvp.going')}`}
                 onPress={() => onRsvp(true)}
                 loading={busy}
-                style={styles.going}
                 testID="event-going"
               />
             </View>
           )}
-        </View>
+        </Animated.View>
       )}
 
       <Sheet ref={confirmRef} testID="event-confirm">
         <View style={styles.confirmIcon}>
-          <EventIcon name="check" size={30} color={colors.status.ok.fg} strokeWidth={2.6} />
+          <CheckIcon size={30} color={palette.white} strokeWidth={3} />
         </View>
-        <VText variant="largeTitle" style={styles.confirmTitle}>
+        <AppText variant="title" style={styles.confirmTitle}>
           {registration === EventRegistrationStatus.PENDING
             ? t('confirm.pending_title')
             : t('confirm.title')}
-        </VText>
-        <VText variant="sub">
+        </AppText>
+        <AppText variant="body" color={palette.ink2}>
           {registration === EventRegistrationStatus.PENDING
             ? t('confirm.pending_description')
             : t('confirm.description')}
-        </VText>
-        <VButton
-          variant="soft"
+        </AppText>
+        <Button
+          variant="secondary"
+          full
           label={`${t('confirm.done')}`}
           onPress={() => confirmRef.current?.dismiss()}
         />
@@ -412,13 +512,15 @@ const Event = ({ navigation, route }: any) => {
         subtitle={`${t('error_modal.description')}`}
         testID="event-profile-missing"
       >
-        <VButton
+        <Button
+          full
           label={`${t('error_modal.action_btn_label')}`}
           onPress={onCompleteProfile}
           testID="event-complete-profile"
         />
-        <VButton
-          variant="soft"
+        <Button
+          variant="outline"
+          full
           label={`${t('general:back')}`}
           onPress={() => profileRef.current?.dismiss()}
         />
@@ -429,55 +531,80 @@ const Event = ({ navigation, route }: any) => {
 
 export default Event;
 
-const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.white },
-  content: { paddingHorizontal: spacing.gutter },
+const styles = StyleSheet.create((theme) => ({
+  screen: { flex: 1, backgroundColor: theme.colors.paper },
+  hero: {
+    backgroundColor: theme.colors.navy,
+    paddingHorizontal: theme.space.gutter,
+    paddingBottom: 22,
+    borderBottomLeftRadius: 32,
+    borderBottomRightRadius: 32,
+  },
   back: {
-    position: 'absolute',
-    left: 16,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.white,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: 'rgba(255,255,255,0.14)',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  title: { fontSize: 28, lineHeight: 34 },
-  subtitle: { marginTop: 6 },
-  registration: { marginTop: 14, gap: 6 },
-  organizer: { flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 20 },
-  hair: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.line },
-  fact: { flexDirection: 'row', alignItems: 'flex-start', gap: 14, paddingVertical: 18 },
-  factText: { flex: 1, gap: 2 },
-  factTitle: { fontSize: 15 },
-  underline: { textDecorationLine: 'underline', fontFamily: fonts.bold },
-  about: { paddingVertical: 20, gap: 10 },
-  description: { lineHeight: 23 },
+  backPressed: { backgroundColor: 'rgba(255,255,255,0.24)' },
+  heroRow: { flexDirection: 'row', alignItems: 'flex-end', gap: 14, marginTop: 18 },
+  heroTitle: { flex: 1 },
+  title: {
+    fontFamily: theme.fontFamily.display,
+    fontSize: 38,
+    lineHeight: 37,
+    letterSpacing: -1.33,
+    color: theme.colors.white,
+  },
+  heroChips: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 14 },
+  reason: { marginTop: 8 },
+  skeleton: { paddingHorizontal: theme.space.gutter, paddingTop: 16 },
+  cards: { paddingHorizontal: theme.space.gutter, paddingTop: 14, gap: 10 },
+  card: { backgroundColor: theme.colors.card, borderRadius: theme.radius.card, overflow: 'hidden' },
+  // starts under the text, past the 44pt tile
+  line: { height: StyleSheet.hairlineWidth, backgroundColor: theme.colors.line, marginLeft: 70 },
+  info: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 14, minHeight: 72 },
+  infoPressed: { backgroundColor: theme.colors.paper },
+  iconTile: {
+    width: 44,
+    height: 44,
+    borderRadius: 15,
+    backgroundColor: theme.colors.yellow,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  infoText: { flex: 1, gap: 1 },
+  infoTitle: { fontFamily: theme.fontFamily.textHeavy, fontSize: 15.5, lineHeight: 21 },
+  infoCaption: { fontFamily: theme.fontFamily.text },
+  underline: { textDecorationLine: 'underline', fontFamily: theme.fontFamily.textBold },
+  about: { padding: 16, gap: 6 },
+  aboutTitle: { fontSize: 20, lineHeight: 24 },
   bar: {
     position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(255,255,255,0.96)',
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: colors.line,
-    paddingTop: 12,
-    paddingHorizontal: spacing.gutter,
+    left: 12,
+    right: 12,
+    borderRadius: 30,
+    paddingVertical: 10,
+    paddingLeft: 18,
+    paddingRight: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 14,
+    gap: 12,
+    ...elevation.float,
   },
   barText: { flex: 1 },
-  barActions: { flexDirection: 'row', alignItems: 'center', gap: 16 },
-  going: { paddingHorizontal: 28 },
+  barStatus: { fontSize: 15 },
+  barActions: { flexDirection: 'row', alignItems: 'center', gap: 14 },
   confirmIcon: {
     width: 64,
     height: 64,
     borderRadius: 32,
-    backgroundColor: colors.status.ok.bg,
+    backgroundColor: theme.colors.green,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 12,
   },
-  confirmTitle: { fontSize: 26 },
-});
+  confirmTitle: { fontSize: 26, lineHeight: 30 },
+}));
