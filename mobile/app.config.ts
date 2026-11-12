@@ -38,6 +38,8 @@ const expoConfig: ExpoConfig = {
   orientation: 'portrait',
   icon: './src/assets/images/icon.png',
   userInterfaceStyle: 'light',
+  // root view color (expo-system-ui): paper behind the screens, also under the Android keyboard
+  backgroundColor: '#F4F1E9',
   assetBundlePatterns: ['**/*'],
   ios: {
     buildNumber: '23',
@@ -64,7 +66,6 @@ const expoConfig: ExpoConfig = {
   },
   web: {
     favicon: './src/assets/images/favicon.png',
-    build: { babel: { include: ['@ui-kitten/components'] } },
   },
   plugins: [
     'expo-localization',

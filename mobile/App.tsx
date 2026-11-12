@@ -13,7 +13,13 @@ import {
   Manrope_700Bold,
   Manrope_800ExtraBold,
 } from '@expo-google-fonts/manrope';
-import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
+import {
+  DefaultTheme,
+  NavigationContainer,
+  Theme,
+  useNavigationContainerRef,
+} from '@react-navigation/native';
+import { palette } from './src/design/tokens';
 import { linking } from './src/routes/linking';
 import { Platform, StyleSheet, View } from 'react-native';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
@@ -79,6 +85,7 @@ export default () => {
                 <AuthContextProvider>
                   <NavigationContainer
                     ref={navigationRef}
+                    theme={navigationTheme}
                     linking={linking}
                     navigationInChildEnabled
                   >
@@ -101,6 +108,12 @@ export default () => {
   );
 };
 
+// paper behind every screen and transition (no gray flash between pushes on Android)
+const navigationTheme: Theme = {
+  ...DefaultTheme,
+  colors: { ...DefaultTheme.colors, background: palette.paper, card: palette.paper },
+};
+
 const styles = StyleSheet.create({
-  gestureHandler: { flex: 1 },
+  gestureHandler: { flex: 1, backgroundColor: palette.paper },
 });
