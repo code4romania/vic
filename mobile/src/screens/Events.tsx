@@ -29,7 +29,7 @@ import {
 } from '../components/events/event-filters';
 import EventSkeletonListItem from '../components/skeleton/event-skeleton-item';
 
-const HEADER_HEIGHT = 150;
+const HEADER_HEIGHT = 158;
 
 const tabIcon = (name: 'open' | 'going' | 'organizations') => (active: boolean) => (
   <EventIcon name={name} color={active ? colors.navy : colors.muted} />
@@ -104,7 +104,7 @@ const Events = ({ navigation, route }: any) => {
       filters.when !== 'any' ? t(`search.when_options.${filters.when}`) : null,
       organizations.find((org) => org.id === filters.organizationId)?.name ?? null,
     ].filter(Boolean);
-    return parts.length ? parts.join(' · ') : t('search.summary_any');
+    return parts.join(' · ');
   }, [filters, organizations, t]);
 
   // restagger the list when the tab or the filters change
@@ -117,14 +117,6 @@ const Events = ({ navigation, route }: any) => {
   const headerHeight = measuredHeader || insets.top + HEADER_HEIGHT;
   const headerShadow = useAnimatedStyle(() => ({
     shadowOpacity: interpolate(scrollY.value, [0, 12], [0, 0.06], Extrapolation.CLAMP),
-    borderBottomColor: scrollY.value > 4 ? colors.line : 'transparent',
-  }));
-  const pillStyle = useAnimatedStyle(() => ({
-    height: interpolate(scrollY.value, [0, 40], [56, 46], Extrapolation.CLAMP),
-  }));
-  const pillSummaryStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(scrollY.value, [0, 24], [1, 0], Extrapolation.CLAMP),
-    height: interpolate(scrollY.value, [0, 24], [16, 0], Extrapolation.CLAMP),
   }));
 
   const onOpenEvent = (eventId: string) => navigation.navigate('event', { eventId });
@@ -211,11 +203,11 @@ const Events = ({ navigation, route }: any) => {
         }}
       >
         <View style={styles.searchRow}>
-          <Animated.View style={[styles.pillWrap, pillStyle]}>
+          <View style={styles.pillWrap}>
             <PressableScale
               onPress={() => setSearchOpen(true)}
               style={styles.pill}
-              accessibilityLabel={`${t('search.title')}. ${summary}`}
+              accessibilityLabel={summary ? `${t('search.title')}. ${summary}` : t('search.title')}
               testID="events-search-pill"
             >
               <EventIcon name="search" size={20} />
@@ -223,14 +215,14 @@ const Events = ({ navigation, route }: any) => {
                 <VText variant="label" style={styles.pillTitle}>
                   {t('search.title')}
                 </VText>
-                <Animated.View style={pillSummaryStyle}>
+                {!!summary && (
                   <VText variant="cap" numberOfLines={1}>
                     {summary}
                   </VText>
-                </Animated.View>
+                )}
               </View>
             </PressableScale>
-          </Animated.View>
+          </View>
           <PressableScale
             onPress={() => setSearchOpen(true)}
             style={styles.filterButton}
@@ -301,14 +293,14 @@ const styles = StyleSheet.create({
     right: 0,
     backgroundColor: colors.white,
     paddingHorizontal: spacing.gutter,
-    borderBottomWidth: StyleSheet.hairlineWidth,
     shadowColor: '#000',
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 6 },
     zIndex: 4,
   },
-  searchRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  pillWrap: { flex: 1 },
+  searchRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: spacing.s },
+  // fixed size: the pill is a button that opens the search sheet, it doesn't grow or shrink on scroll
+  pillWrap: { flex: 1, height: 46 },
   pill: {
     flex: 1,
     borderRadius: 28,
