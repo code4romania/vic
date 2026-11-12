@@ -217,7 +217,8 @@
       "years": "{{count}} years",
       "years_de": "{{count}} years"
     },
-    "section_settings": "Settings"
+    "section_settings": "Settings",
+    "your_profile": "Your profile"
   },
   "account_data": {
     "title": "Personal data",

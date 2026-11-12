@@ -151,7 +151,11 @@ const Documents = ({ navigation, route }: any) => {
         ListFooterComponent={
           history.hasNextPage && history.isFetchingNextPage ? (
             <View style={styles.more}>
-              <ActivityIndicator size="small" color={palette.navy} testID="documents-loading-more" />
+              <ActivityIndicator
+                size="small"
+                color={palette.navy}
+                testID="documents-loading-more"
+              />
             </View>
           ) : null
         }

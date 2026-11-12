@@ -229,7 +229,8 @@
             "years": "{{count}} ani",
             "years_de": "{{count}} de ani"
         },
-        "section_settings": "Setări"
+        "section_settings": "Setări",
+        "your_profile": "Profilul tău"
     },
     "account_data": {
         "title": "Date personale",

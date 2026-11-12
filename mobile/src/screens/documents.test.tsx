@@ -168,7 +168,9 @@ describe('Documente', () => {
     ];
     mockHistory = page(mockSigned);
     await renderApp();
-    expect(await screen.findByTestId('document-bar-3', { includeHiddenElements: true })).toBeTruthy();
+    expect(
+      await screen.findByTestId('document-bar-3', { includeHiddenElements: true }),
+    ).toBeTruthy();
     expect(screen.queryByTestId('document-bar-9', { includeHiddenElements: true })).toBeNull();
   });
 

@@ -1,26 +1,17 @@
-import React, { useCallback, useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import Animated, {
-  Extrapolation,
-  interpolate,
-  useAnimatedStyle,
-  useSharedValue,
-} from 'react-native-reanimated';
-import { SvgXml } from 'react-native-svg';
+import React, { useCallback, useRef } from 'react';
+import { View } from 'react-native';
+import Animated, { useReducedMotion, useSharedValue } from 'react-native-reanimated';
+import Svg, { Path } from 'react-native-svg';
 import * as Linking from 'expo-linking';
 import { useFocusEffect } from '@react-navigation/native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import bell from '../assets/svg/bell';
-import information from '../assets/svg/information';
-import trash from '../assets/svg/trash';
-import logoutIcon from '../assets/svg/logout';
-import user from '../assets/svg/user';
+import { StyleSheet } from 'react-native-unistyles';
+import Toast from 'react-native-toast-message';
 import { useAuth } from '../hooks/useAuth';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { useActivateOrganization } from '../services/organization/organization.service';
-import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { romanianNeedsDe } from '../common/utils/plural';
 import { usePersonalStatistics } from '../services/statistics/statistics.service';
@@ -29,22 +20,23 @@ import {
   IOrganizationVolunteer,
   isCandidateVolunteer,
 } from '../common/interfaces/organization-list-item.interface';
-import { colors, radius, shadows, spacing } from '../common/theme/tokens';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import { useTabBarScroll } from '../components/navigation/TabBarScroll';
 import { useGlassTabBarInset } from '../components/navigation/GlassTabBar';
+import { CompactTitleBar } from '../components/ui/ScreenChrome';
+import { Sheet, VButton } from '../components/ui';
+import { AppText, Group, HexAvatar, ListRow, RowChevron, StatusChip } from '../design/components';
+import { enter } from '../design/motion';
+import { palette } from '../design/tokens';
 import {
-  Avatar,
-  Badge,
-  Chevron,
-  Enter,
-  Group,
-  ListRow,
-  Sheet,
-  StatusBarScrim,
-  VButton,
-  VText,
-} from '../components/ui';
+  BellIcon,
+  ICON_STROKE,
+  InfoIcon,
+  LogOutIcon,
+  PlusIcon,
+  TrashIcon,
+  UserIcon,
+} from '../design/icons';
 
 export enum SETTINGS_ROUTES {
   ACCOUNT_DATA = 'account-data',
@@ -57,52 +49,52 @@ export enum SETTINGS_ROUTES {
   SEARCH_ORGANIZATIONS = 'search',
 }
 
-const Stat = ({
-  value,
-  label,
-  color,
-  last,
-  testID,
-}: {
-  value: string;
-  label: string;
-  color: string;
-  last?: boolean;
-  testID: string;
-}) => (
-  <View style={[styles.stat, !last && styles.statDivider]} testID={testID}>
-    <VText variant="h3" color={color} style={styles.statValue}>
-      {value}
-    </VText>
-    <VText variant="cap">{label}</VText>
+/** The yellow 40×44 hexagon with a navy plus („Alătură-te unei organizații”). */
+const JoinHexagon = () => (
+  <View
+    style={styles.joinHex}
+    accessibilityElementsHidden
+    importantForAccessibility="no-hide-descendants"
+  >
+    <Svg width={40} height={44} viewBox="0 0 40 44" style={styles.joinHexSvg}>
+      <Path d="M20 0 L40 11 L40 33 L20 44 L0 33 L0 11 Z" fill={palette.yellow} />
+    </Svg>
+    <PlusIcon size={18} color={palette.navy} strokeWidth={ICON_STROKE + 0.5} />
   </View>
 );
 
-const RowIcon = ({ xml }: { xml: string }) => (
-  <View style={styles.rowIcon}>
-    <SvgXml xml={xml} width={20} height={20} />
+const Stat = ({ value, label, testID }: { value: string; label: string; testID: string }) => (
+  <View style={styles.stat} testID={testID}>
+    <AppText
+      variant="display"
+      numberOfLines={1}
+      adjustsFontSizeToFit
+      minimumFontScale={0.6}
+      style={styles.statValue}
+    >
+      {value}
+    </AppText>
+    <AppText variant="label" color={palette.ink2} numberOfLines={2}>
+      {label}
+    </AppText>
   </View>
 );
 
 /**
- * VIC 2.0 Profil (canvas board "Profil"): who you are, your organizations (tap one to make it active
- * and open its page; this replaces the old drawer) and the settings. Log out asks first.
+ * Profil „Îndrăzneț” (handbook prototype "Profil"): the yellow hexagon with your initial and your
+ * first name in Bricolage 46, your numbers, your organizations (tap one to make it active and open
+ * its page; this replaces the old drawer), the settings, and the destructive rows on their own.
+ * Log out asks first.
  */
 const Settings = ({ navigation }: any) => {
   const { t } = useTranslation('settings');
   const insets = useSafeAreaInsets();
   const bottomInset = useGlassTabBarInset();
+  const reduced = useReducedMotion();
   useFocusedStatusBarStyle('dark');
   const scrollY = useSharedValue(0);
   const onScroll = useTabBarScroll(scrollY);
-  const [measuredHeaderHeight, setMeasuredHeaderHeight] = useState(0);
   const logoutSheet = useRef<BottomSheetModal>(null);
-
-  // Before layout: safe area + top padding + title margin/line + header bottom padding.
-  const headerHeight = measuredHeaderHeight || insets.top + 12 + 16 + 38 + 6;
-  const headerShadow = useAnimatedStyle(() => ({
-    shadowOpacity: interpolate(scrollY.value, [0, 12], [0, 0.06], Extrapolation.CLAMP),
-  }));
 
   const { userProfile } = useUserProfile();
   const { activate } = useActivateOrganization();
@@ -130,6 +122,7 @@ const Settings = ({ navigation }: any) => {
   };
 
   const name = [userProfile?.firstName, userProfile?.lastName].filter(Boolean).join(' ');
+  const firstName = userProfile?.firstName || name;
   const place = userProfile?.location?.name;
   const organizations = userProfile?.myOrganizations ?? [];
   const activeId = userProfile?.activeOrganization?.id;
@@ -173,147 +166,146 @@ const Settings = ({ navigation }: any) => {
         scrollEventThrottle={16}
         contentContainerStyle={[
           styles.content,
-          // Exclude the header's 6pt bottom padding; keep the card's original 16pt top margin.
-          { paddingTop: headerHeight - 6, paddingBottom: bottomInset },
+          { paddingTop: insets.top + 18, paddingBottom: bottomInset },
         ]}
         showsVerticalScrollIndicator={false}
         testID="profile"
       >
-        <Enter index={1} style={[styles.me, shadows.card]}>
-          <View style={styles.meText}>
-            <Avatar name={name || '?'} uri={userProfile?.profilePicture} size={88} />
-            <VText variant="h2" style={[styles.center, styles.name]}>
-              {userProfile?.firstName || name}
-            </VText>
-            <VText variant="cap" style={[styles.center, styles.email]}>
+        <Animated.View entering={enter(0, reduced)} testID="settings-header">
+          <View style={styles.me}>
+            <HexAvatar name={firstName || '?'} size="lg" tone="yellow" />
+            <View style={styles.meText}>
+              <AppText variant="overline" color={palette.ink2}>
+                {t('your_profile')}
+              </AppText>
+              <AppText
+                variant="largeTitle"
+                accessibilityRole="header"
+                numberOfLines={1}
+                adjustsFontSizeToFit
+                minimumFontScale={0.6}
+                style={styles.name}
+              >
+                {firstName}
+              </AppText>
+            </View>
+          </View>
+          {!!(userProfile?.email || place) && (
+            <AppText variant="caption" color={palette.ink2} style={styles.email}>
               {[userProfile?.email, place].filter(Boolean).join(' · ')}
-            </VText>
-          </View>
-          <View style={styles.meDivider} />
-          <View style={styles.stats}>
-            <Stat
-              value={stats ? `${stats.approvedHours}` : '–'}
-              label={`${t('stats.hours')}`}
-              color={colors.status.ok.fg}
-              testID="profile-stat-hours"
-            />
-            <Stat
-              value={stats ? `${stats.events}` : '–'}
-              label={`${t('stats.events')}`}
-              color={colors.navy}
-              testID="profile-stat-events"
-            />
-            <Stat
-              value={stats ? years(stats.yearsInVic) : '–'}
-              label={`${t('stats.in_vic')}`}
-              color="#0B6B6B"
-              last
-              testID="profile-stat-years"
-            />
-          </View>
-        </Enter>
+            </AppText>
+          )}
+        </Animated.View>
 
-        <Enter index={2} style={styles.section}>
-          <VText variant="h2">{t('my_organizations')}</VText>
+        <Animated.View entering={enter(1, reduced)} style={styles.stats}>
+          <Stat
+            value={stats ? `${stats.approvedHours}` : '–'}
+            label={`${t('stats.hours')}`}
+            testID="profile-stat-hours"
+          />
+          <Stat
+            value={stats ? `${stats.events}` : '–'}
+            label={`${t('stats.events')}`}
+            testID="profile-stat-events"
+          />
+          <Stat
+            value={stats ? years(stats.yearsInVic) : '–'}
+            label={`${t('stats.in_vic')}`}
+            testID="profile-stat-years"
+          />
+        </Animated.View>
+
+        <Animated.View entering={enter(2, reduced)} style={styles.section}>
+          <AppText variant="title" accessibilityRole="header">
+            {t('my_organizations')}
+          </AppText>
+        </Animated.View>
+        <Animated.View entering={enter(3, reduced)}>
           <Group>
             {organizations.map((organization) => (
               <ListRow
                 key={organization.id}
-                leading={
-                  <Avatar
-                    name={organization.name}
-                    uri={organization.logo}
-                    size={44}
-                    shape="rounded"
-                  />
-                }
+                avatar={{ name: organization.name }}
                 title={organization.name}
+                titleLines={2}
                 subtitle={
                   isCandidateVolunteer(organization) || organization.volunteerProfileId
                     ? undefined
                     : `${t('volunteer_profile_missing')}`
                 }
                 trailing={
-                  <View style={styles.trailing}>
-                    {isCandidateVolunteer(organization) ? (
-                      <Badge label={`${t('waiting')}`} tone="wait" />
-                    ) : (
-                      organization.id === activeId && <Badge label={`${t('active')}`} tone="ok" />
-                    )}
-                    <Chevron />
-                  </View>
+                  isCandidateVolunteer(organization) ? (
+                    <StatusChip label={`${t('waiting')}`} kind="wait" />
+                  ) : organization.id === activeId ? (
+                    <StatusChip label={`${t('active')}`} kind="ok" />
+                  ) : (
+                    <RowChevron />
+                  )
                 }
                 onPress={() => onOpenOrganization(organization)}
                 testID={`profile-organization-${organization.id}`}
               />
             ))}
             <ListRow
-              leading={
-                <View style={[styles.rowIcon, styles.addIcon]}>
-                  <VText variant="h2" color={colors.navy}>
-                    +
-                  </VText>
-                </View>
-              }
+              leading={<JoinHexagon />}
               title={`${t('join_organization')}`}
+              trailing={null}
               onPress={() => navigation.navigate(SETTINGS_ROUTES.SEARCH_ORGANIZATIONS)}
-              divider={false}
               testID="profile-join"
             />
           </Group>
-        </Enter>
+        </Animated.View>
 
-        <Enter index={3} style={styles.section}>
-          <VText variant="h2">{t('section_settings')}</VText>
+        <Animated.View entering={enter(4, reduced)} style={styles.section}>
+          <AppText variant="title" accessibilityRole="header">
+            {t('section_settings')}
+          </AppText>
+        </Animated.View>
+        <Animated.View entering={enter(5, reduced)}>
           <Group>
             <ListRow
-              leading={<RowIcon xml={user} />}
+              icon={UserIcon}
               title={`${t('heading')}`}
               onPress={() => navigation.navigate(SETTINGS_ROUTES.ACCOUNT_DATA)}
               testID="profile-account"
             />
             <ListRow
-              leading={<RowIcon xml={bell} />}
+              icon={BellIcon}
               title={`${t('notification')}`}
               onPress={() => navigation.navigate(SETTINGS_ROUTES.NOTIFICATIONS_SETTINGS)}
               testID="profile-notifications"
             />
             <ListRow
-              leading={<RowIcon xml={information} />}
+              icon={InfoIcon}
               title={`${t('information')}`}
               onPress={onInformation}
               testID="profile-information"
             />
+          </Group>
+        </Animated.View>
+
+        <Animated.View entering={enter(6, reduced)} style={styles.dangerGroup}>
+          <Group>
             <ListRow
-              leading={<RowIcon xml={trash} />}
+              icon={TrashIcon}
               title={`${t('delete')}`}
-              destructive
+              danger
+              trailing={null}
               onPress={() => navigation.navigate(SETTINGS_ROUTES.DELETE_ACCOUNT)}
               testID="profile-delete"
             />
             <ListRow
-              leading={<RowIcon xml={logoutIcon} />}
+              icon={LogOutIcon}
               title={`${t('logout')}`}
-              destructive
-              divider={false}
+              danger
+              trailing={null}
               onPress={() => logoutSheet.current?.present()}
               testID="profile-logout"
             />
           </Group>
-        </Enter>
+        </Animated.View>
       </Animated.ScrollView>
-      <Animated.View
-        testID="settings-header"
-        style={[styles.header, { paddingTop: insets.top + 12 }, headerShadow]}
-        onLayout={(e) => setMeasuredHeaderHeight(e.nativeEvent.layout.height)}
-      >
-        <Enter>
-          <VText variant="largeTitle" accessibilityRole="header" style={styles.title}>
-            {t('profile')}
-          </VText>
-        </Enter>
-      </Animated.View>
-      <StatusBarScrim />
+      <CompactTitleBar title={firstName || `${t('profile')}`} scrollY={scrollY} />
 
       <Sheet
         ref={logoutSheet}
@@ -339,54 +331,30 @@ const Settings = ({ navigation }: any) => {
 
 export default Settings;
 
-const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.canvas },
-  content: { paddingHorizontal: spacing.gutter },
-  title: { marginTop: 16 },
-  header: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 4,
-    backgroundColor: colors.canvas,
-    paddingHorizontal: spacing.gutter,
-    paddingBottom: 6,
-    shadowColor: '#000',
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 6 },
+const styles = StyleSheet.create((theme) => ({
+  screen: { flex: 1, backgroundColor: theme.colors.background },
+  content: { paddingHorizontal: theme.space.gutter },
+  me: { flexDirection: 'row', alignItems: 'center', gap: 14 },
+  meText: { flex: 1, minWidth: 0 },
+  // handbook: Bricolage 46 for the first name
+  name: { fontSize: 46, lineHeight: 46, letterSpacing: -1.84, marginTop: 2 },
+  email: { marginTop: theme.space.s },
+  stats: { flexDirection: 'row', gap: theme.space.s, marginTop: theme.space.gutter },
+  // handbook .tile: white, radius 22, number on top, label below
+  stat: {
+    flex: 1,
+    minHeight: 96,
+    borderRadius: 22,
+    paddingVertical: theme.space.m,
+    paddingHorizontal: theme.space.l,
+    backgroundColor: theme.colors.card,
+    justifyContent: 'space-between',
+    gap: 6,
   },
-  me: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 16,
-    marginTop: 16,
-    padding: 20,
-    borderRadius: radius.card,
-    backgroundColor: colors.white,
-  },
-  meText: { flex: 1, alignItems: 'center', gap: 6, minWidth: 0 },
-  center: { textAlign: 'center' },
-  name: { fontSize: 24, lineHeight: 28, alignSelf: 'stretch' },
-  email: { alignSelf: 'stretch', lineHeight: 18, paddingBottom: 2 },
-  statValue: { fontSize: 20, lineHeight: 24 },
-  meDivider: {
-    width: StyleSheet.hairlineWidth,
-    alignSelf: 'stretch',
-    backgroundColor: colors.line,
-  },
-  stats: { width: 110 },
-  stat: { paddingVertical: 8 },
-  statDivider: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.line },
-  section: { marginTop: 28, gap: 10 },
-  trailing: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  rowIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: radius.button,
-    backgroundColor: colors.soft,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  addIcon: { backgroundColor: colors.status.accent.bg },
-});
+  statValue: { fontSize: 32, lineHeight: 32, letterSpacing: -1.28 },
+  // handbook .sect: 22 above, 10 below
+  section: { marginTop: theme.space.section, marginBottom: theme.space.s, marginHorizontal: 2 },
+  dangerGroup: { marginTop: theme.space.s },
+  joinHex: { width: 40, height: 44, alignItems: 'center', justifyContent: 'center' },
+  joinHexSvg: { position: 'absolute', top: 0, left: 0 },
+}));

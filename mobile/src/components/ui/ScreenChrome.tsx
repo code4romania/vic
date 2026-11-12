@@ -102,7 +102,12 @@ export interface CompactTitleBarProps {
 export const CompactTitleBar = ({ title, scrollY, testID }: CompactTitleBarProps) => {
   const insets = useSafeAreaInsets();
   const barStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(scrollY.value, [COLLAPSE_AT - 16, COLLAPSE_AT], [0, 1], Extrapolation.CLAMP),
+    opacity: interpolate(
+      scrollY.value,
+      [COLLAPSE_AT - 16, COLLAPSE_AT],
+      [0, 1],
+      Extrapolation.CLAMP,
+    ),
   }));
   const titleStyle = useAnimatedStyle(() => ({
     transform: [
