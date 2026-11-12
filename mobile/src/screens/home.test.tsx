@@ -116,6 +116,28 @@ beforeEach(() => {
 });
 
 describe('Acasă', () => {
+  it('pins the avatar and news controls outside the scroll content', async () => {
+    await renderHome();
+    const content = within(screen.getByTestId('home'));
+    expect(content.queryByTestId('home-avatar')).toBeNull();
+    expect(content.queryByTestId('home-news')).toBeNull();
+    expect(screen.getByTestId('home-avatar')).toBeTruthy();
+    expect(screen.getByTestId('home-news')).toBeTruthy();
+    expect(content.getByRole('header', { name: 'Bună, Ana' })).toBeTruthy();
+  });
+
+  it('opens the profile from the pinned avatar', async () => {
+    await renderHome();
+    await fireEvent.press(screen.getByTestId('home-avatar'));
+    expect(await screen.findByText('page:profile')).toBeTruthy();
+  });
+
+  it('opens logged hours news from the pinned bell', async () => {
+    await renderHome();
+    await fireEvent.press(screen.getByTestId('home-news'));
+    expect(await screen.findByText(`page:news:${NewsType.LOGGED_HOURS}`)).toBeTruthy();
+  });
+
   it('refetches the profile on focus', async () => {
     await renderHome();
     expect(mockRefetchProfile).toHaveBeenCalledTimes(1);

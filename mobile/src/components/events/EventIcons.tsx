@@ -15,6 +15,7 @@ type IconName =
   | 'close'
   | 'back'
   | 'check'
+  | 'history'
   | 'target'
   | 'mail'
   | 'phone';
@@ -72,6 +73,13 @@ const paths: Record<IconName, React.ReactNode> = {
   close: <Path d="M6 6l12 12M18 6 6 18" />,
   back: <Path d="M15 18l-6-6 6-6" />,
   check: <Path d="m5 12 5 5 9-10" />,
+  // clock with a back arrow: time already spent (logging volunteer hours)
+  history: (
+    <>
+      <Path d="M3 12a9 9 0 1 0 2.64-6.36L3 8.3" />
+      <Path d="M3 3.5v4.8h4.8M12 7.5V12l3 2" />
+    </>
+  ),
   mail: (
     <>
       <Rect x={3} y={5} width={18} height={14} rx={2} />
