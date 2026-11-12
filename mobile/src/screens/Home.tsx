@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Pressable, RefreshControl, StyleSheet, View } from 'react-native';
+import { Pressable, RefreshControl, StyleSheet, useWindowDimensions, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import Svg, { Path } from 'react-native-svg';
 import { useFocusEffect } from '@react-navigation/native';
@@ -104,6 +104,9 @@ const TodoIcon = ({ name, tone }: { name: EventIconName; tone: 'wait' | 'accent'
 const Home = ({ navigation }: any) => {
   const { t } = useTranslation('home');
   const insets = useSafeAreaInsets();
+  // iOS changes the text size of mounted text but keeps the old layout until the app restarts
+  // (#640, iPhone 8 on iOS 16, release build), so the content is mounted again when it changes.
+  const { fontScale } = useWindowDimensions();
   const bottomInset = useGlassTabBarInset();
   useFocusedStatusBarStyle('light');
   const onScroll = useTabBarScroll();
@@ -225,175 +228,179 @@ const Home = ({ navigation }: any) => {
         showsVerticalScrollIndicator={false}
         testID="home"
       >
-        <View style={[styles.hero, { paddingTop: insets.top + 12 }]}>
-          {/* navy behind the pull-to-refresh bounce */}
-          <View style={styles.heroBounce} />
-          <View style={styles.topRow}>
-            <PressableScale
-              onPress={() => navigation.navigate(TAB_ROUTES.PROFILE)}
-              accessibilityLabel={`${t('settings:profile')}`}
-              style={styles.avatarRing}
-              testID="home-avatar"
-            >
-              <Avatar
-                name={
-                  [userProfile?.firstName, userProfile?.lastName].filter(Boolean).join(' ') || '?'
-                }
-                uri={userProfile?.profilePicture}
-                size={40}
-              />
-            </PressableScale>
-            <PressableScale
-              onPress={() => navigation.navigate('news', { type: NewsType.LOGGED_HOURS })}
-              style={styles.bell}
-              accessibilityLabel={`${t('news')}`}
-              testID="home-news"
-            >
-              <BellIcon color={colors.white} />
-            </PressableScale>
+        <React.Fragment key={fontScale}>
+          <View style={[styles.hero, { paddingTop: insets.top + 12 }]}>
+            {/* navy behind the pull-to-refresh bounce */}
+            <View style={styles.heroBounce} />
+            <View style={styles.topRow}>
+              <PressableScale
+                onPress={() => navigation.navigate(TAB_ROUTES.PROFILE)}
+                accessibilityLabel={`${t('settings:profile')}`}
+                style={styles.avatarRing}
+                testID="home-avatar"
+              >
+                <Avatar
+                  name={
+                    [userProfile?.firstName, userProfile?.lastName].filter(Boolean).join(' ') || '?'
+                  }
+                  uri={userProfile?.profilePicture}
+                  size={40}
+                />
+              </PressableScale>
+              <PressableScale
+                onPress={() => navigation.navigate('news', { type: NewsType.LOGGED_HOURS })}
+                style={styles.bell}
+                accessibilityLabel={`${t('news')}`}
+                testID="home-news"
+              >
+                <BellIcon color={colors.white} />
+              </PressableScale>
+            </View>
+
+            <Enter>
+              <VText
+                variant="largeTitle"
+                color={colors.white}
+                accessibilityRole="header"
+                style={styles.title}
+              >
+                {t('hello', { name: userProfile?.firstName || '' })}
+              </VText>
+              {!!organization?.name && (
+                <VText variant="sub" color="rgba(255,255,255,0.75)">
+                  {organization.name}
+                </VText>
+              )}
+            </Enter>
           </View>
 
-          <Enter>
-            <VText
-              variant="largeTitle"
-              color={colors.white}
-              accessibilityRole="header"
-              style={styles.title}
-            >
-              {t('hello', { name: userProfile?.firstName || '' })}
-            </VText>
-            {!!organization?.name && (
-              <VText variant="sub" color="rgba(255,255,255,0.75)">
-                {organization.name}
-              </VText>
+          <View style={styles.content}>
+            {inactive && (
+              <Enter index={1} style={[styles.join, shadows.card]} testID="home-inactive">
+                <VText variant="sub">
+                  {t('organization_profile:disclaimer.volunteer_inactive')}
+                </VText>
+              </Enter>
             )}
-          </Enter>
-        </View>
 
-        <View style={styles.content}>
-          {inactive && (
-            <Enter index={1} style={[styles.join, shadows.card]} testID="home-inactive">
-              <VText variant="sub">{t('organization_profile:disclaimer.volunteer_inactive')}</VText>
-            </Enter>
-          )}
+            {!organization && (
+              <Enter index={1} style={[styles.join, shadows.card]}>
+                <VText variant="h3">{t('no_ngo_title')}</VText>
+                <VText variant="sub">{t('no_ngo_paragraph')}</VText>
+                <VButton
+                  label={`${t('join_ngo_short')}`}
+                  onPress={() => navigation.navigate('search')}
+                  testID="home-join"
+                />
+              </Enter>
+            )}
 
-          {!organization && (
-            <Enter index={1} style={[styles.join, shadows.card]}>
-              <VText variant="h3">{t('no_ngo_title')}</VText>
-              <VText variant="sub">{t('no_ngo_paragraph')}</VText>
-              <VButton
-                label={`${t('join_ngo_short')}`}
-                onPress={() => navigation.navigate('search')}
-                testID="home-join"
-              />
-            </Enter>
-          )}
-
-          {nextEvents.length > 0 && (
-            <Enter index={1} style={styles.section}>
-              <SectionHead
-                title={`${t('next.title')}`}
-                action={`${t('see_all')}`}
-                onAction={() =>
-                  navigation.navigate(TAB_ROUTES.EVENTS, { eventFilter: EventType.GOING })
-                }
-                testID="home-next-all"
-              />
-              <Group>
-                {nextEvents.map((event, index) => (
-                  <EventCard
-                    key={event.id}
-                    event={event}
-                    onPress={(eventId) => navigation.navigate('event', { eventId })}
-                    divider={index < nextEvents.length - 1}
-                  />
-                ))}
-              </Group>
-            </Enter>
-          )}
-
-          {todos.length > 0 && (
-            <Enter index={2} style={styles.section} testID="home-todo">
-              <SectionHead title={`${t('todo.title')}`} />
-              <Group>
-                {todos.map((todo, index) => (
-                  <ListRow
-                    key={todo.key}
-                    leading={<TodoIcon name={todo.icon} tone={todo.tone} />}
-                    title={todo.title}
-                    subtitle={todo.subtitle}
-                    onPress={todo.onPress}
-                    divider={index < todos.length - 1}
-                    testID={`home-todo-${todo.key}`}
-                  />
-                ))}
-              </Group>
-            </Enter>
-          )}
-
-          <Enter index={3} style={styles.section}>
-            <SectionHead title={`${t('general:current_month')}`} />
-            <View style={styles.tiles}>
-              {tiles.map((tile) => (
-                <PressableScale
-                  key={tile.key}
-                  onPress={tile.onPress}
-                  style={[styles.tile, shadows.card, { backgroundColor: TILE_TONE[tile.key].bg }]}
-                  accessibilityLabel={`${tile.value ?? 0} ${tile.label}`}
-                  testID={`home-stat-${tile.key}`}
-                >
-                  <VText style={[styles.tileValue, { color: TILE_TONE[tile.key].fg }]}>
-                    {`${tile.value ?? '–'}`}
-                  </VText>
-                  <VText variant="cap" color={TILE_TONE[tile.key].label}>
-                    {tile.label}
-                  </VText>
-                </PressableScale>
-              ))}
-            </View>
-          </Enter>
-
-          {!!organization && (
-            <Enter index={4} style={styles.section}>
-              <SectionHead
-                title={`${t('anouncements.section.title')}`}
-                action={`${t('see_all')}`}
-                onAction={() => navigation.navigate('announcements')}
-                testID="home-anouncements-all"
-              />
-              {anouncements.error ? (
-                <VText variant="sub">{t('general:error.load_entries')}</VText>
-              ) : !anouncements.data?.items?.length ? (
-                <VText variant="sub">{t('anouncements.section.empty_list')}</VText>
-              ) : (
+            {nextEvents.length > 0 && (
+              <Enter index={1} style={styles.section}>
+                <SectionHead
+                  title={`${t('next.title')}`}
+                  action={`${t('see_all')}`}
+                  onAction={() =>
+                    navigation.navigate(TAB_ROUTES.EVENTS, { eventFilter: EventType.GOING })
+                  }
+                  testID="home-next-all"
+                />
                 <Group>
-                  {anouncements.data.items.map((item, index, all) => (
-                    <ListRow
-                      key={item.id}
-                      leading={
-                        <Avatar
-                          name={item.organization?.name || item.title}
-                          uri={item.organization?.logo || item.organizationLogo}
-                          size={40}
-                          shape="rounded"
-                        />
-                      }
-                      title={item.title}
-                      subtitle={[item.organization?.name, item.description]
-                        .filter(Boolean)
-                        .join(' · ')}
-                      titleLines={2}
-                      subtitleLines={2}
-                      onPress={() => navigation.navigate('announcements')}
-                      divider={index < all.length - 1}
-                      testID={`home-anouncement-${item.id}`}
+                  {nextEvents.map((event, index) => (
+                    <EventCard
+                      key={event.id}
+                      event={event}
+                      onPress={(eventId) => navigation.navigate('event', { eventId })}
+                      divider={index < nextEvents.length - 1}
                     />
                   ))}
                 </Group>
-              )}
+              </Enter>
+            )}
+
+            {todos.length > 0 && (
+              <Enter index={2} style={styles.section} testID="home-todo">
+                <SectionHead title={`${t('todo.title')}`} />
+                <Group>
+                  {todos.map((todo, index) => (
+                    <ListRow
+                      key={todo.key}
+                      leading={<TodoIcon name={todo.icon} tone={todo.tone} />}
+                      title={todo.title}
+                      subtitle={todo.subtitle}
+                      onPress={todo.onPress}
+                      divider={index < todos.length - 1}
+                      testID={`home-todo-${todo.key}`}
+                    />
+                  ))}
+                </Group>
+              </Enter>
+            )}
+
+            <Enter index={3} style={styles.section}>
+              <SectionHead title={`${t('general:current_month')}`} />
+              <View style={styles.tiles}>
+                {tiles.map((tile) => (
+                  <PressableScale
+                    key={tile.key}
+                    onPress={tile.onPress}
+                    style={[styles.tile, shadows.card, { backgroundColor: TILE_TONE[tile.key].bg }]}
+                    accessibilityLabel={`${tile.value ?? 0} ${tile.label}`}
+                    testID={`home-stat-${tile.key}`}
+                  >
+                    <VText style={[styles.tileValue, { color: TILE_TONE[tile.key].fg }]}>
+                      {`${tile.value ?? '–'}`}
+                    </VText>
+                    <VText variant="cap" color={TILE_TONE[tile.key].label}>
+                      {tile.label}
+                    </VText>
+                  </PressableScale>
+                ))}
+              </View>
             </Enter>
-          )}
-        </View>
+
+            {!!organization && (
+              <Enter index={4} style={styles.section}>
+                <SectionHead
+                  title={`${t('anouncements.section.title')}`}
+                  action={`${t('see_all')}`}
+                  onAction={() => navigation.navigate('announcements')}
+                  testID="home-anouncements-all"
+                />
+                {anouncements.error ? (
+                  <VText variant="sub">{t('general:error.load_entries')}</VText>
+                ) : !anouncements.data?.items?.length ? (
+                  <VText variant="sub">{t('anouncements.section.empty_list')}</VText>
+                ) : (
+                  <Group>
+                    {anouncements.data.items.map((item, index, all) => (
+                      <ListRow
+                        key={item.id}
+                        leading={
+                          <Avatar
+                            name={item.organization?.name || item.title}
+                            uri={item.organization?.logo || item.organizationLogo}
+                            size={40}
+                            shape="rounded"
+                          />
+                        }
+                        title={item.title}
+                        subtitle={[item.organization?.name, item.description]
+                          .filter(Boolean)
+                          .join(' · ')}
+                        titleLines={2}
+                        subtitleLines={2}
+                        onPress={() => navigation.navigate('announcements')}
+                        divider={index < all.length - 1}
+                        testID={`home-anouncement-${item.id}`}
+                      />
+                    ))}
+                  </Group>
+                )}
+              </Enter>
+            )}
+          </View>
+        </React.Fragment>
       </Animated.ScrollView>
       <StatusBarScrim color={colors.navy} />
     </View>
