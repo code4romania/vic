@@ -13,6 +13,7 @@ import { useContractHistoryInfiniteQuery } from '../services/contract/contract.s
 import { colors, shadows, spacing } from '../common/theme/tokens';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
+import { MAX_FONT_SCALE } from '../common/constants/constants';
 import { isTabRoute } from '../routes/tab-routes';
 import { useTabBarScroll } from '../components/navigation/TabBarScroll';
 import { useGlassTabBarInset } from '../components/navigation/GlassTabBar';
@@ -49,7 +50,7 @@ const Documents = ({ navigation, route }: any) => {
   // Before layout: safe area + top padding + back button + title margins/line + subtitle + bottom.
   const headerHeight =
     measuredHeaderHeight ||
-    insets.top + 12 + (isTabRoute(route) ? 0 : 40) + 16 + 38 + 4 + (organization ? 20 : 0) + 6;
+    insets.top + 12 + (isTabRoute(route) ? 16 + 38 : 40) + 4 + (organization ? 20 : 0) + 6;
   const headerShadow = useAnimatedStyle(() => ({
     shadowOpacity: interpolate(scrollY.value, [0, 12], [0, 0.06], Extrapolation.CLAMP),
   }));
@@ -149,24 +150,35 @@ const Documents = ({ navigation, route }: any) => {
         style={[styles.header, { paddingTop: insets.top + 12 }, headerShadow]}
         onLayout={(e) => setMeasuredHeaderHeight(e.nativeEvent.layout.height)}
       >
-        {!isTabRoute(route) && (
-          <PressableScale
-            onPress={navigation.goBack}
-            style={[styles.back, shadows.back]}
-            accessibilityLabel={`${t('general:back')}`}
-            testID="documents-back"
+        {/* Opened from the volunteer page: the back button joins the title row and the title
+            drops to h2, as on Organizații and Ore. As a tab: large title, no back button. */}
+        <Enter style={styles.titleRow}>
+          {!isTabRoute(route) && (
+            <PressableScale
+              onPress={navigation.goBack}
+              style={[styles.back, shadows.back]}
+              accessibilityLabel={`${t('general:back')}`}
+              testID="documents-back"
+            >
+              <EventIcon name="back" size={20} />
+            </PressableScale>
+          )}
+          <VText
+            variant={isTabRoute(route) ? 'largeTitle' : 'h2'}
+            accessibilityRole="header"
+            numberOfLines={isTabRoute(route) ? undefined : 1}
+            maxFontSizeMultiplier={isTabRoute(route) ? undefined : MAX_FONT_SCALE.title}
+            style={isTabRoute(route) ? styles.title : styles.compactTitle}
           >
-            <EventIcon name="back" size={20} />
-          </PressableScale>
-        )}
-        <Enter>
-          <VText variant="largeTitle" accessibilityRole="header" style={styles.title}>
             {t('general:documents')}
           </VText>
         </Enter>
         {!!organization && (
           <Enter index={1}>
-            <VText variant="sub">{t('activity_logs:at', { name: organization.name })}</VText>
+            {/* with the back button, start under the title text, not under the button */}
+            <VText variant="sub" style={!isTabRoute(route) && styles.subtitleAfterBack}>
+              {t('activity_logs:at', { name: organization.name })}
+            </VText>
           </Enter>
         )}
       </Animated.View>
@@ -188,7 +200,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  title: { marginTop: 16, marginBottom: 4 },
+  titleRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  title: { flex: 1, marginTop: 16, marginBottom: 4 },
+  compactTitle: { flex: 1, marginBottom: 4 },
+  // back button (40) + titleRow gap (12)
+  subtitleAfterBack: { marginLeft: 52 },
   header: {
     position: 'absolute',
     top: 0,

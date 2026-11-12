@@ -114,6 +114,54 @@ beforeEach(() => {
 });
 
 describe('Organizații', () => {
+  it('pins the back button, compact title and count above the scrolling list', async () => {
+    await render(
+      <SafeAreaProvider
+        initialMetrics={{
+          frame: { x: 0, y: 0, width: 390, height: 844 },
+          insets: { top: 47, left: 0, right: 0, bottom: 34 },
+        }}
+      >
+        <NavigationContainer
+          initialState={{ index: 1, routes: [{ name: 'events' }, { name: 'search' }] }}
+        >
+          <Navigator screenOptions={{ headerShown: false }}>
+            <Screen name="events" component={Stub} />
+            <Screen name="search" component={Organizations} />
+          </Navigator>
+        </NavigationContainer>
+      </SafeAreaProvider>,
+    );
+    const header = within(screen.getByTestId('organizations-header'));
+    expect(header.getByTestId('organizations-back')).toBeTruthy();
+    expect(header.getByRole('header', { name: 'Organizații' })).toBeTruthy();
+    expect(header.getByText('2 organizații')).toBeTruthy();
+    const list = within(screen.getByTestId('organizations-list'));
+    expect(list.queryByRole('header', { name: 'Organizații' })).toBeNull();
+    expect(list.queryByText('Organizații')).toBeNull();
+
+    await fireEvent.press(header.getByTestId('organizations-back'));
+    expect(screen.queryByTestId('organizations-header')).toBeNull();
+  });
+
+  it('keeps the title without a back stack and preserves the search input after header layout', async () => {
+    await renderApp();
+    const header = screen.getByTestId('organizations-header');
+    expect(within(header).queryByTestId('organizations-back')).toBeNull();
+    expect(within(header).getByRole('header', { name: 'Organizații' })).toBeTruthy();
+    const input = screen.getByTestId('organizations-search');
+    await fireEvent.changeText(input, 'Crucea');
+    await fireEvent(header, 'layout', { nativeEvent: { layout: { height: 120 } } });
+    expect(screen.getByTestId('organizations-search')).toBe(input);
+    expect(input.props.value).toBe('Crucea');
+    expect(screen.getByTestId('organizations-list').props.contentContainerStyle).toEqual(
+      expect.arrayContaining([expect.objectContaining({ paddingTop: 128 })]),
+    );
+    expect(
+      screen.getByTestId('organizations-list').props.refreshControl.props.progressViewOffset,
+    ).toBe(120);
+  });
+
   it('lists organizations with volunteers and marks the ones you belong to', async () => {
     await renderApp();
     expect(await screen.findByText('Organizații')).toBeTruthy();
@@ -152,6 +200,20 @@ describe('Organizații', () => {
 });
 
 describe('Organizație', () => {
+  it('pins the back button and compact name while keeping the large title as the header', async () => {
+    await renderApp('organization-profile');
+    const bar = await screen.findByTestId('organization-bar-top');
+    expect(within(bar).getByTestId('organization-back')).toBeTruthy();
+    expect(
+      within(bar).getByText('Asociația Exemplu', { includeHiddenElements: true }),
+    ).toBeTruthy();
+    expect(within(bar).queryByText('Asociația Exemplu')).toBeNull();
+    expect(screen.getByRole('header', { name: 'Asociația Exemplu' })).toBeTruthy();
+    expect(
+      within(bar).queryByRole('header', { name: 'Asociația Exemplu', includeHiddenElements: true }),
+    ).toBeNull();
+  });
+
   it('shows the description, contacts and "Am un cod" + "Vreau să ajut" for a new volunteer', async () => {
     await renderApp('organization-profile');
     expect(await screen.findByText('Despre')).toBeTruthy();
@@ -185,8 +247,11 @@ describe('Organizație', () => {
     setOrganization(OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER);
     await renderApp('organization-profile');
     const bar = await screen.findByTestId('organization-bar');
-    expect(within(bar).getByText('Membru')).toBeTruthy();
-    expect(within(bar).getByText('din 01.03.2025')).toBeTruthy();
+    // status and date stacked in one block, next to "Vezi evenimente"
+    const member = within(within(bar).getByTestId('organization-member'));
+    expect(member.getByText('Membru')).toBeTruthy();
+    expect(member.getByText('din 01.03.2025')).toBeTruthy();
+    expect(within(bar).getByTestId('organization-events')).toBeTruthy();
     expect(screen.getByTestId('organization-leave')).toBeTruthy();
   });
 

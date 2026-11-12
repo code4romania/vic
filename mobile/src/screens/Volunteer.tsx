@@ -1,6 +1,14 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import Animated from 'react-native-reanimated';
+import Animated, {
+  Extrapolation,
+  interpolate,
+  runOnJS,
+  useAnimatedReaction,
+  useAnimatedStyle,
+  useDerivedValue,
+  useSharedValue,
+} from 'react-native-reanimated';
 import { SvgXml } from 'react-native-svg';
 import { useFocusEffect } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -12,6 +20,7 @@ import { useVolunteerStats } from '../services/volunteer/volunteer.service';
 import { useGetUserProfileQuery } from '../services/user/user.service';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { colors, fonts, radius, shadows, spacing } from '../common/theme/tokens';
+import { MAX_FONT_SCALE } from '../common/constants/constants';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import { useTabBarScroll } from '../components/navigation/TabBarScroll';
 import { useGlassTabBarInset } from '../components/navigation/GlassTabBar';
@@ -23,7 +32,6 @@ import {
   Group,
   ListRow,
   PressableScale,
-  StatusBarScrim,
   VButton,
   VText,
 } from '../components/ui';
@@ -44,7 +52,44 @@ const Volunteer = ({ navigation }: any) => {
   const insets = useSafeAreaInsets();
   const bottomInset = useGlassTabBarInset();
   useFocusedStatusBarStyle('dark');
-  const onScroll = useTabBarScroll();
+  const scrollY = useSharedValue(0);
+  const onScroll = useTabBarScroll(scrollY);
+  const barHeight = insets.top + 56;
+  const canGoBack = navigation.canGoBack();
+  const headY = useSharedValue(0);
+  const titleY = useSharedValue(0);
+  const titleHeight = useSharedValue(0);
+  const titleBottom = useDerivedValue(() => headY.value + titleY.value + titleHeight.value);
+  const [compactAccessible, setCompactAccessible] = React.useState(false);
+  const compactOpacity = useDerivedValue(() =>
+    titleHeight.value > 0
+      ? interpolate(
+          scrollY.value,
+          [titleBottom.value - barHeight - titleHeight.value, titleBottom.value - barHeight],
+          [0, 1],
+          Extrapolation.CLAMP,
+        )
+      : 0,
+  );
+  const compactStyle = useAnimatedStyle(() => ({ opacity: compactOpacity.value }));
+  useAnimatedReaction(
+    () => compactOpacity.value > 0.5,
+    (visible, previous) => {
+      if (visible !== previous) {
+        runOnJS(setCompactAccessible)(visible);
+      }
+    },
+  );
+  // The logo starts at safe-area top + 12 + 40pt back slot + 16pt head margin = bar bottom + 12.
+  const shadowStart = Math.max(0, insets.top + 68 - barHeight);
+  const headerShadow = useAnimatedStyle(() => ({
+    shadowOpacity: interpolate(
+      scrollY.value,
+      [shadowStart, shadowStart + 12],
+      [0, 0.06],
+      Extrapolation.CLAMP,
+    ),
+  }));
 
   const { userProfile } = useUserProfile();
   const organization = userProfile?.activeOrganization;
@@ -61,7 +106,7 @@ const Volunteer = ({ navigation }: any) => {
     }, []),
   );
 
-  const back = navigation.canGoBack() ? (
+  const back = canGoBack ? (
     <PressableScale
       onPress={navigation.goBack}
       style={[styles.back, shadows.back]}
@@ -103,19 +148,37 @@ const Volunteer = ({ navigation }: any) => {
         showsVerticalScrollIndicator={false}
         testID="volunteer"
       >
-        {back}
-        <Enter style={styles.head}>
-          <Avatar
-            name={organization.name}
-            uri={organization.logo}
-            size={72}
-            shape="rounded"
-            onCanvas
-          />
-          <VText variant="largeTitle" style={styles.name} accessibilityRole="header">
-            {organization.name}
-          </VText>
-        </Enter>
+        {/* The old back slot: the logo stays at safe-area top + 68, just below the pinned bar.
+            Kept without a back button too, so the bar never covers the logo at rest. */}
+        <View style={styles.backSpacer} />
+        <View
+          style={styles.head}
+          onLayout={(event) => {
+            headY.value = event.nativeEvent.layout.y;
+          }}
+        >
+          {/* Enter does not forward onLayout; its content starts at the wrapper's origin. */}
+          <Enter style={styles.headContent}>
+            <Avatar
+              name={organization.name}
+              uri={organization.logo}
+              size={64}
+              shape="rounded"
+              onCanvas
+            />
+            <VText
+              variant="largeTitle"
+              style={styles.name}
+              accessibilityRole="header"
+              onLayout={(event) => {
+                titleY.value = event.nativeEvent.layout.y;
+                titleHeight.value = event.nativeEvent.layout.height;
+              }}
+            >
+              {organization.name}
+            </VText>
+          </Enter>
+        </View>
 
         <Enter index={1} style={styles.stats}>
           <View style={[styles.stat, styles.statHours]} testID="volunteer-stat-logs">
@@ -227,7 +290,31 @@ const Volunteer = ({ navigation }: any) => {
           </Group>
         </Enter>
       </Animated.ScrollView>
-      <StatusBarScrim />
+      <Animated.View
+        testID="volunteer-bar-top"
+        pointerEvents="box-none"
+        style={[styles.pinnedBar, { height: barHeight, paddingTop: insets.top }, headerShadow]}
+      >
+        <View style={styles.topRow} pointerEvents="box-none">
+          {back}
+          <Animated.View
+            pointerEvents="none"
+            accessibilityElementsHidden={!compactAccessible}
+            importantForAccessibility={compactAccessible ? 'auto' : 'no-hide-descendants'}
+            style={[styles.compactOrganization, compactStyle]}
+          >
+            <Avatar name={organization.name} uri={organization.logo} size={32} shape="rounded" />
+            <VText
+              color={colors.ink}
+              style={styles.compactName}
+              numberOfLines={1}
+              maxFontSizeMultiplier={MAX_FONT_SCALE.title}
+            >
+              {organization.name}
+            </VText>
+          </Animated.View>
+        </View>
+      </Animated.View>
     </View>
   );
 };
@@ -245,8 +332,34 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  head: { marginTop: 16, gap: 12 },
-  name: { fontSize: 28, lineHeight: 34 },
+  backSpacer: { height: 40 },
+  head: { marginTop: 16 },
+  // logo and name on one row; the name takes the rest of the width and may wrap
+  headContent: { flexDirection: 'row', alignItems: 'center', gap: 14 },
+  pinnedBar: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 10,
+    backgroundColor: colors.canvas,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowRadius: 8,
+    elevation: 0,
+  },
+  topRow: {
+    height: 56,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    // Preserve the back button's old top at safe-area top + 12; center compact content beside it.
+    paddingTop: 12,
+    paddingHorizontal: spacing.gutter,
+    gap: 12,
+  },
+  compactOrganization: { flex: 1, height: 40, flexDirection: 'row', alignItems: 'center', gap: 10 },
+  compactName: { fontFamily: fonts.title, fontSize: 17, flexShrink: 1 },
+  name: { flex: 1, fontSize: 28, lineHeight: 34 },
   stats: { flexDirection: 'row', gap: 10, marginTop: 18 },
   stat: {
     flex: 1,

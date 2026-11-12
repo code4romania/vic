@@ -1,6 +1,11 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Animated from 'react-native-reanimated';
+import Animated, {
+  Extrapolation,
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
 import { SvgXml } from 'react-native-svg';
 import * as Linking from 'expo-linking';
 import { useFocusEffect } from '@react-navigation/native';
@@ -88,8 +93,16 @@ const Settings = ({ navigation }: any) => {
   const insets = useSafeAreaInsets();
   const bottomInset = useGlassTabBarInset();
   useFocusedStatusBarStyle('dark');
-  const onScroll = useTabBarScroll();
+  const scrollY = useSharedValue(0);
+  const onScroll = useTabBarScroll(scrollY);
+  const [measuredHeaderHeight, setMeasuredHeaderHeight] = useState(0);
   const logoutSheet = useRef<BottomSheetModal>(null);
+
+  // Before layout: safe area + top padding + title margin/line + header bottom padding.
+  const headerHeight = measuredHeaderHeight || insets.top + 12 + 16 + 38 + 6;
+  const headerShadow = useAnimatedStyle(() => ({
+    shadowOpacity: interpolate(scrollY.value, [0, 12], [0, 0.06], Extrapolation.CLAMP),
+  }));
 
   const { userProfile } = useUserProfile();
   const { activate } = useActivateOrganization();
@@ -160,17 +173,12 @@ const Settings = ({ navigation }: any) => {
         scrollEventThrottle={16}
         contentContainerStyle={[
           styles.content,
-          { paddingTop: insets.top + 12, paddingBottom: bottomInset },
+          // Exclude the header's 6pt bottom padding; keep the card's original 16pt top margin.
+          { paddingTop: headerHeight - 6, paddingBottom: bottomInset },
         ]}
         showsVerticalScrollIndicator={false}
         testID="profile"
       >
-        <Enter>
-          <VText variant="largeTitle" accessibilityRole="header" style={styles.title}>
-            {t('profile')}
-          </VText>
-        </Enter>
-
         <Enter index={1} style={[styles.me, shadows.card]}>
           <View style={styles.meText}>
             <Avatar name={name || '?'} uri={userProfile?.profilePicture} size={88} />
@@ -294,6 +302,17 @@ const Settings = ({ navigation }: any) => {
           </Group>
         </Enter>
       </Animated.ScrollView>
+      <Animated.View
+        testID="settings-header"
+        style={[styles.header, { paddingTop: insets.top + 12 }, headerShadow]}
+        onLayout={(e) => setMeasuredHeaderHeight(e.nativeEvent.layout.height)}
+      >
+        <Enter>
+          <VText variant="largeTitle" accessibilityRole="header" style={styles.title}>
+            {t('profile')}
+          </VText>
+        </Enter>
+      </Animated.View>
       <StatusBarScrim />
 
       <Sheet
@@ -324,6 +343,19 @@ const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.canvas },
   content: { paddingHorizontal: spacing.gutter },
   title: { marginTop: 16 },
+  header: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 4,
+    backgroundColor: colors.canvas,
+    paddingHorizontal: spacing.gutter,
+    paddingBottom: 6,
+    shadowColor: '#000',
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 6 },
+  },
   me: {
     flexDirection: 'row',
     alignItems: 'center',
