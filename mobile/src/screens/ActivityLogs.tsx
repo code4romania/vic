@@ -1,93 +1,100 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, RefreshControl, StyleSheet, View } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ActivityIndicator, Pressable, RefreshControl, View } from 'react-native';
 import Animated, {
   Extrapolation,
   interpolate,
   useAnimatedStyle,
+  useReducedMotion,
   useSharedValue,
 } from 'react-native-reanimated';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { StyleSheet } from 'react-native-unistyles';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { useFocusEffect } from '@react-navigation/native';
 import { useQueryClient } from 'react-query';
+import Toast from 'react-native-toast-message';
 import { queryKeys } from '../services/query-keys';
-import { MAX_FONT_SCALE } from '../common/constants/constants';
-import { isInactiveVolunteer } from '../common/interfaces/organization-list-item.interface';
+import {
+  isCandidateVolunteer,
+  isInactiveVolunteer,
+  IOrganizationVolunteer,
+} from '../common/interfaces/organization-list-item.interface';
 import {
   useActivityLogsCounters,
   useActivityLogsInfiniteQuery,
 } from '../services/activity-log/activity-log.service';
+import { useActivateOrganization } from '../services/organization/organization.service';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
 import { IActivityLogItem } from '../common/interfaces/activity-log-item.interface';
-import { colors, fonts, radius, shadows, spacing } from '../common/theme/tokens';
+import { IActivityLog } from '../common/interfaces/activity-log.interface';
 import { useActivityLogs } from '../store/activity-log/activity-log.selectors';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import { isTabRoute } from '../routes/tab-routes';
-import { useTabBarScroll } from '../components/navigation/TabBarScroll';
+import { useTabBarAccessory, useTabBarScroll } from '../components/navigation/TabBarScroll';
 import { useGlassTabBarInset } from '../components/navigation/GlassTabBar';
-import { EventIcon } from '../components/events/EventIcons';
-import { LogRow } from '../components/hours/LogRow';
+import { HIGHLIGHT_MS, LogRow } from '../components/hours/LogRow';
+import { HoursSummary } from '../components/hours/HoursSummary';
+import { AddHoursSheet, AddHoursSheetHandle } from '../components/hours/AddHoursSheet';
+import { OrganizationChip, OrganizationSwitchSheet } from '../components/hours/OrganizationChip';
 import ActivityLogSkeletonItem from '../components/skeleton/activity-log-skeleton-item';
-import {
-  EmptyState,
-  Enter,
-  groupedItem,
-  PressableScale,
-  SegmentedControl,
-  Sheet,
-  StatusBarScrim,
-  VButton,
-  VText,
-} from '../components/ui';
+import { EmptyState, LargeTitleHeader, StatusBarScrim } from '../components/ui';
+import { palette } from '../design/tokens';
+import { enter } from '../design/motion';
+import { ChevronLeftIcon, ICON_STROKE, PlusIcon } from '../design/icons';
+import { AppText } from '../design/components/Text';
+import { Button } from '../design/components/Button';
+import { SegmentedControl } from '../design/components/SegmentedControl';
+import { Sheet, SheetBackdropScale, useSheetBackdropProgress } from '../design/components/Sheet';
 
 // newest first, like the canvas
 const ORDER = OrderDirection.DESC;
-
-// white stat cards with a strong colored figure (Andrew, 9 Nov: no pastel blocks)
-const STAT_TONE: Record<string, { bg: string; fg: string }> = {
-  approved: { bg: colors.white, fg: colors.figure.green },
-  pending: { bg: colors.white, fg: colors.figure.amber },
-  rejected: { bg: colors.white, fg: colors.figure.red },
-};
+// the large title fades out as the compact bar comes in (LargeTitleHeader: 48pt)
+const COLLAPSE_AT = 48;
 
 /**
- * VIC 2.0 Ore (canvas boards "Ore" and "OraDetaliu"): large title beside the add action, organization, hours
- * per status, a segmented control (În așteptare / Aprobate / Refuzate) and the entries. "+ Adaugă
- * ore" needs a volunteer profile; without one a sheet sends the volunteer to fill it in.
+ * Ore „Îndrăzneț” (prototype `#s-hours`): the active organization as a navy chip (switch on tap),
+ * the large title, a white card with the impact hexagon and the hours per status, the segmented
+ * control (În așteptare / Aprobate / Respinse) and the entries. „Adaugă ore” sits beside the tab
+ * bar and opens a form sheet; the screen scales back behind it. Without a volunteer profile a
+ * sheet sends the volunteer to fill it in.
  */
 const ActivityLogs = ({ navigation, route }: any) => {
   const { t } = useTranslation('activity_logs');
   const insets = useSafeAreaInsets();
   const bottomInset = useGlassTabBarInset();
+  const reduced = useReducedMotion();
   useFocusedStatusBarStyle('dark');
   const scrollY = useSharedValue(0);
   const onScroll = useTabBarScroll(scrollY);
-  const [summaryHeight, setSummaryHeight] = useState(0);
-  const [titleHeight, setTitleHeight] = useState(0);
-  const [statusHeight, setStatusHeight] = useState(0);
   const profileSheet = useRef<BottomSheetModal>(null);
+  const organizationSheet = useRef<BottomSheetModal>(null);
+  const addSheet = useRef<AddHoursSheetHandle>(null);
+  const { animatedPosition, progress } = useSheetBackdropProgress();
+  const asTab = isTabRoute(route);
 
   const [status, setStatus] = useState<ActivityLogStatus>(ActivityLogStatus.PENDING);
+  const [pendingCount, setPendingCount] = useState<number | undefined>(undefined);
+  // the entry just sent (highlighted once) and a counter that refills the hexagon
+  const [highlightId, setHighlightId] = useState<string | null>(null);
+  const [refillKey, setRefillKey] = useState(0);
   const { approvedHours, rejectedHours, pendingHours } = useActivityLogs();
   const { userProfile } = useUserProfile();
   const organization = userProfile?.activeOrganization;
   const inactive = isInactiveVolunteer(organization);
+  const canAdd = !!organization && !inactive;
   const queryClient = useQueryClient();
+  const { activate } = useActivateOrganization();
 
-  // The whole header (title, organization, totals, status) stays fixed and only the list scrolls
-  // under it; the measured sections give the list its top padding, at any text size.
-  const headerHeight =
-    insets.top +
-    12 +
-    (titleHeight || 44) +
-    (organization ? (summaryHeight || 140) + (statusHeight || 44) : 0) +
-    6;
-  const headerShadow = useAnimatedStyle(() => ({
-    shadowOpacity: interpolate(scrollY.value, [0, 12], [0, 0.06], Extrapolation.CLAMP),
-  }));
+  // the organizations the volunteer can switch to here (a candidate only sees its page)
+  const organizations = useMemo(
+    () => (userProfile?.myOrganizations ?? []).filter((item) => !isCandidateVolunteer(item)),
+    [userProfile?.myOrganizations],
+  );
+  const canSwitch = organizations.some((item) => item.id !== organization?.id);
 
   const {
     data,
@@ -124,113 +131,144 @@ const ActivityLogs = ({ navigation, route }: any) => {
     [data],
   );
 
-  const onAdd = () => {
-    if (!organization?.volunteerProfileId) {
+  // the count on „În așteptare” comes from the pending list (the first one shown)
+  const totalItems = (data?.pages?.[0] as any)?.meta?.totalItems;
+  useEffect(() => {
+    if (status === ActivityLogStatus.PENDING && organization && typeof totalItems === 'number') {
+      setPendingCount(totalItems);
+    }
+  }, [status, organization, totalItems]);
+
+  // the highlight plays once the new entry is in the reloaded list, then it is cleared
+  const highlightShown = !!highlightId && items.some((item) => item.id === highlightId);
+  useEffect(() => {
+    if (!highlightShown) {
+      return;
+    }
+    const timer = setTimeout(() => setHighlightId(null), HIGHLIGHT_MS + 200);
+    return () => clearTimeout(timer);
+  }, [highlightShown]);
+
+  const hasProfile = !!organization?.volunteerProfileId;
+  const onAdd = useCallback(() => {
+    if (!hasProfile) {
       profileSheet.current?.present();
       return;
     }
-    navigation.navigate('add-activity-log');
-  };
+    addSheet.current?.present();
+  }, [hasProfile]);
+
+  // after „Trimis spre aprobare”: back to the pending entries, the new one glows, the hexagon refills
+  const onSent = useCallback(
+    (log: IActivityLog) => {
+      setStatus(ActivityLogStatus.PENDING);
+      setHighlightId(log?.id ?? null);
+      setRefillKey((key) => key + 1);
+      reload();
+    },
+    [reload],
+  );
+
+  const accessory = useMemo(
+    () =>
+      asTab && canAdd
+        ? { label: `${t('add')}`, icon: PlusIcon, onPress: onAdd, testID: 'hours-add' }
+        : null,
+    [asTab, canAdd, onAdd, t],
+  );
+  useTabBarAccessory(accessory);
 
   const onOpen = (activityLogId: string) => navigation.navigate('activity-log', { activityLogId });
 
-  const stats = [
-    { key: 'approved', value: approvedHours, label: t('totals.approved') },
-    { key: 'pending', value: pendingHours, label: t('totals.pending') },
-    { key: 'rejected', value: rejectedHours, label: t('totals.rejected') },
-  ];
+  const onSwitch = async (next: IOrganizationVolunteer) => {
+    organizationSheet.current?.dismiss();
+    try {
+      await activate(next);
+    } catch (switchError: any) {
+      Toast.show({
+        type: 'error',
+        text1: `${InternalErrors.ORGANIZATION_ERRORS.getError(
+          switchError?.response?.data?.code_error,
+        )}`,
+      });
+    }
+  };
+
+  const titleStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(scrollY.value, [0, COLLAPSE_AT], [1, 0], Extrapolation.CLAMP),
+  }));
 
   const header = (
-    <Animated.View style={[styles.header, { paddingTop: insets.top + 12 }, headerShadow]}>
-      <View
-        style={styles.pinnedTitle}
-        onLayout={(e) => setTitleHeight(e.nativeEvent.layout.height)}
-      >
-        <Enter>
-          {/* Opened from the volunteer page: the back button joins the title row and the title
-              drops to h2, as on Organizații, instead of a row of its own above a large title. */}
-          <View testID="hours-title-row" style={styles.titleRow}>
-            {!isTabRoute(route) && (
-              <PressableScale
-                onPress={navigation.goBack}
-                style={[styles.back, shadows.back]}
-                accessibilityLabel={`${t('general:back')}`}
-                testID="hours-back"
-              >
-                <EventIcon name="back" size={20} />
-              </PressableScale>
-            )}
-            <VText
-              variant={isTabRoute(route) ? 'largeTitle' : 'h2'}
-              accessibilityRole="header"
-              numberOfLines={isTabRoute(route) ? undefined : 1}
-              maxFontSizeMultiplier={isTabRoute(route) ? undefined : MAX_FONT_SCALE.title}
-              style={styles.title}
-            >
-              {t('title')}
-            </VText>
-            {!inactive && !!organization && (
-              <VButton
-                size="small"
-                variant="primary"
-                label={`+ ${t('add_short')}`}
-                accessibilityLabel={`${t('add')}`}
-                onPress={onAdd}
-                style={styles.addButton}
-                hitSlop={2}
-                maxFontSizeMultiplier={MAX_FONT_SCALE.title}
-                testID="hours-add"
-              />
-            )}
-          </View>
-        </Enter>
-      </View>
+    <View style={[styles.header, { paddingTop: insets.top + 14 }]}>
       {!!organization && (
-        <View testID="hours-summary">
-          <View
-            style={styles.summaryContent}
-            onLayout={(e) => setSummaryHeight(e.nativeEvent.layout.height)}
+        <Animated.View entering={enter(0, reduced)}>
+          <OrganizationChip
+            name={organization.name}
+            onPress={canSwitch ? () => organizationSheet.current?.present() : undefined}
+            testID="hours-organization"
+          />
+        </Animated.View>
+      )}
+      {/* Opened from the volunteer page: the back button and „+ Adaugă” join the title row (no tab
+          bar there to hold the action). */}
+      <Animated.View entering={enter(1, reduced)} testID="hours-title-row" style={styles.titleRow}>
+        {!asTab && (
+          <Pressable
+            onPress={navigation.goBack}
+            style={({ pressed }) => [styles.back, pressed ? styles.backPressed : null]}
+            accessibilityRole="button"
+            accessibilityLabel={`${t('general:back')}`}
+            hitSlop={2}
+            testID="hours-back"
           >
-            <Enter index={1}>
-              <VText variant="sub">{t('at', { name: organization.name })}</VText>
-            </Enter>
-            <Enter index={2} style={styles.stats}>
-              {stats.map((stat) => (
-                <View
-                  key={stat.key}
-                  style={[styles.stat, shadows.card, { backgroundColor: STAT_TONE[stat.key].bg }]}
-                  testID={`hours-total-${stat.key}`}
-                >
-                  <VText style={[styles.statValue, { color: STAT_TONE[stat.key].fg }]}>
-                    {`${stat.value || 0}h`}
-                  </VText>
-                  <VText variant="cap">{stat.label}</VText>
-                </View>
-              ))}
-            </Enter>
-          </View>
-        </View>
+            <ChevronLeftIcon size={22} color={palette.navy} strokeWidth={ICON_STROKE + 0.4} />
+          </Pressable>
+        )}
+        <Animated.View style={[styles.title, titleStyle]}>
+          <AppText variant={asTab ? 'largeTitle' : 'title'} accessibilityRole="header">
+            {t('title')}
+          </AppText>
+        </Animated.View>
+        {!asTab && canAdd && (
+          <Button
+            size="S"
+            label={`+ ${t('add_short')}`}
+            accessibilityLabel={`${t('add')}`}
+            onPress={onAdd}
+            hitSlop={5}
+            testID="hours-add"
+          />
+        )}
+      </Animated.View>
+      {!!organization && (
+        <Animated.View entering={enter(2, reduced)}>
+          <HoursSummary
+            approved={approvedHours}
+            pending={pendingHours}
+            rejected={rejectedHours}
+            refillKey={refillKey}
+          />
+        </Animated.View>
       )}
       {!!organization && (
-        <View
-          style={styles.pinnedStatus}
-          onLayout={(e) => setStatusHeight(e.nativeEvent.layout.height)}
-        >
-          <Enter index={3}>
-            <SegmentedControl
-              options={[
-                { key: ActivityLogStatus.PENDING, label: `${t('tabs.pending')}` },
-                { key: ActivityLogStatus.APPROVED, label: `${t('tabs.approved')}` },
-                { key: ActivityLogStatus.REJECTED, label: `${t('tabs.rejected')}` },
-              ]}
-              value={status}
-              onChange={setStatus}
-              testID="hours-status"
-            />
-          </Enter>
-        </View>
+        <Animated.View entering={enter(3, reduced)}>
+          <SegmentedControl
+            options={[
+              {
+                key: ActivityLogStatus.PENDING,
+                label: `${t('tabs.pending')}`,
+                count: pendingCount,
+              },
+              { key: ActivityLogStatus.APPROVED, label: `${t('tabs.approved')}` },
+              { key: ActivityLogStatus.REJECTED, label: `${t('tabs.rejected')}` },
+            ]}
+            value={status}
+            onChange={setStatus}
+            testID="hours-status"
+          />
+        </Animated.View>
       )}
-    </Animated.View>
+    </View>
   );
 
   const renderEmpty = () => {
@@ -246,7 +284,7 @@ const ActivityLogs = ({ navigation, route }: any) => {
         />
       );
     }
-    const canAdd = status === ActivityLogStatus.PENDING && !inactive;
+    const emptyAdd = status === ActivityLogStatus.PENDING && canAdd;
     if (isFetching && !isRefetching && !items.length) {
       return <ActivityLogSkeletonItem />;
     }
@@ -264,115 +302,109 @@ const ActivityLogs = ({ navigation, route }: any) => {
       <EmptyState
         title={`${t(`empty.${status}.title`)}`}
         description={`${t(`empty.${status}.description`)}`}
-        actionLabel={canAdd ? `${t('add')}` : undefined}
-        onAction={canAdd ? onAdd : undefined}
+        actionLabel={emptyAdd ? `${t('add')}` : undefined}
+        onAction={emptyAdd ? onAdd : undefined}
         testID="hours-empty"
       />
     );
   };
 
   return (
-    <View style={styles.screen}>
-      <Animated.FlatList
-        data={items}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item, index }) => (
-          <Enter index={Math.min(index, 6)} style={groupedItem(index, items.length)}>
-            <LogRow log={item} status={status} onPress={onOpen} />
-          </Enter>
-        )}
-        ListEmptyComponent={renderEmpty}
-        ListFooterComponent={
-          isFetchingNextPage ? <ActivityIndicator color={colors.navy} style={styles.more} /> : null
-        }
-        onScroll={onScroll}
-        scrollEventThrottle={16}
-        onEndReached={() => hasNextPage && !isFetching && fetchNextPage()}
-        onEndReachedThreshold={0.4}
-        refreshControl={
-          <RefreshControl
-            refreshing={isRefetching}
-            onRefresh={reload}
-            progressViewOffset={headerHeight}
-          />
-        }
-        contentContainerStyle={[
-          styles.list,
-          { paddingTop: headerHeight, paddingBottom: bottomInset },
-        ]}
-        showsVerticalScrollIndicator={false}
-        testID="hours-list"
+    <View style={styles.root}>
+      <SheetBackdropScale progress={progress} style={styles.screen}>
+        <Animated.FlatList
+          data={items}
+          keyExtractor={(item) => item.id}
+          ListHeaderComponent={header}
+          renderItem={({ item, index }) => (
+            <Animated.View entering={enter(4 + Math.min(index, 4), reduced)} style={styles.item}>
+              <LogRow
+                log={item}
+                status={status}
+                onPress={onOpen}
+                highlight={item.id === highlightId}
+              />
+            </Animated.View>
+          )}
+          ListEmptyComponent={renderEmpty}
+          ListFooterComponent={
+            isFetchingNextPage ? (
+              <ActivityIndicator color={palette.navy} style={styles.more} />
+            ) : null
+          }
+          onScroll={onScroll}
+          scrollEventThrottle={16}
+          onEndReached={() => hasNextPage && !isFetching && fetchNextPage()}
+          onEndReachedThreshold={0.4}
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefetching}
+              onRefresh={reload}
+              progressViewOffset={insets.top}
+            />
+          }
+          contentContainerStyle={[styles.list, { paddingBottom: bottomInset }]}
+          showsVerticalScrollIndicator={false}
+          testID="hours-list"
+        />
+        <StatusBarScrim color={palette.paper} />
+        <LargeTitleHeader title={`${t('title')}`} scrollY={scrollY} compactOnly />
+      </SheetBackdropScale>
+
+      <AddHoursSheet ref={addSheet} animatedPosition={animatedPosition} onSent={onSent} />
+
+      <OrganizationSwitchSheet
+        ref={organizationSheet}
+        organizations={organizations}
+        activeId={organization?.id}
+        onSelect={onSwitch}
       />
-      {header}
 
       <Sheet
         ref={profileSheet}
         title={`${t('error_modal.title')}`}
         subtitle={`${t('error_modal.description')}`}
+        closeLabel={`${t('general:close')}`}
         testID="hours-profile-sheet"
       >
-        <VButton
+        <Button
           label={`${t('error_modal.action_btn_label')}`}
+          full
           onPress={() => {
             profileSheet.current?.dismiss();
             navigation.navigate('volunteer-profile');
           }}
         />
-        <VButton
-          variant="soft"
+        <Button
+          variant="outline"
           label={`${t('general:back')}`}
+          full
           onPress={() => profileSheet.current?.dismiss()}
         />
       </Sheet>
-      <StatusBarScrim />
     </View>
   );
 };
 
 export default ActivityLogs;
 
-const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.canvas },
-  list: { paddingHorizontal: spacing.gutter, flexGrow: 1 },
-  header: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 4,
-    backgroundColor: colors.canvas,
-    paddingHorizontal: spacing.gutter,
-    paddingBottom: 6,
-    shadowColor: '#000',
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 6 },
-  },
-  pinnedTitle: { gap: 4 },
-  pinnedStatus: { paddingTop: 4 },
-  summaryContent: { paddingTop: 4, gap: 4 },
-  titleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
+const styles = StyleSheet.create((theme) => ({
+  // behind the screen while it scales back under a sheet
+  root: { flex: 1, backgroundColor: theme.colors.black },
+  screen: { backgroundColor: theme.colors.paper },
+  list: { paddingHorizontal: theme.space.gutter, flexGrow: 1 },
+  header: { gap: 14, paddingBottom: 14 },
+  titleRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   back: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.white,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: theme.colors.card,
     alignItems: 'center',
     justifyContent: 'center',
   },
+  backPressed: { transform: [{ scale: 0.94 }] },
   title: { flex: 1 },
-  addButton: { minHeight: 40, flexShrink: 0 },
-  stats: { flexDirection: 'row', gap: 10, marginTop: 12, marginBottom: 12 },
-  stat: {
-    flex: 1,
-    borderRadius: radius.card,
-    paddingVertical: 12,
-    paddingHorizontal: 14,
-    gap: 2,
-  },
-  statValue: { fontFamily: fonts.title, fontSize: 22, lineHeight: 28, color: colors.ink },
+  item: { marginBottom: 10 },
   more: { paddingVertical: 20 },
-});
+}));

@@ -646,7 +646,8 @@
                 "title": "Nicio înregistrare refuzată",
                 "description": "Dacă organizația refuză ore, vezi aici motivul."
             }
-        }
+        },
+        "switch_organization": "Schimbă organizația"
     },
     "activity_log": {
         "title": "Ore de voluntariat",
@@ -664,7 +665,8 @@
         },
         "form": {
             "event": {
-                "label": "Eveniment"
+                "label": "Eveniment",
+                "placeholder": "Alege un eveniment"
             },
             "task": {
                 "label": "Activitate",
@@ -686,7 +688,7 @@
             },
             "mentions": {
                 "label": "Mențiuni",
-                "placeholder": "Adaugă mențiune",
+                "placeholder": "Ce-ai făcut? Ceva ce ar trebui să știe coordonatorul?",
                 "min": "Mențiunea poate să aibă minim {{value}} caractere",
                 "max": "Mențiunea poate să aibă maxim {{value}} caractere"
             }
@@ -721,6 +723,13 @@
             "pending": "În așteptare",
             "approved": "Aprobat",
             "rejected": "Respins"
+        },
+        "submit": "Trimite spre aprobare",
+        "success": {
+            "title": "Trimis spre aprobare",
+            "description_0": "O oră la {{name}}. Primești notificare când coordonatorul o aprobă.",
+            "description_1": "{{count}} ore la {{name}}. Primești notificare când coordonatorul le aprobă.",
+            "description_2": "{{count}} de ore la {{name}}. Primești notificare când coordonatorul le aprobă."
         }
     },
     "tabs": {
