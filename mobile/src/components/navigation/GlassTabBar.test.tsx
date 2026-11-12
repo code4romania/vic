@@ -9,6 +9,10 @@ import { nextCollapse, TabBarScrollProvider } from './TabBarScroll';
 import { resetTabBarOverlays, useHideTabBarWhile } from './tab-bar-overlay';
 
 jest.mock('expo-blur', () => ({ BlurView: () => null }));
+jest.mock('expo-glass-effect', () => ({
+  GlassView: () => null,
+  isLiquidGlassAvailable: () => false,
+}));
 
 const items: Record<string, GlassTabBarItem> = {
   dashboard: { icon: 'home', label: 'Acasă' },
@@ -67,9 +71,11 @@ describe('GlassTabBar', () => {
     expect(screen.getAllByRole('tab')).toHaveLength(5);
   });
 
-  it('marks the active tab with the yellow dot and switches tabs on press', async () => {
+  it('marks the active tab (yellow lens) and switches tabs on press', async () => {
     await renderTabs();
-    expect(screen.getByTestId('tab-dashboard-dot')).toBeTruthy();
+    expect(screen.getByTestId('tab-dashboard').props.accessibilityState).toEqual({
+      selected: true,
+    });
     expect(screen.getByText('page:dashboard')).toBeTruthy();
 
     await act(async () => {
@@ -77,8 +83,9 @@ describe('GlassTabBar', () => {
     });
 
     expect(await screen.findByText('page:hours')).toBeTruthy();
-    expect(screen.getByTestId('tab-hours-dot')).toBeTruthy();
-    expect(screen.queryByTestId('tab-dashboard-dot')).toBeNull();
+    expect(screen.getByTestId('tab-dashboard').props.accessibilityState).toEqual({
+      selected: false,
+    });
     expect(screen.getByTestId('tab-hours').props.accessibilityState).toEqual({ selected: true });
   });
 });
@@ -100,7 +107,7 @@ describe('tab bar and bottom sheets', () => {
   });
 });
 
-describe('tab bar collapse on scroll (canvas rule)', () => {
+describe('tab bar minimise on scroll (iOS 26 rule)', () => {
   const run = (offsets: number[]) => {
     let state = { collapsed: 0, accumulated: 0 };
     let previous = 0;
@@ -117,12 +124,13 @@ describe('tab bar collapse on scroll (canvas rule)', () => {
     expect(run([5, 10, 20, 24])).toEqual([0, 0, 0, 0]);
   });
 
-  it('collapses after 24pt once the user scrolled 10pt further down', () => {
-    expect(run([20, 28, 33])).toEqual([0, 0, 1]);
+  it('minimises after 24pt of scrolling down', () => {
+    expect(run([20, 30, 40, 45])).toEqual([0, 0, 0, 1]);
+    expect(run([20, 30, 40, 50])).toEqual([0, 0, 0, 1]);
   });
 
   it('expands again after 10pt of scrolling up, and ignores small jitter', () => {
-    expect(run([20, 40, 60, 55, 60, 52, 49])).toEqual([0, 1, 1, 1, 1, 1, 0]);
+    expect(run([20, 40, 60, 55, 60, 52, 49])).toEqual([0, 0, 1, 1, 1, 1, 0]);
   });
 
   it('always expands when back at the top', () => {

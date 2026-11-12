@@ -1,4 +1,9 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationOptions,
+} from '@react-navigation/native-stack';
+import { duration } from '../design/motion';
+import { palette } from '../design/tokens';
 import React from 'react';
 import ActivityLog from '../screens/ActivityLog';
 import ActivityLogs from '../screens/ActivityLogs';
@@ -24,8 +29,18 @@ import DeleteAccount from '../screens/DeleteAccount';
 
 const { Navigator, Screen, Group } = createNativeStackNavigator();
 
+// „Îndrăzneț” push: a 420 ms lateral push, the screen below shifts and dims (native on iOS), the
+// whole edge swipes back, and every screen sits on paper.
+const pushOptions: NativeStackNavigationOptions = {
+  headerShown: false,
+  animation: 'slide_from_right',
+  animationDuration: duration.push,
+  fullScreenGestureEnabled: true,
+  contentStyle: { backgroundColor: palette.paper },
+};
+
 const Private = () => (
-  <Navigator screenOptions={{ headerShown: false }}>
+  <Navigator screenOptions={pushOptions}>
     <Group>
       <Screen name="home" component={Tabs} />
       <Screen name="news" component={News} />
@@ -41,7 +56,7 @@ const Private = () => (
       <Screen name="notifications-settings" component={NotificationsSettings} />
       <Screen name="documents" component={Documents} />
     </Group>
-    <Group screenOptions={{ presentation: 'modal' }}>
+    <Group screenOptions={{ presentation: 'modal', animation: 'default' }}>
       <Screen name="leave-organization" component={LeaveOrganization} />
       <Screen name="edit-volunteer" component={EditVolunteer} />
       <Screen name="add-activity-log" component={AddActivityLog} />
