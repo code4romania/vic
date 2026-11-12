@@ -1,7 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { colors, fonts, radius } from '../../common/theme/tokens';
-import { PressableScale, VText } from '../ui';
+import { Stepper } from '../../design/components/Stepper';
 
 export interface HoursStepperProps {
   label: string;
@@ -14,7 +12,15 @@ export interface HoursStepperProps {
   testID?: string;
 }
 
-/** "Număr de ore" with − and + (canvas boards Ore and OraDetaliu). */
+// „o oră”, „5 ore”, „20 de ore” (Romanian adds „de” from 20 up)
+const spokenHours = (hours: number) =>
+  hours === 1
+    ? 'o oră'
+    : hours % 100 >= 20 || (hours > 0 && hours % 100 === 0)
+      ? `${hours} de ore`
+      : `${hours} ore`;
+
+/** "Număr de ore" on the „Îndrăzneț” Stepper: − and +, the value „4h” rolls between them. */
 export const HoursStepper = ({
   label,
   value,
@@ -24,71 +30,21 @@ export const HoursStepper = ({
   error,
   disabled,
   testID = 'hours-stepper',
-}: HoursStepperProps) => {
-  const step = (delta: number) => onChange(Math.min(max, Math.max(min, (value || 0) + delta)));
-  return (
-    <View style={styles.wrap}>
-      <View style={[styles.box, !!error && styles.boxError]} testID={testID}>
-        <View style={styles.text}>
-          <VText variant="cap">{label}</VText>
-          <VText style={styles.value} testID={`${testID}-value`}>
-            {`${value || 0}h`}
-          </VText>
-        </View>
-        <PressableScale
-          onPress={() => step(-1)}
-          disabled={disabled || value <= min}
-          style={[styles.button, (disabled || value <= min) && styles.off]}
-          accessibilityLabel="−1"
-          testID={`${testID}-minus`}
-        >
-          <VText style={styles.sign}>−</VText>
-        </PressableScale>
-        <PressableScale
-          onPress={() => step(1)}
-          disabled={disabled || value >= max}
-          style={[styles.button, (disabled || value >= max) && styles.off]}
-          accessibilityLabel="+1"
-          testID={`${testID}-plus`}
-        >
-          <VText style={styles.sign}>+</VText>
-        </PressableScale>
-      </View>
-      {!!error && (
-        <VText variant="cap" color={colors.danger}>
-          {error}
-        </VText>
-      )}
-    </View>
-  );
-};
+}: HoursStepperProps) => (
+  <Stepper
+    label={label}
+    value={value || 0}
+    onChange={onChange}
+    min={min}
+    max={max}
+    error={error}
+    disabled={disabled}
+    formatValue={(hours) => `${hours}h`}
+    accessibilityValueText={spokenHours}
+    decrementLabel="O oră mai puțin"
+    incrementLabel="O oră în plus"
+    testID={testID}
+  />
+);
 
 export default HoursStepper;
-
-const styles = StyleSheet.create({
-  wrap: { gap: 6 },
-  box: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    borderRadius: radius.field,
-    borderWidth: 1,
-    borderColor: colors.line,
-    paddingVertical: 10,
-    paddingLeft: 16,
-    paddingRight: 10,
-  },
-  boxError: { borderColor: colors.danger },
-  text: { flex: 1, gap: 2 },
-  value: { fontFamily: fonts.bold, fontSize: 18, lineHeight: 24, color: colors.ink },
-  button: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.soft,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  off: { opacity: 0.4 },
-  sign: { fontFamily: fonts.bold, fontSize: 20, lineHeight: 24, color: colors.ink },
-});

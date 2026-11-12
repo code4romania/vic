@@ -1,8 +1,6 @@
-import React, { ReactNode, useState } from 'react';
-import { ActivityIndicator, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
-import { PressableScale, PressableScaleProps } from './PressableScale';
-import { VText } from './VText';
-import { colors, radius } from '../../common/theme/tokens';
+import React, { ReactNode } from 'react';
+import { Insets, StyleProp, ViewStyle } from 'react-native';
+import { Button, ButtonSize, ButtonVariant } from '../../design/components/Button';
 
 export type VButtonVariant = 'primary' | 'navy' | 'outline' | 'soft' | 'danger';
 
@@ -19,97 +17,33 @@ export interface VButtonProps {
   accessibilityHint?: string;
   /** Spoken label when the visible one is shortened; defaults to `label`. */
   accessibilityLabel?: string;
-  hitSlop?: PressableScaleProps['hitSlop'];
+  hitSlop?: number | Insets | null;
   maxFontSizeMultiplier?: number;
 }
 
-const palette: Record<
-  VButtonVariant,
-  { bg: string; pressed: string; fg: string; border?: string }
-> = {
-  primary: { bg: colors.yellow, pressed: colors.yellowPressed, fg: colors.navy },
-  navy: { bg: colors.navy, pressed: colors.navy, fg: colors.white },
-  outline: { bg: colors.white, pressed: colors.soft, fg: colors.ink, border: colors.ink },
-  soft: { bg: colors.soft, pressed: colors.line, fg: colors.ink },
-  danger: { bg: colors.danger, pressed: colors.danger, fg: colors.white },
+// The „Îndrăzneț” button has four variants: the soft (gray) button becomes the outline one and the
+// filled red one becomes the red outline (destructive).
+const VARIANT: Record<VButtonVariant, ButtonVariant> = {
+  primary: 'primary',
+  navy: 'secondary',
+  outline: 'outline',
+  soft: 'outline',
+  danger: 'destructive',
 };
+
+const SIZE: Record<NonNullable<VButtonProps['size']>, ButtonSize> = { regular: 'L', small: 'S' };
 
 /**
- * VIC 2.0 button. Yellow (`primary`) is only for the main action of a screen, with navy text.
- * Minimum heights: 52 (regular) and 36 (small pill); labels can wrap.
+ * Legacy name of the „Îndrăzneț” Button (src/design/components/Button). Yellow (`primary`) is only
+ * for the main action of a screen, with navy text.
  */
 export const VButton = ({
-  label,
-  onPress,
   variant = 'primary',
   size = 'regular',
-  loading,
-  disabled,
-  icon,
-  style,
-  testID,
-  accessibilityHint,
-  accessibilityLabel,
   hitSlop,
-  maxFontSizeMultiplier,
-}: VButtonProps) => {
-  const [pressed, setPressed] = useState(false);
-  const p = palette[variant];
-  const inactive = disabled || loading;
-
-  return (
-    <PressableScale
-      testID={testID}
-      accessibilityLabel={accessibilityLabel ?? label}
-      accessibilityHint={accessibilityHint}
-      hitSlop={hitSlop}
-      accessibilityState={{ disabled: !!inactive, busy: !!loading }}
-      disabled={inactive}
-      onPress={onPress}
-      onPressIn={() => setPressed(true)}
-      onPressOut={() => setPressed(false)}
-      style={[
-        styles.base,
-        size === 'small' ? styles.small : styles.regular,
-        { backgroundColor: pressed ? p.pressed : p.bg },
-        p.border ? [styles.bordered, { borderColor: p.border }] : null,
-        inactive && !loading ? styles.disabled : null,
-        style,
-      ]}
-    >
-      {loading ? (
-        <ActivityIndicator color={p.fg} size="small" />
-      ) : (
-        <View style={styles.content}>
-          {icon}
-          <VText
-            variant="button"
-            color={p.fg}
-            {...(maxFontSizeMultiplier !== undefined ? { maxFontSizeMultiplier } : {})}
-            style={[styles.label, size === 'small' ? styles.smallLabel : null]}
-          >
-            {label}
-          </VText>
-        </View>
-      )}
-    </PressableScale>
-  );
-};
+  ...props
+}: VButtonProps) => (
+  <Button {...props} variant={VARIANT[variant]} size={SIZE[size]} hitSlop={hitSlop ?? undefined} />
+);
 
 export default VButton;
-
-const styles = StyleSheet.create({
-  base: { alignItems: 'center', justifyContent: 'center', flexDirection: 'row' },
-  regular: {
-    minHeight: 52,
-    paddingVertical: 12,
-    borderRadius: radius.button,
-    paddingHorizontal: 20,
-  },
-  small: { minHeight: 36, paddingVertical: 6, borderRadius: 18, paddingHorizontal: 14 },
-  label: { flexShrink: 1, textAlign: 'center' },
-  smallLabel: { fontSize: 14 },
-  content: { flexShrink: 1, flexDirection: 'row', alignItems: 'center', gap: 8 },
-  disabled: { opacity: 0.4 },
-  bordered: { borderWidth: 1 },
-});

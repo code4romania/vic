@@ -1,35 +1,24 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { VText } from './VText';
-import { colors, radius, StatusTone } from '../../common/theme/tokens';
+import { StatusTone } from '../../common/theme/tokens';
+import { StatusChip, StatusKind } from '../../design/components/Chip';
 
 export interface BadgeProps {
   label: string;
   tone?: StatusTone;
 }
 
-/** Status badge: ok (green), wait (amber), no (red), neutral (gray), accent (yellow). */
-export const Badge = ({ label, tone = 'neutral' }: BadgeProps) => {
-  const c = colors.status[tone];
-  return (
-    <View style={[styles.badge, { backgroundColor: c.bg }]}>
-      <VText variant="cap" color={c.fg} style={styles.label} numberOfLines={1}>
-        {label}
-      </VText>
-    </View>
-  );
+// legacy tones → „Îndrăzneț” status pills (each with a color plus an icon or texture)
+const KIND: Record<StatusTone, StatusKind> = {
+  ok: 'ok',
+  wait: 'wait',
+  no: 'no',
+  neutral: 'exp',
+  accent: 'act',
 };
 
-export default Badge;
+/** Status badge: ok (green ✓), wait (striped), no (red ✕), neutral (slate), accent (navy/yellow). */
+export const Badge = ({ label, tone = 'neutral' }: BadgeProps) => (
+  <StatusChip label={label} kind={KIND[tone]} />
+);
 
-const styles = StyleSheet.create({
-  badge: {
-    height: 22,
-    paddingHorizontal: 8,
-    borderRadius: radius.badge,
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'flex-start',
-  },
-  label: { fontFamily: 'roboto-bold' },
-});
+export default Badge;

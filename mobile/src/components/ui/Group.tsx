@@ -1,15 +1,26 @@
-import React from 'react';
-import { StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
-import { colors, radius, shadows } from '../../common/theme/tokens';
+import React, { createContext, useContext } from 'react';
+import { StyleSheet, ViewProps, ViewStyle } from 'react-native';
+import { Group as DesignGroup } from '../../design/components/Group';
+import { palette as colors, radius, space } from '../../design/tokens';
+
+/** Horizontal padding of the legacy Group; rows inside bleed over it so their press fills the width. */
+const GROUP_INSET = space.l;
+const GroupInsetContext = createContext(0);
+
+/** The horizontal padding of the Group around this row (0 outside a Group). */
+export const useGroupInset = () => useContext(GroupInsetContext);
 
 /**
- * White rounded block that groups rows (list rows, event cards) on the tinted page background, like
- * iOS inset-grouped lists. Rows keep their own hairlines between them.
+ * White block (radius 24, overflow hidden) that groups rows and event cards on the paper
+ * background. Legacy API over the „Îndrăzneț” Group: it pads its content (event cards, info rows
+ * expect it) and the rows keep their own hairlines (`divider`).
  */
 export const Group = ({ style, children, ...props }: ViewProps) => (
-  <View {...props} style={[styles.group, shadows.card, style]}>
-    {children}
-  </View>
+  <GroupInsetContext.Provider value={GROUP_INSET}>
+    <DesignGroup {...props} separators={false} padded style={style}>
+      {children}
+    </DesignGroup>
+  </GroupInsetContext.Provider>
 );
 
 /**
@@ -25,12 +36,7 @@ export const groupedItem = (index: number, count: number): ViewStyle[] => [
 export default Group;
 
 const styles = StyleSheet.create({
-  group: {
-    backgroundColor: colors.white,
-    borderRadius: radius.card,
-    paddingHorizontal: 16,
-  },
-  item: { backgroundColor: colors.white, paddingHorizontal: 16, overflow: 'hidden' },
+  item: { backgroundColor: colors.card, paddingHorizontal: GROUP_INSET, overflow: 'hidden' },
   first: { borderTopLeftRadius: radius.card, borderTopRightRadius: radius.card },
   last: { borderBottomLeftRadius: radius.card, borderBottomRightRadius: radius.card },
   middle: {},

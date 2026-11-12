@@ -18,7 +18,7 @@ interface FormInputProps extends Omit<TextInputProps, 'style'> {
   [key: string]: any;
 }
 
-/** react-hook-form field in the VIC 2.0 style (label inside an outlined box). */
+/** react-hook-form field in the „Îndrăzneț” style (label above, red asterisk when required). */
 const FormInput: React.FC<FormInputProps> = ({
   control,
   name,
@@ -38,7 +38,8 @@ const FormInput: React.FC<FormInputProps> = ({
     name={name}
     render={({ field: { onChange, onBlur, value } }) => (
       <VTextField
-        label={required ? `${label} *` : label}
+        label={label}
+        required={required}
         placeholder={placeholder}
         secureTextEntry={secureTextEntry}
         onBlur={onBlur}

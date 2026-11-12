@@ -1,9 +1,8 @@
 import React, { ReactNode } from 'react';
-import { StyleSheet, View } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
-import { PressableScale } from './PressableScale';
-import { VText } from './VText';
-import { colors } from '../../common/theme/tokens';
+import { StyleSheet } from 'react-native';
+import { ListRow as DesignListRow, RowChevron } from '../../design/components/ListRow';
+import { palette as colors } from '../../design/tokens';
+import { useGroupInset } from './Group';
 
 export interface ListRowProps {
   title: string;
@@ -20,19 +19,12 @@ export interface ListRowProps {
   testID?: string;
 }
 
-export const Chevron = ({ color = colors.subtle }: { color?: string }) => (
-  <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
-    <Path
-      d="m9 6 6 6-6 6"
-      stroke={color}
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </Svg>
-);
+export const Chevron = ({ color }: { color?: string }) => <RowChevron color={color} />;
 
-/** Settings-style row: optional leading icon, title + subtitle, chevron when pressable. */
+/**
+ * Settings-style row, legacy API over the „Îndrăzneț” ListRow (60pt, Manrope 700 15.5 title,
+ * pressed tint). Inside a Group it bleeds over the group padding so the press fills the width.
+ */
 export const ListRow = ({
   title,
   subtitle,
@@ -45,48 +37,32 @@ export const ListRow = ({
   subtitleLines,
   testID,
 }: ListRowProps) => {
-  const content = (
-    <>
-      {leading}
-      <View style={styles.text}>
-        <VText
-          variant="bodyStrong"
-          color={destructive ? colors.danger : colors.ink}
-          numberOfLines={titleLines}
-        >
-          {title}
-        </VText>
-        {!!subtitle && (
-          <VText variant="sub" numberOfLines={subtitleLines}>
-            {subtitle}
-          </VText>
-        )}
-      </View>
-      {trailing ?? (onPress ? <Chevron /> : null)}
-    </>
-  );
-  const style = [styles.row, divider ? styles.divider : null];
-  return onPress ? (
-    <PressableScale
-      testID={testID}
+  const inset = useGroupInset();
+  return (
+    <DesignListRow
+      title={title}
+      subtitle={subtitle}
+      leading={leading}
+      trailing={trailing}
       onPress={onPress}
+      danger={destructive}
+      titleLines={titleLines}
+      subtitleLines={subtitleLines}
       accessibilityLabel={title}
-      style={style}
-      pressedScale={0.99}
-    >
-      {content}
-    </PressableScale>
-  ) : (
-    <View testID={testID} style={style}>
-      {content}
-    </View>
+      testID={testID}
+      inset={inset > 0}
+      style={[
+        inset > 0 ? { marginHorizontal: -inset } : styles.bare,
+        divider ? styles.divider : null,
+      ]}
+    />
   );
 };
 
 export default ListRow;
 
 const styles = StyleSheet.create({
-  row: { flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 16 },
+  // outside a Group the parent pads the row horizontally
+  bare: { paddingVertical: 12 },
   divider: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.line },
-  text: { flex: 1, gap: 2 },
 });

@@ -1,8 +1,5 @@
 import React, { ReactNode } from 'react';
-import { StyleSheet } from 'react-native';
-import { PressableScale } from './PressableScale';
-import { VText } from './VText';
-import { colors, radius } from '../../common/theme/tokens';
+import { OptionChip } from '../../design/components/Chip';
 
 export interface ChipProps {
   label: string;
@@ -12,46 +9,12 @@ export interface ChipProps {
   testID?: string;
 }
 
-/** Filter chip, 36 high. Selected chips are filled ink with white text. */
+/**
+ * Filter chip, now the „Îndrăzneț” quick option: 34 high, navy with yellow text when selected.
+ * A long organization name is cut with "…" instead of leaving the card.
+ */
 export const Chip = ({ label, selected, onPress, icon, testID }: ChipProps) => (
-  <PressableScale
-    testID={testID}
-    onPress={onPress}
-    accessibilityRole="button"
-    accessibilityState={{ selected: !!selected }}
-    accessibilityLabel={label}
-    style={[styles.chip, selected ? styles.on : null]}
-  >
-    {icon}
-    <VText
-      variant="label"
-      color={selected ? colors.white : colors.ink}
-      numberOfLines={1}
-      ellipsizeMode="tail"
-      style={styles.label}
-    >
-      {label}
-    </VText>
-  </PressableScale>
+  <OptionChip label={label} selected={!!selected} onPress={onPress} icon={icon} testID={testID} />
 );
 
 export default Chip;
-
-const styles = StyleSheet.create({
-  chip: {
-    height: 36,
-    // a long organization name is cut with "…" instead of leaving the card
-    maxWidth: '100%',
-    flexShrink: 1,
-    paddingHorizontal: 14,
-    borderRadius: radius.chip,
-    borderWidth: 1,
-    borderColor: colors.line,
-    backgroundColor: colors.white,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  label: { flexShrink: 1 },
-  on: { backgroundColor: colors.navy, borderColor: colors.navy },
-});
