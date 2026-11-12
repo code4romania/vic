@@ -4,6 +4,7 @@ import { fireEvent, render, screen } from '@testing-library/react-native';
 import '../common/config/i18n';
 import MissingEntity from '../screens/MissingEntity';
 import { toastConfig } from '../common/config/toast';
+import { palette } from '../design/tokens';
 
 const metrics = {
   frame: { x: 0, y: 0, width: 390, height: 844 },
@@ -50,7 +51,7 @@ describe('VIC 2.0 states', () => {
     expect(screen.queryByTestId('state-back')).toBeNull();
   });
 
-  it('toasts are white cards with a colored dot for success, error and info', async () => {
+  it('toasts are navy pills with an icon circle for success, error and info', async () => {
     await render(
       <>
         {toastConfig.success({ text1: 'Răspunsul a fost trimis' })}
@@ -62,5 +63,7 @@ describe('VIC 2.0 states', () => {
     expect(screen.getByTestId('toast-no')).toBeTruthy();
     expect(screen.getByTestId('toast-neutral')).toBeTruthy();
     expect(screen.getByText('cod #E502')).toBeTruthy();
+    expect(screen.getByTestId('toast-ok')).toHaveStyle({ backgroundColor: palette.navy });
+    expect(screen.getByText('Răspunsul a fost trimis')).toHaveStyle({ color: palette.white });
   });
 });

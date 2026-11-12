@@ -2,7 +2,8 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import { Avatar, Badge, initials, SegmentedControl, UnderlineTabs, VButton } from '.';
-import { colors, fonts } from '../../common/theme/tokens';
+import { colors } from '../../common/theme/tokens';
+import { fontFamily, palette } from '../../design/tokens';
 
 describe('VButton', () => {
   it('uses yellow with navy text for the primary action', async () => {
@@ -50,24 +51,25 @@ describe('SegmentedControl', () => {
 });
 
 describe('UnderlineTabs', () => {
-  it('marks the active tab with a bold navy label', async () => {
+  it('marks the active tab with a navy label on the yellow thumb, the others white on navy', async () => {
     const tabs = [
       { key: 'open', label: 'Deschise' },
       { key: 'going', label: 'Particip' },
     ];
     await render(<UnderlineTabs testID="tabs" value="open" onChange={jest.fn()} tabs={tabs} />);
     expect(screen.getByTestId('tabs-open').props.accessibilityState).toEqual({ selected: true });
+    expect(screen.getByTestId('tabs-going').props.accessibilityState).toEqual({ selected: false });
     expect(screen.getByText('Deschise')).toHaveStyle({
-      color: colors.navy,
-      fontFamily: fonts.bold,
+      color: palette.navy,
+      fontFamily: fontFamily.textHeavy,
     });
     expect(screen.getByText('Particip')).toHaveStyle({
-      color: colors.muted,
-      fontFamily: fonts.medium,
+      color: 'rgba(255,255,255,0.75)',
+      fontFamily: fontFamily.textHeavy,
     });
   });
 
-  it('sizes and positions the underline from the active tab layout', async () => {
+  it('sizes and positions the thumb from the active tab layout', async () => {
     const onChange = jest.fn();
     const tabs = [
       { key: 'open', label: 'Deschise' },
