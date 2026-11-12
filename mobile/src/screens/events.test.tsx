@@ -116,6 +116,14 @@ beforeEach(() => {
 const lastCall = () => mockCalls[mockCalls.length - 1];
 
 describe('Evenimente', () => {
+  it('shows only the search title in the pill when no filters are active', async () => {
+    await renderApp();
+    const pill = await screen.findByTestId('events-search-pill');
+    expect(within(pill).getByText('Caută evenimente')).toBeTruthy();
+    expect(screen.queryByText('Oricând · toate organizațiile')).toBeNull();
+    expect(pill.props.accessibilityLabel).toBe('Caută evenimente');
+  });
+
   it('opens on "Deschise" and lists events with date, place and organizer', async () => {
     await renderApp();
     expect(await screen.findByText('Eveniment 1')).toBeTruthy();
@@ -164,7 +172,11 @@ describe('Evenimente', () => {
     expect(filters.startTo).toBeDefined();
     expect(screen.getByTestId('events-filter-count')).toBeTruthy();
     expect(within(screen.getByTestId('events-filter-count')).getByText('2')).toBeTruthy();
-    expect(screen.getByText('Săptămâna asta · Asociația Exemplu')).toBeTruthy();
+    const pill = screen.getByTestId('events-search-pill');
+    expect(within(pill).getByText('Săptămâna asta · Asociația Exemplu')).toBeTruthy();
+    expect(pill.props.accessibilityLabel).toBe(
+      'Caută evenimente. Săptămâna asta · Asociația Exemplu',
+    );
   });
 
   it('no results: says so and "Șterge tot" brings the list back', async () => {

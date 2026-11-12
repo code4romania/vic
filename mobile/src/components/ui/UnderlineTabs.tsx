@@ -1,13 +1,8 @@
-import React, { ReactNode, useEffect, useState } from 'react';
-import { LayoutChangeEvent, Pressable, StyleSheet, View } from 'react-native';
-import Animated, {
-  useAnimatedStyle,
-  useReducedMotion,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
+import React, { ReactNode, useState } from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
+import Animated, { useAnimatedStyle, useReducedMotion, withTiming } from 'react-native-reanimated';
 import { VText } from './VText';
-import { colors, motion } from '../../common/theme/tokens';
+import { colors, fonts, motion } from '../../common/theme/tokens';
 
 export interface UnderlineTab<T extends string> {
   key: T;
@@ -22,40 +17,33 @@ export interface UnderlineTabsProps<T extends string> {
   testID?: string;
 }
 
-const UNDERLINE_WIDTH = 72;
-
-/** Airbnb-style category tabs with an icon, a label and a 2px underline that slides. */
+/**
+ * Airbnb-style category tabs with an icon, a label and a 2px underline as wide as the active tab,
+ * which slides between tabs. No line under the whole row.
+ */
 export function UnderlineTabs<T extends string>({
   tabs,
   value,
   onChange,
   testID,
 }: UnderlineTabsProps<T>) {
-  const [width, setWidth] = useState(0);
-  const index = Math.max(
-    0,
-    tabs.findIndex((tab) => tab.key === value),
-  );
-  const tabWidth = width / Math.max(1, tabs.length);
-  const left = useSharedValue(0);
+  const [layouts, setLayouts] = useState<Partial<Record<T, { x: number; width: number }>>>({});
+  const activeTab = tabs.find((tab) => tab.key === value) ?? tabs[0];
+  const activeLayout = activeTab ? layouts[activeTab.key] : undefined;
+  const left = activeLayout?.x ?? 0;
+  const width = activeLayout?.width ?? 0;
   const reducedMotion = useReducedMotion();
 
-  useEffect(() => {
-    const target = index * tabWidth + (tabWidth - UNDERLINE_WIDTH) / 2;
-    left.value = reducedMotion
-      ? target
-      : withTiming(target, { duration: 380, easing: motion.indicator.easing });
-  }, [index, tabWidth, reducedMotion, left]);
-
-  const underlineStyle = useAnimatedStyle(() => ({ transform: [{ translateX: left.value }] }));
+  const underlineStyle = useAnimatedStyle(() => {
+    const timing = { duration: 380, easing: motion.indicator.easing };
+    return {
+      width: reducedMotion ? width : withTiming(width, timing),
+      transform: [{ translateX: reducedMotion ? left : withTiming(left, timing) }],
+    };
+  }, [left, width, reducedMotion]);
 
   return (
-    <View
-      testID={testID}
-      accessibilityRole="tablist"
-      style={styles.container}
-      onLayout={(event: LayoutChangeEvent) => setWidth(event.nativeEvent.layout.width)}
-    >
+    <View testID={testID} accessibilityRole="tablist" style={styles.container}>
       {tabs.map((tab) => {
         const active = tab.key === value;
         return (
@@ -66,16 +54,29 @@ export function UnderlineTabs<T extends string>({
             accessibilityState={{ selected: active }}
             accessibilityLabel={tab.label}
             onPress={() => onChange(tab.key)}
+            onLayout={(event) => {
+              const { x, width: tabWidth } = event.nativeEvent.layout;
+              setLayouts((previous) => ({ ...previous, [tab.key]: { x, width: tabWidth } }));
+            }}
             style={styles.tab}
           >
             {tab.icon?.(active)}
-            <VText variant="cap" color={active ? colors.navy : colors.muted} style={styles.label}>
+            <VText
+              variant="cap"
+              color={active ? colors.navy : colors.muted}
+              style={active ? styles.activeLabel : styles.label}
+            >
               {tab.label}
             </VText>
           </Pressable>
         );
       })}
-      {width > 0 && <Animated.View style={[styles.underline, underlineStyle]} />}
+      {activeLayout && width > 0 && (
+        <Animated.View
+          testID={testID ? `${testID}-indicator` : undefined}
+          style={[styles.underline, underlineStyle]}
+        />
+      )}
     </View>
   );
 }
@@ -83,18 +84,14 @@ export function UnderlineTabs<T extends string>({
 export default UnderlineTabs;
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: colors.line,
-  },
+  container: { flexDirection: 'row' },
   tab: { flex: 1, alignItems: 'center', gap: 6, paddingTop: 8, paddingBottom: 12 },
-  label: { fontFamily: 'roboto-medium' },
+  label: { fontFamily: fonts.medium },
+  activeLabel: { fontFamily: fonts.bold },
   underline: {
     position: 'absolute',
     bottom: 0,
     left: 0,
-    width: UNDERLINE_WIDTH,
     height: 2,
     borderRadius: 1,
     backgroundColor: colors.navy,
