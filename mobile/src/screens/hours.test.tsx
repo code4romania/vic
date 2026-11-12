@@ -142,6 +142,21 @@ beforeEach(() => {
 afterEach(() => queryClient.clear());
 
 describe('Ore', () => {
+  it('keeps the title, totals and status fixed above the scrolling list', async () => {
+    await renderApp();
+    const list = within(await screen.findByTestId('hours-list'));
+    expect(screen.getByTestId('hours-title-row')).toBeTruthy();
+    expect(screen.getByTestId('hours-status')).toBeTruthy();
+    expect(list.queryByTestId('hours-title-row')).toBeNull();
+    expect(list.queryByTestId('hours-status')).toBeNull();
+    expect(list.queryByTestId('hours-summary')).toBeNull();
+
+    const summary = within(screen.getByTestId('hours-summary'));
+    for (const status of ['approved', 'pending', 'rejected']) {
+      expect(summary.getByTestId(`hours-total-${status}`)).toBeTruthy();
+    }
+  });
+
   it('refetches the current list and counters on initial focus and when returning', async () => {
     await renderApp();
     expect(mockRefetchList).toHaveBeenCalledTimes(1);
@@ -232,6 +247,18 @@ describe('Ore', () => {
     await renderApp();
     await fireEvent.press(await screen.findByTestId('hours-add'));
     expect(screen.getByText('Completează datele')).toBeTruthy();
+  });
+
+  it('places the add action beside the title and opens the add-activity-log screen', async () => {
+    await renderApp();
+    const titleRow = within(await screen.findByTestId('hours-title-row'));
+    expect(titleRow.getByText(i18n.t('activity_logs:title'))).toBeTruthy();
+    expect(titleRow.getByText('+ Adaugă')).toBeTruthy();
+    // short visible label, full spoken label
+    expect(titleRow.getByTestId('hours-add').props.accessibilityLabel).toBe('Adaugă ore');
+    await fireEvent.press(titleRow.getByTestId('hours-add'));
+    expect(await screen.findByText('Adaugă ore de voluntariat')).toBeTruthy();
+    expect(screen.getByTestId('hours-stepper-value').props.children).toBe('1h');
   });
 
   it('asks before closing changed hours and keeps them when staying', async () => {

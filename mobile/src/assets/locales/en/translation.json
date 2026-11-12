@@ -589,6 +589,7 @@
       "action_btn_label": "Complete data"
     },
     "add": "Add hours",
+    "add_short": "Add",
     "at": "At {{name}}",
     "totals": {
       "approved": "approved",

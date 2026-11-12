@@ -612,6 +612,7 @@
             "action_btn_label": "Completează datele"
         },
         "add": "Adaugă ore",
+        "add_short": "Adaugă",
         "at": "La {{name}}",
         "totals": {
             "approved": "aprobate",
