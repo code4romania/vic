@@ -1,5 +1,4 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -12,7 +11,12 @@ import { ClientContractStatus } from '../common/enums/client-contract-status.enu
 import API from '../services/api';
 import { getContractsHistory } from '../services/contract/contract.api';
 import { OrderDirection } from '../common/enums/order-direction.enum';
-import { formatContractDay } from '../components/documents/DocumentRow';
+import {
+  contractProgress,
+  daysLeft,
+  formatContractDay,
+  pickExpiringSoon,
+} from '../components/documents/DocumentRow';
 
 jest.mock('../services/api', () => ({
   __esModule: true,
@@ -107,11 +111,12 @@ describe('Documente', () => {
   it('lists the uploaded contracts with their period and status (#486, #488)', async () => {
     await renderApp();
     const header = within(await screen.findByTestId('documents-header'));
-    expect(header.getByText('Documente')).toBeTruthy();
+    expect(header.getByRole('header', { name: 'Contractele tale' })).toBeTruthy();
     expect(header.getByText('La Asociația Exemplu')).toBeTruthy();
-    const list = within(screen.getByTestId('documents-list'));
-    expect(list.queryByText('Documente')).toBeNull();
-    expect(list.queryByText('La Asociația Exemplu')).toBeNull();
+    // the large title scrolls with the list; the compact bar repeats the tab name
+    expect(within(screen.getByTestId('documents-list')).getByText('Contractele tale')).toBeTruthy();
+    const bar = screen.getByTestId('documents-compact-bar', { includeHiddenElements: true });
+    expect(within(bar).getByText('Documente', { includeHiddenElements: true })).toBeTruthy();
     const signed = screen.getByTestId('document-row-3');
     expect(within(signed).getByText('Contract 3/2026')).toBeTruthy();
     expect(within(signed).getByText('15 ian 2026 – 15 ian 2027')).toBeTruthy();
@@ -124,8 +129,47 @@ describe('Documente', () => {
     expect(screen.queryByTestId('documents-back')).toBeNull();
     expect(within(screen.getByTestId('document-row-0')).getByText('Expirat')).toBeTruthy();
     expect(screen.queryByText(/Vezi toate/)).toBeNull();
-    expect(screen.queryByText('Contractele tale')).toBeNull();
     expect(screen.queryByText(/semnătura ta/)).toBeNull();
+  });
+
+  it('features the contract that expires soonest, with the days left (#488)', async () => {
+    const inDays = (days: number) => new Date(Date.now() + days * 86400000 - 3600000).toISOString();
+    mockSigned = [
+      contract('3', ClientContractStatus.SIGNED),
+      contract('late', ClientContractStatus.SIGNED, { expiringSoon: true, endDate: inDays(20) }),
+      contract('soon', ClientContractStatus.SIGNED, { expiringSoon: true, endDate: inDays(7) }),
+    ];
+    mockHistory = page(mockSigned);
+    await renderApp();
+    const featured = await screen.findByTestId('document-row-soon');
+    expect(within(featured).getByText('7 zile rămase')).toBeTruthy();
+    expect(within(featured).getByText('Expiră în curând')).toBeTruthy();
+    expect(within(featured).getByText('soon/2026')).toBeTruthy();
+    expect(within(featured).getByText('Descarcă contractul')).toBeTruthy();
+    // the other one that expires soon stays a row with the orange chip
+    const later = screen.getByTestId('document-row-late');
+    expect(within(later).queryByText(/rămase/)).toBeNull();
+    expect(within(later).getByText('Expiră în curând')).toBeTruthy();
+    await fireEvent.press(featured);
+    expect(mockDownload).toHaveBeenCalledWith(expect.objectContaining({ id: 'soon' }));
+  });
+
+  it('only the featured contract loaded: no empty state under it', async () => {
+    mockHistory = page([contract('2', ClientContractStatus.SIGNED, { expiringSoon: true })]);
+    await renderApp();
+    expect(await screen.findByTestId('document-row-2')).toBeTruthy();
+    expect(screen.queryByTestId('documents-empty')).toBeNull();
+  });
+
+  it('every contract has a validity bar; a certificate has none', async () => {
+    mockSigned = [
+      contract('3', ClientContractStatus.SIGNED),
+      contract('9', ClientContractStatus.SIGNED, { type: 'CERTIFICATE', endDate: null }),
+    ];
+    mockHistory = page(mockSigned);
+    await renderApp();
+    expect(await screen.findByTestId('document-bar-3', { includeHiddenElements: true })).toBeTruthy();
+    expect(screen.queryByTestId('document-bar-9', { includeHiddenElements: true })).toBeNull();
   });
 
   it('shows a certificate as "Adeverință", issued on a day (#490)', async () => {
@@ -237,19 +281,16 @@ describe('Documente', () => {
     expect(
       within(screen.getByTestId('documents-header')).getByTestId('documents-back'),
     ).toBeTruthy();
-    expect(within(screen.getByTestId('documents-list')).queryByTestId('documents-back')).toBeNull();
+    expect(screen.getByTestId('documents-back').props.accessibilityLabel).toBe('Înapoi');
   });
 
-  it('updates list padding and refresh offset when the header grows', async () => {
+  it('shows row skeletons while the first page loads', async () => {
+    mockHistory = page([]);
+    (mockHistory as any).data = undefined;
+    mockHistory.isFetching = true;
     await renderApp();
-    for (const height of [260, 340]) {
-      await fireEvent(screen.getByTestId('documents-header'), 'layout', {
-        nativeEvent: { layout: { x: 0, y: 0, width: 390, height } },
-      });
-      const list = screen.getByTestId('documents-list');
-      expect(StyleSheet.flatten(list.props.contentContainerStyle).paddingTop).toBe(height + 18);
-      expect(list.props.refreshControl.props.progressViewOffset).toBe(height);
-    }
+    expect(screen.getByTestId('documents-loading')).toBeTruthy();
+    expect(screen.queryByTestId('documents-empty')).toBeNull();
   });
 
   it('requests documents in descending order', async () => {
@@ -259,6 +300,26 @@ describe('Documente', () => {
     expect(API.get).toHaveBeenCalledWith('/mobile/contract/history', {
       params: { limit: 15, page: 2, orderDirection: OrderDirection.DESC, volunteerId: 'v1' },
     });
+  });
+
+  it('measures validity and the days left', () => {
+    const now = Date.parse('2026-07-15T00:00:00.000Z');
+    const signed = contract('a', ClientContractStatus.SIGNED) as any;
+    expect(contractProgress(signed, now)).toBeCloseTo(181 / 365, 2);
+    expect(contractProgress({ ...signed, status: ClientContractStatus.EXPIRED }, now)).toBe(1);
+    expect(contractProgress({ ...signed, endDate: null }, now)).toBeCloseTo(181 / 365, 2);
+    expect(contractProgress({ ...signed, type: 'CERTIFICATE' }, now)).toBeNull();
+    expect(contractProgress({ ...signed, startDate: '2027-01-01T00:00:00.000Z' }, now)).toBe(0);
+    expect(daysLeft(signed, now)).toBe(184);
+    expect(daysLeft({ ...signed, endDate: null }, now)).toBeNull();
+    expect(daysLeft({ ...signed, endDate: '2026-01-01T00:00:00.000Z' }, now)).toBe(0);
+    expect(
+      pickExpiringSoon([
+        { ...signed, id: 'x', expiringSoon: true, endDate: '2026-08-01T00:00:00.000Z' },
+        { ...signed, id: 'y', expiringSoon: true, endDate: '2026-07-20T00:00:00.000Z' },
+        { ...signed, id: 'z', endDate: '2026-07-16T00:00:00.000Z' },
+      ])?.id,
+    ).toBe('y');
   });
 
   it('formats contract days with Romanian short months', () => {

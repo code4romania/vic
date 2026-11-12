@@ -1,59 +1,60 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { ActivityIndicator, RefreshControl, StyleSheet, View } from 'react-native';
-import Animated, {
-  Extrapolation,
-  interpolate,
-  useAnimatedStyle,
-  useSharedValue,
-} from 'react-native-reanimated';
+import React, { useCallback, useMemo } from 'react';
+import { ActivityIndicator, RefreshControl, View } from 'react-native';
+import Animated, { useReducedMotion, useSharedValue } from 'react-native-reanimated';
 import { useFocusEffect } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet } from 'react-native-unistyles';
 import { useContractHistoryInfiniteQuery } from '../services/contract/contract.service';
-import { colors, shadows, spacing } from '../common/theme/tokens';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
-import { MAX_FONT_SCALE } from '../common/constants/constants';
 import { isTabRoute } from '../routes/tab-routes';
 import { useTabBarScroll } from '../components/navigation/TabBarScroll';
 import { useGlassTabBarInset } from '../components/navigation/GlassTabBar';
-import { EventIcon } from '../components/events/EventIcons';
-import { DocumentRow } from '../components/documents/DocumentRow';
-import { useDownloadContract } from '../components/documents/useDownloadContract';
-import DocumentSkeletonList from '../components/skeleton/documents-skeleton-list';
 import {
-  EmptyState,
-  Enter,
-  groupedItem,
-  PressableScale,
-  StatusBarScrim,
-  VText,
-} from '../components/ui';
+  DocumentRow,
+  FeaturedContract,
+  pickExpiringSoon,
+} from '../components/documents/DocumentRow';
+import { useDownloadContract } from '../components/documents/useDownloadContract';
+import { BackButton, CompactTitleBar } from '../components/ui/ScreenChrome';
+import { EmptyState } from '../components/ui';
+import { AppText } from '../design/components/Text';
+import { enter } from '../design/motion';
+import { palette } from '../design/tokens';
+
+/** Three white cards in the shape of contract rows while the first page loads. */
+const DocumentsSkeleton = () => (
+  <View style={styles.skeleton} testID="documents-loading">
+    {[0, 1, 2].map((key) => (
+      <View key={key} style={styles.skeletonRow}>
+        <View style={[styles.skeletonLine, styles.skeletonTitle]} />
+        <View style={[styles.skeletonLine, styles.skeletonPeriod]} />
+        <View style={styles.skeletonBar} />
+      </View>
+    ))}
+  </View>
+);
 
 /**
- * VIC 2.0 Documente (canvas board "Documente"): the contracts the organization uploaded for the
- * volunteer (#486), with their status (#488). Each one downloads as a file.
+ * Documente „Îndrăzneț” (handbook prototype "Documente"): „Contractele tale” as a large title that
+ * scrolls away under a compact glass bar; the contract that expires soonest as an orange card with
+ * the days left; the others as white rows with a status chip and a validity bar. Contracts load in
+ * pages of 15 (#486, #488) and each one downloads as a file.
  */
 const Documents = ({ navigation, route }: any) => {
   const { t } = useTranslation('documents');
   const insets = useSafeAreaInsets();
   const bottomInset = useGlassTabBarInset();
+  const reduced = useReducedMotion();
   useFocusedStatusBarStyle('dark');
   const scrollY = useSharedValue(0);
   const onScroll = useTabBarScroll(scrollY);
-  const [measuredHeaderHeight, setMeasuredHeaderHeight] = useState(0);
   const { userProfile } = useUserProfile();
   const organization = userProfile?.activeOrganization;
   const volunteerId: string | undefined = route.params?.volunteerId || organization?.volunteerId;
   const { downloadingId, download } = useDownloadContract();
-
-  // Before layout: safe area + top padding + back button + title margins/line + subtitle + bottom.
-  const headerHeight =
-    measuredHeaderHeight ||
-    insets.top + 12 + (isTabRoute(route) ? 16 + 38 : 40) + 4 + (organization ? 20 : 0) + 6;
-  const headerShadow = useAnimatedStyle(() => ({
-    shadowOpacity: interpolate(scrollY.value, [0, 12], [0, 0.06], Extrapolation.CLAMP),
-  }));
+  const isTab = isTabRoute(route);
 
   const history = useContractHistoryInfiniteQuery(volunteerId);
   const { reloadFirstPage: reloadHistory } = history;
@@ -67,6 +68,11 @@ const Documents = ({ navigation, route }: any) => {
   const items = useMemo(
     () => (history.data?.pages ?? []).flatMap((page) => page.items),
     [history.data],
+  );
+  const featured = useMemo(() => pickExpiringSoon(items), [items]);
+  const rows = useMemo(
+    () => (featured ? items.filter((item) => item.id !== featured.id) : items),
+    [items, featured],
   );
   const isLoading = history.isFetching && !history.data;
 
@@ -83,7 +89,7 @@ const Documents = ({ navigation, route }: any) => {
       );
     }
     if (isLoading) {
-      return <DocumentSkeletonList />;
+      return <DocumentsSkeleton />;
     }
     return (
       <EmptyState
@@ -97,27 +103,55 @@ const Documents = ({ navigation, route }: any) => {
     );
   };
 
+  const header = (
+    <>
+      <Animated.View
+        entering={enter(0, reduced)}
+        style={[styles.header, { paddingTop: insets.top + 12 }]}
+        testID="documents-header"
+      >
+        {/* Opened from the volunteer page: a back button above the title. As a tab: none. */}
+        {!isTab && (
+          <BackButton onPress={navigation.goBack} testID="documents-back" style={styles.back} />
+        )}
+        <AppText variant="largeTitle" accessibilityRole="header" style={styles.title}>
+          {t('title_large')}
+        </AppText>
+        {!!organization && (
+          <AppText variant="overline" color={palette.ink2} numberOfLines={1}>
+            {t('activity_logs:at', { name: organization.name })}
+          </AppText>
+        )}
+      </Animated.View>
+      {featured && (
+        <Animated.View entering={enter(1, reduced)} style={styles.featured}>
+          <FeaturedContract
+            contract={featured}
+            onPress={download}
+            busy={downloadingId === featured.id}
+          />
+        </Animated.View>
+      )}
+    </>
+  );
+
   return (
     <View style={styles.screen} testID="documents">
       <Animated.FlatList
-        data={items}
+        data={rows}
         keyExtractor={(item) => item.id}
         extraData={downloadingId}
+        ListHeaderComponent={header}
         renderItem={({ item, index }) => (
-          <View style={groupedItem(index, items.length)}>
-            <DocumentRow
-              contract={item}
-              onPress={download}
-              busy={downloadingId === item.id}
-              divider={index < items.length - 1}
-            />
-          </View>
+          <Animated.View entering={enter(index + 2, reduced)} style={styles.item}>
+            <DocumentRow contract={item} onPress={download} busy={downloadingId === item.id} />
+          </Animated.View>
         )}
-        ListEmptyComponent={renderEmpty}
+        ListEmptyComponent={items.length ? null : renderEmpty}
         ListFooterComponent={
           history.hasNextPage && history.isFetchingNextPage ? (
             <View style={styles.more}>
-              <ActivityIndicator size="small" color={colors.navy} testID="documents-loading-more" />
+              <ActivityIndicator size="small" color={palette.navy} testID="documents-loading-more" />
             </View>
           ) : null
         }
@@ -133,90 +167,48 @@ const Documents = ({ navigation, route }: any) => {
           <RefreshControl
             refreshing={!isLoading && history.isRefetching && !history.isFetchingNextPage}
             onRefresh={reload}
-            progressViewOffset={headerHeight}
+            progressViewOffset={insets.top}
           />
         }
-        contentContainerStyle={[
-          styles.content,
-          // Header includes 6pt bottom padding; 6 + 18 keeps the old 24pt gap above the first row.
-          // Empty, error and loading states sit right under the subtitle, as before.
-          { paddingTop: headerHeight + (items.length ? 18 : 0), paddingBottom: bottomInset },
-        ]}
+        contentContainerStyle={[styles.content, { paddingBottom: bottomInset }]}
         showsVerticalScrollIndicator={false}
         testID="documents-list"
       />
-      <Animated.View
-        testID="documents-header"
-        style={[styles.header, { paddingTop: insets.top + 12 }, headerShadow]}
-        onLayout={(e) => setMeasuredHeaderHeight(e.nativeEvent.layout.height)}
-      >
-        {/* Opened from the volunteer page: the back button joins the title row and the title
-            drops to h2, as on Organizații and Ore. As a tab: large title, no back button. */}
-        <Enter style={styles.titleRow}>
-          {!isTabRoute(route) && (
-            <PressableScale
-              onPress={navigation.goBack}
-              style={[styles.back, shadows.back]}
-              accessibilityLabel={`${t('general:back')}`}
-              testID="documents-back"
-            >
-              <EventIcon name="back" size={20} />
-            </PressableScale>
-          )}
-          <VText
-            variant={isTabRoute(route) ? 'largeTitle' : 'h2'}
-            accessibilityRole="header"
-            numberOfLines={isTabRoute(route) ? undefined : 1}
-            maxFontSizeMultiplier={isTabRoute(route) ? undefined : MAX_FONT_SCALE.title}
-            style={isTabRoute(route) ? styles.title : styles.compactTitle}
-          >
-            {t('general:documents')}
-          </VText>
-        </Enter>
-        {!!organization && (
-          <Enter index={1}>
-            {/* with the back button, start under the title text, not under the button */}
-            <VText variant="sub" style={!isTabRoute(route) && styles.subtitleAfterBack}>
-              {t('activity_logs:at', { name: organization.name })}
-            </VText>
-          </Enter>
-        )}
-      </Animated.View>
-      <StatusBarScrim />
+      <CompactTitleBar
+        title={`${t('general:documents')}`}
+        scrollY={scrollY}
+        testID="documents-compact-bar"
+      />
     </View>
   );
 };
 
 export default Documents;
 
-const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.canvas },
-  content: { paddingHorizontal: spacing.gutter, flexGrow: 1 },
-  back: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.white,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  titleRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  title: { flex: 1, marginTop: 16, marginBottom: 4 },
-  compactTitle: { flex: 1, marginBottom: 4 },
-  // back button (40) + titleRow gap (12)
-  subtitleAfterBack: { marginLeft: 52 },
-  header: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 4,
-    backgroundColor: colors.canvas,
-    paddingHorizontal: spacing.gutter,
-    paddingBottom: 6,
-    shadowColor: '#000',
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 6 },
-  },
+const styles = StyleSheet.create((theme) => ({
+  screen: { flex: 1, backgroundColor: theme.colors.background },
+  content: { paddingHorizontal: theme.space.gutter, flexGrow: 1 },
+  header: { paddingBottom: theme.space.l, gap: 4 },
+  back: { marginBottom: theme.space.m },
+  // handbook .lt: Bricolage 44, line height .96, 14pt above
+  title: { lineHeight: 42, marginTop: 14 },
+  featured: { marginBottom: theme.space.s },
+  item: { marginBottom: theme.space.s },
   more: { paddingVertical: 20, alignItems: 'center', justifyContent: 'center' },
-});
+  skeleton: { gap: theme.space.s },
+  skeletonRow: {
+    backgroundColor: theme.colors.card,
+    borderRadius: theme.radius.row,
+    padding: theme.space.l,
+    gap: theme.space.xs,
+  },
+  skeletonLine: { height: 12, borderRadius: 6, backgroundColor: theme.colors.paper },
+  skeletonTitle: { width: '55%', height: 16 },
+  skeletonPeriod: { width: '70%' },
+  skeletonBar: {
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: theme.colors.paper,
+    marginTop: theme.space.xs,
+  },
+}));
