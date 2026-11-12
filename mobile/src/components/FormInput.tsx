@@ -31,6 +31,7 @@ const FormInput: React.FC<FormInputProps> = ({
   disabled,
   accessoryLeft,
   backdropComponent: _backdropComponent,
+  onBlur: onBlurProp,
   ...rest
 }: FormInputProps) => (
   <Controller
@@ -42,7 +43,10 @@ const FormInput: React.FC<FormInputProps> = ({
         required={required}
         placeholder={placeholder}
         secureTextEntry={secureTextEntry}
-        onBlur={onBlur}
+        onBlur={(event: any) => {
+          onBlur();
+          onBlurProp?.(event);
+        }}
         onChangeText={onChange}
         value={value === undefined || value === null ? '' : `${value}`}
         error={error?.message}

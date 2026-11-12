@@ -34,6 +34,9 @@ interface ActivityLogFormProps {
    * and the text field uses the sheet's keyboard-aware input.
    */
   inSheet?: boolean;
+  /** the „Mențiuni” field gets / loses focus (the sheet scrolls it above its footer) */
+  onMentionsFocus?: () => void;
+  onMentionsBlur?: () => void;
 }
 
 // The backend's rule (M12): whole hours, at least 1, at most 24 in a day
@@ -65,7 +68,14 @@ export const activityLogSchema = yup
   })
   .required();
 
-const ActivityLogForm = ({ isLoading, control, errors, inSheet = false }: ActivityLogFormProps) => {
+const ActivityLogForm = ({
+  isLoading,
+  control,
+  errors,
+  inSheet = false,
+  onMentionsFocus,
+  onMentionsBlur,
+}: ActivityLogFormProps) => {
   const { userProfile } = useUserProfile();
 
   const { t } = useTranslation('activity_log');
@@ -128,6 +138,8 @@ const ActivityLogForm = ({ isLoading, control, errors, inSheet = false }: Activi
         placeholder={t('form.mentions.placeholder')}
         optional
         disabled={isLoading}
+        {...(onMentionsFocus ? { onFocus: onMentionsFocus } : {})}
+        {...(onMentionsBlur ? { onBlur: onMentionsBlur } : {})}
         {...(inSheet ? { InputComponent: BottomSheetTextInput } : {})}
       />
     </>
@@ -148,7 +160,7 @@ const ActivityLogForm = ({ isLoading, control, errors, inSheet = false }: Activi
             size={36}
             shape="rounded"
           />
-          <VText variant="label" numberOfLines={1} style={styles.organizationName}>
+          <VText variant="label" numberOfLines={2} style={styles.organizationName}>
             {userProfile.activeOrganization.name}
           </VText>
         </View>
