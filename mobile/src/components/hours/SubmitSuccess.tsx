@@ -101,7 +101,11 @@ export const SubmitSuccess = ({ title, description, testID }: SubmitSuccessProps
 
   return (
     <Animated.View style={[styles.done, containerStyle]} testID={testID}>
-      <View style={styles.mark} accessibilityElementsHidden importantForAccessibility="no">
+      <View
+        style={styles.mark}
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
+      >
         <Animated.View style={hexStyle}>
           <Svg width={HEX_W} height={HEX_H} viewBox={`0 0 ${HEX_W} ${HEX_H}`}>
             <Path

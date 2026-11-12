@@ -1,11 +1,9 @@
 import React from 'react';
-import { DatepickerProps } from '@ui-kitten/components';
 import { Control, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { datePickerService } from '../common/utils/birthday';
 import { DateField } from '../design/components/DateField';
 
-interface FormDatepickerProps extends DatepickerProps {
+interface FormDatepickerProps {
   control: Control<Record<string, any>>;
   name: string;
   label: string;
@@ -14,6 +12,14 @@ interface FormDatepickerProps extends DatepickerProps {
   required?: boolean;
   /** quick options „Azi” / „Ieri” under the field (for days of activity, not for birthdays) */
   quickOptions?: boolean;
+  disabled?: boolean;
+  min?: Date;
+  max?: Date;
+  /** month the calendar opens on when there is no value */
+  initialVisibleDate?: Date;
+  /** open the calendar on the year grid (e.g. for a birthday) */
+  startView?: 'day' | 'year';
+  testID?: string;
 }
 
 /**
@@ -33,11 +39,9 @@ const FormDatePicker: React.FC<FormDatepickerProps> = ({
   max,
   initialVisibleDate,
   testID,
-  filter,
   startView,
 }: FormDatepickerProps) => {
   const { i18n } = useTranslation();
-  const dateService = React.useMemo(() => datePickerService(i18n.language), [i18n.language]);
 
   return (
     <Controller
@@ -57,9 +61,9 @@ const FormDatePicker: React.FC<FormDatepickerProps> = ({
           maximumDate={max}
           // open on the chosen date when there is one, else on the hint (e.g. a plausible year)
           initialVisibleDate={initialVisibleDate}
-          dateService={dateService}
+          language={i18n.language === 'en' ? 'en' : 'ro'}
           quickOptions={quickOptions}
-          calendarProps={{ ...(filter ? { filter } : {}), ...(startView ? { startView } : {}) }}
+          startView={startView}
           testID={testID ?? `date-${name}`}
         />
       )}

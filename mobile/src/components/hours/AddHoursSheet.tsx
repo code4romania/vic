@@ -6,13 +6,15 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Alert, Pressable, Text, View } from 'react-native';
+import { Alert, Keyboard, Pressable, Text, View } from 'react-native';
 import {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
   BottomSheetModal,
   BottomSheetScrollView,
+  BottomSheetScrollViewMethods,
 } from '@gorhom/bottom-sheet';
+import { useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller';
 import Animated, { SharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import { StyleSheet } from 'react-native-unistyles';
 import { useForm } from 'react-hook-form';
@@ -66,6 +68,34 @@ export const AddHoursSheet = forwardRef<AddHoursSheetHandle, AddHoursSheetProps>
     const [sent, setSent] = useState<{ hours: number } | null>(null);
     const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
     const { mutate: logHours, isLoading: isLoggingHours } = useCreateActivityLogMutation();
+
+    // Keyboard up: the sheet only rises to its top inset, so its lower part (and the scroll view in
+    // it) stays behind the keyboard while the sticky footer rides above it. A spacer as tall as the
+    // keyboard lets the last field scroll above the footer, and a focused „Mențiuni” is scrolled
+    // there once the keyboard is up (and again as it grows line by line).
+    const scrollRef = useRef<BottomSheetScrollViewMethods>(null);
+    const mentionsFocused = useRef(false);
+    const { height: keyboardHeight } = useReanimatedKeyboardAnimation();
+    const keyboardSpacer = useAnimatedStyle(() => ({ height: Math.abs(keyboardHeight.value) }));
+    const revealMentions = useCallback(() => {
+      if (mentionsFocused.current) {
+        scrollRef.current?.scrollToEnd({ animated: true });
+      }
+    }, []);
+    useEffect(() => {
+      const shown = Keyboard.addListener('keyboardDidShow', revealMentions);
+      return () => shown.remove();
+    }, [revealMentions]);
+    const onMentionsFocus = useCallback(() => {
+      mentionsFocused.current = true;
+      // already up (moving from another field): scroll now; else keyboardDidShow does it
+      if (Keyboard.isVisible()) {
+        revealMentions();
+      }
+    }, [revealMentions]);
+    const onMentionsBlur = useCallback(() => {
+      mentionsFocused.current = false;
+    }, []);
 
     const {
       control,
@@ -228,16 +258,21 @@ export const AddHoursSheet = forwardRef<AddHoursSheetHandle, AddHoursSheetProps>
               </Pressable>
             </View>
             <BottomSheetScrollView
+              ref={scrollRef}
               keyboardShouldPersistTaps="handled"
               showsVerticalScrollIndicator={false}
               contentContainerStyle={styles.body}
+              onContentSizeChange={revealMentions}
             >
               <ActivityLogForm
                 inSheet
                 isLoading={isLoggingHours}
                 control={control}
                 errors={errors}
+                onMentionsFocus={onMentionsFocus}
+                onMentionsBlur={onMentionsBlur}
               />
+              <Animated.View style={keyboardSpacer} />
             </BottomSheetScrollView>
             {!!sent && (
               <SubmitSuccess

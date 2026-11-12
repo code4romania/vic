@@ -13,7 +13,7 @@ interface FormInputProps extends Omit<TextInputProps, 'style'> {
   helper?: string;
   required?: boolean;
   disabled?: boolean;
-  /** element or ui-kitten style render function, e.g. the +40 phone prefix */
+  /** element or render function (gets the text style), e.g. the +40 phone prefix */
   accessoryLeft?: React.ReactNode | ((props: any) => React.ReactNode);
   [key: string]: any;
 }
@@ -31,6 +31,7 @@ const FormInput: React.FC<FormInputProps> = ({
   disabled,
   accessoryLeft,
   backdropComponent: _backdropComponent,
+  onBlur: onBlurProp,
   ...rest
 }: FormInputProps) => (
   <Controller
@@ -42,7 +43,10 @@ const FormInput: React.FC<FormInputProps> = ({
         required={required}
         placeholder={placeholder}
         secureTextEntry={secureTextEntry}
-        onBlur={onBlur}
+        onBlur={(event: any) => {
+          onBlur();
+          onBlurProp?.(event);
+        }}
         onChangeText={onChange}
         value={value === undefined || value === null ? '' : `${value}`}
         error={error?.message}

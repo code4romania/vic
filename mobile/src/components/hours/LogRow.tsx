@@ -104,7 +104,7 @@ export const LogRow = ({ log, status, onPress, highlight = false }: LogRowProps)
           <AppText variant="headline" style={styles.title} numberOfLines={2}>
             {title}
           </AppText>
-          <AppText variant="caption" color={palette.ink2} numberOfLines={1}>
+          <AppText variant="caption" color={palette.ink2} numberOfLines={2}>
             {meta}
           </AppText>
         </View>

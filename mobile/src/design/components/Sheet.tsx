@@ -3,7 +3,15 @@
 // `sheet` spring (150 ms timing with Reduce Motion). Detents: form 92%, filters 50% + 92%.
 // The main button goes in the sticky `footer`, which rides above the keyboard.
 import React, { forwardRef, ReactNode, useCallback, useMemo, useRef, useState } from 'react';
-import { Text, useWindowDimensions, View, StyleProp, ViewStyle, Pressable } from 'react-native';
+import {
+  AccessibilityInfo,
+  Pressable,
+  StyleProp,
+  Text,
+  useWindowDimensions,
+  View,
+  ViewStyle,
+} from 'react-native';
 import {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
@@ -253,6 +261,10 @@ export const Sheet = forwardRef<BottomSheetModal, SheetProps>(
           const nowOpen = index >= 0;
           if (nowOpen && !openRef.current) {
             haptics.light();
+            // VoiceOver / TalkBack: say which sheet just opened
+            if (title) {
+              AccessibilityInfo.announceForAccessibility(title);
+            }
           }
           openRef.current = nowOpen;
           setOpen(nowOpen);

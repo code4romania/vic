@@ -143,6 +143,9 @@ export const glass = {
   // expo-blur intensity that reads like the 22pt CSS blur
   blurIntensity: 60,
   stroke: lightColors.glassStroke,
+  // Android: expo-blur blurs only inside a BlurTargetView, so the floating glass is a dense white
+  // that keeps the labels readable over any content
+  androidTint: 'rgba(255,255,255,0.9)',
 } as const;
 
 /** Only floating elements have elevation; cards get their contrast from paper. */

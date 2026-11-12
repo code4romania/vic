@@ -3,9 +3,6 @@ import { getStateFromPath, NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Text } from 'react-native';
 import { render, screen } from '@testing-library/react-native';
-import * as eva from '@eva-design/eva';
-import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
-import { FeatherIconsPack } from '../common/adapters/feather-icons.adapter';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { linking } from './linking';
 import Login from '../screens/Login';
@@ -33,21 +30,18 @@ describe('vic://login deep link', () => {
           insets: { top: 0, left: 0, right: 0, bottom: 0 },
         }}
       >
-        <IconRegistry icons={FeatherIconsPack} />
-        <ApplicationProvider {...eva} theme={eva.light}>
-          <NavigationContainer
-            linking={{
-              ...linking,
-              getInitialURL: async () => 'vic://login?email=mira%40a2.test',
-              subscribe: () => () => undefined,
-            }}
-          >
-            <Navigator screenOptions={{ headerShown: false }}>
-              <Screen name="landing" component={Landing} />
-              <Screen name="login" component={Login} />
-            </Navigator>
-          </NavigationContainer>
-        </ApplicationProvider>
+        <NavigationContainer
+          linking={{
+            ...linking,
+            getInitialURL: async () => 'vic://login?email=mira%40a2.test',
+            subscribe: () => () => undefined,
+          }}
+        >
+          <Navigator screenOptions={{ headerShown: false }}>
+            <Screen name="landing" component={Landing} />
+            <Screen name="login" component={Login} />
+          </Navigator>
+        </NavigationContainer>
       </SafeAreaProvider>,
     );
 

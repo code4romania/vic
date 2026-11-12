@@ -65,10 +65,15 @@ const PILL_RING = 4;
 const PILL = tabBar.pill + PILL_RING * 2;
 const ACCESSORY_HEIGHT = tabBar.pill;
 const ACCESSORY_GAP = 10;
+const EXPAND_HINT = 'Arată toate tab-urile';
 
-/** Real glass on iOS 26 (Liquid Glass); elsewhere a blur with 58% white over it. */
+/**
+ * Real glass on iOS 26 (Liquid Glass); older iOS a blur with 58% white over it; Android a dense
+ * white (expo-blur only blurs inside a BlurTargetView there, so a BlurView is just a tint).
+ */
 export const GlassSurface = ({ radius, children }: { radius: number; children?: ReactNode }) => {
   const liquid = Platform.OS === 'ios' && isLiquidGlassAvailable();
+  const android = Platform.OS === 'android';
   return (
     <View
       pointerEvents="none"
@@ -76,14 +81,11 @@ export const GlassSurface = ({ radius, children }: { radius: number; children?: 
     >
       {liquid ? (
         <GlassView glassEffectStyle="regular" colorScheme="light" style={StyleSheet.absoluteFill} />
+      ) : android ? (
+        <View style={[StyleSheet.absoluteFill, { backgroundColor: glass.androidTint }]} />
       ) : (
         <>
-          <BlurView
-            intensity={glass.blurIntensity}
-            tint="light"
-            experimentalBlurMethod="dimezisBlurView"
-            style={StyleSheet.absoluteFill}
-          />
+          <BlurView intensity={glass.blurIntensity} tint="light" style={StyleSheet.absoluteFill} />
           <View style={[StyleSheet.absoluteFill, { backgroundColor: glass.tint }]} />
         </>
       )}
@@ -289,6 +291,7 @@ export const GlassTabBar = ({ state, navigation, items }: GlassTabBarProps) => {
                 progress={pSnap}
                 reducedMotion={reducedMotion}
                 hiddenWhenCollapsed={isCollapsed && !focused}
+                collapsed={isCollapsed}
                 onPress={() => {
                   if (isCollapsed) {
                     expand();
@@ -319,7 +322,7 @@ export const GlassTabBar = ({ state, navigation, items }: GlassTabBarProps) => {
           <Pressable
             accessibilityRole="button"
             accessibilityLabel={activeItem?.label}
-            accessibilityHint="Arată toate tab-urile"
+            accessibilityHint={EXPAND_HINT}
             onPress={expand}
             style={StyleSheet.absoluteFill}
           >
@@ -344,6 +347,8 @@ interface TabButtonProps {
   progress: SharedValue<number>;
   reducedMotion: boolean;
   hiddenWhenCollapsed: boolean;
+  /** the bar is minimised: this slot is the pill and a tap expands it */
+  collapsed: boolean;
   onPress: () => void;
   onLongPress: () => void;
 }
@@ -358,6 +363,7 @@ const TabButton = ({
   progress,
   reducedMotion,
   hiddenWhenCollapsed,
+  collapsed,
   onPress,
   onLongPress,
 }: TabButtonProps) => {
@@ -395,6 +401,7 @@ const TabButton = ({
         accessibilityRole="tab"
         accessibilityState={{ selected: focused }}
         accessibilityLabel={item.label}
+        accessibilityHint={collapsed && focused ? EXPAND_HINT : undefined}
         accessibilityElementsHidden={hiddenWhenCollapsed}
         importantForAccessibility={hiddenWhenCollapsed ? 'no-hide-descendants' : 'auto'}
         onPress={onPress}

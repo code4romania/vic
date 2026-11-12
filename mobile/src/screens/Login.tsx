@@ -30,7 +30,11 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /** Navy hexagon with the yellow envelope: "check your mail". */
 const MailHexagon = () => (
-  <View style={styles.mailHex} accessibilityElementsHidden importantForAccessibility="no">
+  <View
+    style={styles.mailHex}
+    accessibilityElementsHidden
+    importantForAccessibility="no-hide-descendants"
+  >
     <Svg width={64} height={70} viewBox="0 0 56 62" style={StyleSheet.absoluteFill}>
       <Path
         d="M28 3 52 17v28L28 59 4 45V17z"

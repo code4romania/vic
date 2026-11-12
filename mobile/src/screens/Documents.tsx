@@ -118,7 +118,7 @@ const Documents = ({ navigation, route }: any) => {
           {t('title_large')}
         </AppText>
         {!!organization && (
-          <AppText variant="overline" color={palette.ink2} numberOfLines={1}>
+          <AppText variant="overline" color={palette.ink2} numberOfLines={2}>
             {t('activity_logs:at', { name: organization.name })}
           </AppText>
         )}
