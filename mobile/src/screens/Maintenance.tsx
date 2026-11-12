@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import MissingEntity from './MissingEntity';
+import SystemState from '../components/SystemState';
 import { useAppState } from '../store/app/app.selector';
 import { useAuth } from '../hooks/useAuth';
 
@@ -26,12 +26,14 @@ const Maintenance = () => {
   };
 
   return (
-    <MissingEntity
-      kind="error"
-      heading={t('heading')}
-      paragraph={t('paragraph')}
-      actionBtnLabel={t('retry')}
-      onActionBtnPress={onRetry}
+    <SystemState
+      kicker="VIC"
+      title={t('heading')}
+      description={t('paragraph')}
+      actionLabel={t('retry')}
+      onAction={onRetry}
+      loading={isRetrying}
+      testID="maintenance"
     />
   );
 };

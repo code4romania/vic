@@ -61,6 +61,7 @@
     },
     "landing": {
         "message": "Intră în aplicație sau creează-ți cont folosind una dintre modalitățile următoare",
+        "kicker": "VIC · pentru voluntari",
         "email": "Continuă cu email",
         "social": {
             "google": "Continuă cu Google",
@@ -229,7 +230,8 @@
             "years": "{{count}} ani",
             "years_de": "{{count}} de ani"
         },
-        "section_settings": "Setări"
+        "section_settings": "Setări",
+        "your_profile": "Profilul tău"
     },
     "account_data": {
         "title": "Date personale",
@@ -869,7 +871,12 @@
         },
         "expiring_soon": "Expiră în curând",
         "period_open": "din {{start}}, fără dată de final",
-        "issued_on": "emisă la {{date}}"
+        "issued_on": "emisă la {{date}}",
+        "title_large": "Contractele tale",
+        "days_left_one": "1 zi rămasă",
+        "days_left": "{{count}} zile rămase",
+        "days_left_de": "{{count}} de zile rămase",
+        "featured_action": "Descarcă contractul"
     },
     "notifications": {
         "header": "Setări notificări",

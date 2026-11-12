@@ -103,7 +103,7 @@ const JoinOrganization = ({ navigation, route }: any) => {
       >
         <FormLayout>
           <View style={styles.content}>
-            <OrganizationIdentity uri={logo} name={name} />
+            <OrganizationIdentity uri={logo} name={name} card />
             <VText variant="sub">{`${t('complete')}`}</VText>
             <FormSelect
               control={control as any}

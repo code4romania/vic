@@ -1,16 +1,9 @@
 import React from 'react';
-import ContentLoader, { Rect, Circle } from 'react-content-loader/native';
+import { Rect, Circle } from 'react-content-loader/native';
+import ContentLoader from './SkeletonLoader';
 
 const ActivityLogSkeleton = (props: any) => (
-  <ContentLoader
-    speed={2}
-    width={350}
-    height={350}
-    viewBox="0 0 350 350"
-    backgroundColor="#f3f3f3"
-    foregroundColor="#ecebeb"
-    {...props}
-  >
+  <ContentLoader width={350} height={350} viewBox="0 0 350 350" {...props}>
     <Rect x="41" y="59" rx="3" ry="3" width="88" height="8" />
     <Circle cx="19" cy="63" r="14" />
     <Rect x="6" y="98" rx="7" ry="7" width="94" height="6" />

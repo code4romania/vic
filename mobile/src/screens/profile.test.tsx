@@ -110,12 +110,35 @@ beforeEach(() => {
 });
 
 describe('Profil', () => {
-  it('keeps the title in a fixed header outside the scroll view', async () => {
+  it('opens with your hexagon, „Profilul tău” and your first name as the title', async () => {
     await renderApp();
-    const header = screen.getByTestId('settings-header');
-    expect(within(header).getByText('Profil')).toBeTruthy();
-    expect(within(header).getByRole('header', { name: 'Profil' })).toBeTruthy();
-    expect(within(screen.getByTestId('profile')).queryByText('Profil')).toBeNull();
+    const header = within(screen.getByTestId('settings-header'));
+    expect(header.getByText('Profilul tău')).toBeTruthy();
+    expect(header.getByRole('header', { name: 'Ana' })).toBeTruthy();
+    // the yellow hexagon shows the first initial
+    expect(header.getByText('A', { includeHiddenElements: true })).toBeTruthy();
+  });
+
+  it('keeps delete and log out apart from the other settings', async () => {
+    await renderApp();
+    expect(screen.getByText('Setări')).toBeTruthy();
+    expect(screen.getByText('Ajutor și informații')).toBeTruthy();
+    expect(screen.getByTestId('profile-delete')).toBeTruthy();
+    await fireEvent.press(screen.getByTestId('profile-delete'));
+    expect(await screen.findByText('page:delete-account')).toBeTruthy();
+  });
+
+  it('marks an organization that has not accepted you yet as waiting', async () => {
+    useStore.setState({
+      userProfile: {
+        firstName: 'Ana',
+        activeOrganization: null,
+        myOrganizations: [{ ...org('org-3', 'Cerc Nou'), volunteerStatus: 'candidate' }],
+      } as any,
+    });
+    await renderApp();
+    const row = await screen.findByTestId('profile-organization-org-3');
+    expect(within(row).getByText('În așteptare')).toBeTruthy();
   });
 
   it('refetches the profile on focus', async () => {

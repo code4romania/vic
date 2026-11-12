@@ -5,9 +5,13 @@ import FormLayout from '../layouts/FormLayout';
 import { useTranslation } from 'react-i18next';
 import { Controller, useForm } from 'react-hook-form';
 import * as Linking from 'expo-linking';
-import { Checkbox, VText } from '../components/ui';
-import { colors, fonts, spacing } from '../common/theme/tokens';
-import { StyleSheet, View } from 'react-native';
+import Animated, { useReducedMotion } from 'react-native-reanimated';
+import { View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
+import { Checkbox } from '../components/ui/Checkbox';
+import { AppText } from '../design/components/Text';
+import { enter } from '../design/motion';
+import { palette } from '../design/tokens';
 import * as yup from 'yup';
 import { useCreateUserProfileMutation } from '../services/user/user.service';
 import FormInput from '../components/FormInput';
@@ -91,6 +95,7 @@ const CreateUser = ({ navigation }: any) => {
   const { t } = useTranslation('register');
   const paddingTop = usePaddingTop();
   const scrollRef = useRef<KeyboardAwareScrollViewRef>(null);
+  const reduced = useReducedMotion();
 
   const { mutate: createUserProfile, isLoading } = useCreateUserProfileMutation();
 
@@ -148,12 +153,12 @@ const CreateUser = ({ navigation }: any) => {
       <FormLayout scrollRef={scrollRef}>
         {/* 20pt side margins: the layout gives 16 */}
         <View style={styles.content}>
-          <View style={styles.intro}>
-            <VText variant="largeTitle" style={styles.heading} accessibilityRole="header">
+          <Animated.View style={styles.intro} entering={enter(0, reduced)}>
+            <AppText variant="largeTitle" style={styles.heading} accessibilityRole="header">
               {t('create_user.heading')}
-            </VText>
-            <VText variant="sub">{t('create_user.paragraph')}</VText>
-          </View>
+            </AppText>
+            <AppText color={palette.ink2}>{t('create_user.paragraph')}</AppText>
+          </Animated.View>
           <FormInput
             control={control as any}
             placeholder={t('create_user.form.first_name.placeholder')}
@@ -224,38 +229,40 @@ const CreateUser = ({ navigation }: any) => {
             control={control}
             name="acceptTerms"
             render={({ field: { value, onChange } }) => (
-              <Checkbox
-                checked={!!value}
-                onChange={onChange}
-                disabled={isLoading}
-                error={errors.acceptTerms?.message}
-                accessibilityLabel={`${t('create_account.form.terms.accessibility')}`}
-                testID="create-user-terms"
-              >
-                <VText variant="body">
-                  {t('create_account.form.terms.agree')}
-                  <VText
-                    variant="body"
-                    style={styles.link}
-                    accessibilityRole="link"
-                    onPress={() => openLink(process.env.EXPO_PUBLIC_TERMS_AND_CONDITIONS_LINK)}
-                    testID="create-user-terms-link"
-                  >
-                    {t('create_account.form.terms.conditions')}
-                  </VText>
-                  {` ${t('create_account.form.terms.and')}`}
-                  <VText
-                    variant="body"
-                    style={styles.link}
-                    accessibilityRole="link"
-                    onPress={() => openLink(process.env.EXPO_PUBLIC_PRIVACY_POLICY_LINK)}
-                    testID="create-user-privacy-link"
-                  >
-                    {t('create_account.form.terms.privacy_policy')}
-                  </VText>
-                  {t('create_account.form.terms.application')}
-                </VText>
-              </Checkbox>
+              <View style={styles.terms}>
+                <Checkbox
+                  checked={!!value}
+                  onChange={onChange}
+                  disabled={isLoading}
+                  error={errors.acceptTerms?.message}
+                  accessibilityLabel={`${t('create_account.form.terms.accessibility')}`}
+                  testID="create-user-terms"
+                >
+                  <AppText>
+                    {t('create_account.form.terms.agree')}
+                    <AppText
+                      variant="bodyStrong"
+                      style={styles.link}
+                      accessibilityRole="link"
+                      onPress={() => openLink(process.env.EXPO_PUBLIC_TERMS_AND_CONDITIONS_LINK)}
+                      testID="create-user-terms-link"
+                    >
+                      {t('create_account.form.terms.conditions')}
+                    </AppText>
+                    {` ${t('create_account.form.terms.and')}`}
+                    <AppText
+                      variant="bodyStrong"
+                      style={styles.link}
+                      accessibilityRole="link"
+                      onPress={() => openLink(process.env.EXPO_PUBLIC_PRIVACY_POLICY_LINK)}
+                      testID="create-user-privacy-link"
+                    >
+                      {t('create_account.form.terms.privacy_policy')}
+                    </AppText>
+                    {t('create_account.form.terms.application')}
+                  </AppText>
+                </Checkbox>
+              </View>
             )}
           />
         </View>
@@ -266,9 +273,16 @@ const CreateUser = ({ navigation }: any) => {
 
 export default CreateUser;
 
-const styles = StyleSheet.create({
-  content: { marginHorizontal: spacing.gutter - spacing.l, gap: spacing.l },
-  intro: { gap: spacing.s, paddingTop: spacing.s },
-  heading: { fontSize: 26, lineHeight: 32 },
-  link: { fontFamily: fonts.bold, color: colors.navy, textDecorationLine: 'underline' },
-});
+const styles = StyleSheet.create((theme) => ({
+  content: { marginHorizontal: theme.space.gutter - 16, gap: 18 },
+  intro: { gap: theme.space.s, paddingTop: theme.space.xxs, paddingBottom: theme.space.xxs },
+  heading: { fontSize: 36, lineHeight: 38 },
+  // the consent sits on a white card so it reads as one block
+  terms: {
+    backgroundColor: theme.colors.card,
+    borderRadius: theme.radius.control,
+    paddingVertical: theme.space.xs,
+    paddingHorizontal: theme.space.m,
+  },
+  link: { textDecorationLine: 'underline' },
+}));

@@ -1,16 +1,9 @@
 import React from 'react';
-import ContentLoader, { Rect, Circle } from 'react-content-loader/native';
+import { Rect, Circle } from 'react-content-loader/native';
+import ContentLoader from './SkeletonLoader';
 
 const DocumentSkeletonList = (props: any) => (
-  <ContentLoader
-    speed={2}
-    width={350}
-    height={500}
-    viewBox="0 0 350 500"
-    backgroundColor="#f3f3f3"
-    foregroundColor="#ecebeb"
-    {...props}
-  >
+  <ContentLoader width={350} height={500} viewBox="0 0 350 500" {...props}>
     <Rect x="5" y="20" rx="8" ry="8" width="150" height="12" />
     <Circle cx="27" cy="91" r="22" />
     <Rect x="62" y="80" rx="8" ry="8" width="99" height="8" />

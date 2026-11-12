@@ -186,6 +186,13 @@ describe('Landing', () => {
     expect(mockAuth.loginWithSocial).toHaveBeenCalledWith('google');
   });
 
+  it('the outline "Vezi prezentarea" button opens the intro again', async () => {
+    await AsyncStorage.setItem('vic.onboarding.seen', '1');
+    await renderStack('landing');
+    await fireEvent.press(await screen.findByTestId('landing-intro'));
+    expect(await screen.findByTestId('onboarding')).toBeTruthy();
+  });
+
   it('sends the code from the email sheet and moves to the code step', async () => {
     await AsyncStorage.setItem('vic.onboarding.seen', '1');
     await renderStack('landing');

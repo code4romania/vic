@@ -9,38 +9,21 @@ import Animated, {
   useDerivedValue,
   useSharedValue,
 } from 'react-native-reanimated';
-import { SvgXml } from 'react-native-svg';
 import { useFocusEffect } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import volunteerUserSVG from '../assets/svg/volunteer-user';
-import volunteerClockSVG from '../assets/svg/volunteer-clock';
-import volunteerDocumentSVG from '../assets/svg/doc';
 import { useVolunteerStats } from '../services/volunteer/volunteer.service';
 import { useGetUserProfileQuery } from '../services/user/user.service';
 import { useUserProfile } from '../store/profile/profile.selector';
-import { colors, fonts, radius, shadows, spacing } from '../common/theme/tokens';
+import { colors, fonts, radius, spacing } from '../common/theme/tokens';
 import { MAX_FONT_SCALE } from '../common/constants/constants';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import { useTabBarScroll } from '../components/navigation/TabBarScroll';
 import { useGlassTabBarInset } from '../components/navigation/GlassTabBar';
-import { EventIcon } from '../components/events/EventIcons';
-import {
-  Avatar,
-  EmptyState,
-  Enter,
-  Group,
-  ListRow,
-  PressableScale,
-  VButton,
-  VText,
-} from '../components/ui';
-
-const RowIcon = ({ xml }: { xml: string }) => (
-  <View style={styles.rowIcon}>
-    <SvgXml xml={xml} width={20} height={20} />
-  </View>
-);
+import { Avatar, EmptyState, Enter, VButton, VText } from '../components/ui';
+import { BackButton } from '../components/ui/ScreenChrome';
+import { Group, ListRow } from '../design/components';
+import { ClockIcon, DocumentIcon, LogOutIcon, UserIcon } from '../design/icons';
 
 /**
  * VIC 2.0 profile in an organization (canvas board "ProfilOrg"): the active organization with the
@@ -80,8 +63,8 @@ const Volunteer = ({ navigation }: any) => {
       }
     },
   );
-  // The logo starts at safe-area top + 12 + 40pt back slot + 16pt head margin = bar bottom + 12.
-  const shadowStart = Math.max(0, insets.top + 68 - barHeight);
+  // The logo starts at safe-area top + 12 + 44pt back slot + 16pt head margin = bar bottom + 12.
+  const shadowStart = Math.max(0, insets.top + 72 - barHeight);
   const headerShadow = useAnimatedStyle(() => ({
     shadowOpacity: interpolate(
       scrollY.value,
@@ -107,14 +90,11 @@ const Volunteer = ({ navigation }: any) => {
   );
 
   const back = canGoBack ? (
-    <PressableScale
+    <BackButton
       onPress={navigation.goBack}
-      style={[styles.back, shadows.back]}
       accessibilityLabel={`${t('general:back')}`}
       testID="volunteer-back"
-    >
-      <EventIcon name="back" size={20} />
-    </PressableScale>
+    />
   ) : null;
 
   if (!organization) {
@@ -181,19 +161,15 @@ const Volunteer = ({ navigation }: any) => {
         </View>
 
         <Enter index={1} style={styles.stats}>
-          <View style={[styles.stat, styles.statHours]} testID="volunteer-stat-logs">
-            <VText style={[styles.statValue, { color: colors.figure.amber }]}>
-              {`${pendingLogs}`}
-            </VText>
-            <VText variant="cap" color={colors.status.wait.fg}>
+          <View style={styles.stat} testID="volunteer-stat-logs">
+            <VText style={styles.statValue}>{`${pendingLogs}`}</VText>
+            <VText variant="cap" color={colors.muted} style={styles.statLabel}>
               {t('stats.pending_logs')}
             </VText>
           </View>
-          <View style={[styles.stat, styles.statDocuments]} testID="volunteer-stat-documents">
-            <VText
-              style={[styles.statValue, { color: colors.navy }]}
-            >{`${pendingDocuments}`}</VText>
-            <VText variant="cap" color={colors.navy}>
+          <View style={styles.stat} testID="volunteer-stat-documents">
+            <VText style={styles.statValue}>{`${pendingDocuments}`}</VText>
+            <VText variant="cap" color={colors.muted} style={styles.statLabel}>
               {t('stats.pending_documents')}
             </VText>
           </View>
@@ -237,7 +213,7 @@ const Volunteer = ({ navigation }: any) => {
               testID="volunteer-organization"
             />
             <ListRow
-              leading={<RowIcon xml={volunteerClockSVG} />}
+              icon={ClockIcon}
               title={`${t('menu_items.activity_log.title')}`}
               subtitle={
                 pendingLogs
@@ -253,7 +229,7 @@ const Volunteer = ({ navigation }: any) => {
               testID="volunteer-hours"
             />
             <ListRow
-              leading={<RowIcon xml={volunteerDocumentSVG} />}
+              icon={DocumentIcon}
               title={`${t('general:documents')}`}
               subtitle={
                 pendingDocuments
@@ -264,7 +240,7 @@ const Volunteer = ({ navigation }: any) => {
               testID="volunteer-documents"
             />
             <ListRow
-              leading={<RowIcon xml={volunteerUserSVG} />}
+              icon={UserIcon}
               title={`${t('menu_items.volunteer_profile.title')}`}
               subtitle={
                 profileMissing
@@ -274,10 +250,13 @@ const Volunteer = ({ navigation }: any) => {
               onPress={() => navigation.navigate('volunteer-profile')}
               testID="volunteer-profile"
             />
+          </Group>
+          <Group style={styles.dangerGroup}>
             <ListRow
+              icon={LogOutIcon}
               title={`${t('leave')}`}
-              destructive
-              divider={false}
+              danger
+              trailing={null}
               onPress={() =>
                 navigation.navigate('leave-organization', {
                   volunteerId: organization.volunteerId,
@@ -324,15 +303,7 @@ export default Volunteer;
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.canvas },
   content: { paddingHorizontal: spacing.gutter, flexGrow: 1 },
-  back: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.white,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  backSpacer: { height: 40 },
+  backSpacer: { height: 44 },
   head: { marginTop: 16 },
   // logo and name on one row; the name takes the rest of the width and may wrap
   headContent: { flexDirection: 'row', alignItems: 'center', gap: 14 },
@@ -357,37 +328,37 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.gutter,
     gap: 12,
   },
-  compactOrganization: { flex: 1, height: 40, flexDirection: 'row', alignItems: 'center', gap: 10 },
+  compactOrganization: { flex: 1, height: 44, flexDirection: 'row', alignItems: 'center', gap: 10 },
   compactName: { fontFamily: fonts.title, fontSize: 17, flexShrink: 1 },
   name: { flex: 1, fontSize: 28, lineHeight: 34 },
   stats: { flexDirection: 'row', gap: 10, marginTop: 18 },
+  // handbook .tile: white, radius 22, a Bricolage 40 number over its label
   stat: {
     flex: 1,
-    borderRadius: radius.card,
+    minHeight: 96,
+    borderRadius: 22,
     paddingVertical: 12,
     paddingHorizontal: 14,
-    gap: 2,
+    justifyContent: 'space-between',
+    backgroundColor: colors.white,
   },
-  statHours: { backgroundColor: colors.white, ...shadows.card },
-  statDocuments: { backgroundColor: colors.white, ...shadows.card },
-  statValue: { fontFamily: fonts.title, fontSize: 22, lineHeight: 28, color: colors.ink },
+  statValue: {
+    fontFamily: fonts.title,
+    fontSize: 40,
+    lineHeight: 40,
+    letterSpacing: -1.6,
+    color: colors.ink,
+    fontVariant: ['tabular-nums'],
+  },
+  statLabel: { fontFamily: fonts.medium },
   prompt: {
     marginTop: 18,
     borderRadius: radius.card,
     padding: 16,
     gap: 6,
-    // on the gray canvas: a white card, the amber stays on the text
     backgroundColor: colors.white,
-    ...shadows.card,
   },
   promptAction: { alignSelf: 'flex-start', marginTop: 6 },
   section: { marginTop: 20 },
-  rowIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: radius.button,
-    backgroundColor: colors.soft,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  dangerGroup: { marginTop: 10 },
 });

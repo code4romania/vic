@@ -5,12 +5,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { useAnouncementsInfiniteQuery } from '../services/anouncement/anouncement.service';
 import { IAnouncement } from '../common/interfaces/anouncement.interface';
-import { colors, fonts, radius, shadows, spacing } from '../common/theme/tokens';
+import { colors, fonts, radius, spacing } from '../common/theme/tokens';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
-import { EventIcon } from '../components/events/EventIcons';
 import NewsItemSkeleton from '../components/skeleton/news-item.skeleton';
 import { formatPostedAt } from '../common/utils/event-format';
-import { Avatar, EmptyState, Enter, PressableScale, StatusBarScrim, VText } from '../components/ui';
+import { Avatar, EmptyState, Enter, StatusBarScrim, VText } from '../components/ui';
+import { BackButton } from '../components/ui/ScreenChrome';
 
 /**
  * VIC 2.0 Anunțuri (canvas board "Anunțuri"): announcements from the volunteer's organizations, each
@@ -114,14 +114,11 @@ const Anouncements = ({ navigation }: any) => {
         renderItem={renderItem}
         ListHeaderComponent={
           <View style={styles.header}>
-            <PressableScale
+            <BackButton
               onPress={navigation.goBack}
-              style={[styles.back, shadows.back]}
               accessibilityLabel={`${t('back')}`}
               testID="anouncements-back"
-            >
-              <EventIcon name="back" size={20} />
-            </PressableScale>
+            />
             <Enter>
               <VText variant="largeTitle" accessibilityRole="header">
                 {t('home:anouncements.section.title')}
@@ -154,14 +151,6 @@ const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.canvas },
   list: { paddingHorizontal: spacing.gutter, flexGrow: 1, gap: 12 },
   header: { paddingBottom: 8, gap: 16 },
-  back: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.white,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   card: {
     borderRadius: radius.card,
     backgroundColor: colors.white,

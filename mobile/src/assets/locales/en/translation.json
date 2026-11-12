@@ -52,6 +52,7 @@
   },
   "landing": {
     "message": "Log in or create an account in one of the following ways",
+    "kicker": "VIC · for volunteers",
     "email": "Continue with email",
     "social": {
       "google": "Continue with Google",
@@ -217,7 +218,8 @@
       "years": "{{count}} years",
       "years_de": "{{count}} years"
     },
-    "section_settings": "Settings"
+    "section_settings": "Settings",
+    "your_profile": "Your profile"
   },
   "account_data": {
     "title": "Personal data",
@@ -840,7 +842,12 @@
     },
     "expiring_soon": "Expires soon",
     "period_open": "from {{start}}, no end date",
-    "issued_on": "issued on {{date}}"
+    "issued_on": "issued on {{date}}",
+    "title_large": "Your contracts",
+    "days_left_one": "1 day left",
+    "days_left": "{{count}} days left",
+    "days_left_de": "{{count}} days left",
+    "featured_action": "Download the contract"
   },
   "notifications": {
     "header": "Notifications settings",

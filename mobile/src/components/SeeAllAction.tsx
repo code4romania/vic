@@ -1,40 +1,37 @@
-import { Button, Text, useTheme } from '@ui-kitten/components';
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { Pressable } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 import { useTranslation } from 'react-i18next';
+import { AppText } from '../design/components/Text';
+import { ChevronRightIcon } from '../design/icons';
+import { palette } from '../design/tokens';
 
 interface SeeAllActionProps {
   onPress: () => void;
 }
 
+/** "Vezi tot" pill: white, navy label and chevron, 44pt touch area. */
 const SeeAllAction = ({ onPress }: SeeAllActionProps) => {
   const { t } = useTranslation('home');
-  const theme = useTheme();
   return (
-    <Button
-      style={[styles.seeAllBtn, { backgroundColor: theme['color-primary-50'] }]}
-      size="tiny"
-      appearance="ghost"
-      onPress={onPress}
-    >
-      {() => (
-        <Text
-          allowFontScaling={ALLOW_FONT_SCALLING}
-          category="c2"
-          style={{ color: theme['color-primary-800'] }}
-        >{`${t('anouncements.section.see_all')}`}</Text>
-      )}
-    </Button>
+    <Pressable onPress={onPress} hitSlop={6} accessibilityRole="button" style={styles.seeAllBtn}>
+      <AppText variant="label">{`${t('anouncements.section.see_all')}`}</AppText>
+      <ChevronRightIcon size={16} color={palette.navy} strokeWidth={2.4} />
+    </Pressable>
   );
 };
 
 export default SeeAllAction;
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   seeAllBtn: {
-    borderRadius: 100,
-    paddingVertical: 4,
-    paddingHorizontal: 10,
+    minHeight: 32,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+    borderRadius: theme.radius.pill,
+    paddingLeft: 12,
+    paddingRight: 8,
+    backgroundColor: theme.colors.card,
   },
-});
+}));

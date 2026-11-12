@@ -1,7 +1,8 @@
 import React, { ReactNode } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text } from '@ui-kitten/components';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
+import { AppText } from '../design/components/Text';
+import { palette } from '../design/tokens';
 
 interface SectionHeaderProps {
   title: string;
@@ -9,23 +10,23 @@ interface SectionHeaderProps {
   action?: ReactNode;
 }
 
+/** Section title „Îndrăzneț”: an overline in secondary ink, with an optional icon and action. */
 const SectionHeader = ({ title, icon, action }: SectionHeaderProps) => (
   <View style={styles.sectionHeader}>
-    <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p2" status="info">
+    <AppText variant="overline" color={palette.ink2} accessibilityRole="header">
       {title}
-    </Text>
+    </AppText>
     {icon}
     {action}
   </View>
 );
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
-    backgroundColor: 'white',
+    gap: theme.space.xs,
   },
-});
+}));
 
 export default SectionHeader;

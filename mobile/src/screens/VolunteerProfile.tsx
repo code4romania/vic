@@ -16,6 +16,7 @@ import { useUserProfile } from '../store/profile/profile.selector';
 import { usePaddingTop } from '../hooks/usePaddingTop';
 import { colors, spacing } from '../common/theme/tokens';
 import { Group, VText } from '../components/ui';
+import { AppText } from '../design/components';
 
 const EMPTY = '–';
 
@@ -32,8 +33,10 @@ const InfoRow = ({
   testID?: string;
 }) => (
   <View style={[styles.row, !last && styles.divider]} accessible testID={testID}>
-    <VText variant="cap">{label}</VText>
-    <VText variant="body">{value?.trim() ? value : EMPTY}</VText>
+    <AppText variant="overline" color={colors.muted}>
+      {label}
+    </AppText>
+    <VText variant="bodyStrong">{value?.trim() ? value : EMPTY}</VText>
   </View>
 );
 
@@ -153,9 +156,9 @@ const VolunteerProfile = ({ navigation }: any) => {
             </ProfileIntro>
 
             <View style={styles.section}>
-              <VText variant="label" color={colors.muted} style={styles.sectionTitle}>
+              <AppText variant="title" accessibilityRole="header" style={styles.sectionTitle}>
                 {`${t('information')}`}
-              </VText>
+              </AppText>
               <Group>
                 <InfoRow label={t('email')} value={volunteer.profile?.email} />
                 <InfoRow label={t('general:phone')} value={volunteer.user.phone} />
@@ -190,8 +193,7 @@ const VolunteerProfile = ({ navigation }: any) => {
 export default VolunteerProfile;
 
 const styles = StyleSheet.create({
-  // PageLayout pads its content by 16 on white: the gray canvas fills it edge to edge, with the
-  // 20pt page margins
+  // PageLayout pads its content by 16: the canvas fills it edge to edge, with the 20pt margins
   canvas: {
     flex: 1,
     marginHorizontal: -spacing.l,
@@ -210,7 +212,7 @@ const styles = StyleSheet.create({
     borderTopColor: colors.line,
   },
   section: { gap: spacing.s },
-  sectionTitle: { paddingHorizontal: spacing.xs },
+  sectionTitle: { paddingHorizontal: 2 },
   row: { gap: 2, paddingVertical: spacing.m, minHeight: 44, justifyContent: 'center' },
   divider: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.line },
 });

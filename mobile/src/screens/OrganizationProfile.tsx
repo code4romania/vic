@@ -31,17 +31,10 @@ import { MAX_FONT_SCALE } from '../common/constants/constants';
 import { TAB_ROUTES } from '../routes/tab-routes';
 import OrganizationSkeleton from '../components/skeleton/organization-skeleton';
 import { EventCard } from '../components/events/EventCard';
-import { EventIcon } from '../components/events/EventIcons';
-import {
-  Avatar,
-  Enter,
-  Group,
-  ListRow,
-  PressableScale,
-  Sheet,
-  VButton,
-  VText,
-} from '../components/ui';
+import { Avatar, Enter, Group, Sheet, VButton, VText } from '../components/ui';
+import { BackButton } from '../components/ui/ScreenChrome';
+import { Group as RowGroup, ListRow } from '../design/components';
+import { GlobeIcon, LogOutIcon, MailIcon, PhoneIcon, PinIcon } from '../design/icons';
 
 type Banner = { tone: StatusTone; text: string };
 
@@ -296,7 +289,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
       >
         <View style={[styles.hero, { height: heroHeight }]}>
           {loaded && (
-            <View style={[styles.logo, shadows.card]}>
+            <View style={styles.logo}>
               <Avatar name={organization.name} uri={organization.logo} size={80} shape="rounded" />
             </View>
           )}
@@ -332,7 +325,12 @@ const OrganizationProfile = ({ navigation, route }: any) => {
             {statusBanner && (
               <Enter
                 index={1}
-                style={[styles.banner, { backgroundColor: colors.status[statusBanner.tone].bg }]}
+                style={[
+                  styles.banner,
+                  { backgroundColor: colors.status[statusBanner.tone].bg },
+                  // pending reads as the "wait" chip: white with a navy outline
+                  statusBanner.tone === 'wait' && styles.bannerWait,
+                ]}
               >
                 <VText variant="label" color={colors.status[statusBanner.tone].fg}>
                   {statusBanner.text}
@@ -350,10 +348,10 @@ const OrganizationProfile = ({ navigation, route }: any) => {
             )}
 
             <Enter index={2} style={styles.section}>
-              <Group>
+              <RowGroup>
                 {!!organization.address && (
                   <ListRow
-                    leading={<EventIcon name="pin" />}
+                    icon={PinIcon}
                     title={organization.address}
                     onPress={() =>
                       Linking.openURL(
@@ -366,7 +364,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
                 )}
                 {!!organization.website && (
                   <ListRow
-                    leading={<EventIcon name="open" />}
+                    icon={GlobeIcon}
                     title={organization.website.replace(/^https?:\/\//, '')}
                     onPress={() =>
                       Linking.openURL(
@@ -379,7 +377,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
                 )}
                 {!!organization.email && (
                   <ListRow
-                    leading={<EventIcon name="mail" />}
+                    icon={MailIcon}
                     title={organization.email}
                     subtitle={`${t('email')}`}
                     onPress={() =>
@@ -389,16 +387,15 @@ const OrganizationProfile = ({ navigation, route }: any) => {
                 )}
                 {!!organization.phone && (
                   <ListRow
-                    leading={<EventIcon name="phone" />}
+                    icon={PhoneIcon}
                     title={organization.phone}
                     subtitle={`${t('phone')}`}
                     onPress={() =>
                       Linking.openURL(`tel:${organization.phone}`).catch(() => undefined)
                     }
-                    divider={false}
                   />
                 )}
-              </Group>
+              </RowGroup>
             </Enter>
 
             <Enter index={3} style={styles.section}>
@@ -421,20 +418,23 @@ const OrganizationProfile = ({ navigation, route }: any) => {
 
             {status === OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER && (
               <Enter index={4}>
-                <ListRow
-                  title={`${t('leave')}`}
-                  destructive
-                  divider={false}
-                  onPress={() =>
-                    organization &&
-                    navigation.navigate('leave-organization', {
-                      volunteerId: organization.volunteer.id,
-                      name: organization.name,
-                      logo: organization.logo,
-                    })
-                  }
-                  testID="organization-leave"
-                />
+                <RowGroup>
+                  <ListRow
+                    icon={LogOutIcon}
+                    title={`${t('leave')}`}
+                    danger
+                    trailing={null}
+                    onPress={() =>
+                      organization &&
+                      navigation.navigate('leave-organization', {
+                        volunteerId: organization.volunteer.id,
+                        name: organization.name,
+                        logo: organization.logo,
+                      })
+                    }
+                    testID="organization-leave"
+                  />
+                </RowGroup>
               </Enter>
             )}
           </View>
@@ -452,14 +452,12 @@ const OrganizationProfile = ({ navigation, route }: any) => {
         ]}
       >
         <View style={styles.topRow} pointerEvents="box-none">
-          <PressableScale
+          <BackButton
+            tone="glass"
             onPress={navigation.goBack}
             accessibilityLabel={`${t('general:back')}`}
-            style={[styles.back, shadows.back]}
             testID="organization-back"
-          >
-            <EventIcon name="back" size={20} />
-          </PressableScale>
+          />
           {loaded && (
             <Animated.View
               pointerEvents="none"
@@ -549,6 +547,7 @@ const styles = StyleSheet.create({
   gap6: { gap: 6 },
   name: { fontSize: 28, lineHeight: 34 },
   banner: { borderRadius: radius.button, padding: 14 },
+  bannerWait: { borderWidth: 2, borderColor: colors.navy },
   section: { gap: 10 },
   paragraph: { lineHeight: 23 },
   pinnedBar: {
@@ -569,14 +568,6 @@ const styles = StyleSheet.create({
     paddingRight: spacing.gutter,
   },
   compactName: { fontFamily: fonts.title, fontSize: 17, flexShrink: 1 },
-  back: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.white,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   bar: {
     position: 'absolute',
     left: 0,

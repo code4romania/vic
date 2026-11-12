@@ -1,6 +1,6 @@
 import React from 'react';
-import { useTheme } from '@ui-kitten/components';
 import GrayIcon from './GreyIcon';
+import { DocumentIcon as FileIcon } from '../design/icons';
 
 // legacy file icon, still used by the contract signing page
 export const DocumentIcon = ({
@@ -9,17 +9,6 @@ export const DocumentIcon = ({
 }: {
   backgroundColor?: string;
   color?: string;
-}) => {
-  const theme = useTheme();
-  return (
-    <GrayIcon
-      name={'file-text'}
-      backgroundColor={backgroundColor}
-      style={{
-        color: theme[color || 'gray-50'],
-      }}
-    />
-  );
-};
+}) => <GrayIcon icon={FileIcon} color={color} backgroundColor={backgroundColor} />;
 
 export default DocumentIcon;

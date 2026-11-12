@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import HorizontalCarousel from './HorizontalCarousel';
-import { Button, StyleService, Text, useStyleSheet } from '@ui-kitten/components';
-import { ISelectItem } from './FormSelect';
 import { View } from 'react-native';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { StyleSheet } from 'react-native-unistyles';
+import HorizontalCarousel from './HorizontalCarousel';
+import { ISelectItem } from './FormSelect';
+import { OptionChip } from '../design/components/Chip';
+import { haptics } from '../design/haptics';
 
 interface TabsProps {
   tabs: ISelectItem[];
@@ -11,11 +12,14 @@ interface TabsProps {
   onPress: (id: string | number) => void;
 }
 
+/** A row of option chips that scrolls sideways; the selected one is navy. */
 const Tabs = ({ tabs, onPress, defaultTab }: TabsProps) => {
   const [activeTab, setActiveTab] = useState<ISelectItem>(defaultTab || tabs[0]);
-  const styles = useStyleSheet(themedStyles);
 
   const onTabClick = (selected: ISelectItem): void => {
+    if (selected.key !== activeTab.key) {
+      haptics.selection();
+    }
     setActiveTab(selected);
     onPress(selected.key);
   };
@@ -23,28 +27,14 @@ const Tabs = ({ tabs, onPress, defaultTab }: TabsProps) => {
   return (
     <View style={styles.container}>
       <HorizontalCarousel>
-        {tabs.map((tab) => {
-          const isTabActive = activeTab.key === tab.key;
-          return (
-            <Button
-              key={tab.key}
-              appearance="ghost"
-              status="basic"
-              style={[styles.tab, isTabActive ? styles.activeTabBgc : null]}
-              onPress={onTabClick.bind(null, tab)}
-            >
-              {() => (
-                <Text
-                  allowFontScaling={ALLOW_FONT_SCALLING}
-                  category={isTabActive ? 's1' : 'c1'}
-                  appearance={isTabActive ? 'default' : 'hint'}
-                >
-                  {tab.label}
-                </Text>
-              )}
-            </Button>
-          );
-        })}
+        {tabs.map((tab) => (
+          <OptionChip
+            key={tab.key}
+            label={tab.label}
+            selected={activeTab.key === tab.key}
+            onPress={() => onTabClick(tab)}
+          />
+        ))}
       </HorizontalCarousel>
     </View>
   );
@@ -52,8 +42,6 @@ const Tabs = ({ tabs, onPress, defaultTab }: TabsProps) => {
 
 export default Tabs;
 
-const themedStyles = StyleService.create({
+const styles = StyleSheet.create({
   container: { marginBottom: 12 },
-  activeTabBgc: { backgroundColor: '$cool-gray-100' },
-  tab: { borderRadius: 6, paddingHorizontal: 12 },
 });

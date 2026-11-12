@@ -10,7 +10,8 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import { VText } from '../components/ui';
 import { useRejectedAccessRequest } from '../services/access-request/access-request.service';
 import { format } from 'date-fns';
-import { spacing } from '../common/theme/tokens';
+import { colors, radius, spacing } from '../common/theme/tokens';
+import { AppText } from '../design/components';
 
 const RequestRejectedReason = ({ navigation, route }: any) => {
   // translations
@@ -51,7 +52,7 @@ const RequestRejectedReason = ({ navigation, route }: any) => {
               date: format(new Date(accessRequest.createdOn), 'dd/MM/y'),
             })}`}</VText>
             <View style={styles.reason}>
-              <VText variant="cap">{`${t('reason')}`}</VText>
+              <AppText variant="overline" color={colors.muted}>{`${t('reason')}`}</AppText>
               <VText variant="body">{accessRequest.rejectionReason || '-'}</VText>
             </View>
           </View>
@@ -70,5 +71,11 @@ const styles = StyleSheet.create({
     paddingTop: spacing.l,
     paddingHorizontal: spacing.gutter - spacing.l,
   },
-  reason: { gap: spacing.xs },
+  // the reason on a paper card: the modal is white
+  reason: {
+    gap: spacing.xs,
+    padding: 14,
+    borderRadius: radius.field,
+    backgroundColor: colors.canvas,
+  },
 });

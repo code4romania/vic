@@ -1,15 +1,16 @@
 import React, { ReactNode, useState } from 'react';
-import { Spinner } from '@ui-kitten/components';
-import { View, StyleSheet, ViewStyle } from 'react-native';
+import { Pressable, View, ViewStyle } from 'react-native';
 import { KeyboardStickyView } from 'react-native-keyboard-controller';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StyleSheet } from 'react-native-unistyles';
 import { useTranslation } from 'react-i18next';
 import { ButtonType } from '../common/enums/button-type.enum';
-import { colors, fonts, shadows, spacing } from '../common/theme/tokens';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import { FormLayoutBottomOffsetContext } from './FormLayout';
-import { EventIcon } from '../components/events/EventIcons';
-import { PressableScale, VButton, VText } from '../components/ui';
+import { LayoutHeader, RoundIconButton } from './LayoutHeader';
+import { Button, ButtonVariant } from '../design/components/Button';
+import { AppText } from '../design/components/Text';
+import { palette } from '../design/tokens';
 
 interface ActionsOptionsProps {
   primaryActionLabel: string;
@@ -32,21 +33,15 @@ interface PageLayoutProps {
   headerStyle?: ViewStyle;
 }
 
-export const LoadingIndicator = (props: any): React.ReactElement => (
-  <View style={[props.style, styles.indicator]}>
-    <Spinner size="medium" />
-  </View>
-);
-
-const BUTTON_VARIANT = {
+export const BUTTON_VARIANT: Record<ButtonType, ButtonVariant> = {
   [ButtonType.PRIMARY]: 'primary',
   [ButtonType.SECONDARY]: 'outline',
-  [ButtonType.DANGER]: 'danger',
-} as const;
+  [ButtonType.DANGER]: 'destructive',
+};
 
 /**
- * VIC 2.0 page: a round back button, the title, an optional edit link, the content, and the actions
- * that stay above the keyboard.
+ * „Îndrăzneț” page: paper, a 44pt round white back button, the title in Bricolage, an optional
+ * "Editează" pill, the content, and the actions (one yellow button) that stay above the keyboard.
  */
 export const PageLayout = ({
   children,
@@ -63,32 +58,23 @@ export const PageLayout = ({
 
   return (
     <View style={styles.screen}>
-      <View style={[styles.header, headerStyle]}>
-        {onBackButtonPress && (
-          <PressableScale
-            onPress={onBackButtonPress}
-            style={[styles.back, shadows.back]}
-            accessibilityLabel={`${t('back')}`}
-            testID="page-back"
-          >
-            <EventIcon name="back" size={20} />
-          </PressableScale>
-        )}
-        <VText variant="h2" numberOfLines={1} style={styles.title} accessibilityRole="header">
-          {title}
-        </VText>
-        {onEditButtonPress && (
-          <VText
-            variant="label"
-            style={styles.edit}
-            onPress={onEditButtonPress}
-            accessibilityRole="button"
-            testID="page-edit"
-          >
-            {t('edit', { item: '' }).trim()}
-          </VText>
-        )}
-      </View>
+      <LayoutHeader
+        title={title}
+        style={headerStyle}
+        leading={
+          onBackButtonPress ? (
+            <RoundIconButton
+              icon="back"
+              onPress={onBackButtonPress}
+              accessibilityLabel={`${t('back')}`}
+              testID="page-back"
+            />
+          ) : undefined
+        }
+        onEditButtonPress={onEditButtonPress}
+        editLabel={t('edit', { item: '' }).trim()}
+        editTestID="page-edit"
+      />
       <View style={styles.childrenContainer}>
         <FormLayoutBottomOffsetContext.Provider value={actionsHeight}>
           {children}
@@ -104,33 +90,37 @@ export const PageLayout = ({
             onLayout={(event) => setActionsHeight(event.nativeEvent.layout.height)}
           >
             {!!actionsOptions.helperText && (
-              <VText variant="sub" style={styles.center}>
+              <AppText variant="caption" color={palette.ink2} style={styles.center}>
                 {actionsOptions.helperText}
-              </VText>
+              </AppText>
             )}
-            <VButton
+            <Button
+              full
               onPress={() => actionsOptions.onPrimaryActionButtonClick(undefined)}
               label={`${actionsOptions.primaryActionLabel}`}
               variant={BUTTON_VARIANT[actionsOptions.primaryBtnType || ButtonType.PRIMARY]}
               loading={actionsOptions.loading}
-              disabled={actionsOptions.loading}
               testID="page-action"
             />
             {actionsOptions.onSecondaryActionButtonClick && actionsOptions.secondaryActionLink && (
-              <VText variant="sub" style={styles.center}>
-                {actionsOptions.secondaryActionLabel
-                  ? `${actionsOptions.secondaryActionLabel} `
-                  : ''}
-                <VText
-                  variant="label"
-                  style={styles.link}
+              <View style={styles.secondary}>
+                {!!actionsOptions.secondaryActionLabel && (
+                  <AppText variant="caption" color={palette.ink2}>
+                    {actionsOptions.secondaryActionLabel}
+                  </AppText>
+                )}
+                <Pressable
                   onPress={actionsOptions.onSecondaryActionButtonClick}
                   accessibilityRole="button"
+                  hitSlop={8}
+                  style={styles.linkHit}
                   testID="page-secondary"
                 >
-                  {actionsOptions.secondaryActionLink}
-                </VText>
-              </VText>
+                  <AppText variant="label" style={styles.link}>
+                    {actionsOptions.secondaryActionLink}
+                  </AppText>
+                </Pressable>
+              </View>
             )}
           </View>
         </KeyboardStickyView>
@@ -141,40 +131,25 @@ export const PageLayout = ({
 
 export default PageLayout;
 
-const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.white },
-  header: {
-    minHeight: 64,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    paddingHorizontal: spacing.gutter,
-    paddingVertical: 12,
-  },
-  back: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.white,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: { flex: 1 },
-  edit: { fontFamily: fonts.bold, textDecorationLine: 'underline' },
-  childrenContainer: { flex: 1, paddingHorizontal: spacing.l, paddingVertical: spacing.s },
+const styles = StyleSheet.create((theme) => ({
+  screen: { flex: 1, backgroundColor: theme.colors.background },
+  childrenContainer: { flex: 1, paddingHorizontal: 16, paddingVertical: theme.space.xs },
   actions: {
-    gap: 12,
-    paddingTop: 12,
-    paddingHorizontal: spacing.gutter,
-    backgroundColor: colors.white,
+    gap: theme.space.s,
+    paddingTop: theme.space.m,
+    paddingHorizontal: theme.space.gutter,
+    backgroundColor: theme.colors.background,
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: colors.line,
+    borderTopColor: theme.colors.line,
   },
   center: { textAlign: 'center' },
-  link: { fontFamily: fonts.bold, textDecorationLine: 'underline', color: colors.ink },
-  indicator: {
+  secondary: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'row',
+    columnGap: 6,
   },
-});
+  linkHit: { minHeight: 36, justifyContent: 'center' },
+  link: { textDecorationLine: 'underline' },
+}));
