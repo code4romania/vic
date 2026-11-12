@@ -1,12 +1,18 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, RefreshControl, StyleSheet, View } from 'react-native';
-import Animated from 'react-native-reanimated';
+import Animated, {
+  Extrapolation,
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { useFocusEffect } from '@react-navigation/native';
 import { useQueryClient } from 'react-query';
 import { queryKeys } from '../services/query-keys';
+import { MAX_FONT_SCALE } from '../common/constants/constants';
 import { isInactiveVolunteer } from '../common/interfaces/organization-list-item.interface';
 import {
   useActivityLogsCounters,
@@ -48,7 +54,7 @@ const STAT_TONE: Record<string, { bg: string; fg: string }> = {
 };
 
 /**
- * VIC 2.0 Ore (canvas boards "Ore" and "OraDetaliu"): large title with the organization, the hours
+ * VIC 2.0 Ore (canvas boards "Ore" and "OraDetaliu"): large title beside the add action, organization, hours
  * per status, a segmented control (În așteptare / Aprobate / Refuzate) and the entries. "+ Adaugă
  * ore" needs a volunteer profile; without one a sheet sends the volunteer to fill it in.
  */
@@ -57,7 +63,11 @@ const ActivityLogs = ({ navigation, route }: any) => {
   const insets = useSafeAreaInsets();
   const bottomInset = useGlassTabBarInset();
   useFocusedStatusBarStyle('dark');
-  const onScroll = useTabBarScroll();
+  const scrollY = useSharedValue(0);
+  const onScroll = useTabBarScroll(scrollY);
+  const [summaryHeight, setSummaryHeight] = useState(0);
+  const [titleHeight, setTitleHeight] = useState(0);
+  const [statusHeight, setStatusHeight] = useState(0);
   const profileSheet = useRef<BottomSheetModal>(null);
 
   const [status, setStatus] = useState<ActivityLogStatus>(ActivityLogStatus.PENDING);
@@ -66,6 +76,18 @@ const ActivityLogs = ({ navigation, route }: any) => {
   const organization = userProfile?.activeOrganization;
   const inactive = isInactiveVolunteer(organization);
   const queryClient = useQueryClient();
+
+  // The whole header (title, organization, totals, status) stays fixed and only the list scrolls
+  // under it; the measured sections give the list its top padding, at any text size.
+  const headerHeight =
+    insets.top +
+    12 +
+    (titleHeight || (isTabRoute(route) ? 44 : 104)) +
+    (organization ? (summaryHeight || 140) + (statusHeight || 44) : 0) +
+    6;
+  const headerShadow = useAnimatedStyle(() => ({
+    shadowOpacity: interpolate(scrollY.value, [0, 12], [0, 0.06], Extrapolation.CLAMP),
+  }));
 
   const {
     data,
@@ -119,57 +141,78 @@ const ActivityLogs = ({ navigation, route }: any) => {
   ];
 
   const header = (
-    <View style={styles.header}>
-      <View style={styles.topRow}>
-        {isTabRoute(route) ? (
-          <View />
-        ) : (
-          <PressableScale
-            onPress={navigation.goBack}
-            style={[styles.back, shadows.back]}
-            accessibilityLabel={`${t('general:back')}`}
-            testID="hours-back"
+    <Animated.View style={[styles.header, { paddingTop: insets.top + 12 }, headerShadow]}>
+      <View
+        style={styles.pinnedTitle}
+        onLayout={(e) => setTitleHeight(e.nativeEvent.layout.height)}
+      >
+        {!isTabRoute(route) && (
+          <View style={styles.backRow}>
+            <PressableScale
+              onPress={navigation.goBack}
+              style={[styles.back, shadows.back]}
+              accessibilityLabel={`${t('general:back')}`}
+              testID="hours-back"
+            >
+              <EventIcon name="back" size={20} />
+            </PressableScale>
+          </View>
+        )}
+        <Enter>
+          <View
+            testID="hours-title-row"
+            style={[styles.titleRow, !isTabRoute(route) && styles.titleAfterBack]}
           >
-            <EventIcon name="back" size={20} />
-          </PressableScale>
-        )}
-        {!inactive && !!organization && (
-          // the screen's primary action: yellow, as on the canvas board "Ore"
-          <VButton
-            size="small"
-            variant="primary"
-            label={`+ ${t('add')}`}
-            onPress={onAdd}
-            testID="hours-add"
-          />
-        )}
-      </View>
-      <Enter>
-        <VText variant="largeTitle" accessibilityRole="header" style={styles.title}>
-          {t('title')}
-        </VText>
-      </Enter>
-      {!!organization && (
-        <Enter index={1}>
-          <VText variant="sub">{t('at', { name: organization.name })}</VText>
+            <VText variant="largeTitle" accessibilityRole="header" style={styles.title}>
+              {t('title')}
+            </VText>
+            {!inactive && !!organization && (
+              <VButton
+                size="small"
+                variant="primary"
+                label={`+ ${t('add_short')}`}
+                accessibilityLabel={`${t('add')}`}
+                onPress={onAdd}
+                style={styles.addButton}
+                hitSlop={2}
+                maxFontSizeMultiplier={MAX_FONT_SCALE.title}
+                testID="hours-add"
+              />
+            )}
+          </View>
         </Enter>
+      </View>
+      {!!organization && (
+        <View testID="hours-summary">
+          <View
+            style={styles.summaryContent}
+            onLayout={(e) => setSummaryHeight(e.nativeEvent.layout.height)}
+          >
+            <Enter index={1}>
+              <VText variant="sub">{t('at', { name: organization.name })}</VText>
+            </Enter>
+            <Enter index={2} style={styles.stats}>
+              {stats.map((stat) => (
+                <View
+                  key={stat.key}
+                  style={[styles.stat, shadows.card, { backgroundColor: STAT_TONE[stat.key].bg }]}
+                  testID={`hours-total-${stat.key}`}
+                >
+                  <VText style={[styles.statValue, { color: STAT_TONE[stat.key].fg }]}>
+                    {`${stat.value || 0}h`}
+                  </VText>
+                  <VText variant="cap">{stat.label}</VText>
+                </View>
+              ))}
+            </Enter>
+          </View>
+        </View>
       )}
       {!!organization && (
-        <>
-          <Enter index={2} style={styles.stats}>
-            {stats.map((stat) => (
-              <View
-                key={stat.key}
-                style={[styles.stat, shadows.card, { backgroundColor: STAT_TONE[stat.key].bg }]}
-                testID={`hours-total-${stat.key}`}
-              >
-                <VText style={[styles.statValue, { color: STAT_TONE[stat.key].fg }]}>
-                  {`${stat.value || 0}h`}
-                </VText>
-                <VText variant="cap">{stat.label}</VText>
-              </View>
-            ))}
-          </Enter>
+        <View
+          style={styles.pinnedStatus}
+          onLayout={(e) => setStatusHeight(e.nativeEvent.layout.height)}
+        >
           <Enter index={3}>
             <SegmentedControl
               options={[
@@ -182,9 +225,9 @@ const ActivityLogs = ({ navigation, route }: any) => {
               testID="hours-status"
             />
           </Enter>
-        </>
+        </View>
       )}
-    </View>
+    </Animated.View>
   );
 
   const renderEmpty = () => {
@@ -235,7 +278,6 @@ const ActivityLogs = ({ navigation, route }: any) => {
             <LogRow log={item} status={status} onPress={onOpen} />
           </Enter>
         )}
-        ListHeaderComponent={header}
         ListEmptyComponent={renderEmpty}
         ListFooterComponent={
           isFetchingNextPage ? <ActivityIndicator color={colors.navy} style={styles.more} /> : null
@@ -244,14 +286,21 @@ const ActivityLogs = ({ navigation, route }: any) => {
         scrollEventThrottle={16}
         onEndReached={() => hasNextPage && !isFetching && fetchNextPage()}
         onEndReachedThreshold={0.4}
-        refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={reload} />}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetching}
+            onRefresh={reload}
+            progressViewOffset={headerHeight}
+          />
+        }
         contentContainerStyle={[
           styles.list,
-          { paddingTop: insets.top + 12, paddingBottom: bottomInset },
+          { paddingTop: headerHeight, paddingBottom: bottomInset },
         ]}
         showsVerticalScrollIndicator={false}
         testID="hours-list"
       />
+      {header}
 
       <Sheet
         ref={profileSheet}
@@ -282,12 +331,27 @@ export default ActivityLogs;
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.canvas },
   list: { paddingHorizontal: spacing.gutter, flexGrow: 1 },
-  header: { paddingBottom: 6, gap: 4 },
-  topRow: {
+  header: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 4,
+    backgroundColor: colors.canvas,
+    paddingHorizontal: spacing.gutter,
+    paddingBottom: 6,
+    shadowColor: '#000',
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 6 },
+  },
+  pinnedTitle: { gap: 4 },
+  pinnedStatus: { paddingTop: 4 },
+  summaryContent: { paddingTop: 4, gap: 4 },
+  backRow: { minHeight: 40 },
+  titleRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    minHeight: 40,
+    gap: 12,
   },
   back: {
     width: 40,
@@ -297,8 +361,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  title: { marginTop: 16 },
-  stats: { flexDirection: 'row', gap: 10, marginTop: 16, marginBottom: 16 },
+  titleAfterBack: { marginTop: 16 },
+  title: { flex: 1 },
+  addButton: { minHeight: 40, flexShrink: 0 },
+  stats: { flexDirection: 'row', gap: 10, marginTop: 12, marginBottom: 12 },
   stat: {
     flex: 1,
     borderRadius: radius.card,

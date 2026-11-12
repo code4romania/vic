@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from 'react';
 import { ActivityIndicator, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
-import { PressableScale } from './PressableScale';
+import { PressableScale, PressableScaleProps } from './PressableScale';
 import { VText } from './VText';
 import { colors, radius } from '../../common/theme/tokens';
 
@@ -17,6 +17,10 @@ export interface VButtonProps {
   style?: StyleProp<ViewStyle>;
   testID?: string;
   accessibilityHint?: string;
+  /** Spoken label when the visible one is shortened; defaults to `label`. */
+  accessibilityLabel?: string;
+  hitSlop?: PressableScaleProps['hitSlop'];
+  maxFontSizeMultiplier?: number;
 }
 
 const palette: Record<
@@ -45,6 +49,9 @@ export const VButton = ({
   style,
   testID,
   accessibilityHint,
+  accessibilityLabel,
+  hitSlop,
+  maxFontSizeMultiplier,
 }: VButtonProps) => {
   const [pressed, setPressed] = useState(false);
   const p = palette[variant];
@@ -53,8 +60,9 @@ export const VButton = ({
   return (
     <PressableScale
       testID={testID}
-      accessibilityLabel={label}
+      accessibilityLabel={accessibilityLabel ?? label}
       accessibilityHint={accessibilityHint}
+      hitSlop={hitSlop}
       accessibilityState={{ disabled: !!inactive, busy: !!loading }}
       disabled={inactive}
       onPress={onPress}
@@ -77,6 +85,7 @@ export const VButton = ({
           <VText
             variant="button"
             color={p.fg}
+            {...(maxFontSizeMultiplier !== undefined ? { maxFontSizeMultiplier } : {})}
             style={[styles.label, size === 'small' ? styles.smallLabel : null]}
           >
             {label}
