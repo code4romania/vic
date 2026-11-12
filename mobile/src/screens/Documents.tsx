@@ -1,12 +1,16 @@
-import React, { useCallback } from 'react';
-import { RefreshControl, StyleSheet, View } from 'react-native';
-import Animated from 'react-native-reanimated';
+import React, { useCallback, useMemo, useState } from 'react';
+import { ActivityIndicator, RefreshControl, StyleSheet, View } from 'react-native';
+import Animated, {
+  Extrapolation,
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
 import { useFocusEffect } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { useContractHistoryInfiniteQuery } from '../services/contract/contract.service';
-import { IContractListItem } from '../common/interfaces/contract-list-item.interface';
-import { colors, fonts, shadows, spacing } from '../common/theme/tokens';
+import { colors, shadows, spacing } from '../common/theme/tokens';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import { isTabRoute } from '../routes/tab-routes';
@@ -16,10 +20,14 @@ import { EventIcon } from '../components/events/EventIcons';
 import { DocumentRow } from '../components/documents/DocumentRow';
 import { useDownloadContract } from '../components/documents/useDownloadContract';
 import DocumentSkeletonList from '../components/skeleton/documents-skeleton-list';
-import { EmptyState, Enter, Group, PressableScale, StatusBarScrim, VText } from '../components/ui';
-
-// rows per section on the tab; "Vezi toate" opens the full list
-const PREVIEW = 3;
+import {
+  EmptyState,
+  Enter,
+  groupedItem,
+  PressableScale,
+  StatusBarScrim,
+  VText,
+} from '../components/ui';
 
 /**
  * VIC 2.0 Documente (canvas board "Documente"): the contracts the organization uploaded for the
@@ -30,14 +38,24 @@ const Documents = ({ navigation, route }: any) => {
   const insets = useSafeAreaInsets();
   const bottomInset = useGlassTabBarInset();
   useFocusedStatusBarStyle('dark');
-  const onScroll = useTabBarScroll();
+  const scrollY = useSharedValue(0);
+  const onScroll = useTabBarScroll(scrollY);
+  const [measuredHeaderHeight, setMeasuredHeaderHeight] = useState(0);
   const { userProfile } = useUserProfile();
   const organization = userProfile?.activeOrganization;
   const volunteerId: string | undefined = route.params?.volunteerId || organization?.volunteerId;
   const { downloadingId, download } = useDownloadContract();
 
+  // Before layout: safe area + top padding + back button + title margins/line + subtitle + bottom.
+  const headerHeight =
+    measuredHeaderHeight ||
+    insets.top + 12 + (isTabRoute(route) ? 0 : 40) + 16 + 38 + 4 + (organization ? 20 : 0) + 6;
+  const headerShadow = useAnimatedStyle(() => ({
+    shadowOpacity: interpolate(scrollY.value, [0, 12], [0, 0.06], Extrapolation.CLAMP),
+  }));
+
   const history = useContractHistoryInfiniteQuery(volunteerId);
-  const { refetch: reloadHistory } = history;
+  const { reloadFirstPage: reloadHistory } = history;
 
   const reload = useCallback(() => {
     reloadHistory();
@@ -45,62 +63,91 @@ const Documents = ({ navigation, route }: any) => {
 
   useFocusEffect(reload);
 
-  const signedItems = history.data?.pages?.[0]?.items ?? [];
-  const signedTotal = history.data?.pages?.[0]?.meta?.totalItems ?? signedItems.length;
+  const items = useMemo(
+    () => (history.data?.pages ?? []).flatMap((page) => page.items),
+    [history.data],
+  );
   const isLoading = history.isFetching && !history.data;
 
-  const section = (
-    key: 'signed',
-    title: string,
-    items: IContractListItem[],
-    total: number,
-    onSeeAll: () => void,
-    onPress: (contract: IContractListItem) => void,
-  ) => (
-    <View style={styles.section} testID={`documents-${key}`}>
-      <View style={styles.sectionHead}>
-        <VText variant="h2">{title}</VText>
-        {total > PREVIEW && (
-          <VText
-            variant="label"
-            style={styles.link}
-            onPress={onSeeAll}
-            accessibilityRole="button"
-            testID={`documents-${key}-all`}
-          >
-            {t('see_all', { count: total })}
-          </VText>
-        )}
-      </View>
-      <Group>
-        {items.slice(0, PREVIEW).map((contract, index, shown) => (
-          <Enter key={contract.id} index={index}>
-            <DocumentRow
-              contract={contract}
-              onPress={onPress}
-              busy={downloadingId === contract.id}
-              divider={index < shown.length - 1}
-            />
-          </Enter>
-        ))}
-      </Group>
-    </View>
-  );
+  const renderEmpty = () => {
+    if (!volunteerId) {
+      return (
+        <EmptyState
+          title={`${t('volunteer:no_org_added')}`}
+          description={`${t('volunteer:no_org_description')}`}
+          actionLabel={`${t('volunteer:join_organization')}`}
+          onAction={() => navigation.navigate('search')}
+          testID="documents-no-organization"
+        />
+      );
+    }
+    if (isLoading) {
+      return <DocumentSkeletonList />;
+    }
+    return (
+      <EmptyState
+        title={`${history.error ? t('errors.generic') : t('empty.title')}`}
+        error={!!history.error}
+        description={history.error ? undefined : `${t('empty.description')}`}
+        actionLabel={history.error ? `${t('events:retry')}` : undefined}
+        onAction={history.error ? reload : undefined}
+        testID="documents-empty"
+      />
+    );
+  };
 
   return (
-    <View style={styles.screen}>
-      <Animated.ScrollView
+    <View style={styles.screen} testID="documents">
+      <Animated.FlatList
+        data={items}
+        keyExtractor={(item) => item.id}
+        extraData={downloadingId}
+        renderItem={({ item, index }) => (
+          <View style={groupedItem(index, items.length)}>
+            <DocumentRow
+              contract={item}
+              onPress={download}
+              busy={downloadingId === item.id}
+              divider={index < items.length - 1}
+            />
+          </View>
+        )}
+        ListEmptyComponent={renderEmpty}
+        ListFooterComponent={
+          history.hasNextPage && history.isFetchingNextPage ? (
+            <View style={styles.more}>
+              <ActivityIndicator size="small" color={colors.navy} testID="documents-loading-more" />
+            </View>
+          ) : null
+        }
+        onEndReached={() => {
+          if (history.hasNextPage && !history.isFetchingNextPage && !history.isFetching) {
+            history.fetchNextPage();
+          }
+        }}
+        onEndReachedThreshold={0.5}
         onScroll={onScroll}
         scrollEventThrottle={16}
         refreshControl={
-          <RefreshControl refreshing={!isLoading && history.isRefetching} onRefresh={reload} />
+          <RefreshControl
+            refreshing={!isLoading && history.isRefetching && !history.isFetchingNextPage}
+            onRefresh={reload}
+            progressViewOffset={headerHeight}
+          />
         }
         contentContainerStyle={[
           styles.content,
-          { paddingTop: insets.top + 12, paddingBottom: bottomInset },
+          // Header includes 6pt bottom padding; 6 + 18 keeps the old 24pt gap above the first row.
+          // Empty, error and loading states sit right under the subtitle, as before.
+          { paddingTop: headerHeight + (items.length ? 18 : 0), paddingBottom: bottomInset },
         ]}
         showsVerticalScrollIndicator={false}
-        testID="documents"
+        testID="documents-list"
+      />
+      <Animated.View
+        testID="documents-header"
+        style={[styles.header, { paddingTop: insets.top + 12 }, headerShadow]}
+        onLayout={(e) => setMeasuredHeaderHeight(e.nativeEvent.layout.height)}
       >
         {!isTabRoute(route) && (
           <PressableScale
@@ -122,44 +169,7 @@ const Documents = ({ navigation, route }: any) => {
             <VText variant="sub">{t('activity_logs:at', { name: organization.name })}</VText>
           </Enter>
         )}
-
-        {isLoading && <DocumentSkeletonList />}
-
-        {!isLoading && signedItems.length > 0 && (
-          <Enter index={3}>
-            {section(
-              'signed',
-              `${t('sections.all')}`,
-              signedItems,
-              signedTotal,
-              () => navigation.navigate('contract-history'),
-              download,
-            )}
-          </Enter>
-        )}
-
-        {!volunteerId && (
-          // no active organization: nothing to ask the API for
-          <EmptyState
-            title={`${t('volunteer:no_org_added')}`}
-            description={`${t('volunteer:no_org_description')}`}
-            actionLabel={`${t('volunteer:join_organization')}`}
-            onAction={() => navigation.navigate('search')}
-            testID="documents-no-organization"
-          />
-        )}
-
-        {!!volunteerId && !isLoading && !signedItems.length && (
-          <EmptyState
-            title={`${history.error ? t('errors.generic') : t('empty.title')}`}
-            error={!!history.error}
-            description={history.error ? undefined : `${t('empty.description')}`}
-            actionLabel={history.error ? `${t('events:retry')}` : undefined}
-            onAction={history.error ? reload : undefined}
-            testID="documents-empty"
-          />
-        )}
-      </Animated.ScrollView>
+      </Animated.View>
       <StatusBarScrim />
     </View>
   );
@@ -179,12 +189,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: { marginTop: 16, marginBottom: 4 },
-  section: { marginTop: 24 },
-  sectionHead: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 10,
+  header: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 4,
+    backgroundColor: colors.canvas,
+    paddingHorizontal: spacing.gutter,
+    paddingBottom: 6,
+    shadowColor: '#000',
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 6 },
   },
-  link: { fontFamily: fonts.bold, textDecorationLine: 'underline' },
+  more: { paddingVertical: 20, alignItems: 'center', justifyContent: 'center' },
 });

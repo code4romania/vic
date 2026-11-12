@@ -779,10 +779,6 @@
     "contract_prefix": "Contract",
     "certificate_prefix": "Certificate",
     "description": "The contracts you signed with the organization. Download them any time.",
-    "sections": {
-      "closed": "History of signed contracts",
-      "all": "Your contracts"
-    },
     "contract_status": {
       "active": "active",
       "closed": "concluded",
@@ -790,7 +786,6 @@
     },
     "download": "download",
     "download_error": "We could not download the document. Try again.",
-    "see_all": "See all ({{count}})",
     "status": {
       "SIGNED": "Signed",
       "PENDING": "Pending",
