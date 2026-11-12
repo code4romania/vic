@@ -1,10 +1,22 @@
 import 'react-native-gesture-handler';
+// Unistyles themes must be configured before any StyleSheet is created
+import './src/design/theme';
 import React from 'react';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { default as theme } from './src/common/theme/theme.json';
 import { default as mapping } from './src/common/theme/mappings.json';
 import * as Font from 'expo-font';
+import {
+  BricolageGrotesque_700Bold,
+  BricolageGrotesque_800ExtraBold,
+} from '@expo-google-fonts/bricolage-grotesque';
+import {
+  Manrope_500Medium,
+  Manrope_600SemiBold,
+  Manrope_700Bold,
+  Manrope_800ExtraBold,
+} from '@expo-google-fonts/manrope';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { linking } from './src/routes/linking';
 import { Platform, StyleSheet, View } from 'react-native';
@@ -49,8 +61,15 @@ export default () => {
     'roboto-medium': require('./src/assets/fonts/Roboto-Medium.ttf'),
     'roboto-regular': require('./src/assets/fonts/Roboto-Regular.ttf'),
     'titilium-web': require('./src/assets/fonts/TitilliumWeb-SemiBold.ttf'),
-    // VIC 2.0 titles (Titillium Web 700)
+    // VIC 2.0 titles (Titillium Web 700); Titillium stays only in the logo
     'titillium-bold': require('./src/assets/fonts/TitilliumWeb-Bold.ttf'),
+    // „Îndrăzneț”: Bricolage Grotesque for numbers and titles, Manrope for everything else
+    BricolageGrotesque_700Bold,
+    BricolageGrotesque_800ExtraBold,
+    Manrope_500Medium,
+    Manrope_600SemiBold,
+    Manrope_700Bold,
+    Manrope_800ExtraBold,
   });
 
   return fontsLoaded ? (

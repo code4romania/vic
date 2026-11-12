@@ -18,6 +18,18 @@ jest.mock('expo-secure-store', () => {
   };
 });
 
+// Unistyles 3: the library's jest mocks, then our themes
+require('react-native-unistyles/mocks');
+require('../design/theme');
+
+jest.mock('expo-haptics', () => ({
+  selectionAsync: jest.fn(async () => undefined),
+  impactAsync: jest.fn(async () => undefined),
+  notificationAsync: jest.fn(async () => undefined),
+  ImpactFeedbackStyle: { Light: 'light', Medium: 'medium', Heavy: 'heavy' },
+  NotificationFeedbackType: { Success: 'success', Warning: 'warning', Error: 'error' },
+}));
+
 jest.mock('react-native-worklets', () => require('react-native-worklets/src/mock'));
 jest.mock('react-native-reanimated', () => ({
   ...require('react-native-reanimated/mock'),
