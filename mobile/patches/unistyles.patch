@@ -1,0 +1,45 @@
+diff --git a/node_modules/react-native-unistyles/lib/commonjs/components/native/Pressable.native.js b/node_modules/react-native-unistyles/lib/commonjs/components/native/Pressable.native.js
+index 09d13c5..864d847 100644
+--- a/node_modules/react-native-unistyles/lib/commonjs/components/native/Pressable.native.js
++++ b/node_modules/react-native-unistyles/lib/commonjs/components/native/Pressable.native.js
+@@ -14,6 +14,10 @@ function _interopRequireWildcard(e, t) { if ("function" == typeof WeakMap) var r
+ // instance type of View for both legacy and Strict TypeScript API (RN 0.87+)
+ 
+ const getStyles = (styleProps = {}) => {
++  // null / false styles (e.g. `cond ? style : null`) are valid in React Native
++  if (!styleProps || typeof styleProps !== "object") {
++      return styleProps
++  }
+   const unistyleKey = Object.keys(styleProps).find(key => key.startsWith('unistyles_'));
+   if (!unistyleKey) {
+     return styleProps;
+diff --git a/node_modules/react-native-unistyles/lib/module/components/native/Pressable.native.js b/node_modules/react-native-unistyles/lib/module/components/native/Pressable.native.js
+index 7be4d9a..77b80cc 100644
+--- a/node_modules/react-native-unistyles/lib/module/components/native/Pressable.native.js
++++ b/node_modules/react-native-unistyles/lib/module/components/native/Pressable.native.js
+@@ -9,6 +9,10 @@ import { ScopedThemeContext } from '../ScopedThemeContext';
+ // instance type of View for both legacy and Strict TypeScript API (RN 0.87+)
+ import { jsx as _jsx } from "react/jsx-runtime";
+ const getStyles = (styleProps = {}) => {
++  // null / false styles (e.g. `cond ? style : null`) are valid in React Native
++  if (!styleProps || typeof styleProps !== "object") {
++      return styleProps
++  }
+   const unistyleKey = Object.keys(styleProps).find(key => key.startsWith('unistyles_'));
+   if (!unistyleKey) {
+     return styleProps;
+diff --git a/node_modules/react-native-unistyles/src/components/native/Pressable.native.tsx b/node_modules/react-native-unistyles/src/components/native/Pressable.native.tsx
+index a893f58..b4ffe78 100644
+--- a/node_modules/react-native-unistyles/src/components/native/Pressable.native.tsx
++++ b/node_modules/react-native-unistyles/src/components/native/Pressable.native.tsx
+@@ -17,6 +17,10 @@ type PressableProps = Props & {
+ }
+ 
+ const getStyles = (styleProps: Record<string, any> = {}) => {
++    // null / false styles (e.g. `cond ? style : null`) are valid in React Native
++    if (!styleProps || typeof styleProps !== "object") {
++        return styleProps
++    }
+     const unistyleKey = Object.keys(styleProps).find((key) => key.startsWith('unistyles_'))
+ 
+     if (!unistyleKey) {

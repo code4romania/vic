@@ -1,58 +1,64 @@
 import { Easing } from 'react-native-reanimated';
-import { Platform, TextStyle, ViewStyle } from 'react-native';
+import { TextStyle, ViewStyle } from 'react-native';
+import {
+  elevation,
+  fontFamily,
+  palette,
+  radius as dsRadius,
+  space,
+  status,
+  type,
+} from '../../design/tokens';
 
-// VIC 2.0 design tokens (approved mobile redesign, canvas v22).
-// Colors and fonts are the app's own: yellow #FFD209 only on the primary action, with navy text.
+// Legacy token names, now backed by the „Îndrăzneț” design system (src/design/tokens.ts).
+// Screens that still import from here pick up the new palette and type; new code imports src/design.
 export const colors = {
-  yellow: '#FFD209',
-  yellowPressed: '#F5C800',
-  navy: '#01344F',
-  ink: '#1F2937',
-  // WCAG AA: 4.5:1 on white and on the canvas (#6B7280 was 3.96:1 on #E4E9EF)
-  muted: '#4B5563',
-  // placeholders and field borders: 4.8:1 on white (#9CA3AF was 2.5:1)
-  subtle: '#6B7280',
-  line: '#E5E7EB',
-  soft: '#F3F4F6',
-  // page background behind white cards (Andrew, 9 Nov: a gray that clearly sets off the white lists)
-  canvas: '#E4E9EF',
-  navyTint: '#E3ECF2',
-  tealTint: '#DDF3F1',
-  // strong figure colors on white (Andrew, 9 Nov: no pastel blocks)
-  figure: { green: '#15803D', amber: '#B45309', red: '#C62828', teal: '#0B7A7A' },
-  grab: '#D1D5DB',
-  white: '#FFFFFF',
-  black: '#000000',
-  // error text on white: 5.6:1 (#E23D3D was 4.23:1)
-  danger: '#C62828',
-  teal: '#0AA5A5',
-  tealLight: '#3BC9BC',
-  scrim: 'rgba(0,0,0,0.4)',
-  // Status = colored figure on a neutral gray chip, no pastel tints (Andrew, 9 Nov: "solid
-  // navy/white with colored figures, green/red only for status").
+  yellow: palette.yellow,
+  yellowPressed: palette.yellowPress,
+  navy: palette.navy,
+  ink: palette.ink,
+  // secondary text: 5.5:1 on paper
+  muted: palette.ink2,
+  subtle: palette.ink2,
+  line: palette.line,
+  soft: palette.paper,
+  // page background behind white cards: warm paper, so white never sits on white
+  canvas: palette.paper,
+  navyTint: palette.sand,
+  tealTint: palette.paper,
+  // solid figure colors (no pastel blocks)
+  figure: { green: palette.green, amber: '#9A4A00', red: palette.red, teal: palette.navy },
+  grab: 'rgba(1,52,79,0.25)',
+  white: palette.white,
+  black: palette.black,
+  danger: palette.red,
+  teal: palette.navy,
+  tealLight: palette.navy2,
+  scrim: palette.scrim,
+  // Solid status pills, white or navy text on the status color (all AA).
   status: {
-    ok: { bg: '#F3F4F6', fg: '#166534' },
-    wait: { bg: '#F3F4F6', fg: '#92400E' },
-    no: { bg: '#F3F4F6', fg: '#991B1B' },
-    neutral: { bg: '#F3F4F6', fg: '#374151' },
-    accent: { bg: '#FFD209', fg: '#01344F' },
+    ok: { bg: status.ok.bg, fg: status.ok.fg },
+    wait: { bg: status.wait.bg, fg: status.wait.fg },
+    no: { bg: status.no.bg, fg: status.no.fg },
+    neutral: { bg: status.exp.bg, fg: status.exp.fg },
+    accent: { bg: palette.yellow, fg: palette.navy },
   },
 } as const;
 
 export type StatusTone = keyof typeof colors.status;
 
 export const radius = {
-  badge: 6,
-  button: 12,
-  field: 12,
-  card: 16,
-  chip: 18,
-  sheet: 20,
-  pill: 28,
+  badge: 10,
+  button: dsRadius.button,
+  field: dsRadius.control,
+  card: dsRadius.card,
+  chip: dsRadius.chip,
+  sheet: dsRadius.sheet,
+  pill: dsRadius.bar,
 } as const;
 
 export const spacing = {
-  gutter: 20,
+  gutter: space.gutter,
   xs: 4,
   s: 8,
   m: 12,
@@ -61,50 +67,36 @@ export const spacing = {
   xxl: 32,
 } as const;
 
-// Font families are registered in App.tsx.
+// Font families are registered in App.tsx: Bricolage Grotesque for titles, Manrope for text.
 export const fonts = {
-  title: 'titillium-bold',
-  regular: 'roboto-regular',
-  medium: 'roboto-medium',
-  bold: 'roboto-bold',
+  title: fontFamily.display,
+  regular: fontFamily.text,
+  medium: fontFamily.textBold,
+  bold: fontFamily.textHeavy,
 } as const;
 
 export const typography: Record<
   'largeTitle' | 'h2' | 'h3' | 'body' | 'bodyStrong' | 'sub' | 'cap' | 'label' | 'button',
   TextStyle
 > = {
-  largeTitle: { fontFamily: fonts.title, fontSize: 32, lineHeight: 38, color: colors.ink },
-  h2: { fontFamily: fonts.title, fontSize: 21, lineHeight: 26, color: colors.ink },
-  h3: { fontFamily: fonts.bold, fontSize: 16, lineHeight: 22, color: colors.ink },
-  body: { fontFamily: fonts.regular, fontSize: 15, lineHeight: 22, color: colors.ink },
-  bodyStrong: { fontFamily: fonts.medium, fontSize: 15, lineHeight: 22, color: colors.ink },
-  sub: { fontFamily: fonts.regular, fontSize: 14, lineHeight: 20, color: colors.muted },
-  cap: { fontFamily: fonts.regular, fontSize: 12, lineHeight: 16, color: colors.muted },
-  label: { fontFamily: fonts.medium, fontSize: 14, lineHeight: 18, color: colors.ink },
-  button: { fontFamily: fonts.bold, fontSize: 16, lineHeight: 20 },
+  largeTitle: { ...type.largeTitle, color: colors.ink },
+  h2: { ...type.title, color: colors.ink },
+  h3: { ...type.headline, color: colors.ink },
+  body: { ...type.body, color: colors.ink },
+  bodyStrong: { ...type.bodyStrong, color: colors.ink },
+  sub: { fontFamily: fontFamily.text, fontSize: 14, lineHeight: 20, color: colors.muted },
+  cap: { ...type.caption, color: colors.muted },
+  label: { fontFamily: fontFamily.textBold, fontSize: 14, lineHeight: 18, color: colors.ink },
+  button: { ...type.button },
 };
 
-// Card shadow: 0 0 0 1px rgba(0,0,0,.04), 0 2px 4px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06).
-// React Native has one shadow per view, so the 1px ring becomes a hairline border.
+// Cards have no shadow: their contrast comes from the paper behind them. Only floating
+// elements (tab bar, action bars, toasts) are elevated.
 export const shadows: Record<'card' | 'floating' | 'back', ViewStyle> = {
-  card: {
-    borderWidth: Platform.OS === 'ios' ? 1 : 0,
-    borderColor: 'rgba(0,0,0,0.04)',
-    shadowColor: '#000',
-    shadowOpacity: 0.06,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: 6 },
-    elevation: 3,
-  },
-  floating: {
-    shadowColor: '#0F172A',
-    shadowOpacity: 0.16,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 12 },
-    elevation: 10,
-  },
+  card: {},
+  floating: elevation.float,
   back: {
-    shadowColor: '#000',
+    shadowColor: '#011A29',
     shadowOpacity: 0.18,
     shadowRadius: 2,
     shadowOffset: { width: 0, height: 1 },

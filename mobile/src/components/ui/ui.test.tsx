@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import { Avatar, Badge, initials, SegmentedControl, UnderlineTabs, VButton } from '.';
-import { colors } from '../../common/theme/tokens';
+import { colors, fonts } from '../../common/theme/tokens';
 
 describe('VButton', () => {
   it('uses yellow with navy text for the primary action', async () => {
@@ -59,11 +59,11 @@ describe('UnderlineTabs', () => {
     expect(screen.getByTestId('tabs-open').props.accessibilityState).toEqual({ selected: true });
     expect(screen.getByText('Deschise')).toHaveStyle({
       color: colors.navy,
-      fontFamily: 'roboto-bold',
+      fontFamily: fonts.bold,
     });
     expect(screen.getByText('Particip')).toHaveStyle({
       color: colors.muted,
-      fontFamily: 'roboto-medium',
+      fontFamily: fonts.medium,
     });
   });
 
