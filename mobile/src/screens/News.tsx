@@ -9,7 +9,7 @@ import { NewsType } from '../common/enums/news-type.enum';
 import { TrackedEventName } from '../common/enums/tracked-event-name.enum';
 import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
 import { INewsItem } from '../common/interfaces/news-item.interface';
-import { colors, shadows, spacing, StatusTone } from '../common/theme/tokens';
+import { colors, spacing, StatusTone } from '../common/theme/tokens';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import { EventIcon, EventIconName } from '../components/events/EventIcons';
@@ -25,6 +25,7 @@ import {
   StatusBarScrim,
   VText,
 } from '../components/ui';
+import { BackButton } from '../components/ui/ScreenChrome';
 
 type NewsLine = { start: string; organization?: string; end?: string };
 
@@ -241,14 +242,11 @@ const News = ({ navigation, route }: any) => {
         renderItem={renderItem}
         ListHeaderComponent={
           <View style={styles.header}>
-            <PressableScale
+            <BackButton
               onPress={navigation.goBack}
-              style={[styles.back, shadows.back]}
               accessibilityLabel={`${t('general:back')}`}
               testID="news-back"
-            >
-              <EventIcon name="back" size={20} />
-            </PressableScale>
+            />
             <Enter>
               <VText variant="largeTitle" accessibilityRole="header" style={styles.title}>
                 {t('title')}
@@ -293,14 +291,6 @@ const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.canvas },
   list: { paddingHorizontal: spacing.gutter, flexGrow: 1 },
   header: { paddingBottom: 8, gap: 16 },
-  back: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.white,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   title: { marginTop: 0 },
   row: {
     flexDirection: 'row',

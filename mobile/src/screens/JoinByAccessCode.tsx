@@ -117,7 +117,11 @@ const JoinByAccessCode = ({ navigation }: any) => {
       >
         <FormLayout>
           <View style={styles.content}>
-            <OrganizationIdentity name={organization?.name || ''} uri={organization?.logo || ''} />
+            <OrganizationIdentity
+              name={organization?.name || ''}
+              uri={organization?.logo || ''}
+              card
+            />
             <VText variant="sub">{`${t('description')}`}</VText>
             <FormInput
               control={control as any}

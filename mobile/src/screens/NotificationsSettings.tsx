@@ -16,7 +16,9 @@ import useStore from '../store/store';
 import { registerForPushNotificationsAsync } from '../common/utils/notifications';
 import { colors, spacing } from '../common/theme/tokens';
 import { usePaddingTop } from '../hooks/usePaddingTop';
-import { Group, ListRow, PressableScale, Sheet, StateIcon, VButton, VText } from '../components/ui';
+import { PressableScale, Sheet, StateIcon, VButton, VText } from '../components/ui';
+import { Group, ListRow } from '../design/components';
+import { BellIcon, OrganizationIcon } from '../design/icons';
 
 const Check = () => (
   <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
@@ -185,6 +187,7 @@ const NotificationsSettings = ({ navigation }: any) => {
         <View style={styles.canvas}>
           <Group>
             <ListRow
+              icon={OrganizationIcon}
               title={`${t('from.title')}`}
               subtitle={
                 notificationFrom === NotificationsFrom.ALL_ORGANIZATIONS
@@ -195,10 +198,10 @@ const NotificationsSettings = ({ navigation }: any) => {
               testID="notifications-from"
             />
             <ListRow
+              icon={BellIcon}
               title={`${t('by.title')}`}
               subtitle={notificationBy.length > 0 ? byNotificationDescription : `${t('disabled')}`}
               onPress={() => bySheetRef.current?.present()}
-              divider={false}
               testID="notifications-by"
             />
           </Group>
@@ -269,8 +272,7 @@ const NotificationsSettings = ({ navigation }: any) => {
 export default NotificationsSettings;
 
 const styles = StyleSheet.create({
-  // PageLayout pads its content by 16 on white: the gray canvas fills it edge to edge, with the
-  // 20pt page margins
+  // PageLayout pads its content by 16: the 20pt page margins
   canvas: {
     flex: 1,
     marginHorizontal: -spacing.l,

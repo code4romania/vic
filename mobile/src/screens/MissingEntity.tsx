@@ -2,9 +2,9 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import { colors, shadows, spacing } from '../common/theme/tokens';
-import { EventIcon } from '../components/events/EventIcons';
-import { Enter, PressableScale, StateIcon, StateKind, VButton, VText } from '../components/ui';
+import { colors, spacing } from '../common/theme/tokens';
+import { Enter, StateIcon, StateKind, VButton, VText } from '../components/ui';
+import { BackButton } from '../components/ui/ScreenChrome';
 
 interface MissingEntityProps {
   heading: string;
@@ -32,14 +32,11 @@ const MissingEntity = ({
       style={[styles.screen, { paddingTop: insets.top + 12, paddingBottom: insets.bottom + 24 }]}
     >
       {onBackButtonPress ? (
-        <PressableScale
+        <BackButton
           onPress={onBackButtonPress}
-          style={[styles.back, shadows.back]}
           accessibilityLabel={`${t('back')}`}
           testID="state-back"
-        >
-          <EventIcon name="back" size={20} />
-        </PressableScale>
+        />
       ) : (
         <View style={styles.backSpace} />
       )}
@@ -62,16 +59,8 @@ const MissingEntity = ({
 export default MissingEntity;
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.white, paddingHorizontal: spacing.gutter },
-  back: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.white,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  backSpace: { height: 40 },
+  screen: { flex: 1, backgroundColor: colors.canvas, paddingHorizontal: spacing.gutter },
+  backSpace: { height: 44 },
   body: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 12, paddingHorizontal: 12 },
   center: { textAlign: 'center' },
 });
