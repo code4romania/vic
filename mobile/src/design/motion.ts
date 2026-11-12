@@ -56,4 +56,5 @@ export const enter = (i: number, reduced = false) =>
         .damping(spring.gentle.damping)
         .delay(Math.min(i, MAX_STAGGER) * duration.stagger);
 
-export const exit = (reduced = false) => FadeOut.duration(reduced ? duration.reduced : duration.exit);
+export const exit = (reduced = false) =>
+  FadeOut.duration(reduced ? duration.reduced : duration.exit);

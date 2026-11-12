@@ -1,6 +1,14 @@
 import { Easing } from 'react-native-reanimated';
 import { TextStyle, ViewStyle } from 'react-native';
-import { elevation, fontFamily, palette, radius as dsRadius, space, status, type } from '../../design/tokens';
+import {
+  elevation,
+  fontFamily,
+  palette,
+  radius as dsRadius,
+  space,
+  status,
+  type,
+} from '../../design/tokens';
 
 // Legacy token names, now backed by the „Îndrăzneț” design system (src/design/tokens.ts).
 // Screens that still import from here pick up the new palette and type; new code imports src/design.
