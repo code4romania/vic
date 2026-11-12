@@ -162,8 +162,8 @@ const OrganizationsScene = () => {
         initials="VM"
         name="Verde Mare"
         meta={t('sample.org2_meta')}
-        bg="#E0F5F3"
-        fg="#0A7C7C"
+        bg={colors.status.ok.bg}
+        fg={colors.white}
         trailing={<Check delay={1150} />}
         delay={120}
         style={styles.offset}
@@ -172,7 +172,7 @@ const OrganizationsScene = () => {
         initials="CS"
         name="Casa Speranței"
         meta={t('sample.org3_meta')}
-        bg="#FFF6CC"
+        bg={colors.yellow}
         fg={colors.navy}
         delay={260}
         trailing={
@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: '#16A34A',
+    backgroundColor: colors.status.ok.bg,
     alignItems: 'center',
     justifyContent: 'center',
   },

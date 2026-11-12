@@ -52,6 +52,7 @@
   },
   "landing": {
     "message": "Log in or create an account in one of the following ways",
+    "kicker": "VIC · for volunteers",
     "email": "Continue with email",
     "social": {
       "google": "Continue with Google",

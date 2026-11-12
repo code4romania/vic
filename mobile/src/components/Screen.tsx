@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { ExtendedEdge, useSafeAreaInsetsStyle } from '../hooks/useSafeAreaInsetsStyle';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
-import { useTheme } from '@ui-kitten/components';
+import { palette } from '../design/tokens';
 
 interface BaseScreenProps {
   /**
@@ -230,9 +230,8 @@ function ScreenWithScrolling(props: ScreenProps) {
  * @returns {JSX.Element} The rendered `Screen` component.
  */
 export function Screen(props: ScreenProps) {
-  const theme = useTheme();
   const {
-    backgroundColor = theme['background-basic-color-1'],
+    backgroundColor = palette.paper,
     KeyboardAvoidingViewProps,
     keyboardOffset = 0,
     safeAreaEdges,

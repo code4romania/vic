@@ -2,7 +2,8 @@ import React from 'react';
 import { endOfToday } from '../common/utils/date-bounds';
 import FormLayout from '../layouts/FormLayout';
 import OrganizationIdentity from './OrganizationIdentity';
-import { VText } from './ui';
+import { AppText } from '../design/components/Text';
+import { palette } from '../design/tokens';
 import FormInput from './FormInput';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
@@ -46,7 +47,7 @@ const VolunteerForm = ({ paragraph, isLoading, control, errors }: VolunteerFormP
 
   return (
     <FormLayout>
-      {!!paragraph && <VText variant="sub">{paragraph}</VText>}
+      {!!paragraph && <AppText color={palette.ink2}>{paragraph}</AppText>}
       <OrganizationIdentity
         name={userProfile?.activeOrganization?.name || ''}
         uri={userProfile?.activeOrganization?.logo || ''}

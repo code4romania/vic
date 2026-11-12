@@ -1,16 +1,9 @@
 import React from 'react';
-import ContentLoader, { Rect, Circle } from 'react-content-loader/native';
+import { Rect, Circle } from 'react-content-loader/native';
+import ContentLoader from './SkeletonLoader';
 
 const EventSkeleton = (props: any) => (
-  <ContentLoader
-    speed={2}
-    width={350}
-    height={500}
-    viewBox="0 0 350 500"
-    backgroundColor="#f3f3f3"
-    foregroundColor="#ecebeb"
-    {...props}
-  >
+  <ContentLoader width={350} height={500} viewBox="0 0 350 500" {...props}>
     <Circle cx="23" cy="24" r="18" />
     <Rect x="49" y="19" rx="6" ry="6" width="138" height="10" />
     <Rect x="6" y="76" rx="6" ry="6" width="170" height="9" />

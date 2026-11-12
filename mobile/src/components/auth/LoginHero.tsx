@@ -1,171 +1,90 @@
+// The VIC hexagon motif of the handbook masthead (a thick hexagon ring around a solid hexagon), in
+// yellow on the navy entry screens. It settles in with the gentle spring and then floats slowly
+// (6 s, 3°); with Reduce Motion it is still.
 import React, { useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
-import Svg, { Circle, Defs, Path, RadialGradient, Rect, Stop } from 'react-native-svg';
+import { StyleProp, ViewStyle } from 'react-native';
 import Animated, {
+  cancelAnimation,
   Easing,
   useAnimatedStyle,
   useReducedMotion,
   useSharedValue,
   withRepeat,
-  withSpring,
   withTiming,
 } from 'react-native-reanimated';
-import { VicLogo } from '../brand/VicLogo';
-import { colors } from '../../common/theme/tokens';
+import Svg, { Path } from 'react-native-svg';
+import { palette } from '../../design/tokens';
+import { springTo } from '../../design/motion';
 
-const ORBIT = 250;
-const ORB = 44;
-// the hero's natural height
-const FULL = 330;
+const FLOAT_CYCLE = 6000;
 
-const stroke = {
-  stroke: colors.navy,
-  strokeWidth: 2,
-  strokeLinecap: 'round' as const,
-  strokeLinejoin: 'round' as const,
-  fill: 'none',
-};
+export interface HexMotifProps {
+  /** width of the drawing; the height follows the 400×400 viewBox */
+  size?: number;
+  color?: string;
+  /** the solid hexagon in the middle */
+  coreColor?: string;
+  style?: StyleProp<ViewStyle>;
+}
 
-// What VIC is about, around the logo: events, hours, documents, causes, people, places.
-const orbIcons = [
-  <>
-    <Rect x={3} y={4} width={18} height={17} rx={2} {...stroke} />
-    <Path d="M3 9h18M8 2v4M16 2v4" {...stroke} />
-  </>,
-  <>
-    <Circle cx={12} cy={12} r={9} {...stroke} />
-    <Path d="M12 7v5l3 2" {...stroke} />
-  </>,
-  <>
-    <Path d="M14 3H6v18h12V7z" {...stroke} />
-    <Path d="M14 3v4h4" {...stroke} />
-  </>,
-  <Path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z" {...stroke} />,
-  <>
-    <Circle cx={9} cy={8} r={3.5} {...stroke} />
+/** The masthead drawing, static. */
+export const HexMotifShape = ({
+  size = 320,
+  color = palette.yellow,
+  coreColor = palette.yellow,
+}: Omit<HexMotifProps, 'style'>) => (
+  <Svg width={size} height={size} viewBox="0 0 400 400">
     <Path
-      d="M2.5 20c0-3.5 3-5.5 6.5-5.5s6.5 2 6.5 5.5M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5c2 .6 3.5 2.3 3.5 5.5"
-      {...stroke}
+      d="M200 20 356 110v180L200 380 44 290V110z"
+      fill="none"
+      stroke={color}
+      strokeWidth={44}
+      strokeLinejoin="round"
     />
-  </>,
-  <>
-    <Path d="M12 21s-7-6-7-11a7 7 0 0 1 14 0c0 5-7 11-7 11z" {...stroke} />
-    <Circle cx={12} cy={10} r={2.5} {...stroke} />
-  </>,
-];
+    <Path d="M200 120 270 160v80l-70 40-70-40v-80z" fill={coreColor} />
+  </Svg>
+);
 
-/** Login hero: the VIC mark with a slowly turning ring of feature icons (40s per turn). */
-export const LoginHero = ({ height = FULL }: { height?: number }) => {
-  // shorter heroes (small phones) scale the whole drawing instead of cropping it
-  const scale = Math.min(1, height / FULL);
-  const reducedMotion = useReducedMotion();
-  const rotation = useSharedValue(0);
-  // the mark is visible from the first frame: only its scale animates, so it can't stay hidden
-  // when the entry animation doesn't run (seen on a slow Android emulator)
-  const logoScale = useSharedValue(reducedMotion ? 1 : 0.85);
+/** The masthead hexagon, animated: enters (scale .86 → 1, -8° → 0) and floats. Decorative. */
+export const LoginHero = ({ size = 320, color, coreColor, style }: HexMotifProps) => {
+  const reduced = useReducedMotion();
+  const shown = useSharedValue(reduced ? 1 : 0);
+  const float = useSharedValue(0);
 
   useEffect(() => {
-    if (reducedMotion) {
-      return;
+    shown.value = springTo(1, 'gentle', reduced);
+    if (reduced) {
+      cancelAnimation(float);
+      float.value = 0;
+      return undefined;
     }
-    rotation.value = withRepeat(withTiming(360, { duration: 40000, easing: Easing.linear }), -1);
-    logoScale.value = withSpring(1, { damping: 12, stiffness: 140 });
-  }, [reducedMotion, rotation, logoScale]);
+    float.value = withRepeat(
+      withTiming(1, { duration: FLOAT_CYCLE / 2, easing: Easing.inOut(Easing.ease) }),
+      -1,
+      true,
+    );
+    return () => cancelAnimation(float);
+  }, [reduced, shown, float]);
 
-  const orbitStyle = useAnimatedStyle(() => ({
-    transform: [{ rotate: `${rotation.value}deg` }],
-  }));
-  // each orb turns back so its icon stays upright
-  const orbStyle = useAnimatedStyle(() => ({
-    transform: [{ rotate: `${-rotation.value}deg` }],
-  }));
-  const logoStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: logoScale.value }],
+  const motion = useAnimatedStyle(() => ({
+    // visible from the first frame: only scale and rotation animate in
+    transform: [
+      { translateY: -8 * float.value },
+      { rotate: `${-8 * (1 - shown.value) + 3 * float.value}deg` },
+      { scale: 0.86 + 0.14 * shown.value },
+    ],
   }));
 
   return (
-    <View
-      style={[styles.stage, { height }]}
+    <Animated.View
+      pointerEvents="none"
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
+      style={[style, motion]}
     >
-      <View style={[styles.inner, { transform: [{ scale }] }]}>
-        <Svg width={220} height={220} style={styles.glow}>
-          <Defs>
-            <RadialGradient id="glow" cx="50%" cy="50%" r="50%">
-              <Stop offset="0" stopColor={colors.yellow} stopOpacity={0.35} />
-              <Stop offset="0.7" stopColor={colors.yellow} stopOpacity={0} />
-            </RadialGradient>
-          </Defs>
-          <Circle cx={110} cy={110} r={110} fill="url(#glow)" />
-        </Svg>
-        <View style={styles.ring} />
-        <Animated.View style={[styles.orbit, orbitStyle]}>
-          {orbIcons.map((icon, index) => {
-            const angle = (index / orbIcons.length) * 2 * Math.PI - Math.PI / 2;
-            const r = ORBIT / 2;
-            return (
-              <Animated.View
-                key={index}
-                style={[
-                  styles.orb,
-                  {
-                    left: r + r * Math.cos(angle) - ORB / 2,
-                    top: r + r * Math.sin(angle) - ORB / 2,
-                  },
-                  orbStyle,
-                ]}
-              >
-                <Svg width={20} height={20} viewBox="0 0 24 24">
-                  {icon}
-                </Svg>
-              </Animated.View>
-            );
-          })}
-        </Animated.View>
-        <Animated.View style={logoStyle}>
-          <VicLogo size={88} />
-        </Animated.View>
-      </View>
-    </View>
+      <HexMotifShape size={size} color={color} coreColor={coreColor} />
+    </Animated.View>
   );
 };
 
 export default LoginHero;
-
-const styles = StyleSheet.create({
-  stage: { alignItems: 'center', justifyContent: 'center' },
-  inner: { width: FULL, height: FULL, alignItems: 'center', justifyContent: 'center' },
-  glow: { position: 'absolute' },
-  ring: {
-    position: 'absolute',
-    width: 160,
-    height: 160,
-    borderRadius: 80,
-    borderWidth: 1,
-    borderColor: colors.soft,
-  },
-  orbit: {
-    position: 'absolute',
-    width: ORBIT,
-    height: ORBIT,
-    borderRadius: ORBIT / 2,
-    borderWidth: 1,
-    borderStyle: 'dashed',
-    borderColor: colors.line,
-  },
-  orb: {
-    position: 'absolute',
-    width: ORB,
-    height: ORB,
-    borderRadius: ORB / 2,
-    backgroundColor: colors.white,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: colors.navy,
-    shadowOpacity: 0.14,
-    shadowRadius: 7,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 4,
-  },
-});

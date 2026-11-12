@@ -1,16 +1,9 @@
 import React from 'react';
-import ContentLoader, { Rect, Circle } from 'react-content-loader/native';
+import { Rect, Circle } from 'react-content-loader/native';
+import ContentLoader from './SkeletonLoader';
 
 const OrganizationSkeleton = (props: any) => (
-  <ContentLoader
-    speed={2}
-    width={350}
-    height={400}
-    viewBox="0 0 350 400"
-    backgroundColor="#f3f3f3"
-    foregroundColor="#ecebeb"
-    {...props}
-  >
+  <ContentLoader width={350} height={400} viewBox="0 0 350 400" {...props}>
     <Rect x="153" y="76" rx="3" ry="3" width="52" height="6" />
     <Rect x="579" y="154" rx="0" ry="0" width="73" height="25" />
     <Circle cx="71" cy="65" r="63" />

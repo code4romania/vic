@@ -1,31 +1,28 @@
-import { Layout, withStyles } from '@ui-kitten/components';
 import React, { ReactNode } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 interface ScrollViewLayoutProps {
   children: ReactNode;
-  eva?: any;
 }
 
-const ScrollViewLayout = ({ children, eva }: ScrollViewLayoutProps) => (
+/** Plain scrolling page on paper, 24pt between blocks. */
+const ScrollViewLayout = ({ children }: ScrollViewLayoutProps) => (
   <ScrollView
     bouncesZoom={false}
     alwaysBounceHorizontal={false}
     alwaysBounceVertical={false}
     bounces={false}
     showsVerticalScrollIndicator={false}
-    style={eva?.style.background}
+    style={styles.scroll}
   >
-    <Layout style={styles.layout}>{children}</Layout>
+    <View style={styles.layout}>{children}</View>
   </ScrollView>
 );
 
-const styles = StyleSheet.create({
-  layout: { flex: 1, gap: 24 },
-});
+export default ScrollViewLayout;
 
-export default withStyles(ScrollViewLayout, (theme) => ({
-  background: {
-    backgroundColor: theme['color-basic-100'],
-  },
+const styles = StyleSheet.create((theme) => ({
+  scroll: { backgroundColor: theme.colors.background },
+  layout: { flex: 1, gap: 24 },
 }));

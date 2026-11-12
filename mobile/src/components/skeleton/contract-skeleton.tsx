@@ -1,16 +1,9 @@
 import React from 'react';
-import ContentLoader, { Rect, Circle } from 'react-content-loader/native';
+import { Rect, Circle } from 'react-content-loader/native';
+import ContentLoader from './SkeletonLoader';
 
 const ContractSkeleton = (props: any) => (
-  <ContentLoader
-    speed={2}
-    width={350}
-    height={500}
-    viewBox="0 0 350 500"
-    backgroundColor="#f3f3f3"
-    foregroundColor="#ecebeb"
-    {...props}
-  >
+  <ContentLoader width={350} height={500} viewBox="0 0 350 500" {...props}>
     <Circle cx="22" cy="65" r="16" />
     <Rect x="42" y="62" rx="8" ry="8" width="95" height="10" />
     <Rect x="9" y="114" rx="8" ry="8" width="287" height="11" />

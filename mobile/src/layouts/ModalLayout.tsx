@@ -1,15 +1,16 @@
 import React, { ReactNode, useState } from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
+import { Platform, View } from 'react-native';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { KeyboardStickyView } from 'react-native-keyboard-controller';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StyleSheet } from 'react-native-unistyles';
 import { useTranslation } from 'react-i18next';
 import { ButtonType } from '../common/enums/button-type.enum';
-import { colors, fonts, spacing } from '../common/theme/tokens';
 import { usePaddingTop } from '../hooks/usePaddingTop';
 import { FormLayoutBottomOffsetContext } from './FormLayout';
-import { EventIcon } from '../components/events/EventIcons';
-import { PressableScale, VButton, VText } from '../components/ui';
+import { LayoutHeader, RoundIconButton } from './LayoutHeader';
+import { BUTTON_VARIANT } from './PageLayout';
+import { Button } from '../design/components/Button';
 import { ToastHost } from '../common/config/toast';
 
 interface ActionsOptionsProps {
@@ -27,15 +28,9 @@ interface ModalLayoutProps {
   actionsOptions?: ActionsOptionsProps;
 }
 
-const BUTTON_VARIANT = {
-  [ButtonType.PRIMARY]: 'primary',
-  [ButtonType.SECONDARY]: 'outline',
-  [ButtonType.DANGER]: 'danger',
-} as const;
-
 /**
- * VIC 2.0 modal page: a round close button, the title, the content and one action that stays
- * above the keyboard.
+ * „Îndrăzneț” modal page: paper, a 44pt round white close button, the title in Bricolage, the
+ * content and one action that stays above the keyboard.
  */
 export const ModalLayout = ({
   children,
@@ -57,30 +52,21 @@ export const ModalLayout = ({
     <BottomSheetModalProvider>
       <View style={styles.screen}>
         {/* on android this is not shown as a modal, so the header includes the insets */}
-        <View style={[styles.header, Platform.OS === 'android' && { paddingTop }]}>
-          <PressableScale
-            onPress={onDismiss}
-            style={styles.close}
-            accessibilityLabel={`${t('close')}`}
-            testID="modal-close"
-          >
-            <EventIcon name="close" size={18} color={colors.ink} />
-          </PressableScale>
-          <VText variant="h2" numberOfLines={1} style={styles.title} accessibilityRole="header">
-            {title}
-          </VText>
-          {onEditButtonPress && (
-            <VText
-              variant="label"
-              style={styles.edit}
-              onPress={onEditButtonPress}
-              accessibilityRole="button"
-              testID="modal-edit"
-            >
-              {t('edit', { item: '' }).trim()}
-            </VText>
-          )}
-        </View>
+        <LayoutHeader
+          title={title}
+          style={[styles.header, Platform.OS === 'android' ? { paddingTop } : null]}
+          leading={
+            <RoundIconButton
+              icon="close"
+              onPress={onDismiss}
+              accessibilityLabel={`${t('close')}`}
+              testID="modal-close"
+            />
+          }
+          onEditButtonPress={onEditButtonPress}
+          editLabel={t('edit', { item: '' }).trim()}
+          editTestID="modal-edit"
+        />
         <View style={styles.childrenContainer}>
           <FormLayoutBottomOffsetContext.Provider value={actionsHeight}>
             {children}
@@ -97,12 +83,12 @@ export const ModalLayout = ({
               ]}
               onLayout={(event) => setActionsHeight(event.nativeEvent.layout.height)}
             >
-              <VButton
+              <Button
+                full
                 label={actionsOptions.actionLabel}
                 onPress={() => actionsOptions.onActionButtonClick(undefined)}
                 variant={BUTTON_VARIANT[actionsOptions.buttonType || ButtonType.PRIMARY]}
                 loading={actionsOptions.loading}
-                disabled={actionsOptions.loading}
                 testID="modal-action"
               />
             </View>
@@ -117,33 +103,16 @@ export const ModalLayout = ({
 
 export default ModalLayout;
 
-const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.white },
-  header: {
-    minHeight: 64,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    paddingHorizontal: spacing.gutter,
-    paddingVertical: 12,
-  },
-  close: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: colors.soft,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: { flex: 1 },
-  edit: { fontFamily: fonts.bold, textDecorationLine: 'underline' },
-  childrenContainer: { flex: 1, paddingHorizontal: spacing.l },
+const styles = StyleSheet.create((theme) => ({
+  screen: { flex: 1, backgroundColor: theme.colors.background },
+  header: { paddingTop: theme.space.m },
+  childrenContainer: { flex: 1, paddingHorizontal: 16 },
   bottomActionContainer: {
     width: '100%',
-    backgroundColor: colors.white,
-    paddingTop: 12,
-    paddingHorizontal: spacing.gutter,
+    backgroundColor: theme.colors.background,
+    paddingTop: theme.space.m,
+    paddingHorizontal: theme.space.gutter,
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: colors.line,
+    borderTopColor: theme.colors.line,
   },
-});
+}));

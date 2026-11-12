@@ -1,30 +1,25 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  ActivityIndicator,
-  Keyboard,
-  Platform,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { Keyboard, Platform, Pressable, ScrollView, View } from 'react-native';
 import * as Linking from 'expo-linking';
+import Animated, { useReducedMotion } from 'react-native-reanimated';
+import { KeyboardStickyView } from 'react-native-keyboard-controller';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
+import { StyleSheet } from 'react-native-unistyles';
 import { useTranslation } from 'react-i18next';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useAuth } from '../hooks/useAuth';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
-import {
-  Enter,
-  PressableScale,
-  StatusBarScrim,
-  VButton,
-  VText,
-  VTextField,
-} from '../components/ui';
+import { StatusBarScrim } from '../components/ui/StatusBarScrim';
 import { CodeInput, CodeInputHandle } from '../components/auth/CodeInput';
-import { colors, fonts, shadows, spacing } from '../common/theme/tokens';
+import { RoundIconButton } from '../layouts/LayoutHeader';
+import { AppText } from '../design/components/Text';
+import { Button } from '../design/components/Button';
+import { TextField } from '../design/components/TextField';
+import { FloatingHexagon } from '../design/components/EmptyState';
+import { enter } from '../design/motion';
+import { MailIcon } from '../design/icons';
+import { palette } from '../design/tokens';
 import { isMigrationNoticeActive } from '../common/utils/migration-notice';
 
 // A new code can be asked for once a minute (the backend answers AUTH_010 sooner).
@@ -33,36 +28,19 @@ export const CODE_LENGTH = 6;
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const BackButton = ({ onPress, label }: { onPress: () => void; label: string }) => (
-  <PressableScale
-    onPress={onPress}
-    accessibilityLabel={label}
-    style={[styles.back, shadows.back]}
-    testID="login-back"
-  >
-    <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+/** Navy hexagon with the yellow envelope: "check your mail". */
+const MailHexagon = () => (
+  <View style={styles.mailHex} accessibilityElementsHidden importantForAccessibility="no">
+    <Svg width={64} height={70} viewBox="0 0 56 62" style={StyleSheet.absoluteFill}>
       <Path
-        d="M15 18l-6-6 6-6"
-        stroke={colors.ink}
-        strokeWidth={2.2}
-        strokeLinecap="round"
+        d="M28 3 52 17v28L28 59 4 45V17z"
+        fill={palette.navy}
+        stroke={palette.navy}
+        strokeWidth={4}
         strokeLinejoin="round"
       />
     </Svg>
-  </PressableScale>
-);
-
-const MailTile = () => (
-  <View style={styles.tile}>
-    <Svg width={30} height={30} viewBox="0 0 24 24" fill="none">
-      <Path
-        d="M3 6h18v12H3zM3 7l9 6 9-6"
-        stroke={colors.navy}
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </Svg>
+    <MailIcon size={26} color={palette.yellow} strokeWidth={2.2} />
   </View>
 );
 
@@ -72,6 +50,8 @@ const MailTile = () => (
  * vic://login?email= link from the web), it starts with the email step.
  * A new email gets an account too (sign-up = login); without a volunteer profile the app opens
  * CreateUser.
+ * „Îndrăzneț”: paper, a 44pt round back button, a Bricolage large title, TextField inputs and one
+ * yellow button pinned above the keyboard.
  */
 const Login = ({ navigation, route }: any) => {
   const linkEmail: string | undefined = route?.params?.email;
@@ -79,6 +59,7 @@ const Login = ({ navigation, route }: any) => {
   const { requestLoginCode, loginWithCode } = useAuth();
   const { t } = useTranslation('login');
   const insets = useSafeAreaInsets();
+  const reduced = useReducedMotion();
   useFocusedStatusBarStyle('dark');
   const codeRef = useRef<CodeInputHandle>(null);
 
@@ -91,7 +72,7 @@ const Login = ({ navigation, route }: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isVerifying, setIsVerifying] = useState<boolean>(false);
   const [secondsLeft, setSecondsLeft] = useState<number>(sentTo ? RESEND_AFTER_SECONDS : 0);
-  // while the keyboard is open the code step drops the mail tile and the "open mail" button,
+  // while the keyboard is open the code step drops the mail hexagon and the "open mail" button,
   // so the boxes, "Alt email" and the spam hint fit above it on small phones (iPhone SE)
   const [keyboardOpen, setKeyboardOpen] = useState(false);
   useEffect(() => {
@@ -197,46 +178,59 @@ const Login = ({ navigation, route }: any) => {
     Linking.openURL('message://').catch(() => undefined);
   };
 
+  const contentPadding = {
+    paddingTop: insets.top + 12,
+    paddingBottom: insets.bottom + 24,
+  };
+
   if (maskedEmail) {
     return (
       <View style={styles.screen}>
         {/* compact while typing, so it fits above the keyboard without scrolling the back button away */}
         <ScrollView
-          contentContainerStyle={[
-            styles.content,
-            { paddingTop: insets.top + spacing.l, paddingBottom: insets.bottom + spacing.xl },
-          ]}
+          contentContainerStyle={[styles.content, contentPadding]}
           keyboardShouldPersistTaps="handled"
         >
-          <BackButton onPress={onChangeEmail} label={`${t('code.change_email')}`} />
+          <RoundIconButton
+            icon="back"
+            onPress={onChangeEmail}
+            accessibilityLabel={`${t('code.change_email')}`}
+            testID="login-back"
+            style={styles.back}
+          />
           {!keyboardOpen && (
-            <Enter style={styles.tileWrap}>
-              <MailTile />
-            </Enter>
+            <Animated.View entering={enter(0, reduced)}>
+              <MailHexagon />
+            </Animated.View>
           )}
-          <Enter index={1} style={styles.gap8}>
-            <VText variant="largeTitle" accessibilityRole="header">
+          <Animated.View entering={enter(1, reduced)} style={styles.intro}>
+            <AppText variant="largeTitle" accessibilityRole="header" style={styles.title}>
               {t('code.title')}
-            </VText>
-            <VText variant="sub">
+            </AppText>
+            <AppText color={palette.ink2}>
               {t('code.sent_to')}
-              <VText variant="sub" color={colors.ink} style={styles.bold}>
-                {maskedEmail}
-              </VText>
+              <AppText variant="bodyStrong">{maskedEmail}</AppText>
               {t('code.valid_for')}
-            </VText>
-          </Enter>
+            </AppText>
+          </Animated.View>
           {Platform.OS === 'ios' && !keyboardOpen && (
-            <Enter index={2}>
-              <VButton variant="navy" label={t('code.open_mail')} onPress={openMailApp} />
-            </Enter>
+            <Animated.View entering={enter(2, reduced)}>
+              <Button
+                full
+                label={t('code.open_mail')}
+                icon={<MailIcon size={20} color={palette.navy} strokeWidth={2.2} />}
+                onPress={openMailApp}
+              />
+            </Animated.View>
           )}
-          <Enter index={3} style={styles.divider}>
+          <Animated.View entering={enter(3, reduced)} style={styles.divider}>
             <View style={styles.rule} />
-            <VText variant="cap">{t('code.or_type')}</VText>
+            <AppText variant="caption" color={palette.ink2}>
+              {t('code.or_type')}
+            </AppText>
             <View style={styles.rule} />
-          </Enter>
-          <Enter index={3}>
+          </Animated.View>
+          <Animated.View entering={enter(4, reduced)}>
             <CodeInput
               ref={codeRef}
               value={code}
@@ -250,30 +244,40 @@ const Login = ({ navigation, route }: any) => {
               accessibilityLabel={`${t('form.code.label')}`}
               testID="login-code"
             />
-          </Enter>
-          <Enter index={4} style={styles.resendRow}>
+          </Animated.View>
+          <Animated.View entering={enter(5, reduced)} style={styles.resendRow}>
             {secondsLeft > 0 ? (
-              <VText variant="cap">{t('code.resend_in', { seconds: secondsLeft })}</VText>
+              <AppText variant="caption" color={palette.ink2} style={styles.tabular}>
+                {t('code.resend_in', { seconds: secondsLeft })}
+              </AppText>
             ) : (
-              <Pressable onPress={onResend} hitSlop={8} disabled={isLoading} testID="login-resend">
-                <VText variant="cap" color={colors.ink} style={styles.underline}>
+              <Pressable
+                onPress={onResend}
+                hitSlop={12}
+                disabled={isLoading}
+                accessibilityRole="button"
+                testID="login-resend"
+              >
+                <AppText variant="label" style={styles.underline}>
                   {t('code.resend')}
-                </VText>
+                </AppText>
               </Pressable>
             )}
-            <Pressable onPress={onChangeEmail} hitSlop={8}>
-              <VText variant="label" style={styles.underline}>
+            <Pressable onPress={onChangeEmail} hitSlop={12} accessibilityRole="button">
+              <AppText variant="label" style={styles.underline}>
                 {t('code.other_email')}
-              </VText>
+              </AppText>
             </Pressable>
-          </Enter>
-          <VText variant="cap">{t('code.not_received')}</VText>
+          </Animated.View>
+          <AppText variant="caption" color={palette.ink2}>
+            {t('code.not_received')}
+          </AppText>
         </ScrollView>
-        <StatusBarScrim color={colors.white} />
+        <StatusBarScrim color={palette.paper} />
         {isVerifying && (
           <View style={styles.verifying} accessibilityLiveRegion="polite">
-            <ActivityIndicator color={colors.navy} />
-            <VText variant="sub">{t('code.verifying')}</VText>
+            <FloatingHexagon size={48} />
+            <AppText variant="headline">{t('code.verifying')}</AppText>
           </View>
         )}
       </View>
@@ -283,24 +287,31 @@ const Login = ({ navigation, route }: any) => {
   return (
     <View style={styles.screen}>
       <ScrollView
-        contentContainerStyle={[
-          styles.content,
-          { paddingTop: insets.top + spacing.l, paddingBottom: insets.bottom + spacing.xl },
-        ]}
+        contentContainerStyle={[styles.content, contentPadding]}
         keyboardShouldPersistTaps="handled"
       >
         {navigation.canGoBack() && (
-          <BackButton onPress={navigation.goBack} label={`${t('general:back')}`} />
+          <RoundIconButton
+            icon="back"
+            onPress={navigation.goBack}
+            accessibilityLabel={`${t('general:back')}`}
+            testID="login-back"
+            style={styles.back}
+          />
         )}
-        <Enter style={styles.gap8}>
-          <VText variant="largeTitle" accessibilityRole="header">
+        <Animated.View entering={enter(0, reduced)} style={styles.intro}>
+          <AppText variant="largeTitle" accessibilityRole="header" style={styles.title}>
             {t('title')}
-          </VText>
-          <VText variant="sub">{t('paragraph')}</VText>
-        </Enter>
-        {isMigrationNoticeActive() && <VText variant="cap">{t('migration_notice')}</VText>}
-        <Enter index={1}>
-          <VTextField
+          </AppText>
+          <AppText color={palette.ink2}>{t('paragraph')}</AppText>
+        </Animated.View>
+        {isMigrationNoticeActive() && (
+          <Animated.View entering={enter(1, reduced)} style={styles.notice}>
+            <AppText variant="caption">{t('migration_notice')}</AppText>
+          </Animated.View>
+        )}
+        <Animated.View entering={enter(2, reduced)}>
+          <TextField
             label={t('form.email.label')}
             placeholder={t('form.email.placeholder')}
             value={email}
@@ -318,53 +329,64 @@ const Login = ({ navigation, route }: any) => {
             onSubmitEditing={onSubmitEmail}
             testID="login-email-input"
           />
-        </Enter>
-        <Enter index={2}>
-          <VButton
+        </Animated.View>
+      </ScrollView>
+      {/* the one yellow button, pinned above the keyboard */}
+      <KeyboardStickyView offset={{ opened: insets.bottom }}>
+        <View style={[styles.footer, { paddingBottom: insets.bottom + 16 }]}>
+          <Button
+            full
             label={t('submit')}
             onPress={onSubmitEmail}
             loading={isLoading}
             testID="login-send"
           />
-        </Enter>
-      </ScrollView>
+        </View>
+      </KeyboardStickyView>
+      <StatusBarScrim color={palette.paper} />
     </View>
   );
 };
 
 export default Login;
 
-const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.white },
-  content: { flexGrow: 1, paddingHorizontal: 24, gap: 20 },
-  back: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.white,
-    alignItems: 'center',
-    justifyContent: 'center',
+const styles = StyleSheet.create((theme) => ({
+  screen: { flex: 1, backgroundColor: theme.colors.background },
+  content: { flexGrow: 1, paddingHorizontal: theme.space.gutter + 2, gap: 20 },
+  // the round button keeps its own 44pt, not the column's width
+  back: { alignSelf: 'flex-start' },
+  intro: { gap: 10 },
+  title: { fontSize: 40, lineHeight: 42 },
+  mailHex: { width: 64, height: 70, alignItems: 'center', justifyContent: 'center' },
+  notice: {
+    backgroundColor: theme.colors.card,
+    borderRadius: theme.radius.control,
+    padding: theme.space.l,
   },
-  tileWrap: { marginTop: 8 },
-  tile: {
-    width: 64,
-    height: 64,
-    borderRadius: 18,
-    backgroundColor: colors.soft,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  gap8: { gap: 8 },
-  bold: { fontFamily: fonts.bold },
   divider: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  rule: { flex: 1, height: 1, backgroundColor: colors.line },
-  resendRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  rule: { flex: 1, height: StyleSheet.hairlineWidth, backgroundColor: theme.colors.line },
+  resendRow: {
+    minHeight: 44,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  tabular: { fontVariant: ['tabular-nums'] },
   underline: { textDecorationLine: 'underline' },
+  footer: {
+    paddingTop: theme.space.m,
+    paddingHorizontal: theme.space.gutter + 2,
+    backgroundColor: theme.colors.background,
+  },
   verifying: {
-    ...StyleSheet.absoluteFill,
-    backgroundColor: 'rgba(255,255,255,0.85)',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(244,241,233,0.9)',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 16,
   },
-});
+}));

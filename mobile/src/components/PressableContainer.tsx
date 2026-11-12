@@ -1,26 +1,20 @@
-import { useTheme } from '@ui-kitten/components';
 import React from 'react';
 import { Pressable } from 'react-native';
+import { palette } from '../design/tokens';
 
 interface PressableContainerProps {
   children: React.ReactNode;
   onPress: () => void;
 }
 
-const PressableContainer = ({ children, onPress }: PressableContainerProps) => {
-  const theme = useTheme();
-  return (
-    <Pressable
-      style={({ pressed }) => [
-        {
-          backgroundColor: pressed ? theme['cool-gray-50'] : 'white',
-        },
-      ]}
-      onPress={onPress}
-    >
-      {children}
-    </Pressable>
-  );
-};
+/** White surface that turns paper while pressed. */
+const PressableContainer = ({ children, onPress }: PressableContainerProps) => (
+  <Pressable
+    style={({ pressed }) => ({ backgroundColor: pressed ? palette.paper : palette.card })}
+    onPress={onPress}
+  >
+    {children}
+  </Pressable>
+);
 
 export default PressableContainer;

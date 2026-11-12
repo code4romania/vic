@@ -1,7 +1,7 @@
 import React from 'react';
 import { Linking, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import MissingEntity from './MissingEntity';
+import SystemState from '../components/SystemState';
 
 const STORE_URL =
   Platform.OS === 'ios'
@@ -20,12 +20,13 @@ const UpdateRequired = () => {
   };
 
   return (
-    <MissingEntity
-      kind="update"
-      heading={t('heading')}
-      paragraph={t('paragraph')}
-      actionBtnLabel={t('update')}
-      onActionBtnPress={onUpdate}
+    <SystemState
+      kicker="VIC"
+      title={t('heading')}
+      description={t('paragraph')}
+      actionLabel={t('update')}
+      onAction={onUpdate}
+      testID="update-required"
     />
   );
 };

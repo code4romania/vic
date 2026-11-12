@@ -1,39 +1,47 @@
 import React from 'react';
-import { Text, withStyles } from '@ui-kitten/components';
 import { View } from 'react-native';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { StyleSheet } from 'react-native-unistyles';
+import { AppText } from '../design/components/Text';
+import { palette } from '../design/tokens';
 
 interface DisclaimerProps {
+  /** dot color: a palette name (green, red, orange, yellow, navy, slate) or any color */
   color: string;
   text: string;
-  eva?: any;
 }
 
-const Disclaimer = ({ color, text, eva }: DisclaimerProps) => {
-  return (
-    <View style={[eva.style.container, { backgroundColor: eva.theme[`${color}-50`] }]}>
-      <View style={[eva.style.dot, { backgroundColor: eva.theme[`${color}-500`] }]} />
-      <Text allowFontScaling={ALLOW_FONT_SCALLING} category="c1" appearance="hint">
-        {text}
-      </Text>
-    </View>
-  );
+const DOT_COLORS: Record<string, string> = {
+  green: palette.green,
+  red: palette.red,
+  orange: palette.orange,
+  yellow: palette.yellow,
+  navy: palette.navy,
+  slate: palette.slate,
 };
 
-export default withStyles(Disclaimer, () => ({
+/** A short note on a white strip with a solid status dot. */
+const Disclaimer = ({ color, text }: DisclaimerProps) => (
+  <View style={styles.container}>
+    <View style={[styles.dot, { backgroundColor: DOT_COLORS[color] ?? color }]} />
+    <AppText variant="caption" color={palette.ink2} style={styles.text}>
+      {text}
+    </AppText>
+  </View>
+);
+
+export default Disclaimer;
+
+const styles = StyleSheet.create((theme) => ({
   container: {
-    paddingVertical: 10,
-    marginHorizontal: -16,
-    paddingLeft: 16,
+    paddingVertical: theme.space.s,
+    paddingHorizontal: theme.space.l,
     flexDirection: 'row',
-    gap: 8,
+    gap: theme.space.xs,
     alignItems: 'center',
-    justifyContent: 'flex-start',
     marginBottom: 16,
+    borderRadius: theme.radius.control,
+    backgroundColor: theme.colors.card,
   },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 8,
-  },
+  dot: { width: 8, height: 8, borderRadius: 4 },
+  text: { flex: 1 },
 }));

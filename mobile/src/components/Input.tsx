@@ -1,37 +1,22 @@
-import {
-  InputProps,
-  Input as KittenInput,
-  StyleService,
-  useStyleSheet,
-} from '@ui-kitten/components';
-import React from 'react';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import React, { forwardRef } from 'react';
+import { TextInput } from 'react-native';
+import { TextField, TextFieldProps } from '../design/components/TextField';
 
-const Input = (props: InputProps) => {
-  const styles = useStyleSheet(themedStyles);
+export interface InputProps extends Omit<TextFieldProps, 'label'> {
+  label?: string;
+  disabled?: boolean;
+}
 
-  return (
-    <KittenInput
-      allowFontScaling={ALLOW_FONT_SCALLING}
-      textStyle={[styles.inputText, props.disabled ? styles.disabledColor : {}]}
-      {...props}
-      style={[styles.input, props.style, props.disabled ? styles.disabledBackground : {}]}
-    />
-  );
-};
+/** Legacy input name over the „Îndrăzneț” TextField. */
+const Input = forwardRef<TextInput, InputProps>(({ label, disabled, ...props }, ref) => (
+  <TextField
+    ref={ref}
+    {...props}
+    label={label ?? ''}
+    editable={disabled ? false : props.editable}
+  />
+));
 
-const themedStyles = StyleService.create({
-  input: {
-    shadowColor: '$input-shadow-color',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 1,
-    elevation: 1,
-    borderRadius: 6,
-  },
-  disabledBackground: { backgroundColor: '$cool-gray-100' },
-  disabledColor: { color: '$cool-gray-500' },
-  inputText: { fontSize: 16, fontWeight: '400' },
-});
+Input.displayName = 'Input';
 
 export default Input;

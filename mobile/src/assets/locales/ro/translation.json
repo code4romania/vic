@@ -61,6 +61,7 @@
     },
     "landing": {
         "message": "Intră în aplicație sau creează-ți cont folosind una dintre modalitățile următoare",
+        "kicker": "VIC · pentru voluntari",
         "email": "Continuă cu email",
         "social": {
             "google": "Continuă cu Google",
