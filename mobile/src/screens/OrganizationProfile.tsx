@@ -1,5 +1,15 @@
-import React, { useEffect, useRef } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import Animated, {
+  Extrapolation,
+  interpolate,
+  runOnJS,
+  useAnimatedReaction,
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  useDerivedValue,
+  useSharedValue,
+} from 'react-native-reanimated';
 import * as Linking from 'expo-linking';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -17,19 +27,18 @@ import { colors, fonts, radius, shadows, spacing, StatusTone } from '../common/t
 import { useOrganization } from '../store/organization/organization.selector';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
+import { MAX_FONT_SCALE } from '../common/constants/constants';
 import { TAB_ROUTES } from '../routes/tab-routes';
 import OrganizationSkeleton from '../components/skeleton/organization-skeleton';
 import { EventCard } from '../components/events/EventCard';
 import { EventIcon } from '../components/events/EventIcons';
 import {
   Avatar,
-  Badge,
   Enter,
   Group,
   ListRow,
   PressableScale,
   Sheet,
-  StatusBarScrim,
   VButton,
   VText,
 } from '../components/ui';
@@ -48,6 +57,51 @@ const OrganizationProfile = ({ navigation, route }: any) => {
   useFocusedStatusBarStyle('light');
   const { userProfile } = useUserProfile();
   const { organization } = useOrganization();
+  const heroHeight = insets.top + 160;
+  const barHeight = insets.top + 56;
+  const scrollY = useSharedValue(0);
+  const titleBottom = useSharedValue(0);
+  const titleHeight = useSharedValue(0);
+  const [compactAccessible, setCompactAccessible] = useState(false);
+  const onScroll = useAnimatedScrollHandler((event) => {
+    scrollY.value = event.contentOffset.y;
+  });
+  const compactOpacity = useDerivedValue(() =>
+    // Fade from the title's top reaching the bar bottom to its bottom passing under it.
+    // Scroll range: [titleBottom - barHeight - titleHeight, titleBottom - barHeight].
+    titleHeight.value > 0
+      ? interpolate(
+          scrollY.value,
+          [titleBottom.value - barHeight - titleHeight.value, titleBottom.value - barHeight],
+          [0, 1],
+          Extrapolation.CLAMP,
+        )
+      : 0,
+  );
+  const compactStyle = useAnimatedStyle(() => ({ opacity: compactOpacity.value }));
+  useAnimatedReaction(
+    () => compactOpacity.value > 0.5,
+    (visible, previous) => {
+      if (visible !== previous) {
+        runOnJS(setCompactAccessible)(visible);
+      }
+    },
+  );
+  const barStyle = useAnimatedStyle(() => {
+    const threshold = heroHeight - barHeight;
+    const progress = interpolate(
+      scrollY.value,
+      [threshold, threshold + 16],
+      [0, 1],
+      Extrapolation.CLAMP,
+    );
+    return {
+      borderBottomLeftRadius: radius.sheet * progress,
+      borderBottomRightRadius: radius.sheet * progress,
+      shadowOpacity: Number(shadows.card.shadowOpacity ?? 0) * progress,
+      elevation: (shadows.card.elevation ?? 0) * progress,
+    };
+  });
   const birthdaySheet = useRef<BottomSheetModal>(null);
   const cancelSheet = useRef<BottomSheetModal>(null);
 
@@ -167,15 +221,20 @@ const OrganizationProfile = ({ navigation, route }: any) => {
       case OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER:
         return (
           <>
-            <Badge label={`${t('bar.member')}`} tone="ok" />
-            <VText variant="cap" style={styles.barText}>
-              {t('bar.member_since', {
-                date: datePickerService('ro').format(
-                  new Date(organization.volunteer.createdOn),
-                  'DD.MM.YYYY',
-                ),
-              })}
-            </VText>
+            {/* two lines like the pending state: status on top, since when underneath */}
+            <View style={styles.barText} testID="organization-member">
+              <VText variant="h3" style={styles.barTitle} color={colors.status.ok.fg}>
+                {t('bar.member')}
+              </VText>
+              <VText variant="cap">
+                {t('bar.member_since', {
+                  date: datePickerService('ro').format(
+                    new Date(organization.volunteer.createdOn),
+                    'DD.MM.YYYY',
+                  ),
+                })}
+              </VText>
+            </View>
             <VButton
               variant="navy"
               label={`${t('bar.see_events')}`}
@@ -229,11 +288,13 @@ const OrganizationProfile = ({ navigation, route }: any) => {
 
   return (
     <View style={styles.screen}>
-      <ScrollView
+      <Animated.ScrollView
+        onScroll={onScroll}
+        scrollEventThrottle={16}
         contentContainerStyle={{ paddingBottom: insets.bottom + (bar ? 120 : 40) }}
         showsVerticalScrollIndicator={false}
       >
-        <View style={[styles.hero, { height: insets.top + 160 }]}>
+        <View style={[styles.hero, { height: heroHeight }]}>
           {loaded && (
             <View style={[styles.logo, shadows.card]}>
               <Avatar name={organization.name} uri={organization.logo} size={80} shape="rounded" />
@@ -250,7 +311,17 @@ const OrganizationProfile = ({ navigation, route }: any) => {
         {loaded && (
           <View style={styles.body}>
             <Enter style={styles.gap6}>
-              <VText variant="largeTitle" style={styles.name} accessibilityRole="header">
+              <VText
+                variant="largeTitle"
+                style={styles.name}
+                accessibilityRole="header"
+                onLayout={(event) => {
+                  const { y, height } = event.nativeEvent.layout;
+                  // Enter is the body's first child, starting at its top padding.
+                  titleBottom.value = heroHeight + styles.body.paddingTop + y + height;
+                  titleHeight.value = height;
+                }}
+              >
                 {organization.name}
               </VText>
               <VText variant="sub">
@@ -368,18 +439,47 @@ const OrganizationProfile = ({ navigation, route }: any) => {
             )}
           </View>
         )}
-      </ScrollView>
-      {/* light clock over the navy header: keep navy behind it once the page scrolls */}
-      <StatusBarScrim color={colors.navy} />
-
-      <PressableScale
-        onPress={navigation.goBack}
-        accessibilityLabel={`${t('general:back')}`}
-        style={[styles.back, shadows.back, { top: insets.top + 12 }]}
-        testID="organization-back"
+      </Animated.ScrollView>
+      <Animated.View
+        testID="organization-bar-top"
+        pointerEvents="box-none"
+        style={[
+          styles.pinnedBar,
+          shadows.card,
+          styles.barBorder,
+          { height: barHeight, paddingTop: insets.top },
+          barStyle,
+        ]}
       >
-        <EventIcon name="back" size={20} />
-      </PressableScale>
+        <View style={styles.topRow} pointerEvents="box-none">
+          <PressableScale
+            onPress={navigation.goBack}
+            accessibilityLabel={`${t('general:back')}`}
+            style={[styles.back, shadows.back]}
+            testID="organization-back"
+          >
+            <EventIcon name="back" size={20} />
+          </PressableScale>
+          {loaded && (
+            <Animated.View
+              pointerEvents="none"
+              accessibilityElementsHidden={!compactAccessible}
+              importantForAccessibility={compactAccessible ? 'auto' : 'no-hide-descendants'}
+              style={[styles.compactOrganization, compactStyle]}
+            >
+              <Avatar name={organization.name} uri={organization.logo} size={32} shape="rounded" />
+              <VText
+                color={colors.white}
+                style={styles.compactName}
+                numberOfLines={1}
+                maxFontSizeMultiplier={MAX_FONT_SCALE.title}
+              >
+                {organization.name}
+              </VText>
+            </Animated.View>
+          )}
+        </View>
+      </Animated.View>
 
       {bar && (
         <View
@@ -451,9 +551,25 @@ const styles = StyleSheet.create({
   banner: { borderRadius: radius.button, padding: 14 },
   section: { gap: 10 },
   paragraph: { lineHeight: 23 },
-  back: {
+  pinnedBar: {
     position: 'absolute',
-    left: 16,
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 10,
+    backgroundColor: colors.navy,
+  },
+  barBorder: { borderWidth: 0 },
+  topRow: { height: 56, flexDirection: 'row', alignItems: 'center', paddingLeft: 16, gap: 12 },
+  compactOrganization: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingRight: spacing.gutter,
+  },
+  compactName: { fontFamily: fonts.title, fontSize: 17, flexShrink: 1 },
+  back: {
     width: 40,
     height: 40,
     borderRadius: 20,
@@ -466,7 +582,8 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(255,255,255,0.96)',
+    // solid: the events list must not show through the bar
+    backgroundColor: colors.white,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: colors.line,
     paddingTop: 12,

@@ -110,6 +110,14 @@ beforeEach(() => {
 });
 
 describe('Profil', () => {
+  it('keeps the title in a fixed header outside the scroll view', async () => {
+    await renderApp();
+    const header = screen.getByTestId('settings-header');
+    expect(within(header).getByText('Profil')).toBeTruthy();
+    expect(within(header).getByRole('header', { name: 'Profil' })).toBeTruthy();
+    expect(within(screen.getByTestId('profile')).queryByText('Profil')).toBeNull();
+  });
+
   it('refetches the profile on focus', async () => {
     await renderApp();
     expect(mockRefetchProfile).toHaveBeenCalledTimes(1);

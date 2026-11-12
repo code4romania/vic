@@ -82,7 +82,7 @@ const ActivityLogs = ({ navigation, route }: any) => {
   const headerHeight =
     insets.top +
     12 +
-    (titleHeight || (isTabRoute(route) ? 44 : 104)) +
+    (titleHeight || 44) +
     (organization ? (summaryHeight || 140) + (statusHeight || 44) : 0) +
     6;
   const headerShadow = useAnimatedStyle(() => ({
@@ -146,24 +146,27 @@ const ActivityLogs = ({ navigation, route }: any) => {
         style={styles.pinnedTitle}
         onLayout={(e) => setTitleHeight(e.nativeEvent.layout.height)}
       >
-        {!isTabRoute(route) && (
-          <View style={styles.backRow}>
-            <PressableScale
-              onPress={navigation.goBack}
-              style={[styles.back, shadows.back]}
-              accessibilityLabel={`${t('general:back')}`}
-              testID="hours-back"
-            >
-              <EventIcon name="back" size={20} />
-            </PressableScale>
-          </View>
-        )}
         <Enter>
-          <View
-            testID="hours-title-row"
-            style={[styles.titleRow, !isTabRoute(route) && styles.titleAfterBack]}
-          >
-            <VText variant="largeTitle" accessibilityRole="header" style={styles.title}>
+          {/* Opened from the volunteer page: the back button joins the title row and the title
+              drops to h2, as on Organizații, instead of a row of its own above a large title. */}
+          <View testID="hours-title-row" style={styles.titleRow}>
+            {!isTabRoute(route) && (
+              <PressableScale
+                onPress={navigation.goBack}
+                style={[styles.back, shadows.back]}
+                accessibilityLabel={`${t('general:back')}`}
+                testID="hours-back"
+              >
+                <EventIcon name="back" size={20} />
+              </PressableScale>
+            )}
+            <VText
+              variant={isTabRoute(route) ? 'largeTitle' : 'h2'}
+              accessibilityRole="header"
+              numberOfLines={isTabRoute(route) ? undefined : 1}
+              maxFontSizeMultiplier={isTabRoute(route) ? undefined : MAX_FONT_SCALE.title}
+              style={styles.title}
+            >
               {t('title')}
             </VText>
             {!inactive && !!organization && (
@@ -347,7 +350,6 @@ const styles = StyleSheet.create({
   pinnedTitle: { gap: 4 },
   pinnedStatus: { paddingTop: 4 },
   summaryContent: { paddingTop: 4, gap: 4 },
-  backRow: { minHeight: 40 },
   titleRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -361,7 +363,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  titleAfterBack: { marginTop: 16 },
   title: { flex: 1 },
   addButton: { minHeight: 40, flexShrink: 0 },
   stats: { flexDirection: 'row', gap: 10, marginTop: 12, marginBottom: 12 },

@@ -82,6 +82,7 @@ const renderApp = (initialRouteName = 'hours', params?: Record<string, unknown>)
       <NavigationContainer>
         <Navigator initialRouteName={initialRouteName} screenOptions={{ headerShown: false }}>
           <Screen name="hours" component={ActivityLogs} />
+          <Screen name="activity-logs" component={ActivityLogs} />
           <Screen name="activity-log" component={ActivityLog} initialParams={params} />
           <Screen name="add-activity-log" component={AddActivityLog} />
           <Screen name="edit-activity-log" component={Stub} />
@@ -142,6 +143,20 @@ beforeEach(() => {
 afterEach(() => queryClient.clear());
 
 describe('Ore', () => {
+  it('opened from the volunteer page, puts the back button on the title row', async () => {
+    await renderApp('activity-logs');
+    const titleRow = within(await screen.findByTestId('hours-title-row'));
+    expect(titleRow.getByTestId('hours-back')).toBeTruthy();
+    expect(titleRow.getByRole('header', { name: i18n.t('activity_logs:title') })).toBeTruthy();
+    expect(titleRow.getByTestId('hours-add')).toBeTruthy();
+  });
+
+  it('as the Ore tab, has no back button', async () => {
+    await renderApp();
+    await screen.findByTestId('hours-title-row');
+    expect(screen.queryByTestId('hours-back')).toBeNull();
+  });
+
   it('keeps the title, totals and status fixed above the scrolling list', async () => {
     await renderApp();
     const list = within(await screen.findByTestId('hours-list'));

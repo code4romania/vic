@@ -7,7 +7,12 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import Animated from 'react-native-reanimated';
+import Animated, {
+  Extrapolation,
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { OrderDirection } from '../common/enums/order-direction.enum';
@@ -38,7 +43,7 @@ import OrganizationSkeleton from '../components/skeleton/organization-skeleton';
 const SEARCH_DEBOUNCE_MS = 300;
 
 /**
- * VIC 2.0 Organizații (canvas board "Organizații"): large title, a search that filters as you
+ * VIC 2.0 Organizații (canvas board "Organizații"): pinned title, a search that filters as you
  * type, and rows with the logo, the number of volunteers and "Membru" for your organizations.
  */
 const Organizations = ({ navigation }: any) => {
@@ -46,7 +51,13 @@ const Organizations = ({ navigation }: any) => {
   const insets = useSafeAreaInsets();
   const bottomInset = useGlassTabBarInset();
   useFocusedStatusBarStyle('dark');
-  const onScroll = useTabBarScroll();
+  const scrollY = useSharedValue(0);
+  const onScroll = useTabBarScroll(scrollY);
+  const [measuredHeaderHeight, setMeasuredHeaderHeight] = useState(0);
+  const headerHeight = measuredHeaderHeight || insets.top + 12 + 40 + 6;
+  const headerShadow = useAnimatedStyle(() => ({
+    shadowOpacity: interpolate(scrollY.value, [0, 12], [0, 0.06], Extrapolation.CLAMP),
+  }));
 
   const [query, setQuery] = useState('');
   const [search, setSearch] = useState('');
@@ -123,26 +134,6 @@ const Organizations = ({ navigation }: any) => {
 
   const header = (
     <View style={styles.header}>
-      <View style={styles.topRow}>
-        {navigation.canGoBack() ? (
-          <PressableScale
-            onPress={navigation.goBack}
-            style={[styles.back, shadows.back]}
-            accessibilityLabel={`${t('general:back')}`}
-            testID="organizations-back"
-          >
-            <EventIcon name="back" size={20} />
-          </PressableScale>
-        ) : (
-          <View />
-        )}
-        {total !== undefined && <VText variant="cap">{t('count', { n: total })}</VText>}
-      </View>
-      <Enter>
-        <VText variant="largeTitle" accessibilityRole="header" style={styles.title}>
-          {t('heading')}
-        </VText>
-      </Enter>
       <Enter index={1}>
         <VText variant="sub" style={styles.subtitle}>
           {t('subtitle')}
@@ -218,14 +209,48 @@ const Organizations = ({ navigation }: any) => {
         onEndReachedThreshold={0.4}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
-        refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={reload} />}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetching}
+            onRefresh={reload}
+            progressViewOffset={headerHeight}
+          />
+        }
         contentContainerStyle={[
           styles.list,
-          { paddingTop: insets.top + 12, paddingBottom: bottomInset },
+          { paddingTop: headerHeight + 8, paddingBottom: bottomInset },
         ]}
         showsVerticalScrollIndicator={false}
         testID="organizations-list"
       />
+      <Animated.View
+        testID="organizations-header"
+        style={[styles.pinnedHeader, { paddingTop: insets.top + 12 }, headerShadow]}
+        onLayout={(e) => setMeasuredHeaderHeight(e.nativeEvent.layout.height)}
+      >
+        <View style={styles.topRow}>
+          {navigation.canGoBack() && (
+            <PressableScale
+              onPress={navigation.goBack}
+              style={[styles.back, shadows.back]}
+              accessibilityLabel={`${t('general:back')}`}
+              testID="organizations-back"
+            >
+              <EventIcon name="back" size={20} />
+            </PressableScale>
+          )}
+          <VText
+            variant="h2"
+            accessibilityRole="header"
+            numberOfLines={1}
+            maxFontSizeMultiplier={MAX_FONT_SCALE.title}
+            style={styles.heading}
+          >
+            {t('heading')}
+          </VText>
+          {total !== undefined && <VText variant="cap">{t('count', { n: total })}</VText>}
+        </View>
+      </Animated.View>
       <StatusBarScrim />
     </View>
   );
@@ -238,10 +263,23 @@ const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.canvas },
   list: { paddingHorizontal: spacing.gutter, flexGrow: 1 },
   header: { paddingBottom: 6 },
+  pinnedHeader: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 4,
+    backgroundColor: colors.canvas,
+    paddingHorizontal: spacing.gutter,
+    paddingBottom: 6,
+    shadowColor: '#000',
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 6 },
+  },
   topRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    gap: 12,
     minHeight: 40,
   },
   back: {
@@ -252,8 +290,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  title: { marginTop: 16 },
-  subtitle: { marginTop: 4, marginBottom: 16 },
+  heading: { flex: 1 },
+  subtitle: { marginBottom: 16 },
   search: {
     height: 48,
     borderRadius: 24,
