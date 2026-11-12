@@ -211,6 +211,7 @@ const CreateUser = ({ navigation }: any) => {
             min={BIRTHDAY_MIN}
             max={birthdayMax()}
             initialVisibleDate={BIRTHDAY_INITIAL_VISIBLE}
+            startView="year"
             disabled={isLoading}
             name="birthday"
             error={errors.birthday}

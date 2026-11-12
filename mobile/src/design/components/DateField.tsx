@@ -1,7 +1,7 @@
 // Date field „Îndrăzneț”: a field with a calendar icon and the date written out ("Vin, 13 nov 2026"),
 // quick options „Azi” / „Ieri” under it, and a calendar that unfolds below on tap.
-// @react-native-community/datetimepicker is not installed in this app, so the calendar is the UI
-// Kitten Calendar that FormDatePicker already used (Romanian names, Monday first).
+// @react-native-community/datetimepicker is not installed in this app, so the calendar is our own
+// pure-JS Calendar (Romanian names, Monday first).
 import React, { useEffect, useMemo, useState } from 'react';
 import { LayoutChangeEvent, Pressable, StyleProp, View, ViewStyle } from 'react-native';
 import Animated, {
@@ -9,13 +9,12 @@ import Animated, {
   useReducedMotion,
   useSharedValue,
 } from 'react-native-reanimated';
-import { Calendar, CalendarProps, NativeDateService } from '@ui-kitten/components';
 import { StyleSheet } from 'react-native-unistyles';
 import { palette } from '../tokens';
 import { springTo } from '../motion';
-import { haptics } from '../haptics';
 import { CalendarIcon } from '../icons';
 import { AppText } from './Text';
+import { Calendar, CalendarLanguage } from './Calendar';
 import { OptionChip } from './Chip';
 import {
   FieldError,
@@ -57,10 +56,11 @@ export interface DateFieldProps {
   quickOptions?: boolean;
   /** month the calendar opens on when there is no value */
   initialVisibleDate?: Date;
-  dateService?: NativeDateService;
+  /** names in the calendar (Romanian by default) */
+  language?: CalendarLanguage;
   formatDate?: (date: Date) => string;
-  /** extra props for the calendar (filter, startView…) */
-  calendarProps?: Partial<CalendarProps<Date>>;
+  /** open the calendar on the year grid (e.g. for a birthday) */
+  startView?: 'day' | 'year';
   onBlur?: () => void;
   testID?: string;
   style?: StyleProp<ViewStyle>;
@@ -80,9 +80,9 @@ export const DateField = ({
   maximumDate,
   quickOptions = true,
   initialVisibleDate,
-  dateService,
+  language = 'ro',
   formatDate = formatDateRo,
-  calendarProps,
+  startView,
   onBlur,
   testID = 'date-field',
   style,
@@ -202,17 +202,14 @@ export const DateField = ({
             }
           >
             <Calendar
-              date={value ?? undefined}
+              value={value}
               min={minimumDate}
               max={maximumDate}
-              initialVisibleDate={value ?? initialVisibleDate}
-              dateService={dateService}
-              {...calendarProps}
-              onSelect={(date: Date) => {
-                haptics.selection();
-                choose(date);
-              }}
-              style={styles.calendarInner}
+              initialVisibleDate={initialVisibleDate}
+              language={language}
+              startView={startView}
+              onSelect={choose}
+              testID={`${testID}-calendar`}
             />
           </View>
         </Animated.View>
@@ -233,5 +230,4 @@ const styles = StyleSheet.create((theme) => ({
     overflow: 'hidden',
   },
   calendarContent: { position: 'absolute', top: 0, left: 0, right: 0, alignItems: 'center' },
-  calendarInner: { borderWidth: 0, backgroundColor: 'transparent' },
 }));

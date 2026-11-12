@@ -2,10 +2,6 @@ import 'react-native-gesture-handler';
 // Unistyles themes must be configured before any StyleSheet is created
 import './src/design/theme';
 import React from 'react';
-import * as eva from '@eva-design/eva';
-import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
-import { default as theme } from './src/common/theme/theme.json';
-import { default as mapping } from './src/common/theme/mappings.json';
 import * as Font from 'expo-font';
 import {
   BricolageGrotesque_700Bold,
@@ -27,7 +23,6 @@ import './src/common/config/i18n';
 import { ToastHost } from './src/common/config/toast';
 import { QueryClientProvider } from 'react-query';
 import { queryClient } from './src/services/query-client';
-import { FeatherIconsPack } from './src/common/adapters/feather-icons.adapter';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Notifications from 'expo-notifications';
 import * as NavigationBar from 'expo-navigation-bar';
@@ -74,39 +69,32 @@ export default () => {
 
   return fontsLoaded ? (
     <>
-      <IconRegistry icons={FeatherIconsPack} />
-      <ApplicationProvider
-        {...eva}
-        theme={{ ...eva.dark, ...theme } as any}
-        customMapping={mapping}
-      >
-        {/* the Maintenance / UpdateRequired screens render outside the navigators, which otherwise
+      {/* the Maintenance / UpdateRequired screens render outside the navigators, which otherwise
             provide the safe area */}
-        <SafeAreaProvider>
-          <GestureHandlerRootView style={styles.gestureHandler}>
-            <KeyboardProvider>
-              <QueryClientProvider client={queryClient}>
-                <BottomSheetModalProvider>
-                  <AuthContextProvider>
-                    <NavigationContainer
-                      ref={navigationRef}
-                      linking={linking}
-                      navigationInChildEnabled
-                    >
-                      <NotificationContextProvider navigation={navigationRef}>
-                        <Router />
-                      </NotificationContextProvider>
-                    </NavigationContainer>
-                  </AuthContextProvider>
-                </BottomSheetModalProvider>
-              </QueryClientProvider>
-            </KeyboardProvider>
-          </GestureHandlerRootView>
-          <ToastHost />
-        </SafeAreaProvider>
+      <SafeAreaProvider>
+        <GestureHandlerRootView style={styles.gestureHandler}>
+          <KeyboardProvider>
+            <QueryClientProvider client={queryClient}>
+              <BottomSheetModalProvider>
+                <AuthContextProvider>
+                  <NavigationContainer
+                    ref={navigationRef}
+                    linking={linking}
+                    navigationInChildEnabled
+                  >
+                    <NotificationContextProvider navigation={navigationRef}>
+                      <Router />
+                    </NotificationContextProvider>
+                  </NavigationContainer>
+                </AuthContextProvider>
+              </BottomSheetModalProvider>
+            </QueryClientProvider>
+          </KeyboardProvider>
+        </GestureHandlerRootView>
+        <ToastHost />
+      </SafeAreaProvider>
 
-        <ExpoStatusBar style="dark" />
-      </ApplicationProvider>
+      <ExpoStatusBar style="dark" />
     </>
   ) : (
     <View />

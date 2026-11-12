@@ -11,6 +11,7 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import * as Linking from 'expo-linking';
+import { format } from 'date-fns';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
@@ -22,7 +23,6 @@ import {
 import { useCancelAccessRequestMutation } from '../services/access-request/access-request.service';
 import { OrganizatinVolunteerStatus } from '../common/enums/organization-volunteer-status.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { datePickerService } from '../common/utils/birthday';
 import { colors, fonts, radius, shadows, spacing, StatusTone } from '../common/theme/tokens';
 import { useOrganization } from '../store/organization/organization.selector';
 import { useUserProfile } from '../store/profile/profile.selector';
@@ -221,10 +221,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
               </VText>
               <VText variant="cap">
                 {t('bar.member_since', {
-                  date: datePickerService('ro').format(
-                    new Date(organization.volunteer.createdOn),
-                    'DD.MM.YYYY',
-                  ),
+                  date: format(new Date(organization.volunteer.createdOn), 'dd.MM.yyyy'),
                 })}
               </VText>
             </View>

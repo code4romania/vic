@@ -13,7 +13,7 @@ interface FormInputProps extends Omit<TextInputProps, 'style'> {
   helper?: string;
   required?: boolean;
   disabled?: boolean;
-  /** element or ui-kitten style render function, e.g. the +40 phone prefix */
+  /** element or render function (gets the text style), e.g. the +40 phone prefix */
   accessoryLeft?: React.ReactNode | ((props: any) => React.ReactNode);
   [key: string]: any;
 }

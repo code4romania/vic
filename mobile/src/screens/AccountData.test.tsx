@@ -4,11 +4,8 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-
 import { NavigationContainer } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import * as eva from '@eva-design/eva';
-import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import '../common/config/i18n';
-import { FeatherIconsPack } from '../common/adapters/feather-icons.adapter';
 import { Sex } from '../common/enums/sex.enum';
 import useStore from '../store/store';
 import { updateUserProfile } from '../services/user/user.api';
@@ -52,12 +49,9 @@ const setup = async (phone?: string) => {
           insets: { top: 0, left: 0, right: 0, bottom: 0 },
         }}
       >
-        <IconRegistry icons={FeatherIconsPack} />
-        <ApplicationProvider {...eva} theme={eva.light}>
-          <NavigationContainer>
-            <AccountData navigation={navigation} />
-          </NavigationContainer>
-        </ApplicationProvider>
+        <NavigationContainer>
+          <AccountData navigation={navigation} />
+        </NavigationContainer>
       </SafeAreaProvider>
     </QueryClientProvider>,
   );
