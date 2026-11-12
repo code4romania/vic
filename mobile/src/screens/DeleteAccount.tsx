@@ -12,7 +12,12 @@ import { colors, spacing } from '../common/theme/tokens';
 
 /** Solid danger circle with a white trash can (no pastel illustration). */
 const DangerIcon = () => (
-  <View style={styles.icon} testID="delete-account-icon">
+  <View
+    style={styles.icon}
+    testID="delete-account-icon"
+    accessibilityElementsHidden
+    importantForAccessibility="no-hide-descendants"
+  >
     <Svg
       width={30}
       height={30}

@@ -214,6 +214,7 @@ const Onboarding = ({ navigation }: any) => {
           style={styles.dots}
           accessibilityRole="progressbar"
           accessibilityLabel={`${t('a11y.progress', { current: index + 1, total: STORIES.length })}`}
+          accessibilityValue={{ min: 1, max: STORIES.length, now: index + 1 }}
         >
           {STORIES.map((key, i) => (
             <PageDot

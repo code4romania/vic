@@ -53,7 +53,7 @@ const Anouncements = ({ navigation }: any) => {
           />
           <View style={styles.cardSource}>
             {!!organizationName && (
-              <VText variant="label" numberOfLines={1}>
+              <VText variant="label" numberOfLines={2}>
                 {organizationName}
               </VText>
             )}

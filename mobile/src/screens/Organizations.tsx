@@ -158,8 +158,10 @@ const Organizations = ({ navigation }: any) => {
         {!!query && (
           <Pressable
             onPress={() => setQuery('')}
-            hitSlop={8}
+            // 24pt circle, 44pt to the finger
+            hitSlop={10}
             style={styles.clear}
+            accessibilityRole="button"
             accessibilityLabel={`${t('search.clear')}`}
             testID="organizations-search-clear"
           >

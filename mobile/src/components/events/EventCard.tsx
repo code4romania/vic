@@ -143,7 +143,7 @@ export const EventCard = ({
             <AppText
               variant="caption"
               color={palette.ink2}
-              numberOfLines={1}
+              numberOfLines={2}
               style={styles.metaText}
             >
               {when}
@@ -155,7 +155,7 @@ export const EventCard = ({
               <AppText
                 variant="caption"
                 color={palette.ink2}
-                numberOfLines={1}
+                numberOfLines={2}
                 style={styles.metaText}
               >
                 {event.location}
@@ -166,7 +166,7 @@ export const EventCard = ({
             <AppText
               variant="caption"
               color={palette.ink2}
-              numberOfLines={1}
+              numberOfLines={2}
               style={styles.metaText}
             >
               {event.organizationName}

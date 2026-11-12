@@ -186,7 +186,7 @@ export const OrgRow = ({
               {t('org.overline')}
             </AppText>
             <View style={styles.orgNameRow}>
-              <AppText variant="bodyStrong" style={styles.orgName} numberOfLines={1}>
+              <AppText variant="bodyStrong" style={styles.orgName} numberOfLines={2}>
                 {name}
               </AppText>
               {!!onSwitch && (
@@ -493,7 +493,7 @@ const MetaLine = ({
 }) => (
   <View style={[styles.meta, first ? styles.metaFirst : null]}>
     {Icon && <Icon size={14} color={palette.ink2} strokeWidth={ICON_STROKE} />}
-    <AppText variant="caption" color={palette.ink2} numberOfLines={1} style={styles.metaText}>
+    <AppText variant="caption" color={palette.ink2} numberOfLines={2} style={styles.metaText}>
       {text}
     </AppText>
   </View>
