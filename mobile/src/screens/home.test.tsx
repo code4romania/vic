@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { fireEvent, render, screen, within } from '@testing-library/react-native';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
 import '../common/config/i18n';
 import Home from './Home';
 import useStore from '../store/store';
@@ -12,8 +12,12 @@ import { NewsType } from '../common/enums/news-type.enum';
 
 const mockEventCalls: any[][] = [];
 let mockGoing: any[] = [];
+let mockCounters: any = { approved: 42, pending: 5, rejected: 1 };
+let mockStats: any;
+const mockCounterCalls: any[] = [];
 const mockRefetch = jest.fn();
 const mockRefetchProfile = jest.fn();
+const mockSwitch = jest.fn();
 
 const query = (data: unknown) => ({
   data,
@@ -23,14 +27,24 @@ const query = (data: unknown) => ({
   refetch: mockRefetch,
 });
 
+jest.mock('@gorhom/bottom-sheet', () => require('@gorhom/bottom-sheet/mock'));
 jest.mock('../services/statistics/statistics.service', () => ({
-  useMonthlyStatistics: () =>
-    query({
-      numberOfUpcomingEvents: 4,
-      numberOfActivityLogUpdates: 2,
-      numberOfDocumentUpdates: 1,
-      numberOfOrganizationUpdates: 3,
-    }),
+  useMonthlyStatistics: () => query(mockStats),
+}));
+jest.mock('../services/activity-log/activity-log.service', () => ({
+  useActivityLogsCounters: (volunteerId: string | undefined) => {
+    mockCounterCalls.push(volunteerId);
+    return query(volunteerId ? mockCounters : undefined);
+  },
+}));
+jest.mock('../services/organization/organization.service', () => ({
+  // the real hook waits for the backend; here the switch resolves at once
+  useActivateOrganization: () => ({
+    activate: async (organization: any) => {
+      require('../store/store').default.getState().setActiveOrganization(organization);
+      await mockSwitch(organization.id);
+    },
+  }),
 }));
 jest.mock('../services/anouncement/anouncement.service', () => ({
   useAnouncementsSnapshot: () =>
@@ -74,6 +88,7 @@ const renderHome = () =>
           <Screen name="dashboard" component={Home} />
           {[
             'events',
+            'hours',
             'docs',
             'profile',
             'news',
@@ -111,31 +126,95 @@ const org = (volunteerProfileId: string | null = 'p1') => ({
 beforeEach(() => {
   jest.clearAllMocks();
   mockEventCalls.length = 0;
+  mockCounterCalls.length = 0;
   mockGoing = [];
+  mockCounters = { approved: 42, pending: 5, rejected: 1 };
+  mockStats = {
+    numberOfUpcomingEvents: 4,
+    numberOfActivityLogUpdates: 2,
+    numberOfDocumentUpdates: 1,
+    numberOfOrganizationUpdates: 3,
+  };
   setProfile(org());
 });
 
 describe('Acasă', () => {
-  it('pins the avatar and news controls outside the scroll content', async () => {
+  it('shows the organization, the news bell and the greeting, with a compact „Acasă” bar', async () => {
     await renderHome();
     const content = within(screen.getByTestId('home'));
-    expect(content.queryByTestId('home-avatar')).toBeNull();
-    expect(content.queryByTestId('home-news')).toBeNull();
-    expect(screen.getByTestId('home-avatar')).toBeTruthy();
-    expect(screen.getByTestId('home-news')).toBeTruthy();
+    expect(content.getByTestId('home-org')).toBeTruthy();
+    expect(content.getByText('Asociația Exemplu')).toBeTruthy();
+    expect(content.getByText('Organizația ta')).toBeTruthy();
+    expect(content.getByTestId('home-news')).toBeTruthy();
     expect(content.getByRole('header', { name: 'Bună, Ana' })).toBeTruthy();
+    // the compact bar sits outside the scroll content and stays out of the accessibility tree
+    expect(content.queryByTestId('home-compact-bar', { includeHiddenElements: true })).toBeNull();
+    expect(screen.queryByTestId('home-compact-bar')).toBeNull();
+    expect(
+      within(screen.getByTestId('home-compact-bar', { includeHiddenElements: true })).getByText(
+        'Acasă',
+        { includeHiddenElements: true },
+      ),
+    ).toBeTruthy();
   });
 
-  it('opens the profile from the pinned avatar', async () => {
-    await renderHome();
-    await fireEvent.press(screen.getByTestId('home-avatar'));
-    expect(await screen.findByText('page:profile')).toBeTruthy();
-  });
-
-  it('opens logged hours news from the pinned bell', async () => {
+  it('opens logged hours news from the bell', async () => {
     await renderHome();
     await fireEvent.press(screen.getByTestId('home-news'));
     expect(await screen.findByText(`page:news:${NewsType.LOGGED_HOURS}`)).toBeTruthy();
+  });
+
+  it('shows your impact: approved hours in the hexagon, pending and rejected chips', async () => {
+    await renderHome();
+    expect(mockCounterCalls[0]).toBe('v1');
+    const card = screen.getByTestId('home-impact');
+    expect(card.props.accessibilityLabel).toBe(
+      '42 de ore aprobate, 5 în așteptare, 1 respinsă. Deschide Ore',
+    );
+    expect(within(card).getByText('Impactul tău')).toBeTruthy();
+    expect(within(card).getByText('ore aprobate')).toBeTruthy();
+    expect(within(card).getByText('5h în așteptare')).toBeTruthy();
+    expect(within(card).getByText('1h respinsă')).toBeTruthy();
+    await fireEvent.press(card);
+    expect(await screen.findByText('page:hours')).toBeTruthy();
+  });
+
+  it('the impact number counts up to the approved hours', async () => {
+    await renderHome();
+    await waitFor(() => expect(screen.getByTestId('home-impact-count')).toHaveTextContent('42h'));
+  });
+
+  it('hides the pending and rejected chips when there are none', async () => {
+    mockCounters = { approved: 3, pending: 0, rejected: 0 };
+    await renderHome();
+    const card = screen.getByTestId('home-impact');
+    expect(card.props.accessibilityLabel).toBe('3 ore aprobate. Deschide Ore');
+    expect(within(card).queryByText(/în așteptare/)).toBeNull();
+    expect(within(card).queryByText(/respins/)).toBeNull();
+  });
+
+  it('switches the organization from the row when you have more than one', async () => {
+    const other = { ...org(), id: 'org-2', name: 'Fundația Doi', volunteerId: 'v2' };
+    useStore.setState({
+      userProfile: {
+        firstName: 'Ana',
+        lastName: 'Popescu',
+        activeOrganization: org(),
+        myOrganizations: [org(), other],
+      } as any,
+    });
+    await renderHome();
+    expect(screen.getByTestId('home-org').props.accessibilityState?.disabled).toBeFalsy();
+    await fireEvent.press(screen.getByTestId('home-org'));
+    await fireEvent.press(await screen.findByTestId('home-org-org-2'));
+    await waitFor(() => expect(mockSwitch).toHaveBeenCalledWith('org-2'));
+    expect(useStore.getState().userProfile?.activeOrganization?.id).toBe('org-2');
+  });
+
+  it('with one organization the row does not offer a switch', async () => {
+    await renderHome();
+    expect(screen.getByTestId('home-org').props.accessibilityState?.disabled).toBe(true);
+    expect(screen.queryByTestId('home-org-sheet')).toBeNull();
   });
 
   it('refetches the profile on focus', async () => {
@@ -151,6 +230,15 @@ describe('Acasă', () => {
     expect(screen.getByText('Căutăm 50 de voluntari')).toBeTruthy();
     await fireEvent.press(screen.getByTestId('home-stat-documents'));
     expect(await screen.findByText(`page:news:${NewsType.CONTRACTS}`)).toBeTruthy();
+  });
+
+  it('"Luna aceasta" shows a zero as a ghost tile you cannot open', async () => {
+    mockStats = { ...mockStats, numberOfOrganizationUpdates: 0 };
+    await renderHome();
+    const ghost = screen.getByTestId('home-stat-organizations');
+    expect(ghost.props.accessibilityRole).toBeUndefined();
+    expect(ghost.props.accessibilityLabel).toBe('0 actualizări la organizații');
+    expect(screen.getByTestId('home-stat-events').props.accessibilityRole).toBe('button');
   });
 
   it('"Urmează" lists the next events you go to', async () => {
@@ -177,6 +265,13 @@ describe('Acasă', () => {
     expect(await screen.findByText('Urmează')).toBeTruthy();
     expect(screen.getByText('Ziua Pământului')).toBeTruthy();
     expect(screen.queryByText('Eveniment trecut')).toBeNull();
+    const card = within(screen.getByTestId('event-card-e1'));
+    // the yellow date block: day of week, day, month
+    expect(card.getByText('22')).toBeTruthy();
+    expect(card.getByText('NOV')).toBeTruthy();
+    expect(card.getByText('Pădurea Băneasa')).toBeTruthy();
+    expect(card.getByText('Public')).toBeTruthy();
+    expect(card.getByText('Înscris')).toBeTruthy();
     await fireEvent.press(screen.getByTestId('event-card-e1'));
     expect(await screen.findByText('page:event')).toBeTruthy();
   });
@@ -198,6 +293,8 @@ describe('Acasă', () => {
     setProfile(null);
     await renderHome();
     expect(await screen.findByText('Nu ai adăugat încă nicio organizație')).toBeTruthy();
+    expect(screen.queryByTestId('home-impact')).toBeNull();
+    expect(screen.queryByTestId('home-org')).toBeNull();
     expect(screen.queryByTestId('home-stat-hours')).toBeNull();
     expect(screen.queryByText('Căutăm 50 de voluntari')).toBeNull();
     await fireEvent.press(screen.getByTestId('home-join'));
