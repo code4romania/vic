@@ -27,7 +27,7 @@ const save = async (uri: string, fileName: string, mimetype: string) => {
   await shareAsync(uri);
 };
 
-/** Downloads a signed contract and saves or shares it (was duplicated in Documents and ContractHistory). */
+/** Downloads a signed contract and saves or shares it. */
 export const downloadContract = async (contract: IContractListItem) => {
   const fileName = sanitizeFileName(contract.contractFileName);
   const localPath = `${FileSystem.documentDirectory}${fileName}`;

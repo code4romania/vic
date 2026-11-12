@@ -3,6 +3,8 @@ import { IContractListItem } from '../../common/interfaces/contract-list-item.in
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import API from '../api';
 
+export const CONTRACTS_PAGE_SIZE = 15;
+
 interface PaginationQuery {
   pageParam?: number;
   volunteerId: string;
@@ -15,9 +17,9 @@ export const getContractsHistory = async ({
 }: PaginationQuery): Promise<IPaginatedEntity<IContractListItem>> => {
   return API.get('/mobile/contract/history', {
     params: {
-      limit: 25,
+      limit: CONTRACTS_PAGE_SIZE,
       page: pageParam,
-      orderDirection: OrderDirection.ASC,
+      orderDirection: OrderDirection.DESC,
       volunteerId,
       ...params,
     },

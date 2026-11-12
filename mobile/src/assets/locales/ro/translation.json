@@ -807,10 +807,6 @@
         "contract_prefix": "Contract",
         "certificate_prefix": "Adeverință",
         "description": "Contractele semnate cu organizația. Le poți descărca oricând.",
-        "sections": {
-            "closed": "Istoric contracte semnate",
-            "all": "Contractele tale"
-        },
         "contract_status": {
             "active": "activ",
             "closed": "încheiat",
@@ -818,7 +814,6 @@
         },
         "download": "descarcă",
         "download_error": "Nu am putut descărca documentul. Încearcă din nou.",
-        "see_all": "Vezi toate ({{count}})",
         "status": {
             "SIGNED": "Semnat",
             "PENDING": "În așteptare",

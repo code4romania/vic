@@ -19,7 +19,6 @@ import JoinByAccessCode from '../screens/JoinByAccessCode';
 import Documents from '../screens/Documents';
 import Anouncements from '../screens/Anouncements';
 import AnouncementResponse from '../screens/AnouncementResponse';
-import ContractHistory from '../screens/ContractHistory';
 import RequestRejectedReason from '../screens/RequestRejectedReason';
 import DeleteAccount from '../screens/DeleteAccount';
 
@@ -41,7 +40,6 @@ const Private = () => (
       <Screen name="account-data" component={AccountData} />
       <Screen name="notifications-settings" component={NotificationsSettings} />
       <Screen name="documents" component={Documents} />
-      <Screen name="contract-history" component={ContractHistory} />
     </Group>
     <Group screenOptions={{ presentation: 'modal' }}>
       <Screen name="leave-organization" component={LeaveOrganization} />
