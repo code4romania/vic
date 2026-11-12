@@ -1,6 +1,11 @@
 import React, { useCallback } from 'react';
 import { Pressable, RefreshControl, StyleSheet, useWindowDimensions, View } from 'react-native';
-import Animated from 'react-native-reanimated';
+import Animated, {
+  Extrapolation,
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
 import Svg, { Path } from 'react-native-svg';
 import { useFocusEffect } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -15,6 +20,7 @@ import { EventType } from '../common/enums/event-type.enum';
 import { NewsType } from '../common/enums/news-type.enum';
 import { IEventListItem } from '../common/interfaces/event-list-item.interface';
 import { colors, radius, shadows, spacing } from '../common/theme/tokens';
+import { MAX_FONT_SCALE } from '../common/constants/constants';
 import { useUserProfile } from '../store/profile/profile.selector';
 import useStore from '../store/store';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
@@ -24,16 +30,9 @@ import { useGlassTabBarInset } from '../components/navigation/GlassTabBar';
 import { EventCard } from '../components/events/EventCard';
 import { EventIcon, EventIconName } from '../components/events/EventIcons';
 import { isInactiveVolunteer } from '../common/interfaces/organization-list-item.interface';
-import {
-  Avatar,
-  Enter,
-  Group,
-  ListRow,
-  PressableScale,
-  StatusBarScrim,
-  VButton,
-  VText,
-} from '../components/ui';
+import { Avatar, Enter, Group, ListRow, PressableScale, VButton, VText } from '../components/ui';
+
+const ROW = 68;
 
 const BellIcon = ({ color = colors.ink }: { color?: string }) => (
   <Svg width={22} height={22} viewBox="0 0 24 24" fill="none">
@@ -74,12 +73,12 @@ const SectionHead = ({
       {title}
     </VText>
     {!!action && (
-      // 44pt touch target around the short link
+      // 44pt touch target around the short link (18pt label + 13 + 13 slop), without making the
+      // title row taller than the title
       <Pressable
         onPress={onAction}
         accessibilityRole="button"
-        hitSlop={{ top: 12, bottom: 12, left: 12, right: 8 }}
-        style={styles.linkTouch}
+        hitSlop={{ top: 13, bottom: 13, left: 12, right: 8 }}
         testID={testID}
       >
         <VText variant="label" style={styles.link}>
@@ -109,7 +108,31 @@ const Home = ({ navigation }: any) => {
   const { fontScale } = useWindowDimensions();
   const bottomInset = useGlassTabBarInset();
   useFocusedStatusBarStyle('light');
-  const onScroll = useTabBarScroll();
+  const barHeight = insets.top + ROW;
+  const scrollY = useSharedValue(0);
+  const heroHeight = useSharedValue(0);
+  const greetingBottom = useSharedValue(0);
+  const onScroll = useTabBarScroll(scrollY);
+  const compactStyle = useAnimatedStyle(() => ({
+    opacity:
+      greetingBottom.value > 12
+        ? interpolate(scrollY.value, [12, greetingBottom.value], [0, 1], Extrapolation.CLAMP)
+        : 0,
+  }));
+  const barStyle = useAnimatedStyle(() => {
+    // Measure the whole hero so wrapping, optional organization and font scale set the threshold.
+    const threshold = heroHeight.value - barHeight;
+    const progress =
+      heroHeight.value > 0
+        ? interpolate(scrollY.value, [threshold, threshold + 16], [0, 1], Extrapolation.CLAMP)
+        : 0;
+    return {
+      borderBottomLeftRadius: radius.sheet * progress,
+      borderBottomRightRadius: radius.sheet * progress,
+      shadowOpacity: Number(shadows.card.shadowOpacity ?? 0) * progress,
+      elevation: (shadows.card.elevation ?? 0) * progress,
+    };
+  });
 
   const { userProfile } = useUserProfile();
   const { setUserProfile } = useStore();
@@ -166,7 +189,7 @@ const Home = ({ navigation }: any) => {
       !inactive &&
       !profileMissing && {
         key: 'hours',
-        icon: 'check' as EventIconName,
+        icon: 'history' as EventIconName,
         tone: 'neutral' as const,
         title: `${t('todo.hours.title')}`,
         subtitle: `${t('todo.hours.subtitle', { name: organization.name })}`,
@@ -222,6 +245,9 @@ const Home = ({ navigation }: any) => {
             refreshing={statistics.isRefetching || anouncements.isRefetching}
             onRefresh={onRefresh}
             tintColor={colors.white}
+            // RN's native iOS and Android controls both support this offset: keep the spinner
+            // below the pinned bar without changing scroll coordinates or tab-bar collapse.
+            progressViewOffset={barHeight}
           />
         }
         contentContainerStyle={{ paddingBottom: bottomInset }}
@@ -229,33 +255,16 @@ const Home = ({ navigation }: any) => {
         testID="home"
       >
         <React.Fragment key={fontScale}>
-          <View style={[styles.hero, { paddingTop: insets.top + 12 }]}>
+          <View
+            style={styles.hero}
+            onLayout={(event) => {
+              heroHeight.value = event.nativeEvent.layout.height;
+            }}
+          >
             {/* navy behind the pull-to-refresh bounce */}
             <View style={styles.heroBounce} />
-            <View style={styles.topRow}>
-              <PressableScale
-                onPress={() => navigation.navigate(TAB_ROUTES.PROFILE)}
-                accessibilityLabel={`${t('settings:profile')}`}
-                style={styles.avatarRing}
-                testID="home-avatar"
-              >
-                <Avatar
-                  name={
-                    [userProfile?.firstName, userProfile?.lastName].filter(Boolean).join(' ') || '?'
-                  }
-                  uri={userProfile?.profilePicture}
-                  size={40}
-                />
-              </PressableScale>
-              <PressableScale
-                onPress={() => navigation.navigate('news', { type: NewsType.LOGGED_HOURS })}
-                style={styles.bell}
-                accessibilityLabel={`${t('news')}`}
-                testID="home-news"
-              >
-                <BellIcon color={colors.white} />
-              </PressableScale>
-            </View>
+            {/* 68 = 12 + 44 + 12; spacer + 4 preserves the old greeting top (12 + 44 + 16). */}
+            <View style={{ height: barHeight }} />
 
             <Enter>
               <VText
@@ -263,6 +272,11 @@ const Home = ({ navigation }: any) => {
                 color={colors.white}
                 accessibilityRole="header"
                 style={styles.title}
+                onLayout={(event) => {
+                  const { y, height } = event.nativeEvent.layout;
+                  // Relative to the greeting wrapper, which starts immediately below the spacer.
+                  greetingBottom.value = y + height;
+                }}
               >
                 {t('hello', { name: userProfile?.firstName || '' })}
               </VText>
@@ -402,7 +416,59 @@ const Home = ({ navigation }: any) => {
           </View>
         </React.Fragment>
       </Animated.ScrollView>
-      <StatusBarScrim color={colors.navy} />
+      <Animated.View
+        key={fontScale}
+        pointerEvents="box-none"
+        style={[
+          styles.pinnedBar,
+          shadows.card,
+          styles.barBorder,
+          { height: barHeight, paddingTop: insets.top + 12 },
+          barStyle,
+        ]}
+      >
+        <View style={styles.topRow}>
+          <PressableScale
+            onPress={() => navigation.navigate(TAB_ROUTES.PROFILE)}
+            accessibilityLabel={`${t('settings:profile')}`}
+            style={styles.avatarRing}
+            testID="home-avatar"
+          >
+            <Avatar
+              name={
+                [userProfile?.firstName, userProfile?.lastName].filter(Boolean).join(' ') || '?'
+              }
+              uri={userProfile?.profilePicture}
+              size={40}
+            />
+          </PressableScale>
+          <PressableScale
+            onPress={() => navigation.navigate('news', { type: NewsType.LOGGED_HOURS })}
+            style={styles.bell}
+            accessibilityLabel={`${t('news')}`}
+            testID="home-news"
+          >
+            <BellIcon color={colors.white} />
+          </PressableScale>
+        </View>
+        {/* The large greeting is the screen header; avoid a duplicate accessibility announcement. */}
+        <Animated.View
+          pointerEvents="none"
+          accessibilityElementsHidden
+          importantForAccessibility="no-hide-descendants"
+          style={[styles.compactGreeting, { top: insets.top + 12 }, compactStyle]}
+        >
+          <VText
+            variant="h3"
+            color={colors.white}
+            style={styles.compactTitle}
+            numberOfLines={1}
+            maxFontSizeMultiplier={MAX_FONT_SCALE.title}
+          >
+            {t('hello', { name: userProfile?.firstName || '' })}
+          </VText>
+        </Animated.View>
+      </Animated.View>
     </View>
   );
 };
@@ -437,7 +503,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  title: { marginTop: 16 },
+  pinnedBar: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 10,
+    backgroundColor: colors.navy,
+    paddingHorizontal: spacing.gutter,
+  },
+  compactGreeting: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    height: 44,
+    justifyContent: 'center',
+    paddingHorizontal: spacing.gutter + 44 + 12,
+  },
+  barBorder: { borderWidth: 0 },
+  compactTitle: { fontSize: 17, textAlign: 'center' },
+  title: { marginTop: 4 },
   join: {
     marginTop: 18,
     gap: 8,
@@ -445,11 +530,10 @@ const styles = StyleSheet.create({
     borderRadius: radius.card,
     backgroundColor: colors.white,
   },
-  section: { marginTop: 28, gap: 10 },
+  section: { marginTop: 24, gap: 10 },
   sectionHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   sectionTitle: { flex: 1 },
   link: { textDecorationLine: 'underline' },
-  linkTouch: { minHeight: 44, justifyContent: 'center' },
   todoIcon: {
     width: 40,
     height: 40,
