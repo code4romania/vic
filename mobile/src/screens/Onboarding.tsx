@@ -241,7 +241,7 @@ const Onboarding = ({ navigation }: any) => {
           <Button
             full
             label={t('next')}
-            icon={<ArrowRightIcon size={20} color={palette.navy} strokeWidth={2.4} />}
+            trailingIcon={ArrowRightIcon}
             onPress={() => goTo(index + 1)}
             testID="onboarding-next"
           />

@@ -28,11 +28,10 @@ import { MobileEventListItemPresenter } from './presenters/mobile-event-list-ite
 import { GetOneEventWithVolunteerStatusUsecase } from 'src/usecases/event/get-one-event-with-volunteer-status.usecase';
 import { MobileEventPresenter } from './presenters/mobile-event.presenter';
 import { GetEventsByOrganizationUsecase } from 'src/usecases/event/get-events-by-organization.usecase';
-import { IdAndNamePresenter } from 'src/infrastructure/presenters/id-name.presenter';
-import { IEventModel } from 'src/modules/event/models/event.model';
 import { GetMyEventsCountsDto } from './dto/get-my-events-counts.dto';
 import { GetMyEventsCountsUsecase } from 'src/usecases/event/get-my-events-counts.usecase';
 import { MobileEventsCountsPresenter } from './presenters/mobile-events-counts.presenter';
+import { MobileEventOptionPresenter } from './presenters/mobile-event-option.presenter';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard, MobileProfileGuard) // VolunteerGuard
@@ -86,13 +85,13 @@ export class MobileEventController {
   async getEventsByOrganizationId(
     @Param('organizationId', UuidValidationPipe) organizationId: string,
     @ExtractUser() { id }: IRegularUserModel,
-  ): Promise<IdAndNamePresenter<IEventModel>[]> {
+  ): Promise<MobileEventOptionPresenter[]> {
     const events = await this.getEventsByOrganization.execute({
       userId: id,
       organizationId,
     });
 
-    return events.map((event) => new IdAndNamePresenter(event));
+    return events.map((event) => new MobileEventOptionPresenter(event));
   }
 
   @Get(':id')

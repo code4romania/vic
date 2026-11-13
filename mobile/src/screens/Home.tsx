@@ -13,6 +13,7 @@ import { useEventsInfiniteQuery } from '../services/event/event.service';
 import { toHours } from '../common/utils/hours';
 import { useActivityLogsCounters } from '../services/activity-log/activity-log.service';
 import { useActivateOrganization } from '../services/organization/organization.service';
+import { useUnreadNewsCountQuery } from '../services/news/news.service';
 import { getUserProfile } from '../services/user/user.api';
 import { useGetUserProfileQuery } from '../services/user/user.service';
 import { OrderDirection } from '../common/enums/order-direction.enum';
@@ -93,11 +94,13 @@ const Home = ({ navigation }: any) => {
   const anouncements = useAnouncementsSnapshot();
   const upcoming = useEventsInfiniteQuery(OrderDirection.ASC, '', EventType.GOING);
   const counters = useActivityLogsCounters(organization?.volunteerId);
+  const unreadNews = useUnreadNewsCountQuery();
 
   const { refetch: refetchStatistics } = statistics;
   const { refetch: refetchAnouncements } = anouncements;
   const { refetch: refetchUpcoming } = upcoming;
   const { refetch: refetchCounters } = counters;
+  const { refetch: refetchUnreadNews } = unreadNews;
 
   useFocusEffect(
     useCallback(() => {
@@ -107,7 +110,15 @@ const Home = ({ navigation }: any) => {
       refetchUpcoming();
       refetchProfile();
       refetchCounters();
-    }, [refetchStatistics, refetchAnouncements, refetchUpcoming, refetchProfile, refetchCounters]),
+      refetchUnreadNews();
+    }, [
+      refetchStatistics,
+      refetchAnouncements,
+      refetchUpcoming,
+      refetchProfile,
+      refetchCounters,
+      refetchUnreadNews,
+    ]),
   );
 
   const onRefresh = async () => {
@@ -115,6 +126,7 @@ const Home = ({ navigation }: any) => {
     refetchAnouncements();
     refetchUpcoming();
     refetchCounters();
+    refetchUnreadNews();
     try {
       setUserProfile(await getUserProfile());
     } catch {
@@ -240,6 +252,7 @@ const Home = ({ navigation }: any) => {
               name={organization?.name}
               onSwitch={switchable.length > 1 ? () => orgSheet.current?.present() : undefined}
               onNews={() => navigation.navigate('news', { type: NewsType.LOGGED_HOURS })}
+              unread={unreadNews.data ?? 0}
             />
           </Animated.View>
 

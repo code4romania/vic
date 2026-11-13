@@ -57,6 +57,8 @@ export const HoursSummary = ({
           pending={pending || 0}
           rejected={rejected || 0}
           size={120}
+          // Ore: navy / white pending stripes (Acasă's navy card uses yellow on #012A40)
+          tone="onLight"
           testID="impact-hexagon"
         />
       </View>

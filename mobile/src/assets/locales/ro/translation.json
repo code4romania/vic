@@ -787,6 +787,8 @@
         },
         "hello": "Bună, {{name}}",
         "news": "Noutăți",
+        "news_unread": "Noutăți, {{n}} necitite",
+        "news_unread_one": "Noutăți, 1 necitită",
         "join_ngo_short": "Caută organizații",
         "see_all": "Toate",
         "next": {

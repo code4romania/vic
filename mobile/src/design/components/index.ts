@@ -2,3 +2,4 @@
 export * from './groupA';
 export * from './groupB';
 export * from './ImpactHexagon';
+export * from './CountBadge';

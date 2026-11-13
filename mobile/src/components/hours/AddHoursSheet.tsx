@@ -30,7 +30,7 @@ import ActivityLogForm, { ActivityLogFormTypes, activityLogSchema } from '../Act
 import { fontScaleCap, palette } from '../../design/tokens';
 import { duration } from '../../design/motion';
 import { haptics } from '../../design/haptics';
-import { CloseIcon, ICON_STROKE } from '../../design/icons';
+import { ArrowRightIcon, CloseIcon, ICON_STROKE } from '../../design/icons';
 import { Button } from '../../design/components/Button';
 import { Sheet } from '../../design/components/Sheet';
 import { tight, useEffectiveFontScale } from '../../design/components/Text';
@@ -54,7 +54,7 @@ const defaultValues = (): Partial<ActivityLogFormTypes> => ({ date: new Date(), 
 
 /**
  * „Adaugă ore” as a 92% form sheet (prototype `.sheet`): Eveniment (optional), Activitate, Data with
- * Azi / Ieri, the hours stepper, Mențiuni, and the sticky yellow „Trimite spre aprobare →”. On
+ * Azi / Ieri, the hours stepper, Mențiuni, and the sticky yellow „Trimite spre aprobare” with its arrow. On
  * success the sheet shows „Trimis spre aprobare”, then closes and hands the new entry to Ore.
  * Changed fields ask before the sheet is closed.
  */
@@ -205,8 +205,8 @@ export const AddHoursSheet = forwardRef<AddHoursSheetHandle, AddHoursSheetProps>
     const footer = (
       <Animated.View style={footerStyle} pointerEvents={sent ? 'none' : 'auto'}>
         <Button
-          label={`${t('submit')} →`}
-          accessibilityLabel={`${t('submit')}`}
+          label={`${t('submit')}`}
+          trailingIcon={ArrowRightIcon}
           onPress={handleSubmit(onSubmit)}
           loading={isLoggingHours}
           disabled={isLoggingHours || !!sent}

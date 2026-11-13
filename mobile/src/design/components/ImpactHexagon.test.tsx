@@ -1,5 +1,14 @@
 import { act, renderHook } from '@testing-library/react-native';
-import { impactHexagonLabel, liquidY, useCountUp } from './ImpactHexagon';
+import {
+  HEXAGON_TONES,
+  impactHexagonLabel,
+  liquidY,
+  STRIPE_BAR,
+  STRIPE_PITCH,
+  stripes,
+  useCountUp,
+} from './ImpactHexagon';
+import { palette } from '../tokens';
 
 // size 108 on Acasă: H = 119, R = 52, corners at y 7.5 and 111.5, headroom 21
 const TOP = 7.5;
@@ -64,5 +73,39 @@ describe('useCountUp', () => {
   it('shows the number at once with Reduce Motion', async () => {
     const hook = await renderHook(() => useCountUp(42, true, 1));
     expect(hook.result.current).toBe(42);
+  });
+});
+
+describe('ImpactHexagon pending stripes', () => {
+  it('Ore (onLight) draws navy stripes on white, like the prototype Ore card', () => {
+    expect(HEXAGON_TONES.onLight.stripe).toBe('#01344F');
+    expect(HEXAGON_TONES.onLight.stripeBg).toBe('#FFFFFF');
+    expect(HEXAGON_TONES.onLight.empty).toBe('#EAE5D8');
+    expect(HEXAGON_TONES.onLight.outline).toBe(palette.navy);
+  });
+
+  it('Acasă (onNavy) keeps yellow stripes on #012A40 over a #001A29 hexagon', () => {
+    expect(HEXAGON_TONES.onNavy.stripe).toBe('#FFD209');
+    expect(HEXAGON_TONES.onNavy.stripeBg).toBe('#012A40');
+    expect(HEXAGON_TONES.onNavy.empty).toBe('#001A29');
+  });
+
+  it('uses the yellow liquid on both tones', () => {
+    expect(HEXAGON_TONES.onLight.liquid).toBe(palette.yellow);
+    expect(HEXAGON_TONES.onNavy.liquid).toBe(palette.yellow);
+  });
+
+  it('draws 4pt bars every 8pt across, as „/” stripes covering the whole band', () => {
+    expect(STRIPE_PITCH).toBeCloseTo(8 * Math.SQRT2);
+    expect(STRIPE_BAR).toBeCloseTo(STRIPE_PITCH / 2);
+    const d = stripes(100, 50);
+    const bars = d.split('M').filter(Boolean);
+    // enough bars to cover x from -height to width
+    expect(bars.length).toBe(Math.ceil(150 / STRIPE_PITCH));
+    // first bar: top edge 0 → bar at y 0, bottom edge shifted left by the height („/”)
+    const nums = bars[0].match(/-?\d+(\.\d+)?/g)!.map(Number);
+    expect(nums.slice(0, 2)).toEqual([0, 0]);
+    expect(nums[4]).toBeCloseTo(STRIPE_BAR - 50, 1);
+    expect(nums[5]).toBe(50);
   });
 });

@@ -40,8 +40,31 @@ const SLOW_AMP = 4;
 // both waves are back where they started after this long, so the clock can wrap without a jump
 const CLOCK_WRAP = 46800;
 const COUNT_MS = 900;
-// the dark half of the „în așteptare” stripes on the navy card (prototype pattern #012A40)
-const STRIPE_BG_ON_NAVY = '#012A40';
+
+/**
+ * Colours per tone, from the prototype's makeHex(): on the navy Acasă card the pending stripes are
+ * yellow on #012A40 over a #001A29 hexagon; on Ore (paper / white) they are navy on white over a
+ * #EAE5D8 hexagon with a navy outline. The approved liquid is yellow on both.
+ */
+export const HEXAGON_TONES: Record<
+  ImpactHexagonTone,
+  { empty: string; stripeBg: string; stripe: string; liquid: string; outline: string }
+> = {
+  onNavy: {
+    empty: palette.navy3,
+    stripeBg: palette.navy2,
+    stripe: palette.yellow,
+    liquid: palette.yellow,
+    outline: 'rgba(255,210,9,0.55)',
+  },
+  onLight: {
+    empty: '#EAE5D8',
+    stripeBg: palette.white,
+    stripe: palette.navy,
+    liquid: palette.yellow,
+    outline: palette.navy,
+  },
+};
 
 /** Romanian count: „1 oră”, „5 ore”, „42 de ore” (20+ and round hundreds take „de”). */
 const roHours = (n: number) => {
@@ -99,18 +122,21 @@ const waveLine = (width: number, period: number, amp: number) => {
 const waveFill = (width: number, height: number, period: number, amp: number) =>
   `${waveLine(width, period, amp)}L${width} ${height}L0 ${height}Z`;
 
+/** Stripe geometry of the prototype's pattern: 8pt tile with a 4pt bar, rotated 45°. */
+export const STRIPE_PITCH = 8 * Math.SQRT2;
+export const STRIPE_BAR = 4 * Math.SQRT2;
+
 /**
- * The prototype's stripe pattern (8pt tile with a 4pt bar, rotated 45°): bars 4pt wide every 8pt
- * measured across the stripes, so 4√2 wide every 8√2 along a horizontal line.
+ * The prototype's stripe pattern: bars 4pt wide every 8pt measured across the stripes, so 4√2
+ * wide every 8√2 along a horizontal line. `rotate(45)` turns the tile's vertical bars into „/”
+ * stripes (going down to the left), the same direction as the legend's StripedSquare.
  */
-const stripes = (width: number, height: number) => {
-  const pitch = 8 * Math.SQRT2;
-  const bar = 4 * Math.SQRT2;
+export const stripes = (width: number, height: number) => {
   let d = '';
-  for (let x = -height; x < width; x += pitch) {
-    d += `M${x.toFixed(2)} 0L${(x + bar).toFixed(2)} 0L${(x + bar + height).toFixed(2)} ${height}L${(
-      x + height
-    ).toFixed(2)} ${height}Z`;
+  for (let x = 0; x < width + height; x += STRIPE_PITCH) {
+    d += `M${x.toFixed(2)} 0L${(x + STRIPE_BAR).toFixed(2)} 0L${(x + STRIPE_BAR - height).toFixed(
+      2,
+    )} ${height}L${(x - height).toFixed(2)} ${height}Z`;
   }
   return d;
 };
@@ -168,7 +194,7 @@ export const ImpactHexagon = ({
 }: ImpactHexagonProps) => {
   const reduced = useReducedMotion();
   const focused = useScreenFocused();
-  const onNavy = tone === 'onNavy';
+  const colors = HEXAGON_TONES[tone];
 
   const W = size;
   const H = Math.round(size * 1.1);
@@ -245,33 +271,22 @@ export const ImpactHexagon = ({
       style={{ width: W, height: H }}
     >
       <Canvas style={{ width: W, height: H }} pointerEvents="none">
-        <Path path={paths.hex} color={onNavy ? palette.navy3 : '#EAE5D8'} />
+        <Path path={paths.hex} color={colors.empty} />
         <Group clip={paths.hex}>
           {/* no band without pending hours: its crest would show in the troughs of the liquid */}
           {pendingShare > 0 && (
             <Group transform={pendingTransform}>
               <Group clip={paths.pending}>
-                <Rect
-                  x={0}
-                  y={0}
-                  width={bandWidth}
-                  height={H * 2}
-                  color={onNavy ? STRIPE_BG_ON_NAVY : palette.white}
-                />
-                <Path path={paths.stripes} color={onNavy ? palette.yellow : palette.navy} />
+                <Rect x={0} y={0} width={bandWidth} height={H * 2} color={colors.stripeBg} />
+                <Path path={paths.stripes} color={colors.stripe} />
               </Group>
             </Group>
           )}
           <Group transform={approvedTransform}>
-            <Path path={paths.approved} color={palette.yellow} />
+            <Path path={paths.approved} color={colors.liquid} />
           </Group>
         </Group>
-        <Path
-          path={paths.hex}
-          color={onNavy ? 'rgba(255,210,9,0.55)' : palette.navy}
-          style="stroke"
-          strokeWidth={3}
-        />
+        <Path path={paths.hex} color={colors.outline} style="stroke" strokeWidth={3} />
       </Canvas>
     </View>
   );
