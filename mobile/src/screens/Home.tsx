@@ -358,11 +358,8 @@ const Home = ({ navigation }: any) => {
                         />
                       }
                       title={item.title}
-                      subtitle={[item.organization?.name, item.description]
-                        .filter(Boolean)
-                        .join(' · ')}
-                      titleLines={2}
-                      subtitleLines={2}
+                      subtitle={item.organization?.name}
+                      preview={item.description}
                       onPress={() => navigation.navigate('announcements')}
                       divider={index < all.length - 1}
                       testID={`home-anouncement-${item.id}`}

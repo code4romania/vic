@@ -138,6 +138,22 @@ describe('Login, code step', () => {
 });
 
 describe('Login, email step', () => {
+  it.each([
+    [new Error('Network Error'), 'Eroare la autentificare, vă rugăm încercați din nou'],
+    [
+      { response: { status: 429, data: {} } },
+      'Prea multe cereri. Încearcă din nou peste un minut.',
+    ],
+  ])('keeps a failed send visible at the email field', async (error, message) => {
+    mockAuth.requestLoginCode.mockRejectedValueOnce(error);
+    await renderStack('login');
+    await fireEvent.changeText(await screen.findByTestId('login-email-input'), 'ana@example.ro');
+    await fireEvent.press(screen.getByTestId('login-send'));
+    expect(await screen.findByText(message)).toBeTruthy();
+    expect(screen.queryByTestId('button-spinner')).toBeNull();
+    expect(screen.queryByTestId('login-code')).toBeNull();
+  });
+
   it('validates the address before sending a code', async () => {
     await renderStack('login');
     await fireEvent.changeText(await screen.findByTestId('login-email-input'), 'nu-e-email');
@@ -169,6 +185,20 @@ describe('Login, email step', () => {
 });
 
 describe('Landing', () => {
+  it('keeps a failed send visible in the email sheet and allows retrying', async () => {
+    await AsyncStorage.setItem('vic.onboarding.seen', '1');
+    mockAuth.requestLoginCode.mockRejectedValueOnce(new Error('Network Error'));
+    await renderStack('landing');
+    await fireEvent.changeText(await screen.findByTestId('email-input'), 'ana@example.ro');
+    await fireEvent.press(screen.getByTestId('email-send'));
+    expect(
+      await screen.findByText('Eroare la autentificare, vă rugăm încercați din nou'),
+    ).toBeTruthy();
+    expect(screen.queryByTestId('button-spinner')).toBeNull();
+    await fireEvent.press(screen.getByTestId('email-send'));
+    expect(await screen.findByText('Verifică-ți emailul')).toBeTruthy();
+  });
+
   it('opens the intro on the first start only', async () => {
     await renderStack('landing');
     expect(await screen.findByTestId('onboarding')).toBeTruthy();

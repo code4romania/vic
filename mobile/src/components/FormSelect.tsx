@@ -1,14 +1,10 @@
 import React, { useMemo, useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import {
-  BottomSheetFlatList,
-  BottomSheetModal,
-  BottomSheetScrollView,
-  BottomSheetTextInput,
-} from '@gorhom/bottom-sheet';
+import { Keyboard, StyleSheet, View } from 'react-native';
+import { BottomSheetFlatList, BottomSheetModal, BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { useTranslation } from 'react-i18next';
 import { Control, Controller } from 'react-hook-form';
 import Svg, { Path } from 'react-native-svg';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors } from '../common/theme/tokens';
 import { PressableScale, Sheet, VText, VTextField } from './ui';
 import { INLINE_MAX, Select } from '../design/components/Select';
@@ -108,6 +104,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
   disabled,
 }: FormSelectProps) => {
   const { t } = useTranslation('general');
+  const insets = useSafeAreaInsets();
   const sheet = useRef<BottomSheetModal>(null);
   const long = options.length > LONG_LIST;
   const [query, setQuery] = useState('');
@@ -144,6 +141,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
                 title={label}
                 testID={`select-${name}-sheet`}
                 fullHeight={long}
+                scrollable={!long}
                 closeLabel={`${t('close')}`}
                 onDismiss={() => setQuery('')}
               >
@@ -166,7 +164,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
                       keyExtractor={(option: ISelectItem) => `${option.key}`}
                       keyboardShouldPersistTaps="handled"
                       keyboardDismissMode="on-drag"
-                      contentContainerStyle={styles.list}
+                      contentContainerStyle={[styles.list, { paddingBottom: 24 + insets.bottom }]}
                       initialNumToRender={20}
                       ListEmptyComponent={
                         <VText variant="sub" style={styles.empty}>
@@ -178,6 +176,9 @@ const FormSelect: React.FC<FormSelectProps> = ({
                           option={option}
                           active={option.key === value}
                           onPress={() => {
+                            // Blur the search before closing/unmounting it, so focus cannot fall
+                            // back to an input in the underlying form.
+                            Keyboard.dismiss();
                             onChange(option.key);
                             sheet.current?.dismiss();
                           }}
@@ -187,20 +188,21 @@ const FormSelect: React.FC<FormSelectProps> = ({
                     />
                   </>
                 ) : (
-                  <BottomSheetScrollView style={styles.options}>
+                  <View>
                     {options.map((option) => (
                       <Option
                         key={option.key}
                         option={option}
                         active={option.key === value}
                         onPress={() => {
+                          Keyboard.dismiss();
                           onChange(option.key);
                           sheet.current?.dismiss();
                         }}
                         testID={`select-${name}-option-${option.key}`}
                       />
                     ))}
-                  </BottomSheetScrollView>
+                  </View>
                 )}
               </Sheet>
             ) : null
@@ -215,7 +217,6 @@ export default FormSelect;
 
 const styles = StyleSheet.create({
   text: { flex: 1 },
-  options: { maxHeight: 420 },
   search: { paddingHorizontal: 20 },
   list: { paddingHorizontal: 20, paddingBottom: 24 },
   empty: { paddingVertical: 24, textAlign: 'center' },

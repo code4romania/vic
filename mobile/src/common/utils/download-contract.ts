@@ -32,6 +32,10 @@ export const downloadContract = async (contract: IContractListItem) => {
   const fileName = sanitizeFileName(contract.contractFileName);
   const localPath = `${FileSystem.documentDirectory}${fileName}`;
   const file = await FileSystem.downloadAsync(contract.path, localPath);
+  if (file.status < 200 || file.status >= 300) {
+    await FileSystem.deleteAsync(file.uri, { idempotent: true }).catch(() => undefined);
+    throw new Error(`Contract download failed (${file.status})`);
+  }
   const extension = fileName.split('.').pop() as string;
   await save(file.uri, fileName, MIME_TYPES[extension] as string);
 };

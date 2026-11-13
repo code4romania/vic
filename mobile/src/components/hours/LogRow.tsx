@@ -145,6 +145,8 @@ export const LogRow = ({
             variant="title"
             style={styles.badgeText}
             numberOfLines={1}
+            adjustsFontSizeToFit
+            minimumFontScale={0.6}
             maxFontSizeMultiplier={fontScaleCap.display}
           >
             {`${log.hours}h`}

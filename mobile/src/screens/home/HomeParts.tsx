@@ -2,7 +2,7 @@
 // organization row, the navy impact card with the liquid hexagon, the yellow to-do cards, the
 // „Urmează” carousel and the „Luna aceasta” bento.
 import React from 'react';
-import { Pressable, ScrollView, Text, View, useWindowDimensions } from 'react-native';
+import { Platform, Pressable, ScrollView, Text, View, useWindowDimensions } from 'react-native';
 import Animated, {
   Extrapolation,
   interpolate,
@@ -76,7 +76,9 @@ export const CompactBar = ({ title, scrollY }: { title: string; scrollY: SharedV
       style={[styles.compact, { paddingTop: insets.top, height: insets.top + 44 }, barStyle]}
       testID="home-compact-bar"
     >
-      <BlurView intensity={glass.blurIntensity} tint="light" style={StyleSheet.absoluteFill} />
+      {Platform.OS === 'ios' && (
+        <BlurView intensity={glass.blurIntensity} tint="light" style={StyleSheet.absoluteFill} />
+      )}
       <View style={[StyleSheet.absoluteFill, styles.compactTint]} />
       <Animated.View style={titleStyle}>
         <AppText variant="headline" style={styles.compactTitle} numberOfLines={1}>
@@ -99,12 +101,7 @@ export const LargeTitle = ({ title, scrollY }: { title: string; scrollY: SharedV
   });
   return (
     <Animated.View style={[styles.largeTitle, style]}>
-      <AppText
-        variant="largeTitle"
-        accessibilityRole="header"
-        numberOfLines={2}
-        style={styles.largeTitleText}
-      >
+      <AppText variant="largeTitle" accessibilityRole="header" style={styles.largeTitleText}>
         {title}
       </AppText>
     </Animated.View>
@@ -152,7 +149,7 @@ export const OrgRow = ({
               {t('org.overline')}
             </AppText>
             <View style={styles.orgNameRow}>
-              <AppText variant="bodyStrong" style={styles.orgName} numberOfLines={2}>
+              <AppText variant="bodyStrong" style={styles.orgName}>
                 {name}
               </AppText>
               {!!onSwitch && (
@@ -254,7 +251,7 @@ export const ImpactCard = ({
           {`${shown}`}
           {/* the small „h” (36pt) inherits the line of the number; AppText trims the line */}
           <Text maxFontSizeMultiplier={fontScaleCap.display} style={styles.numUnit}>
-            h
+            {'\u2009h'}
           </Text>
         </AppText>
         <AppText style={styles.impactLabel}>
@@ -319,7 +316,7 @@ export const TodoCard = ({
     <View style={styles.todoText}>
       <AppText style={styles.todoTitle}>{title}</AppText>
       {!!subtitle && (
-        <AppText variant="caption" color="rgba(1,52,79,0.75)" numberOfLines={2}>
+        <AppText variant="caption" color="rgba(1,52,79,0.75)">
           {subtitle}
         </AppText>
       )}
@@ -579,7 +576,9 @@ const styles = StyleSheet.create((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  compactTint: { backgroundColor: lightColors.topBarTint },
+  compactTint: {
+    backgroundColor: Platform.OS === 'ios' ? lightColors.topBarTint : lightColors.androidTopBarTint,
+  },
   compactTitle: {
     fontFamily: theme.fontFamily.display,
     fontSize: 17,
@@ -597,7 +596,7 @@ const styles = StyleSheet.create((theme) => ({
   },
   orgOuter: { flex: 1 },
   org: { flexDirection: 'row', alignItems: 'center', gap: 10, minHeight: theme.hit.min },
-  orgText: { flex: 1 },
+  orgText: { flex: 1, minWidth: 0 },
   orgNameRow: { flexDirection: 'row', alignItems: 'center', gap: 2 },
   orgName: { fontFamily: theme.fontFamily.textHeavy, flexShrink: 1 },
   bell: {
@@ -665,7 +664,7 @@ const styles = StyleSheet.create((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  todoText: { flex: 1, gap: 1 },
+  todoText: { flex: 1, minWidth: 0, gap: 1 },
   todoTitle: {
     fontFamily: theme.fontFamily.textHeavy,
     fontSize: 15.5,

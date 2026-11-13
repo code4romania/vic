@@ -21,9 +21,7 @@ export interface HoursSummaryProps {
   approved: number;
   pending: number;
   rejected: number;
-  /** change it to empty and refill the hexagon (e.g. after sending new hours) */
-  refillKey?: number;
-  /** change it to count the approved hours again from 0 (each focus, after sending) */
+  /** change it to count the approved hours again from 0 (each time the screen comes into view) */
   replay?: unknown;
 }
 
@@ -31,16 +29,10 @@ export interface HoursSummaryProps {
  * The Ore header card (`.hrsHead`): the impact hexagon (approved fill + pending stripes) beside a
  * legend of the hours per status in Bricolage 30.
  */
-export const HoursSummary = ({
-  approved,
-  pending,
-  rejected,
-  refillKey = 0,
-  replay,
-}: HoursSummaryProps) => {
+export const HoursSummary = ({ approved, pending, rejected, replay }: HoursSummaryProps) => {
   const { t } = useTranslation('activity_logs');
   const reduced = useReducedMotion();
-  // prototype `counts()`: approved counts from 0 with the refill, pending from the number shown
+  // prototype `counts()`: approved counts from 0 on each focus, pending from the number shown
   const approvedShown = useCountTo(approved || 0, { reduced, replay });
   const pendingShown = useCountTo(pending || 0, { reduced, fromZero: false });
   const items: { key: LegendKey; value: number; shown: number }[] = [
@@ -52,7 +44,6 @@ export const HoursSummary = ({
     <View style={styles.card} testID="hours-summary">
       <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
         <ImpactHexagon
-          key={refillKey}
           approved={approved || 0}
           pending={pending || 0}
           rejected={rejected || 0}

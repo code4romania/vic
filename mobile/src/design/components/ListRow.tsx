@@ -2,7 +2,7 @@
 // leading tile (38pt, radius 13, paper) or a hexagon avatar, a Manrope 700 15.5 title, an optional
 // subtitle and a trailing chevron / chip / custom node. Inside a Group a hairline separates rows.
 import React, { ReactNode } from 'react';
-import { Pressable, StyleProp, Text, View, ViewStyle } from 'react-native';
+import { Pressable, StyleProp, Text, useWindowDimensions, View, ViewStyle } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { StyleSheet } from 'react-native-unistyles';
 import { fontScaleCap, palette } from '../tokens';
@@ -71,6 +71,8 @@ export const HexAvatar = ({ name, size = 'md', tone = 'navy', testID }: HexAvata
 export interface ListRowProps {
   title: string;
   subtitle?: string;
+  /** Free-text preview; only this part may be clamped. */
+  preview?: string;
   /** a lucide icon drawn in the 38pt paper tile */
   icon?: LucideIcon;
   /** a hexagon avatar with the initials of this name */
@@ -103,6 +105,7 @@ export const RowChevron = ({ color = palette.navy }: { color?: string }) => (
 export const ListRow = ({
   title,
   subtitle,
+  preview,
   icon: Icon,
   avatar,
   leading,
@@ -119,6 +122,11 @@ export const ListRow = ({
   style,
   testID,
 }: ListRowProps) => {
+  const { fontScale } = useWindowDimensions();
+  const stackTail =
+    fontScale >= 1.2 &&
+    trailing != null &&
+    !(React.isValidElement(trailing) && trailing.type === RowChevron);
   const lead =
     leading ??
     (Icon ? (
@@ -157,8 +165,14 @@ export const ListRow = ({
             {subtitle}
           </Text>
         )}
+        {!!preview && (
+          <Text numberOfLines={2} maxFontSizeMultiplier={fontScaleCap.text} style={styles.subtitle}>
+            {preview}
+          </Text>
+        )}
+        {stackTail && tail ? <View style={styles.stackedTail}>{tail}</View> : null}
       </View>
-      {tail}
+      {!stackTail && tail}
     </>
   );
 
@@ -215,6 +229,7 @@ const styles = StyleSheet.create((theme) => ({
   },
   tileDanger: { backgroundColor: 'rgba(200,50,31,0.1)' },
   text: { flex: 1, minWidth: 0, gap: 2 },
+  stackedTail: { alignSelf: 'flex-start', marginTop: 6 },
   title: {
     fontFamily: theme.fontFamily.textBold,
     fontSize: 15.5,

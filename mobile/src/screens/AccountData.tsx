@@ -24,6 +24,7 @@ import { Avatar, VButton } from '../components/ui';
 import { spacing } from '../common/theme/tokens';
 import { CONSTANTS, REGEX } from '../common/constants/constants';
 import { renderPhoneNumberPrefix } from '../components/InputPrefixes';
+import { normalizePhoneNumber } from '../common/utils/phone';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { usePaddingTop } from '../hooks/usePaddingTop';
 import { useConfirmDiscard } from '../hooks/useConfirmDiscard';
@@ -252,6 +253,8 @@ const AccountData = ({ navigation }: any) => {
             error={errors.phone}
             disabled={isUpdatingProfile}
             keyboardType="phone-pad"
+            maxLength={10}
+            normalizeText={normalizePhoneNumber}
             accessoryLeft={renderPhoneNumberPrefix}
           />
           <CountySelect
