@@ -1,24 +1,14 @@
 // Pieces of Acasă „Îndrăzneț” (handbook prototype, screen „Acasă”): the compact glass bar, the
 // organization row, the navy impact card with the liquid hexagon, the yellow to-do cards, the
 // „Urmează” carousel and the „Luna aceasta” bento.
-import React, { ReactNode } from 'react';
-import {
-  AccessibilityProps,
-  Pressable,
-  ScrollView,
-  StyleProp,
-  Text,
-  View,
-  ViewStyle,
-  useWindowDimensions,
-} from 'react-native';
+import React from 'react';
+import { Pressable, ScrollView, Text, View, useWindowDimensions } from 'react-native';
 import Animated, {
   Extrapolation,
   interpolate,
   SharedValue,
   useAnimatedStyle,
   useReducedMotion,
-  useSharedValue,
 } from 'react-native-reanimated';
 import { BlurView } from 'expo-blur';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -31,7 +21,6 @@ import { EventRegistrationStatus } from '../../common/enums/event-registration-s
 import { IEventListItem } from '../../common/interfaces/event-list-item.interface';
 import { formatEventWhen, shortMonth } from '../../common/utils/event-format';
 import { fontScaleCap, glass, lightColors, palette, space, StatusKind } from '../../design/tokens';
-import { springTo } from '../../design/motion';
 import {
   ArrowRightIcon,
   BellIcon,
@@ -45,71 +34,10 @@ import {
   PinIcon,
 } from '../../design/icons';
 import { AppText } from '../../design/components/Text';
+import { PressableScale } from '../../components/ui/PressableScale';
 import { StatusChip } from '../../design/components/Chip';
 import { HexAvatar } from '../../design/components/ListRow';
 import { ImpactHexagon, useCountUp } from '../../design/components/ImpactHexagon';
-
-// ---------------------------------------------------------------------------------------------
-// Bricolage Grotesque metrics (ascent 0.93, descent 0.27 of the size). When a line is shorter than
-// the font (1.2 × size), iOS and Android both cut the difference from the top: the baseline sits
-// `descent` above the bottom of the line. CSS centres the glyphs instead, so the prototype's tight
-// `line-height: .86` lines are rebuilt here with a taller line and a negative bottom margin.
-const DESCENT = 0.27;
-
-/** Display text scale, as AppText caps it (display and large titles stop at 1.15×). */
-const useDisplayScale = () => Math.min(useWindowDimensions().fontScale || 1, fontScaleCap.display);
-
-/**
- * Line height and bottom margin that put the glyphs where CSS puts them for `line-height: lh`:
- * digits start `(ascent - capHeight) - (1.2 - lh) / 2` below the top of the line and the line
- * ends `descent - (1.2 - lh) / 2` below the baseline.
- */
-const tightLine = (size: number, lh: number, scale: number) => {
-  const half = (1.2 - lh) / 2;
-  const below = (DESCENT - half) * size; // CSS: from the baseline to the bottom of the line
-  const height = lh * size;
-  const lineHeight = height - below + DESCENT * size;
-  return { lineHeight, marginBottom: -(lineHeight - height) * scale };
-};
-
-// ---------------------------------------------------------------------------------------------
-// Press: scale .965 with the snappy spring (handbook `.press:active`)
-
-interface PressProps extends AccessibilityProps {
-  onPress?: () => void;
-  style?: StyleProp<ViewStyle>;
-  /** style of the touch area around the scaled content (e.g. flex: 1 in a row) */
-  outerStyle?: StyleProp<ViewStyle>;
-  children: ReactNode;
-  testID?: string;
-  disabled?: boolean;
-  hitSlop?: number;
-}
-
-export const Press = ({ onPress, style, outerStyle, children, disabled, ...props }: PressProps) => {
-  const reduced = useReducedMotion();
-  const pressed = useSharedValue(0);
-  const scale = useAnimatedStyle(() => ({
-    transform: [{ scale: reduced ? 1 : interpolate(pressed.value, [0, 1], [1, 0.965]) }],
-  }));
-  return (
-    <Pressable
-      accessibilityRole="button"
-      {...props}
-      disabled={disabled}
-      onPress={onPress}
-      style={outerStyle}
-      onPressIn={() => {
-        pressed.value = springTo(1, 'snappy', reduced);
-      }}
-      onPressOut={() => {
-        pressed.value = springTo(0, 'snappy', reduced);
-      }}
-    >
-      <Animated.View style={[style, scale]}>{children}</Animated.View>
-    </Pressable>
-  );
-};
 
 // ---------------------------------------------------------------------------------------------
 // Large title + compact glass bar. The large title scrolls with the content (as in the
@@ -159,7 +87,6 @@ export const CompactBar = ({ title, scrollY }: { title: string; scrollY: SharedV
 };
 
 export const LargeTitle = ({ title, scrollY }: { title: string; scrollY: SharedValue<number> }) => {
-  const line = tightLine(44, 0.96, useDisplayScale());
   const style = useAnimatedStyle(() => {
     const p = interpolate(scrollY.value, [10, 80], [0, 1], Extrapolation.CLAMP);
     return {
@@ -175,7 +102,7 @@ export const LargeTitle = ({ title, scrollY }: { title: string; scrollY: SharedV
         variant="largeTitle"
         accessibilityRole="header"
         numberOfLines={2}
-        style={[styles.largeTitleText, line]}
+        style={styles.largeTitleText}
       >
         {title}
       </AppText>
@@ -200,11 +127,10 @@ export const OrgRow = ({
   return (
     <View style={styles.orgRow}>
       {name ? (
-        <Press
+        <PressableScale
           onPress={onSwitch}
           disabled={!onSwitch}
-          outerStyle={styles.orgOuter}
-          style={styles.org}
+          style={[styles.orgOuter, styles.org]}
           accessibilityRole={onSwitch ? 'button' : 'text'}
           accessibilityLabel={`${t('org.overline')}: ${name}`}
           accessibilityHint={onSwitch ? `${t('org.switch')}` : undefined}
@@ -224,18 +150,18 @@ export const OrgRow = ({
               )}
             </View>
           </View>
-        </Press>
+        </PressableScale>
       ) : (
         <View style={styles.orgOuter} />
       )}
-      <Press
+      <PressableScale
         onPress={onNews}
         style={styles.bell}
         accessibilityLabel={`${t('news')}`}
         testID="home-news"
       >
         <BellIcon size={22} color={palette.navy} strokeWidth={ICON_STROKE} />
-      </Press>
+      </PressableScale>
     </View>
   );
 };
@@ -268,7 +194,6 @@ export const ImpactCard = ({
   const { t } = useTranslation('home');
   const reduced = useReducedMotion();
   const shown = useCountUp(approved, reduced, replay);
-  const numLine = tightLine(76, 0.86, useDisplayScale());
   const approvedA11y =
     approved === 1
       ? t('impact.a11y_approved_singular')
@@ -287,7 +212,7 @@ export const ImpactCard = ({
     .filter(Boolean)
     .join(', ');
   return (
-    <Press
+    <PressableScale
       onPress={onPress}
       style={styles.impact}
       accessibilityLabel={`${label}. ${t('impact.a11y_open')}`}
@@ -312,11 +237,11 @@ export const ImpactCard = ({
           color={palette.yellow}
           numberOfLines={1}
           adjustsFontSizeToFit
-          style={[styles.num, numLine]}
+          style={styles.num}
           testID="home-impact-count"
         >
           {`${shown}`}
-          {/* the small „h” (36pt) inherits the line of the number */}
+          {/* the small „h” (36pt) inherits the line of the number; AppText trims the line */}
           <Text maxFontSizeMultiplier={fontScaleCap.display} style={styles.numUnit}>
             h
           </Text>
@@ -346,7 +271,7 @@ export const ImpactCard = ({
           </View>
         )}
       </View>
-    </Press>
+    </PressableScale>
   );
 };
 
@@ -371,7 +296,7 @@ export const TodoCard = ({
   onPress: () => void;
   testID?: string;
 }) => (
-  <Press
+  <PressableScale
     onPress={onPress}
     style={styles.todo}
     accessibilityLabel={[title, subtitle].filter(Boolean).join(', ')}
@@ -391,7 +316,7 @@ export const TodoCard = ({
     <View style={styles.go}>
       <ArrowRightIcon size={20} color={palette.yellow} strokeWidth={ICON_STROKE} />
     </View>
-  </Press>
+  </PressableScale>
 );
 
 // ---------------------------------------------------------------------------------------------
@@ -465,11 +390,10 @@ const EventSlide = ({
       : { kind: 'ok', label: `${t('card.going')}` };
   const audience = event.isPublic ? `${t('card.public')}` : `${t('card.members')}`;
   return (
-    <Press
+    <PressableScale
       onPress={() => onPress(event.id)}
       // every card as tall as the tallest one (the prototype's flex row stretches them)
-      outerStyle={{ width }}
-      style={styles.ecard}
+      style={[styles.ecard, { width }]}
       accessibilityLabel={[event.name, when, event.location, event.organizationName, status?.label]
         .filter(Boolean)
         .join(', ')}
@@ -506,7 +430,7 @@ const EventSlide = ({
           {status && <StatusChip kind={status.kind} label={status.label} />}
         </View>
       </View>
-    </Press>
+    </PressableScale>
   );
 };
 
@@ -616,7 +540,7 @@ export const MonthBento = ({ tiles }: { tiles: BentoTile[] }) => {
             {content}
           </View>
         ) : (
-          <Press
+          <PressableScale
             key={tile.key}
             onPress={tile.onPress}
             style={look}
@@ -624,7 +548,7 @@ export const MonthBento = ({ tiles }: { tiles: BentoTile[] }) => {
             testID={`home-stat-${tile.key}`}
           >
             {content}
-          </Press>
+          </PressableScale>
         );
       })}
     </View>
@@ -786,12 +710,11 @@ const styles = StyleSheet.create((theme) => ({
     letterSpacing: 0.74,
     color: theme.colors.navy,
   },
-  // prototype `.dateb b`: 30pt, line-height 1 (see tightLine)
+  // prototype `.dateb b`: 30pt, line-height 1 (AppText trims the Bricolage line)
   datebDay: {
     fontFamily: theme.fontFamily.display,
     fontSize: 30,
-    lineHeight: 33,
-    marginBottom: -3,
+    lineHeight: 30,
     includeFontPadding: false,
     letterSpacing: -1.2,
     color: theme.colors.navy,
@@ -817,12 +740,11 @@ const styles = StyleSheet.create((theme) => ({
     borderWidth: 2,
     borderColor: 'rgba(1,52,79,0.18)',
   },
-  // prototype `.tile .n`: 40pt, line-height .9 (see tightLine)
+  // prototype `.tile .n`: 40pt, line-height .9 (AppText trims the Bricolage line)
   tileN: {
     fontFamily: theme.fontFamily.display,
     fontSize: 40,
-    lineHeight: 42,
-    marginBottom: -6,
+    lineHeight: 36,
     includeFontPadding: false,
     letterSpacing: -1.6,
     fontVariant: ['tabular-nums'],
