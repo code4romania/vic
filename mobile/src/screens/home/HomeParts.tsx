@@ -7,6 +7,7 @@ import {
   Pressable,
   ScrollView,
   StyleProp,
+  Text,
   View,
   ViewStyle,
   useWindowDimensions,
@@ -29,7 +30,7 @@ import i18n from '../../common/config/i18n';
 import { EventRegistrationStatus } from '../../common/enums/event-registration-status.enum';
 import { IEventListItem } from '../../common/interfaces/event-list-item.interface';
 import { formatEventWhen, shortMonth } from '../../common/utils/event-format';
-import { glass, lightColors, palette, space, StatusKind } from '../../design/tokens';
+import { fontScaleCap, glass, lightColors, palette, space, StatusKind } from '../../design/tokens';
 import { springTo } from '../../design/motion';
 import {
   ArrowRightIcon,
@@ -47,6 +48,29 @@ import { AppText } from '../../design/components/Text';
 import { StatusChip } from '../../design/components/Chip';
 import { HexAvatar } from '../../design/components/ListRow';
 import { ImpactHexagon, useCountUp } from '../../design/components/ImpactHexagon';
+
+// ---------------------------------------------------------------------------------------------
+// Bricolage Grotesque metrics (ascent 0.93, descent 0.27 of the size). When a line is shorter than
+// the font (1.2 × size), iOS and Android both cut the difference from the top: the baseline sits
+// `descent` above the bottom of the line. CSS centres the glyphs instead, so the prototype's tight
+// `line-height: .86` lines are rebuilt here with a taller line and a negative bottom margin.
+const DESCENT = 0.27;
+
+/** Display text scale, as AppText caps it (display and large titles stop at 1.15×). */
+const useDisplayScale = () => Math.min(useWindowDimensions().fontScale || 1, fontScaleCap.display);
+
+/**
+ * Line height and bottom margin that put the glyphs where CSS puts them for `line-height: lh`:
+ * digits start `(ascent - capHeight) - (1.2 - lh) / 2` below the top of the line and the line
+ * ends `descent - (1.2 - lh) / 2` below the baseline.
+ */
+const tightLine = (size: number, lh: number, scale: number) => {
+  const half = (1.2 - lh) / 2;
+  const below = (DESCENT - half) * size; // CSS: from the baseline to the bottom of the line
+  const height = lh * size;
+  const lineHeight = height - below + DESCENT * size;
+  return { lineHeight, marginBottom: -(lineHeight - height) * scale };
+};
 
 // ---------------------------------------------------------------------------------------------
 // Press: scale .965 with the snappy spring (handbook `.press:active`)
@@ -135,6 +159,7 @@ export const CompactBar = ({ title, scrollY }: { title: string; scrollY: SharedV
 };
 
 export const LargeTitle = ({ title, scrollY }: { title: string; scrollY: SharedValue<number> }) => {
+  const line = tightLine(44, 0.96, useDisplayScale());
   const style = useAnimatedStyle(() => {
     const p = interpolate(scrollY.value, [10, 80], [0, 1], Extrapolation.CLAMP);
     return {
@@ -146,7 +171,12 @@ export const LargeTitle = ({ title, scrollY }: { title: string; scrollY: SharedV
   });
   return (
     <Animated.View style={[styles.largeTitle, style]}>
-      <AppText variant="largeTitle" accessibilityRole="header" numberOfLines={2}>
+      <AppText
+        variant="largeTitle"
+        accessibilityRole="header"
+        numberOfLines={2}
+        style={[styles.largeTitleText, line]}
+      >
         {title}
       </AppText>
     </Animated.View>
@@ -238,6 +268,7 @@ export const ImpactCard = ({
   const { t } = useTranslation('home');
   const reduced = useReducedMotion();
   const shown = useCountUp(approved, reduced, replay);
+  const numLine = tightLine(76, 0.86, useDisplayScale());
   const approvedA11y =
     approved === 1
       ? t('impact.a11y_approved_singular')
@@ -276,21 +307,20 @@ export const ImpactCard = ({
         <AppText variant="overline" color={palette.yellow}>
           {t('impact.overline')}
         </AppText>
-        <View style={styles.numRow}>
-          <AppText
-            variant="display"
-            color={palette.yellow}
-            numberOfLines={1}
-            adjustsFontSizeToFit
-            style={styles.num}
-            testID="home-impact-count"
-          >
-            {`${shown}`}
-            <AppText variant="display" color={palette.yellow} style={styles.numUnit}>
-              h
-            </AppText>
-          </AppText>
-        </View>
+        <AppText
+          variant="display"
+          color={palette.yellow}
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          style={[styles.num, numLine]}
+          testID="home-impact-count"
+        >
+          {`${shown}`}
+          {/* the small „h” (36pt) inherits the line of the number */}
+          <Text maxFontSizeMultiplier={fontScaleCap.display} style={styles.numUnit}>
+            h
+          </Text>
+        </AppText>
         <AppText style={styles.impactLabel}>
           {approved === 1 ? t('impact.label_singular') : t('impact.label')}
         </AppText>
@@ -437,7 +467,9 @@ const EventSlide = ({
   return (
     <Press
       onPress={() => onPress(event.id)}
-      style={[styles.ecard, { width }]}
+      // every card as tall as the tallest one (the prototype's flex row stretches them)
+      outerStyle={{ width }}
+      style={styles.ecard}
       accessibilityLabel={[event.name, when, event.location, event.organizationName, status?.label]
         .filter(Boolean)
         .join(', ')}
@@ -455,9 +487,7 @@ const EventSlide = ({
         </AppText>
       </View>
       <View style={styles.ebody}>
-        <AppText variant="headline" numberOfLines={2}>
-          {event.name}
-        </AppText>
+        <AppText variant="headline">{event.name}</AppText>
         <MetaLine icon={ClockIcon} text={when} first />
         {!!event.location && <MetaLine icon={PinIcon} text={event.location} />}
         {!!event.organizationName && <MetaLine text={event.organizationName} />}
@@ -493,7 +523,7 @@ const MetaLine = ({
 }) => (
   <View style={[styles.meta, first ? styles.metaFirst : null]}>
     {Icon && <Icon size={14} color={palette.ink2} strokeWidth={ICON_STROKE} />}
-    <AppText variant="caption" color={palette.ink2} numberOfLines={2} style={styles.metaText}>
+    <AppText variant="caption" color={palette.ink2} style={styles.metaText}>
       {text}
     </AppText>
   </View>
@@ -622,6 +652,7 @@ const styles = StyleSheet.create((theme) => ({
     letterSpacing: -0.2,
   },
   largeTitle: { marginTop: 14, marginBottom: 16, transformOrigin: 'left bottom' },
+  largeTitleText: { includeFontPadding: false },
   orgRow: {
     marginTop: 6,
     flexDirection: 'row',
@@ -652,8 +683,8 @@ const styles = StyleSheet.create((theme) => ({
     overflow: 'hidden',
   },
   impactBody: { flex: 1, minWidth: 0 },
-  numRow: { flexDirection: 'row', alignItems: 'flex-end', marginTop: 4 },
-  num: { flexShrink: 1 },
+  // prototype `.impact .num`: 76pt, line-height .86, right under the overline
+  num: { includeFontPadding: false },
   numUnit: { fontSize: 36, letterSpacing: -1.08 },
   impactLabel: {
     fontFamily: theme.fontFamily.textBold,
@@ -732,6 +763,7 @@ const styles = StyleSheet.create((theme) => ({
     gap: CARD_GAP,
   },
   ecard: {
+    flex: 1,
     backgroundColor: theme.colors.surface,
     borderRadius: theme.radius.card,
     padding: 10,
@@ -754,10 +786,13 @@ const styles = StyleSheet.create((theme) => ({
     letterSpacing: 0.74,
     color: theme.colors.navy,
   },
+  // prototype `.dateb b`: 30pt, line-height 1 (see tightLine)
   datebDay: {
     fontFamily: theme.fontFamily.display,
     fontSize: 30,
-    lineHeight: 32,
+    lineHeight: 33,
+    marginBottom: -3,
+    includeFontPadding: false,
     letterSpacing: -1.2,
     color: theme.colors.navy,
     fontVariant: ['tabular-nums'],
@@ -782,10 +817,13 @@ const styles = StyleSheet.create((theme) => ({
     borderWidth: 2,
     borderColor: 'rgba(1,52,79,0.18)',
   },
+  // prototype `.tile .n`: 40pt, line-height .9 (see tightLine)
   tileN: {
     fontFamily: theme.fontFamily.display,
     fontSize: 40,
-    lineHeight: 40,
+    lineHeight: 42,
+    marginBottom: -6,
+    includeFontPadding: false,
     letterSpacing: -1.6,
     fontVariant: ['tabular-nums'],
   },
@@ -793,6 +831,6 @@ const styles = StyleSheet.create((theme) => ({
     fontFamily: theme.fontFamily.textBold,
     fontSize: 12.5,
     lineHeight: 15.6,
-    marginTop: 6,
+    marginTop: 2,
   },
 }));

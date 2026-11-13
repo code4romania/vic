@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { RefreshControl, View, useWindowDimensions } from 'react-native';
 import Animated, { useReducedMotion, useSharedValue } from 'react-native-reanimated';
 import { useFocusEffect } from '@react-navigation/native';
@@ -70,6 +70,18 @@ const Home = ({ navigation }: any) => {
   const orgSheet = useRef<BottomSheetModal>(null);
   // each focus refills the hexagon and counts the hours again
   const [focusCount, setFocusCount] = useState(0);
+  // switching to Acasă from another tab plays the staggered entrance again (prototype: each tab
+  // enters with its blocks 40 ms apart); coming back from a pushed screen does not
+  const [enterKey, setEnterKey] = useState(0);
+  useEffect(
+    () =>
+      navigation.addListener('tabPress', () => {
+        if (!navigation.isFocused()) {
+          setEnterKey((key) => key + 1);
+        }
+      }),
+    [navigation],
+  );
 
   const { userProfile } = useUserProfile();
   const { setUserProfile } = useStore();
@@ -222,7 +234,7 @@ const Home = ({ navigation }: any) => {
         showsVerticalScrollIndicator={false}
         testID="home"
       >
-        <React.Fragment key={fontScale}>
+        <React.Fragment key={`${fontScale}-${enterKey}`}>
           <Animated.View entering={entering()}>
             <OrgRow
               name={organization?.name}
