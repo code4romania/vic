@@ -12,7 +12,8 @@ import { StyleSheet } from 'react-native-unistyles';
 import { useTranslation } from 'react-i18next';
 import { EventType } from '../common/enums/event-type.enum';
 import { OrderDirection } from '../common/enums/order-direction.enum';
-import { useEventsInfiniteQuery } from '../services/event/event.service';
+import { useEventsCountsQuery, useEventsInfiniteQuery } from '../services/event/event.service';
+import { EventsCounts } from '../services/event/event.api';
 import { useEvent } from '../store/event/event.selector';
 import useMyOrganizations from '../hooks/useMyOrganizations';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
@@ -44,6 +45,12 @@ import EventSkeletonListItem from '../components/skeleton/event-skeleton-item';
 const SWAP_OUT_MS = 140;
 /** the header takes the first three entrance steps (title, search row, segmented control) */
 const HEADER_STEPS = 3;
+/** which field of GET /mobile/event/counts badges each segment */
+const COUNT_FIELD: Record<EventType, keyof EventsCounts> = {
+  [EventType.OPEN]: 'open',
+  [EventType.GOING]: 'going',
+  [EventType.ORGANIZATIONS]: 'organizations',
+};
 
 /** One list item: enters with the stagger (first screenful only) and follows the swap-out. */
 const ListItem = ({
@@ -166,13 +173,25 @@ const Events = ({ navigation, route }: any) => {
     isRefetching,
   } = useEventsInfiniteQuery(OrderDirection.ASC, filters.search, eventFilter, queryFilters);
 
+  // the badges of the three segments, for the same search and filters as the list
+  const { data: counts, refetch: refetchCounts } = useEventsCountsQuery(
+    filters.search,
+    queryFilters,
+  );
+
   // an RSVP from the event page changes what the tabs show
   const reload = useCallback(() => {
     refetch();
-  }, [refetch]);
+    refetchCounts();
+  }, [refetch, refetchCounts]);
   useEffect(() => {
     reload();
   }, [event, reload]);
+  // coming back to the tab (or from an event) brings the badges up to date
+  useEffect(
+    () => navigation.addListener?.('focus', () => refetchCounts()),
+    [navigation, refetchCounts],
+  );
 
   const items = useMemo(
     () => (events?.pages ?? []).flatMap((page) => page.items) as EventCardItem[],
@@ -203,9 +222,13 @@ const Events = ({ navigation, route }: any) => {
   // on the first screen the cards follow the header's steps; after a swap they start at once
   const itemOffset = initialListKey.current ? HEADER_STEPS : 0;
   const isInitialLoading = isFetching && !isFetchingNextPage && !isRefetching && !items.length;
-  // the count of the list on screen (the API gives no count for the other segments)
-  const countFor = (key: EventType) =>
-    key === eventFilter && key === selectedFilter && !isInitialLoading ? total : undefined;
+  // every segment shows its count; until the counts arrive, the list on screen gives its own
+  const countFor = (key: EventType): number | undefined => {
+    if (counts) {
+      return counts[COUNT_FIELD[key]];
+    }
+    return key === eventFilter && key === selectedFilter && !isInitialLoading ? total : undefined;
+  };
 
   const onOpenEvent = (eventId: string) => {
     haptics.light();

@@ -23,6 +23,9 @@ jest.mock('expo-linking', () => ({
 }));
 
 const mockCalls: any[][] = [];
+const mockCountCalls: any[][] = [];
+const mockRefetchCounts = jest.fn();
+let mockCounts: any = { open: 3, going: 2, organizations: 0 };
 const mockSetRsvp = jest.fn();
 const mockRefetchEvent = jest.fn();
 let mockEventError: any = null;
@@ -67,6 +70,16 @@ jest.mock('../services/event/event.service', () => ({
       refetch: jest.fn(),
     };
   },
+  // the segment badges: remembers the search and filters they were asked for
+  useEventsCountsQuery: (...args: any[]) => {
+    mockCountCalls.push(args);
+    const [search, filters] = args;
+    const empty = search === 'nimic' || filters?.organizationId === 'org-2';
+    return {
+      data: mockCounts && (empty ? { open: 0, going: 0, organizations: 0 } : mockCounts),
+      refetch: mockRefetchCounts,
+    };
+  },
   useEventQuery: () => ({ isFetching: false, error: mockEventError, refetch: mockRefetchEvent }),
   useSetRsvpEventMutation: () => ({ mutate: mockSetRsvp, isLoading: false }),
   useCancelRsvpMutation: () => ({ mutate: jest.fn(), isLoading: false }),
@@ -94,6 +107,8 @@ const renderApp = (initialRouteName = 'events', params?: Record<string, unknown>
 beforeEach(() => {
   mockEventError = null;
   mockCalls.length = 0;
+  mockCountCalls.length = 0;
+  mockCounts = { open: 3, going: 2, organizations: 0 };
   jest.clearAllMocks();
   useStore.setState({
     userProfile: {
@@ -139,6 +154,46 @@ describe('Evenimente', () => {
     expect(screen.queryByText('Înscris')).toBeNull();
     // the segment on screen shows how many events it has
     expect(within(screen.getByTestId('events-tabs-OPEN')).getByText('3')).toBeTruthy();
+  });
+
+  it('every segment shows its count, from the counts endpoint', async () => {
+    await renderApp();
+    await screen.findByText('Eveniment 1');
+    expect(within(screen.getByTestId('events-tabs-OPEN')).getByText('3')).toBeTruthy();
+    expect(within(screen.getByTestId('events-tabs-GOING')).getByText('2')).toBeTruthy();
+    expect(within(screen.getByTestId('events-tabs-ORGANIZATIONS')).getByText('0')).toBeTruthy();
+    expect(screen.getByTestId('events-tabs-GOING').props.accessibilityLabel).toBe('Particip, 2');
+    // asked with the list's search and filters
+    expect(mockCountCalls[mockCountCalls.length - 1]).toEqual(['', {}]);
+  });
+
+  it('until the counts arrive, only the segment on screen shows its list total', async () => {
+    mockCounts = undefined;
+    await renderApp();
+    await screen.findByText('Eveniment 1');
+    expect(within(screen.getByTestId('events-tabs-OPEN')).getByText('3')).toBeTruthy();
+    expect(within(screen.getByTestId('events-tabs-GOING')).queryByText('2')).toBeNull();
+  });
+
+  it('the counts follow the filters and refresh on pull, focus and RSVP changes', async () => {
+    await renderApp();
+    await fireEvent.press(await screen.findByTestId('events-filter-button'));
+    await fireEvent.press(screen.getByTestId('filter-organization-org-2'));
+    expect(mockCountCalls[mockCountCalls.length - 1][1]).toEqual({ organizationId: 'org-2' });
+    expect(within(screen.getByTestId('events-tabs-GOING')).getByText('0')).toBeTruthy();
+
+    mockRefetchCounts.mockClear();
+    // an RSVP on the event page updates the store's event
+    await act(async () => {
+      useStore.setState({ event: { ...event('1'), description: 'x' } as any });
+    });
+    expect(mockRefetchCounts).toHaveBeenCalled();
+
+    mockRefetchCounts.mockClear();
+    await act(async () => {
+      screen.getByTestId('events-list').props.refreshControl.props.onRefresh();
+    });
+    expect(mockRefetchCounts).toHaveBeenCalled();
   });
 
   it('"Particip" lists the events you go to, marked "Înscris"', async () => {
