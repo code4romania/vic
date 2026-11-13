@@ -12,6 +12,8 @@
 // - <AppText variant="display|largeTitle|title"> trims automatically, also with your own
 //   fontSize / lineHeight / margins in `style` (your margins and paddings are kept, the trim is
 //   added to them). Pass `trim={false}` to opt out.
+// - Plain `Text` with a tight Bricolage line: spread `tight(size, ratio, scale)` (one shared
+//   generator; HomeParts `tightLine` and layouts/displayTitle.ts can migrate to it).
 // - For a Bricolage `Text` / `Animated.Text` you style yourself, spread `useTextTrim(style, cap)`
 //   after your style, or the static `trimFor(fontSize, lineHeight)` (exact at 1×, a few points off
 //   at the 1.15× cap).
@@ -61,6 +63,18 @@ export const trimFor = (fontSize: number, lineHeight: number, scale = 1) => {
   return Platform.OS === 'android'
     ? { paddingTop: d / 2, paddingBottom: d / 2, marginTop: -d / 2, marginBottom: -d / 2 }
     : { paddingTop: d, paddingBottom: 0, marginTop: -d / 2, marginBottom: -d / 2 };
+};
+
+/**
+ * Style generator for a tight Bricolage line drawn with a plain `Text`: font size, designed line
+ * height (`ratio` × size, e.g. 0.86 display, 0.96 largeTitle, 1.1 title) and the trim. Replaces
+ * the per-screen helpers (HomeParts `tightLine`, layouts/displayTitle.ts): spread it last and add
+ * your own vertical margins to the returned ones. `scale` = the drawn font scale
+ * (`useEffectiveFontScale(cap)`); AppText does all of this by itself.
+ */
+export const tight = (fontSize: number, ratio: number, scale = 1): TextStyle => {
+  const lineHeight = Math.round(ratio * fontSize * 10) / 10;
+  return { fontSize, lineHeight, ...(trimFor(fontSize, lineHeight, scale) ?? {}) };
 };
 
 /** First defined value; null when it is not a number (percent, 'auto'). */
