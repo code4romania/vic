@@ -42,6 +42,11 @@ export class ActivityLogRepositoryService
   findMany(
     findOptions: FindManyActivityLogsOptions,
   ): Promise<Pagination<IActivityLogListItemModel>> {
+    const direction = findOptions.orderDirection || OrderDirection.ASC;
+    const orderBy = this.buildOrderByQuery(
+      findOptions.orderBy || 'createdOn',
+      'activityLog',
+    );
     let query = this.activityLogRepo // TODO: strong type queries to use only the resulting select
       .createQueryBuilder('activityLog')
       .leftJoinAndMapOne('activityLog.event', 'activityLog.event', 'event')
@@ -94,13 +99,13 @@ export class ActivityLogRepositoryService
       .where('activityLog.organizationId = :organizationId', {
         organizationId: findOptions.organizationId,
       })
-      .orderBy(
-        this.buildOrderByQuery(
-          findOptions.orderBy || 'createdOn',
-          'activityLog',
-        ),
-        findOptions.orderDirection || OrderDirection.ASC,
-      );
+      .orderBy(orderBy, direction);
+
+    // Break ties consistently so logs with the same date have stable pagination.
+    if (orderBy !== 'activityLog.createdOn') {
+      query.addOrderBy('activityLog.createdOn', direction);
+    }
+    query.addOrderBy('activityLog.id', direction);
 
     if (findOptions.search) {
       query.andWhere(
