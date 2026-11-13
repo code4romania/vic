@@ -1,5 +1,5 @@
 import React from 'react';
-import { AccessibilityInfo, Text } from 'react-native';
+import { AccessibilityInfo, Platform, StyleSheet, Text } from 'react-native';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import * as Haptics from 'expo-haptics';
 import {
@@ -11,7 +11,7 @@ import {
   SegmentedControl,
   toastConfig,
 } from './groupB';
-import { palette } from '../tokens';
+import { fontScaleCap, palette } from '../tokens';
 
 const options = [
   { key: 'pending', label: 'În așteptare', count: 3 },
@@ -45,6 +45,83 @@ describe('SegmentedControl', () => {
     );
     expect(screen.getByTestId('seg-approved').props.accessibilityState).toEqual({ selected: true });
     expect(screen.getByTestId('seg-pending').props.accessibilityState).toEqual({ selected: false });
+  });
+
+  it('fits single-line labels into equal segments and reserves space for badges', async () => {
+    await render(
+      <SegmentedControl
+        testID="seg"
+        value="mine"
+        onChange={jest.fn()}
+        options={[
+          { key: 'pending', label: 'În așteptare', count: 18 },
+          { key: 'approved', label: 'Aprobate', count: 0 },
+          { key: 'mine', label: 'Organizațiile mele' },
+        ]}
+      />,
+    );
+    expect(screen.container.queryAll((node) => node.type.includes('ScrollView'))).toHaveLength(0);
+    expect(fontScaleCap.segment).toBe(1.15);
+    for (const label of ['În așteptare', 'Aprobate', 'Organizațiile mele']) {
+      expect(screen.getByText(label).props).toMatchObject({
+        numberOfLines: 1,
+        adjustsFontSizeToFit: true,
+        minimumFontScale: 0.7,
+        maxFontSizeMultiplier: fontScaleCap.segment,
+        ellipsizeMode: 'clip',
+      });
+      expect(screen.getByText(label)).toHaveStyle({ flexShrink: 1 });
+    }
+    for (const key of ['pending', 'approved', 'mine']) {
+      expect(StyleSheet.flatten(screen.getByTestId(`seg-${key}`).props.style)).toMatchObject({
+        flex: 1,
+        flexGrow: 1,
+        flexShrink: 1,
+        flexBasis: 0,
+        minWidth: 0,
+      });
+    }
+    for (const count of ['18', '0']) {
+      expect(screen.getByText(count).parent).toHaveStyle({
+        flexShrink: 0,
+        minWidth: 20,
+        minHeight: 20,
+      });
+      expect(screen.getByText(count).props.maxFontSizeMultiplier).toBe(fontScaleCap.segment);
+    }
+    expect(screen.getByTestId('seg-mine').props).toMatchObject({
+      accessibilityShowsLargeContentViewer: Platform.OS === 'ios',
+      accessibilityLargeContentTitle: Platform.OS === 'ios' ? 'Organizațiile mele' : undefined,
+    });
+  });
+
+  it('keeps segment styles identical when selection and the active-only badge move', async () => {
+    const keys = ['pending', 'approved', 'rejected'] as const;
+    const renderControl = (value: (typeof keys)[number]) => (
+      <SegmentedControl
+        testID="seg"
+        value={value}
+        onChange={jest.fn()}
+        options={options.map((option) => ({
+          key: option.key,
+          label: option.label,
+          count: option.key === value ? 18 : undefined,
+        }))}
+      />
+    );
+    await render(renderControl('pending'));
+    const stylesBefore = keys.map((key) =>
+      StyleSheet.flatten(screen.getByTestId(`seg-${key}`).props.style),
+    );
+    expect(stylesBefore[1]).toEqual(stylesBefore[0]);
+    expect(stylesBefore[2]).toEqual(stylesBefore[0]);
+
+    await screen.rerender(renderControl('approved'));
+    keys.forEach((key, index) => {
+      expect(StyleSheet.flatten(screen.getByTestId(`seg-${key}`).props.style)).toEqual(
+        stylesBefore[index],
+      );
+    });
   });
 
   it('shows the thumb once segments are measured', async () => {
@@ -84,6 +161,20 @@ describe('ListRow and Group', () => {
     expect(onPress).toHaveBeenCalledTimes(1);
     expect(screen.getByText('Ieși din cont')).toHaveStyle({ color: palette.red });
     expect(screen.getByTestId('grp')).toHaveStyle({ borderRadius: 24, overflow: 'hidden' });
+  });
+
+  it('shows the full organization separately from the clamped free-text preview', async () => {
+    const organization = 'Asociația Exemplu pentru Comunitate';
+    await render(
+      <ListRow
+        title="Anunț important"
+        subtitle={organization}
+        preview="Text lung de previzualizare"
+      />,
+    );
+    expect(screen.getByText('Anunț important').props.numberOfLines).toBeUndefined();
+    expect(screen.getByText(organization).props.numberOfLines).toBeUndefined();
+    expect(screen.getByText('Text lung de previzualizare').props.numberOfLines).toBe(2);
   });
 
   it('hexagon avatar shows the initials', async () => {

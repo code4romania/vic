@@ -14,7 +14,6 @@ import {
   BottomSheetScrollView,
   BottomSheetScrollViewMethods,
 } from '@gorhom/bottom-sheet';
-import { useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller';
 import Animated, { SharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import { StyleSheet } from 'react-native-unistyles';
 import { useForm } from 'react-hook-form';
@@ -70,14 +69,10 @@ export const AddHoursSheet = forwardRef<AddHoursSheetHandle, AddHoursSheetProps>
     const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
     const { mutate: logHours, isLoading: isLoggingHours } = useCreateActivityLogMutation();
 
-    // Keyboard up: the sheet only rises to its top inset, so its lower part (and the scroll view in
-    // it) stays behind the keyboard while the sticky footer rides above it. A spacer as tall as the
-    // keyboard lets the last field scroll above the footer, and a focused „Mențiuni” is scrolled
-    // there once the keyboard is up (and again as it grows line by line).
+    // Sheet resizes the scroll area above the keyboard and reserves the sticky footer's height.
+    // Reveal a focused „Mențiuni” once the keyboard is up and as it grows line by line.
     const scrollRef = useRef<BottomSheetScrollViewMethods>(null);
     const mentionsFocused = useRef(false);
-    const { height: keyboardHeight } = useReanimatedKeyboardAnimation();
-    const keyboardSpacer = useAnimatedStyle(() => ({ height: Math.abs(keyboardHeight.value) }));
     const revealMentions = useCallback(() => {
       if (mentionsFocused.current) {
         scrollRef.current?.scrollToEnd({ animated: true });
@@ -269,6 +264,7 @@ export const AddHoursSheet = forwardRef<AddHoursSheetHandle, AddHoursSheetProps>
               keyboardShouldPersistTaps="handled"
               showsVerticalScrollIndicator={false}
               contentContainerStyle={styles.body}
+              onLayout={revealMentions}
               onContentSizeChange={revealMentions}
             >
               <ActivityLogForm
@@ -279,7 +275,6 @@ export const AddHoursSheet = forwardRef<AddHoursSheetHandle, AddHoursSheetProps>
                 onMentionsFocus={onMentionsFocus}
                 onMentionsBlur={onMentionsBlur}
               />
-              <Animated.View style={keyboardSpacer} />
             </BottomSheetScrollView>
             {!!sent && (
               <SubmitSuccess

@@ -61,7 +61,6 @@ const AFTER_CLOSE_MS = 420;
 const ActivityLogs = ({ navigation, route }: any) => {
   const { t } = useTranslation('activity_logs');
   const insets = useSafeAreaInsets();
-  const bottomInset = useGlassTabBarInset();
   const reduced = useReducedMotion();
   useFocusedStatusBarStyle('dark');
   const scrollY = useSharedValue(0);
@@ -74,11 +73,11 @@ const ActivityLogs = ({ navigation, route }: any) => {
 
   const [status, setStatus] = useState<ActivityLogStatus>(ActivityLogStatus.PENDING);
   const [pendingCount, setPendingCount] = useState<number | undefined>(undefined);
-  // the entry just sent (highlighted once) and a counter that refills the hexagon
+  // the entry just sent (highlighted once)
   const [highlightId, setHighlightId] = useState<string | null>(null);
-  const [refillKey, setRefillKey] = useState(0);
   // each focus counts the approved hours again from 0, with the hexagon refill
   const [focusKey, setFocusKey] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
   const sentAt = useRef(0);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   // the first list enters as one block (stagger step 4); after a segment change rows stagger from 0
@@ -106,7 +105,7 @@ const ActivityLogs = ({ navigation, route }: any) => {
     fetchNextPage,
     hasNextPage,
     refetch: reloadActivityLogs,
-    isRefetching,
+    isLoading,
   } = useActivityLogsInfiniteQuery(organization?.id, ORDER, '', status);
 
   // adding, editing or deleting an entry invalidates the list and these totals
@@ -116,6 +115,15 @@ const ActivityLogs = ({ navigation, route }: any) => {
     reloadActivityLogs();
     reloadCounters();
   }, [reloadActivityLogs, reloadCounters]);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await Promise.all([reloadActivityLogs(), reloadCounters()]);
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -170,13 +178,12 @@ const ActivityLogs = ({ navigation, route }: any) => {
     addSheet.current?.present();
   }, [hasProfile]);
 
-  // after „Trimis spre aprobare”: back to the pending entries, the new one glows, the hexagon refills
+  // after „Trimis spre aprobare”: back to the pending entries, the new one glows
   const onSent = useCallback(
     (log: IActivityLog) => {
       sentAt.current = Date.now();
       setStatus(ActivityLogStatus.PENDING);
       setHighlightId(log?.id ?? null);
-      setRefillKey((key) => key + 1);
       reload();
       if (toastTimer.current) {
         clearTimeout(toastTimer.current);
@@ -202,6 +209,7 @@ const ActivityLogs = ({ navigation, route }: any) => {
     [asTab, canAdd, onAdd, t],
   );
   useTabBarAccessory(accessory);
+  const bottomInset = useGlassTabBarInset({ accessory: !!accessory });
 
   const onOpen = (activityLogId: string) => navigation.navigate('activity-log', { activityLogId });
 
@@ -274,8 +282,7 @@ const ActivityLogs = ({ navigation, route }: any) => {
             approved={toHours(approvedHours)}
             pending={toHours(pendingHours)}
             rejected={toHours(rejectedHours)}
-            refillKey={refillKey}
-            replay={`${focusKey}-${refillKey}`}
+            replay={focusKey}
           />
         </Animated.View>
       )}
@@ -315,7 +322,7 @@ const ActivityLogs = ({ navigation, route }: any) => {
     }
     // on the tab the add action already sits in the tab bar; the empty state repeats it only off-tab
     const emptyAdd = status === ActivityLogStatus.PENDING && canAdd && !asTab;
-    if (isFetching && !isRefetching && !items.length) {
+    if (isLoading && !data) {
       return <ActivityLogSkeletonItem />;
     }
     if (error) {
@@ -369,8 +376,8 @@ const ActivityLogs = ({ navigation, route }: any) => {
           onEndReachedThreshold={0.4}
           refreshControl={
             <RefreshControl
-              refreshing={isRefetching}
-              onRefresh={reload}
+              refreshing={refreshing}
+              onRefresh={onRefresh}
               progressViewOffset={insets.top}
             />
           }

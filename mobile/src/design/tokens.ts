@@ -42,6 +42,7 @@ export const lightColors = {
   glassTintStrong: 'rgba(255,255,255,0.62)',
   glassStroke: 'rgba(255,255,255,0.75)',
   topBarTint: 'rgba(244,241,233,0.72)',
+  androidTopBarTint: palette.paper,
 } as const;
 
 export type AppColors = typeof lightColors;
@@ -154,10 +155,12 @@ export type TypeVariant = keyof typeof type;
 
 /**
  * Dynamic Type: text grows to 1.35×, display and large titles stop at 1.15×. Tab bar labels stop at
- * 1.1× (they also shrink to fit their slot and never ellipsize; the iOS Large Content Viewer shows
- * them big on long press, like the system tab bar).
+ * 1.1× on iOS (they also shrink to fit their slot; the Large Content Viewer shows them big on long
+ * press, like the system tab bar). Android navigation labels stay at 1× to avoid auto-fit shrinking.
+ * Segmented control labels stop at 1.15× and shrink to fit their equal-width segment, never
+ * ellipsized or broken mid-word.
  */
-export const fontScaleCap = { text: 1.35, display: 1.15, tabLabel: 1.1 } as const;
+export const fontScaleCap = { text: 1.35, display: 1.15, tabLabel: 1.1, segment: 1.15 } as const;
 
 export const glass = {
   tint: lightColors.glassTint,

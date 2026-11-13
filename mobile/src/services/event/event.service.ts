@@ -15,11 +15,13 @@ export const useEventsInfiniteQuery = (
   search: string,
   eventFilter: EventType,
   filters: EventsFilters = {},
+  { keepPreviousData = false }: { keepPreviousData?: boolean } = {},
 ) => {
   return useInfiniteQuery(
     ['events', orderDirection, search, eventFilter, filters],
     ({ pageParam }) => getEvents({ pageParam, orderDirection, search, eventFilter, ...filters }),
     {
+      keepPreviousData,
       getNextPageParam: (lastPage) => {
         return lastPage?.meta.totalPages > lastPage?.meta.currentPage
           ? lastPage?.meta.currentPage + 1

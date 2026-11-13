@@ -17,7 +17,8 @@ import {
   pickExpiringSoon,
 } from '../components/documents/DocumentRow';
 import { useDownloadContract } from '../components/documents/useDownloadContract';
-import { BackButton, CompactTitleBar } from '../components/ui/ScreenChrome';
+import { BackButton, CompactTitleBar, useLargeTitleCollapse } from '../components/ui/ScreenChrome';
+import { StatusBarScrim } from '../components/ui/StatusBarScrim';
 import { EmptyState } from '../components/ui';
 import { AppText } from '../design/components/Text';
 import { enter } from '../design/motion';
@@ -50,6 +51,7 @@ const Documents = ({ navigation, route }: any) => {
   useFocusedStatusBarStyle('dark');
   const scrollY = useSharedValue(0);
   const onScroll = useTabBarScroll(scrollY);
+  const titleStyle = useLargeTitleCollapse(scrollY);
   const { userProfile } = useUserProfile();
   const organization = userProfile?.activeOrganization;
   const volunteerId: string | undefined = route.params?.volunteerId || organization?.volunteerId;
@@ -116,14 +118,16 @@ const Documents = ({ navigation, route }: any) => {
           <BackButton onPress={navigation.goBack} testID="documents-back" style={styles.back} />
         )}
         {/* Two lines like the handbook („Contractele<br>tale”): break before the last word. */}
-        <AppText
-          variant="largeTitle"
-          accessibilityRole="header"
-          accessibilityLabel={`${t('title_large')}`}
-          style={styles.title}
-        >
-          {`${t('title_large')}`.replace(/ (?=\S+$)/, '\n')}
-        </AppText>
+        <Animated.View style={[styles.titleWrap, titleStyle]}>
+          <AppText
+            variant="largeTitle"
+            accessibilityRole="header"
+            accessibilityLabel={`${t('title_large')}`}
+            style={styles.title}
+          >
+            {`${t('title_large')}`.replace(/ (?=\S+$)/, '\n')}
+          </AppText>
+        </Animated.View>
         {!!organization && (
           <AppText variant="overline" color={palette.ink2} numberOfLines={2}>
             {t('activity_logs:at', { name: organization.name })}
@@ -185,6 +189,7 @@ const Documents = ({ navigation, route }: any) => {
         showsVerticalScrollIndicator={false}
         testID="documents-list"
       />
+      <StatusBarScrim color={palette.paper} />
       <CompactTitleBar
         title={`${t('general:documents')}`}
         scrollY={scrollY}
@@ -204,6 +209,7 @@ const styles = StyleSheet.create((theme) => ({
   back: { marginBottom: theme.space.m },
   // handbook .lt: Bricolage 44, line height .96 (42), 14pt above; no font padding on Android
   title: { lineHeight: 42, marginTop: 14, includeFontPadding: false },
+  titleWrap: { transformOrigin: 'left bottom' },
   featured: { marginBottom: theme.space.s },
   item: { marginBottom: theme.space.s },
   more: { paddingVertical: 20, alignItems: 'center', justifyContent: 'center' },

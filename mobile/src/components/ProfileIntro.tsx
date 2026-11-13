@@ -20,7 +20,7 @@ const ProfileIntro = ({ uri, name, description, children, testID }: ProfileIntro
     <View style={styles.person}>
       <Avatar name={name} uri={uri || null} size={64} shape="circle" />
       <View style={styles.text}>
-        <VText variant="h2" accessibilityRole="header" numberOfLines={3}>
+        <VText variant="h2" accessibilityRole="header">
           {name}
         </VText>
         {!!description && <VText variant="sub">{description}</VText>}

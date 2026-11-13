@@ -91,6 +91,7 @@ const Events = ({ navigation, route }: any) => {
   const [eventFilter, setEventFilter] = useState<EventType>(EventType.OPEN);
   const [filters, setFilters] = useState<EventFilters>(EMPTY_EVENT_FILTERS);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const filtersRef = useRef<BottomSheetModal>(null);
 
   const listOut = useSharedValue(0);
@@ -163,13 +164,24 @@ const Events = ({ navigation, route }: any) => {
     fetchNextPage,
     hasNextPage,
     refetch,
-    isRefetching,
-  } = useEventsInfiniteQuery(OrderDirection.ASC, filters.search, eventFilter, queryFilters);
+    isLoading,
+    isPreviousData,
+  } = useEventsInfiniteQuery(OrderDirection.ASC, filters.search, eventFilter, queryFilters, {
+    keepPreviousData: true,
+  });
 
   // an RSVP from the event page changes what the tabs show
   const reload = useCallback(() => {
     refetch();
   }, [refetch]);
+  const onRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await refetch();
+    } finally {
+      setRefreshing(false);
+    }
+  };
   useEffect(() => {
     reload();
   }, [event, reload]);
@@ -178,7 +190,9 @@ const Events = ({ navigation, route }: any) => {
     () => (events?.pages ?? []).flatMap((page) => page.items) as EventCardItem[],
     [events],
   );
-  const total: number | undefined = events?.pages?.[0]?.meta?.totalItems;
+  const total: number | undefined = isPreviousData
+    ? undefined
+    : events?.pages?.[0]?.meta?.totalItems;
   const activeFilters = countActiveFilters(filters);
   const organizations = useMyOrganizations();
   const summary = useMemo(() => {
@@ -202,7 +216,7 @@ const Events = ({ navigation, route }: any) => {
   }
   // on the first screen the cards follow the header's steps; after a swap they start at once
   const itemOffset = initialListKey.current ? HEADER_STEPS : 0;
-  const isInitialLoading = isFetching && !isFetchingNextPage && !isRefetching && !items.length;
+  const isInitialLoading = isLoading && !events;
   // the count of the list on screen (the API gives no count for the other segments)
   const countFor = (key: EventType) =>
     key === eventFilter && key === selectedFilter && !isInitialLoading ? total : undefined;
@@ -346,13 +360,13 @@ const Events = ({ navigation, route }: any) => {
         ListHeaderComponent={header}
         onScroll={onScroll}
         scrollEventThrottle={16}
-        onEndReached={() => hasNextPage && !isFetching && fetchNextPage()}
+        onEndReached={() => hasNextPage && !isPreviousData && !isFetching && fetchNextPage()}
         onEndReachedThreshold={0.4}
         ListEmptyComponent={renderEmpty}
         ListFooterComponent={
           isFetchingNextPage ? <ActivityIndicator color={palette.navy} style={styles.more} /> : null
         }
-        refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={reload} />}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         contentContainerStyle={[styles.list, { paddingBottom: bottomInset }]}
         showsVerticalScrollIndicator={false}
         testID="events-list"

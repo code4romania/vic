@@ -70,6 +70,8 @@ export interface SheetProps extends Omit<BottomSheetModalProps, 'children'> {
   closeLabel?: string;
   /** form / filters: wrap the children in a BottomSheetScrollView (default true) */
   scroll?: boolean;
+  /** auto: measure and scroll the header, body and footer as a single dynamic-sized scrollable. */
+  scrollable?: boolean;
   /** style of the body around the children */
   bodyStyle?: StyleProp<ViewStyle>;
   testID?: string;
@@ -87,6 +89,7 @@ export const Sheet = forwardRef<BottomSheetModal, SheetProps>(
       showClose = true,
       closeLabel = 'Închide',
       scroll = true,
+      scrollable = false,
       bodyStyle,
       testID,
       onChange,
@@ -210,18 +213,35 @@ export const Sheet = forwardRef<BottomSheetModal, SheetProps>(
 
     let content: ReactNode;
     if (variant === 'auto') {
-      content = (
-        <BottomSheetView testID={testID} style={[styles.auto, { paddingBottom: bottomSpace }]}>
+      const autoContent = (
+        <>
           {header}
           <View style={[styles.autoBody, bodyStyle]}>{children}</View>
           {!!footer && <View style={styles.inlineFooter}>{footer}</View>}
+        </>
+      );
+      content = scrollable ? (
+        <BottomSheetScrollView
+          testID={testID}
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={[styles.auto, { paddingBottom: bottomSpace }]}
+        >
+          {autoContent}
+        </BottomSheetScrollView>
+      ) : (
+        <BottomSheetView testID={testID} style={[styles.auto, { paddingBottom: bottomSpace }]}>
+          {autoContent}
         </BottomSheetView>
       );
     } else if (variant === 'full' || !scroll) {
       content = (
         <View
           testID={testID}
-          style={[styles.fill, { paddingBottom: stickyFooter ? bottomSpace : insets.bottom }]}
+          // Full-height lists own their bottom safe-area padding inside the scroll content.
+          style={[
+            styles.fill,
+            { paddingBottom: stickyFooter ? bottomSpace : variant === 'full' ? 0 : insets.bottom },
+          ]}
         >
           {header}
           <View style={[styles.fill, bodyStyle]}>{children}</View>
@@ -256,7 +276,9 @@ export const Sheet = forwardRef<BottomSheetModal, SheetProps>(
         handleIndicatorStyle={styles.grabber}
         keyboardBehavior="interactive"
         keyboardBlurBehavior="restore"
-        android_keyboardInputMode="adjustResize"
+        // KeyboardProvider keeps the Android window full height. Gorhom's adjustResize path
+        // assumes the OS resized it and skips both the interactive lift and footer offset.
+        android_keyboardInputMode="adjustPan"
         onChange={(index, position, type) => {
           const nowOpen = index >= 0;
           if (nowOpen && !openRef.current) {

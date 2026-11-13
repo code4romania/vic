@@ -15,6 +15,7 @@ interface FormInputProps extends Omit<TextInputProps, 'style'> {
   disabled?: boolean;
   /** element or render function (gets the text style), e.g. the +40 phone prefix */
   accessoryLeft?: React.ReactNode | ((props: any) => React.ReactNode);
+  normalizeText?: (text: string) => string;
   [key: string]: any;
 }
 
@@ -30,6 +31,7 @@ const FormInput: React.FC<FormInputProps> = ({
   helper,
   disabled,
   accessoryLeft,
+  normalizeText,
   backdropComponent: _backdropComponent,
   onBlur: onBlurProp,
   ...rest
@@ -47,7 +49,7 @@ const FormInput: React.FC<FormInputProps> = ({
           onBlur();
           onBlurProp?.(event);
         }}
-        onChangeText={onChange}
+        onChangeText={(text) => onChange(normalizeText ? normalizeText(text) : text)}
         value={value === undefined || value === null ? '' : `${value}`}
         error={error?.message}
         helper={helper}

@@ -1,7 +1,8 @@
-// Segmented control „Îndrăzneț”: a navy track with a yellow thumb that slides and resizes to the
-// selected segment (spring snappy). Segments size to their labels (flex 1 1 auto).
+// Segmented control „Îndrăzneț”: a fixed navy track with equal-width segments and a yellow thumb
+// measured from their layout (spring snappy). Single-line labels shrink to fit beside count badges;
+// iOS Large Content Viewer exposes the full label at larger accessibility sizes.
 import React, { ReactNode, useCallback, useState } from 'react';
-import { LayoutChangeEvent, Pressable, Text, View } from 'react-native';
+import { LayoutChangeEvent, Platform, Pressable, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useReducedMotion } from 'react-native-reanimated';
 import { StyleSheet } from 'react-native-unistyles';
 import { fontScaleCap, palette } from '../tokens';
@@ -98,6 +99,8 @@ export function SegmentedControl<T extends string>({
               option.accessibilityLabel ??
               (hasCount ? `${option.label}, ${option.count}` : option.label)
             }
+            accessibilityShowsLargeContentViewer={Platform.OS === 'ios'}
+            accessibilityLargeContentTitle={Platform.OS === 'ios' ? option.label : undefined}
             onLayout={onLayoutFor(option.key)}
             // 42pt segment + the track padding: a 52pt hit target
             hitSlop={{ top: TRACK_PADDING, bottom: TRACK_PADDING }}
@@ -107,14 +110,15 @@ export function SegmentedControl<T extends string>({
               }
               onChange(option.key);
             }}
-            // Dynamic Type: a label of several words wraps to a second line instead of being cut;
-            // one-word labels keep their width, so they never break mid-word
-            style={[styles.segment, option.label.includes(' ') ? null : styles.segmentOneWord]}
+            style={styles.segment}
           >
             {option.icon?.(selected)}
             <Text
-              numberOfLines={2}
-              maxFontSizeMultiplier={fontScaleCap.text}
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.7}
+              maxFontSizeMultiplier={fontScaleCap.segment}
+              ellipsizeMode="clip"
               style={[styles.label, { color: selected ? palette.navy : LABEL_OFF }]}
             >
               {option.label}
@@ -122,7 +126,7 @@ export function SegmentedControl<T extends string>({
             {hasCount && (
               <View style={[styles.count, selected ? styles.countOn : null]}>
                 <Text
-                  maxFontSizeMultiplier={fontScaleCap.text}
+                  maxFontSizeMultiplier={fontScaleCap.segment}
                   style={[styles.countText, { color: selected ? palette.yellow : LABEL_OFF }]}
                 >
                   {option.count}
@@ -154,9 +158,10 @@ const styles = StyleSheet.create((theme) => ({
     backgroundColor: theme.colors.yellow,
   },
   segment: {
+    flex: 1,
     flexGrow: 1,
     flexShrink: 1,
-    flexBasis: 'auto',
+    flexBasis: 0,
     minHeight: 42,
     minWidth: 0,
     borderRadius: 17,
@@ -167,7 +172,6 @@ const styles = StyleSheet.create((theme) => ({
     justifyContent: 'center',
     gap: 6,
   },
-  segmentOneWord: { flexShrink: 0 },
   label: {
     flexShrink: 1,
     fontFamily: theme.fontFamily.textHeavy,
@@ -176,8 +180,10 @@ const styles = StyleSheet.create((theme) => ({
     textAlign: 'center',
   },
   count: {
+    flexShrink: 0,
     minWidth: 20,
-    height: 20,
+    minHeight: 20,
+    paddingVertical: 3,
     borderRadius: 10,
     paddingHorizontal: 5,
     alignItems: 'center',
