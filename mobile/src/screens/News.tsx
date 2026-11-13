@@ -205,7 +205,7 @@ const News = ({ navigation, route }: any) => {
             </View>
           </View>
           <View style={styles.text}>
-            <VText variant="body" numberOfLines={3}>
+            <VText variant="body">
               {line.start ? `${line.start} ` : ''}
               {!!line.organization && <VText variant="bodyStrong">{line.organization}</VText>}
               {line.end ? ` ${line.end}` : ''}

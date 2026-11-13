@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import { View } from 'react-native';
+import { useWindowDimensions, View } from 'react-native';
 import Animated, { useReducedMotion, useSharedValue } from 'react-native-reanimated';
 import Svg, { Path } from 'react-native-svg';
 import * as Linking from 'expo-linking';
@@ -63,8 +63,22 @@ const JoinHexagon = () => (
   </View>
 );
 
-const Stat = ({ value, label, testID }: { value: string; label: string; testID: string }) => (
-  <View style={styles.stat} testID={testID}>
+// From this text size up a third of the width no longer holds „evenimente” on one line: the
+// tiles go two per row (the third takes a row of its own) instead of breaking words.
+const STATS_WRAP_SCALE = 1.2;
+
+const Stat = ({
+  value,
+  label,
+  wide,
+  testID,
+}: {
+  value: string;
+  label: string;
+  wide: boolean;
+  testID: string;
+}) => (
+  <View style={[styles.stat, wide ? styles.statWide : null]} testID={testID}>
     <AppText
       variant="display"
       numberOfLines={1}
@@ -74,7 +88,7 @@ const Stat = ({ value, label, testID }: { value: string; label: string; testID: 
     >
       {value}
     </AppText>
-    <AppText variant="label" color={palette.ink2} numberOfLines={2}>
+    <AppText variant="label" color={palette.ink2}>
       {label}
     </AppText>
   </View>
@@ -91,6 +105,8 @@ const Settings = ({ navigation }: any) => {
   const insets = useSafeAreaInsets();
   const bottomInset = useGlassTabBarInset();
   const reduced = useReducedMotion();
+  const { fontScale } = useWindowDimensions();
+  const wideStats = fontScale >= STATS_WRAP_SCALE;
   useFocusedStatusBarStyle('dark');
   const scrollY = useSharedValue(0);
   const onScroll = useTabBarScroll(scrollY);
@@ -181,9 +197,9 @@ const Settings = ({ navigation }: any) => {
               <AppText
                 variant="largeTitle"
                 accessibilityRole="header"
-                numberOfLines={1}
+                numberOfLines={2}
                 adjustsFontSizeToFit
-                minimumFontScale={0.6}
+                minimumFontScale={0.7}
                 style={styles.name}
               >
                 {firstName}
@@ -201,16 +217,19 @@ const Settings = ({ navigation }: any) => {
           <Stat
             value={stats ? `${stats.approvedHours}` : '–'}
             label={`${t('stats.hours')}`}
+            wide={wideStats}
             testID="profile-stat-hours"
           />
           <Stat
             value={stats ? `${stats.events}` : '–'}
             label={`${t('stats.events')}`}
+            wide={wideStats}
             testID="profile-stat-events"
           />
           <Stat
             value={stats ? years(stats.yearsInVic) : '–'}
             label={`${t('stats.in_vic')}`}
+            wide={wideStats}
             testID="profile-stat-years"
           />
         </Animated.View>
@@ -336,10 +355,22 @@ const styles = StyleSheet.create((theme) => ({
   content: { paddingHorizontal: theme.space.gutter },
   me: { flexDirection: 'row', alignItems: 'center', gap: 14 },
   meText: { flex: 1, minWidth: 0 },
-  // handbook: Bricolage 46 for the first name
-  name: { fontSize: 46, lineHeight: 46, letterSpacing: -1.84, marginTop: 2 },
+  // handbook .lt at 46: line height .96 (44), -.04em, 2pt under the overline; the comma of Ș
+  // hangs below the line box, which iOS draws unclipped
+  name: {
+    fontSize: 46,
+    lineHeight: 44,
+    letterSpacing: -1.84,
+    marginTop: 2,
+    includeFontPadding: false,
+  },
   email: { marginTop: theme.space.s },
-  stats: { flexDirection: 'row', gap: theme.space.s, marginTop: theme.space.gutter },
+  stats: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: theme.space.s,
+    marginTop: theme.space.gutter,
+  },
   // handbook .tile: white, radius 22, number on top, label below
   stat: {
     flex: 1,
@@ -351,6 +382,8 @@ const styles = StyleSheet.create((theme) => ({
     justifyContent: 'space-between',
     gap: 6,
   },
+  // two per row at large text sizes; flexGrow lets the third fill its own row
+  statWide: { flexBasis: '45%', flexGrow: 1 },
   statValue: { fontSize: 32, lineHeight: 32, letterSpacing: -1.28 },
   // handbook .sect: 22 above, 10 below
   section: { marginTop: theme.space.section, marginBottom: theme.space.s, marginHorizontal: 2 },

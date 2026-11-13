@@ -242,7 +242,7 @@ const Organizations = ({ navigation }: any) => {
           <VText
             variant="h2"
             accessibilityRole="header"
-            numberOfLines={1}
+            numberOfLines={2}
             maxFontSizeMultiplier={MAX_FONT_SCALE.title}
             style={styles.heading}
           >

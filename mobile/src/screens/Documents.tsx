@@ -107,15 +107,22 @@ const Documents = ({ navigation, route }: any) => {
     <>
       <Animated.View
         entering={enter(0, reduced)}
-        style={[styles.header, { paddingTop: insets.top + 12 }]}
+        // handbook .scroll pads 58 (status bar 54 + 4), the title adds 14: safe area + 18
+        style={[styles.header, { paddingTop: insets.top + (isTab ? 4 : 12) }]}
         testID="documents-header"
       >
         {/* Opened from the volunteer page: a back button above the title. As a tab: none. */}
         {!isTab && (
           <BackButton onPress={navigation.goBack} testID="documents-back" style={styles.back} />
         )}
-        <AppText variant="largeTitle" accessibilityRole="header" style={styles.title}>
-          {t('title_large')}
+        {/* Two lines like the handbook („Contractele<br>tale”): break before the last word. */}
+        <AppText
+          variant="largeTitle"
+          accessibilityRole="header"
+          accessibilityLabel={`${t('title_large')}`}
+          style={styles.title}
+        >
+          {`${t('title_large')}`.replace(/ (?=\S+$)/, '\n')}
         </AppText>
         {!!organization && (
           <AppText variant="overline" color={palette.ink2} numberOfLines={2}>
@@ -192,10 +199,11 @@ export default Documents;
 const styles = StyleSheet.create((theme) => ({
   screen: { flex: 1, backgroundColor: theme.colors.background },
   content: { paddingHorizontal: theme.space.gutter, flexGrow: 1 },
-  header: { paddingBottom: theme.space.l, gap: 4 },
+  // handbook .lt margin 14 0 16 before the orange card
+  header: { paddingBottom: 16, gap: 4 },
   back: { marginBottom: theme.space.m },
-  // handbook .lt: Bricolage 44, line height .96, 14pt above
-  title: { lineHeight: 42, marginTop: 14 },
+  // handbook .lt: Bricolage 44, line height .96 (42), 14pt above; no font padding on Android
+  title: { lineHeight: 42, marginTop: 14, includeFontPadding: false },
   featured: { marginBottom: theme.space.s },
   item: { marginBottom: theme.space.s },
   more: { paddingVertical: 20, alignItems: 'center', justifyContent: 'center' },

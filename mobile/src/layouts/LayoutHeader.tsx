@@ -82,7 +82,7 @@ export const LayoutHeader = ({
     {leading}
     <AppText
       variant="title"
-      numberOfLines={1}
+      numberOfLines={2}
       style={[styles.title, !leading ? styles.titleAlone : null]}
       accessibilityRole="header"
     >

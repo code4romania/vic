@@ -16,7 +16,7 @@ export type HexAvatarTone = 'navy' | 'yellow';
 
 const HEX_SIZE: Record<HexAvatarSize, { width: number; height: number; font: number }> = {
   md: { width: 40, height: 44, font: 14 },
-  lg: { width: 64, height: 72, font: 22 },
+  lg: { width: 64, height: 72, font: 26 },
 };
 
 /** Up to two initials from a name ("Asociația Exemplu" → "AE"). */
@@ -95,9 +95,9 @@ export interface ListRowProps {
   testID?: string;
 }
 
-/** The trailing chevron of pressable rows. */
-export const RowChevron = ({ color = palette.ink2 }: { color?: string }) => (
-  <ChevronRightIcon size={20} color={color} strokeWidth={ICON_STROKE} />
+/** The trailing chevron of pressable rows (handbook .li: 18pt, navy). */
+export const RowChevron = ({ color = palette.navy }: { color?: string }) => (
+  <ChevronRightIcon size={18} color={color} strokeWidth={ICON_STROKE} />
 );
 
 export const ListRow = ({
@@ -193,7 +193,8 @@ export default ListRow;
 const styles = StyleSheet.create((theme) => ({
   hex: { alignItems: 'center', justifyContent: 'center', flexShrink: 0 },
   hexSvg: { position: 'absolute', top: 0, left: 0 },
-  hexText: { fontFamily: theme.fontFamily.display, letterSpacing: -0.3 },
+  // no font padding: Bricolage's tall ascent would push the initial below the centre on Android
+  hexText: { fontFamily: theme.fontFamily.display, letterSpacing: -0.3, includeFontPadding: false },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
