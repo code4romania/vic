@@ -20,3 +20,13 @@ export const getNews = async ({
     },
   }).then((res) => res.data);
 };
+
+/** The volunteer's news newer than their last visit to „Noutăți” (the badge on the Home bell). */
+export const getUnreadNewsCount = async (): Promise<{ unread: number }> => {
+  return API.get('/mobile/news/unread-count').then((res) => res.data);
+};
+
+/** The volunteer opened „Noutăți”: everything up to now is read. */
+export const markNewsSeen = async (): Promise<void> => {
+  return API.post('/mobile/news/seen').then(() => undefined);
+};
