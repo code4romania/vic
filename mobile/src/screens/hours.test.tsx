@@ -6,6 +6,7 @@ import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/b
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
 import * as Haptics from 'expo-haptics';
+import Toast from 'react-native-toast-message';
 import i18n from '../common/config/i18n';
 import ActivityLogs from './ActivityLogs';
 import ActivityLog from './ActivityLog';
@@ -273,7 +274,10 @@ describe('Ore', () => {
       useStore.setState({ counters: { approved: 151, pending: 3, rejected: 5 } });
     });
 
-    expect(within(screen.getByTestId('hours-total-approved')).getByText('151h')).toBeTruthy();
+    // the legend counts to the new totals (prototype count-up)
+    await waitFor(() =>
+      expect(within(screen.getByTestId('hours-total-approved')).getByText('151h')).toBeTruthy(),
+    );
     expect(mockRefetchList).toHaveBeenCalledTimes(1);
     expect(mockRefetchCounters).toHaveBeenCalledTimes(1);
   });
@@ -305,7 +309,10 @@ describe('Ore', () => {
     expect(
       within(screen.getByTestId('hours-organization')).getByText('Asociația Exemplu'),
     ).toBeTruthy();
-    expect(within(screen.getByTestId('hours-total-approved')).getByText('145h')).toBeTruthy();
+    // approved counts up from 0 with the hexagon refill
+    await waitFor(() =>
+      expect(within(screen.getByTestId('hours-total-approved')).getByText('145h')).toBeTruthy(),
+    );
     expect(within(screen.getByTestId('hours-total-pending')).getByText('9h')).toBeTruthy();
     expect(within(screen.getByTestId('hours-total-rejected')).getByText('5h')).toBeTruthy();
     const last = mockListCalls[mockListCalls.length - 1];
@@ -500,6 +507,15 @@ describe('Ore', () => {
     await waitFor(() =>
       expect(mockListCalls[mockListCalls.length - 1][3]).toBe(ActivityLogStatus.PENDING),
     );
+    // then the toast confirms it (prototype: „4h trimise spre aprobare”)
+    await waitFor(() =>
+      expect(Toast.show).toHaveBeenCalledWith({
+        type: 'success',
+        text1: '3h trimise spre aprobare',
+      }),
+    );
+    // no event chosen: no empty event id is sent
+    expect(mockCreate.mock.calls[0][0].activityLog.eventId).toBeUndefined();
   });
 });
 

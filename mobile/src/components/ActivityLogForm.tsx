@@ -89,6 +89,7 @@ const ActivityLogForm = ({
         label={t('form.event.label')}
         placeholder={t('form.event.placeholder')}
         organizationId={userProfile?.activeOrganization?.id as string}
+        {...(inSheet ? { noneLabel: `${t('form.event.none')}` } : {})}
         optional
         disabled={isLoading}
       />

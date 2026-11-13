@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { AccessibilityInfo, View } from 'react-native';
 import Animated, {
-  Extrapolation,
   interpolate,
   useAnimatedProps,
   useAnimatedStyle,
@@ -72,6 +71,8 @@ export const SubmitSuccess = ({ title, description, testID }: SubmitSuccessProps
   const reduced = useReducedMotion();
   const shown = useSharedValue(0);
   const pop = useSharedValue(reduced ? 1 : 0);
+  // the hexagon's own fade: 160 ms, while the turn and scale ride the bouncy spring
+  const hexIn = useSharedValue(reduced ? 1 : 0);
   const check = useSharedValue(reduced ? 0 : CHECK_LENGTH);
   const burst = useSharedValue(0);
 
@@ -80,10 +81,11 @@ export const SubmitSuccess = ({ title, description, testID }: SubmitSuccessProps
     if (reduced) {
       return;
     }
+    hexIn.value = withTiming(1, { duration: 160 });
     pop.value = withSpring(1, spring.bouncy);
     check.value = withDelay(360, withTiming(0, { duration: 420, easing: easing.standard }));
     burst.value = withDelay(120, withTiming(1, { duration: 900, easing: easing.emphasized }));
-  }, [reduced, shown, pop, check, burst]);
+  }, [reduced, shown, pop, hexIn, check, burst]);
 
   useEffect(() => {
     AccessibilityInfo.announceForAccessibility(`${title}. ${description}`);
@@ -91,7 +93,7 @@ export const SubmitSuccess = ({ title, description, testID }: SubmitSuccessProps
 
   const containerStyle = useAnimatedStyle(() => ({ opacity: shown.value }));
   const hexStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(pop.value, [0, 0.16], [0, 1], Extrapolation.CLAMP),
+    opacity: hexIn.value,
     transform: [
       { scale: interpolate(pop.value, [0, 1], [0.2, 1]) },
       { rotate: `${interpolate(pop.value, [0, 1], [-30, 0])}deg` },
@@ -165,16 +167,19 @@ const styles = StyleSheet.create((theme) => ({
     left: HEX_W / 2 - 6,
     top: HEX_H / 2 - 6.5,
   },
+  // `.done h5`: Bricolage 800 32 (two lines at large text sizes stay tight)
   title: {
     marginTop: 6,
     fontSize: 32,
-    lineHeight: 35,
+    lineHeight: 31,
+    includeFontPadding: false,
     letterSpacing: -1.1,
     textAlign: 'center',
   },
   description: {
     fontFamily: theme.fontFamily.text,
     textAlign: 'center',
-    maxWidth: 280,
+    // max-width 28ch of Manrope 15
+    maxWidth: 240,
   },
 }));

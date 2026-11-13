@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react';
-import { Pressable, View } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { Pressable, useWindowDimensions, View } from 'react-native';
 import Animated, {
   interpolate,
   interpolateColor,
   useAnimatedStyle,
   useReducedMotion,
   useSharedValue,
+  withDelay,
+  withSequence,
   withTiming,
 } from 'react-native-reanimated';
 import { StyleSheet } from 'react-native-unistyles';
@@ -24,8 +26,17 @@ export const LOG_STATUS_TONE: Record<ActivityLogStatus, 'ok' | 'wait' | 'no'> = 
   [ActivityLogStatus.REJECTED]: 'no',
 };
 
-/** The new-row highlight: a yellow tint that fades to white while a yellow ring pulses. */
+/**
+ * The new-row highlight (prototype `@keyframes newRow`, 1.4 s standard): the card fades from
+ * #FFF6CC to white over the whole time while a yellow ring spreads to 4pt (90%) by 60% and
+ * shrinks away by the end.
+ */
 export const HIGHLIGHT_MS = 1400;
+const RING_IN = HIGHLIGHT_MS * 0.6;
+const RING_OUT = HIGHLIGHT_MS - RING_IN;
+const RING = 4;
+// from this text size on, the status chip moves under the text so the title keeps its width
+const STACK_FONT_SCALE = 1.2;
 
 export interface LogRowProps {
   log: IActivityLogItem;
@@ -33,41 +44,80 @@ export interface LogRowProps {
   onPress: (id: string) => void;
   /** the entry was just sent: play the new-row highlight once */
   highlight?: boolean;
+  /** wait this long before the highlight (the sheet is still closing) */
+  highlightDelay?: number;
 }
 
 /**
  * One entry on Ore (`.hrow`): a white 22pt card with the hours in a 52pt paper badge, the task,
  * the event and the day, and the solid status chip.
  */
-export const LogRow = ({ log, status, onPress, highlight = false }: LogRowProps) => {
+export const LogRow = ({
+  log,
+  status,
+  onPress,
+  highlight = false,
+  highlightDelay = 0,
+}: LogRowProps) => {
   const { t } = useTranslation('activity_log');
   const reduced = useReducedMotion();
   const title = log.activityType?.name || `${t('other')}`;
   const meta = [log.event?.name, formatLogShortDay(log.date)].filter(Boolean).join(' · ');
   const statusLabel = `${t(`status.${status}`)}`;
+  const { fontScale } = useWindowDimensions();
+  const stacked = fontScale >= STACK_FONT_SCALE;
 
   // 0 = highlighted (yellow tint), 1 = resting (white card)
   const progress = useSharedValue(1);
+  // read when the highlight starts only (the list re-renders with a new value)
+  const delay = useRef(highlightDelay);
+  delay.current = highlightDelay;
+  // 0 = no ring, 1 = 4pt ring at 90%
+  const ring = useSharedValue(0);
   const pressed = useSharedValue(0);
   useEffect(() => {
     if (!highlight) {
       return;
     }
+    const wait = Math.max(0, delay.current);
     progress.value = 0;
-    progress.value = withTiming(1, {
-      duration: reduced ? duration.reduced * 4 : HIGHLIGHT_MS,
-      easing: easing.standard,
-    });
-  }, [highlight, progress, reduced]);
+    progress.value = withDelay(
+      wait,
+      withTiming(1, {
+        duration: reduced ? duration.reduced * 4 : HIGHLIGHT_MS,
+        easing: easing.standard,
+      }),
+    );
+    if (!reduced) {
+      ring.value = 0;
+      ring.value = withDelay(
+        wait,
+        withSequence(
+          withTiming(1, { duration: RING_IN, easing: easing.standard }),
+          withTiming(0, { duration: RING_OUT, easing: easing.standard }),
+        ),
+      );
+    }
+  }, [highlight, progress, ring, reduced]);
 
   const cardStyle = useAnimatedStyle(() => ({
     backgroundColor: interpolateColor(progress.value, [0, 1], [palette.highlight, palette.card]),
     transform: [{ scale: reduced ? 1 : interpolate(pressed.value, [0, 1], [1, 0.985]) }],
   }));
-  // the ring grows in until 60% of the highlight, then fades out (none with Reduce Motion)
-  const ringStyle = useAnimatedStyle(() => ({
-    opacity: reduced ? 0 : interpolate(progress.value, [0, 0.6, 1], [0, 0.9, 0]),
-  }));
+  // box-shadow 0 0 0 0→4px rgba(255,210,9,0→.9→0): the ring spreads out and back (none with Reduce
+  // Motion)
+  const ringStyle = useAnimatedStyle(() => {
+    const spread = RING * ring.value;
+    return {
+      opacity: 0.9 * ring.value,
+      top: -spread,
+      left: -spread,
+      right: -spread,
+      bottom: -spread,
+      borderWidth: spread,
+      borderRadius: 22 + spread,
+    };
+  });
 
   return (
     <Pressable
@@ -101,14 +151,23 @@ export const LogRow = ({ log, status, onPress, highlight = false }: LogRowProps)
           </AppText>
         </View>
         <View style={styles.text}>
-          <AppText variant="headline" style={styles.title} numberOfLines={2}>
+          <AppText variant="headline" style={styles.title}>
             {title}
           </AppText>
-          <AppText variant="caption" color={palette.ink2} numberOfLines={2}>
-            {meta}
-          </AppText>
+          {!!meta && (
+            <AppText variant="caption" color={palette.ink2} style={styles.meta}>
+              {meta}
+            </AppText>
+          )}
+          {stacked && (
+            <StatusChip
+              label={statusLabel}
+              kind={LOG_STATUS_TONE[status]}
+              style={styles.stackedChip}
+            />
+          )}
         </View>
-        <StatusChip label={statusLabel} kind={LOG_STATUS_TONE[status]} />
+        {!stacked && <StatusChip label={statusLabel} kind={LOG_STATUS_TONE[status]} />}
       </Animated.View>
     </Pressable>
   );
@@ -129,12 +188,6 @@ const styles = StyleSheet.create((theme) => ({
   },
   ring: {
     position: 'absolute',
-    top: -4,
-    left: -4,
-    right: -4,
-    bottom: -4,
-    borderRadius: theme.radius.row + 4,
-    borderWidth: 4,
     borderColor: theme.colors.yellow,
   },
   badge: {
@@ -147,10 +200,14 @@ const styles = StyleSheet.create((theme) => ({
   },
   badgeText: {
     fontSize: 20,
-    lineHeight: 24,
-    letterSpacing: -0.6,
+    lineHeight: 22,
+    letterSpacing: -0.5,
     fontVariant: ['tabular-nums'],
+    includeFontPadding: false,
   },
-  text: { flex: 1, minWidth: 0, gap: 2 },
-  title: { fontSize: 15.5, lineHeight: 20 },
+  text: { flex: 1, minWidth: 0 },
+  // `.hrow b` 800 15.5 and the 13pt 600 meta, both at line-height 1.35
+  title: { fontSize: 15.5, lineHeight: 21 },
+  meta: { lineHeight: 17.5 },
+  stackedChip: { marginTop: 6 },
 }));

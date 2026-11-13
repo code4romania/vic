@@ -5,9 +5,11 @@ import { getEventsByOrganizationId } from '../services/event/event.api';
 
 interface EventSelectProps extends Omit<FormSelectProps, 'options'> {
   organizationId: string;
+  /** a last option that clears the event (key '') */
+  noneLabel?: string;
 }
 
-const EventSelect = ({ organizationId, ...props }: EventSelectProps) => {
+const EventSelect = ({ organizationId, noneLabel, ...props }: EventSelectProps) => {
   const [structures, setStructures] = useState<ISelectItem[]>([]);
 
   useEffect(() => {
@@ -27,7 +29,14 @@ const EventSelect = ({ organizationId, ...props }: EventSelectProps) => {
     }
   };
 
-  return <FormSelect {...props} options={structures} />;
+  return (
+    <FormSelect
+      {...props}
+      options={
+        noneLabel && structures.length ? [...structures, { key: '', label: noneLabel }] : structures
+      }
+    />
+  );
 };
 
 export default EventSelect;
