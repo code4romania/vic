@@ -33,9 +33,15 @@ export interface ImpactHexagonProps {
 
 const FAST_MS = 2600;
 const SLOW_MS = 3600;
+// the prototype's wavelength: one crest every 120pt, whatever the size
+const PERIOD = 120;
+const FAST_AMP = 7;
+const SLOW_AMP = 4;
 // both waves are back where they started after this long, so the clock can wrap without a jump
 const CLOCK_WRAP = 46800;
 const COUNT_MS = 900;
+// the dark half of the „în așteptare” stripes on the navy card (prototype pattern #012A40)
+const STRIPE_BG_ON_NAVY = '#012A40';
 
 /** Romanian count: „1 oră”, „5 ore”, „42 de ore” (20+ and round hundreds take „de”). */
 const roHours = (n: number) => {
@@ -93,13 +99,41 @@ const waveLine = (width: number, period: number, amp: number) => {
 const waveFill = (width: number, height: number, period: number, amp: number) =>
   `${waveLine(width, period, amp)}L${width} ${height}L0 ${height}Z`;
 
-/** 45° stripes, 4pt yellow every 8pt, covering width × height. */
+/**
+ * The prototype's stripe pattern (8pt tile with a 4pt bar, rotated 45°): bars 4pt wide every 8pt
+ * measured across the stripes, so 4√2 wide every 8√2 along a horizontal line.
+ */
 const stripes = (width: number, height: number) => {
+  const pitch = 8 * Math.SQRT2;
+  const bar = 4 * Math.SQRT2;
   let d = '';
-  for (let x = -height; x < width; x += 8) {
-    d += `M${x} 0L${x + 4} 0L${x + 4 + height} ${height}L${x + height} ${height}Z`;
+  for (let x = -height; x < width; x += pitch) {
+    d += `M${x.toFixed(2)} 0L${(x + bar).toFixed(2)} 0L${(x + bar + height).toFixed(2)} ${height}L${(
+      x + height
+    ).toFixed(2)} ${height}Z`;
   }
   return d;
+};
+
+/**
+ * Where the middle of a wave sits (y, from the top of the canvas) for a fill level 0–1.
+ * 0 hides the wave under the bottom corner. 1 does NOT reach the top corner: the prototype maps
+ * the level straight onto the height, so real numbers like 42 aprobate + 1 respinsă (98%) cover
+ * the whole hexagon and it reads as a flat yellow shape. Here a full level stops `headroom`
+ * below the top corner, so the crest and its motion always stay visible under the outline.
+ */
+export const liquidY = (
+  level: number,
+  top: number,
+  bottom: number,
+  amp: number,
+  headroom: number,
+) => {
+  'worklet';
+  const empty = bottom + amp;
+  const full = top + headroom;
+  const clamped = Math.min(1, Math.max(0, level));
+  return empty - clamped * (empty - full);
 };
 
 const svgPath = (d: string) => Skia.Path.MakeFromSVGString(d) ?? Skia.Path.Make();
@@ -134,22 +168,27 @@ export const ImpactHexagon = ({
 }: ImpactHexagonProps) => {
   const reduced = useReducedMotion();
   const focused = useScreenFocused();
+  const onNavy = tone === 'onNavy';
 
   const W = size;
   const H = Math.round(size * 1.1);
-  const period = Math.round(size * 1.1);
+  const R = W / 2 - 2;
+  const period = PERIOD;
   const bandWidth = W + period + 8;
+  // the hexagon's top and bottom corners, and the gap a full level keeps under the top one
+  const top = H / 2 - R;
+  const bottom = H / 2 + R;
+  const headroom = Math.round(R * 0.4);
 
   const paths = useMemo(() => {
-    const hex = roundedHexPath(W / 2, H / 2, W / 2 - 2, W * 0.12);
+    const hex = roundedHexPath(W / 2, H / 2, R, W * 0.12);
     return {
       hex: svgPath(hex),
-      approved: svgPath(waveFill(bandWidth, H * 2, period, 7)),
-      pending: svgPath(waveFill(bandWidth, H * 2, period, 4)),
-      crest: svgPath(waveLine(bandWidth, period, 4)),
+      approved: svgPath(waveFill(bandWidth, H * 2, period, FAST_AMP)),
+      pending: svgPath(waveFill(bandWidth, H * 2, period, SLOW_AMP)),
       stripes: svgPath(stripes(bandWidth, H * 2)),
     };
-  }, [W, H, period, bandWidth]);
+  }, [W, H, R, period, bandWidth]);
 
   // defensive: counters can arrive as numeric strings
   const a = toHours(approved);
@@ -188,15 +227,15 @@ export const ImpactHexagon = ({
 
   const approvedTransform = useDerivedValue(() => [
     { translateX: -((clock.value / FAST_MS) % 1) * period },
-    { translateY: H * (1 - approvedLevel.value) - 5 },
+    // the wave path has its middle line at y = amp
+    { translateY: liquidY(approvedLevel.value, top, bottom, FAST_AMP, headroom) - FAST_AMP },
   ]);
   const pendingTransform = useDerivedValue(() => [
     // counter-phase: the slow wave runs the other way
     { translateX: -(1 - ((clock.value / SLOW_MS) % 1)) * period },
-    { translateY: H * (1 - pendingLevel.value) - 4 },
+    { translateY: liquidY(pendingLevel.value, top, bottom, SLOW_AMP, headroom) - SLOW_AMP },
   ]);
 
-  const onNavy = tone === 'onNavy';
   return (
     <View
       testID={testID}
@@ -208,19 +247,21 @@ export const ImpactHexagon = ({
       <Canvas style={{ width: W, height: H }} pointerEvents="none">
         <Path path={paths.hex} color={onNavy ? palette.navy3 : '#EAE5D8'} />
         <Group clip={paths.hex}>
-          <Group transform={pendingTransform}>
-            <Group clip={paths.pending}>
-              <Rect x={0} y={0} width={bandWidth} height={H * 2} color={palette.white} />
-              <Path path={paths.stripes} color={palette.yellow} />
+          {/* no band without pending hours: its crest would show in the troughs of the liquid */}
+          {pendingShare > 0 && (
+            <Group transform={pendingTransform}>
+              <Group clip={paths.pending}>
+                <Rect
+                  x={0}
+                  y={0}
+                  width={bandWidth}
+                  height={H * 2}
+                  color={onNavy ? STRIPE_BG_ON_NAVY : palette.white}
+                />
+                <Path path={paths.stripes} color={onNavy ? palette.yellow : palette.navy} />
+              </Group>
             </Group>
-            <Path
-              path={paths.crest}
-              color={palette.navy}
-              style="stroke"
-              strokeWidth={2}
-              strokeJoin="round"
-            />
-          </Group>
+          )}
           <Group transform={approvedTransform}>
             <Path path={paths.approved} color={palette.yellow} />
           </Group>
