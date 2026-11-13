@@ -33,6 +33,7 @@ import { haptics } from '../../design/haptics';
 import { CloseIcon, ICON_STROKE } from '../../design/icons';
 import { Button } from '../../design/components/Button';
 import { Sheet } from '../../design/components/Sheet';
+import { tight, useEffectiveFontScale } from '../../design/components/Text';
 import { SubmitSuccess } from './SubmitSuccess';
 
 /** How long „Trimis spre aprobare” stays before the sheet closes (prototype: 1.7 s). */
@@ -216,6 +217,8 @@ export const AddHoursSheet = forwardRef<AddHoursSheetHandle, AddHoursSheetProps>
     );
 
     const title = `${t('activity_logs:add')}`;
+    // `.shead h4` Bricolage 30 on a 30pt line, trimmed so Ă is not cut (design/components/Text)
+    const titleTrim = tight(30, 1, useEffectiveFontScale(fontScaleCap.display));
 
     return (
       <Sheet
@@ -245,7 +248,7 @@ export const AddHoursSheet = forwardRef<AddHoursSheetHandle, AddHoursSheetProps>
               <Text
                 accessibilityRole="header"
                 maxFontSizeMultiplier={fontScaleCap.display}
-                style={styles.title}
+                style={[styles.title, titleTrim]}
                 numberOfLines={2}
               >
                 {title}
@@ -315,8 +318,6 @@ const styles = StyleSheet.create((theme) => ({
   title: {
     flex: 1,
     fontFamily: theme.fontFamily.display,
-    fontSize: 30,
-    lineHeight: 30,
     includeFontPadding: false,
     letterSpacing: -1.05,
     color: theme.colors.ink,

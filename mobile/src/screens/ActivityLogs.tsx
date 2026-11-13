@@ -1,12 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Pressable, RefreshControl, View } from 'react-native';
-import Animated, {
-  Extrapolation,
-  interpolate,
-  useAnimatedStyle,
-  useReducedMotion,
-  useSharedValue,
-} from 'react-native-reanimated';
+import Animated, { useReducedMotion, useSharedValue } from 'react-native-reanimated';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { StyleSheet } from 'react-native-unistyles';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -43,6 +37,7 @@ import { AddHoursSheet, AddHoursSheetHandle } from '../components/hours/AddHours
 import { OrganizationChip, OrganizationSwitchSheet } from '../components/hours/OrganizationChip';
 import ActivityLogSkeletonItem from '../components/skeleton/activity-log-skeleton-item';
 import { EmptyState, LargeTitleHeader, StatusBarScrim } from '../components/ui';
+import { useLargeTitleCollapse } from '../components/ui/LargeTitleHeader';
 import { palette } from '../design/tokens';
 import { enter } from '../design/motion';
 import { ChevronLeftIcon, ICON_STROKE, PlusIcon } from '../design/icons';
@@ -53,10 +48,6 @@ import { Sheet, SheetBackdropScale, useSheetBackdropProgress } from '../design/c
 
 // newest first, like the canvas
 const ORDER = OrderDirection.DESC;
-// prototype scroll: from 10pt to 80pt the large title shrinks to 88% (from its bottom-left corner)
-// and fades to 10%; the compact bar comes in at 48pt (LargeTitleHeader)
-const TITLE_FADE_FROM = 10;
-const TITLE_FADE_TO = 80;
 // after „Trimis spre aprobare” closes: the new row glows and the toast comes this much later
 const AFTER_CLOSE_MS = 420;
 
@@ -228,15 +219,7 @@ const ActivityLogs = ({ navigation, route }: any) => {
     }
   };
 
-  const titleStyle = useAnimatedStyle(() => {
-    const p = interpolate(
-      scrollY.value,
-      [TITLE_FADE_FROM, TITLE_FADE_TO],
-      [0, 1],
-      Extrapolation.CLAMP,
-    );
-    return { opacity: 1 - p * 0.9, transform: [{ scale: 1 - p * 0.12 }] };
-  });
+  const titleStyle = useLargeTitleCollapse(scrollY);
 
   const header = (
     <View style={[styles.header, { paddingTop: insets.top + 18 }]}>
@@ -395,7 +378,7 @@ const ActivityLogs = ({ navigation, route }: any) => {
           testID="hours-list"
         />
         <StatusBarScrim color={palette.paper} />
-        <LargeTitleHeader title={`${t('title')}`} scrollY={scrollY} compactOnly />
+        <LargeTitleHeader title={`${t('title')}`} scrollY={scrollY} bar="only" />
       </SheetBackdropScale>
 
       <AddHoursSheet ref={addSheet} animatedPosition={animatedPosition} onSent={onSent} />
