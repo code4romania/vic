@@ -106,7 +106,7 @@ export default ModalLayout;
 const styles = StyleSheet.create((theme) => ({
   screen: { flex: 1, backgroundColor: theme.colors.background },
   header: { paddingTop: theme.space.m },
-  childrenContainer: { flex: 1, paddingHorizontal: 16 },
+  childrenContainer: { flex: 1, paddingHorizontal: theme.space.gutter },
   bottomActionContainer: {
     width: '100%',
     backgroundColor: theme.colors.background,

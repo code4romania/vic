@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import Animated, {
+  FadeIn,
   useAnimatedStyle,
   useReducedMotion,
   useSharedValue,
@@ -11,9 +12,16 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
-import { VText } from '../ui/VText';
+import { VText as BaseText, VTextProps } from '../ui/VText';
 import { Badge } from '../ui/Badge';
 import { colors, fonts, motion } from '../../common/theme/tokens';
+import { radius as dsRadius } from '../../design/tokens';
+import { duration } from '../../design/motion';
+
+// The scenes are pictures: the stage is one button with its own label, so their sample text is not
+// read and does not grow with Dynamic Type (it would overflow the fixed cards); the story title
+// under the stage grows instead.
+const VText = (props: VTextProps) => <BaseText maxFontSizeMultiplier={1} {...props} />;
 
 const EASE = motion.enter.easing;
 
@@ -44,7 +52,10 @@ const Fly = ({
 }) => {
   const reducedMotion = useReducedMotion();
   return (
-    <Animated.View style={[styles.mini, style]} entering={reducedMotion ? undefined : flyIn(delay)}>
+    <Animated.View
+      style={[styles.mini, style]}
+      entering={reducedMotion ? FadeIn.duration(duration.reduced) : flyIn(delay)}
+    >
       {children}
     </Animated.View>
   );
@@ -268,8 +279,16 @@ const HoursScene = () => {
         <Swap
           after={1300}
           style={styles.swapBadge}
-          from={<Badge label={t('sample.pending')} tone="wait" />}
-          to={<Badge label={t('sample.approved')} tone="ok" />}
+          from={
+            <View style={styles.badgeEnd}>
+              <Badge label={t('sample.pending')} tone="wait" />
+            </View>
+          }
+          to={
+            <View style={styles.badgeEnd}>
+              <Badge label={t('sample.approved')} tone="ok" />
+            </View>
+          }
         />
       </Fly>
     </View>
@@ -321,7 +340,7 @@ export const StoryScenes = [OrganizationsScene, EventScene, HoursScene, Document
 const styles = StyleSheet.create({
   mini: {
     backgroundColor: colors.white,
-    borderRadius: 16,
+    borderRadius: dsRadius.row,
     shadowColor: '#000',
     shadowOpacity: 0.35,
     shadowRadius: 20,
@@ -355,8 +374,8 @@ const styles = StyleSheet.create({
   cover: {
     height: 150,
     backgroundColor: colors.teal,
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
+    borderTopLeftRadius: dsRadius.row,
+    borderTopRightRadius: dsRadius.row,
   },
   coverBadge: {
     position: 'absolute',
@@ -375,11 +394,20 @@ const styles = StyleSheet.create({
   sceneHours: { width: 290, gap: 12 },
   hoursCard: { padding: 16, gap: 10 },
   hoursTotal: { flexDirection: 'row', alignItems: 'baseline', gap: 6 },
-  bigNumber: { fontFamily: fonts.title, fontSize: 34, lineHeight: 38, color: colors.ink },
+  bigNumber: {
+    fontFamily: fonts.title,
+    fontSize: 34,
+    lineHeight: 38,
+    letterSpacing: -1.36,
+    fontVariant: ['tabular-nums'],
+    color: colors.ink,
+  },
   bars: { flexDirection: 'row', alignItems: 'flex-end', gap: 8, height: 80 },
   barSlot: { flex: 1, height: '100%', justifyContent: 'flex-end' },
   bar: { width: '100%', borderTopLeftRadius: 6, borderTopRightRadius: 6, borderRadius: 3 },
-  swapBadge: { width: 104, height: 24, alignItems: 'flex-end' },
+  // the status pills are 28pt; both sit at the right edge of the row
+  swapBadge: { width: 124, height: 28 },
+  badgeEnd: { flex: 1, alignItems: 'flex-end', justifyContent: 'center' },
   sceneDocs: { width: 250, height: 300 },
   paper: { position: 'absolute', padding: 18, gap: 8 },
   paperBack: {

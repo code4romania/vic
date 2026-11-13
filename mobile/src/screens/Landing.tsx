@@ -21,6 +21,7 @@ import { MailIcon } from '../design/icons';
 import { palette } from '../design/tokens';
 import { hasSeenOnboarding } from '../common/utils/onboarding';
 import { isMigrationNoticeActive } from '../common/utils/migration-notice';
+import { displayTitle } from '../layouts/displayTitle';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -251,8 +252,9 @@ const styles = StyleSheet.create((theme) => ({
   content: { flexGrow: 1, paddingHorizontal: 24 },
   copy: { gap: 12 },
   copyCompact: { gap: 8 },
-  title: { fontSize: 46, lineHeight: 46, maxWidth: 340 },
-  titleCompact: { fontSize: 38, lineHeight: 39 },
+  // the masthead headline: tight like the handbook's h1, with headroom for Î / ț (see displayTitle)
+  title: { ...displayTitle(46, 0.92), maxWidth: 340 },
+  titleCompact: displayTitle(38, 0.94),
   subtitle: {
     color: 'rgba(255,255,255,0.78)',
     fontFamily: theme.fontFamily.textBold,
