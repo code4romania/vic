@@ -118,8 +118,16 @@ export default EventFiltersSheet;
 const styles = StyleSheet.create((theme) => ({
   section: { gap: 10 },
   options: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 16 },
+  // at large text sizes the button moves under "Șterge filtrele" instead of squeezing its label
+  footer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    columnGap: 16,
+    rowGap: 12,
+  },
   clear: { textDecorationLine: 'underline', color: theme.colors.ink },
   dim: { opacity: 0.45 },
-  apply: { flexShrink: 1 },
+  apply: { marginLeft: 'auto', maxWidth: '100%' },
 }));
