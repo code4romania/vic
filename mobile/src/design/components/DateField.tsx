@@ -164,7 +164,7 @@ export const DateField = ({
           >
             <CalendarIcon size={20} color={palette.navy} strokeWidth={2} />
             <AppText
-              numberOfLines={1}
+              numberOfLines={2}
               testID={`${testID}-value`}
               color={value && !disabled ? palette.navy : palette.ink2}
               style={[fieldStyles.value, value ? null : fieldStyles.placeholder]}

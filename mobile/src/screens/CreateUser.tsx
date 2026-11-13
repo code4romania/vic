@@ -34,6 +34,7 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import { CONSTANTS, REGEX } from '../common/constants/constants';
 import { renderPhoneNumberPrefix } from '../components/InputPrefixes';
 import { usePaddingTop } from '../hooks/usePaddingTop';
+import { displayTitle } from '../layouts/displayTitle';
 
 export type UserFormTypes = {
   firstName: string;
@@ -151,7 +152,6 @@ const CreateUser = ({ navigation }: any) => {
       headerStyle={{ paddingTop }}
     >
       <FormLayout scrollRef={scrollRef}>
-        {/* 20pt side margins: the layout gives 16 */}
         <View style={styles.content}>
           <Animated.View style={styles.intro} entering={enter(0, reduced)}>
             <AppText variant="largeTitle" style={styles.heading} accessibilityRole="header">
@@ -275,9 +275,9 @@ const CreateUser = ({ navigation }: any) => {
 export default CreateUser;
 
 const styles = StyleSheet.create((theme) => ({
-  content: { marginHorizontal: theme.space.gutter - 16, gap: 18 },
+  content: { gap: 18 },
   intro: { gap: theme.space.s, paddingTop: theme.space.xxs, paddingBottom: theme.space.xxs },
-  heading: { fontSize: 36, lineHeight: 38 },
+  heading: displayTitle(36),
   // the consent sits on a white card so it reads as one block
   terms: {
     backgroundColor: theme.colors.card,

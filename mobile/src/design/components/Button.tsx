@@ -120,6 +120,9 @@ export const Button = ({
       : { transform: [{ scale }] };
   });
   const pressFill = useAnimatedStyle(() => ({ opacity: pressed.value }));
+  // the yellow button's darker bottom edge (inset 0 -3 navy 12%) tightens to 1pt when pressed
+  const edgeRest = useAnimatedStyle(() => ({ opacity: 1 - pressed.value }));
+  const edgePressed = useAnimatedStyle(() => ({ opacity: pressed.value }));
 
   // a 34pt button still has a 44pt target
   const slop = hitSlop ?? Math.max(0, Math.ceil((hit.min - dims.height) / 2));
@@ -164,6 +167,18 @@ export const Button = ({
             pressFill,
           ]}
         />
+        {variant === 'primary' && (
+          <>
+            <Animated.View
+              pointerEvents="none"
+              style={[styles.edge, styles.edgeRest, { borderRadius: dims.radius }, edgeRest]}
+            />
+            <Animated.View
+              pointerEvents="none"
+              style={[styles.edge, styles.edgePressed, { borderRadius: dims.radius }, edgePressed]}
+            />
+          </>
+        )}
         {/* the label stays laid out (invisible) while loading, so the width does not jump */}
         <View
           style={[styles.content, loading ? styles.hidden : null]}
@@ -204,6 +219,9 @@ const styles = StyleSheet.create((theme) => ({
   content: { flexShrink: 1, flexDirection: 'row', alignItems: 'center', gap: theme.space.xs },
   hidden: { opacity: 0 },
   bordered: { borderWidth: 2 },
+  edge: { ...StyleSheet.absoluteFillObject, borderColor: 'rgba(1,52,79,0.12)' },
+  edgeRest: { borderBottomWidth: 3 },
+  edgePressed: { borderBottomWidth: 1 },
   label: { flexShrink: 1, textAlign: 'center' },
   spinner: {
     ...StyleSheet.absoluteFillObject,
