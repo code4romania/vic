@@ -8,7 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOkResponse } from '@nestjs/swagger';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { CreateEventRSVPUseCase } from 'src/usecases/event/RSVP/create-rsvp.usecase';
 import { DeleteEventRSVPUseCase } from 'src/usecases/event/RSVP/delete-rsvp.usecase';
@@ -30,6 +30,9 @@ import { MobileEventPresenter } from './presenters/mobile-event.presenter';
 import { GetEventsByOrganizationUsecase } from 'src/usecases/event/get-events-by-organization.usecase';
 import { IdAndNamePresenter } from 'src/infrastructure/presenters/id-name.presenter';
 import { IEventModel } from 'src/modules/event/models/event.model';
+import { GetMyEventsCountsDto } from './dto/get-my-events-counts.dto';
+import { GetMyEventsCountsUsecase } from 'src/usecases/event/get-my-events-counts.usecase';
+import { MobileEventsCountsPresenter } from './presenters/mobile-events-counts.presenter';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard, MobileProfileGuard) // VolunteerGuard
@@ -41,6 +44,7 @@ export class MobileEventController {
     private readonly getMyEventsUsecase: GetMyEventsUsecase,
     private readonly getOneEventWithVolunteerStatus: GetOneEventWithVolunteerStatusUsecase,
     private readonly getEventsByOrganization: GetEventsByOrganizationUsecase,
+    private readonly getMyEventsCountsUsecase: GetMyEventsCountsUsecase,
   ) {}
 
   @Get()
@@ -60,6 +64,21 @@ export class MobileEventController {
         (event) => new MobileEventListItemPresenter(event),
       ),
     });
+  }
+
+  // The badges of the three segments, for the same search and filters as the list
+  @Get('counts')
+  @ApiOkResponse({ type: MobileEventsCountsPresenter })
+  async getCounts(
+    @Query() filters: GetMyEventsCountsDto,
+    @ExtractUser() { id }: IRegularUserModel,
+  ): Promise<MobileEventsCountsPresenter> {
+    const counts = await this.getMyEventsCountsUsecase.execute({
+      ...filters,
+      userId: id,
+    });
+
+    return new MobileEventsCountsPresenter(counts);
   }
 
   // TODO: Volunteer Guard

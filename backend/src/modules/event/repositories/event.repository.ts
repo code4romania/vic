@@ -33,7 +33,10 @@ import {
   FindEventCandidatesOptions,
   IEventCandidateModel,
   IEventRegistrationExportRow,
+  CountMyEventsOptions,
+  IMyEventsCountsModel,
 } from '../models/event.model';
+import { EventFilterEnum } from '../enums/event-filter.enum';
 import { EventStatus } from '../enums/event-status.enum';
 import { VolunteerEntity } from 'src/modules/volunteer/entities/volunteer.entity';
 import { EventRSVPEntity } from '../entities/event-rsvp.entity';
@@ -339,87 +342,138 @@ export class EventRepository
   async findOpenEvents(
     findOptions: Omit<FindMyEventsOptions, 'eventFilter'>,
   ): Promise<Pagination<IEventsMobileListItemModel>> {
-    const { userId } = findOptions;
-    const query = this.createSelectOpenOrganizationGoingEventsBaseSelectQuery();
-
-    // Get all events in progress from the organizations i am part or public events
-    query.andWhere(
-      `${EVENT_END} > :currentDate AND ((event.isPublic = :isPublic AND event.organizationId NOT IN ` +
-        query
-          .subQuery()
-          .select('vol.organizationId')
-          .from(VolunteerEntity, 'vol')
-          .where('vol.userId = :userId AND vol.status = :blocked ', {
-            userId,
-            blocked: VolunteerStatus.BLOCKED,
-          })
-          .getQuery() +
-        ') OR (v.userId = :userId AND v.status = :active AND (targets.id = vp.departmentId OR targets.id IS NULL)))',
-      {
-        isPublic: true,
-        currentDate: new Date(),
-        userId,
-        active: VolunteerStatus.ACTIVE,
-      },
+    return this.orderAndPaginate(
+      this.buildMyEventsQuery(EventFilterEnum.OPEN, findOptions),
+      findOptions,
     );
-
-    return this.searchOrderAndPaginate(query, findOptions);
   }
 
-  // Get all ongoing events public or from the organizations the user is part of
+  // Get all ongoing events from the organizations the user is an active volunteer of
   async findMyOrganizationsEvents(
     findOptions: Omit<FindMyEventsOptions, 'eventFilter'>,
   ): Promise<Pagination<IEventsMobileListItemModel>> {
-    const { userId } = findOptions;
-    const query = this.createSelectOpenOrganizationGoingEventsBaseSelectQuery();
-
-    query.andWhere(
-      `${EVENT_END} > :currentDate AND v.userId = :userId AND v.status = :volunteerStatus AND (targets.id = vp.departmentId OR targets.id IS NULL)`,
-      {
-        currentDate: new Date(),
-        userId,
-        volunteerStatus: VolunteerStatus.ACTIVE,
-      },
+    return this.orderAndPaginate(
+      this.buildMyEventsQuery(EventFilterEnum.ORGANIZATIONS, findOptions),
+      findOptions,
     );
-
-    return this.searchOrderAndPaginate(query, findOptions);
   }
 
   // get all ongoing or upcoming events where the user have confirmed going
   async findGoingEvents(
     findOptions: Omit<FindMyEventsOptions, 'eventFilter'>,
   ): Promise<Pagination<IEventsMobileListItemModel>> {
-    const { userId } = findOptions;
+    return this.orderAndPaginate(
+      this.buildMyEventsQuery(EventFilterEnum.GOING, findOptions),
+      findOptions,
+    );
+  }
+
+  // The totals of the three mobile segments, built with the very queries of the lists, so a badge
+  // always says what its list holds (the same visibility rules, search and filters).
+  async countMyEvents(
+    findOptions: CountMyEventsOptions,
+  ): Promise<IMyEventsCountsModel> {
+    const [open, going, organizations] = await Promise.all(
+      [
+        EventFilterEnum.OPEN,
+        EventFilterEnum.GOING,
+        EventFilterEnum.ORGANIZATIONS,
+      ].map((filter) =>
+        // getCount counts distinct events, like the list's totalItems (getManyAndCount)
+        this.buildMyEventsQuery(filter, findOptions).getCount(),
+      ),
+    );
+
+    return { open, going, organizations };
+  }
+
+  // One segment of the mobile events screen: its visibility rule plus the search and the
+  // Organizație / Când filters. Shared by the lists and their counts so they cannot drift.
+  private buildMyEventsQuery(
+    filter: EventFilterEnum,
+    findOptions: CountMyEventsOptions,
+  ): SelectQueryBuilder<EventEntity> {
+    const { userId, search, organizationId, startFrom, startTo } = findOptions;
     const query = this.createSelectOpenOrganizationGoingEventsBaseSelectQuery();
 
-    query.andWhere(
-      `${EVENT_END} > :currentDate AND ((v.status = :active AND v.userId = :userId) OR event.isPublic = :isPublic)`,
-      {
-        currentDate: new Date(),
-        active: VolunteerStatus.ACTIVE,
-        isPublic: true,
-      },
-    );
-
-    // Get all events where i have responded with going, unless the NGO rejected it (#501)
-    query.andWhere(
-      'event.id IN ' +
-        query
-          .subQuery()
-          .select('rsvp.eventId')
-          .from(EventRSVPEntity, 'rsvp')
-          .where('rsvp.userId = :userId AND rsvp.going = :going ', {
+    switch (filter) {
+      case EventFilterEnum.OPEN:
+        // Get all events in progress from the organizations i am part or public events
+        query.andWhere(
+          `${EVENT_END} > :currentDate AND ((event.isPublic = :isPublic AND event.organizationId NOT IN ` +
+            query
+              .subQuery()
+              .select('vol.organizationId')
+              .from(VolunteerEntity, 'vol')
+              .where('vol.userId = :userId AND vol.status = :blocked ', {
+                userId,
+                blocked: VolunteerStatus.BLOCKED,
+              })
+              .getQuery() +
+            ') OR (v.userId = :userId AND v.status = :active AND (targets.id = vp.departmentId OR targets.id IS NULL)))',
+          {
+            isPublic: true,
+            currentDate: new Date(),
             userId,
-            going: true,
-          })
-          .andWhere(
-            '(rsvp.status IS NULL OR rsvp.status <> :rejectedRegistration)',
-            { rejectedRegistration: EventRegistrationStatus.REJECTED },
-          )
-          .getQuery(),
-    );
+            active: VolunteerStatus.ACTIVE,
+          },
+        );
+        break;
+      case EventFilterEnum.ORGANIZATIONS:
+        query.andWhere(
+          `${EVENT_END} > :currentDate AND v.userId = :userId AND v.status = :volunteerStatus AND (targets.id = vp.departmentId OR targets.id IS NULL)`,
+          {
+            currentDate: new Date(),
+            userId,
+            volunteerStatus: VolunteerStatus.ACTIVE,
+          },
+        );
+        break;
+      case EventFilterEnum.GOING:
+        query.andWhere(
+          `${EVENT_END} > :currentDate AND ((v.status = :active AND v.userId = :userId) OR event.isPublic = :isPublic)`,
+          {
+            currentDate: new Date(),
+            active: VolunteerStatus.ACTIVE,
+            isPublic: true,
+          },
+        );
+        // Get all events where i have responded with going, unless the NGO rejected it (#501)
+        query.andWhere(
+          'event.id IN ' +
+            query
+              .subQuery()
+              .select('rsvp.eventId')
+              .from(EventRSVPEntity, 'rsvp')
+              .where('rsvp.userId = :userId AND rsvp.going = :going ', {
+                userId,
+                going: true,
+              })
+              .andWhere(
+                '(rsvp.status IS NULL OR rsvp.status <> :rejectedRegistration)',
+                { rejectedRegistration: EventRegistrationStatus.REJECTED },
+              )
+              .getQuery(),
+        );
+        break;
+    }
 
-    return this.searchOrderAndPaginate(query, findOptions);
+    if (search) {
+      query.andWhere(this.buildBracketSearchQuery(['event.name'], search));
+    }
+    if (organizationId) {
+      query.andWhere('event.organizationId = :filterOrganizationId', {
+        filterOrganizationId: organizationId,
+      });
+    }
+    if (startFrom) {
+      query.andWhere('event.startDate >= :startFrom', { startFrom });
+    }
+    if (startTo) {
+      query.andWhere('event.startDate <= :startTo', { startTo });
+    }
+
+    return query;
   }
 
   async findOngoingAndFinishedEvents(
@@ -486,40 +540,15 @@ export class EventRepository
     );
   }
 
-  private async searchOrderAndPaginate(
+  private async orderAndPaginate(
     eventQuery: SelectQueryBuilder<EventEntity>,
     findOptions: Omit<FindMyEventsOptions, 'eventFilter'>,
   ): Promise<Pagination<IEventsMobileListItemModel>> {
-    const {
-      orderBy,
-      orderDirection,
-      search,
-      userId,
-      organizationId,
-      startFrom,
-      startTo,
-    } = findOptions;
+    const { orderBy, orderDirection, userId } = findOptions;
     const updatedQuery = eventQuery.orderBy(
       this.buildOrderByQuery(orderBy || 'startDate', 'event'),
       orderDirection || OrderDirection.ASC,
     );
-
-    if (search) {
-      updatedQuery.andWhere(
-        this.buildBracketSearchQuery(['event.name'], search),
-      );
-    }
-    if (organizationId) {
-      updatedQuery.andWhere('event.organizationId = :filterOrganizationId', {
-        filterOrganizationId: organizationId,
-      });
-    }
-    if (startFrom) {
-      updatedQuery.andWhere('event.startDate >= :startFrom', { startFrom });
-    }
-    if (startTo) {
-      updatedQuery.andWhere('event.startDate <= :startTo', { startTo });
-    }
 
     const page = await this.paginateQuery(
       updatedQuery,

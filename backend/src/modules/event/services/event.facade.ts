@@ -15,6 +15,8 @@ import {
   CreateEventOptions,
   FindManyEventOptions,
   FindMyEventsOptions,
+  CountMyEventsOptions,
+  IMyEventsCountsModel,
   FindOneEventOptions,
   FindOngoingAndFinishedEventOptions,
   IEventModel,
@@ -149,6 +151,12 @@ export class EventFacade {
     findOptions: Omit<FindMyEventsOptions, 'eventFilter'>,
   ): Promise<Pagination<IEventsMobileListItemModel>> {
     return this.eventRepository.findGoingEvents(findOptions);
+  }
+
+  async countMyEvents(
+    findOptions: CountMyEventsOptions,
+  ): Promise<IMyEventsCountsModel> {
+    return this.eventRepository.countMyEvents(findOptions);
   }
 
   async findOngoingAndFinishedEvents(
