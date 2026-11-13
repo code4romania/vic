@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import FormSelect, { FormSelectProps, ISelectItem } from '../components/FormSelect';
 import { getEventsByOrganizationId } from '../services/event/event.api';
+import { formatDayMonth } from '../common/utils/event-format';
 
 interface EventSelectProps extends Omit<FormSelectProps, 'options'> {
   organizationId: string;
@@ -19,9 +20,11 @@ const EventSelect = ({ organizationId, noneLabel, ...props }: EventSelectProps) 
   const loadEvents = async () => {
     try {
       const rawEvents = await getEventsByOrganizationId(organizationId);
-      const mappedStructures = rawEvents.map((structure) => ({
-        label: structure.name,
-        key: structure.id,
+      const mappedStructures = rawEvents.map((event) => ({
+        label: event.name,
+        key: event.id,
+        // „13 NOV” on the right of the row, like the prototype's menu
+        detail: formatDayMonth(event.startDate) || undefined,
       }));
       setStructures(mappedStructures);
     } catch {

@@ -217,7 +217,9 @@ describe('Ore', () => {
     expect(titleRow.getByTestId('hours-back')).toBeTruthy();
     expect(titleRow.getByRole('header', { name: i18n.t('activity_logs:title') })).toBeTruthy();
     expect(titleRow.getByTestId('hours-add')).toBeTruthy();
-    expect(titleRow.getByText('+ Adaugă')).toBeTruthy();
+    // „Adaugă” with a lucide Plus before it, not a typed „+”
+    expect(titleRow.getByText('Adaugă')).toBeTruthy();
+    expect(titleRow.queryByText(/\+/)).toBeNull();
     expect(titleRow.getByTestId('hours-add').props.accessibilityLabel).toBe('Adaugă ore');
   });
 
@@ -421,7 +423,9 @@ describe('Ore', () => {
     expect(screen.getByTestId('hours-submit').props.accessibilityLabel).toBe(
       'Trimite spre aprobare',
     );
-    expect(screen.getByText('Trimite spre aprobare →')).toBeTruthy();
+    // the arrow is a lucide icon after the label, not a typed „→”
+    expect(screen.getByText('Trimite spre aprobare')).toBeTruthy();
+    expect(screen.queryByText(/→/)).toBeNull();
   });
 
   it('asks before closing changed hours and keeps them when staying', async () => {
