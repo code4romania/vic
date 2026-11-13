@@ -285,7 +285,8 @@ const ActivityLogs = ({ navigation, route }: any) => {
         />
       );
     }
-    const emptyAdd = status === ActivityLogStatus.PENDING && canAdd;
+    // on the tab the add action already sits in the tab bar; the empty state repeats it only off-tab
+    const emptyAdd = status === ActivityLogStatus.PENDING && canAdd && !asTab;
     if (isFetching && !isRefetching && !items.length) {
       return <ActivityLogSkeletonItem />;
     }
