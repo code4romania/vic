@@ -4,22 +4,27 @@ import Animated, {
   useAnimatedStyle,
   useReducedMotion,
   useSharedValue,
-  withTiming,
 } from 'react-native-reanimated';
-import { motion } from '../../common/theme/tokens';
+import { springTo } from '../../design/motion';
+
+/** Prototype `.press:active{transform:scale(.965)}` with the snappy spring. */
+export const PRESSED_SCALE = 0.965;
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 export interface PressableScaleProps extends Omit<PressableProps, 'style'> {
   style?: StyleProp<ViewStyle>;
-  /** Scale while pressed. Defaults to the canvas value (.98). */
+  /** Scale while pressed. Defaults to the prototype value (.965). */
   pressedScale?: number;
 }
 
-/** Pressable that shrinks slightly while pressed (canvas: `.btn:active{transform:scale(.98)}`). */
+/**
+ * Pressable that shrinks slightly while pressed and springs back (snappy spring). Reduce Motion: no
+ * scale.
+ */
 export const PressableScale = ({
   style,
-  pressedScale = motion.press.scale,
+  pressedScale = PRESSED_SCALE,
   onPressIn,
   onPressOut,
   disabled,
@@ -37,12 +42,12 @@ export const PressableScale = ({
       {...props}
       onPressIn={(event) => {
         if (!reducedMotion) {
-          scale.value = withTiming(pressedScale, { duration: motion.press.duration });
+          scale.value = springTo(pressedScale, 'snappy', false);
         }
         onPressIn?.(event);
       }}
       onPressOut={(event) => {
-        scale.value = withTiming(1, { duration: motion.press.duration });
+        scale.value = springTo(1, 'snappy', reducedMotion);
         onPressOut?.(event);
       }}
       style={[style, animatedStyle]}

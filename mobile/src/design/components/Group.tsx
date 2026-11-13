@@ -44,5 +44,6 @@ const styles = StyleSheet.create((theme) => ({
     overflow: 'hidden',
   },
   padded: { paddingHorizontal: theme.space.l },
-  line: { height: StyleSheet.hairlineWidth, backgroundColor: theme.colors.line },
+  // 1pt line, like the prototype (`border-top:1px solid var(--line)`)
+  line: { height: 1, backgroundColor: theme.colors.line },
 }));

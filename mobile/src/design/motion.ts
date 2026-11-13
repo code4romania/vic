@@ -32,6 +32,9 @@ export const duration = {
   toast: 2200,
 } as const;
 
+/** Entrance lift in points (prototype `@keyframes stIn`). */
+export const ENTER_LIFT = 16;
+
 /** At most 8 stagger steps; later items enter at once. */
 export const MAX_STAGGER = 8;
 
@@ -54,6 +57,8 @@ export const enter = (i: number, reduced = false) =>
     : FadeInDown.springify()
         .stiffness(spring.gentle.stiffness)
         .damping(spring.gentle.damping)
+        // the handbook lift is 16pt (FadeInDown's own default is 25)
+        .withInitialValues({ opacity: 0, transform: [{ translateY: ENTER_LIFT }] })
         .delay(Math.min(i, MAX_STAGGER) * duration.stagger);
 
 export const exit = (reduced = false) =>

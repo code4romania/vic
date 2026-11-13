@@ -243,7 +243,10 @@ describe('Ore', () => {
     }
     expect(summary.getByTestId('impact-hexagon', { includeHiddenElements: true })).toBeTruthy();
     // the large title and the compact one that comes in after scrolling
-    expect(screen.getAllByText('Ore de voluntariat')).toHaveLength(2);
+    // (the compact one is hidden from VoiceOver: the large title is the header)
+    expect(screen.getAllByText('Ore de voluntariat', { includeHiddenElements: true })).toHaveLength(
+      2,
+    );
   });
 
   it('refetches the current list and counters on initial focus and when returning', async () => {
