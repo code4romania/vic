@@ -21,6 +21,7 @@ import { enter } from '../design/motion';
 import { MailIcon } from '../design/icons';
 import { palette } from '../design/tokens';
 import { isMigrationNoticeActive } from '../common/utils/migration-notice';
+import { displayTitle } from '../layouts/displayTitle';
 
 // A new code can be asked for once a minute (the backend answers AUTH_010 sooner).
 export const RESEND_AFTER_SECONDS = 60;
@@ -229,7 +230,7 @@ const Login = ({ navigation, route }: any) => {
           )}
           <Animated.View entering={enter(3, reduced)} style={styles.divider}>
             <View style={styles.rule} />
-            <AppText variant="caption" color={palette.ink2}>
+            <AppText variant="caption" color={palette.ink2} style={styles.dividerText}>
               {t('code.or_type')}
             </AppText>
             <View style={styles.rule} />
@@ -251,7 +252,11 @@ const Login = ({ navigation, route }: any) => {
           </Animated.View>
           <Animated.View entering={enter(5, reduced)} style={styles.resendRow}>
             {secondsLeft > 0 ? (
-              <AppText variant="caption" color={palette.ink2} style={styles.tabular}>
+              <AppText
+                variant="caption"
+                color={palette.ink2}
+                style={[styles.tabular, styles.shrink]}
+              >
                 {t('code.resend_in', { seconds: secondsLeft })}
               </AppText>
             ) : (
@@ -360,7 +365,7 @@ const styles = StyleSheet.create((theme) => ({
   // the round button keeps its own 44pt, not the column's width
   back: { alignSelf: 'flex-start' },
   intro: { gap: 10 },
-  title: { fontSize: 40, lineHeight: 42 },
+  title: displayTitle(40),
   mailHex: { width: 64, height: 70, alignItems: 'center', justifyContent: 'center' },
   notice: {
     backgroundColor: theme.colors.card,
@@ -369,12 +374,18 @@ const styles = StyleSheet.create((theme) => ({
   },
   divider: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   rule: { flex: 1, height: StyleSheet.hairlineWidth, backgroundColor: theme.colors.line },
+  // wraps at the largest text sizes on a 320pt phone instead of pushing "Alt email" off screen
   resendRow: {
     minHeight: 44,
     flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'space-between',
     alignItems: 'center',
+    columnGap: 16,
+    rowGap: 8,
   },
+  shrink: { flexShrink: 1 },
+  dividerText: { flexShrink: 1, textAlign: 'center' },
   tabular: { fontVariant: ['tabular-nums'] },
   underline: { textDecorationLine: 'underline' },
   footer: {

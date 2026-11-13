@@ -317,7 +317,15 @@ export const fieldStyles = StyleSheet.create((theme) => ({
   },
   inputMultiline: { minHeight: 60, textAlignVertical: 'top' },
   inputDisabled: { color: theme.colors.textSecondary },
-  value: { flex: 1, fontFamily: theme.fontFamily.textBold, fontSize: 15.5, lineHeight: 21 },
+  // select / date value: wraps to a second line for long names, with room above and below
+  value: {
+    flex: 1,
+    minWidth: 0,
+    paddingVertical: 6,
+    fontFamily: theme.fontFamily.textBold,
+    fontSize: 15.5,
+    lineHeight: 21,
+  },
   placeholder: { fontFamily: theme.fontFamily.text },
   errorFold: { overflow: 'hidden' },
   errorRow: {

@@ -38,9 +38,7 @@ const CodeBox = ({
   return (
     <View style={styles.cell}>
       <Animated.View pointerEvents="none" style={[styles.halo, ring.halo]} />
-      <Animated.View
-        style={[styles.box, digit ? styles.filled : null, error ? styles.error : null, ring.field]}
-      >
+      <Animated.View style={[styles.box, error ? styles.error : null, ring.field]}>
         <Text maxFontSizeMultiplier={fontScaleCap.display} style={styles.digit}>
           {digit ?? ''}
         </Text>
@@ -114,7 +112,10 @@ CodeInput.displayName = 'CodeInput';
 
 export default CodeInput;
 
-const BOX_HEIGHT = 60;
+// the field height of the handbook; the focus halo is the field's 5pt one
+const BOX_HEIGHT = 56;
+const HALO = 5;
+const BOX_RADIUS = 14;
 
 const styles = StyleSheet.create((theme) => ({
   row: { flexDirection: 'row', justifyContent: 'center', gap: 8 },
@@ -122,28 +123,29 @@ const styles = StyleSheet.create((theme) => ({
   cell: { flex: 1, maxWidth: 56 },
   halo: {
     position: 'absolute',
-    top: -4,
-    left: -4,
-    right: -4,
-    bottom: -4,
-    borderRadius: 18,
+    top: -HALO,
+    left: -HALO,
+    right: -HALO,
+    bottom: -HALO,
+    borderRadius: BOX_RADIUS + HALO,
     backgroundColor: theme.colors.yellow,
   },
   box: {
     height: BOX_HEIGHT,
-    borderRadius: 14,
+    borderRadius: BOX_RADIUS,
     borderWidth: 2,
     borderColor: 'transparent',
     backgroundColor: theme.colors.surface,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  filled: { backgroundColor: theme.colors.card },
   error: { backgroundColor: theme.colors.errorTint },
   digit: {
     fontFamily: theme.fontFamily.display,
     fontSize: 28,
     lineHeight: 34,
+    letterSpacing: -0.7,
+    includeFontPadding: false,
     color: theme.colors.ink,
     fontVariant: ['tabular-nums'],
   },

@@ -33,6 +33,7 @@ import { VicLogo } from '../components/brand/VicLogo';
 import { HexMotifShape } from '../components/auth/LoginHero';
 import { StoryScenes } from '../components/onboarding/StoryScenes';
 import { markOnboardingSeen } from '../common/utils/onboarding';
+import { displayTitle } from '../layouts/displayTitle';
 
 export const STORY_DURATION = 3800;
 
@@ -137,11 +138,16 @@ const Onboarding = ({ navigation }: any) => {
   const Scene = StoryScenes[index];
   const story = STORIES[index];
 
-  // The scene shrinks to the room left between the header and the text: on a small phone
-  // (iPhone SE, Android 360×640) the text never covers it.
+  // The scene shrinks to the room left between the header and the text, and to the screen width:
+  // on a small phone (iPhone SE, Android 360×640, 320pt) the text never covers it and it never
+  // runs off the sides.
   const [stageHeight, setStageHeight] = useState(0);
-  const [sceneHeight, setSceneHeight] = useState(0);
-  const sceneScale = stageHeight && sceneHeight ? Math.min(1, (stageHeight - 16) / sceneHeight) : 1;
+  const [scene, setScene] = useState({ width: 0, height: 0 });
+  const sceneScale = Math.min(
+    1,
+    stageHeight && scene.height ? (stageHeight - 16) / scene.height : 1,
+    scene.width ? (width - 32) / scene.width : 1,
+  );
   const motifSize = Math.min(340, width * 0.9);
 
   return (
@@ -190,7 +196,12 @@ const Onboarding = ({ navigation }: any) => {
         </View>
         <View
           style={{ transform: [{ scale: sceneScale }] }}
-          onLayout={(event) => setSceneHeight(event.nativeEvent.layout.height)}
+          onLayout={(event) =>
+            setScene({
+              width: event.nativeEvent.layout.width,
+              height: event.nativeEvent.layout.height,
+            })
+          }
         >
           <Scene key={story} />
         </View>
@@ -279,7 +290,7 @@ const styles = StyleSheet.create((theme) => ({
   },
   motif: { position: 'absolute' },
   copy: { paddingHorizontal: 24, paddingTop: 8, paddingBottom: 16, gap: 10, minHeight: 112 },
-  title: { fontSize: 34, lineHeight: 36 },
+  title: displayTitle(34),
   foot: { paddingHorizontal: 24, gap: 14 },
   dots: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 4 },
   dot: {

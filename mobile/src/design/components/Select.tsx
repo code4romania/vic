@@ -151,7 +151,7 @@ export function Select<K extends SelectKey>({
             ]}
           >
             <AppText
-              numberOfLines={1}
+              numberOfLines={2}
               color={selected ? (disabled ? palette.ink2 : palette.navy) : palette.ink2}
               style={[fieldStyles.value, selected ? null : fieldStyles.placeholder]}
             >
