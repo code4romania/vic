@@ -117,7 +117,8 @@ const styles = StyleSheet.create((theme) => ({
     paddingHorizontal: 18,
   },
   light: { backgroundColor: theme.colors.card },
-  outline: { borderWidth: 2, borderColor: 'rgba(255,255,255,0.7)' },
+  // the handbook's outline button (2pt, full color), in white on navy
+  outline: { borderWidth: 2, borderColor: theme.colors.white },
   disabled: { opacity: 0.45 },
   icon: { width: 24, alignItems: 'center' },
   label: { flex: 1, textAlign: 'center' },

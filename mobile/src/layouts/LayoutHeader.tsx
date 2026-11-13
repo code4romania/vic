@@ -12,6 +12,7 @@ import { AppText } from '../design/components/Text';
 import { springTo } from '../design/motion';
 import { ChevronLeftIcon, CloseIcon, EditIcon } from '../design/icons';
 import { hit, palette } from '../design/tokens';
+import { displayTitle } from './displayTitle';
 
 export interface RoundIconButtonProps {
   icon: 'back' | 'close';
@@ -80,9 +81,10 @@ export const LayoutHeader = ({
 }: LayoutHeaderProps) => (
   <View style={[styles.header, style]}>
     {leading}
+    {/* long titles („Completează profil voluntar”) wrap to a second line instead of being cut */}
     <AppText
       variant="title"
-      numberOfLines={1}
+      numberOfLines={2}
       style={[styles.title, !leading ? styles.titleAlone : null]}
       accessibilityRole="header"
     >
@@ -124,9 +126,10 @@ const styles = StyleSheet.create((theme) => ({
     justifyContent: 'center',
   },
   roundDark: { backgroundColor: 'rgba(255,255,255,0.14)' },
-  title: { flex: 1, fontSize: 22, lineHeight: 26, letterSpacing: -0.5 },
-  titleAlone: { fontSize: 24, lineHeight: 28 },
+  title: { flex: 1, minWidth: 0, ...displayTitle(22, 1.1, -0.025) },
+  titleAlone: displayTitle(24, 1.1, -0.025),
   edit: {
+    flexShrink: 0,
     minHeight: hit.min,
     flexDirection: 'row',
     alignItems: 'center',

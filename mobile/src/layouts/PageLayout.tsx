@@ -133,7 +133,11 @@ export default PageLayout;
 
 const styles = StyleSheet.create((theme) => ({
   screen: { flex: 1, backgroundColor: theme.colors.background },
-  childrenContainer: { flex: 1, paddingHorizontal: 16, paddingVertical: theme.space.xs },
+  childrenContainer: {
+    flex: 1,
+    paddingHorizontal: theme.space.gutter,
+    paddingVertical: theme.space.xs,
+  },
   actions: {
     gap: theme.space.s,
     paddingTop: theme.space.m,

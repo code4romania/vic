@@ -11,6 +11,7 @@ import { AppText } from '../design/components/Text';
 import { Button } from '../design/components/Button';
 import { enter } from '../design/motion';
 import { palette } from '../design/tokens';
+import { displayTitle } from '../layouts/displayTitle';
 
 export interface SystemStateProps {
   /** small line above the title, e.g. "VIC" */
@@ -88,7 +89,7 @@ const styles = StyleSheet.create((theme) => ({
   },
   body: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 24 },
   copy: { alignItems: 'center', gap: 10 },
-  title: { fontSize: 38, lineHeight: 40, textAlign: 'center' },
+  title: { ...displayTitle(38), textAlign: 'center' },
   description: { maxWidth: 320 },
   center: { textAlign: 'center' },
 }));
