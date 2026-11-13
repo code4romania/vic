@@ -14,6 +14,7 @@ import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
 
 const mockSwitch = jest.fn();
 const mockNewsCalls: NewsType[] = [];
+const mockMarkSeen = jest.fn();
 
 const mockPage = (items: any[]) => ({
   data: { pages: [{ items, meta: { totalItems: items.length } }] },
@@ -53,6 +54,7 @@ const mockNews: Record<string, any[]> = {
 };
 
 jest.mock('../services/news/news.service', () => ({
+  useMarkNewsSeenMutation: () => ({ mutate: mockMarkSeen }),
   useNewsInfiniteQuery: (type: NewsType) => {
     mockNewsCalls.push(type);
     return mockPage(mockNews[type]);
@@ -150,6 +152,14 @@ describe('Noutăți', () => {
     expect(await screen.findByText('Crucea Verde')).toBeTruthy();
     await fireEvent.press(screen.getByText('Documente'));
     expect(await screen.findByText('Nicio noutate aici încă')).toBeTruthy();
+  });
+
+  it('opening Noutăți marks the news seen once (the Home badge goes back to 0)', async () => {
+    await renderApp('news', { type: NewsType.LOGGED_HOURS });
+    expect(await screen.findByText('Noutăți')).toBeTruthy();
+    expect(mockMarkSeen).toHaveBeenCalledTimes(1);
+    await fireEvent.press(screen.getByText('Organizații'));
+    expect(mockMarkSeen).toHaveBeenCalledTimes(1);
   });
 
   it('an update from another organization makes it active, then opens it', async () => {

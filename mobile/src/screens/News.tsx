@@ -1,9 +1,9 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, RefreshControl, StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import { useNewsInfiniteQuery } from '../services/news/news.service';
+import { useMarkNewsSeenMutation, useNewsInfiniteQuery } from '../services/news/news.service';
 import { useActivateOrganization } from '../services/organization/organization.service';
 import { NewsType } from '../common/enums/news-type.enum';
 import { TrackedEventName } from '../common/enums/tracked-event-name.enum';
@@ -44,6 +44,12 @@ const News = ({ navigation, route }: any) => {
   const insets = useSafeAreaInsets();
   useFocusedStatusBarStyle('dark');
   const [type, setType] = useState<NewsType>(route.params?.type ?? NewsType.LOGGED_HOURS);
+
+  // opening „Noutăți” reads them all: the badge on the Home bell goes back to 0
+  const { mutate: markSeen } = useMarkNewsSeenMutation();
+  useEffect(() => {
+    markSeen();
+  }, [markSeen]);
 
   const { activate } = useActivateOrganization();
   const { userProfile } = useUserProfile();

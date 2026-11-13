@@ -112,4 +112,12 @@ export class RegularUserEntity extends UserEntity {
   @ManyToOne(() => OrganizationEntity)
   @JoinColumn({ name: 'active_organization_id' })
   activeOrganization: OrganizationEntity;
+
+  // The last time the volunteer opened "Noutăți": newer news are unread (the badge on the Home bell).
+  @Column({
+    type: 'timestamptz',
+    name: 'news_last_seen_at',
+    default: () => 'now()',
+  })
+  newsLastSeenAt: Date;
 }

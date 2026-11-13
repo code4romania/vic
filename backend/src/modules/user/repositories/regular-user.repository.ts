@@ -59,6 +59,13 @@ export class RegularUserRepositoryService implements IRegularUserRepository {
     return userEntity ? RegularUserTransformer.fromEntity(userEntity) : null;
   }
 
+  async markNewsSeen(id: string): Promise<void> {
+    // the database clock, the one that stamps the news (created_on)
+    await this.regularUserRepository.update(id, {
+      newsLastSeenAt: () => 'now()',
+    });
+  }
+
   async softDeleteAndAnonimize(id: string): Promise<IRegularUserModel> {
     const userToUpdate = await this.regularUserRepository.preload({
       id,

@@ -38,6 +38,7 @@ import { PressableScale } from '../../components/ui/PressableScale';
 import { StatusChip } from '../../design/components/Chip';
 import { HexAvatar } from '../../design/components/ListRow';
 import { ImpactHexagon, useCountUp } from '../../design/components/ImpactHexagon';
+import { CountBadge } from '../../design/components/CountBadge';
 
 // ---------------------------------------------------------------------------------------------
 // Large title + compact glass bar. The large title scrolls with the content (as in the
@@ -117,13 +118,22 @@ export const OrgRow = ({
   name,
   onSwitch,
   onNews,
+  unread = 0,
 }: {
   name?: string;
   /** set when there is another organization to switch to */
   onSwitch?: () => void;
   onNews: () => void;
+  /** news newer than the last visit to „Noutăți”: the red badge on the bell */
+  unread?: number;
 }) => {
   const { t } = useTranslation('home');
+  const newsLabel =
+    unread > 0
+      ? unread === 1
+        ? `${t('news_unread_one')}`
+        : `${t('news_unread', { n: unread })}`
+      : `${t('news')}`;
   return (
     <View style={styles.orgRow}>
       {name ? (
@@ -157,10 +167,11 @@ export const OrgRow = ({
       <PressableScale
         onPress={onNews}
         style={styles.bell}
-        accessibilityLabel={`${t('news')}`}
+        accessibilityLabel={newsLabel}
         testID="home-news"
       >
         <BellIcon size={22} color={palette.navy} strokeWidth={ICON_STROKE} />
+        <CountBadge count={unread} testID="home-news-badge" />
       </PressableScale>
     </View>
   );

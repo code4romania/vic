@@ -68,4 +68,10 @@ export class ActionsArchiveFacade {
   ): Promise<Pagination<IActionArchiveModel>> {
     return this.actionsArchiveRepository.findNews(options);
   }
+
+  async countUnreadNews(
+    options: Pick<FindManyNewsOptions, 'userId' | 'events'>,
+  ): Promise<number> {
+    return this.actionsArchiveRepository.countUnreadNews(options);
+  }
 }
