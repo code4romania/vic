@@ -37,6 +37,7 @@ import { isTabRoute } from '../routes/tab-routes';
 import { useTabBarAccessory, useTabBarScroll } from '../components/navigation/TabBarScroll';
 import { useGlassTabBarInset } from '../components/navigation/GlassTabBar';
 import { HIGHLIGHT_MS, LogRow } from '../components/hours/LogRow';
+import { toHours } from '../common/utils/hours';
 import { HoursSummary } from '../components/hours/HoursSummary';
 import { AddHoursSheet, AddHoursSheetHandle } from '../components/hours/AddHoursSheet';
 import { OrganizationChip, OrganizationSwitchSheet } from '../components/hours/OrganizationChip';
@@ -243,9 +244,9 @@ const ActivityLogs = ({ navigation, route }: any) => {
       {!!organization && (
         <Animated.View entering={enter(2, reduced)}>
           <HoursSummary
-            approved={approvedHours}
-            pending={pendingHours}
-            rejected={rejectedHours}
+            approved={toHours(approvedHours)}
+            pending={toHours(pendingHours)}
+            rejected={toHours(rejectedHours)}
             refillKey={refillKey}
           />
         </Animated.View>
@@ -284,7 +285,8 @@ const ActivityLogs = ({ navigation, route }: any) => {
         />
       );
     }
-    const emptyAdd = status === ActivityLogStatus.PENDING && canAdd;
+    // on the tab the add action already sits in the tab bar; the empty state repeats it only off-tab
+    const emptyAdd = status === ActivityLogStatus.PENDING && canAdd && !asTab;
     if (isFetching && !isRefetching && !items.length) {
       return <ActivityLogSkeletonItem />;
     }

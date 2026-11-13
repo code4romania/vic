@@ -12,6 +12,7 @@ import {
 } from 'react-native-reanimated';
 import { Canvas, Group, Path, Rect, Skia } from '@shopify/react-native-skia';
 import { NavigationContext } from '@react-navigation/native';
+import { toHours } from '../../common/utils/hours';
 import { palette } from '../tokens';
 import { springTo } from '../motion';
 
@@ -150,9 +151,11 @@ export const ImpactHexagon = ({
     };
   }, [W, H, period, bandWidth]);
 
-  const total = approved + pending + rejected;
-  const approvedShare = total > 0 ? approved / total : 0;
-  const pendingShare = total > 0 ? pending / total : 0;
+  // defensive: counters can arrive as numeric strings
+  const a = toHours(approved);
+  const total = a + toHours(pending) + toHours(rejected);
+  const approvedShare = total > 0 ? a / total : 0;
+  const pendingShare = total > 0 ? toHours(pending) / total : 0;
 
   // 0 = empty, 1 = full; the pending band sits on top of the approved liquid
   const approvedLevel = useSharedValue(0);
