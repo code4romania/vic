@@ -3,12 +3,57 @@ import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { IEventWithVolunteerStatus } from 'src/modules/event/models/event.model';
 import { OrganizationStructureListItemPresenter } from 'src/api/organization/presenters/organization-structure-list-item.presenter';
+import {
+  IEventParticipants,
+  PARTICIPANTS_PREVIEW_SIZE,
+} from 'src/modules/event/event-participants';
 import { formatEventDate } from '../helpers/event.helper';
 import { EventVolunteerStatus } from 'src/modules/event/enums/event-volunteer-status.enum';
 import {
   EventDisplayStatus,
   getEventDisplayStatus,
 } from 'src/modules/event/enums/event-status.enum';
+
+export class EventParticipantPreviewPresenter {
+  @Expose()
+  @ApiProperty({
+    description: 'Initials of a volunteer going to the event (no name)',
+    example: 'ȘP',
+  })
+  initials: string;
+
+  @Expose()
+  @ApiProperty({
+    description:
+      'Picture of the volunteer; not sent today (pictures are not shared between volunteers)',
+    required: false,
+  })
+  avatarUrl?: string;
+}
+
+export class EventParticipantsPresenter {
+  constructor(participants: IEventParticipants) {
+    this.total = participants.total;
+    this.preview = participants.preview.map((person) => {
+      const item = new EventParticipantPreviewPresenter();
+      item.initials = person.initials;
+      if (person.avatarUrl) item.avatarUrl = person.avatarUrl;
+      return item;
+    });
+  }
+
+  @Expose()
+  @ApiProperty({ description: 'Volunteers going (approved registrations)' })
+  total: number;
+
+  @Expose()
+  @ApiProperty({
+    type: EventParticipantPreviewPresenter,
+    isArray: true,
+    description: `The first ${PARTICIPANTS_PREVIEW_SIZE} to register, oldest first`,
+  })
+  preview: EventParticipantPreviewPresenter[];
+}
 
 export class MobileEventPresenter {
   constructor(event: IEventWithVolunteerStatus) {
@@ -35,6 +80,12 @@ export class MobileEventPresenter {
 
     this.volunteerStatus = event.volunteerStatus;
     this.numberOfPersonsGoingToEvent = event.numberOfPersonsGoingToEvent;
+    this.participants = new EventParticipantsPresenter(
+      event.participants ?? {
+        total: event.numberOfPersonsGoingToEvent ?? 0,
+        preview: [],
+      },
+    );
     this.registrationStatus = event.registrationStatus ?? null;
     this.rejectionReason = event.rejectionReason ?? null;
 
@@ -143,6 +194,14 @@ export class MobileEventPresenter {
       'Number of volunteers who have responded to join to this event',
   })
   numberOfPersonsGoingToEvent: number;
+
+  @Expose()
+  @ApiProperty({
+    type: EventParticipantsPresenter,
+    description:
+      'Who is coming, privacy-safe: the count and the initials of the first ones',
+  })
+  participants: EventParticipantsPresenter;
 
   @Expose()
   @ApiProperty({ description: 'Wether the event is public or not' })

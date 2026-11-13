@@ -33,6 +33,7 @@ import { TAB_ROUTES } from '../routes/tab-routes';
 import { Sheet, StatusBarScrim } from '../components/ui';
 import { GlassSurface } from '../components/navigation/GlassTabBar';
 import { DateBlock } from '../components/events/EventCard';
+import ParticipantAvatars from '../components/events/ParticipantAvatars';
 import { AppText, Button, HexAvatar, StatusChip, statusKind } from '../design/components';
 import {
   CalendarIcon,
@@ -72,6 +73,8 @@ const InfoRow = ({
   captionUnderline,
   captionFirst,
   chevron,
+  trailing,
+  below,
   onPress,
   accessibilityLabel,
   testID,
@@ -87,6 +90,10 @@ const InfoRow = ({
   captionFirst?: boolean;
   /** a chevron at the end: the row opens a page */
   chevron?: boolean;
+  /** at the end of the row (the participants' faces) */
+  trailing?: ReactNode;
+  /** under the caption, inside the text column (the faces at large text sizes) */
+  below?: ReactNode;
   onPress?: () => void;
   accessibilityLabel?: string;
   testID?: string;
@@ -112,7 +119,9 @@ const InfoRow = ({
             {caption}
           </AppText>
         )}
+        {below ? <View style={styles.infoBelow}>{below}</View> : null}
       </View>
+      {trailing}
       {chevron && <ChevronRightIcon size={18} color={palette.navy} strokeWidth={ICON_STROKE} />}
     </>
   );
@@ -263,6 +272,14 @@ const Event = ({ navigation, route }: any) => {
     );
   };
 
+  // the faces' spoken label: „18 persoane participă” (no exclamation, no names)
+  const participantsLabel = (n: number) => {
+    if (n === 1) {
+      return `${t('participants_label_one')}`;
+    }
+    return `${t(romanianNeedsDe(n) ? 'participants_label_of' : 'participants_label', { n })}`;
+  };
+
   const attendees = () => {
     const n = event?.numberOfPersonsGoingToEvent;
     if (n === undefined || n === null) {
@@ -306,6 +323,15 @@ const Event = ({ navigation, route }: any) => {
       />
     );
   }
+
+  // beside the facts there is room for three faces; under them (large text), for all five
+  const participantFaces = event?.participants?.total ? (
+    <ParticipantAvatars
+      participants={event.participants}
+      max={stackedBar ? 5 : 3}
+      accessibilityLabel={participantsLabel(event.participants.total)}
+    />
+  ) : null;
 
   const barStatus = !responded
     ? event?.isPublic
@@ -445,6 +471,9 @@ const Event = ({ navigation, route }: any) => {
                   event.capacity ? `${capacityLabel(event.capacity)}` : `${t('capacity_unlimited')}`
                 }
                 caption={attendees() || `${t('capacity')}`}
+                // large text: the faces go under the caption so the title and caption keep the width
+                trailing={stackedBar ? undefined : participantFaces}
+                below={stackedBar ? participantFaces : undefined}
                 testID="event-capacity"
               />
               {!event.isPublic && (
@@ -616,6 +645,7 @@ const styles = StyleSheet.create((theme) => ({
   },
   infoText: { flex: 1, minWidth: 0, gap: 1 },
   infoTextReversed: { flexDirection: 'column-reverse' },
+  infoBelow: { marginTop: 8, alignSelf: 'flex-start' },
   infoTitle: { fontFamily: theme.fontFamily.textHeavy, fontSize: 15.5, lineHeight: 21 },
   infoCaption: { fontFamily: theme.fontFamily.text },
   underline: { textDecorationLine: 'underline', fontFamily: theme.fontFamily.textBold },

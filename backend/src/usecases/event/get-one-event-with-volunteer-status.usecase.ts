@@ -7,6 +7,7 @@ import {
   FindOneEventOptions,
   IEventWithVolunteerStatus,
 } from 'src/modules/event/models/event.model';
+import { buildEventParticipants } from 'src/modules/event/event-participants';
 import { EventStatus } from 'src/modules/event/enums/event-status.enum';
 import { EventExceptionMessages } from 'src/modules/event/exceptions/event.exceptions';
 import { IEventModel } from 'src/modules/event/models/event.model';
@@ -38,10 +39,10 @@ export class GetOneEventWithVolunteerStatusUsecase
     // 2. count the number of rsvps going for this event
     const { eventRsvps, ...rest } = event;
 
-    // #501: a registration counts once the NGO approved it
-    const numberOfPersonsGoingToEvent = eventRsvps.filter(
-      (rsvp) => rsvp.going && rsvp.status === EventRegistrationStatus.APPROVED,
-    ).length;
+    // #501: a registration counts once the NGO approved it; the event screen shows the count and
+    // the initials of the first ones (no names: the people are other volunteers)
+    const participants = buildEventParticipants(eventRsvps);
+    const numberOfPersonsGoingToEvent = participants.total;
 
     // 3.1 check if the user has responded to this event
     const rsvp = eventRsvps.find((rsvp) => rsvp.user.id === userId);
@@ -56,6 +57,7 @@ export class GetOneEventWithVolunteerStatusUsecase
       ...rest,
       volunteerStatus,
       numberOfPersonsGoingToEvent,
+      participants,
       registrationStatus: rsvp?.going ? rsvp.status : null,
       rejectionReason:
         rsvp?.going && rsvp.status === EventRegistrationStatus.REJECTED
