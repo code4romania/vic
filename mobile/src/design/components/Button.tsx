@@ -1,8 +1,10 @@
 // Button „Îndrăzneț”. Variants: primary (yellow, one per screen), secondary (navy), outline,
 // destructive. Sizes L 56 / M 44 / S 34, radius 20 / 16 / 14. Pressed: scale .96 with the snappy
 // spring, a darker fill and a tighter shadow. Loading: a small rotating hexagon replaces the label
-// and the button keeps its width. Disabled: 45% opacity.
-import React, { ReactNode, useEffect } from 'react';
+// and the button keeps its width. Disabled: 45% opacity. Icons: a lucide icon before the label
+// (`icon`, e.g. Plus on „Adaugă ore”) and/or after it (`trailingIcon`, e.g. ArrowRight on
+// „Trimite spre aprobare”), drawn in the label colour at 20 / 18 / 16pt (L / M / S).
+import React, { ComponentType, isValidElement, ReactNode, useEffect } from 'react';
 import { Insets, Pressable, StyleProp, View, ViewStyle } from 'react-native';
 import Animated, {
   cancelAnimation,
@@ -23,13 +25,24 @@ import { AppText } from './Text';
 export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'destructive';
 export type ButtonSize = 'L' | 'M' | 'S';
 
+/** A lucide icon component (from design/icons), drawn by the button in its size and colour. */
+export type ButtonIconComponent = ComponentType<{
+  size?: number;
+  color?: string;
+  strokeWidth?: number;
+}>;
+/** A lucide icon component, or an element the caller draws itself. */
+export type ButtonIcon = ButtonIconComponent | ReactNode;
+
 export interface ButtonProps {
   label: string;
   onPress?: () => void;
   variant?: ButtonVariant;
   size?: ButtonSize;
-  /** element before the label, e.g. a lucide icon */
-  icon?: ReactNode;
+  /** before the label, e.g. `PlusIcon` (or an element drawn by the caller) */
+  icon?: ButtonIcon;
+  /** after the label, e.g. `ArrowRightIcon` (or an element drawn by the caller) */
+  trailingIcon?: ButtonIcon;
   loading?: boolean;
   disabled?: boolean;
   /** stretch to the width of the parent */
@@ -64,6 +77,27 @@ const SIZES: Record<ButtonSize, { height: number; radius: number; padding: numbe
     S: { height: 34, radius: 14, padding: 12, font: 13 },
   };
 
+/** Icon size per button size: 20pt like the prototype's `.btn svg`, smaller on M and S. */
+export const BUTTON_ICON_SIZE: Record<ButtonSize, number> = { L: 20, M: 18, S: 16 };
+// the prototype's arrow and chevrons are drawn at stroke 2.4
+const ICON_STROKE = 2.4;
+
+const isIconComponent = (icon: ButtonIcon): icon is ButtonIconComponent =>
+  typeof icon === 'function' ||
+  (typeof icon === 'object' && icon !== null && !isValidElement(icon) && '$$typeof' in icon);
+
+/** A lucide component in the button's size and label colour; an element as the caller drew it. */
+const renderIcon = (icon: ButtonIcon | undefined, size: number, color: string): ReactNode => {
+  if (icon === undefined || icon === null || icon === false) {
+    return null;
+  }
+  if (isIconComponent(icon)) {
+    const Icon = icon;
+    return <Icon size={size} color={color} strokeWidth={ICON_STROKE} />;
+  }
+  return icon as ReactNode;
+};
+
 const PRESSED_SCALE = 0.96;
 const SPIN_MS = 900;
 
@@ -91,6 +125,7 @@ export const Button = ({
   variant = 'primary',
   size = 'L',
   icon,
+  trailingIcon,
   loading = false,
   disabled = false,
   full = false,
@@ -185,7 +220,7 @@ export const Button = ({
           accessibilityElementsHidden={loading}
           importantForAccessibility={loading ? 'no-hide-descendants' : 'auto'}
         >
-          {icon}
+          {renderIcon(icon, BUTTON_ICON_SIZE[size], look.fg)}
           <AppText
             variant="button"
             color={look.fg}
@@ -194,6 +229,7 @@ export const Button = ({
           >
             {label}
           </AppText>
+          {renderIcon(trailingIcon, BUTTON_ICON_SIZE[size], look.fg)}
         </View>
         {loading && (
           <View style={styles.spinner} pointerEvents="none">

@@ -1,8 +1,17 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import * as Haptics from 'expo-haptics';
-import { Button, StatusChip, statusKind, Stepper, TextField } from './groupA';
+import { Text, View } from 'react-native';
+import { Button, Select, StatusChip, statusKind, Stepper, TextField } from './groupA';
 import { palette, status } from '../tokens';
+import { ArrowRightIcon } from '../icons';
+
+/** A stand-in lucide icon that shows the props the button draws it with. */
+const probeIcon =
+  (name: string) =>
+  ({ size, color, strokeWidth }: { size?: number; color?: string; strokeWidth?: number }) => (
+    <Text testID={name}>{`${size}|${color}|${strokeWidth}`}</Text>
+  );
 
 describe('Button', () => {
   it('keeps the label for screen readers while loading, hides it visually and does not fire', async () => {
@@ -44,6 +53,67 @@ describe('Button', () => {
     expect(screen.getByText('Adaugă ore')).toHaveStyle({ color: palette.navy });
     expect(screen.getByText('Șterge')).toHaveStyle({ color: palette.red });
     expect(screen.getByText('Secundar')).toHaveStyle({ color: palette.white });
+  });
+
+  it('draws a trailing icon after the label in the label colour and the size of the button', async () => {
+    await render(
+      <>
+        <Button label="Trimite" trailingIcon={probeIcon('arrow-l')} testID="l" />
+        <Button label="Mic" size="S" variant="secondary" trailingIcon={probeIcon('arrow-s')} />
+      </>,
+    );
+    expect(screen.getByTestId('arrow-l').props.children).toBe(`20|${palette.navy}|2.4`);
+    expect(screen.getByTestId('arrow-s').props.children).toBe(`16|${palette.white}|2.4`);
+    // label first, then the arrow
+    const tree = JSON.stringify(screen.toJSON());
+    expect(tree.indexOf(`20|${palette.navy}`)).toBeGreaterThan(tree.indexOf('Trimite'));
+    // the spoken name stays the label
+    expect(screen.getByRole('button', { name: 'Trimite' })).toBeTruthy();
+  });
+
+  it('draws a leading icon component the same way, and keeps a caller-drawn element as is', async () => {
+    await render(
+      <>
+        <Button label="Adaugă" size="M" icon={probeIcon('plus')} />
+        <Button label="Altul" icon={<View testID="own" />} />
+      </>,
+    );
+    expect(screen.getByTestId('plus').props.children).toBe(`18|${palette.navy}|2.4`);
+    expect(screen.getByTestId('own')).toBeTruthy();
+  });
+
+  it('accepts a real lucide icon and hides it with the label while loading', async () => {
+    await render(<Button label="Trimite" trailingIcon={ArrowRightIcon} loading testID="send" />);
+    expect(screen.getByTestId('button-spinner')).toBeTruthy();
+    expect(screen.queryByText('Trimite')).toBeNull();
+    expect(screen.getByText('Trimite', { includeHiddenElements: true })).toBeTruthy();
+  });
+});
+
+describe('Select option detail', () => {
+  it('shows the detail on the right of a menu row and reads it with the label', async () => {
+    const onChange = jest.fn();
+    await render(
+      <Select
+        label="Eveniment"
+        options={[
+          { key: 'e1', label: 'Atelier Comunicare', detail: '13 nov' },
+          { key: 'e2', label: 'Fără eveniment' },
+        ]}
+        onChange={onChange}
+        testID="ev"
+      />,
+    );
+    await fireEvent.press(screen.getByTestId('ev'));
+    expect(screen.getByTestId('ev-option-e1-detail').props.children).toBe('13 nov');
+    expect(screen.getByTestId('ev-option-e1').props.accessibilityLabel).toBe(
+      'Atelier Comunicare, 13 nov',
+    );
+    // a row without a detail keeps its plain label
+    expect(screen.queryByTestId('ev-option-e2-detail')).toBeNull();
+    expect(screen.getByTestId('ev-option-e2').props.accessibilityLabel).toBeUndefined();
+    await fireEvent.press(screen.getByTestId('ev-option-e1'));
+    expect(onChange).toHaveBeenCalledWith('e1');
   });
 });
 

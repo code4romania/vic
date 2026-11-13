@@ -30,6 +30,8 @@ export type SelectKey = string | number;
 export interface SelectOption<K extends SelectKey = SelectKey> {
   key: K;
   label: string;
+  /** short text on the right of the menu row (prototype `.menu button .over`, e.g. „13 NOV”) */
+  detail?: string;
 }
 
 export interface SelectProps<K extends SelectKey = SelectKey> {
@@ -186,6 +188,9 @@ export function Select<K extends SelectKey>({
                   }
                   onPress={() => pick(option.key)}
                   accessibilityRole="button"
+                  accessibilityLabel={
+                    option.detail ? `${option.label}, ${option.detail}` : undefined
+                  }
                   accessibilityState={{ selected: active }}
                   style={({ pressed }) => [
                     styles.row,
@@ -199,7 +204,21 @@ export function Select<K extends SelectKey>({
                   >
                     {option.label}
                   </AppText>
-                  {active && <CheckIcon size={18} color={palette.navy} strokeWidth={2.6} />}
+                  {(!!option.detail || active) && (
+                    <View style={styles.rowEnd}>
+                      {!!option.detail && (
+                        <AppText
+                          variant="overline"
+                          color={palette.ink2}
+
+                          testID={testID ? `${testID}-option-${option.key}-detail` : undefined}
+                        >
+                          {option.detail}
+                        </AppText>
+                      )}
+                      {active && <CheckIcon size={18} color={palette.navy} strokeWidth={2.6} />}
+                    </View>
+                  )}
                 </Pressable>
               );
             })}
@@ -240,4 +259,5 @@ const styles = StyleSheet.create((theme) => ({
     lineHeight: 20,
   },
   rowActive: { fontFamily: theme.fontFamily.textHeavy },
+  rowEnd: { flexDirection: 'row', alignItems: 'center', gap: theme.space.xs },
 }));

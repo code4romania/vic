@@ -35,9 +35,14 @@ export const getEvents = async ({
   }).then((res) => res.data);
 };
 
+/** An event of the „Adaugă ore” picker; older backends send no `startDate`. */
+export interface IEventOption extends IOrganizationStructureItem {
+  startDate?: string | null;
+}
+
 export const getEventsByOrganizationId = async (
   organizationId: string,
-): Promise<IOrganizationStructureItem[]> => {
+): Promise<IEventOption[]> => {
   return API.get(`/mobile/event/organization/${organizationId}`).then((res) => res.data);
 };
 

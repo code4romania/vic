@@ -13,6 +13,8 @@ import { colors } from '../common/theme/tokens';
 import { PressableScale, Sheet, VText, VTextField } from './ui';
 import { INLINE_MAX, Select } from '../design/components/Select';
 import { EventIcon } from './events/EventIcons';
+import { AppText } from '../design/components/Text';
+import { palette } from '../design/tokens';
 
 // Longer lists (counties, cities) open in a tall sheet with a search field.
 const LONG_LIST = 12;
@@ -28,6 +30,8 @@ const normalize = (text: string) =>
 export interface ISelectItem {
   label: string;
   key: string | number;
+  /** short text on the right of the row, e.g. an event's date („13 NOV”) */
+  detail?: string;
 }
 
 export interface FormSelectProps {
@@ -79,6 +83,11 @@ const Option = ({
     <VText variant={active ? 'bodyStrong' : 'body'} style={styles.text}>
       {option.label}
     </VText>
+    {!!option.detail && (
+      <AppText variant="overline" color={palette.ink2}>
+        {option.detail}
+      </AppText>
+    )}
     {active && <Check />}
   </PressableScale>
 );
