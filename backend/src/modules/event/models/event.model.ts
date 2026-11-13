@@ -130,6 +130,18 @@ export type FindMyEventsOptions = {
   startTo?: Date;
 } & IBasePaginationFilterModel;
 
+// The mobile segment totals take the list's search and filters, but no segment nor paging
+export type CountMyEventsOptions = Pick<
+  FindMyEventsOptions,
+  'userId' | 'organizationId' | 'startFrom' | 'startTo' | 'search'
+>;
+
+export interface IMyEventsCountsModel {
+  open: number;
+  going: number;
+  organizations: number;
+}
+
 export type FindOngoingAndFinishedEventOptions = {
   organizationId: string;
   userId: string;

@@ -9,6 +9,7 @@ import {
   hexInitials,
   ListRow,
   SegmentedControl,
+  segmentFit,
   toastConfig,
 } from './groupB';
 import { palette } from '../tokens';
@@ -65,6 +66,51 @@ describe('SegmentedControl', () => {
       transform: [{ translateX: 130 }],
       backgroundColor: palette.yellow,
     });
+  });
+});
+
+describe('SegmentedControl with counts on every segment (Evenimente)', () => {
+  // Manrope 800 widths of Deschise / Particip / Organizațiile with their badges, padding included
+  const atDefault = [105, 96, 129];
+  const atLargest = [130, 118, 163];
+  const counts = [true, true, true];
+
+  it('stays inline when the row fits, tightens a little, then puts the badges under the labels', () => {
+    expect(segmentFit(atDefault, counts, 390 - 36 - 10)).toBe('inline');
+    // iPhone SE / mini at the default size: 1pt short, the tighter padding is enough
+    expect(segmentFit([111, 101, 118], counts, 375 - 36 - 10)).toBe('compact');
+    // largest Dynamic Type: no word may be cut, the badge goes under the label
+    expect(segmentFit(atLargest, counts, 430 - 36 - 10)).toBe('stacked');
+  });
+
+  it('measures its segments once laid out and stacks the badges when they do not fit', async () => {
+    const eventOptions = [
+      { key: 'OPEN', label: 'Deschise', count: 3 },
+      { key: 'GOING', label: 'Particip', count: 2 },
+      { key: 'ORGANIZATIONS', label: 'Organizațiile mele', count: 5 },
+    ];
+    await render(
+      <SegmentedControl testID="seg" value="OPEN" onChange={jest.fn()} options={eventOptions} />,
+    );
+    // before any layout nothing is measured and the segments are inline
+    expect(screen.getByTestId('seg-GOING')).toHaveStyle({ flexDirection: 'row' });
+    await fireEvent(screen.getByTestId('seg'), 'layout', {
+      nativeEvent: { layout: { x: 0, y: 0, width: 354, height: 52 } },
+    });
+    for (const [index, width] of atLargest.entries()) {
+      await fireEvent(
+        screen.getByTestId(`seg-measure-${eventOptions[index].key}`, {
+          includeHiddenElements: true,
+        }),
+        'layout',
+        {
+          nativeEvent: { layout: { x: 0, y: 0, width, height: 30 } },
+        },
+      );
+    }
+    expect(screen.getByTestId('seg-GOING')).toHaveStyle({ flexDirection: 'column' });
+    // every badge is still there, and still part of its segment's label
+    expect(screen.getByLabelText('Organizațiile mele, 5')).toBeTruthy();
   });
 });
 

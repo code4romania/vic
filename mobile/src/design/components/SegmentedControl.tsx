@@ -1,5 +1,8 @@
 // Segmented control „Îndrăzneț”: a navy track with a yellow thumb that slides and resizes to the
 // selected segment (spring snappy). Segments size to their labels (flex 1 1 auto).
+// With count badges the row may not fit (small phones, Dynamic Type): the control measures what
+// each segment needs (its longest word + badge) and, only when the row is too narrow, first tightens
+// the padding, then puts each badge under its label, so no word is ever cut.
 import React, { ReactNode, useCallback, useState } from 'react';
 import { LayoutChangeEvent, Pressable, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useReducedMotion } from 'react-native-reanimated';
@@ -31,8 +34,32 @@ export interface SegmentedControlProps<T extends string> {
 
 const TRACK_PADDING = 5;
 const LABEL_OFF = 'rgba(255,255,255,0.75)';
+const SEGMENT_PADDING = 8;
+const SEGMENT_GAP = 6;
+const COMPACT_PADDING = 5;
+const COMPACT_GAP = 4;
 
 type Layout = { x: number; width: number };
+/** inline: label and badge side by side; compact: the same, tighter; stacked: badge under label */
+export type SegmentFit = 'inline' | 'compact' | 'stacked';
+
+/** How the segments fit the track, from the width each needs laid out inline (padding included). */
+export const segmentFit = (
+  needed: number[],
+  withCount: boolean[],
+  available: number,
+): SegmentFit => {
+  const total = needed.reduce((sum, width) => sum + width, 0);
+  if (total <= available + 0.5) {
+    return 'inline';
+  }
+  const saved = withCount.reduce(
+    (sum, hasCount) =>
+      sum + 2 * (SEGMENT_PADDING - COMPACT_PADDING) + (hasCount ? SEGMENT_GAP - COMPACT_GAP : 0),
+    0,
+  );
+  return total - saved <= available + 0.5 ? 'compact' : 'stacked';
+};
 
 export function SegmentedControl<T extends string>({
   options,
@@ -44,6 +71,24 @@ export function SegmentedControl<T extends string>({
 }: SegmentedControlProps<T>) {
   const reduced = useReducedMotion();
   const [layouts, setLayouts] = useState<Partial<Record<T, Layout>>>({});
+  const [trackWidth, setTrackWidth] = useState(0);
+  const [needed, setNeeded] = useState<Partial<Record<T, number>>>({});
+  const withCount = options.map((option) => typeof option.count === 'number');
+  const measure = trackWidth > 0 && withCount.some(Boolean);
+  const neededWidths = options.map((option) => needed[option.key]);
+  const fit: SegmentFit =
+    measure && neededWidths.every((width) => typeof width === 'number')
+      ? segmentFit(neededWidths as number[], withCount, trackWidth - 2 * TRACK_PADDING)
+      : 'inline';
+  const onNeededFor = useCallback(
+    (key: T) => (event: LayoutChangeEvent) => {
+      const { width: segmentWidth } = event.nativeEvent.layout;
+      setNeeded((previous) =>
+        previous[key] === segmentWidth ? previous : { ...previous, [key]: segmentWidth },
+      );
+    },
+    [],
+  );
   const active = options.find((option) => option.key === value) ?? options[0];
   const activeLayout = active ? layouts[active.key] : undefined;
   const x = activeLayout?.x ?? 0;
@@ -77,7 +122,42 @@ export function SegmentedControl<T extends string>({
       accessibilityRole="tablist"
       accessibilityLabel={accessibilityLabel}
       style={styles.track}
+      onLayout={(event) => setTrackWidth(event.nativeEvent.layout.width)}
     >
+      {measure && (
+        // invisible: what each segment needs inline, its longest word next to its badge
+        <View
+          pointerEvents="none"
+          accessibilityElementsHidden
+          importantForAccessibility="no-hide-descendants"
+          style={styles.measurer}
+        >
+          {options.map((option) => (
+            <View
+              key={option.key}
+              testID={testID ? `${testID}-measure-${option.key}` : undefined}
+              style={styles.measureRow}
+              onLayout={onNeededFor(option.key)}
+            >
+              {option.icon?.(false)}
+              <View>
+                {option.label.split(' ').map((word, index) => (
+                  <Text key={index} maxFontSizeMultiplier={fontScaleCap.text} style={styles.label}>
+                    {word}
+                  </Text>
+                ))}
+              </View>
+              {typeof option.count === 'number' && (
+                <View style={styles.count}>
+                  <Text maxFontSizeMultiplier={fontScaleCap.text} style={styles.countText}>
+                    {option.count}
+                  </Text>
+                </View>
+              )}
+            </View>
+          ))}
+        </View>
+      )}
       {activeLayout && width > 0 && (
         <Animated.View
           pointerEvents="none"
@@ -109,7 +189,12 @@ export function SegmentedControl<T extends string>({
             }}
             // Dynamic Type: a label of several words wraps to a second line instead of being cut;
             // one-word labels keep their width, so they never break mid-word
-            style={[styles.segment, option.label.includes(' ') ? null : styles.segmentOneWord]}
+            style={[
+              styles.segment,
+              option.label.includes(' ') ? null : styles.segmentOneWord,
+              fit === 'compact' ? styles.segmentCompact : null,
+              fit === 'stacked' ? styles.segmentStacked : null,
+            ]}
           >
             {option.icon?.(selected)}
             <Text
@@ -160,14 +245,25 @@ const styles = StyleSheet.create((theme) => ({
     minHeight: 42,
     minWidth: 0,
     borderRadius: 17,
-    paddingHorizontal: 8,
+    paddingHorizontal: SEGMENT_PADDING,
     paddingVertical: 3,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 6,
+    gap: SEGMENT_GAP,
   },
   segmentOneWord: { flexShrink: 0 },
+  segmentCompact: { paddingHorizontal: COMPACT_PADDING, gap: COMPACT_GAP },
+  segmentStacked: { flexDirection: 'column', gap: 2, paddingVertical: 4 },
+  // far out of the track, unconstrained, so every word keeps its natural width
+  measurer: { position: 'absolute', top: 0, left: -10000, width: 5000, opacity: 0 },
+  measureRow: {
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SEGMENT_GAP,
+    paddingHorizontal: SEGMENT_PADDING,
+  },
   label: {
     flexShrink: 1,
     fontFamily: theme.fontFamily.textHeavy,
@@ -177,7 +273,8 @@ const styles = StyleSheet.create((theme) => ({
   },
   count: {
     minWidth: 20,
-    height: 20,
+    // grows with Dynamic Type instead of clipping the number
+    minHeight: 20,
     borderRadius: 10,
     paddingHorizontal: 5,
     alignItems: 'center',
@@ -185,5 +282,10 @@ const styles = StyleSheet.create((theme) => ({
     backgroundColor: 'rgba(255,255,255,0.16)',
   },
   countOn: { backgroundColor: theme.colors.navy },
-  countText: { fontFamily: theme.fontFamily.textHeavy, fontSize: 11, lineHeight: 14 },
+  countText: {
+    fontFamily: theme.fontFamily.textHeavy,
+    fontSize: 11,
+    lineHeight: 14,
+    fontVariant: ['tabular-nums'],
+  },
 }));
