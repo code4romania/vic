@@ -114,12 +114,10 @@ export class ActionsArchiveRepository
       .where('actionsArchive.eventName in (:...eventNames)', {
         eventNames: options.events,
       })
-      .andWhere(
-        `(("actionsArchive".event_data->>'volunteerId')::uuid IN (select "v".id from "volunteer" "v" 
-      INNER JOIN "user" "u" ON "v".user_id = "u".id 
-      where "u".id = :userId AND "v".status = :volunteerStatus) OR ("actionsArchive".event_data->>'userId')::uuid = :userId)`,
-        { userId: options.userId, volunteerStatus: VolunteerStatus.ACTIVE },
-      )
+      .andWhere(this.newsOfUserCondition, {
+        userId: options.userId,
+        volunteerStatus: VolunteerStatus.ACTIVE,
+      })
       .orderBy(
         this.buildOrderByQuery('createdOn', 'actionsArchive'),
         OrderDirection.DESC,
@@ -131,6 +129,34 @@ export class ActionsArchiveRepository
       options.page,
       ActionsArchiveTransformer.fromEntity,
     );
+  }
+
+  // The volunteer's news: about one of their active volunteer profiles, or about them.
+  private readonly newsOfUserCondition = `(("actionsArchive".event_data->>'volunteerId')::uuid IN (select "v".id from "volunteer" "v" 
+      INNER JOIN "user" "u" ON "v".user_id = "u".id 
+      where "u".id = :userId AND "v".status = :volunteerStatus) OR ("actionsArchive".event_data->>'userId')::uuid = :userId)`;
+
+  // The same news as findNews, only those newer than the last time the user opened "Noutăți".
+  public async countUnreadNews(
+    options: Pick<FindManyNewsOptions, 'userId' | 'events'>,
+  ): Promise<number> {
+    if (!options.events.length) {
+      return 0;
+    }
+
+    return this.actionsArchiveRepo
+      .createQueryBuilder('actionsArchive')
+      .where('actionsArchive.eventName in (:...eventNames)', {
+        eventNames: options.events,
+      })
+      .andWhere(this.newsOfUserCondition, {
+        userId: options.userId,
+        volunteerStatus: VolunteerStatus.ACTIVE,
+      })
+      .andWhere(
+        `actionsArchive.createdOn > (select "seen".news_last_seen_at from "user" "seen" where "seen".id = :userId)`,
+      )
+      .getCount();
   }
 
   async countActivityLogBetweenDates(volunteerIds: string[]): Promise<number> {

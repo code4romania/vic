@@ -44,6 +44,15 @@ export const formatLongDay = (value: string | Date) =>
 /** "09:00" */
 export const formatTime = (value: string | Date) => format(new Date(value), 'HH:mm');
 
+/** "13 nov" for the right of an event row (shown as „13 NOV” in overline); '' without a date. */
+export const formatDayMonth = (value?: string | Date | null) => {
+  if (!value) {
+    return '';
+  }
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? '' : `${format(date, 'd')} ${shortMonth(date)}`;
+};
+
 /** Day number and short month for the date tile: { day: '22', month: 'NOV' }. */
 export const dateTile = (value: string | Date) => ({
   day: format(new Date(value), 'd'),

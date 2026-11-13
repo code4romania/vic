@@ -12,4 +12,5 @@ export interface IRegularUserRepository {
     id: string,
     updateUserModel: UpdateRegularUserOptions,
   ): Promise<IRegularUserModel>;
+  markNewsSeen(id: string): Promise<void>;
 }

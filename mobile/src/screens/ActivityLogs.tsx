@@ -259,7 +259,8 @@ const ActivityLogs = ({ navigation, route }: any) => {
         {!asTab && canAdd && (
           <Button
             size="S"
-            label={`+ ${t('add_short')}`}
+            label={`${t('add_short')}`}
+            icon={PlusIcon}
             accessibilityLabel={`${t('add')}`}
             onPress={onAdd}
             hitSlop={5}

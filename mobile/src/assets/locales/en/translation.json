@@ -761,6 +761,8 @@
     },
     "hello": "Hi, {{name}}",
     "news": "News",
+    "news_unread": "News, {{n}} unread",
+    "news_unread_one": "News, 1 unread",
     "join_ngo_short": "Find organizations",
     "see_all": "All",
     "next": {

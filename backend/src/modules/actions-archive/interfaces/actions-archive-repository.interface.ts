@@ -17,4 +17,7 @@ export interface IActionArchiveRepository {
   findNews(
     options: Omit<FindManyNewsOptions, 'type'>,
   ): Promise<Pagination<IActionArchiveModel>>;
+  countUnreadNews(
+    options: Pick<FindManyNewsOptions, 'userId' | 'events'>,
+  ): Promise<number>;
 }

@@ -1,5 +1,5 @@
 import '../config/i18n';
-import { formatPostedAt } from './event-format';
+import { formatDayMonth, formatPostedAt } from './event-format';
 
 describe('formatPostedAt (audit #21, #22)', () => {
   const now = new Date(2026, 10, 10, 18, 0);
@@ -17,5 +17,18 @@ describe('formatPostedAt (audit #21, #22)', () => {
   it('is empty when an older backend sends no date', () => {
     expect(formatPostedAt(undefined, now)).toBe('');
     expect(formatPostedAt('not a date', now)).toBe('');
+  });
+});
+
+describe('formatDayMonth (event rows of „Adaugă ore”)', () => {
+  it('gives the day and the short month, shown as „13 NOV” in overline', () => {
+    expect(formatDayMonth(new Date(2026, 10, 13, 9, 0))).toBe('13 nov');
+    expect(formatDayMonth(new Date(2026, 0, 2).toISOString())).toBe('2 ian');
+  });
+
+  it('is empty when an older backend sends no date', () => {
+    expect(formatDayMonth(undefined)).toBe('');
+    expect(formatDayMonth(null)).toBe('');
+    expect(formatDayMonth('not a date')).toBe('');
   });
 });

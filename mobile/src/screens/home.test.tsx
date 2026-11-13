@@ -18,6 +18,8 @@ const mockCounterCalls: any[] = [];
 const mockRefetch = jest.fn();
 const mockRefetchProfile = jest.fn();
 const mockSwitch = jest.fn();
+let mockUnread = 0;
+const mockRefetchUnread = jest.fn();
 
 const query = (data: unknown) => ({
   data,
@@ -64,6 +66,9 @@ jest.mock('../services/event/event.service', () => ({
     mockEventCalls.push(args);
     return query({ pages: [{ items: mockGoing, meta: { totalItems: mockGoing.length } }] });
   },
+}));
+jest.mock('../services/news/news.service', () => ({
+  useUnreadNewsCountQuery: () => ({ data: mockUnread, refetch: mockRefetchUnread }),
 }));
 jest.mock('../services/user/user.api', () => ({ getUserProfile: jest.fn() }));
 jest.mock('../services/user/user.service', () => ({
@@ -127,6 +132,7 @@ beforeEach(() => {
   jest.clearAllMocks();
   mockEventCalls.length = 0;
   mockCounterCalls.length = 0;
+  mockUnread = 0;
   mockGoing = [];
   mockCounters = { approved: 42, pending: 5, rejected: 1 };
   mockStats = {
@@ -156,6 +162,34 @@ describe('Acasă', () => {
         { includeHiddenElements: true },
       ),
     ).toBeTruthy();
+  });
+
+  it('the bell has no badge when everything is read', async () => {
+    mockUnread = 0;
+    await renderHome();
+    expect(screen.getByTestId('home-news').props.accessibilityLabel).toBe('Noutăți');
+    expect(screen.queryByTestId('home-news-badge', { includeHiddenElements: true })).toBeNull();
+    // the count is fetched again each time Acasă gets the focus
+    expect(mockRefetchUnread).toHaveBeenCalled();
+  });
+
+  it('the bell shows the unread news in a red badge, „9+” above 9', async () => {
+    for (const [count, label, badge] of [
+      [3, 'Noutăți, 3 necitite', '3'],
+      [1, 'Noutăți, 1 necitită', '1'],
+      [14, 'Noutăți, 14 necitite', '9+'],
+    ] as const) {
+      mockUnread = count;
+      const view = await renderHome();
+      expect(screen.getByTestId('home-news').props.accessibilityLabel).toBe(label);
+      expect(
+        within(screen.getByTestId('home-news-badge', { includeHiddenElements: true })).getByText(
+          badge,
+          { includeHiddenElements: true },
+        ),
+      ).toBeTruthy();
+      await view.unmount();
+    }
   });
 
   it('opens logged hours news from the bell', async () => {

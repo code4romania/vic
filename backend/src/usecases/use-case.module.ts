@@ -177,6 +177,8 @@ import { RejoinOrganizationUsecase } from './organization/rejoin-organization.us
 import { UpdateSettingsUsecase } from './notifications-settings/update-settings.usecase';
 import { GetVolunteersUserDataForNotificationsUsecase } from './volunteer/get-volunteers-user-data-for-notifications.usecase';
 import { GetManyNewsUsecase } from './actions-archive/get-many-news.usecase';
+import { GetUnreadNewsCountUsecase } from './actions-archive/get-unread-news-count.usecase';
+import { MarkNewsSeenUsecase } from './actions-archive/mark-news-seen.usecase';
 import { GetVolunteerOrganizationStatusUsecase } from './volunteer/get-volunteer-organization-status.usecase';
 import { GetOneRegularUserProfileUseCase } from './user/get-regule-user-profile.usecase';
 import { SyncUserOrganizationsUsecase } from './user/sync-user-organizations.usecase';
@@ -357,6 +359,8 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     // Actions Archive
     GetManyActionsArchiveUseCase,
     GetManyNewsUsecase,
+    GetUnreadNewsCountUsecase,
+    MarkNewsSeenUsecase,
     // Dashboard
     GetDashboardVolunteerStatusTimeseriesUsecase,
     GetDashboardVolunteerGroupedUsecase,
@@ -541,6 +545,8 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     // Actions Archive
     GetManyActionsArchiveUseCase,
     GetManyNewsUsecase,
+    GetUnreadNewsCountUsecase,
+    MarkNewsSeenUsecase,
     // Dashboard
     GetDashboardVolunteerStatusTimeseriesUsecase,
     GetDashboardVolunteerGroupedUsecase,
