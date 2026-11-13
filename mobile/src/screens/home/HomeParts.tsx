@@ -1,23 +1,14 @@
 // Pieces of Acasă „Îndrăzneț” (handbook prototype, screen „Acasă”): the compact glass bar, the
 // organization row, the navy impact card with the liquid hexagon, the yellow to-do cards, the
 // „Urmează” carousel and the „Luna aceasta” bento.
-import React, { ReactNode } from 'react';
-import {
-  AccessibilityProps,
-  Pressable,
-  ScrollView,
-  StyleProp,
-  View,
-  ViewStyle,
-  useWindowDimensions,
-} from 'react-native';
+import React from 'react';
+import { Pressable, ScrollView, Text, View, useWindowDimensions } from 'react-native';
 import Animated, {
   Extrapolation,
   interpolate,
   SharedValue,
   useAnimatedStyle,
   useReducedMotion,
-  useSharedValue,
 } from 'react-native-reanimated';
 import { BlurView } from 'expo-blur';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -29,8 +20,7 @@ import i18n from '../../common/config/i18n';
 import { EventRegistrationStatus } from '../../common/enums/event-registration-status.enum';
 import { IEventListItem } from '../../common/interfaces/event-list-item.interface';
 import { formatEventWhen, shortMonth } from '../../common/utils/event-format';
-import { glass, lightColors, palette, space, StatusKind } from '../../design/tokens';
-import { springTo } from '../../design/motion';
+import { fontScaleCap, glass, lightColors, palette, space, StatusKind } from '../../design/tokens';
 import {
   ArrowRightIcon,
   BellIcon,
@@ -44,48 +34,10 @@ import {
   PinIcon,
 } from '../../design/icons';
 import { AppText } from '../../design/components/Text';
+import { PressableScale } from '../../components/ui/PressableScale';
 import { StatusChip } from '../../design/components/Chip';
 import { HexAvatar } from '../../design/components/ListRow';
 import { ImpactHexagon, useCountUp } from '../../design/components/ImpactHexagon';
-
-// ---------------------------------------------------------------------------------------------
-// Press: scale .965 with the snappy spring (handbook `.press:active`)
-
-interface PressProps extends AccessibilityProps {
-  onPress?: () => void;
-  style?: StyleProp<ViewStyle>;
-  /** style of the touch area around the scaled content (e.g. flex: 1 in a row) */
-  outerStyle?: StyleProp<ViewStyle>;
-  children: ReactNode;
-  testID?: string;
-  disabled?: boolean;
-  hitSlop?: number;
-}
-
-export const Press = ({ onPress, style, outerStyle, children, disabled, ...props }: PressProps) => {
-  const reduced = useReducedMotion();
-  const pressed = useSharedValue(0);
-  const scale = useAnimatedStyle(() => ({
-    transform: [{ scale: reduced ? 1 : interpolate(pressed.value, [0, 1], [1, 0.965]) }],
-  }));
-  return (
-    <Pressable
-      accessibilityRole="button"
-      {...props}
-      disabled={disabled}
-      onPress={onPress}
-      style={outerStyle}
-      onPressIn={() => {
-        pressed.value = springTo(1, 'snappy', reduced);
-      }}
-      onPressOut={() => {
-        pressed.value = springTo(0, 'snappy', reduced);
-      }}
-    >
-      <Animated.View style={[style, scale]}>{children}</Animated.View>
-    </Pressable>
-  );
-};
 
 // ---------------------------------------------------------------------------------------------
 // Large title + compact glass bar. The large title scrolls with the content (as in the
@@ -146,7 +98,12 @@ export const LargeTitle = ({ title, scrollY }: { title: string; scrollY: SharedV
   });
   return (
     <Animated.View style={[styles.largeTitle, style]}>
-      <AppText variant="largeTitle" accessibilityRole="header" numberOfLines={2}>
+      <AppText
+        variant="largeTitle"
+        accessibilityRole="header"
+        numberOfLines={2}
+        style={styles.largeTitleText}
+      >
         {title}
       </AppText>
     </Animated.View>
@@ -170,11 +127,10 @@ export const OrgRow = ({
   return (
     <View style={styles.orgRow}>
       {name ? (
-        <Press
+        <PressableScale
           onPress={onSwitch}
           disabled={!onSwitch}
-          outerStyle={styles.orgOuter}
-          style={styles.org}
+          style={[styles.orgOuter, styles.org]}
           accessibilityRole={onSwitch ? 'button' : 'text'}
           accessibilityLabel={`${t('org.overline')}: ${name}`}
           accessibilityHint={onSwitch ? `${t('org.switch')}` : undefined}
@@ -194,18 +150,18 @@ export const OrgRow = ({
               )}
             </View>
           </View>
-        </Press>
+        </PressableScale>
       ) : (
         <View style={styles.orgOuter} />
       )}
-      <Press
+      <PressableScale
         onPress={onNews}
         style={styles.bell}
         accessibilityLabel={`${t('news')}`}
         testID="home-news"
       >
         <BellIcon size={22} color={palette.navy} strokeWidth={ICON_STROKE} />
-      </Press>
+      </PressableScale>
     </View>
   );
 };
@@ -256,7 +212,7 @@ export const ImpactCard = ({
     .filter(Boolean)
     .join(', ');
   return (
-    <Press
+    <PressableScale
       onPress={onPress}
       style={styles.impact}
       accessibilityLabel={`${label}. ${t('impact.a11y_open')}`}
@@ -276,21 +232,20 @@ export const ImpactCard = ({
         <AppText variant="overline" color={palette.yellow}>
           {t('impact.overline')}
         </AppText>
-        <View style={styles.numRow}>
-          <AppText
-            variant="display"
-            color={palette.yellow}
-            numberOfLines={1}
-            adjustsFontSizeToFit
-            style={styles.num}
-            testID="home-impact-count"
-          >
-            {`${shown}`}
-            <AppText variant="display" color={palette.yellow} style={styles.numUnit}>
-              h
-            </AppText>
-          </AppText>
-        </View>
+        <AppText
+          variant="display"
+          color={palette.yellow}
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          style={styles.num}
+          testID="home-impact-count"
+        >
+          {`${shown}`}
+          {/* the small „h” (36pt) inherits the line of the number; AppText trims the line */}
+          <Text maxFontSizeMultiplier={fontScaleCap.display} style={styles.numUnit}>
+            h
+          </Text>
+        </AppText>
         <AppText style={styles.impactLabel}>
           {approved === 1 ? t('impact.label_singular') : t('impact.label')}
         </AppText>
@@ -316,7 +271,7 @@ export const ImpactCard = ({
           </View>
         )}
       </View>
-    </Press>
+    </PressableScale>
   );
 };
 
@@ -341,7 +296,7 @@ export const TodoCard = ({
   onPress: () => void;
   testID?: string;
 }) => (
-  <Press
+  <PressableScale
     onPress={onPress}
     style={styles.todo}
     accessibilityLabel={[title, subtitle].filter(Boolean).join(', ')}
@@ -361,7 +316,7 @@ export const TodoCard = ({
     <View style={styles.go}>
       <ArrowRightIcon size={20} color={palette.yellow} strokeWidth={ICON_STROKE} />
     </View>
-  </Press>
+  </PressableScale>
 );
 
 // ---------------------------------------------------------------------------------------------
@@ -435,8 +390,9 @@ const EventSlide = ({
       : { kind: 'ok', label: `${t('card.going')}` };
   const audience = event.isPublic ? `${t('card.public')}` : `${t('card.members')}`;
   return (
-    <Press
+    <PressableScale
       onPress={() => onPress(event.id)}
+      // every card as tall as the tallest one (the prototype's flex row stretches them)
       style={[styles.ecard, { width }]}
       accessibilityLabel={[event.name, when, event.location, event.organizationName, status?.label]
         .filter(Boolean)
@@ -455,9 +411,7 @@ const EventSlide = ({
         </AppText>
       </View>
       <View style={styles.ebody}>
-        <AppText variant="headline" numberOfLines={2}>
-          {event.name}
-        </AppText>
+        <AppText variant="headline">{event.name}</AppText>
         <MetaLine icon={ClockIcon} text={when} first />
         {!!event.location && <MetaLine icon={PinIcon} text={event.location} />}
         {!!event.organizationName && <MetaLine text={event.organizationName} />}
@@ -476,7 +430,7 @@ const EventSlide = ({
           {status && <StatusChip kind={status.kind} label={status.label} />}
         </View>
       </View>
-    </Press>
+    </PressableScale>
   );
 };
 
@@ -493,7 +447,7 @@ const MetaLine = ({
 }) => (
   <View style={[styles.meta, first ? styles.metaFirst : null]}>
     {Icon && <Icon size={14} color={palette.ink2} strokeWidth={ICON_STROKE} />}
-    <AppText variant="caption" color={palette.ink2} numberOfLines={2} style={styles.metaText}>
+    <AppText variant="caption" color={palette.ink2} style={styles.metaText}>
       {text}
     </AppText>
   </View>
@@ -586,7 +540,7 @@ export const MonthBento = ({ tiles }: { tiles: BentoTile[] }) => {
             {content}
           </View>
         ) : (
-          <Press
+          <PressableScale
             key={tile.key}
             onPress={tile.onPress}
             style={look}
@@ -594,7 +548,7 @@ export const MonthBento = ({ tiles }: { tiles: BentoTile[] }) => {
             testID={`home-stat-${tile.key}`}
           >
             {content}
-          </Press>
+          </PressableScale>
         );
       })}
     </View>
@@ -622,6 +576,7 @@ const styles = StyleSheet.create((theme) => ({
     letterSpacing: -0.2,
   },
   largeTitle: { marginTop: 14, marginBottom: 16, transformOrigin: 'left bottom' },
+  largeTitleText: { includeFontPadding: false },
   orgRow: {
     marginTop: 6,
     flexDirection: 'row',
@@ -652,8 +607,8 @@ const styles = StyleSheet.create((theme) => ({
     overflow: 'hidden',
   },
   impactBody: { flex: 1, minWidth: 0 },
-  numRow: { flexDirection: 'row', alignItems: 'flex-end', marginTop: 4 },
-  num: { flexShrink: 1 },
+  // prototype `.impact .num`: 76pt, line-height .86, right under the overline
+  num: { includeFontPadding: false },
   numUnit: { fontSize: 36, letterSpacing: -1.08 },
   impactLabel: {
     fontFamily: theme.fontFamily.textBold,
@@ -732,6 +687,7 @@ const styles = StyleSheet.create((theme) => ({
     gap: CARD_GAP,
   },
   ecard: {
+    flex: 1,
     backgroundColor: theme.colors.surface,
     borderRadius: theme.radius.card,
     padding: 10,
@@ -754,10 +710,12 @@ const styles = StyleSheet.create((theme) => ({
     letterSpacing: 0.74,
     color: theme.colors.navy,
   },
+  // prototype `.dateb b`: 30pt, line-height 1 (AppText trims the Bricolage line)
   datebDay: {
     fontFamily: theme.fontFamily.display,
     fontSize: 30,
-    lineHeight: 32,
+    lineHeight: 30,
+    includeFontPadding: false,
     letterSpacing: -1.2,
     color: theme.colors.navy,
     fontVariant: ['tabular-nums'],
@@ -782,10 +740,12 @@ const styles = StyleSheet.create((theme) => ({
     borderWidth: 2,
     borderColor: 'rgba(1,52,79,0.18)',
   },
+  // prototype `.tile .n`: 40pt, line-height .9 (AppText trims the Bricolage line)
   tileN: {
     fontFamily: theme.fontFamily.display,
     fontSize: 40,
-    lineHeight: 40,
+    lineHeight: 36,
+    includeFontPadding: false,
     letterSpacing: -1.6,
     fontVariant: ['tabular-nums'],
   },
@@ -793,6 +753,6 @@ const styles = StyleSheet.create((theme) => ({
     fontFamily: theme.fontFamily.textBold,
     fontSize: 12.5,
     lineHeight: 15.6,
-    marginTop: 6,
+    marginTop: 2,
   },
 }));
