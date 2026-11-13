@@ -99,7 +99,7 @@ const EventSearch = ({
       <AppText variant="caption" color={palette.ink2}>
         {label}
       </AppText>
-      <AppText variant="bodyStrong" numberOfLines={1} style={styles.sheadValue}>
+      <AppText variant="bodyStrong" numberOfLines={2} style={styles.sheadValue}>
         {value}
       </AppText>
     </Pressable>
@@ -283,7 +283,7 @@ const styles = StyleSheet.create((theme) => ({
     paddingHorizontal: 20,
     gap: 16,
   },
-  sheadValue: { flexShrink: 1 },
+  sheadValue: { flexShrink: 1, textAlign: 'right' },
   sectionTitle: { paddingTop: 20, paddingHorizontal: 20, paddingBottom: 2 },
   sectionTitleText: { fontSize: 28, lineHeight: 31 },
   sectionBody: { paddingHorizontal: 16, paddingTop: 12, paddingBottom: 16 },
@@ -320,10 +320,12 @@ const styles = StyleSheet.create((theme) => ({
     paddingTop: 12,
     paddingHorizontal: theme.space.gutter,
     flexDirection: 'row',
+    flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: 16,
+    columnGap: 16,
+    rowGap: 12,
   },
   clear: { textDecorationLine: 'underline' },
-  apply: { flexShrink: 1 },
+  apply: { marginLeft: 'auto', maxWidth: '100%' },
 }));

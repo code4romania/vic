@@ -135,40 +135,24 @@ export const EventCard = ({
       >
         <DateBlock date={event.startDate} tone={enrolled ? 'yellow' : 'navy'} />
         <View style={styles.body}>
-          <AppText variant="headline" numberOfLines={2}>
-            {event.name}
-          </AppText>
-          <View style={styles.meta}>
+          {/* nothing is cut: long names and dates wrap (Dynamic Type up to 1.35×) */}
+          <AppText variant="headline">{event.name}</AppText>
+          <View style={[styles.meta, styles.firstMeta]}>
             <ClockIcon size={14} color={palette.ink2} />
-            <AppText
-              variant="caption"
-              color={palette.ink2}
-              numberOfLines={2}
-              style={styles.metaText}
-            >
+            <AppText variant="caption" color={palette.ink2} style={styles.metaText}>
               {when}
             </AppText>
           </View>
           {!!event.location && (
             <View style={styles.meta}>
               <PinIcon size={14} color={palette.ink2} />
-              <AppText
-                variant="caption"
-                color={palette.ink2}
-                numberOfLines={2}
-                style={styles.metaText}
-              >
+              <AppText variant="caption" color={palette.ink2} style={styles.metaText}>
                 {event.location}
               </AppText>
             </View>
           )}
           {!!event.organizationName && (
-            <AppText
-              variant="caption"
-              color={palette.ink2}
-              numberOfLines={2}
-              style={styles.metaText}
-            >
+            <AppText variant="caption" color={palette.ink2}>
               {event.organizationName}
             </AppText>
           )}
@@ -207,33 +191,38 @@ const styles = StyleSheet.create((theme) => ({
   // inside the legacy Group, which pads the sides
   row: { paddingVertical: 12 },
   divider: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: theme.colors.line },
+  // no fixed height: it stretches with the card and grows with its own text (capped at 1.15×)
   dateBlock: {
     width: 60,
-    minHeight: 84,
     borderRadius: 18,
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 8,
   },
-  dateBlockHero: { width: 76, minHeight: 100, borderRadius: 20, paddingVertical: 10 },
+  dateBlockHero: { width: 76, paddingVertical: 10 },
   dateSmall: {
     fontFamily: theme.fontFamily.textHeavy,
     fontSize: 10.5,
-    lineHeight: 13,
-    letterSpacing: 0.7,
+    lineHeight: 14,
+    letterSpacing: 0.74,
+    includeFontPadding: false,
   },
+  // handbook: Bricolage 30, line-height 1 (digits: no accents to clip)
   dateDay: {
     fontFamily: theme.fontFamily.display,
     fontSize: 30,
-    lineHeight: 32,
+    lineHeight: 30,
     letterSpacing: -1.2,
     fontVariant: ['tabular-nums'],
+    includeFontPadding: false,
   },
-  dateDayHero: { fontSize: 40, lineHeight: 42, letterSpacing: -1.6 },
-  body: { flex: 1, gap: 3, paddingVertical: 2 },
+  dateDayHero: { fontSize: 40, lineHeight: 40, letterSpacing: -1.6 },
+  // .et / .em: the first meta line sits 3pt under the title, the others follow without a gap
+  body: { flex: 1, minWidth: 0 },
   meta: { flexDirection: 'row', alignItems: 'center', gap: 5 },
-  metaText: { flexShrink: 1 },
-  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 6 },
+  firstMeta: { marginTop: 3 },
+  metaText: { flex: 1, minWidth: 0 },
+  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 },
   // the plain chip on a white card: a hairline so it still reads as a chip
   plainChip: { borderWidth: 1, borderColor: theme.colors.line },
 }));

@@ -139,6 +139,21 @@ const Events = ({ navigation, route }: any) => {
   const scrollY = useSharedValue(0);
   const onScroll = useTabBarScroll(scrollY);
 
+  // entering the tab again replays the entrance (title, search, segments, cards: 40 ms apart);
+  // coming back from an event does not (that is a pop, not a tab switch)
+  const [entranceKey, setEntranceKey] = useState(0);
+  const replayEntrance = useRef(false);
+  useEffect(
+    () =>
+      navigation.addListener?.('tabPress', () => {
+        if (!navigation.isFocused?.()) {
+          replayEntrance.current = true;
+          setEntranceKey((key) => key + 1);
+        }
+      }),
+    [navigation],
+  );
+
   const queryFilters = useMemo(() => toEventQueryFilters(filters), [filters]);
   const {
     data: events,
@@ -176,8 +191,12 @@ const Events = ({ navigation, route }: any) => {
   }, [filters, organizations, t]);
 
   // a new tab or new filters remount the cards, so they stagger in again
-  const listKey = `${eventFilter}:${JSON.stringify(filters)}`;
+  const listKey = `${entranceKey}:${eventFilter}:${JSON.stringify(filters)}`;
   const initialListKey = useRef<string | null>(listKey);
+  if (replayEntrance.current) {
+    replayEntrance.current = false;
+    initialListKey.current = listKey;
+  }
   if (initialListKey.current && listKey !== initialListKey.current) {
     initialListKey.current = null;
   }
@@ -254,7 +273,7 @@ const Events = ({ navigation, route }: any) => {
         : `${t('search.filters_count', { n: activeFilters })}`;
 
   const header = (
-    <View style={styles.header}>
+    <View key={entranceKey} style={styles.header}>
       <Animated.View entering={enter(0, reduced)}>
         <LargeTitleHeader title={`${t('header')}`} scrollY={scrollY} compact={false} />
       </Animated.View>
@@ -267,13 +286,13 @@ const Events = ({ navigation, route }: any) => {
         >
           <SearchIcon size={22} color={palette.navy} />
           <View style={styles.searchText}>
-            <AppText variant="bodyStrong" color={palette.ink2} numberOfLines={1}>
+            <AppText variant="bodyStrong" color={palette.ink2} numberOfLines={2}>
               {t('search.title')}
             </AppText>
             {!!summary && (
               <View style={styles.token}>
                 <Text
-                  numberOfLines={1}
+                  numberOfLines={2}
                   maxFontSizeMultiplier={fontScaleCap.text}
                   style={styles.tokenText}
                 >
@@ -414,10 +433,11 @@ const styles = StyleSheet.create((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  // handbook .badge-n: 20pt at top 2 / right 0, with a 2pt paper ring around it
   filterCount: {
     position: 'absolute',
-    top: -6,
-    right: -6,
+    top: 0,
+    right: -2,
     minWidth: 24,
     height: 24,
     borderRadius: 12,

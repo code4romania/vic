@@ -107,11 +107,13 @@ export function SegmentedControl<T extends string>({
               }
               onChange(option.key);
             }}
-            style={styles.segment}
+            // Dynamic Type: a label of several words wraps to a second line instead of being cut;
+            // one-word labels keep their width, so they never break mid-word
+            style={[styles.segment, option.label.includes(' ') ? null : styles.segmentOneWord]}
           >
             {option.icon?.(selected)}
             <Text
-              numberOfLines={1}
+              numberOfLines={2}
               maxFontSizeMultiplier={fontScaleCap.text}
               style={[styles.label, { color: selected ? palette.navy : LABEL_OFF }]}
             >
@@ -121,7 +123,7 @@ export function SegmentedControl<T extends string>({
               <View style={[styles.count, selected ? styles.countOn : null]}>
                 <Text
                   maxFontSizeMultiplier={fontScaleCap.text}
-                  style={[styles.countText, { color: selected ? palette.yellow : palette.white }]}
+                  style={[styles.countText, { color: selected ? palette.yellow : LABEL_OFF }]}
                 >
                   {option.count}
                 </Text>
@@ -156,17 +158,22 @@ const styles = StyleSheet.create((theme) => ({
     flexShrink: 1,
     flexBasis: 'auto',
     minHeight: 42,
+    minWidth: 0,
     borderRadius: 17,
     paddingHorizontal: 8,
+    paddingVertical: 3,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 6,
   },
+  segmentOneWord: { flexShrink: 0 },
   label: {
+    flexShrink: 1,
     fontFamily: theme.fontFamily.textHeavy,
     fontSize: 13.5,
-    lineHeight: 18,
+    lineHeight: 17,
+    textAlign: 'center',
   },
   count: {
     minWidth: 20,

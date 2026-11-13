@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
-import { Platform, Pressable, ScrollView, Text, View } from 'react-native';
+import { Platform, Pressable, ScrollView, Text, useWindowDimensions, View } from 'react-native';
 import * as Linking from 'expo-linking';
-import Animated, { useReducedMotion } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeInDown, useReducedMotion } from 'react-native-reanimated';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StyleSheet } from 'react-native-unistyles';
@@ -38,6 +38,7 @@ import {
   CalendarIcon,
   CheckIcon,
   ChevronLeftIcon,
+  ChevronRightIcon,
   GlobeIcon,
   ICON_STROKE,
   LockIcon,
@@ -46,8 +47,21 @@ import {
   UsersIcon,
 } from '../design/icons';
 import { elevation, fontScaleCap, palette, tabBar } from '../design/tokens';
-import { enter } from '../design/motion';
+import { duration, enter, spring } from '../design/motion';
 import { haptics } from '../design/haptics';
+
+/**
+ * The hero enters like the handbook's .dhero: date block, then the title 60 ms later, then the
+ * chips at 110 ms (gentle spring, 16pt lift); Reduce Motion fades.
+ */
+const heroEnter = (delay: number, reduced: boolean) =>
+  reduced
+    ? FadeIn.duration(duration.reduced)
+    : FadeInDown.withInitialValues({ opacity: 0, transform: [{ translateY: 16 }] })
+        .springify()
+        .stiffness(spring.gentle.stiffness)
+        .damping(spring.gentle.damping)
+        .delay(delay);
 
 /** A fact on a white card: a yellow 44pt icon tile, a bold line and a caption. */
 const InfoRow = ({
@@ -56,6 +70,8 @@ const InfoRow = ({
   title,
   caption,
   captionUnderline,
+  captionFirst,
+  chevron,
   onPress,
   accessibilityLabel,
   testID,
@@ -67,6 +83,10 @@ const InfoRow = ({
   caption?: string;
   /** the caption is the row's action ("Deschide în Hărți") */
   captionUnderline?: boolean;
+  /** the caption reads first ("Organizat de" above the organization) */
+  captionFirst?: boolean;
+  /** a chevron at the end: the row opens a page */
+  chevron?: boolean;
   onPress?: () => void;
   accessibilityLabel?: string;
   testID?: string;
@@ -79,7 +99,7 @@ const InfoRow = ({
             <Icon size={22} color={palette.navy} strokeWidth={ICON_STROKE} />
           </View>
         ) : null)}
-      <View style={styles.infoText}>
+      <View style={[styles.infoText, captionFirst ? styles.infoTextReversed : null]}>
         <AppText variant="bodyStrong" style={styles.infoTitle}>
           {title}
         </AppText>
@@ -93,6 +113,7 @@ const InfoRow = ({
           </AppText>
         )}
       </View>
+      {chevron && <ChevronRightIcon size={18} color={palette.navy} strokeWidth={ICON_STROKE} />}
     </>
   );
   if (onPress) {
@@ -138,6 +159,9 @@ const Event = ({ navigation, route }: any) => {
   };
   const insets = useSafeAreaInsets();
   const reduced = useReducedMotion();
+  // at large text sizes the action bar stacks: status above, buttons below (nothing is cut)
+  const { fontScale } = useWindowDimensions();
+  const stackedBar = fontScale >= 1.25;
   // light text over the navy hero
   useFocusedStatusBarStyle('light');
   const { userProfile } = useUserProfile();
@@ -258,7 +282,9 @@ const Event = ({ navigation, route }: any) => {
 
   // the bar floats where the tab bar sits on the tab screens
   const barBottom = insets.bottom > 0 ? tabBar.bottom : 16;
-  const barSpace = event && !finished ? barBottom + 64 + 24 : insets.bottom + 24;
+  // the bar's own height (it grows with Dynamic Type and stacks at large sizes)
+  const [barHeight, setBarHeight] = useState(64);
+  const barSpace = event && !finished ? barBottom + barHeight + 24 : insets.bottom + 24;
 
   if (!event && !isLoadingEvent && getEventError) {
     return eventGone ? (
@@ -307,15 +333,15 @@ const Event = ({ navigation, route }: any) => {
             style={({ pressed }) => [styles.back, pressed ? styles.backPressed : null]}
             testID="event-back"
           >
-            <ChevronLeftIcon size={24} color={palette.white} strokeWidth={ICON_STROKE + 0.4} />
+            <ChevronLeftIcon size={22} color={palette.white} strokeWidth={ICON_STROKE + 0.4} />
           </Pressable>
           {event && (
             <>
               <View style={styles.heroRow}>
-                <Animated.View entering={enter(0, reduced)}>
+                <Animated.View entering={heroEnter(0, reduced)}>
                   <DateBlock date={event.startDate} tone="yellow" size="hero" />
                 </Animated.View>
-                <Animated.View entering={enter(1, reduced)} style={styles.heroTitle}>
+                <Animated.View entering={heroEnter(60, reduced)} style={styles.heroTitle}>
                   <Text
                     accessibilityRole="header"
                     maxFontSizeMultiplier={fontScaleCap.display}
@@ -325,7 +351,7 @@ const Event = ({ navigation, route }: any) => {
                   </Text>
                 </Animated.View>
               </View>
-              <Animated.View entering={enter(2, reduced)} style={styles.heroChips}>
+              <Animated.View entering={heroEnter(110, reduced)} style={styles.heroChips}>
                 {event.isPublic ? (
                   <StatusChip
                     kind="glass"
@@ -353,7 +379,7 @@ const Event = ({ navigation, route }: any) => {
               {joined &&
                 registration === EventRegistrationStatus.REJECTED &&
                 !!event.rejectionReason && (
-                  <Animated.View entering={enter(3, reduced)}>
+                  <Animated.View entering={heroEnter(150, reduced)}>
                     <AppText variant="caption" color="rgba(255,255,255,0.8)" style={styles.reason}>
                       {t('registration.reason', { reason: event.rejectionReason })}
                     </AppText>
@@ -376,6 +402,16 @@ const Event = ({ navigation, route }: any) => {
                 leading={<HexAvatar name={event.organizationName || ''} />}
                 title={event.organizationName || ''}
                 caption={`${t('organized_by_caption')}`}
+                captionFirst
+                chevron={!!event.organizationId}
+                onPress={
+                  event.organizationId
+                    ? () =>
+                        navigation.navigate('organization-profile', {
+                          organizationId: event.organizationId,
+                        })
+                    : undefined
+                }
                 accessibilityLabel={`${t('organized_by', { name: event.organizationName })}`}
                 testID="event-organizer"
               />
@@ -438,15 +474,16 @@ const Event = ({ navigation, route }: any) => {
       {event && !finished && (
         <Animated.View
           entering={enter(4, reduced)}
-          style={[styles.bar, { bottom: barBottom }]}
+          style={[styles.bar, stackedBar ? styles.barStacked : null, { bottom: barBottom }]}
+          onLayout={(e) => setBarHeight(Math.round(e.nativeEvent.layout.height))}
           testID="event-bar"
         >
           <GlassSurface radius={30} />
-          <View style={styles.barText}>
-            <AppText variant="headline" numberOfLines={1} style={styles.barStatus}>
+          <View style={[styles.barText, stackedBar ? styles.barTextStacked : null]}>
+            <AppText variant="headline" numberOfLines={2} style={styles.barStatus}>
               {barStatus}
             </AppText>
-            <AppText variant="caption" color={palette.ink2} numberOfLines={1}>
+            <AppText variant="caption" color={palette.ink2} numberOfLines={2} style={styles.barSub}>
               {formatEventWhen(event.startDate, event.endDate)}
             </AppText>
           </View>
@@ -550,21 +587,23 @@ const styles = StyleSheet.create((theme) => ({
   },
   backPressed: { backgroundColor: 'rgba(255,255,255,0.24)' },
   heroRow: { flexDirection: 'row', alignItems: 'flex-end', gap: 14, marginTop: 18 },
-  heroTitle: { flex: 1 },
+  heroTitle: { flex: 1, minWidth: 0 },
+  // handbook: Bricolage 38, line-height .96, -0.035em
   title: {
     fontFamily: theme.fontFamily.display,
     fontSize: 38,
     lineHeight: 37,
     letterSpacing: -1.33,
     color: theme.colors.white,
+    includeFontPadding: false,
   },
   heroChips: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 14 },
   reason: { marginTop: 8 },
   skeleton: { paddingHorizontal: theme.space.gutter, paddingTop: 16 },
   cards: { paddingHorizontal: theme.space.gutter, paddingTop: 14, gap: 10 },
   card: { backgroundColor: theme.colors.card, borderRadius: theme.radius.card, overflow: 'hidden' },
-  // starts under the text, past the 44pt tile
-  line: { height: StyleSheet.hairlineWidth, backgroundColor: theme.colors.line, marginLeft: 70 },
+  // handbook: a full-width 1px line between the facts of a card
+  line: { height: 1, backgroundColor: theme.colors.line },
   info: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 14, minHeight: 72 },
   infoPressed: { backgroundColor: theme.colors.paper },
   iconTile: {
@@ -575,7 +614,8 @@ const styles = StyleSheet.create((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  infoText: { flex: 1, gap: 1 },
+  infoText: { flex: 1, minWidth: 0, gap: 1 },
+  infoTextReversed: { flexDirection: 'column-reverse' },
   infoTitle: { fontFamily: theme.fontFamily.textHeavy, fontSize: 15.5, lineHeight: 21 },
   infoCaption: { fontFamily: theme.fontFamily.text },
   underline: { textDecorationLine: 'underline', fontFamily: theme.fontFamily.textBold },
@@ -594,9 +634,19 @@ const styles = StyleSheet.create((theme) => ({
     gap: 12,
     ...elevation.float,
   },
-  barText: { flex: 1 },
+  barStacked: { flexDirection: 'column', alignItems: 'stretch', paddingRight: 18, paddingTop: 14 },
+  barText: { flex: 1, minWidth: 0 },
+  barTextStacked: { flex: 0 },
   barStatus: { fontSize: 15 },
-  barActions: { flexDirection: 'row', alignItems: 'center', gap: 14 },
+  // handbook .dbar .ss: 12.5 / 600
+  barSub: { fontSize: 12.5, lineHeight: 17 },
+  barActions: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    gap: 14,
+  },
   confirmIcon: {
     width: 64,
     height: 64,
