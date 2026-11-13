@@ -603,11 +603,14 @@
     },
     "add": "Add hours",
     "add_short": "Add",
+    "sent_toast": "{{n}}h sent for approval",
     "at": "At {{name}}",
     "totals": {
       "approved": "approved",
       "pending": "pending",
-      "rejected": "rejected"
+      "rejected": "rejected",
+      "approved_singular": "approved",
+      "rejected_singular": "rejected"
     },
     "errors": {
       "generic": "Error loading your hours"
@@ -645,7 +648,8 @@
     "form": {
       "event": {
         "label": "Event",
-        "placeholder": "Choose an event"
+        "placeholder": "Choose an event",
+        "none": "No event"
       },
       "task": {
         "label": "Task",

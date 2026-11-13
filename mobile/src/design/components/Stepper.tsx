@@ -1,6 +1,7 @@
 // Stepper „Îndrăzneț”: a white 72pt bar, − on paper, + on yellow (52×52, radius 18, press .88 on the
-// snappy spring) and the value in the middle („4h”) that rolls: the old number slides out and the
-// new one slides in, up when it grows and down when it shrinks, clipped in a 44pt window.
+// snappy spring) and the value in the middle („4h”) that rolls (prototype `rUp` / `rDn`): the new
+// number slides in from below when it grows and from above when it shrinks, fading in, in 360 ms on
+// the snappy curve, clipped in a 44pt window.
 // For VoiceOver / TalkBack the whole bar is one adjustable element (swipe up / down).
 import React, { useEffect, useRef, useState } from 'react';
 import {
@@ -12,6 +13,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import Animated, {
+  Easing,
   interpolate,
   useAnimatedStyle,
   useReducedMotion,
@@ -21,7 +23,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { StyleSheet } from 'react-native-unistyles';
 import { palette } from '../tokens';
-import { springTo } from '../motion';
+import { duration, springTo } from '../motion';
 import { haptics } from '../haptics';
 import { MinusIcon, PlusIcon } from '../icons';
 import { FieldError, FieldLabel, useErrorShake } from './TextField';
@@ -50,6 +52,9 @@ export interface StepperProps {
 }
 
 const WINDOW = 44;
+// the prototype's --snappy curve and the 360 ms of `.roll span.in-up / .in-dn`
+const ROLL_MS = 360;
+const SNAPPY = Easing.bezier(0.3, 1.25, 0.5, 1);
 
 const StepButton = ({
   kind,
@@ -87,7 +92,7 @@ const StepButton = ({
       style={disabled ? styles.off : null}
     >
       <Animated.View style={[styles.button, kind === 'plus' ? styles.plus : styles.minus, scale]}>
-        <Icon size={24} color={palette.navy} strokeWidth={2.6} />
+        <Icon size={22} color={palette.navy} strokeWidth={2.6} />
       </Animated.View>
     </Pressable>
   );
@@ -115,9 +120,8 @@ export const Stepper = ({
   const shake = useErrorShake(error);
   const current = Number.isFinite(value) ? value : 0;
 
-  // the number that rolls out, and which way
+  // which way the new number rolls in
   const last = useRef(current);
-  const [previous, setPrevious] = useState<number | null>(null);
   const [direction, setDirection] = useState(1);
   const roll = useSharedValue(1);
 
@@ -125,25 +129,23 @@ export const Stepper = ({
     if (last.current === current) {
       return;
     }
-    setPrevious(last.current);
     setDirection(current > last.current ? 1 : -1);
     last.current = current;
-    roll.value = withSequence(withTiming(0, { duration: 0 }), springTo(1, 'snappy', reduced));
+    roll.value = withSequence(
+      withTiming(0, { duration: 0 }),
+      reduced
+        ? withTiming(1, { duration: duration.reduced })
+        : withTiming(1, { duration: ROLL_MS, easing: SNAPPY }),
+    );
   }, [current, reduced, roll]);
 
+  // from translateY(±100%) and opacity 0; Reduce Motion: a fade only
   const incoming = useAnimatedStyle(
     () => ({
-      opacity: roll.value,
-      transform: [{ translateY: (1 - roll.value) * WINDOW * direction }],
+      opacity: Math.min(1, roll.value),
+      transform: [{ translateY: reduced ? 0 : (1 - roll.value) * WINDOW * direction }],
     }),
-    [direction],
-  );
-  const outgoing = useAnimatedStyle(
-    () => ({
-      opacity: 1 - roll.value,
-      transform: [{ translateY: -roll.value * WINDOW * direction }],
-    }),
-    [direction],
+    [direction, reduced],
   );
 
   const clamp = (next: number) => Math.min(max, Math.max(min, next));
@@ -199,17 +201,6 @@ export const Stepper = ({
           testID={`${testID}-minus`}
         />
         <View style={styles.window}>
-          {previous !== null && (
-            <Animated.View
-              style={[styles.layer, outgoing]}
-              accessibilityElementsHidden
-              importantForAccessibility="no-hide-descendants"
-            >
-              <Text style={styles.number} maxFontSizeMultiplier={1}>
-                {formatValue(previous)}
-              </Text>
-            </Animated.View>
-          )}
           <Animated.View style={[styles.layer, incoming]}>
             {/* 40pt is already large, so this number does not scale further */}
             <Text style={styles.number} maxFontSizeMultiplier={1} testID={`${testID}-value`}>
@@ -242,6 +233,7 @@ const styles = StyleSheet.create((theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    // `.stepper` padding 0 10 (8 + the 2pt error border)
     paddingHorizontal: 8,
   },
   barError: { borderColor: theme.colors.danger, backgroundColor: theme.colors.errorTint },

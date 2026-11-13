@@ -626,11 +626,14 @@
         },
         "add": "Adaugă ore",
         "add_short": "Adaugă",
+        "sent_toast": "{{n}}h trimise spre aprobare",
         "at": "La {{name}}",
         "totals": {
             "approved": "aprobate",
             "pending": "în așteptare",
-            "rejected": "respinse"
+            "rejected": "respinse",
+            "approved_singular": "aprobată",
+            "rejected_singular": "respinsă"
         },
         "errors": {
             "generic": "Eroare la încărcarea orelor"
@@ -668,7 +671,8 @@
         "form": {
             "event": {
                 "label": "Eveniment",
-                "placeholder": "Alege un eveniment"
+                "placeholder": "Alege un eveniment",
+                "none": "Fără eveniment"
             },
             "task": {
                 "label": "Activitate",

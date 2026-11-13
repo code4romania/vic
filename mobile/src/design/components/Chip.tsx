@@ -2,7 +2,7 @@
 // StatusChip: solid 28pt pills; every status has a color plus an icon or a texture, so it never
 // depends on color alone (ok ✓, no ✕, wait = yellow/navy stripes inside a navy outline).
 // OptionChip: the quick option under a field (`.opt`), navy with yellow text when selected.
-import React, { ReactNode, useId } from 'react';
+import React, { ReactNode } from 'react';
 import { Pressable, StyleProp, View, ViewStyle } from 'react-native';
 import Animated, {
   interpolate,
@@ -10,7 +10,7 @@ import Animated, {
   useReducedMotion,
   useSharedValue,
 } from 'react-native-reanimated';
-import Svg, { Defs, Pattern, Rect } from 'react-native-svg';
+import Svg, { Path, Rect } from 'react-native-svg';
 import { StyleSheet } from 'react-native-unistyles';
 import { hit, palette, status, StatusKind } from '../tokens';
 import { springTo } from '../motion';
@@ -40,25 +40,25 @@ export const statusKind = (apiStatus?: string | null): StatusKind => {
   }
 };
 
-/** 12×12 rounded square with diagonal navy/yellow stripes (the "pending" texture). */
+/**
+ * 12×12 rounded square with „/” diagonal navy/yellow stripes (the "pending" texture), 2.5pt each.
+ * Drawn as polygons in a clipped View: an SVG `<Pattern patternTransform="rotate(45)">` renders as
+ * a few dots on iOS at this size.
+ */
 export const PendingStripes = ({ size = 12 }: { size?: number }) => {
-  const id = `stripes-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`;
+  const step = 5 * Math.SQRT2;
+  let d = '';
+  for (let a = 0; a < size * 2; a += step) {
+    const b = a + step / 2;
+    d += `M${a.toFixed(2)} 0L${b.toFixed(2)} 0L0 ${b.toFixed(2)}L0 ${a.toFixed(2)}Z`;
+  }
   return (
-    <Svg width={size} height={size} viewBox="0 0 12 12" testID="status-chip-stripes">
-      <Defs>
-        <Pattern
-          id={id}
-          patternUnits="userSpaceOnUse"
-          width={5}
-          height={5}
-          patternTransform="rotate(45)"
-        >
-          <Rect x={0} y={0} width={2.5} height={5} fill={palette.navy} />
-          <Rect x={2.5} y={0} width={2.5} height={5} fill={palette.yellow} />
-        </Pattern>
-      </Defs>
-      <Rect x={0} y={0} width={12} height={12} rx={4} fill={`url(#${id})`} />
-    </Svg>
+    <View testID="status-chip-stripes" style={[styles.stripes, { width: size, height: size }]}>
+      <Svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+        <Rect x={0} y={0} width={size} height={size} fill={palette.yellow} />
+        <Path d={d} fill={palette.navy} />
+      </Svg>
+    </View>
   );
 };
 
@@ -171,6 +171,7 @@ export const OptionChip = ({
 export default StatusChip;
 
 const styles = StyleSheet.create((theme) => ({
+  stripes: { borderRadius: 4, overflow: 'hidden' },
   status: {
     minHeight: 28,
     borderRadius: theme.radius.chip,

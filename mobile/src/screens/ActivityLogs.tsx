@@ -1,12 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Pressable, RefreshControl, View } from 'react-native';
-import Animated, {
-  Extrapolation,
-  interpolate,
-  useAnimatedStyle,
-  useReducedMotion,
-  useSharedValue,
-} from 'react-native-reanimated';
+import Animated, { useReducedMotion, useSharedValue } from 'react-native-reanimated';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { StyleSheet } from 'react-native-unistyles';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -43,6 +37,7 @@ import { AddHoursSheet, AddHoursSheetHandle } from '../components/hours/AddHours
 import { OrganizationChip, OrganizationSwitchSheet } from '../components/hours/OrganizationChip';
 import ActivityLogSkeletonItem from '../components/skeleton/activity-log-skeleton-item';
 import { EmptyState, LargeTitleHeader, StatusBarScrim } from '../components/ui';
+import { useLargeTitleCollapse } from '../components/ui/LargeTitleHeader';
 import { palette } from '../design/tokens';
 import { enter } from '../design/motion';
 import { ChevronLeftIcon, ICON_STROKE, PlusIcon } from '../design/icons';
@@ -53,8 +48,8 @@ import { Sheet, SheetBackdropScale, useSheetBackdropProgress } from '../design/c
 
 // newest first, like the canvas
 const ORDER = OrderDirection.DESC;
-// the large title fades out as the compact bar comes in (LargeTitleHeader: 48pt)
-const COLLAPSE_AT = 48;
+// after „Trimis spre aprobare” closes: the new row glows and the toast comes this much later
+const AFTER_CLOSE_MS = 420;
 
 /**
  * Ore „Îndrăzneț” (prototype `#s-hours`): the active organization as a navy chip (switch on tap),
@@ -82,6 +77,12 @@ const ActivityLogs = ({ navigation, route }: any) => {
   // the entry just sent (highlighted once) and a counter that refills the hexagon
   const [highlightId, setHighlightId] = useState<string | null>(null);
   const [refillKey, setRefillKey] = useState(0);
+  // each focus counts the approved hours again from 0, with the hexagon refill
+  const [focusKey, setFocusKey] = useState(0);
+  const sentAt = useRef(0);
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // the first list enters as one block (stagger step 4); after a segment change rows stagger from 0
+  const [swapped, setSwapped] = useState(false);
   const { approvedHours, rejectedHours, pendingHours } = useActivityLogs();
   const { userProfile } = useUserProfile();
   const organization = userProfile?.activeOrganization;
@@ -124,7 +125,17 @@ const ActivityLogs = ({ navigation, route }: any) => {
         refetchInactive: false,
       });
       reload();
+      setFocusKey((key) => key + 1);
     }, [queryClient, reload]),
+  );
+
+  useEffect(
+    () => () => {
+      if (toastTimer.current) {
+        clearTimeout(toastTimer.current);
+      }
+    },
+    [],
   );
 
   const items = useMemo(
@@ -162,13 +173,26 @@ const ActivityLogs = ({ navigation, route }: any) => {
   // after „Trimis spre aprobare”: back to the pending entries, the new one glows, the hexagon refills
   const onSent = useCallback(
     (log: IActivityLog) => {
+      sentAt.current = Date.now();
       setStatus(ActivityLogStatus.PENDING);
       setHighlightId(log?.id ?? null);
       setRefillKey((key) => key + 1);
       reload();
+      if (toastTimer.current) {
+        clearTimeout(toastTimer.current);
+      }
+      toastTimer.current = setTimeout(() => {
+        toastTimer.current = null;
+        Toast.show({ type: 'success', text1: `${t('sent_toast', { n: log?.hours ?? '' })}` });
+      }, AFTER_CLOSE_MS);
     },
-    [reload],
+    [reload, t],
   );
+
+  const onStatus = useCallback((next: ActivityLogStatus) => {
+    setSwapped(true);
+    setStatus(next);
+  }, []);
 
   const accessory = useMemo(
     () =>
@@ -195,12 +219,10 @@ const ActivityLogs = ({ navigation, route }: any) => {
     }
   };
 
-  const titleStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(scrollY.value, [0, COLLAPSE_AT], [1, 0], Extrapolation.CLAMP),
-  }));
+  const titleStyle = useLargeTitleCollapse(scrollY);
 
   const header = (
-    <View style={[styles.header, { paddingTop: insets.top + 14 }]}>
+    <View style={[styles.header, { paddingTop: insets.top + 18 }]}>
       {!!organization && (
         <Animated.View entering={enter(0, reduced)}>
           <OrganizationChip
@@ -212,7 +234,11 @@ const ActivityLogs = ({ navigation, route }: any) => {
       )}
       {/* Opened from the volunteer page: the back button and „+ Adaugă” join the title row (no tab
           bar there to hold the action). */}
-      <Animated.View entering={enter(1, reduced)} testID="hours-title-row" style={styles.titleRow}>
+      <Animated.View
+        entering={enter(1, reduced)}
+        testID="hours-title-row"
+        style={[styles.titleRow, organization ? styles.titleAfterChip : null]}
+      >
         {!asTab && (
           <Pressable
             onPress={navigation.goBack}
@@ -242,17 +268,18 @@ const ActivityLogs = ({ navigation, route }: any) => {
         )}
       </Animated.View>
       {!!organization && (
-        <Animated.View entering={enter(2, reduced)}>
+        <Animated.View entering={enter(2, reduced)} style={styles.summary}>
           <HoursSummary
             approved={toHours(approvedHours)}
             pending={toHours(pendingHours)}
             rejected={toHours(rejectedHours)}
             refillKey={refillKey}
+            replay={`${focusKey}-${refillKey}`}
           />
         </Animated.View>
       )}
       {!!organization && (
-        <Animated.View entering={enter(3, reduced)}>
+        <Animated.View entering={enter(3, reduced)} style={styles.segment}>
           <SegmentedControl
             options={[
               {
@@ -264,7 +291,7 @@ const ActivityLogs = ({ navigation, route }: any) => {
               { key: ActivityLogStatus.REJECTED, label: `${t('tabs.rejected')}` },
             ]}
             value={status}
-            onChange={setStatus}
+            onChange={onStatus}
             testID="hours-status"
           />
         </Animated.View>
@@ -319,12 +346,13 @@ const ActivityLogs = ({ navigation, route }: any) => {
           keyExtractor={(item) => item.id}
           ListHeaderComponent={header}
           renderItem={({ item, index }) => (
-            <Animated.View entering={enter(4 + Math.min(index, 4), reduced)} style={styles.item}>
+            <Animated.View entering={enter(swapped ? index : 4, reduced)} style={styles.item}>
               <LogRow
                 log={item}
                 status={status}
                 onPress={onOpen}
                 highlight={item.id === highlightId}
+                highlightDelay={AFTER_CLOSE_MS - (Date.now() - sentAt.current)}
               />
             </Animated.View>
           )}
@@ -350,7 +378,7 @@ const ActivityLogs = ({ navigation, route }: any) => {
           testID="hours-list"
         />
         <StatusBarScrim color={palette.paper} />
-        <LargeTitleHeader title={`${t('title')}`} scrollY={scrollY} compactOnly />
+        <LargeTitleHeader title={`${t('title')}`} scrollY={scrollY} bar="only" />
       </SheetBackdropScale>
 
       <AddHoursSheet ref={addSheet} animatedPosition={animatedPosition} onSent={onSent} />
@@ -395,8 +423,12 @@ const styles = StyleSheet.create((theme) => ({
   root: { flex: 1, backgroundColor: theme.colors.black },
   screen: { backgroundColor: theme.colors.paper },
   list: { paddingHorizontal: theme.space.gutter, flexGrow: 1 },
-  header: { gap: 14, paddingBottom: 14 },
+  // prototype `#s-hours`: chip, 10, title, 16, card, 14, segmented, 14, entries
+  header: { paddingBottom: 14 },
   titleRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  titleAfterChip: { marginTop: 10 },
+  summary: { marginTop: 16 },
+  segment: { marginTop: 14 },
   back: {
     width: 44,
     height: 44,
@@ -406,7 +438,7 @@ const styles = StyleSheet.create((theme) => ({
     justifyContent: 'center',
   },
   backPressed: { transform: [{ scale: 0.94 }] },
-  title: { flex: 1 },
+  title: { flex: 1, transformOrigin: 'left bottom' },
   item: { marginBottom: 10 },
   more: { paddingVertical: 20 },
 }));

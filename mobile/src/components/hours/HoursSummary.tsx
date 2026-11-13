@@ -1,33 +1,13 @@
-import React, { useId } from 'react';
+import React from 'react';
 import { View } from 'react-native';
-import Svg, { Defs, Pattern, Rect } from 'react-native-svg';
+import { useReducedMotion } from 'react-native-reanimated';
 import { StyleSheet } from 'react-native-unistyles';
 import { useTranslation } from 'react-i18next';
 import { fontScaleCap, palette } from '../../design/tokens';
 import { AppText } from '../../design/components/Text';
 import { ImpactHexagon } from '../../design/components/ImpactHexagon';
-
-/** 12×12 legend square with navy / white diagonal stripes (pending hours in the hexagon). */
-const StripedSquare = () => {
-  const id = `legend-stripes-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`;
-  return (
-    <Svg width={12} height={12} viewBox="0 0 12 12">
-      <Defs>
-        <Pattern
-          id={id}
-          patternUnits="userSpaceOnUse"
-          width={6}
-          height={6}
-          patternTransform="rotate(45)"
-        >
-          <Rect x={0} y={0} width={3} height={6} fill={palette.navy} />
-          <Rect x={3} y={0} width={3} height={6} fill={palette.white} />
-        </Pattern>
-      </Defs>
-      <Rect x={0.5} y={0.5} width={11} height={11} rx={4} fill={`url(#${id})`} />
-    </Svg>
-  );
-};
+import { StripedSquare } from './StripedSquare';
+import { useCountTo } from './useCountTo';
 
 type LegendKey = 'approved' | 'pending' | 'rejected';
 
@@ -43,18 +23,30 @@ export interface HoursSummaryProps {
   rejected: number;
   /** change it to empty and refill the hexagon (e.g. after sending new hours) */
   refillKey?: number;
+  /** change it to count the approved hours again from 0 (each focus, after sending) */
+  replay?: unknown;
 }
 
 /**
  * The Ore header card (`.hrsHead`): the impact hexagon (approved fill + pending stripes) beside a
  * legend of the hours per status in Bricolage 30.
  */
-export const HoursSummary = ({ approved, pending, rejected, refillKey = 0 }: HoursSummaryProps) => {
+export const HoursSummary = ({
+  approved,
+  pending,
+  rejected,
+  refillKey = 0,
+  replay,
+}: HoursSummaryProps) => {
   const { t } = useTranslation('activity_logs');
-  const items: { key: LegendKey; value: number }[] = [
-    { key: 'approved', value: approved || 0 },
-    { key: 'pending', value: pending || 0 },
-    { key: 'rejected', value: rejected || 0 },
+  const reduced = useReducedMotion();
+  // prototype `counts()`: approved counts from 0 with the refill, pending from the number shown
+  const approvedShown = useCountTo(approved || 0, { reduced, replay });
+  const pendingShown = useCountTo(pending || 0, { reduced, fromZero: false });
+  const items: { key: LegendKey; value: number; shown: number }[] = [
+    { key: 'approved', value: approved || 0, shown: approvedShown },
+    { key: 'pending', value: pending || 0, shown: pendingShown },
+    { key: 'rejected', value: rejected || 0, shown: rejected || 0 },
   ];
   return (
     <View style={styles.card} testID="hours-summary">
@@ -69,8 +61,9 @@ export const HoursSummary = ({ approved, pending, rejected, refillKey = 0 }: Hou
         />
       </View>
       <View style={styles.legend}>
-        {items.map(({ key, value }) => {
-          const label = `${t(`totals.${key}`)}`;
+        {items.map(({ key, value, shown }) => {
+          // „1h respinsă”, „42h aprobate”
+          const label = `${t(value === 1 && key !== 'pending' ? `totals.${key}_singular` : `totals.${key}`)}`;
           return (
             <View
               key={key}
@@ -83,13 +76,13 @@ export const HoursSummary = ({ approved, pending, rejected, refillKey = 0 }: Hou
                 style={styles.value}
                 maxFontSizeMultiplier={fontScaleCap.display}
               >
-                {`${value}h`}
+                {`${shown}h`}
               </AppText>
               <View style={styles.key}>
                 {SWATCH[key] ? (
                   <View style={[styles.square, { backgroundColor: SWATCH[key]! }]} />
                 ) : (
-                  <StripedSquare />
+                  <StripedSquare period={6} />
                 )}
                 <AppText variant="label" color={palette.ink2} style={styles.keyText}>
                   {label}
@@ -115,13 +108,15 @@ const styles = StyleSheet.create((theme) => ({
     backgroundColor: theme.colors.card,
   },
   legend: { flex: 1, gap: 8 },
+  // `.legend .v`: Bricolage 800 30, line-height 1 (Bricolage needs ~0.9 in RN to sit as tight)
   value: {
     fontSize: 30,
-    lineHeight: 32,
+    lineHeight: 28,
     letterSpacing: -0.9,
     fontVariant: ['tabular-nums'],
+    includeFontPadding: false,
   },
   key: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   square: { width: 12, height: 12, borderRadius: 4 },
-  keyText: { fontFamily: theme.fontFamily.textBold, fontSize: 12.5, flexShrink: 1 },
+  keyText: { fontFamily: theme.fontFamily.textBold, fontSize: 12.5, lineHeight: 17, flexShrink: 1 },
 }));

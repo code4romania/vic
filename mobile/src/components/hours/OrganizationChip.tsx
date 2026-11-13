@@ -30,7 +30,7 @@ export const OrganizationChip = ({ name, onPress, testID }: OrganizationChipProp
       <AppText
         variant="label"
         color={palette.yellow}
-        numberOfLines={1}
+        numberOfLines={2}
         maxFontSizeMultiplier={fontScaleCap.display}
         style={styles.label}
       >
@@ -104,18 +104,20 @@ export const OrganizationSwitchSheet = forwardRef<BottomSheetModal, Organization
 OrganizationSwitchSheet.displayName = 'OrganizationSwitchSheet';
 
 const styles = StyleSheet.create((theme) => ({
+  // `.chip.act`: 28pt, padding 0 10 0 8, radius 14, gap 5, Manrope 800 12.5 (a long name wraps)
   chip: {
     alignSelf: 'flex-start',
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
-    minHeight: 32,
+    gap: 5,
+    minHeight: 28,
     maxWidth: '100%',
-    paddingLeft: 10,
-    paddingRight: 12,
-    borderRadius: 16,
+    paddingVertical: 4,
+    paddingLeft: 8,
+    paddingRight: 10,
+    borderRadius: 14,
     backgroundColor: theme.colors.navy,
   },
   pressed: { transform: [{ scale: 0.96 }] },
-  label: { fontSize: 12.5, flexShrink: 1 },
+  label: { fontSize: 12.5, lineHeight: 16, flexShrink: 1 },
 }));

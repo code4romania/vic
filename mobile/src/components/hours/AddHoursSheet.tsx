@@ -33,6 +33,7 @@ import { haptics } from '../../design/haptics';
 import { CloseIcon, ICON_STROKE } from '../../design/icons';
 import { Button } from '../../design/components/Button';
 import { Sheet } from '../../design/components/Sheet';
+import { tight, useEffectiveFontScale } from '../../design/components/Text';
 import { SubmitSuccess } from './SubmitSuccess';
 
 /** How long „Trimis spre aprobare” stays before the sheet closes (prototype: 1.7 s). */
@@ -152,6 +153,8 @@ export const AddHoursSheet = forwardRef<AddHoursSheetHandle, AddHoursSheetProps>
         {
           activityLog: {
             ...activityLog,
+            // „Fără eveniment” clears the event: send none rather than an empty id
+            eventId: activityLog.eventId || (undefined as unknown as string),
             volunteerId: organization?.volunteerId,
           },
         },
@@ -214,6 +217,8 @@ export const AddHoursSheet = forwardRef<AddHoursSheetHandle, AddHoursSheetProps>
     );
 
     const title = `${t('activity_logs:add')}`;
+    // `.shead h4` Bricolage 30 on a 30pt line, trimmed so Ă is not cut (design/components/Text)
+    const titleTrim = tight(30, 1, useEffectiveFontScale(fontScaleCap.display));
 
     return (
       <Sheet
@@ -225,6 +230,8 @@ export const AddHoursSheet = forwardRef<AddHoursSheetHandle, AddHoursSheetProps>
         animatedPosition={animatedPosition}
         enablePanDownToClose={!guarded && !isLoggingHours}
         backdropComponent={renderBackdrop}
+        // `.done` covers the whole sheet, grabber included
+        {...(sent ? { handleIndicatorStyle: styles.grabberHidden } : {})}
         accessibilityLabel={title}
         onDismiss={() => {
           if (timer.current) {
@@ -241,8 +248,8 @@ export const AddHoursSheet = forwardRef<AddHoursSheetHandle, AddHoursSheetProps>
               <Text
                 accessibilityRole="header"
                 maxFontSizeMultiplier={fontScaleCap.display}
-                style={styles.title}
-                numberOfLines={1}
+                style={[styles.title, titleTrim]}
+                numberOfLines={2}
               >
                 {title}
               </Text>
@@ -297,6 +304,7 @@ export default AddHoursSheet;
 
 const styles = StyleSheet.create((theme) => ({
   fill: { flex: 1 },
+  grabberHidden: { width: 42, height: 5, opacity: 0 },
   scrim: { backgroundColor: theme.colors.scrim },
   header: {
     flexDirection: 'row',
@@ -306,11 +314,11 @@ const styles = StyleSheet.create((theme) => ({
     paddingBottom: 10,
     paddingHorizontal: theme.space.gutter,
   },
+  // `.shead h4`: Bricolage 800 30 beside the 46pt close
   title: {
     flex: 1,
     fontFamily: theme.fontFamily.display,
-    fontSize: 30,
-    lineHeight: 33,
+    includeFontPadding: false,
     letterSpacing: -1.05,
     color: theme.colors.ink,
   },
@@ -327,6 +335,7 @@ const styles = StyleSheet.create((theme) => ({
     paddingHorizontal: theme.space.gutter,
     paddingTop: 4,
     paddingBottom: 24,
-    gap: 16,
+    // `.sbody` gap 14
+    gap: 14,
   },
 }));
