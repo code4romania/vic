@@ -19,7 +19,7 @@ import Animated, {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { elevation, fontFamily, fontScaleCap, glass, palette, tabBar } from '../../design/tokens';
-import { duration, spring } from '../../design/motion';
+import { duration, easing, spring, springTo } from '../../design/motion';
 import { haptics } from '../../design/haptics';
 import {
   CalendarIcon,
@@ -66,6 +66,10 @@ const PILL = tabBar.pill + PILL_RING * 2;
 const ACCESSORY_HEIGHT = tabBar.pill;
 const ACCESSORY_GAP = 10;
 const EXPAND_HINT = 'Arată toate tab-urile';
+const LABEL_LINE = 13;
+// how far a label may reach into the neighbouring slots („Evenimente” is 63pt, a slot at 320pt
+// width is 56pt; its neighbours „Acasă” and „Ore” leave more than that free)
+const LABEL_OVERHANG = 5;
 
 /**
  * Real glass on iOS 26 (Liquid Glass); older iOS a blur with 58% white over it; Android a dense
@@ -164,9 +168,10 @@ export const GlassTabBar = ({ state, navigation, items }: GlassTabBarProps) => {
       ? withTiming(activeIndex * slot, { duration: duration.reduced })
       : withSpring(activeIndex * slot, spring.snappy);
     if (!reducedMotion) {
+      // prototype @keyframes squish: 300 ms, widest (1.12 × 0.92) at 40%
       squish.value = withSequence(
-        withTiming(1.12, { duration: 120 }),
-        withSpring(1, spring.snappy),
+        withTiming(1.12, { duration: 120, easing: easing.standard }),
+        withTiming(1, { duration: 180, easing: easing.standard }),
       );
     }
   }, [activeIndex, slot, reducedMotion, lensX, squish]);
@@ -262,6 +267,8 @@ export const GlassTabBar = ({ state, navigation, items }: GlassTabBarProps) => {
             <Text
               maxFontSizeMultiplier={fontScaleCap.display}
               numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.8}
               style={styles.accessoryLabel}
             >
               {accessory.label}
@@ -369,6 +376,25 @@ const TabButton = ({
 }: TabButtonProps) => {
   const Icon = ICONS[item.icon];
   const color = focused ? palette.navy : palette.ink2;
+  const { fontScale } = useWindowDimensions();
+  // the label row is as tall as one line at the capped scale, so it never clips
+  const labelHeight = Math.ceil(
+    LABEL_LINE * Math.min(Math.max(fontScale, 1), fontScaleCap.tabLabel),
+  );
+
+  // prototype `.tab.on svg{transform:translateY(-1px) scale(1.06)}` and `.tab:active svg{scale(.86)}`:
+  // only the icon moves, the button and its slot never grow
+  const on = useSharedValue(focused ? 1 : 0);
+  const pressed = useSharedValue(0);
+  useEffect(() => {
+    on.value = springTo(focused ? 1 : 0, 'snappy', reducedMotion);
+  }, [focused, reducedMotion, on]);
+  const iconStyle = useAnimatedStyle(() => ({
+    transform: [
+      { translateY: -on.value },
+      { scale: (1 + 0.06 * on.value) * (1 - 0.14 * pressed.value) },
+    ],
+  }));
 
   // Collapsing, every slot slides toward the pill: the active one lands inside the lens, the
   // others slide out of the clipped pill and fade. The slot never gets bigger than it was.
@@ -385,10 +411,13 @@ const TabButton = ({
     };
   });
 
-  // labels go out first (first 35% of the collapse) and come back last
+  // labels go out first (first 35% of the collapse, sliding 4pt down) and come back last
   const labelStyle = useAnimatedStyle(() => ({
     opacity: interpolate(progress.value, [0, 0.35], [1, 0], Extrapolation.CLAMP),
-    height: interpolate(progress.value, [0, 0.35], [13, 0], Extrapolation.CLAMP),
+    height: interpolate(progress.value, [0, 0.35], [labelHeight, 0], Extrapolation.CLAMP),
+    transform: [
+      { translateY: interpolate(progress.value, [0, 0.35], [0, 4], Extrapolation.CLAMP) },
+    ],
   }));
 
   return (
@@ -404,16 +433,32 @@ const TabButton = ({
         accessibilityHint={collapsed && focused ? EXPAND_HINT : undefined}
         accessibilityElementsHidden={hiddenWhenCollapsed}
         importantForAccessibility={hiddenWhenCollapsed ? 'no-hide-descendants' : 'auto'}
+        // big Dynamic Type: a long press shows the label in the iOS Large Content Viewer
+        accessibilityShowsLargeContentViewer
+        accessibilityLargeContentTitle={item.label}
         onPress={onPress}
+        onPressIn={() => {
+          if (!reducedMotion) {
+            pressed.value = springTo(1, 'snappy', false);
+          }
+        }}
+        onPressOut={() => {
+          pressed.value = springTo(0, 'snappy', reducedMotion);
+        }}
         onLongPress={onLongPress}
         hitSlop={4}
         pressRetentionOffset={24}
         style={styles.tab}
       >
-        <Icon size={24} color={color} strokeWidth={focused ? 2.3 : 2} />
+        <Animated.View style={iconStyle}>
+          <Icon size={24} color={color} strokeWidth={focused ? 2.3 : 2} />
+        </Animated.View>
+        {/* never ellipsized: the label may use 5pt of each neighbour's slot and shrinks to fit */}
         <Animated.Text
-          maxFontSizeMultiplier={fontScaleCap.display}
+          maxFontSizeMultiplier={fontScaleCap.tabLabel}
           numberOfLines={1}
+          adjustsFontSizeToFit
+          minimumFontScale={0.8}
           style={[
             styles.label,
             { color, fontFamily: focused ? fontFamily.textHeavy : fontFamily.textBold },
@@ -446,7 +491,14 @@ const styles = StyleSheet.create({
   row: { ...StyleSheet.absoluteFill, overflow: 'hidden', borderRadius: 999 },
   tabSlot: { position: 'absolute', top: 0, bottom: 0 },
   tab: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 3 },
-  label: { fontSize: 10.5, lineHeight: 13, letterSpacing: 0.1 },
+  label: {
+    fontSize: 10.5,
+    lineHeight: LABEL_LINE,
+    letterSpacing: 0.1,
+    alignSelf: 'stretch',
+    marginHorizontal: -LABEL_OVERHANG,
+    textAlign: 'center',
+  },
   accessoryWrap: {
     position: 'absolute',
     left: -tabBar.side,

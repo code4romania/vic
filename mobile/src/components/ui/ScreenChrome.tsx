@@ -1,18 +1,23 @@
 // Screen chrome „Îndrăzneț”: the 44pt round back button of pushed screens, their header row, and
 // the compact glass bar of tab screens whose large title scrolls with the content.
 import React from 'react';
-import { StyleSheet as RNStyleSheet, StyleProp, View, ViewStyle } from 'react-native';
+import { Platform, StyleSheet as RNStyleSheet, StyleProp, View, ViewStyle } from 'react-native';
 import { BlurView } from 'expo-blur';
 import Animated, {
   Extrapolation,
   interpolate,
   SharedValue,
   useAnimatedStyle,
+  useDerivedValue,
+  useReducedMotion,
+  withSpring,
+  withTiming,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native-unistyles';
-import { glass } from '../../design/tokens';
+import { fontScaleCap, glass } from '../../design/tokens';
+import { duration, easing, spring } from '../../design/motion';
 import { ChevronLeftIcon, ICON_STROKE } from '../../design/icons';
 import { hit, palette } from '../../design/tokens';
 import { AppText } from '../../design/components/Text';
@@ -77,7 +82,7 @@ export const PushedHeader = ({
   <View style={[styles.header, style]} testID={testID}>
     {onBack && <BackButton onPress={onBack} testID={backTestID} />}
     {!!title && (
-      <AppText variant="title" numberOfLines={1} accessibilityRole="header" style={styles.title}>
+      <AppText variant="title" numberOfLines={2} accessibilityRole="header" style={styles.title}>
         {title}
       </AppText>
     )}
@@ -85,8 +90,10 @@ export const PushedHeader = ({
   </View>
 );
 
-// the compact bar appears after 48pt of scroll (handbook: Antet), like LargeTitleHeader
-const COLLAPSE_AT = 48;
+/** Scroll offset after which the compact glass bar shows (handbook: Antet). */
+export const COMPACT_BAR_AFTER = 48;
+/** Height of the compact bar under the status bar (prototype .topbar: 100 - 54). */
+export const COMPACT_BAR_HEIGHT = 46;
 
 export interface CompactTitleBarProps {
   title: string;
@@ -95,49 +102,74 @@ export interface CompactTitleBarProps {
 }
 
 /**
- * The compact glass bar of a tab screen whose large title is part of the scroll content: paper at
- * 72% over a blur, a Bricolage 17 title and a hairline. It fades in after 48pt of scroll while the
- * title rises 6pt into place. Render it after the scroll view.
+ * The compact glass bar of a tab screen whose large title scrolls with the content (prototype
+ * `.topbar`): paper at 72% over a blur, a Bricolage 17 title and a 1pt hairline. Once the content
+ * passes 48pt it fades in (200 ms, standard easing) and the title rises 6pt into place with the
+ * snappy spring; scrolling back above 48pt reverses it. Reduce Motion: a 150 ms fade, no rise.
+ *
+ * Render it AFTER the scroll view / list (it is absolutely positioned at the top, zIndex 10), never
+ * inside a list header: it must not scroll. It is hidden from VoiceOver (the large title is the
+ * header). Pair it with `useLargeTitleCollapse(scrollY)` on the large title in the content.
  */
 export const CompactTitleBar = ({ title, scrollY, testID }: CompactTitleBarProps) => {
   const insets = useSafeAreaInsets();
-  const barStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(
-      scrollY.value,
-      [COLLAPSE_AT - 16, COLLAPSE_AT],
-      [0, 1],
-      Extrapolation.CLAMP,
-    ),
-  }));
-  const titleStyle = useAnimatedStyle(() => ({
-    transform: [
-      {
-        translateY: interpolate(
-          scrollY.value,
-          [COLLAPSE_AT - 16, COLLAPSE_AT + 8],
-          [6, 0],
-          Extrapolation.CLAMP,
-        ),
-      },
-    ],
-  }));
+  const reduced = useReducedMotion();
+  const shown = useDerivedValue(() => (scrollY.value > COMPACT_BAR_AFTER ? 1 : 0));
+  const opacity = useDerivedValue(() =>
+    withTiming(shown.value, {
+      duration: reduced ? duration.reduced : 200,
+      easing: easing.standard,
+    }),
+  );
+  const rise = useDerivedValue(() =>
+    reduced ? 0 : withSpring(shown.value ? 0 : 6, spring.snappy),
+  );
+  const barStyle = useAnimatedStyle(() => ({ opacity: opacity.value }));
+  const titleStyle = useAnimatedStyle(() => ({ transform: [{ translateY: rise.value }] }));
   return (
     <Animated.View
       testID={testID}
       pointerEvents="none"
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
-      style={[styles.compact, { paddingTop: insets.top, height: insets.top + 44 }, barStyle]}
+      style={[
+        styles.compact,
+        { paddingTop: insets.top, height: insets.top + COMPACT_BAR_HEIGHT },
+        barStyle,
+      ]}
     >
-      <BlurView intensity={glass.blurIntensity} tint="light" style={RNStyleSheet.absoluteFill} />
+      {Platform.OS === 'ios' && (
+        <BlurView intensity={glass.blurIntensity} tint="light" style={RNStyleSheet.absoluteFill} />
+      )}
       <View style={[RNStyleSheet.absoluteFill, styles.compactTint]} />
       <Animated.View style={titleStyle}>
-        <AppText numberOfLines={1} maxFontSizeMultiplier={1.15} style={styles.compactTitle}>
+        <AppText
+          numberOfLines={1}
+          maxFontSizeMultiplier={fontScaleCap.display}
+          style={styles.compactTitle}
+        >
           {title}
         </AppText>
       </Animated.View>
     </Animated.View>
   );
+};
+
+/**
+ * The large title's own collapse (prototype `.lt`): between 10 and 80pt of scroll it shrinks to
+ * 88% (anchored bottom-left) and fades to 10%, while the compact bar takes over at 48pt. Apply the
+ * returned style to an Animated.View around the large title. Reduce Motion: fade only.
+ */
+export const useLargeTitleCollapse = (scrollY?: SharedValue<number>) => {
+  const reduced = useReducedMotion();
+  return useAnimatedStyle(() => {
+    const y = scrollY ? scrollY.value : 0;
+    const p = interpolate(y, [10, 80], [0, 1], Extrapolation.CLAMP);
+    return {
+      opacity: 1 - p * 0.9,
+      transform: [{ scale: reduced ? 1 : 1 - p * 0.12 }],
+    };
+  });
 };
 
 export default BackButton;
@@ -168,17 +200,20 @@ const styles = StyleSheet.create((theme) => ({
     right: 0,
     zIndex: 10,
     overflow: 'hidden',
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomWidth: 1,
     borderBottomColor: theme.colors.line,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 60,
   },
-  compactTint: { backgroundColor: theme.colors.topBarTint },
+  // Android has no live blur outside a BlurTargetView: a denser paper keeps the title readable
+  compactTint: {
+    backgroundColor: Platform.OS === 'ios' ? theme.colors.topBarTint : 'rgba(244,241,233,0.96)',
+  },
   compactTitle: {
     fontFamily: theme.fontFamily.display,
     fontSize: 17,
     lineHeight: 22,
-    letterSpacing: -0.2,
+    letterSpacing: -0.17,
   },
 }));

@@ -16,7 +16,7 @@ export const ALLOW_FONT_SCALLING = false;
 
 // Text follows the system text size, up to the „Îndrăzneț” caps (fontScaleCap in design/tokens):
 // titles stop at 1.15×, text at 1.35×.
-export const MAX_FONT_SCALE = { title: 1.15, text: 1.35 } as const;
+export const MAX_FONT_SCALE = { title: 1.15, text: 1.35, tabLabel: 1.1 } as const;
 
 export const MIME_TYPES: any = {
   doc: 'application/msword',

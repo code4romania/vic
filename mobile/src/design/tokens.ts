@@ -97,24 +97,42 @@ export const fontFamily = {
 // Letter spacing in RN is in points: em × fontSize.
 const em = (value: number, size: number) => Math.round(value * size * 100) / 100;
 
+/**
+ * Vertical metrics of the fonts (hhea, per 1 em). Bricolage Grotesque has a tall ascent (0.93) and
+ * descent (0.27): its natural line is 1.2 em, so the designed lines (display 0.86, largeTitle 0.96,
+ * title 1.1) are tighter than the font box. The tallest glyphs (Î at 0.909, Ș/ț down to -0.232)
+ * still fit inside that 1.2 em box. AppText keeps the glyphs inside the Text view and pulls the
+ * layout box back to the designed line height (see `trimFor` in design/components/Text.tsx).
+ */
+export const fontMetrics = {
+  display: { ascent: 0.93, descent: 0.27 },
+  text: { ascent: 1.066, descent: 0.3 },
+} as const;
+
+/** Designed line heights (CSS ratios from the handbook). */
+const lh = (ratio: number, size: number) => Math.round(ratio * size * 10) / 10;
+
 export const type = {
+  // 76 / 0.86: the layout box is 65.4 pt, the glyphs overflow it like they do in CSS
   display: {
     fontFamily: fontFamily.display,
     fontSize: 76,
-    lineHeight: 66,
+    lineHeight: lh(0.86, 76),
     letterSpacing: em(-0.055, 76),
     fontVariant: ['tabular-nums'],
   },
+  // 44 / 0.96
   largeTitle: {
     fontFamily: fontFamily.display,
     fontSize: 44,
-    lineHeight: 44,
+    lineHeight: lh(0.96, 44),
     letterSpacing: em(-0.04, 44),
   },
+  // 24 / 1.1
   title: {
     fontFamily: fontFamily.display,
     fontSize: 24,
-    lineHeight: 27,
+    lineHeight: lh(1.1, 24),
     letterSpacing: em(-0.025, 24),
   },
   headline: { fontFamily: fontFamily.textHeavy, fontSize: 16, lineHeight: 20 },
@@ -134,8 +152,12 @@ export const type = {
 
 export type TypeVariant = keyof typeof type;
 
-/** Dynamic Type: text grows to 1.35×, display and large titles stop at 1.15×. */
-export const fontScaleCap = { text: 1.35, display: 1.15 } as const;
+/**
+ * Dynamic Type: text grows to 1.35×, display and large titles stop at 1.15×. Tab bar labels stop at
+ * 1.1× (they also shrink to fit their slot and never ellipsize; the iOS Large Content Viewer shows
+ * them big on long press, like the system tab bar).
+ */
+export const fontScaleCap = { text: 1.35, display: 1.15, tabLabel: 1.1 } as const;
 
 export const glass = {
   tint: lightColors.glassTint,
