@@ -10,6 +10,7 @@ import Toast from 'react-native-toast-message';
 import { useMonthlyStatistics } from '../services/statistics/statistics.service';
 import { useAnouncementsSnapshot } from '../services/anouncement/anouncement.service';
 import { useEventsInfiniteQuery } from '../services/event/event.service';
+import { toHours } from '../common/utils/hours';
 import { useActivityLogsCounters } from '../services/activity-log/activity-log.service';
 import { useActivateOrganization } from '../services/organization/organization.service';
 import { getUserProfile } from '../services/user/user.api';
@@ -240,9 +241,9 @@ const Home = ({ navigation }: any) => {
           {!!organization && !inactive && (
             <Animated.View entering={entering()}>
               <ImpactCard
-                approved={hours?.approved ?? 0}
-                pending={hours?.pending ?? 0}
-                rejected={hours?.rejected ?? 0}
+                approved={toHours(hours?.approved)}
+                pending={toHours(hours?.pending)}
+                rejected={toHours(hours?.rejected)}
                 replay={focusCount}
                 onPress={() => navigation.navigate(TAB_ROUTES.HOURS)}
               />
