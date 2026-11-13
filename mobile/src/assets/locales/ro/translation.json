@@ -870,7 +870,10 @@
             "generic": "Eroare la încărcarea documentelor"
         },
         "expiring_soon": "Expiră în curând",
-        "period_open": "din {{start}}, fără dată de final",
+        "period_open": "Din {{start}} · fără dată de final",
+        "active_for_one": "activ de o zi",
+        "active_for": "activ de {{count}} zile",
+        "active_for_de": "activ de {{count}} de zile",
         "issued_on": "emisă la {{date}}",
         "title_large": "Contractele tale",
         "days_left_one": "1 zi rămasă",

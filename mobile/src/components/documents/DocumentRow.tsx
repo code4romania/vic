@@ -37,6 +37,10 @@ const OPEN_ENDED_SPAN = 365 * DAY;
 // handbook motion catalog: "Bare de progres", gentle · 1.1 s
 const BAR_FILL_MS = 1100;
 const GENTLE = Easing.bezier(0.25, 1, 0.35, 1);
+// handbook .press:active scale(.965)
+const PRESSED = 0.965;
+// handbook .bar track (navy 18%); signed rows use the light paper track (.bar.light)
+const NAVY_TRACK = 'rgba(1,52,79,0.18)';
 
 /** "15 ian 2025" */
 export const formatContractDay = (value?: string | null) =>
@@ -80,6 +84,25 @@ export const pickExpiringSoon = (contracts: IContractListItem[]) =>
     .filter((contract) => contract.expiringSoon && daysLeft(contract) !== null)
     .sort((a, b) => Date.parse(a.endDate as string) - Date.parse(b.endDate as string))[0];
 
+/**
+ * „activ de 33 de zile” for a signed open-ended contract that already started (handbook row:
+ * „Din 10 oct 2026 · fără dată de final · activ de 33 de zile”); empty otherwise.
+ */
+const activeFor = (contract: IContractListItem, t: (key: string, options?: any) => string) => {
+  const start = Date.parse(contract.startDate);
+  if (contract.status !== ClientContractStatus.SIGNED || Number.isNaN(start)) {
+    return '';
+  }
+  const days = Math.floor((Date.now() - start) / DAY);
+  if (days < 1) {
+    return '';
+  }
+  if (days === 1) {
+    return `${t('active_for_one')}`;
+  }
+  return `${t(romanianNeedsDe(days) ? 'active_for_de' : 'active_for', { count: days })}`;
+};
+
 const useContractTexts = (contract: IContractListItem) => {
   const { t } = useTranslation('documents');
   // #490: a certificate is issued on a day and never expires
@@ -88,7 +111,12 @@ const useContractTexts = (contract: IContractListItem) => {
     ? `${t('issued_on', { date: formatContractDay(contract.startDate) })}`
     : contract.endDate
       ? `${formatContractDay(contract.startDate)} – ${formatContractDay(contract.endDate)}`
-      : `${t('period_open', { start: formatContractDay(contract.startDate) })}`;
+      : [
+          `${t('period_open', { start: formatContractDay(contract.startDate) })}`,
+          activeFor(contract, t),
+        ]
+          .filter(Boolean)
+          .join(' · ');
   const prefix = t(isCertificate ? 'certificate_prefix' : 'contract_prefix');
   const title = contract.contractNumber ? `${prefix} ${contract.contractNumber}` : `${prefix}`;
   return { t, period, title };
@@ -159,7 +187,7 @@ export const DocumentRow = ({ contract, onPress, busy }: DocumentRowProps) => {
     <PressableScale
       onPress={() => onPress(contract)}
       disabled={busy}
-      pressedScale={0.985}
+      pressedScale={PRESSED}
       style={styles.row}
       accessibilityLabel={`${title}, ${status ? `${t(status.label)}, ` : ''}${period}, ${t('download')}`}
       testID={`document-row-${contract.id}`}
@@ -168,7 +196,6 @@ export const DocumentRow = ({ contract, onPress, busy }: DocumentRowProps) => {
         <AppText
           variant="headline"
           color={expired ? palette.ink2 : palette.ink}
-          numberOfLines={2}
           style={styles.rowTitle}
         >
           {title}
@@ -176,7 +203,9 @@ export const DocumentRow = ({ contract, onPress, busy }: DocumentRowProps) => {
         {busy ? (
           <ActivityIndicator color={palette.navy} testID={`document-busy-${contract.id}`} />
         ) : (
-          status && <StatusChip label={`${t(status.label)}`} kind={status.kind} />
+          status && (
+            <StatusChip label={`${t(status.label)}`} kind={status.kind} style={styles.chip} />
+          )
         )}
       </View>
       <AppText variant="caption" color={palette.ink2} style={styles.period}>
@@ -186,7 +215,7 @@ export const DocumentRow = ({ contract, onPress, busy }: DocumentRowProps) => {
         <ValidityBar
           progress={progress}
           fill={fill}
-          track={palette.paper}
+          track={contract.status === ClientContractStatus.SIGNED ? palette.paper : NAVY_TRACK}
           testID={`document-bar-${contract.id}`}
         />
       )}
@@ -206,7 +235,7 @@ export const FeaturedContract = ({ contract, onPress, busy }: DocumentRowProps) 
     <PressableScale
       onPress={() => onPress(contract)}
       disabled={busy}
-      pressedScale={0.98}
+      pressedScale={PRESSED}
       style={styles.feature}
       accessibilityLabel={`${title}, ${t('expiring_soon')}, ${remaining}, ${period}, ${t('download')}`}
       testID={`document-row-${contract.id}`}
@@ -218,7 +247,7 @@ export const FeaturedContract = ({ contract, onPress, busy }: DocumentRowProps) 
           icon={<AlertIcon size={14} color={palette.yellow} strokeWidth={2.5} />}
         />
         {!!contract.contractNumber && (
-          <AppText variant="overline" color={palette.navy} numberOfLines={1} style={styles.number}>
+          <AppText variant="overline" color={palette.navy} style={styles.number}>
             {contract.contractNumber}
           </AppText>
         )}
@@ -237,7 +266,7 @@ export const FeaturedContract = ({ contract, onPress, busy }: DocumentRowProps) 
       <ValidityBar
         progress={contractProgress(contract) ?? 1}
         fill={palette.navy}
-        track="rgba(1,52,79,0.18)"
+        track={NAVY_TRACK}
         testID={`document-bar-${contract.id}`}
       />
       <View style={styles.featureFoot}>
@@ -265,7 +294,9 @@ const styles = StyleSheet.create((theme) => ({
     padding: theme.space.l,
   },
   rowHead: { flexDirection: 'row', alignItems: 'flex-start', gap: theme.space.s },
+  // the title wraps (never clips) beside the 28pt chip; 4pt centres one line on the chip
   rowTitle: { flex: 1, minWidth: 0, paddingTop: 4 },
+  chip: { flexShrink: 0, maxWidth: '60%' },
   period: { marginTop: 2, fontVariant: ['tabular-nums'] },
   bar: { height: 10, borderRadius: 5, overflow: 'hidden', marginTop: theme.space.m },
   barFill: { position: 'absolute', top: 0, bottom: 0, left: 0, borderRadius: 5 },
@@ -281,9 +312,24 @@ const styles = StyleSheet.create((theme) => ({
     gap: theme.space.s,
   },
   number: { flexShrink: 1 },
-  // Bricolage 46, line height .9 (display variant brings tabular numbers)
-  big: { fontSize: 46, lineHeight: 44, letterSpacing: -1.84, marginTop: 10, marginBottom: 4 },
-  featureDates: { fontSize: 13.5, fontVariant: ['tabular-nums'] },
+  // handbook .docfeat .big: Bricolage 46, line height .9 (41.4 → 42), -.04em, margin 10 0 4.
+  // The display variant caps Dynamic Type at 1.15× and brings tabular numbers; a long count
+  // („30 de zile rămase”) wraps to a second line instead of shrinking.
+  big: {
+    fontSize: 46,
+    lineHeight: 42,
+    letterSpacing: -1.84,
+    marginTop: 10,
+    marginBottom: 4,
+    includeFontPadding: false,
+  },
+  // handbook: Manrope 700 13.5 for the period, 700 13 for the action
+  featureDates: {
+    fontFamily: theme.fontFamily.textBold,
+    fontSize: 13.5,
+    lineHeight: 18,
+    fontVariant: ['tabular-nums'],
+  },
   featureFoot: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -291,7 +337,7 @@ const styles = StyleSheet.create((theme) => ({
     gap: theme.space.m,
     marginTop: theme.space.m,
   },
-  featureAction: { flex: 1 },
+  featureAction: { flex: 1, minWidth: 0, fontFamily: theme.fontFamily.textBold },
   go: {
     width: 44,
     height: 44,

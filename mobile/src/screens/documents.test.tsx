@@ -114,7 +114,9 @@ describe('Documente', () => {
     expect(header.getByRole('header', { name: 'Contractele tale' })).toBeTruthy();
     expect(header.getByText('La Asociația Exemplu')).toBeTruthy();
     // the large title scrolls with the list; the compact bar repeats the tab name
-    expect(within(screen.getByTestId('documents-list')).getByText('Contractele tale')).toBeTruthy();
+    expect(
+      within(screen.getByTestId('documents-list')).getByText('Contractele\ntale'),
+    ).toBeTruthy();
     const bar = screen.getByTestId('documents-compact-bar', { includeHiddenElements: true });
     expect(within(bar).getByText('Documente', { includeHiddenElements: true })).toBeTruthy();
     const signed = screen.getByTestId('document-row-3');
@@ -124,7 +126,7 @@ describe('Documente', () => {
     expect(within(screen.getByTestId('document-row-2')).getByText('Expiră în curând')).toBeTruthy();
     const pending = screen.getByTestId('document-row-1');
     expect(within(pending).getByText('În așteptare')).toBeTruthy();
-    expect(within(pending).getByText('din 15 ian 2026, fără dată de final')).toBeTruthy();
+    expect(within(pending).getByText('Din 15 ian 2026 · fără dată de final')).toBeTruthy();
     expect(screen.getByTestId('documents')).toBeTruthy();
     expect(screen.queryByTestId('documents-back')).toBeNull();
     expect(within(screen.getByTestId('document-row-0')).getByText('Expirat')).toBeTruthy();

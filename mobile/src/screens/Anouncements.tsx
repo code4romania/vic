@@ -65,9 +65,7 @@ const Anouncements = ({ navigation }: any) => {
         {item.myResponse ? (
           <View style={styles.answer}>
             <VText variant="cap">{tResponse('your_answer')}</VText>
-            <VText variant="body" numberOfLines={3}>
-              {item.myResponse.comment}
-            </VText>
+            <VText variant="body">{item.myResponse.comment}</VText>
           </View>
         ) : (
           <VText

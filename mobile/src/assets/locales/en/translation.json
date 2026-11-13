@@ -841,7 +841,10 @@
       "generic": "Error loading your documents"
     },
     "expiring_soon": "Expires soon",
-    "period_open": "from {{start}}, no end date",
+    "period_open": "From {{start}} · no end date",
+        "active_for_one": "active for 1 day",
+        "active_for": "active for {{count}} days",
+        "active_for_de": "active for {{count}} days",
     "issued_on": "issued on {{date}}",
     "title_large": "Your contracts",
     "days_left_one": "1 day left",

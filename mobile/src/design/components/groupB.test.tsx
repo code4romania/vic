@@ -91,7 +91,7 @@ describe('ListRow and Group', () => {
     await render(<HexAvatar name="Verde Mare" size="lg" tone="yellow" />);
     expect(screen.getByText('VM', { includeHiddenElements: true })).toHaveStyle({
       color: palette.navy,
-      fontSize: 22,
+      fontSize: 26,
     });
   });
 });
