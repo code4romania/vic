@@ -2,7 +2,7 @@
 // quick options „Azi” / „Ieri” under it, and a calendar that unfolds below on tap.
 // @react-native-community/datetimepicker is not installed in this app, so the calendar is our own
 // pure-JS Calendar (Romanian names, Monday first).
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { LayoutChangeEvent, Pressable, StyleProp, View, ViewStyle } from 'react-native';
 import Animated, {
   useAnimatedStyle,
@@ -16,6 +16,7 @@ import { CalendarIcon } from '../icons';
 import { AppText } from './Text';
 import { Calendar, CalendarLanguage } from './Calendar';
 import { OptionChip } from './Chip';
+import { FormRevealContext } from './FormReveal';
 import {
   FieldError,
   FieldHelper,
@@ -31,6 +32,8 @@ const MONTHS = ['ian', 'feb', 'mar', 'apr', 'mai', 'iun', 'iul', 'aug', 'sep', '
 /** "Vin, 13 nov 2026" */
 
 const FOLD_GAP = 8;
+/** the snappy spring has unfolded the calendar by then */
+const REVEAL_AFTER_MS = 350;
 export const formatDateRo = (date: Date) =>
   `${DAYS[date.getDay()]}, ${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
 
@@ -99,6 +102,17 @@ export const DateField = ({
     progress.value = springTo(open ? 1 : 0, 'snappy', reduced);
   }, [open, reduced, progress]);
 
+  // a calendar unfolding near the bottom of a form would open out of sight, behind the actions
+  const reveal = useContext(FormRevealContext);
+  const root = useRef<View>(null);
+  useEffect(() => {
+    if (!open || !calendarHeight) {
+      return;
+    }
+    const timer = setTimeout(() => reveal(root.current), reduced ? 0 : REVEAL_AFTER_MS);
+    return () => clearTimeout(timer);
+  }, [open, calendarHeight, reduced, reveal]);
+
   useEffect(() => {
     if (disabled) {
       setOpen(false);
@@ -141,7 +155,7 @@ export const DateField = ({
   };
 
   return (
-    <View style={style}>
+    <View ref={root} style={style}>
       <FieldLabel label={label} required={required} optional={optional} />
       <Animated.View style={shake}>
         <Animated.View pointerEvents="none" style={[fieldStyles.halo, ring.halo]} />
