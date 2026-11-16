@@ -547,6 +547,9 @@
         "attending": "{{numberOfVolunteer}} persoane participă!",
         "attending_of": "{{numberOfVolunteer}} de persoane participă!",
         "attending_one": "O persoană participă!",
+        "participants_label": "{{n}} persoane participă",
+        "participants_label_of": "{{n}} de persoane participă",
+        "participants_label_one": "O persoană participă",
         "attending_few": "",
         "attending_other": "",
         "type": {

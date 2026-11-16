@@ -531,6 +531,9 @@
     "attending": "{{numberOfVolunteer}} people participate!",
     "attending_of": "{{numberOfVolunteer}} of people participate!",
     "attending_one": "One person participates!",
+    "participants_label": "{{n}} people participate",
+    "participants_label_of": "{{n}} people participate",
+    "participants_label_one": "One person participates",
     "attending_other": "",
     "type": {
       "public": "Public event",
