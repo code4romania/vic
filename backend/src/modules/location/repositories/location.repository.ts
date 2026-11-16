@@ -31,7 +31,11 @@ export class LocationRepositoryService
   }
 
   async findCounties(): Promise<ICountyModel[]> {
-    const countyEntities = await this.countyRepository.find();
+    // Explicit order: without it Postgres returns rows in storage order, and rows rewritten by
+    // the diacritics migrations (Argeș, Vâlcea…) ended up after Vrancea.
+    const countyEntities = await this.countyRepository.find({
+      order: { name: OrderDirection.ASC },
+    });
     return countyEntities.map(CountyTransformer.fromEntity);
   }
 
@@ -70,6 +74,7 @@ export class LocationRepositoryService
   async findCitiesByCountyId(countyId: number): Promise<ICityModel[]> {
     const cityEntities = await this.cityRepository.find({
       where: { countyId },
+      order: { name: OrderDirection.ASC },
       relations: {
         county: true,
       },

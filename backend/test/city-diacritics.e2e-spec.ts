@@ -72,4 +72,37 @@ describe('City names with diacritics (e2e)', () => {
     expect(await search('abramut')).toEqual(['Abrămuț']);
     expect(await search('mureș')).toEqual(['Târgu Mureș']);
   });
+
+  it("counties and a county's cities come back sorted by name, also after a rename", async () => {
+    // an UPDATE writes a new row version at the end of the table, so without ORDER BY the renamed
+    // rows (like the ones the diacritics migration touched) came back last
+    await testApp.dataSource.query(
+      `INSERT INTO _county (id, name, abbreviation) VALUES (3, 'Arges', 'AG'), (42, 'Vrancea', 'VN')`,
+    );
+    await testApp.dataSource.query(
+      `UPDATE _county SET name = 'Argeș' WHERE id = 3`,
+    );
+    await testApp.dataSource.query(
+      `INSERT INTO _city (id, name, county_id) VALUES (1, 'Alesd', 6), (2, 'Beius', 6), (3, 'Oradea', 6)`,
+    );
+    await testApp.dataSource.query(
+      `UPDATE _city SET name = 'Aleșd' WHERE id = 1`,
+    );
+    await testApp.dataSource.query(
+      `UPDATE _city SET name = 'Beiuș' WHERE id = 2`,
+    );
+
+    const get = async (url: string): Promise<string[]> =>
+      (
+        await request(testApp.app.getHttpServer()).get(url).expect(200)
+      ).body.map(({ name }: { name: string }) => name);
+
+    expect(await get('/location/county')).toEqual([
+      'Argeș',
+      'Bihor',
+      'Mureș',
+      'Vrancea',
+    ]);
+    expect(await get('/location/city/6')).toEqual(['Aleșd', 'Beiuș', 'Oradea']);
+  });
 });
