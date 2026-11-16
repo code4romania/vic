@@ -1,3 +1,4 @@
+import { IEventParticipants } from '../event-participants';
 import { EventRegistrationStatus } from '../enums/event-registration-status.enum';
 import { IBaseModel } from 'src/common/interfaces/base.model';
 import { IActivityTypeModel } from 'src/modules/activity-type/models/activity-type.model';
@@ -44,6 +45,8 @@ export interface IEventWithVolunteerStatus
   // #501: the NGO's decision on the volunteer's registration (null when not going)
   registrationStatus?: EventRegistrationStatus;
   rejectionReason?: string;
+  // Who is coming, privacy-safe: count + initials of the first ones (see event-participants.ts)
+  participants?: IEventParticipants;
 }
 export interface IEventsListItemModel
   extends Pick<
