@@ -198,6 +198,85 @@ describe('Mobile events filters (e2e)', () => {
     expect(body.meta.totalItems).toBe(4);
   });
 
+  const counts = async (
+    query: Record<string, string>,
+  ): Promise<{ open: number; going: number; organizations: number }> =>
+    (
+      await request(testApp.app.getHttpServer())
+        .get('/mobile/event/counts')
+        .query(query)
+        .set(
+          'Authorization',
+          `Bearer ${await testApp.mintAccessToken(elena, AuthRealm.MOBILE)}`,
+        )
+        .expect(200)
+    ).body;
+
+  it('counts each segment as many events as its list holds, with the same filters', async () => {
+    // a public event of an organization Elena is not part of: open, but not in her organizations
+    const [other] = await testApp.dataSource.query(
+      `INSERT INTO organization (name, email, phone, status, validated_at) VALUES ('Altii', 'contact@altii.ro', '+40700009000', 'active', now()) RETURNING id`,
+    );
+    await testApp.dataSource.query(
+      `INSERT INTO event (name, description, start_date, status, is_public, organization_id)
+       VALUES ('Maraton public', 'd', '2030-05-12T09:00:00Z', 'published', true, $1),
+              ('Ciornă', 'd', '2030-05-12T09:00:00Z', 'draft', true, $1)`,
+      [other.id],
+    );
+
+    const totals = async (
+      query: Record<string, string>,
+    ): Promise<Record<string, number>> => ({
+      open: (await list({ ...query, eventFilter: 'OPEN' })).meta.totalItems,
+      going: (await list({ ...query, eventFilter: 'GOING' })).meta.totalItems,
+      organizations: (await list({ ...query, eventFilter: 'ORGANIZATIONS' }))
+        .meta.totalItems,
+    });
+
+    expect(await counts({})).toEqual({ open: 5, going: 2, organizations: 4 });
+    for (const query of [
+      {},
+      { search: 'Maraton' },
+      { organizationId: orgs.Salvati },
+      { startFrom: '2030-05-20', startTo: '2030-05-20' },
+      { organizationId: orgs.Crucea, startFrom: '2030-05-15', search: 'Cur' },
+      { search: 'nimic' },
+    ]) {
+      expect(await counts(query)).toEqual(await totals(query));
+    }
+    expect(await counts({ search: 'Maraton' })).toEqual({
+      open: 2,
+      going: 1,
+      organizations: 1,
+    });
+  });
+
+  it('follows a new registration in the Particip count', async () => {
+    const [gala] = await testApp.dataSource.query(
+      `SELECT id FROM event WHERE name = 'Gală'`,
+    );
+    expect((await counts({})).going).toBe(2);
+    await testApp.dataSource.query(
+      `INSERT INTO event_rsvp (going, status, event_id, user_id) VALUES (true, 'pending', $1, $2)`,
+      [gala.id, userId],
+    );
+    expect((await counts({})).going).toBe(3);
+  });
+
+  it('refuses a malformed filter on the counts', async () => {
+    await request(testApp.app.getHttpServer())
+      .get('/mobile/event/counts')
+      .query({ organizationId: 'nope' })
+      .set(
+        'Authorization',
+        `Bearer ${await testApp.mintAccessToken(elena, AuthRealm.MOBILE)}`,
+      )
+      .expect(400);
+    await request(testApp.app.getHttpServer())
+      .get('/mobile/event/counts')
+      .expect(401);
+  });
+
   it('refuses a malformed organization or date', async () => {
     await request(testApp.app.getHttpServer())
       .get('/mobile/event')

@@ -9,9 +9,10 @@ import {
   hexInitials,
   ListRow,
   SegmentedControl,
+  segmentFit,
   toastConfig,
 } from './groupB';
-import { fontScaleCap, palette } from '../tokens';
+import { palette } from '../tokens';
 
 const options = [
   { key: 'pending', label: 'În așteptare', count: 3 },
@@ -47,7 +48,7 @@ describe('SegmentedControl', () => {
     expect(screen.getByTestId('seg-pending').props.accessibilityState).toEqual({ selected: false });
   });
 
-  it('fits single-line labels into equal segments and reserves space for badges', async () => {
+  it('exposes the full label to the iOS Large Content Viewer', async () => {
     await render(
       <SegmentedControl
         testID="seg"
@@ -61,41 +62,13 @@ describe('SegmentedControl', () => {
       />,
     );
     expect(screen.container.queryAll((node) => node.type.includes('ScrollView'))).toHaveLength(0);
-    expect(fontScaleCap.segment).toBe(1.15);
-    for (const label of ['În așteptare', 'Aprobate', 'Organizațiile mele']) {
-      expect(screen.getByText(label).props).toMatchObject({
-        numberOfLines: 1,
-        adjustsFontSizeToFit: true,
-        minimumFontScale: 0.7,
-        maxFontSizeMultiplier: fontScaleCap.segment,
-        ellipsizeMode: 'clip',
-      });
-      expect(screen.getByText(label)).toHaveStyle({ flexShrink: 1 });
-    }
-    for (const key of ['pending', 'approved', 'mine']) {
-      expect(StyleSheet.flatten(screen.getByTestId(`seg-${key}`).props.style)).toMatchObject({
-        flex: 1,
-        flexGrow: 1,
-        flexShrink: 1,
-        flexBasis: 0,
-        minWidth: 0,
-      });
-    }
-    for (const count of ['18', '0']) {
-      expect(screen.getByText(count).parent).toHaveStyle({
-        flexShrink: 0,
-        minWidth: 20,
-        minHeight: 20,
-      });
-      expect(screen.getByText(count).props.maxFontSizeMultiplier).toBe(fontScaleCap.segment);
-    }
     expect(screen.getByTestId('seg-mine').props).toMatchObject({
       accessibilityShowsLargeContentViewer: Platform.OS === 'ios',
       accessibilityLargeContentTitle: Platform.OS === 'ios' ? 'Organizațiile mele' : undefined,
     });
   });
 
-  it('keeps segment styles identical when selection and the active-only badge move', async () => {
+  it('keeps every segment style when selection and the active-only badge move', async () => {
     const keys = ['pending', 'approved', 'rejected'] as const;
     const renderControl = (value: (typeof keys)[number]) => (
       <SegmentedControl
@@ -113,8 +86,6 @@ describe('SegmentedControl', () => {
     const stylesBefore = keys.map((key) =>
       StyleSheet.flatten(screen.getByTestId(`seg-${key}`).props.style),
     );
-    expect(stylesBefore[1]).toEqual(stylesBefore[0]);
-    expect(stylesBefore[2]).toEqual(stylesBefore[0]);
 
     await screen.rerender(renderControl('approved'));
     keys.forEach((key, index) => {
@@ -142,6 +113,51 @@ describe('SegmentedControl', () => {
       transform: [{ translateX: 130 }],
       backgroundColor: palette.yellow,
     });
+  });
+});
+
+describe('SegmentedControl with counts on every segment (Evenimente)', () => {
+  // Manrope 800 widths of Deschise / Particip / Organizațiile with their badges, padding included
+  const atDefault = [105, 96, 129];
+  const atLargest = [130, 118, 163];
+  const counts = [true, true, true];
+
+  it('stays inline when the row fits, tightens a little, then puts the badges under the labels', () => {
+    expect(segmentFit(atDefault, counts, 390 - 36 - 10)).toBe('inline');
+    // iPhone SE / mini at the default size: 1pt short, the tighter padding is enough
+    expect(segmentFit([111, 101, 118], counts, 375 - 36 - 10)).toBe('compact');
+    // largest Dynamic Type: no word may be cut, the badge goes under the label
+    expect(segmentFit(atLargest, counts, 430 - 36 - 10)).toBe('stacked');
+  });
+
+  it('measures its segments once laid out and stacks the badges when they do not fit', async () => {
+    const eventOptions = [
+      { key: 'OPEN', label: 'Deschise', count: 3 },
+      { key: 'GOING', label: 'Particip', count: 2 },
+      { key: 'ORGANIZATIONS', label: 'Organizațiile mele', count: 5 },
+    ];
+    await render(
+      <SegmentedControl testID="seg" value="OPEN" onChange={jest.fn()} options={eventOptions} />,
+    );
+    // before any layout nothing is measured and the segments are inline
+    expect(screen.getByTestId('seg-GOING')).toHaveStyle({ flexDirection: 'row' });
+    await fireEvent(screen.getByTestId('seg'), 'layout', {
+      nativeEvent: { layout: { x: 0, y: 0, width: 354, height: 52 } },
+    });
+    for (const [index, width] of atLargest.entries()) {
+      await fireEvent(
+        screen.getByTestId(`seg-measure-${eventOptions[index].key}`, {
+          includeHiddenElements: true,
+        }),
+        'layout',
+        {
+          nativeEvent: { layout: { x: 0, y: 0, width, height: 30 } },
+        },
+      );
+    }
+    expect(screen.getByTestId('seg-GOING')).toHaveStyle({ flexDirection: 'column' });
+    // every badge is still there, and still part of its segment's label
+    expect(screen.getByLabelText('Organizațiile mele, 5')).toBeTruthy();
   });
 });
 

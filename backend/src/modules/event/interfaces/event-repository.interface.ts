@@ -3,6 +3,8 @@ import {
   CreateEventOptions,
   FindManyEventOptions,
   FindMyEventsOptions,
+  CountMyEventsOptions,
+  IMyEventsCountsModel,
   FindOneEventOptions,
   FindOngoingAndFinishedEventOptions,
   IEventModel,
@@ -43,6 +45,9 @@ export interface IEventRepository {
   findGoingEvents(
     findOptions: Omit<FindMyEventsOptions, 'eventFilter'>,
   ): Promise<Pagination<IEventsMobileListItemModel>>;
+  countMyEvents(
+    findOptions: CountMyEventsOptions,
+  ): Promise<IMyEventsCountsModel>;
   findOngoingAndFinishedEvents(
     findOptions: FindOngoingAndFinishedEventOptions,
   ): Promise<IEventModel[]>;

@@ -35,6 +35,23 @@ export const getEvents = async ({
   }).then((res) => res.data);
 };
 
+/** How many events each Evenimente segment holds (Deschise, Particip, Organizațiile mele) */
+export interface EventsCounts {
+  open: number;
+  going: number;
+  organizations: number;
+}
+
+// The segment badges, for the same search and filters as the list (no segment, no paging)
+export const getEventsCounts = async ({
+  search,
+  ...filters
+}: EventsFilters & { search?: string }): Promise<EventsCounts> => {
+  return API.get('/mobile/event/counts', {
+    params: { ...(search ? { search } : {}), ...filters },
+  }).then((res) => res.data);
+};
+
 /** An event of the „Adaugă ore” picker; older backends send no `startDate`. */
 export interface IEventOption extends IOrganizationStructureItem {
   startDate?: string | null;

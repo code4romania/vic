@@ -138,6 +138,7 @@ import { CancelAccessRequestUsecase } from './access-request/cancel-access-reque
 import { SwitchOrganizationUsecase } from './organization/switch-organization.usecase';
 import { GetVolunteerProfileUsecase } from './volunteer/get-volunteer-profile.usecase';
 import { GetMyEventsUsecase } from './event/get-my-events.usecase';
+import { GetMyEventsCountsUsecase } from './event/get-my-events-counts.usecase';
 import { GetOneEventWithVolunteerStatusUsecase } from './event/get-one-event-with-volunteer-status.usecase';
 import { CreateActivityLogByRegularUser } from './activity-log/create-activity-log-by-regular-user.usecase';
 import { GetEventsByOrganizationUsecase } from './event/get-events-by-organization.usecase';
@@ -331,6 +332,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     GetManyEventUseCase,
     GetEventCountersUseCase,
     GetMyEventsUsecase,
+    GetMyEventsCountsUsecase,
     GetOneEventWithVolunteerStatusUsecase,
     GetEventsByOrganizationUsecase,
     // Events RSVP
@@ -517,6 +519,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     GetEventCountersUseCase,
     GetManyForDownloadEventUseCase,
     GetMyEventsUsecase,
+    GetMyEventsCountsUsecase,
     GetOneEventWithVolunteerStatusUsecase,
     GetEventsByOrganizationUsecase,
     // Events RSVP
