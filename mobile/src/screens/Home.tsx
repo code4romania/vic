@@ -195,7 +195,11 @@ const Home = ({ navigation }: any) => {
     {
       key: 'events',
       value: stats?.numberOfUpcomingEvents,
-      label: t('statistics.events.short'),
+      label: t(
+        stats?.numberOfUpcomingEvents === 1
+          ? 'statistics.events.short_one'
+          : 'statistics.events.short',
+      ),
       onPress: () => navigation.navigate(TAB_ROUTES.EVENTS),
     },
     ...(organization
@@ -203,13 +207,21 @@ const Home = ({ navigation }: any) => {
           {
             key: 'hours',
             value: stats?.numberOfActivityLogUpdates,
-            label: t('statistics.hours.short'),
+            label: t(
+              stats?.numberOfActivityLogUpdates === 1
+                ? 'statistics.hours.short_one'
+                : 'statistics.hours.short',
+            ),
             onPress: () => navigation.navigate('news', { type: NewsType.LOGGED_HOURS }),
           },
           {
             key: 'documents',
             value: stats?.numberOfDocumentUpdates,
-            label: t('statistics.documents.short'),
+            label: t(
+              stats?.numberOfDocumentUpdates === 1
+                ? 'statistics.documents.short_one'
+                : 'statistics.documents.short',
+            ),
             onPress: () => navigation.navigate('news', { type: NewsType.CONTRACTS }),
           },
         ]
@@ -217,7 +229,11 @@ const Home = ({ navigation }: any) => {
     {
       key: 'organizations',
       value: stats?.numberOfOrganizationUpdates,
-      label: t('statistics.organizations.short'),
+      label: t(
+        stats?.numberOfOrganizationUpdates === 1
+          ? 'statistics.organizations.short_one'
+          : 'statistics.organizations.short',
+      ),
       onPress: () => navigation.navigate('news', { type: NewsType.ORGANIZATIONS }),
     },
   ];

@@ -223,7 +223,7 @@ const CreateUser = ({ navigation }: any) => {
           <FormSelect
             control={control as any}
             name="sex"
-            label={t('general:sex', { sex_type: '' })}
+            label={t('general:sex_label')}
             error={errors.sex}
             disabled={isLoading}
             placeholder={t('general:select')}

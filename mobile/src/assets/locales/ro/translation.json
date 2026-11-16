@@ -18,6 +18,7 @@
         "join": "Alătură-te",
         "select": "Selectează",
         "sex": "Sex {{sex_type}}",
+        "sex_label": "Sex",
         "male": "Bărbătesc",
         "female": "Feminin",
         "register": "Înregistrează-te",
@@ -260,6 +261,8 @@
         "heading": "Organizații",
         "subtitle": "Alătură-te celor care fac lucruri care contează pentru tine.",
         "count": "{{n}} organizații",
+        "count_one": "1 organizație",
+        "count_de": "{{n}} de organizații",
         "member": "Membru",
         "empty": {
             "title": "Nu există rezultate",
@@ -762,22 +765,26 @@
             "events": {
                 "title": "{{number}} evenimente",
                 "description": "luna aceasta",
-                "short": "evenimente luna aceasta"
+                "short": "evenimente luna aceasta",
+                "short_one": "eveniment luna aceasta"
             },
             "hours": {
                 "title": "{{number}} actualizări",
                 "description": "în ore voluntariat",
-                "short": "actualizări la ore"
+                "short": "actualizări la ore",
+                "short_one": "actualizare la ore"
             },
             "documents": {
                 "title": "{{number}} actualizări",
                 "description": "în documente",
-                "short": "actualizări la documente"
+                "short": "actualizări la documente",
+                "short_one": "actualizare la documente"
             },
             "organizations": {
                 "title": "{{number}} actualizări",
                 "description": "în organizații",
-                "short": "actualizări la organizații"
+                "short": "actualizări la organizații",
+                "short_one": "actualizare la organizații"
             }
         },
         "anouncements": {

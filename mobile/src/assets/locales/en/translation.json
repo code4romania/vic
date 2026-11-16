@@ -18,6 +18,7 @@
     "join": "Join",
     "select": "Select",
     "sex": "Sex {{sex_type}}",
+    "sex_label": "Sex",
     "male": "Manly",
     "female": "Female",
     "register": "Register",
@@ -244,6 +245,8 @@
     "heading": "Organizations",
     "subtitle": "Join the people doing things that matter to you.",
     "count": "{{n}} organizations",
+    "count_one": "1 organization",
+    "count_de": "{{n}} organizations",
     "member": "Member",
     "empty": {
       "title": "No results",
@@ -733,22 +736,26 @@
       "events": {
         "title": "{{number}} events",
         "description": "this month",
-        "short": "events this month"
+        "short": "events this month",
+        "short_one": "event this month"
       },
       "hours": {
         "title": "{{number}} updates",
         "description": "in volunteer hours",
-        "short": "hours updates"
+        "short": "hours updates",
+        "short_one": "hours update"
       },
       "documents": {
         "title": "{{number}} updates",
         "description": "in documents",
-        "short": "document updates"
+        "short": "document updates",
+        "short_one": "document update"
       },
       "organizations": {
         "title": "{{number}} updates",
         "description": "in organizations",
-        "short": "organization updates"
+        "short": "organization updates",
+        "short_one": "organization update"
       }
     },
     "anouncements": {
