@@ -2,11 +2,12 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { render, screen, within } from '@testing-library/react-native';
+import { fireEvent, render, screen, within } from '@testing-library/react-native';
 import '../common/config/i18n';
 import Event from './Event';
 import useStore from '../store/store';
 import { EventVolunteerStatus } from '../common/enums/event-volunteer-status.enum';
+import { EventRegistrationStatus } from '../common/enums/event-registration-status.enum';
 
 // The event page shows who is coming as overlapping initials in the places row (handbook `.avs`).
 
@@ -20,10 +21,15 @@ jest.mock('../services/organization/organization.service', () => ({
 }));
 jest.mock('@gorhom/bottom-sheet', () => require('@gorhom/bottom-sheet/mock'));
 jest.mock('expo-linking', () => ({ createURL: (p: string) => p, openURL: jest.fn() }));
+const mockRefetch = jest.fn();
 jest.mock('../services/event/event.service', () => ({
-  useEventQuery: () => ({ isFetching: false, error: null, refetch: jest.fn() }),
+  useEventQuery: () => ({ isFetching: false, error: null, refetch: mockRefetch }),
   useSetRsvpEventMutation: () => ({ mutate: jest.fn(), isLoading: false }),
-  useCancelRsvpMutation: () => ({ mutate: jest.fn(), isLoading: false }),
+  // „Retrage răspuns” succeeds right away
+  useCancelRsvpMutation: () => ({
+    mutate: (_: unknown, options: { onSuccess: () => void }) => options.onSuccess(),
+    isLoading: false,
+  }),
 }));
 
 const { Navigator, Screen } = createNativeStackNavigator();
@@ -71,9 +77,28 @@ const setEvent = (extra: Record<string, unknown> = {}) =>
 
 beforeEach(() => {
   mockFontScale = 1;
+  mockRefetch.mockClear();
 });
 
 describe('Eveniment: cine participă', () => {
+  it('„Retrage răspuns” takes the volunteer off the faces too, then reloads the event', async () => {
+    setEvent({
+      volunteerStatus: EventVolunteerStatus.JOINED,
+      registrationStatus: EventRegistrationStatus.APPROVED,
+    });
+    await renderEvent();
+    expect(await screen.findByLabelText('18 persoane participă')).toBeTruthy();
+
+    await fireEvent.press(await screen.findByTestId('event-cancel'));
+
+    // caption, faces and their label agree straight away
+    expect(await screen.findByLabelText('17 persoane participă')).toBeTruthy();
+    expect(screen.getByText('+14')).toBeTruthy();
+    expect(screen.getByText(/17 persoane participă!/)).toBeTruthy();
+    // and the initials come fresh from the API
+    expect(mockRefetch).toHaveBeenCalled();
+  });
+
   it('shows three faces and „+15” beside the places, read as „18 persoane participă”', async () => {
     setEvent();
     await renderEvent();

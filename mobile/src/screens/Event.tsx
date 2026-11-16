@@ -243,7 +243,17 @@ const Event = ({ navigation, route }: any) => {
   };
 
   const onCancelRsvp = () => {
-    cancelRsvp({ eventId }, { onSuccess: canceRsvp, onError: showRsvpError });
+    cancelRsvp(
+      { eventId },
+      {
+        onSuccess: () => {
+          canceRsvp();
+          // the participants' faces: the preview may still hold the volunteer's own initials
+          refetchEvent();
+        },
+        onError: showRsvpError,
+      },
+    );
   };
 
   const onCompleteProfile = async () => {
