@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext, useRef } from 'react';
-import { StyleSheet } from 'react-native';
+import { NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View } from 'react-native';
 import {
   KeyboardAwareScrollView,
   KeyboardAwareScrollViewRef,
@@ -8,6 +8,7 @@ import {
 } from 'react-native-keyboard-controller';
 import { useAnimatedReaction } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
+import { FormRevealContext } from '../design/components/FormReveal';
 
 // Height of the bottom actions rendered by the parent layout (PageLayout / ModalLayout).
 // They stick to the keyboard, so the focused input is scrolled above them, not just above the keyboard.
@@ -25,6 +26,34 @@ const FormLayout = ({ children, scrollRef }: FormLayoutProps) => {
   const internalScrollRef = useRef<KeyboardAwareScrollViewRef>(null);
   const scrollViewRef = scrollRef ?? internalScrollRef;
   const { input } = useReanimatedFocusedInput();
+  const scrollY = useRef(0);
+
+  const onScroll = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    scrollY.current = event.nativeEvent.contentOffset.y;
+  }, []);
+
+  const reveal = useCallback(
+    (node: View | null) => {
+      const scrollView = scrollViewRef.current as unknown as View | null;
+      if (!node || !scrollView?.measureInWindow) {
+        return;
+      }
+      scrollView.measureInWindow((_x, viewTop, _w, viewHeight) => {
+        node.measureInWindow((_nx, nodeTop, _nw, nodeHeight) => {
+          const visibleBottom = viewTop + viewHeight - actionsHeight - INPUT_SPACING;
+          // scroll the bottom into sight, but never past the top of the view
+          const by = Math.min(
+            nodeTop + nodeHeight - visibleBottom,
+            nodeTop - viewTop - INPUT_SPACING,
+          );
+          if (by > 1) {
+            scrollViewRef.current?.scrollTo({ y: scrollY.current + by, animated: true });
+          }
+        });
+      });
+    },
+    [actionsHeight, scrollViewRef],
+  );
 
   const assureFocusedInputVisible = useCallback(() => {
     scrollViewRef.current?.assureFocusedInputVisible();
@@ -67,8 +96,9 @@ const FormLayout = ({ children, scrollRef }: FormLayoutProps) => {
       showsVerticalScrollIndicator={false}
       keyboardShouldPersistTaps="handled"
       contentContainerStyle={styles.layout}
+      onScroll={onScroll}
     >
-      {children}
+      <FormRevealContext.Provider value={reveal}>{children}</FormRevealContext.Provider>
     </KeyboardAwareScrollView>
   );
 };

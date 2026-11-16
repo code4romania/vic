@@ -55,7 +55,15 @@ const SafeAreaBottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
     );
 
     return (
-      <BottomSheet ref={setRefs} snapPoints={safeSnapPoints} onChange={handleChange} {...props}>
+      <BottomSheet
+        ref={setRefs}
+        snapPoints={safeSnapPoints}
+        onChange={handleChange}
+        // keep the content reachable for screen readers (see design/components/Sheet)
+        accessible={false}
+        accessibilityRole={null}
+        {...props}
+      >
         <View style={[styles.content, { paddingBottom: bottomInset }]}>{children}</View>
       </BottomSheet>
     );

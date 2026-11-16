@@ -192,6 +192,20 @@ describe('Organizații', () => {
     }
   });
 
+  it('counts one organization in the singular', async () => {
+    jest.useFakeTimers();
+    try {
+      await renderApp();
+      await fireEvent.changeText(await screen.findByTestId('organizations-search'), 'crucea');
+      await act(async () => {
+        jest.advanceTimersByTime(400);
+      });
+      expect(await screen.findByText('1 organizație')).toBeTruthy();
+    } finally {
+      jest.useRealTimers();
+    }
+  });
+
   it('opens the organization page from a row', async () => {
     await renderApp();
     await fireEvent.press(await screen.findByTestId('organization-row-org-1'));

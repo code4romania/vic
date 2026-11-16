@@ -76,3 +76,23 @@ describe('auto Sheet content sizing', () => {
     }
   });
 });
+
+describe('Sheet accessibility', () => {
+  it('does not turn the whole sheet into one "Bottom Sheet" element for screen readers', async () => {
+    await render(
+      <SafeAreaProvider
+        initialMetrics={{
+          frame: { x: 0, y: 0, width: 390, height: 844 },
+          insets: { top: 24, bottom: 34, left: 0, right: 0 },
+        }}
+      >
+        <Sheet title="Adaugă ore" variant="form">
+          <Text>Activitate</Text>
+        </Sheet>
+      </SafeAreaProvider>,
+    );
+    const modal = screen.getByTestId('mock-sheet-modal');
+    expect(modal.props.accessible).toBe(false);
+    expect(modal.props.accessibilityRole).toBeNull();
+  });
+});

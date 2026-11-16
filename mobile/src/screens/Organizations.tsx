@@ -40,6 +40,7 @@ import {
 import { BackButton } from '../components/ui/ScreenChrome';
 import { StatusChip } from '../design/components';
 import OrganizationSkeleton from '../components/skeleton/organization-skeleton';
+import { romanianNeedsDe } from '../common/utils/plural';
 
 const SEARCH_DEBOUNCE_MS = 300;
 
@@ -245,7 +246,13 @@ const Organizations = ({ navigation }: any) => {
           >
             {t('heading')}
           </VText>
-          {total !== undefined && <VText variant="cap">{t('count', { n: total })}</VText>}
+          {total !== undefined && (
+            <VText variant="cap">
+              {t(total === 1 ? 'count_one' : romanianNeedsDe(total) ? 'count_de' : 'count', {
+                n: total,
+              })}
+            </VText>
+          )}
         </View>
       </Animated.View>
       <StatusBarScrim />

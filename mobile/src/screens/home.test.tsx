@@ -282,6 +282,23 @@ describe('Acasă', () => {
     expect(await screen.findByText(`page:news:${NewsType.CONTRACTS}`)).toBeTruthy();
   });
 
+  it('"Luna aceasta" uses the singular for 1', async () => {
+    mockStats = { ...mockStats, numberOfUpcomingEvents: 1, numberOfActivityLogUpdates: 1 };
+    await renderHome();
+    expect(screen.getByTestId('home-stat-events').props.accessibilityLabel).toBe(
+      '1 eveniment luna aceasta',
+    );
+    expect(screen.getByTestId('home-stat-hours').props.accessibilityLabel).toBe(
+      '1 actualizare la ore',
+    );
+    expect(screen.getByTestId('home-stat-documents').props.accessibilityLabel).toBe(
+      '1 actualizare la documente',
+    );
+    expect(screen.getByTestId('home-stat-organizations').props.accessibilityLabel).toBe(
+      '3 actualizări la organizații',
+    );
+  });
+
   it('"Luna aceasta" shows a zero as a ghost tile you cannot open', async () => {
     mockStats = { ...mockStats, numberOfOrganizationUpdates: 0 };
     await renderHome();

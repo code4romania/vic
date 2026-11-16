@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-  KeyboardAvoidingView,
-  Modal,
-  Platform,
-  Pressable,
-  ScrollView,
-  TextInput,
-  View,
-} from 'react-native';
+import { Modal, Pressable, ScrollView, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import Animated, { FadeIn, LinearTransition, useReducedMotion } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -115,9 +108,11 @@ const EventSearch = ({
 
   return (
     <>
-      {/* the bottom bar (Șterge tot / Arată N evenimente) stays above the keyboard */}
+      {/* the bottom bar (Șterge tot / Arată N evenimente) stays above the keyboard. The
+          keyboard-controller version also on Android: KeyboardProvider keeps the window full
+          height there, so the OS resize the RN one relied on never happens. */}
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        behavior="padding"
         style={[styles.screen, { paddingTop: insets.top }]}
         testID="event-search"
       >

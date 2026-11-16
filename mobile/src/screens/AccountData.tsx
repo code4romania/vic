@@ -289,7 +289,7 @@ const AccountData = ({ navigation }: any) => {
           <FormSelect
             control={control as any}
             name="sex"
-            label={t('general:sex', { sex_type: '' })}
+            label={t('general:sex_label')}
             error={errors.sex}
             placeholder={t('general:select')}
             options={SexOptions}

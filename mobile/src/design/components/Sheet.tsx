@@ -264,6 +264,10 @@ export const Sheet = forwardRef<BottomSheetModal, SheetProps>(
     return (
       <BottomSheetModal
         ref={setRefs}
+        // Gorhom makes the content view one `accessible` "Bottom Sheet" (role adjustable) by
+        // default, which hides every field and button inside from VoiceOver / TalkBack.
+        accessible={false}
+        accessibilityRole={null}
         topInset={insets.top + 8}
         {...sizing}
         enablePanDownToClose
