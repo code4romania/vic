@@ -97,7 +97,7 @@ export const StatusChip = ({ label, kind = 'plain', icon, style, testID }: Statu
       ]}
     >
       {mark}
-      <AppText color={colors.fg} numberOfLines={1} style={styles.statusLabel}>
+      <AppText color={colors.fg} style={styles.statusLabel}>
         {label}
       </AppText>
     </View>
@@ -155,12 +155,7 @@ export const OptionChip = ({
     >
       <Animated.View style={[styles.option, selected ? styles.optionOn : null, scale]}>
         {icon}
-        <AppText
-          color={selected ? palette.yellow : palette.navy}
-          numberOfLines={1}
-          ellipsizeMode="tail"
-          style={styles.optionLabel}
-        >
+        <AppText color={selected ? palette.yellow : palette.navy} style={styles.optionLabel}>
           {label}
         </AppText>
       </Animated.View>
@@ -173,6 +168,8 @@ export default StatusChip;
 const styles = StyleSheet.create((theme) => ({
   stripes: { borderRadius: 4, overflow: 'hidden' },
   status: {
+    maxWidth: '100%',
+    paddingVertical: 4,
     minHeight: 28,
     borderRadius: theme.radius.chip,
     paddingLeft: theme.space.xs,
@@ -194,6 +191,7 @@ const styles = StyleSheet.create((theme) => ({
   optionDisabled: { opacity: 0.45 },
   option: {
     minHeight: OPTION_HEIGHT,
+    paddingVertical: 6,
     paddingHorizontal: theme.space.m,
     borderRadius: 12,
     backgroundColor: theme.colors.surface,

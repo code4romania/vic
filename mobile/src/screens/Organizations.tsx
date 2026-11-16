@@ -117,9 +117,7 @@ const Organizations = ({ navigation }: any) => {
       >
         <Avatar name={item.name} uri={item.logo} size={56} shape="rounded" />
         <View style={styles.rowText}>
-          <VText variant="h3" numberOfLines={2}>
-            {item.name}
-          </VText>
+          <VText variant="h3">{item.name}</VText>
           {/* the "Membru" badge goes under the name so it doesn't cut it on small screens */}
           <View style={styles.meta}>
             <VText variant="cap">
@@ -242,7 +240,6 @@ const Organizations = ({ navigation }: any) => {
           <VText
             variant="h2"
             accessibilityRole="header"
-            numberOfLines={2}
             maxFontSizeMultiplier={MAX_FONT_SCALE.title}
             style={styles.heading}
           >

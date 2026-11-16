@@ -63,8 +63,7 @@ const JoinHexagon = () => (
   </View>
 );
 
-// From this text size up a third of the width no longer holds „evenimente” on one line: the
-// tiles go two per row (the third takes a row of its own) instead of breaking words.
+// Narrow screens and large text use two tiles per row so labels keep whole words.
 const STATS_WRAP_SCALE = 1.2;
 
 const Stat = ({
@@ -105,8 +104,8 @@ const Settings = ({ navigation }: any) => {
   const insets = useSafeAreaInsets();
   const bottomInset = useGlassTabBarInset();
   const reduced = useReducedMotion();
-  const { fontScale } = useWindowDimensions();
-  const wideStats = fontScale >= STATS_WRAP_SCALE;
+  const { fontScale, width } = useWindowDimensions();
+  const wideStats = width < 430 || fontScale >= STATS_WRAP_SCALE;
   useFocusedStatusBarStyle('dark');
   const scrollY = useSharedValue(0);
   const onScroll = useTabBarScroll(scrollY);
@@ -246,7 +245,6 @@ const Settings = ({ navigation }: any) => {
                 key={organization.id}
                 avatar={{ name: organization.name }}
                 title={organization.name}
-                titleLines={2}
                 subtitle={
                   isCandidateVolunteer(organization) || organization.volunteerProfileId
                     ? undefined

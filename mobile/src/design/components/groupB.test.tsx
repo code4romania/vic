@@ -1,5 +1,5 @@
 import React from 'react';
-import { AccessibilityInfo, Text } from 'react-native';
+import { AccessibilityInfo, Platform, StyleSheet, Text } from 'react-native';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import * as Haptics from 'expo-haptics';
 import {
@@ -46,6 +46,53 @@ describe('SegmentedControl', () => {
     );
     expect(screen.getByTestId('seg-approved').props.accessibilityState).toEqual({ selected: true });
     expect(screen.getByTestId('seg-pending').props.accessibilityState).toEqual({ selected: false });
+  });
+
+  it('exposes the full label to the iOS Large Content Viewer', async () => {
+    await render(
+      <SegmentedControl
+        testID="seg"
+        value="mine"
+        onChange={jest.fn()}
+        options={[
+          { key: 'pending', label: 'În așteptare', count: 18 },
+          { key: 'approved', label: 'Aprobate', count: 0 },
+          { key: 'mine', label: 'Organizațiile mele' },
+        ]}
+      />,
+    );
+    expect(screen.container.queryAll((node) => node.type.includes('ScrollView'))).toHaveLength(0);
+    expect(screen.getByTestId('seg-mine').props).toMatchObject({
+      accessibilityShowsLargeContentViewer: Platform.OS === 'ios',
+      accessibilityLargeContentTitle: Platform.OS === 'ios' ? 'Organizațiile mele' : undefined,
+    });
+  });
+
+  it('keeps every segment style when selection and the active-only badge move', async () => {
+    const keys = ['pending', 'approved', 'rejected'] as const;
+    const renderControl = (value: (typeof keys)[number]) => (
+      <SegmentedControl
+        testID="seg"
+        value={value}
+        onChange={jest.fn()}
+        options={options.map((option) => ({
+          key: option.key,
+          label: option.label,
+          count: option.key === value ? 18 : undefined,
+        }))}
+      />
+    );
+    await render(renderControl('pending'));
+    const stylesBefore = keys.map((key) =>
+      StyleSheet.flatten(screen.getByTestId(`seg-${key}`).props.style),
+    );
+
+    await screen.rerender(renderControl('approved'));
+    keys.forEach((key, index) => {
+      expect(StyleSheet.flatten(screen.getByTestId(`seg-${key}`).props.style)).toEqual(
+        stylesBefore[index],
+      );
+    });
   });
 
   it('shows the thumb once segments are measured', async () => {
@@ -130,6 +177,20 @@ describe('ListRow and Group', () => {
     expect(onPress).toHaveBeenCalledTimes(1);
     expect(screen.getByText('Ieși din cont')).toHaveStyle({ color: palette.red });
     expect(screen.getByTestId('grp')).toHaveStyle({ borderRadius: 24, overflow: 'hidden' });
+  });
+
+  it('shows the full organization separately from the clamped free-text preview', async () => {
+    const organization = 'Asociația Exemplu pentru Comunitate';
+    await render(
+      <ListRow
+        title="Anunț important"
+        subtitle={organization}
+        preview="Text lung de previzualizare"
+      />,
+    );
+    expect(screen.getByText('Anunț important').props.numberOfLines).toBeUndefined();
+    expect(screen.getByText(organization).props.numberOfLines).toBeUndefined();
+    expect(screen.getByText('Text lung de previzualizare').props.numberOfLines).toBe(2);
   });
 
   it('hexagon avatar shows the initials', async () => {

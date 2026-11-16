@@ -65,6 +65,7 @@ const FormLayout = ({ children, scrollRef }: FormLayoutProps) => {
       alwaysBounceHorizontal={false}
       alwaysBounceVertical={false}
       showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps="handled"
       contentContainerStyle={styles.layout}
     >
       {children}

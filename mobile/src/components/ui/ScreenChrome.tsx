@@ -206,9 +206,10 @@ const styles = StyleSheet.create((theme) => ({
     justifyContent: 'center',
     paddingHorizontal: 60,
   },
-  // Android has no live blur outside a BlurTargetView: a denser paper keeps the title readable
+  // Android has no live blur outside a BlurTargetView: opaque paper keeps the title readable
   compactTint: {
-    backgroundColor: Platform.OS === 'ios' ? theme.colors.topBarTint : 'rgba(244,241,233,0.96)',
+    backgroundColor:
+      Platform.OS === 'ios' ? theme.colors.topBarTint : theme.colors.androidTopBarTint,
   },
   compactTitle: {
     fontFamily: theme.fontFamily.display,

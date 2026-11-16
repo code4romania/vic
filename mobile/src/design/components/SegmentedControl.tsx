@@ -4,7 +4,7 @@
 // each segment needs (its longest word + badge) and, only when the row is too narrow, first tightens
 // the padding, then puts each badge under its label, so no word is ever cut.
 import React, { ReactNode, useCallback, useState } from 'react';
-import { LayoutChangeEvent, Pressable, Text, View } from 'react-native';
+import { LayoutChangeEvent, Platform, Pressable, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useReducedMotion } from 'react-native-reanimated';
 import { StyleSheet } from 'react-native-unistyles';
 import { fontScaleCap, palette } from '../tokens';
@@ -178,6 +178,8 @@ export function SegmentedControl<T extends string>({
               option.accessibilityLabel ??
               (hasCount ? `${option.label}, ${option.count}` : option.label)
             }
+            accessibilityShowsLargeContentViewer={Platform.OS === 'ios'}
+            accessibilityLargeContentTitle={Platform.OS === 'ios' ? option.label : undefined}
             onLayout={onLayoutFor(option.key)}
             // 42pt segment + the track padding: a 52pt hit target
             hitSlop={{ top: TRACK_PADDING, bottom: TRACK_PADDING }}

@@ -1,11 +1,11 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Platform, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { act, fireEvent, render, screen } from '@testing-library/react-native';
-import GlassTabBar, { GlassTabBarItem } from './GlassTabBar';
-import { nextCollapse, TabBarScrollProvider } from './TabBarScroll';
+import { SafeAreaInsetsContext, SafeAreaProvider } from 'react-native-safe-area-context';
+import { act, fireEvent, render, renderHook, screen } from '@testing-library/react-native';
+import GlassTabBar, { GlassTabBarItem, useGlassTabBarInset } from './GlassTabBar';
+import { nextCollapse, TabBarScrollProvider, useTabBarAccessory } from './TabBarScroll';
 import { resetTabBarOverlays, useHideTabBarWhile } from './tab-bar-overlay';
 
 jest.mock('expo-blur', () => ({ BlurView: () => null }));
@@ -25,6 +25,12 @@ const items: Record<string, GlassTabBarItem> = {
 const { Navigator, Screen } = createBottomTabNavigator();
 const page = (name: string) => () => <Text>{`page:${name}`}</Text>;
 const renderTabBar = (props: BottomTabBarProps) => <GlassTabBar {...props} items={items} />;
+
+const HoursScreen = () => {
+  const accessory = React.useMemo(() => ({ label: 'Adaugă ore', onPress: jest.fn() }), []);
+  useTabBarAccessory(accessory);
+  return <Text>page:hours</Text>;
+};
 
 // a screen with a sheet that opens and closes, like Profil > Log out
 const SheetScreen = () => {
@@ -52,7 +58,9 @@ const renderTabs = () =>
               <Screen
                 key={name}
                 name={name}
-                component={name === 'profile' ? SheetScreen : page(name)}
+                component={
+                  name === 'profile' ? SheetScreen : name === 'hours' ? HoursScreen : page(name)
+                }
               />
             ))}
           </Navigator>
@@ -62,6 +70,30 @@ const renderTabs = () =>
   );
 
 describe('GlassTabBar', () => {
+  afterEach(() => jest.restoreAllMocks());
+
+  it.each(['android', 'ios'] as const)('keeps %s label fitting platform-specific', async (os) => {
+    jest.replaceProperty(Platform, 'OS', os);
+    jest.spyOn(require('react-native'), 'useWindowDimensions').mockReturnValue({
+      width: 320,
+      height: 568,
+      scale: 2,
+      fontScale: 1.3,
+    });
+    // Reanimated's mock leaves interpolate empty; use the expanded bar's first keyframe.
+    jest
+      .spyOn(require('react-native-reanimated'), 'interpolate')
+      .mockImplementation((_value, _input, output) => (output as number[])[0]);
+    await renderTabs();
+    await fireEvent.press(screen.getByTestId('tab-hours'));
+    for (const label of ['Evenimente', 'Adaugă ore']) {
+      const text = screen.getByText(label);
+      expect(text.props.adjustsFontSizeToFit).toBe(os === 'ios');
+      expect(text.props.allowFontScaling).toBe(os === 'ios');
+    }
+    expect(screen.getByText('Evenimente')).toHaveStyle({ height: os === 'android' ? 13 : 15 });
+  });
+
   it('shows the five VIC 2.0 tabs and no button for hidden routes', async () => {
     await renderTabs();
     for (const label of ['Acasă', 'Evenimente', 'Ore', 'Documente', 'Profil']) {
@@ -90,6 +122,38 @@ describe('GlassTabBar', () => {
   });
 });
 
+describe('floating bar content clearance', () => {
+  afterEach(() => jest.restoreAllMocks());
+
+  it.each([
+    ['ios', 0, 16],
+    ['ios', 34, 24],
+    ['android', 0, 16],
+    ['android', 16, 24],
+    ['android', 24, 24],
+    ['android', 48, 56],
+  ] as const)('%s with a %dpt bottom inset', async (os, bottom, expectedBottom) => {
+    jest.replaceProperty(Platform, 'OS', os);
+    const { result } = await renderHook(
+      () => ({
+        bar: useGlassTabBarInset(),
+        accessory: useGlassTabBarInset({ accessory: true }),
+      }),
+      {
+        wrapper: ({ children }) => (
+          <SafeAreaInsetsContext.Provider value={{ top: 20, left: 0, right: 0, bottom }}>
+            {children}
+          </SafeAreaInsetsContext.Provider>
+        ),
+      },
+    );
+    expect(result.current.bar).toBe(expectedBottom + 68 + 16);
+    // The last row clears the expanded action as well as the bar, including its 4pt alignment.
+    expect(result.current.accessory).toBe(expectedBottom + 68 + 56 + 10 + 16);
+    expect(result.current.accessory).toBeGreaterThan(expectedBottom + 68 + 10 + 56 + 4);
+  });
+});
+
 describe('tab bar and bottom sheets', () => {
   afterEach(() => act(() => resetTabBarOverlays()));
 
@@ -102,6 +166,9 @@ describe('tab bar and bottom sheets', () => {
     expect(
       screen.getByTestId('glass-tab-bar', { includeHiddenElements: true }).props.pointerEvents,
     ).toBe('none');
+    expect(screen.getByTestId('glass-tab-bar', { includeHiddenElements: true })).toHaveStyle({
+      transform: [{ translateY: 182 }],
+    });
     await fireEvent.press(screen.getByTestId('toggle-sheet'));
     expect(screen.getByTestId('glass-tab-bar').props.pointerEvents).toBe('box-none');
   });

@@ -54,17 +54,22 @@ export interface GlassTabBarProps extends BottomTabBarProps {
 /** Distance of the bar from the bottom edge of the screen. */
 const useBarBottom = () => {
   const insets = useSafeAreaInsets();
+  // Keep the gesture-nav spacing; three-button navigation needs room for its full inset.
+  if (Platform.OS === 'android' && insets.bottom > tabBar.bottom) {
+    return insets.bottom + 8;
+  }
   return insets.bottom > 0 ? tabBar.bottom : 16;
 };
-
-/** Height the floating bar takes over the content, for bottom padding on tab screens. */
-export const useGlassTabBarInset = () => useBarBottom() + tabBar.height + 16;
 
 // The minimised pill: a glass ring around the yellow lens with the active icon.
 const PILL_RING = 4;
 const PILL = tabBar.pill + PILL_RING * 2;
 const ACCESSORY_HEIGHT = tabBar.pill;
 const ACCESSORY_GAP = 10;
+/** Bottom padding that clears the full bar and, optionally, the action floating above it. */
+export const useGlassTabBarInset = ({ accessory = false }: { accessory?: boolean } = {}) =>
+  useBarBottom() + tabBar.height + 16 + (accessory ? ACCESSORY_HEIGHT + ACCESSORY_GAP : 0);
+
 const EXPAND_HINT = 'Arată toate tab-urile';
 const LABEL_LINE = 13;
 // how far a label may reach into the neighbouring slots („Evenimente” is 63pt, a slot at 320pt
@@ -215,7 +220,9 @@ export const GlassTabBar = ({ state, navigation, items }: GlassTabBarProps) => {
   );
   const wrapperStyle = useAnimatedStyle(() => ({
     opacity: 1 - hideProgress.value,
-    transform: [{ translateY: hideProgress.value * (tabBar.height + bottom + 60) }],
+    transform: [
+      { translateY: hideProgress.value * (bottom + tabBar.height + ACCESSORY_GAP + PILL + 16) },
+    ],
   }));
 
   // the screen action: floats above the bar on the right, sits beside the pill when minimised
@@ -227,7 +234,7 @@ export const GlassTabBar = ({ state, navigation, items }: GlassTabBarProps) => {
       opacity: accessoryWidth ? 1 : 0,
       transform: [
         { translateX: interpolate(p, [0, 1], [right, left]) },
-        { translateY: interpolate(p, [0, 1], [-(tabBar.height + 10), 0]) },
+        { translateY: interpolate(p, [0, 1], [-(tabBar.height + ACCESSORY_GAP), 0]) },
       ],
     };
   });
@@ -267,7 +274,8 @@ export const GlassTabBar = ({ state, navigation, items }: GlassTabBarProps) => {
             <Text
               maxFontSizeMultiplier={fontScaleCap.display}
               numberOfLines={1}
-              adjustsFontSizeToFit
+              allowFontScaling={Platform.OS !== 'android'}
+              adjustsFontSizeToFit={Platform.OS !== 'android'}
               minimumFontScale={0.8}
               style={styles.accessoryLabel}
             >
@@ -377,9 +385,11 @@ const TabButton = ({
   const Icon = ICONS[item.icon];
   const color = focused ? palette.navy : palette.ink2;
   const { fontScale } = useWindowDimensions();
-  // the label row is as tall as one line at the capped scale, so it never clips
+  // Android auto-fit can shrink scaled labels below their base size; keep its labels at 1×.
+  // The label row is as tall as one line at the capped scale, so it never clips.
   const labelHeight = Math.ceil(
-    LABEL_LINE * Math.min(Math.max(fontScale, 1), fontScaleCap.tabLabel),
+    LABEL_LINE *
+      (Platform.OS === 'android' ? 1 : Math.min(Math.max(fontScale, 1), fontScaleCap.tabLabel)),
   );
 
   // prototype `.tab.on svg{transform:translateY(-1px) scale(1.06)}` and `.tab:active svg{scale(.86)}`:
@@ -453,11 +463,12 @@ const TabButton = ({
         <Animated.View style={iconStyle}>
           <Icon size={24} color={color} strokeWidth={focused ? 2.3 : 2} />
         </Animated.View>
-        {/* never ellipsized: the label may use 5pt of each neighbour's slot and shrinks to fit */}
+        {/* the label may use 5pt of each neighbour's slot; on iOS it also shrinks to fit */}
         <Animated.Text
           maxFontSizeMultiplier={fontScaleCap.tabLabel}
           numberOfLines={1}
-          adjustsFontSizeToFit
+          allowFontScaling={Platform.OS !== 'android'}
+          adjustsFontSizeToFit={Platform.OS !== 'android'}
           minimumFontScale={0.8}
           style={[
             styles.label,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert } from 'react-native';
+import { Alert, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -68,6 +68,7 @@ const mockRefetchCounters = jest.fn();
 const mockSent: any[] = [];
 let queryClient: QueryClient;
 let mockLogQuery: any = { isFetching: false };
+let mockRefetching = false;
 
 const entry = (id: string, extra: Record<string, unknown> = {}) => ({
   id,
@@ -80,26 +81,34 @@ const entry = (id: string, extra: Record<string, unknown> = {}) => ({
 
 jest.mock('../services/activity-log/activity-log.service', () => ({
   useActivityLogsInfiniteQuery: (...args: any[]) => {
+    const { useMemo } = require('react');
     mockListCalls.push(args);
+    const organizationId = args[0];
     const status = args[3];
-    // disabled without an organization: no data
-    const items = !args[0]
-      ? []
-      : status === 'pending'
-        ? [
-            ...mockSent,
-            entry('1'),
-            entry('2', { event: undefined, activityType: undefined, hours: 3 }),
-          ]
-        : status === 'approved'
-          ? [entry('3', { hours: 4 })]
-          : [];
+    const sentCount = mockSent.length;
+    // React Query keeps data stable between refreshes, including when onSent changes local state.
+    const data = useMemo(() => {
+      // disabled without an organization: no data
+      const items = !organizationId
+        ? []
+        : status === 'pending'
+          ? [
+              ...mockSent,
+              entry('1'),
+              entry('2', { event: undefined, activityType: undefined, hours: 3 }),
+            ]
+          : status === 'approved'
+            ? [entry('3', { hours: 4 })]
+            : [];
+      return { pages: [{ items, meta: { totalItems: items.length } }] };
+      // eslint-disable-next-line react-hooks/exhaustive-deps -- mockSent is read through sentCount
+    }, [organizationId, status, sentCount]);
     return {
-      data: { pages: [{ items, meta: { totalItems: items.length } }] },
+      data,
       error: null,
-      isFetching: false,
+      isFetching: mockRefetching,
       isFetchingNextPage: false,
-      isRefetching: false,
+      isRefetching: mockRefetching,
       hasNextPage: false,
       fetchNextPage: jest.fn(),
       refetch: mockRefetchList,
@@ -189,6 +198,7 @@ const detailParams = {
 };
 
 beforeEach(() => {
+  mockRefetching = false;
   queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   mockLogQuery = { isFetching: false, error: null, refetch: jest.fn() };
   mockListCalls.length = 0;
@@ -232,6 +242,10 @@ describe('Ore', () => {
     const add = bar.getByTestId('hours-add');
     expect(add.props.accessibilityLabel).toBe('Adaugă ore');
     expect(bar.getByText('Adaugă ore')).toBeTruthy();
+    expect(
+      StyleSheet.flatten(screen.getByTestId('hours-list').props.contentContainerStyle)
+        .paddingBottom,
+    ).toBe(174);
   });
 
   it('scrolls the organization, title, totals and status with the entries, under a compact bar', async () => {
@@ -282,6 +296,28 @@ describe('Ore', () => {
     );
     expect(mockRefetchList).toHaveBeenCalledTimes(1);
     expect(mockRefetchCounters).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps the summary mounted during a background refetch with existing totals', async () => {
+    await renderApp();
+    const summary = screen.getByTestId('hours-summary');
+    const hexagon = screen.getByTestId('impact-hexagon', { includeHiddenElements: true });
+    await waitFor(() =>
+      expect(within(screen.getByTestId('hours-total-approved')).getByText('145h')).toBeTruthy(),
+    );
+
+    mockRefetching = true;
+    await act(async () => {
+      useStore.setState({ counters: { approved: 145, pending: 12, rejected: 5 } });
+    });
+
+    expect(screen.getByTestId('hours-summary')).toBe(summary);
+    expect(screen.getByTestId('impact-hexagon', { includeHiddenElements: true })).toBe(hexagon);
+    expect(within(screen.getByTestId('hours-total-approved')).getByText('145h')).toBeTruthy();
+    expect(screen.getByTestId('hours-list').props.refreshControl.props.refreshing).toBe(false);
+    await waitFor(() =>
+      expect(within(screen.getByTestId('hours-total-pending')).getByText('12h')).toBeTruthy(),
+    );
   });
 
   it('marks cached segments stale on focus without fetching them', async () => {
@@ -470,12 +506,44 @@ describe('Ore', () => {
     expect(mockCreate).not.toHaveBeenCalled();
   });
 
+  it('highlights an entry already refreshed into the pending list before the sheet calls onSent', async () => {
+    mockCreate.mockImplementation((_payload: any, options: any) => {
+      const log = entry('new', { hours: 1 });
+      mockSent.push(log);
+      // refreshHours updates the list and counters before the sheet's success dwell ends.
+      useStore.setState({ counters: { approved: 145, pending: 10, rejected: 5 } });
+      options.onSuccess({ ...log, status: 'pending' });
+    });
+    await renderApp();
+    await waitFor(() =>
+      expect(within(screen.getByTestId('hours-total-approved')).getByText('145h')).toBeTruthy(),
+    );
+    const hexagon = screen.getByTestId('impact-hexagon', { includeHiddenElements: true });
+    await openAddSheet();
+    await pickActivity();
+    await fireEvent.press(screen.getByTestId('hours-submit'));
+
+    expect(await screen.findByTestId('hours-sent')).toBeTruthy();
+    const row = await screen.findByTestId('log-row-new');
+    expect(screen.queryByTestId('log-row-new-highlight')).toBeNull();
+    // Keep the refreshed query result unchanged while onSent sets only highlightId.
+    expect(
+      await screen.findByTestId('log-row-new-highlight', undefined, {
+        timeout: SUCCESS_DWELL_MS + 1000,
+      }),
+    ).toBeTruthy();
+    expect(screen.getByTestId('log-row-new')).toBe(row);
+    expect(screen.getByTestId('impact-hexagon', { includeHiddenElements: true })).toBe(hexagon);
+    expect(within(screen.getByTestId('hours-total-approved')).getByText('145h')).toBeTruthy();
+  });
+
   it('sends the hours, shows „Trimis spre aprobare”, then highlights the new entry', async () => {
     mockCreate.mockImplementation((_payload: any, options: any) => {
       mockSent.push(entry('new', { hours: 3 }));
       options.onSuccess({ ...entry('new', { hours: 3 }), status: 'pending' });
     });
     await renderApp();
+    const hexagon = screen.getByTestId('impact-hexagon', { includeHiddenElements: true });
     await fireEvent.press(await screen.findByText('Aprobate'));
     const sheet = await openAddSheet();
     await pickActivity();
@@ -511,6 +579,8 @@ describe('Ore', () => {
     await waitFor(() =>
       expect(mockListCalls[mockListCalls.length - 1][3]).toBe(ActivityLogStatus.PENDING),
     );
+    expect(screen.getByTestId('impact-hexagon', { includeHiddenElements: true })).toBe(hexagon);
+    expect(within(screen.getByTestId('hours-total-approved')).getByText('145h')).toBeTruthy();
     // then the toast confirms it (prototype: „4h trimise spre aprobare”)
     await waitFor(() =>
       expect(Toast.show).toHaveBeenCalledWith({

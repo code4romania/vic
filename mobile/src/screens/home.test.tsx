@@ -57,6 +57,7 @@ jest.mock('../services/anouncement/anouncement.service', () => ({
           title: 'Căutăm 50 de voluntari',
           description: 'Pentru Ziua Pământului',
           organizationLogo: '',
+          organization: { name: 'Asociația Exemplu pentru Comunitate' },
         },
       ],
     }),
@@ -164,6 +165,19 @@ describe('Acasă', () => {
     ).toBeTruthy();
   });
 
+  it('leaves organization names and announcement titles unclamped, with only a body preview', async () => {
+    await renderHome();
+    expect(
+      within(screen.getByTestId('home-org')).getByText('Asociația Exemplu').props.numberOfLines,
+    ).toBeUndefined();
+    const announcement = within(screen.getByTestId('home-anouncement-a1'));
+    expect(announcement.getByText('Căutăm 50 de voluntari').props.numberOfLines).toBeUndefined();
+    expect(
+      announcement.getByText('Asociația Exemplu pentru Comunitate').props.numberOfLines,
+    ).toBeUndefined();
+    expect(announcement.getByText('Pentru Ziua Pământului').props.numberOfLines).toBe(2);
+  });
+
   it('the bell has no badge when everything is read', async () => {
     mockUnread = 0;
     await renderHome();
@@ -215,7 +229,9 @@ describe('Acasă', () => {
 
   it('the impact number counts up to the approved hours', async () => {
     await renderHome();
-    await waitFor(() => expect(screen.getByTestId('home-impact-count')).toHaveTextContent('42h'));
+    await waitFor(() =>
+      expect(screen.getByTestId('home-impact-count')).toHaveTextContent('42\u2009h'),
+    );
   });
 
   it('hides the pending and rejected chips when there are none', async () => {

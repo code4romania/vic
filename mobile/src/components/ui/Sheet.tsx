@@ -14,6 +14,8 @@ export interface SheetProps extends Omit<BottomSheetModalProps, 'children'> {
   fullHeight?: boolean;
   /** accessibility label of the close button shown by `fullHeight` sheets */
   closeLabel?: string;
+  /** Scroll the complete auto-sized content, including its header and bottom safe area. */
+  scrollable?: boolean;
 }
 
 /**

@@ -7,6 +7,7 @@ import { useGroupInset } from './Group';
 export interface ListRowProps {
   title: string;
   subtitle?: string;
+  preview?: string;
   leading?: ReactNode;
   trailing?: ReactNode;
   onPress?: () => void;
@@ -19,7 +20,7 @@ export interface ListRowProps {
   testID?: string;
 }
 
-export const Chevron = ({ color }: { color?: string }) => <RowChevron color={color} />;
+export const Chevron = RowChevron;
 
 /**
  * Settings-style row, legacy API over the „Îndrăzneț” ListRow (60pt, Manrope 700 15.5 title,
@@ -28,6 +29,7 @@ export const Chevron = ({ color }: { color?: string }) => <RowChevron color={col
 export const ListRow = ({
   title,
   subtitle,
+  preview,
   leading,
   trailing,
   onPress,
@@ -42,6 +44,7 @@ export const ListRow = ({
     <DesignListRow
       title={title}
       subtitle={subtitle}
+      preview={preview}
       leading={leading}
       trailing={trailing}
       onPress={onPress}

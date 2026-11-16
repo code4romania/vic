@@ -111,3 +111,31 @@ describe('Date personale discard guard', () => {
     },
   );
 });
+
+it('normalizes a local phone number before validating and sending the existing API format', async () => {
+  const { client } = await setup();
+  await fireEvent.changeText(screen.getByTestId('field-phone'), '0799111333');
+  expect(screen.getByTestId('field-phone').props.value).toBe('799111333');
+  await fireEvent.press(screen.getByTestId('page-action'));
+  await waitFor(() =>
+    expect(updateUserProfile).toHaveBeenCalledWith(
+      expect.objectContaining({ phone: '+40799111333' }),
+      undefined,
+    ),
+  );
+  client.clear();
+});
+
+it('keeps an untouched missing birthday error hidden while editing other fields', async () => {
+  const { client } = await setup();
+  await act(() => useStore.setState({ userProfile: { ...profile, birthday: undefined } as any }));
+  await fireEvent.changeText(screen.getByTestId('field-phone'), '0799111333');
+  await fireEvent(screen.getByTestId('field-phone'), 'blur');
+  await fireEvent.press(screen.getByTestId('select-countyId'));
+  await fireEvent.press(screen.getByTestId('select-countyId-option-1'));
+  expect(screen.queryByRole('alert')).toBeNull();
+  await fireEvent.press(screen.getByTestId('page-action'));
+  expect(await screen.findByRole('alert')).toBeTruthy();
+  expect(updateUserProfile).not.toHaveBeenCalled();
+  client.clear();
+});

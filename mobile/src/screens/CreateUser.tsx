@@ -33,6 +33,7 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { CONSTANTS, REGEX } from '../common/constants/constants';
 import { renderPhoneNumberPrefix } from '../components/InputPrefixes';
+import { normalizePhoneNumber } from '../common/utils/phone';
 import { usePaddingTop } from '../hooks/usePaddingTop';
 import { displayTitle } from '../layouts/displayTitle';
 
@@ -185,6 +186,8 @@ const CreateUser = ({ navigation }: any) => {
             error={errors.phone}
             disabled={isLoading}
             keyboardType="phone-pad"
+            maxLength={10}
+            normalizeText={normalizePhoneNumber}
             accessoryLeft={renderPhoneNumberPrefix}
           />
           <CountySelect

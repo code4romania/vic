@@ -119,6 +119,14 @@ describe('Documente', () => {
     ).toBeTruthy();
     const bar = screen.getByTestId('documents-compact-bar', { includeHiddenElements: true });
     expect(within(bar).getByText('Documente', { includeHiddenElements: true })).toBeTruthy();
+    // The status area stays covered even before the compact bar fades in at 48pt.
+    expect(screen.getByTestId('status-bar-scrim')).toHaveStyle({
+      height: 47,
+      backgroundColor: '#F4F1E9',
+    });
+    expect(
+      within(screen.getByTestId('documents-list')).queryByTestId('status-bar-scrim'),
+    ).toBeNull();
     const signed = screen.getByTestId('document-row-3');
     expect(within(signed).getByText('Contract 3/2026')).toBeTruthy();
     expect(within(signed).getByText('15 ian 2026 – 15 ian 2027')).toBeTruthy();

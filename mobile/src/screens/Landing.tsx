@@ -22,6 +22,8 @@ import { palette } from '../design/tokens';
 import { hasSeenOnboarding } from '../common/utils/onboarding';
 import { isMigrationNoticeActive } from '../common/utils/migration-notice';
 import { displayTitle } from '../layouts/displayTitle';
+import { getAuthErrorCode } from '../common/utils/auth-error';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -78,8 +80,9 @@ const Landing = ({ navigation }: any) => {
       const maskedEmail = await requestLoginCode(value);
       sheetRef.current?.dismiss();
       navigation.navigate('login', { email: value, maskedEmail });
-    } catch {
-      // the auth context shows the error
+    } catch (error) {
+      const code = getAuthErrorCode(error);
+      setEmailError(code ? InternalErrors.AUTH_ERRORS.getError(code) : `${t('auth:errors.login')}`);
     } finally {
       setIsSending(false);
     }

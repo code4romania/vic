@@ -11,7 +11,7 @@ export interface ChipProps {
 
 /**
  * Filter chip, now the „Îndrăzneț” quick option: 34 high, navy with yellow text when selected.
- * A long organization name is cut with "…" instead of leaving the card.
+ * Long organization names wrap and the chip grows with its text.
  */
 export const Chip = ({ label, selected, onPress, icon, testID }: ChipProps) => (
   <OptionChip label={label} selected={!!selected} onPress={onPress} icon={icon} testID={testID} />

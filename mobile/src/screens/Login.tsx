@@ -22,6 +22,8 @@ import { MailIcon } from '../design/icons';
 import { palette } from '../design/tokens';
 import { isMigrationNoticeActive } from '../common/utils/migration-notice';
 import { displayTitle } from '../layouts/displayTitle';
+import { getAuthErrorCode } from '../common/utils/auth-error';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 
 // A new code can be asked for once a minute (the backend answers AUTH_010 sooner).
 export const RESEND_AFTER_SECONDS = 60;
@@ -111,14 +113,18 @@ const Login = ({ navigation, route }: any) => {
     return () => clearTimeout(timer);
   }, [secondsLeft]);
 
-  // errors are shown by the auth context
+  // Keep request errors visible at the email field as well as the auth context's toast.
   const sendCode = async (value: string): Promise<boolean> => {
     try {
       setIsLoading(true);
       setMaskedEmail(await requestLoginCode(value));
       setSecondsLeft(RESEND_AFTER_SECONDS);
       return true;
-    } catch {
+    } catch (error) {
+      const errorCode = getAuthErrorCode(error);
+      setEmailError(
+        errorCode ? InternalErrors.AUTH_ERRORS.getError(errorCode) : `${t('auth:errors.login')}`,
+      );
       return false;
     } finally {
       setIsLoading(false);

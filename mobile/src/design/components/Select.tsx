@@ -3,7 +3,7 @@
 // the snappy spring). With more options it calls `onOpenSheet`; the sheet itself lives with the
 // caller, which can mount it next to the field through `renderSheet`.
 import React, { ReactNode, useEffect, useState } from 'react';
-import { LayoutChangeEvent, Pressable, StyleProp, View, ViewStyle } from 'react-native';
+import { Keyboard, LayoutChangeEvent, Pressable, StyleProp, View, ViewStyle } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useReducedMotion,
@@ -114,6 +114,8 @@ export function Select<K extends SelectKey>({
   }));
 
   const toggle = () => {
+    // A picker takes over from the form input; don't leave that input focused behind its sheet.
+    Keyboard.dismiss();
     if (sheetMode) {
       onOpenSheet?.();
       return;

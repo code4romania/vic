@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { act, fireEvent, render, screen, within } from '@testing-library/react-native';
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
 import '../common/config/i18n';
 import Events from './Events';
 import Event from './Event';
@@ -29,6 +29,7 @@ let mockCounts: any = { open: 3, going: 2, organizations: 0 };
 const mockSetRsvp = jest.fn();
 const mockRefetchEvent = jest.fn();
 let mockEventError: any = null;
+let mockPreviousEvents = false;
 
 const event = (id: string, extra: Record<string, unknown> = {}) => ({
   id,
@@ -59,12 +60,17 @@ jest.mock('../services/event/event.service', () => ({
     if (search === 'nimic' || filters?.organizationId === 'org-2') {
       items = [];
     }
+    const previous = mockPreviousEvents && eventFilter === 'GOING';
+    if (previous) {
+      items = [event('1'), event('2', { isPublic: false }), event('3')];
+    }
     return {
       data: { pages: [{ items, meta: { totalItems: items.length } }] },
       error: null,
-      isFetching: false,
+      isFetching: previous,
       isFetchingNextPage: false,
-      isRefetching: false,
+      isRefetching: previous,
+      isPreviousData: previous,
       hasNextPage: false,
       fetchNextPage: jest.fn(),
       refetch: jest.fn(),
@@ -105,6 +111,7 @@ const renderApp = (initialRouteName = 'events', params?: Record<string, unknown>
   );
 
 beforeEach(() => {
+  mockPreviousEvents = false;
   mockEventError = null;
   mockCalls.length = 0;
   mockCountCalls.length = 0;
@@ -131,6 +138,23 @@ beforeEach(() => {
 const lastCall = () => mockCalls[mockCalls.length - 1];
 
 describe('Evenimente', () => {
+  it('keeps the header and rows during a segment fetch without pulling down the list', async () => {
+    await renderApp();
+    const header = screen.getByRole('header', { name: 'Evenimente' });
+    const list = screen.getByTestId('events-list');
+    mockPreviousEvents = true;
+
+    await fireEvent.press(screen.getByText('Particip'));
+    await screen.findByTestId('event-card-1');
+    // Wait for the swap-out timer to select the new query.
+    await waitFor(() => expect(lastCall()[2]).toBe(EventType.GOING));
+
+    expect(lastCall()[4]).toEqual({ keepPreviousData: true });
+    expect(screen.getByRole('header', { name: 'Evenimente' })).toBe(header);
+    expect(screen.getByTestId('events-list')).toBe(list);
+    expect(screen.getByTestId('events-list').props.refreshControl.props.refreshing).toBe(false);
+    expect(within(screen.getByTestId('events-tabs-GOING')).queryByText('3')).toBeNull();
+  });
   it('shows only the search title in the pill when no filters are active', async () => {
     await renderApp();
     const pill = await screen.findByTestId('events-search-pill');
