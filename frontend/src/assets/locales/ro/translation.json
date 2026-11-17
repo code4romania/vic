@@ -383,7 +383,8 @@
         "phone": "telefonul are peste 20 de caractere",
         "city_not_found": "localitatea nu a fost găsită",
         "city_ambiguous": "există mai multe localități cu acest nume, completează județul",
-        "department_not_found": "departamentul nu există în organizație"
+        "department_not_found": "departamentul nu există în organizație",
+        "save_failed": "rândul nu a putut fi salvat; adaugă voluntarul manual sau încearcă din nou"
       }
     },
     "subtitle": "Baza de date cu voluntarii organizației",

@@ -379,7 +379,8 @@
         "phone": "the phone has over 20 characters",
         "city_not_found": "the city was not found",
         "city_ambiguous": "several cities have this name, fill in the county",
-        "department_not_found": "the department does not exist in the organization"
+        "department_not_found": "the department does not exist in the organization",
+        "save_failed": "the row could not be saved; add the volunteer by hand or try again"
       }
     },
     "subtitle": "Your organization's volunteer database",
