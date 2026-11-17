@@ -1,4 +1,5 @@
 import * as XLSX from 'xlsx';
+import { withBucharestDates } from './bucharest-time';
 
 export function JSONStringifyError(value: Error): string {
   if (value instanceof Error) {
@@ -19,7 +20,7 @@ export function jsonToExcelBuffer<T>(
   outputFileName: string,
 ): XLSX.BookType {
   const wb = XLSX.utils.book_new();
-  const ws = XLSX.utils.json_to_sheet(jsonData);
+  const ws = XLSX.utils.json_to_sheet(withBucharestDates(jsonData));
 
   XLSX.utils.book_append_sheet(wb, ws, outputFileName);
 

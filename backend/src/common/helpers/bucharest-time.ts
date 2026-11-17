@@ -63,6 +63,40 @@ export function endOfBucharestDay(day: string): Date {
   return new Date(startOfBucharestDay(next).getTime() - 1);
 }
 
+// The same wall-clock time as in Bucharest, as a Date in the server's own time zone. For libraries that
+// write Dates in local time (SheetJS turns a Date into an Excel date by its local fields): on a UTC server
+// 2023-12-17T22:00Z, midnight of 18 December in Bucharest, would otherwise be written as 17 December 22:00.
+export function toBucharestWallClock(instant: Date): Date {
+  const parts = Object.fromEntries(
+    partsFormat
+      .formatToParts(instant)
+      .filter((part) => part.type !== 'literal')
+      .map((part) => [part.type, +part.value]),
+  );
+  return new Date(
+    parts.year,
+    parts.month - 1,
+    parts.day,
+    parts.hour,
+    parts.minute,
+    parts.second,
+    instant.getMilliseconds(),
+  );
+}
+
+// Rows for an Excel sheet with every Date as Bucharest wall-clock time (see toBucharestWallClock).
+export function withBucharestDates<T>(rows: T[]): T[] {
+  return rows.map(
+    (row) =>
+      Object.fromEntries(
+        Object.entries(row as Record<string, unknown>).map(([key, value]) => [
+          key,
+          value instanceof Date ? toBucharestWallClock(value) : value,
+        ]),
+      ) as T,
+  );
+}
+
 // An instant's day in Bucharest as Romanians write it: 20.11.2026.
 export function formatBucharestDate(instant: Date): string {
   const [year, month, day] = bucharestDay(instant).split('-');
