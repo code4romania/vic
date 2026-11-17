@@ -22,7 +22,29 @@ if (
   );
 }
 
-const socialPlugins: NonNullable<ExpoConfig['plugins']> = [
+// On EAS the API URL can come from eas.json or from the expo.dev environment, and the dashboard
+// value has silently won before (a preview build shipped against production). Pin each
+// environment to its API so a mismatch stops the build instead of reaching testers.
+const EXPECTED_API_URL: Record<string, string> = {
+  development: 'https://api-vic-staging.ngohub.ro',
+  'development-simulator': 'https://api-vic-staging.ngohub.ro',
+  staging: 'https://api-vic-staging.ngohub.ro',
+  production: 'https://api-vic.ngohub.ro',
+};
+if (process.env.EAS_BUILD) {
+  const environment = process.env.EXPO_PUBLIC_ENVIRONMENT ?? '';
+  const expected = EXPECTED_API_URL[environment];
+  const actual = process.env.EXPO_PUBLIC_API_URL?.replace(/\/+$/, '');
+  if (!expected || actual !== expected) {
+    throw new Error(
+      `EAS build "${process.env.EAS_BUILD_PROFILE}" (EXPO_PUBLIC_ENVIRONMENT=${environment || 'unset'}) ` +
+        `has EXPO_PUBLIC_API_URL=${actual ?? 'unset'}, expected ${expected ?? 'a known environment'}. ` +
+        'Fix eas.json or the expo.dev environment variables.',
+    );
+  }
+}
+
+const socialPlugins:NonNullable<ExpoConfig['plugins']> = [
   ...(googleIosUrlScheme
     ? [['@react-native-google-signin/google-signin', { iosUrlScheme: googleIosUrlScheme }] as const]
     : []),

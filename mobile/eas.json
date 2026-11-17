@@ -8,6 +8,7 @@
       "developmentClient": true,
       "distribution": "internal",
       "channel": "development",
+      "environment": "development",
       "env": {
         "EXPO_PUBLIC_ENVIRONMENT": "development",
         "EXPO_PUBLIC_API_URL": "https://api-vic-staging.ngohub.ro",
@@ -27,6 +28,7 @@
       "ios": {
         "simulator": true
       },
+      "environment": "development",
       "env": {
         "EXPO_PUBLIC_ENVIRONMENT": "development-simulator",
         "EXPO_PUBLIC_API_URL": "https://api-vic-staging.ngohub.ro",
@@ -43,6 +45,7 @@
     "preview": {
       "distribution": "internal",
       "channel": "staging",
+      "environment": "preview",
       "env": {
         "EXPO_PUBLIC_ENVIRONMENT": "staging",
         "EXPO_PUBLIC_API_URL": "https://api-vic-staging.ngohub.ro",
@@ -58,6 +61,7 @@
     },
     "staging": {
       "channel": "staging",
+      "environment": "preview",
       "env": {
         "EXPO_PUBLIC_ENVIRONMENT": "staging",
         "EXPO_PUBLIC_API_URL": "https://api-vic-staging.ngohub.ro",
@@ -75,6 +79,7 @@
     "production": {
       "channel": "production",
       "autoIncrement": true,
+      "environment": "production",
       "env": {
         "EXPO_PUBLIC_ENVIRONMENT": "production",
         "EXPO_PUBLIC_API_URL": "https://api-vic.ngohub.ro",
