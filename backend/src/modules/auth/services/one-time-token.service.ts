@@ -173,11 +173,14 @@ export class OneTimeTokenService {
     }
   }
 
-  // ana@example.ro -> a•••@example.ro
+  // ana@example.ro -> a•••@example.ro, elena@example.ro -> e•••a@example.ro
   public maskEmail(email: string): string {
     const [local, domain] = (email ?? '').split('@');
     if (!local || !domain) return '•••';
-    return `${local[0]}•••@${domain}`;
+    // the last character too when the name is long enough, so lari+a@ and lari+b@ look different (#689)
+    return local.length > 3
+      ? `${local[0]}•••${local[local.length - 1]}@${domain}`
+      : `${local[0]}•••@${domain}`;
   }
 
   // The link hash is bound to the type only, so a link can be looked up by its hash (decisions R21).

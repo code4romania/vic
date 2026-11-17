@@ -170,7 +170,8 @@ const Team = () => {
     {
       id: 'status',
       name: t('columns.status'),
-      minWidth: '10rem',
+      // fits „Invitație trimisă, expiră în 14 zile” without cutting it (#689)
+      minWidth: '15rem',
       cell: (member) => (
         <CellLayout>
           <StatusBadge tone={TEAM_STATUS_TONE[member.status]}>{statusLabel(member)}</StatusBadge>

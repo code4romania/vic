@@ -240,7 +240,9 @@ const EventForm = ({
                       <p className="text-red-500">{errors.targets?.message}</p>
                     ) : (
                       <small className="text-cool-gray-500">
-                        {i18n.t('announcement:form.target.disclaimer')}
+                        {isEditForm && eventStatus !== EventStatus.DRAFT
+                          ? i18n.t('events:form.target.locked')
+                          : i18n.t('events:form.target.disclaimer')}
                       </small>
                     )
                   }

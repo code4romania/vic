@@ -416,6 +416,10 @@ describe('OneTimeTokenService (database)', () => {
   it.each([
     ['ana@example.ro', 'a•••@example.ro'],
     ['x@vic.ro', 'x•••@vic.ro'],
+    ['elena@example.ro', 'e•••a@example.ro'],
+    // #689: two addresses of the same person stay apart
+    ['lari.oncescu+vicadmin@ong.ro', 'l•••n@ong.ro'],
+    ['lari.oncescu+vicadmin2@ong.ro', 'l•••2@ong.ro'],
     ['not-an-email', '•••'],
   ])('maskEmail(%p) is %p', (input, masked) => {
     expect(service.maskEmail(input)).toBe(masked);

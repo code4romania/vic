@@ -62,7 +62,7 @@ describe('Mobile auth (e2e)', () => {
 
   it('new email → code → login (this is the sign-up) → no profile yet → create profile', async () => {
     const requested = await requestCode('  Elena@Example.RO ').expect(200);
-    expect(requested.body).toEqual({ maskedEmail: 'e•••@example.ro' });
+    expect(requested.body).toEqual({ maskedEmail: 'e•••a@example.ro' });
 
     const email = testApp.mailbox.last(EMAIL);
     expect(email.subject).toContain('Codul tău VIC');
