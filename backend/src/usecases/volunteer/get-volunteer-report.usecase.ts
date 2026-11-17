@@ -4,6 +4,7 @@ import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.en
 import {
   renderVolunteerReport,
   reportDate,
+  OTHER_ACTIVITY,
 } from 'src/modules/volunteer/services/volunteer-report.pdf';
 import { GetOneVolunteerUsecase } from './get-one-volunteer.usecase';
 import { GetVolunteerEventsUseCase } from './get-volunteer-events.usecase';
@@ -66,7 +67,7 @@ export class GetVolunteerReportUseCase {
         .reduce((total, log) => total + +log.hours, 0);
     const activities = new Map<string, { hours: number; entries: number }>();
     logs.forEach((log) => {
-      const name = log.activity || 'Fără tip de activitate';
+      const name = log.activity || OTHER_ACTIVITY;
       const current = activities.get(name) ?? { hours: 0, entries: 0 };
       activities.set(name, {
         hours: current.hours + (log.status === 'approved' ? +log.hours : 0),
