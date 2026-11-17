@@ -19,6 +19,7 @@ import {
 import { SocialTokenVerifierService } from 'src/modules/auth/services/social/social-token-verifier.service';
 import { DataSource } from 'typeorm';
 import { AppleTokenService } from 'src/modules/auth/services/social/apple-token.service';
+import { LinkExistingProfileHelper } from './link-existing-profile.helper';
 
 // Mobile only (decision 7). Finds the login by provider link, else by verified email, else creates one
 // with the same email: the email code login keeps working for it too.
@@ -30,6 +31,7 @@ export class SocialLoginUseCase implements IUseCaseService<SessionTokens> {
     private readonly sessionService: SessionService,
     private readonly dataSource: DataSource,
     private readonly appleTokens: AppleTokenService,
+    private readonly linkExistingProfile: LinkExistingProfileHelper,
   ) {}
 
   async execute(
@@ -99,7 +101,8 @@ export class SocialLoginUseCase implements IUseCaseService<SessionTokens> {
         );
       }
 
-      return current;
+      // A volunteer from before VIC 2.0 signing in for the first time gets their existing profile.
+      return this.linkExistingProfile.link(current, manager);
     });
 
     // App Store 5.1.1(v): keep what is needed to revoke the Apple sign-in when the account is deleted

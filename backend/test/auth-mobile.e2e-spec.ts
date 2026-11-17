@@ -263,4 +263,129 @@ describe('Mobile auth (e2e)', () => {
       .send({ refreshToken: rotated.refreshToken })
       .expect(401);
   });
+
+  // A volunteer from before VIC 2.0 logging in where auth:migrate has not linked them (it never ran, or
+  // their login was created before it ran): the login takes their existing profile instead of opening
+  // the profile form, which would fail with USER_003 on their own email.
+  describe('existing volunteer profile', () => {
+    const insertUser = async (
+      values: {
+        email?: string;
+        type?: 'regular' | 'admin';
+        hasAccount?: boolean;
+        deleted?: boolean;
+      } = {},
+    ): Promise<string> => {
+      const [user] = await testApp.dataSource.query(
+        `INSERT INTO "user" (type, name, first_name, last_name, email, phone, has_account, deleted_on)
+         VALUES ($1, 'Elena Veche', 'Elena', 'Veche', $2, '+40720000099', $3, $4) RETURNING id`,
+        [
+          values.type ?? 'regular',
+          values.email ?? EMAIL,
+          values.hasAccount ?? true,
+          values.deleted ? new Date() : null,
+        ],
+      );
+      return user.id;
+    };
+
+    const profileOf = (accessToken: string): Test =>
+      http
+        .get('/mobile/user/profile')
+        .set('Authorization', `Bearer ${accessToken}`);
+
+    const linkedUserId = async (): Promise<string> =>
+      (
+        await testApp.app
+          .get(AuthIdentityFacade)
+          .findIdentity({ realm: AuthRealm.MOBILE, email: EMAIL })
+      ).userId;
+
+    it('the code login links the old profile: straight to it, no profile form', async () => {
+      const userId = await insertUser({ email: 'Elena@Example.ro' });
+
+      const { accessToken } = await loggedIn();
+
+      expect(await linkedUserId()).toBe(userId);
+      const res = await profileOf(accessToken).expect(200);
+      expect(res.body.id).toBe(userId);
+    });
+
+    it('a login made before the profile was known (the staging case) is linked at its next login', async () => {
+      await loggedIn(); // the empty login, as when nothing linked it
+      expect(await linkedUserId()).toBeNull();
+      const userId = await insertUser();
+
+      const { accessToken } = await loggedIn();
+
+      expect(await linkedUserId()).toBe(userId);
+      await profileOf(accessToken).expect(200);
+    });
+
+    it('a profile another login already holds is not taken', async () => {
+      const userId = await insertUser();
+      await testApp.app.get(AuthIdentityFacade).createIdentity({
+        realm: AuthRealm.MOBILE,
+        email: 'altcineva@example.ro',
+        status: AuthIdentityStatus.ACTIVE,
+        userId,
+      });
+
+      const { accessToken } = await loggedIn();
+
+      expect(await linkedUserId()).toBeNull();
+      expect((await profileOf(accessToken).expect(404)).body.code_error).toBe(
+        'USER_001',
+      );
+    });
+
+    it.each([
+      ['an admin profile', { type: 'admin' as const }],
+      ['a deleted profile', { deleted: true }],
+    ])(
+      '%s is not linked; the volunteer creates a new profile',
+      async (_, values) => {
+        await insertUser(values);
+
+        const { accessToken } = await loggedIn();
+
+        expect(await linkedUserId()).toBeNull();
+        await profileOf(accessToken).expect(404);
+        await http
+          .post('/mobile/user')
+          .set('Authorization', `Bearer ${accessToken}`)
+          .send(profile)
+          .expect(201);
+      },
+    );
+
+    it('a placeholder added by an NGO is not linked at login: the profile form claims it, as before', async () => {
+      const placeholderId = await insertUser({ hasAccount: false });
+
+      const { accessToken } = await loggedIn();
+
+      expect(await linkedUserId()).toBeNull();
+      await profileOf(accessToken).expect(404);
+      await http
+        .post('/mobile/user')
+        .set('Authorization', `Bearer ${accessToken}`)
+        .send(profile)
+        .expect(201);
+      expect(await linkedUserId()).toBe(placeholderId);
+    });
+
+    it('a login that already has a profile keeps it', async () => {
+      const { accessToken } = await loggedIn();
+      await http
+        .post('/mobile/user')
+        .set('Authorization', `Bearer ${accessToken}`)
+        .send(profile)
+        .expect(201);
+      const ownId = await linkedUserId();
+
+      await loggedIn();
+
+      expect(await linkedUserId()).toBe(ownId);
+    });
+  });
 });
