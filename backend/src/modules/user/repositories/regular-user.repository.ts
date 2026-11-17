@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
+import { emailIgnoringCase } from './email-where';
 import { RegularUserEntity } from '../entities/user.entity';
 import { IRegularUserRepository } from '../interfaces/regular-user-repository.interface';
 import {
@@ -44,7 +45,7 @@ export class RegularUserRepositoryService implements IRegularUserRepository {
 
   async find(options: FindRegularUserOptions): Promise<IRegularUserModel> {
     const userEntity = await this.regularUserRepository.findOne({
-      where: options,
+      where: emailIgnoringCase(options) as FindOptionsWhere<RegularUserEntity>,
       relations: {
         location: {
           county: true,

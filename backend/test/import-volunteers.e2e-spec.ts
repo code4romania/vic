@@ -222,4 +222,36 @@ describe('Import volunteers (e2e)', () => {
     ).toBe('VOLUNTEER_010');
     expect((await upload('', 400)).body.code_error).toBe('VOLUNTEER_010');
   });
+
+  // #675: older accounts keep the case they were typed with; the import lowercases emails.
+  it('skips a volunteer whose stored email differs only in case, and imports the other rows', async () => {
+    const [legacy] = await testApp.dataSource.query(
+      `INSERT INTO "user" (type, name, first_name, last_name, email, has_account) VALUES ('regular', 'Andrei Vechi', 'Andrei', 'Vechi', 'Andrei.Vechi@Example.ro', true) RETURNING id`,
+    );
+    await testApp.dataSource.query(
+      `INSERT INTO volunteer (user_id, organization_id, status) VALUES ($1, $2, 'active')`,
+      [legacy.id, organizationId],
+    );
+
+    const res = await upload(
+      'prenume,nume,email\nAndrei,Vechi,andrei.vechi@example.ro\nMaria,Ionescu,maria@example.ro\n',
+      201,
+    );
+
+    expect(res.body).toEqual({
+      imported: 1,
+      skipped: [
+        {
+          row: 2,
+          email: 'andrei.vechi@example.ro',
+          reason: 'already_volunteer',
+        },
+      ],
+      errors: [],
+    });
+    const [{ count }] = await testApp.dataSource.query(
+      `SELECT count(*)::int AS count FROM "user" WHERE lower(email) = 'andrei.vechi@example.ro'`,
+    );
+    expect(count).toBe(1);
+  });
 });
