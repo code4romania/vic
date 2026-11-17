@@ -16,6 +16,8 @@ export interface VolunteerSelectProps {
   errorMessage?: string;
   helper?: string;
   disabled?: boolean;
+  // only volunteers with a volunteer profile in the organization (hours need one, #677)
+  withProfile?: boolean;
 }
 
 const VolunteerSelect = ({
@@ -25,6 +27,7 @@ const VolunteerSelect = ({
   errorMessage,
   helper,
   disabled,
+  withProfile,
 }: VolunteerSelectProps) => {
   const loadVolunteers: LoadOptions<ListItem, GroupBase<ListItem>, any> = useCallback(
     async (searchQuery, loadedOptions, { page }) => {
@@ -37,6 +40,7 @@ const VolunteerSelect = ({
           orderDirection: OrderDirection.ASC,
           page: page,
           limit: 10,
+          ...(withProfile ? { withProfile: true } : {}),
         });
 
         // get the options that will be displayed inside the select list
@@ -64,7 +68,7 @@ const VolunteerSelect = ({
         };
       }
     },
-    [],
+    [withProfile],
   );
 
   return (

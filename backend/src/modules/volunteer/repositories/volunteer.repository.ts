@@ -70,6 +70,7 @@ export class VolunteerRepositoryService
       age,
       activeSinceStart,
       activeSinceEnd,
+      withProfile,
     } = findOptions;
 
     let query = this.volunteerRepository
@@ -121,6 +122,10 @@ export class VolunteerRepositoryService
 
     if (status) {
       query.andWhere('volunteer.status = :status', { status });
+    }
+
+    if (withProfile) {
+      query.andWhere('volunteer.volunteer_profile_id IS NOT NULL');
     }
 
     // logged hours on the activity type, pending or approved (#476)

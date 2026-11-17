@@ -149,6 +149,7 @@ export const getVolunteerListItems = async (params: {
   search?: string;
   orderBy?: string;
   orderDirection?: OrderDirection;
+  withProfile?: boolean;
 }): Promise<IPaginatedEntity<{ id: string; name: string }>> => {
   return API.get('/listing/volunteers', { params }).then((res) => res.data);
 };
