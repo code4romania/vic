@@ -26,6 +26,7 @@ import { AuthRateLimitService } from 'src/modules/auth/services/auth-rate-limit.
 import { AuthMailerService } from 'src/modules/auth/services/auth-mailer.service';
 import { SocialLoginUseCase } from './social-login.usecase';
 import { tokenPurpose } from './token-purpose.helper';
+import { LinkExistingProfileHelper } from './link-existing-profile.helper';
 
 const identity = (
   overrides: Partial<IAuthIdentityModel> = {},
@@ -346,6 +347,7 @@ describe('SocialLoginUseCase', () => {
     linkProvider: jest.Mock;
   };
   let sessions: { createSession: jest.Mock };
+  let linkExistingProfile: { link: jest.Mock };
   let useCase: SocialLoginUseCase;
   const manager = { transactional: true };
   const dataSource = {
@@ -377,12 +379,14 @@ describe('SocialLoginUseCase', () => {
     sessions = {
       createSession: jest.fn().mockResolvedValue({ accessToken: 't' }),
     };
+    linkExistingProfile = { link: jest.fn(async (current) => current) };
     useCase = new SocialLoginUseCase(
       verifier as unknown as SocialTokenVerifierService,
       facade as unknown as AuthIdentityFacade,
       sessions as unknown as SessionService,
       dataSource,
       { storeFromAuthorizationCode: jest.fn() } as never,
+      linkExistingProfile as unknown as LinkExistingProfileHelper,
     );
   });
 
@@ -447,6 +451,25 @@ describe('SocialLoginUseCase', () => {
     expect(facade.linkProvider).toHaveBeenCalledWith(
       expect.objectContaining({ identityId: 'migrated' }),
       manager,
+    );
+  });
+
+  it('a login without a profile: the existing profile is looked up in the same transaction, and the session uses its result', async () => {
+    linkExistingProfile.link.mockImplementation(async (current) => ({
+      ...current,
+      userId: 'old-profile',
+    }));
+
+    await signIn();
+
+    expect(linkExistingProfile.link).toHaveBeenCalledWith(
+      expect.objectContaining({ id: 'new-id' }),
+      manager,
+    );
+    expect(sessions.createSession).toHaveBeenCalledWith(
+      expect.objectContaining({ id: 'new-id', userId: 'old-profile' }),
+      AuthRealm.MOBILE,
+      {},
     );
   });
 

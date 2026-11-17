@@ -27,6 +27,7 @@ import { RequestLoginUseCase } from './auth/request-login.usecase';
 import { LoginWithLinkUseCase } from './auth/login-with-link.usecase';
 import { LoginWithCodeUseCase } from './auth/login-with-code.usecase';
 import { CompleteLoginHelper } from './auth/complete-login.helper';
+import { LinkExistingProfileHelper } from './auth/link-existing-profile.helper';
 import { GetTokenInfoUseCase } from './auth/get-token-info.usecase';
 import { ResendTokenUseCase } from './auth/resend-token.usecase';
 import { ResendVerificationUseCase } from './auth/resend-verification.usecase';
@@ -232,6 +233,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     LoginWithLinkUseCase,
     LoginWithCodeUseCase,
     CompleteLoginHelper,
+    LinkExistingProfileHelper,
     GetTokenInfoUseCase,
     ResendTokenUseCase,
     ResendVerificationUseCase,
@@ -420,6 +422,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     LoginWithLinkUseCase,
     LoginWithCodeUseCase,
     CompleteLoginHelper,
+    LinkExistingProfileHelper,
     GetTokenInfoUseCase,
     ResendTokenUseCase,
     ResendVerificationUseCase,

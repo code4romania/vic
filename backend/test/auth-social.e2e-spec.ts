@@ -129,6 +129,26 @@ describe('Social sign-in (e2e)', () => {
     },
   );
 
+  it.each([AuthProvider.GOOGLE, AuthProvider.APPLE])(
+    '%s: a volunteer from before VIC 2.0 that auth:migrate has not linked gets their old profile',
+    async (provider) => {
+      const userId = await legacyVolunteer('Mara@Example.ro', 'cognito-mara');
+
+      const res = await social(provider, {
+        sub: `${provider}-mara`,
+        email: 'mara@example.ro',
+      }).expect(200);
+
+      const identity = await facade.findIdentity({
+        realm: AuthRealm.MOBILE,
+        email: 'mara@example.ro',
+      });
+      expect(identity.userId).toBe(userId);
+      const own = await profile(res.body.accessToken).expect(200);
+      expect(own.body.id).toBe(userId);
+    },
+  );
+
   it('a wrong audience, an expired token, an unverified email or no email is 401 AUTH_013', async () => {
     const bad: SocialFixture[] = [
       { sub: 's', email: 'a@x.ro', aud: 'another-app' },
