@@ -44,7 +44,7 @@ if (process.env.EAS_BUILD) {
   }
 }
 
-const socialPlugins:NonNullable<ExpoConfig['plugins']> = [
+const socialPlugins: NonNullable<ExpoConfig['plugins']> = [
   ...(googleIosUrlScheme
     ? [['@react-native-google-signin/google-signin', { iosUrlScheme: googleIosUrlScheme }] as const]
     : []),
