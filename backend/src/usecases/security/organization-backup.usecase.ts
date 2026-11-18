@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { format } from 'date-fns';
 import { DataSource } from 'typeorm';
 import * as XLSX from 'xlsx';
+import {
+  bucharestDay,
+  withBucharestDates,
+} from 'src/common/helpers/bucharest-time';
 
 interface BackupSheet {
   name: string;
@@ -130,12 +133,12 @@ export class OrganizationBackupUsecase {
     for (const sheet of SHEETS) {
       const rows = await this.dataSource.query(sheet.sql, [organizationId]);
       const worksheet = rows.length
-        ? XLSX.utils.json_to_sheet(rows)
+        ? XLSX.utils.json_to_sheet(withBucharestDates(rows))
         : XLSX.utils.aoa_to_sheet([['Fără date']]);
       XLSX.utils.book_append_sheet(workbook, worksheet, sheet.name);
     }
     return {
-      fileName: `VIC-backup-${format(new Date(), 'yyyy-MM-dd')}.xlsx`,
+      fileName: `VIC-backup-${bucharestDay()}.xlsx`,
       data: XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' }),
     };
   }
