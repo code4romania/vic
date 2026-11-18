@@ -11,6 +11,9 @@ import { tokenStore } from '../../services/auth/token.store';
 import Maintenance from '../../pages/Maintenance';
 import AccessBlocked from '../../pages/AccessBlocked';
 
+// focus and visibilitychange often fire together: one check is enough
+const SESSION_CHECK_INTERVAL_MS = 10_000;
+
 // The web session: the access token in memory, the refresh token in the httpOnly vic_refresh cookie.
 // On load: refresh, then /auth/web/me; any failure means logged out.
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
@@ -21,6 +24,9 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   // parallel requests all get AUTH_004: end the session only once
   const blockedRef = useRef<boolean>(false);
   const queryClient = useQueryClient();
+  // read by the listeners below, which outlive renders
+  const isAuthenticatedRef = useRef<boolean>(false);
+  isAuthenticatedRef.current = !!profile;
   const { t } = useTranslation('auth');
 
   const endSession = useCallback(() => {
@@ -33,10 +39,10 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     const offMaintenance = apiEvents.onMaintenance(() => setMaintenance(true));
     // A refresh failed in the middle of the session (expired, revoked, disabled): back to the login page.
     const offSessionEnded = apiEvents.onSessionEnded(() => {
-      setProfile((current) => {
-        if (current) toast.info(t('session_ended'), toastOptions('info'));
-        return undefined;
-      });
+      // the toast stays out of the state updater, which StrictMode runs twice
+      if (isAuthenticatedRef.current) toast.info(t('session_ended'), toastOptions('info'));
+      isAuthenticatedRef.current = false;
+      setProfile(undefined);
       queryClient.clear();
     });
     // 403 AUTH_004 mid-session (organization suspended, admin disabled): log out, drop the cached
@@ -69,6 +75,31 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
     bootstrap();
+  }, []);
+
+  // Queries don't refetch on focus, so a tab left open would keep showing the cached pages of an
+  // admin who was disabled (or an NGO suspended) meanwhile, until their next click (#690). When the
+  // tab comes back into view, ask the API who we are: a refused session ends through the usual
+  // listeners (401 → failed refresh → session ended, 403 AUTH_004 → access blocked).
+  useEffect(() => {
+    let lastCheck = 0;
+    const onVisible = () => {
+      if (document.visibilityState !== 'visible' || !isAuthenticatedRef.current) return;
+      if (Date.now() - lastCheck < SESSION_CHECK_INTERVAL_MS) return;
+      lastCheck = Date.now();
+      authApi
+        .getMe()
+        .then((me) => {
+          if (isAuthenticatedRef.current) setProfile(me);
+        })
+        .catch(() => undefined);
+    };
+    document.addEventListener('visibilitychange', onVisible);
+    window.addEventListener('focus', onVisible);
+    return () => {
+      document.removeEventListener('visibilitychange', onVisible);
+      window.removeEventListener('focus', onVisible);
+    };
   }, []);
 
   const startSession = useCallback(async (session: IWebSession) => {

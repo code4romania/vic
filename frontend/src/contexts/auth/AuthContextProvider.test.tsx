@@ -106,4 +106,80 @@ describe('AuthContextProvider', () => {
     expect(queryClient.getQueryData(['organization'])).toBeUndefined();
     await waitFor(() => expect(logouts).toHaveBeenCalledTimes(1));
   });
+
+  describe('the tab comes back into view (#690)', () => {
+    const bootOk = () =>
+      http.post(api('/auth/web/refresh'), () =>
+        HttpResponse.json({ accessToken: 'boot', expiresIn: 900 }),
+      );
+    const showTab = () => {
+      Object.defineProperty(document, 'visibilityState', { value: 'visible', configurable: true });
+      document.dispatchEvent(new Event('visibilitychange'));
+    };
+
+    it('the admin was disabled meanwhile: /me and the refresh are refused → logged out, cache dropped', async () => {
+      let disabled = false;
+      server.use(
+        http.post(api('/auth/web/refresh'), () =>
+          disabled
+            ? businessError(401, 'AUTH_008')
+            : HttpResponse.json({ accessToken: 'boot', expiresIn: 900 }),
+        ),
+        http.get(api('/auth/web/me'), () =>
+          disabled ? new HttpResponse(null, { status: 401 }) : HttpResponse.json(ADMIN),
+        ),
+      );
+      const queryClient = renderProvider();
+      await screen.findByText('in');
+
+      disabled = true;
+      showTab();
+
+      expect(await screen.findByText('out')).toBeInTheDocument();
+      expect(tokenStore.get()).toBeNull();
+      expect(queryClient.getQueryData(['organization'])).toBeUndefined();
+    });
+
+    it('the NGO was suspended meanwhile: 403 AUTH_004 → the access blocked screen', async () => {
+      let suspended = false;
+      server.use(
+        bootOk(),
+        http.get(api('/auth/web/me'), () =>
+          suspended ? businessError(403, 'AUTH_004') : HttpResponse.json(ADMIN),
+        ),
+      );
+      renderProvider();
+      await screen.findByText('in');
+
+      suspended = true;
+      showTab();
+
+      expect(
+        await screen.findByRole('heading', { name: t('auth:access_blocked.title') }),
+      ).toBeInTheDocument();
+    });
+
+    it('the session is still good: stays logged in, one check for focus + visibilitychange', async () => {
+      const me = vi.fn();
+      server.use(
+        bootOk(),
+        http.get(api('/auth/web/me'), () => {
+          me();
+          return HttpResponse.json({
+            ...ADMIN,
+            name: me.mock.calls.length > 1 ? 'Nume nou' : ADMIN.name,
+          });
+        }),
+      );
+      renderProvider();
+      await screen.findByText('in');
+
+      showTab();
+      window.dispatchEvent(new Event('focus'));
+
+      expect(await screen.findByText('Nume nou')).toBeInTheDocument();
+      expect(screen.getByText('in')).toBeInTheDocument();
+      expect(me).toHaveBeenCalledTimes(2); // bootstrap + one check
+    });
+  });
 });
