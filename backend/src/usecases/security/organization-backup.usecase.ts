@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import * as XLSX from 'xlsx';
+import { describeAction } from 'src/modules/actions-archive/describe-action';
 import {
   bucharestDay,
   withBucharestDates,
@@ -9,6 +10,10 @@ import {
 interface BackupSheet {
   name: string;
   sql: string;
+  // turns the query's rows into what the sheet shows
+  rows?: (rows: Record<string, unknown>[]) => Record<string, unknown>[];
+  // Excel format of the date cells, when the time matters too
+  dateFormat?: string;
 }
 
 // One sheet per kind of data; Romanian headers, as the NGO reads them.
@@ -113,10 +118,24 @@ const SHEETS: BackupSheet[] = [
   {
     name: 'Istoric acțiuni',
     sql: `SELECT a.created_on AS "Data", a.event_name AS "Acțiune", u.name AS "Autor",
-                 a.event_data::text AS "Detalii"
+                 a.event_data AS "Detalii", a.changes AS "_changes"
             FROM actions_archive a JOIN "user" u ON u.id = a.author_id
            WHERE u.organization_id = $1 AND u.type = 'admin'
            ORDER BY a.created_on DESC`,
+    // #683: the action's Romanian name and the sentence the web shows, not its code and JSON
+    rows: (rows) =>
+      rows.map(({ _changes, ...row }) => {
+        const { label, text } = describeAction(
+          row['Acțiune'] as string,
+          {
+            ...(row['Detalii'] as Record<string, unknown>),
+            ...(_changes ? { changes: _changes } : {}),
+          } as Record<string, unknown>,
+        );
+        return { ...row, Acțiune: label, Detalii: text };
+      }),
+    // the time matters in a history; the dots are escaped, else a dot after "ss" reads as a fraction of a second
+    dateFormat: 'dd\\.mm\\.yyyy hh:mm',
   },
 ];
 
@@ -131,9 +150,12 @@ export class OrganizationBackupUsecase {
   ): Promise<{ fileName: string; data: Buffer }> {
     const workbook = XLSX.utils.book_new();
     for (const sheet of SHEETS) {
-      const rows = await this.dataSource.query(sheet.sql, [organizationId]);
+      const queried = await this.dataSource.query(sheet.sql, [organizationId]);
+      const rows = sheet.rows ? sheet.rows(queried) : queried;
       const worksheet = rows.length
-        ? XLSX.utils.json_to_sheet(withBucharestDates(rows))
+        ? XLSX.utils.json_to_sheet(withBucharestDates(rows), {
+            dateNF: sheet.dateFormat,
+          })
         : XLSX.utils.aoa_to_sheet([['Fără date']]);
       XLSX.utils.book_append_sheet(workbook, worksheet, sheet.name);
     }

@@ -201,6 +201,20 @@ describe('Data and security (e2e)', () => {
       `INSERT INTO volunteer (user_id, organization_id, status) VALUES ($1, $2, 'active')`,
       [user.id, organizationId],
     );
+    // #683: one entry of the action history, at 14:30 in Bucharest
+    await q(
+      `INSERT INTO actions_archive (event_name, event_data, author_id, created_on)
+       VALUES ('CHANGE_VOLUNTEER_STATUS', $1, $2, '2026-11-17T12:30:00Z')`,
+      [
+        JSON.stringify({
+          volunteerId: user.id,
+          volunteerName: 'Elena Pop',
+          oldStatus: 'inactive',
+          newStatus: 'active',
+        }),
+        adminId,
+      ],
+    );
     // #593: the backup needs the emailed code too
     expect(
       (
@@ -233,6 +247,20 @@ describe('Data and security (e2e)', () => {
     expect(volunteers).toEqual([
       expect.objectContaining({ Nume: 'Elena Pop', Status: 'active' }),
     ]);
+
+    // #683: the history reads like the web, with the time (formatted as Excel shows the cell)
+    const historySheet = XLSX.read(res.body as Buffer, { cellNF: true }).Sheets[
+      'Istoric acțiuni'
+    ];
+    expect(XLSX.utils.sheet_to_json(historySheet)).toEqual([
+      expect.objectContaining({
+        Acțiune: 'Modifică Status Voluntar',
+        Detalii:
+          'Statusul pentru voluntarul Elena Pop a fost schimbat din inactiv în activ.',
+      }),
+    ]);
+    const when = historySheet['A2'];
+    expect(XLSX.SSF.format(when.z as string, when.v)).toBe('17.11.2026 14:30');
   });
 
   // #593: the volunteers export carries personal data; it needs the emailed code, used once
