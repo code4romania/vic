@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, Pressable, RefreshControl, View } from 'react-native';
+import { ActivityIndicator, AppState, Pressable, RefreshControl, View } from 'react-native';
 import Animated, { useReducedMotion, useSharedValue } from 'react-native-reanimated';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { StyleSheet } from 'react-native-unistyles';
@@ -136,6 +136,17 @@ const ActivityLogs = ({ navigation, route }: any) => {
       setFocusKey((key) => key + 1);
     }, [queryClient, reload]),
   );
+
+  // A decision on the hours (approved, rejected) while the app was in the background: when the
+  // volunteer comes back, the list and the totals may be old (#711).
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (state) => {
+      if (state === 'active') {
+        reload();
+      }
+    });
+    return () => subscription.remove();
+  }, [reload]);
 
   useEffect(
     () => () => {

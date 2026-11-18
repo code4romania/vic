@@ -47,6 +47,20 @@ describe('refreshAfterPush (#691)', () => {
     expect(invalidated()).toEqual(['organization', 'organizations', 'user-profile']);
   });
 
+  // #711
+  it.each([EVENTS.VOLUNTEER_HOURS.APPROVE, EVENTS.VOLUNTEER_HOURS.REJECT])(
+    '%s: the Ore list, its totals, the entry and the home impact load again',
+    (key) => {
+      refreshAfterPush(key);
+      expect(invalidated()).toEqual([
+        'activity-log',
+        'activity-logs',
+        'logs-counters',
+        'personal-statistics',
+      ]);
+    },
+  );
+
   it('other pushes and unknown payloads leave the data alone', () => {
     refreshAfterPush(EVENTS.OTHER.SEND_ANNOUNCEMENT);
     refreshAfterPush(undefined);

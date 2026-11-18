@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, StyleSheet } from 'react-native';
+import { Alert, AppState, AppStateStatus, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -282,6 +282,31 @@ describe('Ore', () => {
     expect(await screen.findByTestId('hours-list')).toBeTruthy();
     expect(mockRefetchList).toHaveBeenCalledTimes(2);
     expect(mockRefetchCounters).toHaveBeenCalledTimes(2);
+  });
+
+  // #711: hours approved or rejected while the app was in the background
+  it('reloads the list and the totals when the app comes back to the foreground', async () => {
+    const listeners: ((state: AppStateStatus) => void)[] = [];
+    const original = AppState.addEventListener;
+    AppState.addEventListener = ((type: string, listener: (state: AppStateStatus) => void) => {
+      if (type === 'change') {
+        listeners.push(listener);
+      }
+      return { remove: jest.fn() };
+    }) as any;
+    try {
+      await renderApp();
+      expect(mockRefetchList).toHaveBeenCalledTimes(1);
+
+      await act(async () => listeners.forEach((listener) => listener('background')));
+      expect(mockRefetchList).toHaveBeenCalledTimes(1);
+      await act(async () => listeners.forEach((listener) => listener('active')));
+
+      expect(mockRefetchList).toHaveBeenCalledTimes(2);
+      expect(mockRefetchCounters).toHaveBeenCalledTimes(2);
+    } finally {
+      AppState.addEventListener = original;
+    }
   });
 
   it('does not refetch again when updated counters rerender the focused screen', async () => {

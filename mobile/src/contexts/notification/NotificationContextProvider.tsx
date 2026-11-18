@@ -9,6 +9,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useUpdateSettingsMutation } from '../../services/settings/settings.service';
 import { INotificationsSettings } from '../../common/interfaces/user-profile.interface';
 import { queryClient } from '../../services/query-client';
+import { queryKeys } from '../../services/query-keys';
 
 export const EVENTS = {
   JOIN_NGO: {
@@ -38,23 +39,34 @@ export const EVENTS = {
   },
 };
 
-// Pushes that change the volunteer's status in an organization (approved, rejected, archived).
-const MEMBERSHIP_KEYS = [
-  EVENTS.JOIN_NGO.APPROVE_REQUEST,
-  EVENTS.JOIN_NGO.REJECT_REQUEST,
-  EVENTS.JOIN_NGO.ARCHIVE_VOLUNTEER,
+// What each push makes out of date. Only the queries on screen refetch; the others are marked stale
+// and load fresh when opened.
+const MEMBERSHIP: readonly (readonly unknown[])[] = [
+  ['organization'],
+  ['organizations'],
+  ['user-profile'],
 ];
+const HOURS: readonly (readonly unknown[])[] = [
+  queryKeys.activityLogsAll,
+  queryKeys.activityLogCountersAll,
+  ['activity-log'],
+  ['personal-statistics'],
+];
+const STALE_AFTER_PUSH: Record<string, readonly (readonly unknown[])[]> = {
+  // the organization page, the list and myOrganizations: else "awaiting approval" stays (#691)
+  [EVENTS.JOIN_NGO.APPROVE_REQUEST]: MEMBERSHIP,
+  [EVENTS.JOIN_NGO.REJECT_REQUEST]: MEMBERSHIP,
+  [EVENTS.JOIN_NGO.ARCHIVE_VOLUNTEER]: MEMBERSHIP,
+  // the Ore list, its totals, the entry and the home impact: else they stay "pending" (#711)
+  [EVENTS.VOLUNTEER_HOURS.APPROVE]: HOURS,
+  [EVENTS.VOLUNTEER_HOURS.REJECT]: HOURS,
+};
 
-// The organization page, the organizations list and the profile (myOrganizations) were loaded
-// before the push: ask again, or an approved volunteer keeps seeing "awaiting approval" (#691).
-// Only the queries on screen refetch; the others are marked stale and load fresh when opened.
 export const refreshAfterPush = (key: unknown): void => {
-  if (typeof key !== 'string' || !MEMBERSHIP_KEYS.includes(key)) {
+  if (typeof key !== 'string') {
     return;
   }
-  queryClient.invalidateQueries(['organization']);
-  queryClient.invalidateQueries(['organizations']);
-  queryClient.invalidateQueries(['user-profile']);
+  (STALE_AFTER_PUSH[key] ?? []).forEach((queryKey) => queryClient.invalidateQueries([...queryKey]));
 };
 
 const NotificationContextProvider = ({
