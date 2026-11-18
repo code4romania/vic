@@ -317,6 +317,30 @@ describe('Contracts (e2e)', () => {
     expect(list.meta.totalItems).toBe(2);
   });
 
+  // #681: the admin sees the contract they just uploaded without looking for it.
+  it('lists the newest contracts first unless asked otherwise', async () => {
+    await testApp.dataSource.query(
+      `INSERT INTO contract (contract_number, path, start_date, status, organization_id, volunteer_id, created_on)
+       VALUES ('1/2024', 'contracts/x.pdf', '2024-01-01', 'ACTIVE', $1, $2, '2024-01-01')`,
+      [organizationId, volunteerId],
+    );
+    await upload({
+      startDate: '2026-01-01',
+      endDate: '',
+      contractNumber: '7/2026',
+    }).expect(201);
+
+    const numbers = async (query = ''): Promise<string[]> =>
+      (await auth(http().get(`/contract${query}`)).expect(200)).body.items.map(
+        (contract: { contractNumber: string }) => contract.contractNumber,
+      );
+    expect(await numbers()).toEqual(['7/2026', '1/2024']);
+    expect(await numbers('?orderBy=createdOn&orderDirection=ASC')).toEqual([
+      '1/2024',
+      '7/2026',
+    ]);
+  });
+
   it('refuses what is not a signed PDF, a backwards period, a repeated number or another NGO', async () => {
     const code = async (r: request.Test, status = 400): Promise<string> =>
       (await r.expect(status)).body.code_error;
