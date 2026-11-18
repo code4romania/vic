@@ -462,4 +462,27 @@ describe('Organization registration and validation (e2e)', () => {
     );
     expect(row.tax_id).toBe('18547290');
   });
+
+  // #685: every NGO from before VIC 2.0 was marked validated, some without a CUI.
+  it('a validated NGO without a CUI can add one, which is then locked', async () => {
+    const { accessToken } = await registeredAndConfirmed();
+    const patch = (taxId: string): Test =>
+      http
+        .patch('/organization')
+        .set('Authorization', `Bearer ${accessToken}`)
+        .field('taxId', taxId);
+    const { id } = await organizationRow();
+    await testApp.dataSource.query(
+      `UPDATE organization SET validated_at = now(), tax_id = NULL WHERE id = $1`,
+      [id],
+    );
+
+    await patch('18547291').expect(400);
+    expect((await patch('RO 18547290').expect(200)).body.taxId).toBe(
+      '18547290',
+    );
+    expect((await patch('12345674').expect(400)).body.code_error).toBe(
+      'ORG_012',
+    );
+  });
 });

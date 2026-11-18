@@ -90,6 +90,35 @@ describe('UpdateOrganizationUseCase CUI validation', () => {
     expect(organizations.updateOrganization).not.toHaveBeenCalled();
   });
 
+  // #685: NGOs from before VIC 2.0 were marked validated, some without a CUI.
+  it('lets a validated organization without a CUI add one, once', async () => {
+    getOrganization.execute.mockResolvedValue({
+      ...current,
+      taxId: null,
+      validatedAt: new Date(),
+    });
+
+    await useCase.execute({ taxId: '18547290' }, admin);
+
+    expect(organizations.updateOrganization).toHaveBeenCalledWith('org-1', {
+      taxId: '18547290',
+    });
+  });
+
+  it('a validated organization without a CUI still needs a valid one', async () => {
+    getOrganization.execute.mockResolvedValue({
+      ...current,
+      taxId: null,
+      validatedAt: new Date(),
+    });
+
+    await expect(
+      useCase.execute({ taxId: '18547291' }, admin),
+    ).rejects.toMatchObject({
+      response: { message: ['taxId must be a valid CUI'] },
+    });
+  });
+
   it('still rejects an invalid CUI at registration', async () => {
     const dto = plainToInstance(RegisterOrganizationDto, { taxId: '12345678' });
     const errors = await validate(dto);
