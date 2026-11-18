@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { act, fireEvent, render, screen, within } from '@testing-library/react-native';
+import { AppState, AppStateStatus } from 'react-native';
 import '../common/config/i18n';
 import Organizations from './Organizations';
 import OrganizationProfile from './OrganizationProfile';
@@ -18,6 +19,7 @@ jest.mock('expo-linking', () => ({
 const mockSearches: string[] = [];
 const mockCancel = jest.fn();
 const mockRejoin = jest.fn();
+const mockRefetch = jest.fn(async () => undefined);
 
 const row = (id: string, name: string, numberOfVolunteers: number) => ({
   id,
@@ -42,7 +44,7 @@ jest.mock('../services/organization/organization.service', () => ({
       refetch: jest.fn(),
     };
   },
-  useOrganizationQuery: () => ({ isFetching: false, error: null }),
+  useOrganizationQuery: () => ({ isFetching: false, error: null, refetch: mockRefetch }),
   useRejoinOrganizationMutation: () => ({ mutate: mockRejoin, isLoading: false }),
 }));
 jest.mock('../services/access-request/access-request.service', () => ({
@@ -283,5 +285,45 @@ describe('Organizație', () => {
       await screen.findByText('Accesul tău la organizație a fost restricționat.'),
     ).toBeTruthy();
     expect(screen.queryByTestId('organization-bar')).toBeNull();
+  });
+
+  describe('the status changes while the page is open (#691)', () => {
+    it('back from the background, the page asks again and shows the approval', async () => {
+      const listeners: ((state: AppStateStatus) => void)[] = [];
+      const original = AppState.addEventListener;
+      AppState.addEventListener = ((type: string, listener: (state: AppStateStatus) => void) => {
+        if (type === 'change') {
+          listeners.push(listener);
+        }
+        return { remove: jest.fn() };
+      }) as any;
+      // the API now answers "member": the query's onSuccess puts it in the store
+      mockRefetch.mockImplementation(async () => {
+        setOrganization(OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER);
+        return undefined;
+      });
+      setOrganization(OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING);
+      await renderApp('organization-profile');
+      expect(
+        await screen.findByText('Înscrierea ta așteaptă aprobare de la organizație'),
+      ).toBeTruthy();
+
+      await act(async () => listeners.forEach((listener) => listener('background')));
+      expect(mockRefetch).not.toHaveBeenCalled();
+      await act(async () => listeners.forEach((listener) => listener('active')));
+
+      expect(mockRefetch).toHaveBeenCalled();
+      expect(await screen.findByText('Membru')).toBeTruthy();
+      expect(screen.queryByText('Înscrierea ta așteaptă aprobare de la organizație')).toBeNull();
+      AppState.addEventListener = original;
+    });
+
+    it('pull to refresh asks for the organization again', async () => {
+      setOrganization(OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING);
+      await renderApp('organization-profile');
+      const page = await screen.findByTestId('organization-scroll');
+      await act(async () => page.props.refreshControl.props.onRefresh());
+      expect(mockRefetch).toHaveBeenCalledTimes(1);
+    });
   });
 });

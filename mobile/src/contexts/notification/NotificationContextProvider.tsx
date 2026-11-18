@@ -8,6 +8,7 @@ import useStore from '../../store/store';
 import { useAuth } from '../../hooks/useAuth';
 import { useUpdateSettingsMutation } from '../../services/settings/settings.service';
 import { INotificationsSettings } from '../../common/interfaces/user-profile.interface';
+import { queryClient } from '../../services/query-client';
 
 export const EVENTS = {
   JOIN_NGO: {
@@ -35,6 +36,25 @@ export const EVENTS = {
     APPROVE_CONTRACT: 'contract.approve',
     REJECT_CONATRCT: 'contract.reject',
   },
+};
+
+// Pushes that change the volunteer's status in an organization (approved, rejected, archived).
+const MEMBERSHIP_KEYS = [
+  EVENTS.JOIN_NGO.APPROVE_REQUEST,
+  EVENTS.JOIN_NGO.REJECT_REQUEST,
+  EVENTS.JOIN_NGO.ARCHIVE_VOLUNTEER,
+];
+
+// The organization page, the organizations list and the profile (myOrganizations) were loaded
+// before the push: ask again, or an approved volunteer keeps seeing "awaiting approval" (#691).
+// Only the queries on screen refetch; the others are marked stale and load fresh when opened.
+export const refreshAfterPush = (key: unknown): void => {
+  if (typeof key !== 'string' || !MEMBERSHIP_KEYS.includes(key)) {
+    return;
+  }
+  queryClient.invalidateQueries(['organization']);
+  queryClient.invalidateQueries(['organizations']);
+  queryClient.invalidateQueries(['user-profile']);
 };
 
 const NotificationContextProvider = ({
@@ -111,8 +131,20 @@ const NotificationContextProvider = ({
     return navigation.addListener('state', updateNavigationReady);
   }, [navigation, isAuthenticated]);
 
+  // a push that arrives while the app is open: the data on screen is out of date
+  useEffect(() => {
+    if (!isAuthenticated) {
+      return;
+    }
+    const subscription = Notifications.addNotificationReceivedListener((notification) =>
+      refreshAfterPush((notification.request.content.data as any)?.key),
+    );
+    return () => subscription.remove();
+  }, [isAuthenticated]);
+
   const handleNotificationResponse = (response: Notifications.NotificationResponse) => {
     const payload: any = response.notification.request.content.data;
+    refreshAfterPush(payload?.key);
 
     switch (payload?.key) {
       case EVENTS.JOIN_NGO.APPROVE_REQUEST: {
