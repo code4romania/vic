@@ -136,12 +136,8 @@ const DivisionChips = ({ type }: { type: DivisionType }) => {
       )}
       {toDelete && (
         <ConfirmationModal
-          title={i18n.t('division:modal.delete.title', {
-            division: i18n.t(`division:entity.${type}`),
-          })}
-          description={i18n.t('general:confirm_delete', {
-            item: i18n.t(`division:entity.${type}`),
-          })}
+          title={i18n.t(`division:modal.delete.title_${type}`)}
+          description={i18n.t(`division:modal.delete.description_${type}`)}
           confirmBtnLabel={i18n.t('general:delete')}
           confirmBtnClassName="btn-danger"
           onClose={() => setToDelete(undefined)}

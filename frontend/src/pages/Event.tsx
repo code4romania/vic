@@ -98,7 +98,10 @@ const EventInfo = ({ event, going }: { event: IEvent; going?: number }) => {
                       going: going ?? 0,
                       capacity: event.capacity,
                     })
-                  : i18n.t('events:detail.capacity_unlimited', { going: going ?? 0 })}
+                  : i18n.t('events:detail.capacity_unlimited', {
+                      going: going ?? 0,
+                      count: going ?? 0,
+                    })}
               </span>
               {!!event.capacity && (
                 <div className="h-1.5 w-full max-w-[16rem] rounded-full bg-cool-gray-200 overflow-hidden">

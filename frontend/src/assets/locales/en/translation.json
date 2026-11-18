@@ -151,7 +151,8 @@
       "active": "active",
       "blocked": "locked",
       "inactive": "inactive",
-      "candidate": "candidate"
+      "candidate": "candidate",
+      "archived": "archived"
     },
     "registration": {
       "title": "Application form",
@@ -407,7 +408,13 @@
     },
     "modal": {
       "delete": {
-        "title": "Delete {{division}}"
+        "title": "Delete {{division}}",
+        "title_branch": "Delete branch",
+        "title_department": "Delete department",
+        "title_role": "Delete role",
+        "description_branch": "Are you sure you want to delete this branch?",
+        "description_department": "Are you sure you want to delete this department?",
+        "description_role": "Are you sure you want to delete this role?"
       }
     },
     "submit": {
@@ -792,6 +799,7 @@
         "all": "The whole organization",
         "placeholder": "Choose all that apply",
         "disclaimer": "Disclaimer: If no department is selected, then 'Whole organization' will be selected",
+        "locked": "The audience of a published event cannot change: volunteers have already been notified.",
         "required": "Departments are mandatory",
         "select": "Select departments"
       },
@@ -975,7 +983,8 @@
       "departments": "Departments",
       "capacity": "Capacity",
       "capacity_value": "{{going}} / {{capacity}} registered",
-      "capacity_unlimited": "{{going}} registered, no limit",
+      "capacity_unlimited_one": "{{going}} registered, no limit",
+      "capacity_unlimited_other": "{{going}} registered, no limit",
       "description": "Description",
       "pending_title": "Pending registrations ({{count}})",
       "pending_hint": "People outside the event's departments. Approve or reject the registration; the volunteer is notified.",

@@ -52,6 +52,8 @@ const AddEventVolunteersModal = ({ eventId, onClose }: AddEventVolunteersModalPr
           useSuccessToast(i18n.t('events:add_volunteers.added', { count: added.length }));
           queryClient.invalidateQueries(['event', eventId]);
           queryClient.invalidateQueries(['rsvp']);
+          // the capacity counter on the event page counts approved registrations (#679)
+          queryClient.invalidateQueries(['event-registrations']);
           queryClient.invalidateQueries(['event-candidates', eventId]);
           onClose();
         },

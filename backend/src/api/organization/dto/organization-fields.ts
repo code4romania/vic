@@ -19,8 +19,22 @@ const trimmed = Transform(({ value }) =>
 export const OrganizationName = (): PropertyDecorator =>
   applyDecorators(trimmed, IsString(), MinLength(2), MaxLength(100));
 
+// A Romanian number written the national way (0722 000 000) is stored like the others, +40722000000 (#689).
+// Anything else (already +40…, a foreign number) is kept as typed, trimmed.
+export const normalizePhone = (value: unknown): unknown => {
+  if (typeof value !== 'string') return value;
+  const trimmedValue = value.trim();
+  const digits = trimmedValue.replace(/[\s.\-()]/g, '');
+  return /^0[0-9]{9}$/.test(digits) ? `+40${digits.slice(1)}` : trimmedValue;
+};
+
 export const Phone = (): PropertyDecorator =>
-  applyDecorators(trimmed, IsString(), IsNotEmpty(), MaxLength(20));
+  applyDecorators(
+    Transform(({ value }) => normalizePhone(value)),
+    IsString(),
+    IsNotEmpty(),
+    MaxLength(20),
+  );
 
 export const Address = (): PropertyDecorator =>
   applyDecorators(trimmed, IsString(), MinLength(2), MaxLength(500));

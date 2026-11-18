@@ -35,7 +35,7 @@ import {
 import PageHeader from '../components/PageHeader';
 import { IVolunteer } from '../common/interfaces/volunteer.interface';
 import { VolunteerStatus } from '../common/enums/volunteer-status.enum';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import DataTableFilters from '../components/DataTableFilters';
 import OrganizationStructureSelect from '../containers/OrganizationStructureSelect';
 import { DivisionType } from '../common/enums/division-type.enum';
@@ -76,16 +76,19 @@ const VolunteersTableHeader = [
     sortable: true,
     grow: 2,
     minWidth: '13rem',
+    // the name opens the profile, like ⋮ › Vizualizează profil (#689)
     cell: (row: IVolunteer) => (
-      <MediaCell
-        logo={row.user?.profilePicture || ''}
-        title={row.user.name}
-        subtitle={
-          row.profile?.activeSince
-            ? `${i18n.t('volunteers:member_since', { date: formatDate(row.profile.activeSince) })}`
-            : row.profile?.branch?.name || ''
-        }
-      />
+      <Link to={row.id} className="rounded-md hover:underline focus-visible:outline-navy">
+        <MediaCell
+          logo={row.user?.profilePicture || ''}
+          title={row.user.name}
+          subtitle={
+            row.profile?.activeSince
+              ? `${i18n.t('volunteers:member_since', { date: formatDate(row.profile.activeSince) })}`
+              : row.profile?.branch?.name || ''
+          }
+        />
+      </Link>
     ),
   },
   {

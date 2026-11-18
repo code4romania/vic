@@ -143,7 +143,7 @@ describe('Team (e2e)', () => {
         code: await sensitiveCode(),
       })
       .expect(201);
-    expect(added.body).toEqual({ maskedEmail: 'b•••@ong.ro' });
+    expect(added.body).toEqual({ maskedEmail: 'b•••n@ong.ro' });
 
     const invite = testApp.mailbox.last('bogdan@ong.ro');
     expect(invite.subject).toContain('Asociatia Echipa');

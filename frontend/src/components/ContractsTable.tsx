@@ -44,6 +44,13 @@ import UploadContractModal from './UploadContractModal';
 import GenerateCertificateModal from './GenerateCertificateModal';
 
 // #489: the Contracts page filters by status only
+
+// The download button names the file's type: older contracts were Word files (#688).
+export const fileTypeLabel = (fileName: string | undefined, fallback: string): string => {
+  const extension = fileName?.includes('.') ? fileName.split('.').pop() : undefined;
+  return extension ? extension.toUpperCase() : fallback;
+};
+
 export const ContractStatusOptions: SelectItem<ContractFilterStatus>[] = [
   ...Object.values(ContractStatus).map((status) => ({
     key: status as ContractFilterStatus,
@@ -252,12 +259,14 @@ const ContractsTable = ({
         </a>
         <button
           type="button"
-          aria-label={`${t('page.pdf')} ${row.fileName}`}
+          aria-label={`${fileTypeLabel(row.fileName, t('page.pdf'))} ${row.fileName}`}
           className="flex shrink-0 items-center gap-1.5 px-2 py-1.5 rounded-lg text-sm font-robotoMedium text-cool-gray-700 whitespace-nowrap hover:bg-cool-gray-100 hover:text-cool-gray-900"
           onClick={() => downloadFile(row.uri, row.fileName)}
         >
           <ArrowDownTrayIcon className="w-4 h-4" aria-hidden="true" />
-          <span className="sr-only sm:not-sr-only">{t('page.pdf')}</span>
+          <span className="sr-only sm:not-sr-only">
+            {fileTypeLabel(row.fileName, t('page.pdf'))}
+          </span>
         </button>
         {!readOnly && (
           <Popover<IContractListItem>

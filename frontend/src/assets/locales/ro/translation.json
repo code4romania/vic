@@ -151,7 +151,8 @@
       "active": "activ",
       "blocked": "blocat",
       "inactive": "inactiv",
-      "candidate": "candidat"
+      "candidate": "candidat",
+      "archived": "arhivat"
     },
     "registration": {
       "title": "Cerere de înscriere",
@@ -411,7 +412,13 @@
     },
     "modal": {
       "delete": {
-        "title": "Șterge {{division}}"
+        "title": "Șterge {{division}}",
+        "title_branch": "Șterge filiala",
+        "title_department": "Șterge departamentul",
+        "title_role": "Șterge rolul",
+        "description_branch": "Ești sigur că vrei să ștergi această filială?",
+        "description_department": "Ești sigur că vrei să ștergi acest departament?",
+        "description_role": "Ești sigur că vrei să ștergi acest rol?"
       }
     },
     "submit": {
@@ -800,6 +807,7 @@
         "all": "Toată organizația",
         "placeholder": "Alege toate variantele care se aplică",
         "disclaimer": "Notă: dacă nu alegi niciun departament, evenimentul e pentru toată organizația.",
+        "locked": "Publicul unui eveniment publicat nu se mai schimbă: voluntarii au fost deja anunțați.",
         "required": "Departamentele sunt obligatorii",
         "select": "Selectează departamente"
       },
@@ -988,7 +996,9 @@
       "departments": "Departamente",
       "capacity": "Capacitate",
       "capacity_value": "{{going}} / {{capacity}} înscriși",
-      "capacity_unlimited": "{{going}} înscriși, fără limită",
+      "capacity_unlimited_one": "{{going}} înscris, fără limită",
+      "capacity_unlimited_few": "{{going}} înscriși, fără limită",
+      "capacity_unlimited_other": "{{going}} de înscriși, fără limită",
       "description": "Descriere",
       "pending_title": "Înscrieri în așteptare ({{count}})",
       "pending_hint": "Persoane din afara departamentelor evenimentului. Aprobă sau respinge înscrierea; voluntarul este anunțat.",
