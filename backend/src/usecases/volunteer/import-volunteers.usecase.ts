@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { isEmail } from 'class-validator';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
@@ -22,7 +22,9 @@ export type ImportRowError =
   | 'phone'
   | 'city_not_found'
   | 'city_ambiguous'
-  | 'department_not_found';
+  | 'department_not_found'
+  // anything unexpected while saving the row (#676): the other rows still go in
+  | 'save_failed';
 
 export type ImportRowSkip = 'already_volunteer' | 'duplicate_in_file';
 
@@ -113,6 +115,8 @@ export const matchCities = (
 export class ImportVolunteersUseCase
   implements IUseCaseService<ImportVolunteersResult>
 {
+  private readonly logger = new Logger(ImportVolunteersUseCase.name);
+
   constructor(
     private readonly addVolunteer: AddVolunteerUseCase,
     private readonly dataSource: DataSource,
@@ -202,7 +206,13 @@ export class ImportVolunteersUseCase
           result.skipped.push({ row, email, reason: 'already_volunteer' });
           continue;
         }
-        throw error;
+        // #676: the rows saved so far stay saved, so stopping here would show only an error while part of
+        // the file is already in. The row is reported instead and the import goes on.
+        this.logger.error(
+          `Import row ${row} could not be saved: ${error?.message ?? error}`,
+          error?.stack,
+        );
+        result.errors.push({ row, reasons: ['save_failed'] });
       }
     }
 

@@ -6,6 +6,7 @@ import { IAuthIdentityModel } from 'src/modules/auth/models/auth-identity.model'
 import { AuthIdentityFacade } from 'src/modules/auth/services/auth-identity.facade';
 import * as request from 'supertest';
 import * as XLSX from 'xlsx';
+import { AddVolunteerUseCase } from 'src/usecases/volunteer/add-volunteer.usecase';
 import { createTestApp, TestApp } from './utils/test-app';
 import { truncate } from './utils/test-data-source';
 
@@ -221,6 +222,39 @@ describe('Import volunteers (e2e)', () => {
       (await upload('nume,telefon\nIonescu,0722\n', 400)).body.code_error,
     ).toBe('VOLUNTEER_010');
     expect((await upload('', 400)).body.code_error).toBe('VOLUNTEER_010');
+  });
+
+  // #676: an unexpected error on one row is that row's error; the rows before and after still go in.
+  it('reports a row that fails unexpectedly and imports the others', async () => {
+    const addVolunteer = testApp.app.get(AddVolunteerUseCase);
+    const original = addVolunteer.execute.bind(addVolunteer);
+    const spy = jest
+      .spyOn(addVolunteer, 'execute')
+      .mockImplementation(async (options, admin) => {
+        if (options.email === 'eroare@example.ro') {
+          throw new Error('database went away');
+        }
+        return original(options, admin);
+      });
+
+    try {
+      const res = await upload(
+        'prenume,nume,email\nMaria,Ionescu,maria@example.ro\nIon,Eroare,eroare@example.ro\nAna,Pop,ana@example.ro\n',
+        201,
+      );
+
+      expect(res.body).toEqual({
+        imported: 2,
+        skipped: [],
+        errors: [{ row: 3, reasons: ['save_failed'] }],
+      });
+      expect((await volunteers()).map(({ email }) => email).sort()).toEqual([
+        'ana@example.ro',
+        'maria@example.ro',
+      ]);
+    } finally {
+      spy.mockRestore();
+    }
   });
 
   // #675: older accounts keep the case they were typed with; the import lowercases emails.

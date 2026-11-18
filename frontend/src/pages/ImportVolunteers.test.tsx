@@ -50,9 +50,7 @@ describe('ImportVolunteers (#473)', () => {
     expect(screen.getByRole('button', { name: f('submit') })).toBeDisabled();
     await pickAndImport();
 
-    expect(await screen.findByRole('status')).toHaveTextContent(
-      f('result.imported', { count: 2 }),
-    );
+    expect(await screen.findByRole('status')).toHaveTextContent(f('result.imported', { count: 2 }));
     expect((form?.get('file') as File).name).toBe('voluntari.csv');
     API.interceptors.request.eject(interceptor);
     expect(
@@ -65,6 +63,26 @@ describe('ImportVolunteers (#473)', () => {
         `${f('result.row', { row: 5 })}: ${f('reason.email')}; ${f('reason.department_not_found')}`,
       ),
     ).toBeInTheDocument();
+  });
+
+  // #676: a row the backend could not save is listed with the others, not as a failed import.
+  it('lists a row that could not be saved next to the imported ones', async () => {
+    server.use(
+      http.post(api('/volunteer/import'), () =>
+        HttpResponse.json(
+          { imported: 2, skipped: [], errors: [{ row: 3, reasons: ['save_failed'] }] },
+          { status: 201 },
+        ),
+      ),
+    );
+    renderPage(<ImportVolunteers />);
+    await pickAndImport();
+
+    expect(await screen.findByRole('status')).toHaveTextContent(f('result.imported', { count: 2 }));
+    expect(
+      screen.getByText(`${f('result.row', { row: 3 })}: ${f('reason.save_failed')}`),
+    ).toBeInTheDocument();
+    expect(f('reason.save_failed')).not.toContain('reason.');
   });
 
   it('shows why an unreadable file is refused (VOLUNTEER_010)', async () => {
