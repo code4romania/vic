@@ -122,6 +122,7 @@ export type FindManyVolunteersOptions = Partial<
     age: AgeRangeEnum;
     activeSinceStart: Date;
     activeSinceEnd: Date;
+    withProfile: boolean;
   }> &
   IBasePaginationFilterModel;
 

@@ -1,4 +1,6 @@
+import { Transform } from 'class-transformer';
 import {
+  IsBoolean,
   IsDate,
   IsEnum,
   IsOptional,
@@ -68,4 +70,13 @@ export class GetVolunteersDto extends BasePaginationFilterDto {
   @IsDate()
   @IsOptional()
   activeSinceEnd?: Date;
+
+  // Only volunteers with a volunteer profile in the organization: hours need one (ACTIVITY_LOG_002, #677)
+  // read from obj: implicit conversion has already turned the text "false" into true
+  @Transform(
+    ({ obj }) => obj.withProfile === true || obj.withProfile === 'true',
+  )
+  @IsBoolean()
+  @IsOptional()
+  withProfile?: boolean;
 }

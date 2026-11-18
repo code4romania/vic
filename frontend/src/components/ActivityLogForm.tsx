@@ -46,6 +46,7 @@ const ActivityLogForm = ({
             render={({ field: { onChange, value } }) => {
               return (
                 <VolunteerSelect
+                  withProfile
                   defaultValue={value}
                   onSelect={onChange}
                   label={i18n.t('volunteer:name', { status: '' })}

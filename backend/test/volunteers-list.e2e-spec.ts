@@ -196,4 +196,34 @@ describe('Volunteers list columns (e2e)', () => {
       .sort();
     expect(names).toEqual(['Ana Mediu', 'Mara Asteapta']);
   });
+
+  // #677: the hours form lists only volunteers with a volunteer profile (hours need one, ACTIVITY_LOG_002).
+  it('the listing can keep only volunteers with a volunteer profile', async () => {
+    const withProfile = await addVolunteer('Ana Profil', 'active', null);
+    await addVolunteer('Ion Fara', 'active', null);
+    const [profile] = await testApp.dataSource.query(
+      `INSERT INTO volunteer_profile (email) VALUES ('ana.profil@example.ro') RETURNING id`,
+    );
+    await testApp.dataSource.query(
+      `UPDATE volunteer SET volunteer_profile_id = $1 WHERE id = $2`,
+      [profile.id, withProfile],
+    );
+    const token = await testApp.mintAccessToken(admin, AuthRealm.WEB);
+    const names = async (query: string): Promise<string[]> =>
+      (
+        await http()
+          .get(`/listing/volunteers?status=active&page=1&limit=10${query}`)
+          .set('Authorization', `Bearer ${token}`)
+          .expect(200)
+      ).body.items
+        .map(({ name }: { name: string }) => name)
+        .sort();
+
+    expect(await names('')).toEqual(['Ana Profil', 'Ion Fara']);
+    expect(await names('&withProfile=true')).toEqual(['Ana Profil']);
+    expect(await names('&withProfile=false')).toEqual([
+      'Ana Profil',
+      'Ion Fara',
+    ]);
+  });
 });
