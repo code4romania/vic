@@ -5,6 +5,7 @@ import {
 import { IAuthIdentityModel } from 'src/modules/auth/models/auth-identity.model';
 import { AuthIdentityFacade } from 'src/modules/auth/services/auth-identity.facade';
 import * as request from 'supertest';
+import * as XLSX from 'xlsx';
 import { createTestApp, TestApp } from './utils/test-app';
 import { truncate } from './utils/test-data-source';
 
@@ -158,6 +159,46 @@ describe('Volunteers list columns (e2e)', () => {
         testApp.mailbox.last('ana@example.ro').context.code,
       )
       .expect(200);
+  });
+
+  // #686: approved but no profile filled in here yet: the account's email and the day they joined
+  it('exports a volunteer without a profile with the account email and the join date', async () => {
+    const id = await addVolunteer('Lari Test', 'active', null);
+    await testApp.dataSource.query(
+      `UPDATE volunteer SET created_on = '2026-11-17T10:00:00Z' WHERE id = $1`,
+      [id],
+    );
+
+    const token = await testApp.mintAccessToken(admin, AuthRealm.WEB);
+    await http()
+      .post('/security/code')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ action: 'EXPORT_VOLUNTEERS' })
+      .expect(200);
+    const res = await http()
+      .get('/volunteer/download')
+      .set('Authorization', `Bearer ${token}`)
+      .set(
+        'X-Sensitive-Code',
+        testApp.mailbox.last('ana@example.ro').context.code,
+      )
+      .buffer(true)
+      .parse((response, callback) => {
+        const chunks: Buffer[] = [];
+        response.on('data', (chunk: Buffer) => chunks.push(chunk));
+        response.on('end', () => callback(null, Buffer.concat(chunks)));
+      })
+      .expect(200);
+
+    const book = XLSX.read(res.body, { type: 'buffer', cellDates: true });
+    const [row] = XLSX.utils.sheet_to_json<Record<string, unknown>>(
+      book.Sheets[book.SheetNames[0]],
+    );
+    expect(row.Email).toBe('lari.test@example.ro');
+    // the day they joined, in Bucharest (12:00 there)
+    expect((row['Activ din'] as Date).toISOString().slice(0, 10)).toBe(
+      '2026-11-17',
+    );
   });
 
   // #476
