@@ -38,6 +38,9 @@ const NAVY = '#1f2a44';
 const MUTED = '#6b7280';
 const LINE = '#e5e7eb';
 
+// An entry with no activity type is one the volunteer logged as „Altă opțiune”; the web shows it so too (#684).
+export const OTHER_ACTIVITY = 'Altă opțiune';
+
 export const reportDate = (date: Date | string | null): string =>
   date ? formatBucharestDate(new Date(date)) : '-';
 
@@ -224,7 +227,7 @@ export const renderVolunteerReport = (
           {
             header: 'Activitate',
             width: (width - 190) / 2,
-            value: (l): string => l.activity || '-',
+            value: (l): string => l.activity || OTHER_ACTIVITY,
           },
           {
             header: 'Eveniment',

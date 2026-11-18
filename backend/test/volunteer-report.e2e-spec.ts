@@ -5,6 +5,7 @@ import {
 import { IAuthIdentityModel } from 'src/modules/auth/models/auth-identity.model';
 import { AuthIdentityFacade } from 'src/modules/auth/services/auth-identity.facade';
 import * as request from 'supertest';
+import * as reportPdf from 'src/modules/volunteer/services/volunteer-report.pdf';
 import { createTestApp, TestApp } from './utils/test-app';
 import { truncate } from './utils/test-data-source';
 
@@ -164,6 +165,31 @@ describe('Volunteer report (e2e)', () => {
     if (process.env.REPORT_OUT) {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('fs').writeFileSync(process.env.REPORT_OUT, pdf);
+    }
+  });
+
+  // #684: hours logged as „Altă opțiune” (no activity type) are named the same as on the web
+  it('names hours without an activity type „Altă opțiune”, like the web', async () => {
+    await log(3, 'approved');
+    const render = jest.spyOn(reportPdf, 'renderVolunteerReport');
+
+    try {
+      await request(testApp.app.getHttpServer())
+        .get(`/volunteer/${volunteerId}/report`)
+        .set(
+          'Authorization',
+          `Bearer ${await testApp.mintAccessToken(admin, AuthRealm.WEB)}`,
+        )
+        .expect(200);
+
+      const data = render.mock.calls[0][0];
+      expect(data.activities).toEqual([
+        { name: 'Altă opțiune', hours: 3, entries: 1 },
+      ]);
+      expect(data.logs[0].activity).toBeNull();
+      expect(reportPdf.OTHER_ACTIVITY).toBe('Altă opțiune');
+    } finally {
+      render.mockRestore();
     }
   });
 
