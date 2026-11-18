@@ -3,8 +3,15 @@ import { Expose } from 'class-transformer';
 import { IActivityLogModel } from 'src/modules/activity-log/models/activity-log.model';
 import { MobileActivityLogListItemPresenter } from './activity-log-list-item-presenter';
 import { ActivityLogStatus } from 'src/modules/activity-log/enums/activity-log-status.enum';
-import { format } from 'date-fns';
+import { bucharestDay } from 'src/common/helpers/bucharest-time';
 import { OrganizationWithVolunteersPresenter } from '../../organization/presenters/organization-with-volunteers.presenter';
+
+// The day of the approval in Romania, as the app reads it ("18/11/2026"): the server runs in UTC, so a
+// decision taken after midnight in Bucharest showed the day before (#707).
+const slashDay = (instant: Date): string => {
+  const [year, month, day] = bucharestDay(new Date(instant)).split('-');
+  return `${day}/${month}/${year}`;
+};
 
 export class MobileActivityLogPresenter extends MobileActivityLogListItemPresenter {
   constructor(log: IActivityLogModel) {
@@ -18,8 +25,8 @@ export class MobileActivityLogPresenter extends MobileActivityLogListItemPresent
       createdOn: log.createdOn,
     });
     this.status = log.status;
-    this.approvedOn = log.approvedOn ? format(log.approvedOn, 'dd/MM/y') : '';
-    this.rejectedOn = log.rejectedOn ? format(log.rejectedOn, 'dd/MM/y') : '';
+    this.approvedOn = log.approvedOn ? slashDay(log.approvedOn) : '';
+    this.rejectedOn = log.rejectedOn ? slashDay(log.rejectedOn) : '';
     this.rejectionReason = log.rejectionReason;
     this.mentions = log.mentions;
     this.organization = log.organization
