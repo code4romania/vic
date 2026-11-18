@@ -15,4 +15,7 @@ Object.assign(process.env, TEST_AUTH_SETTINGS, generateTestAuthKeys(), {
   // Queues per Jest worker, like the databases: otherwise one suite's app takes another suite's jobs
   // (the held transition queue is paused and resumed globally).
   BULL_PREFIX: `${process.env.BULL_PREFIX || 'test-bull'}-${process.env.JEST_WORKER_ID ?? '1'}`,
+  // Rate-limit counters per Jest worker too: flushRedis() in one suite deleted every `test:` key,
+  // also the counters another suite was checking at that moment (#706).
+  REDIS_KEY_PREFIX: `${process.env.REDIS_KEY_PREFIX || 'test:'}${process.env.JEST_WORKER_ID ?? '1'}:`,
 });
