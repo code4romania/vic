@@ -54,8 +54,9 @@ export class UpdateOrganizationUseCase
       changes.taxId !== undefined &&
       normalizeCui(changes.taxId ?? '') !== normalizeCui(current.taxId ?? '');
 
-    // The CUI checked by the super admin stays locked after validation.
-    if (current.validatedAt && taxIdChanged) {
+    // The CUI checked by the super admin stays locked after validation. An NGO validated without
+    // one (every NGO from before VIC 2.0 was marked validated) can still add it, once (#685).
+    if (current.validatedAt && taxIdChanged && current.taxId) {
       throw new BadRequestException(OrganizationExceptionMessages.ORG_012);
     }
     if (taxIdChanged && !isValidCui(changes.taxId)) {
