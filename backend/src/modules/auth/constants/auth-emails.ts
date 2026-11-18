@@ -158,48 +158,27 @@ export const AUTH_EMAILS = {
       { cta: { link: url, label: 'Confirmă adresa' } },
     ),
 
+  // To each super admin when an NGO confirmed its email. Only what tells them there is something to
+  // validate: the contacts, the declarations and the suspend action stay on the validation page, behind
+  // the login; an email is kept, forwarded and synced to phones (#710).
   organizationRegistered: (
-    organization: Pick<
-      IOrganizationModel,
-      | 'id'
-      | 'name'
-      | 'email'
-      | 'phone'
-      | 'address'
-      | 'description'
-      | 'website'
-      | 'taxId'
-    >,
-    admin: OrganizationRegisteredAdmin,
+    organization: Pick<IOrganizationModel, 'name' | 'taxId'>,
     validationPageUrl: string,
-  ): AuthEmail => {
-    const details = [
-      `${organization.name} (CUI ${organization.taxId})`,
-      `${organization.email}, ${organization.phone}`,
-      organization.address,
-      organization.website,
-      organization.description,
-      `Admin: ${admin.name}, ${admin.email}, ${admin.phone}`,
-    ]
-      .filter(Boolean)
-      .join(' · ');
-    const suspend = `npm run org:suspend -- ${organization.id} --reason "..."`;
-
-    return email(
+  ): AuthEmail =>
+    email(
       `ONG nou de validat: ${organization.name} / New NGO to validate`,
       {
         title: `ONG nou de validat: ${organization.name}`,
-        subtitle: `${details}. Verifică CUI-ul, apoi validează sau suspendă organizația pe pagina de validare. Pentru suspendare din linia de comandă: ${suspend}`,
+        subtitle: `${organization.name} (CUI ${organization.taxId}) și-a confirmat emailul. Verifică CUI-ul, apoi validează sau suspendă organizația pe pagina de validare.`,
       },
       {
         title: `New NGO to validate: ${organization.name}`,
-        subtitle: `Check the CUI, then validate or suspend the organization on the validation page. To suspend from the command line: ${suspend}`,
+        subtitle: `${organization.name} (CUI ${organization.taxId}) confirmed its email. Check the CUI, then validate or suspend the organization on the validation page.`,
       },
       {
         cta: { link: validationPageUrl, label: 'Deschide pagina de validare' },
       },
-    );
-  },
+    ),
 
   organizationValidated: (
     organizationName: string,

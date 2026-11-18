@@ -271,6 +271,17 @@ describe('Organization registration and validation (e2e)', () => {
     expect(notice.subject).toContain('ONG nou de validat: Asociatia Noua');
     expect(notice.context.subtitle).toContain('CUI 12345674');
     expect(notice.context.cta.link).toBe('https://vic.test/admin/validation');
+    // #710: no personal data or internal ids in a mailbox; one email per super admin
+    const text = JSON.stringify(notice.context);
+    for (const hidden of [
+      ADMIN_EMAIL,
+      '+40711111100',
+      organization.id,
+      'org:suspend',
+    ]) {
+      expect(text).not.toContain(hidden);
+    }
+    expect(notice.to).toBe('super@vic.ro');
 
     const own = await http
       .get('/organization')
