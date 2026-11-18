@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { AppState, RefreshControl, StyleSheet, View } from 'react-native';
 import Animated, {
   Extrapolation,
   interpolate,
@@ -98,9 +98,27 @@ const OrganizationProfile = ({ navigation, route }: any) => {
   const birthdaySheet = useRef<BottomSheetModal>(null);
   const cancelSheet = useRef<BottomSheetModal>(null);
 
-  const { isFetching: isFetchingOrganization, error: getOrganizationError } = useOrganizationQuery(
-    route.params.organizationId,
-  );
+  const {
+    isFetching: isFetchingOrganization,
+    error: getOrganizationError,
+    refetch: refetchOrganization,
+  } = useOrganizationQuery(route.params.organizationId);
+  const [pulling, setPulling] = useState(false);
+  const onPullToRefresh = () => {
+    setPulling(true);
+    refetchOrganization().finally(() => setPulling(false));
+  };
+
+  // A push (approved, rejected, archived) that lands while the app is in the background is not
+  // seen by the app: when the volunteer comes back, the status shown here may be old (#691).
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (state) => {
+      if (state === 'active') {
+        refetchOrganization();
+      }
+    });
+    return () => subscription.remove();
+  }, [refetchOrganization]);
   const { isLoading: isCancelingAccessRequest, mutate: cancelAccessRequest } =
     useCancelAccessRequestMutation();
   const { isLoading: isRejoiningOrganization, mutate: rejoinOrganization } =
@@ -279,10 +297,19 @@ const OrganizationProfile = ({ navigation, route }: any) => {
   return (
     <View style={styles.screen}>
       <Animated.ScrollView
+        testID="organization-scroll"
         onScroll={onScroll}
         scrollEventThrottle={16}
         contentContainerStyle={{ paddingBottom: insets.bottom + (bar ? 120 : 40) }}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={pulling}
+            onRefresh={onPullToRefresh}
+            tintColor={colors.white}
+            progressViewOffset={insets.top}
+          />
+        }
       >
         <View style={[styles.hero, { height: heroHeight }]}>
           {loaded && (
