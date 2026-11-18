@@ -289,7 +289,10 @@ const ContractsTable = ({
     ? [numberColumn, statusColumn, periodColumn, actionColumn]
     : [volunteerColumn, numberColumn, periodColumn, statusColumn, actionColumn];
 
+  // The table also calls this once on load, with no column and "ascending": that call would
+  // replace the default order (newest first, #681), so only a click on a column counts.
   const onSort = (column: TableColumn<IContractListItem>, direction: SortOrder) =>
+    column?.id &&
     setQuery({
       orderBy: column.id as string,
       orderDirection:
@@ -421,6 +424,8 @@ const ContractsTable = ({
             onChangeRowsPerPage={(rows: number) => setQuery({ limit: rows, page: 1 })}
             onChangePage={(page: number) => setQuery({ page })}
             onSort={onSort}
+            defaultSortFieldId={query?.orderBy as string | undefined}
+            defaultSortAsc={query?.orderDirection === OrderDirection.ASC}
           />
         </CardBody>
       </Card>

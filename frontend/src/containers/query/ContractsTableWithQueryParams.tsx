@@ -9,6 +9,7 @@ import {
 } from '../../common/constants/pagination';
 import { ContractFilterStatus } from '../../common/enums/contract-status.enum';
 import { DocumentType } from '../../common/enums/document-type.enum';
+import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { VolunteerTabsOptions } from '../../pages/Volunteer';
 
 export interface ContractsTableQueryProps extends IPaginationQueryParams {
@@ -20,7 +21,11 @@ export interface ContractsTableQueryProps extends IPaginationQueryParams {
 
 export type ContractsTableBasicProps = IHOCQueryProps<ContractsTableQueryProps>;
 
-const DEFAULT_QUERY_PARAMS = getPaginationQueryParams();
+// the newest first: a contract the admin just uploaded is at the top (#681)
+const DEFAULT_QUERY_PARAMS = getPaginationQueryParams({
+  orderBy: 'createdOn',
+  orderDirection: OrderDirection.DESC,
+});
 
 const ContractsTableWithQueryParams = ({
   volunteerId,

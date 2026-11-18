@@ -75,9 +75,10 @@ export class ContractRepositoryService
       .leftJoinAndMapOne('volunteer.user', 'volunteer.user', 'user')
       .select()
       .where('contract.organizationId = :organizationId', { organizationId })
+      // newest first unless asked otherwise: an uploaded contract shows at the top (#681)
       .orderBy(
         this.buildOrderByQuery(orderBy || 'createdOn', 'contract'),
-        orderDirection || OrderDirection.ASC,
+        orderDirection || (orderBy ? OrderDirection.ASC : OrderDirection.DESC),
       );
 
     // B9: a volunteer's own contracts (their tab on the web, their history in the app) whatever
