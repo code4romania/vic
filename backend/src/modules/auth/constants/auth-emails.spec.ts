@@ -54,7 +54,6 @@ const builders: Array<[string, AuthEmail, string | null]> = [
     'organizationRegistered',
     AUTH_EMAILS.organizationRegistered(
       organization,
-      { name: 'Ana', email: 'ana@test.ro', phone: '+40711111111' },
       'https://vic.test/admin/validation',
     ),
     'https://vic.test/admin/validation',
@@ -126,23 +125,26 @@ describe('AUTH_EMAILS', () => {
     }
   });
 
-  it('the new-NGO email gives every field and the ready suspend command', () => {
+  // #710: an email is kept and forwarded; the details stay on the validation page, behind the login
+  it('the new-NGO email names the NGO and its CUI, and nothing else', () => {
     const { context } = AUTH_EMAILS.organizationRegistered(
       organization,
-      { name: 'Ana', email: 'ana@test.ro', phone: '+40711111111' },
       'https://vic.test/admin/validation',
     );
+    const text = `${context.subtitle} ${context.english.subtitle}`;
 
-    for (const value of [
-      'Asociatia Test',
-      'RO123',
+    expect(context.title).toContain('Asociatia Test');
+    expect(context.subtitle).toContain('CUI RO123');
+    expect(context.cta.link).toBe('https://vic.test/admin/validation');
+    for (const hidden of [
       'contact@test.ro',
       'Str. Test 1',
-      'ana@test.ro',
+      'org-id',
+      'org:suspend',
+      'npm run',
     ]) {
-      expect(context.subtitle).toContain(value);
+      expect(text).not.toContain(hidden);
     }
-    expect(context.subtitle).toContain('npm run org:suspend -- org-id');
   });
 
   it('an existing email without cta, code or english still renders', () => {

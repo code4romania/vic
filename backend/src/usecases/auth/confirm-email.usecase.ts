@@ -77,7 +77,7 @@ export class ConfirmEmailUseCase implements IUseCaseService<LinkResult> {
     });
 
     if (activated) {
-      await this.notifySuperAdmins(activated.organization, activated.admin);
+      await this.notifySuperAdmins(activated.organization);
     }
 
     return confirmed.realm === AuthRealm.WEB
@@ -108,20 +108,18 @@ export class ConfirmEmailUseCase implements IUseCaseService<LinkResult> {
     return { organization: active, admin };
   }
 
-  // The "new NGO to validate" email, with every field and a link to the validation page.
+  // The "new NGO to validate" email: one per super admin, so none sees the others' addresses (#710).
   private async notifySuperAdmins(
     organization: IOrganizationModel,
-    admin: IAdminUserModel,
   ): Promise<void> {
     const superAdmins = await this.authIdentityFacade.findSuperAdmins();
-    if (!superAdmins.length) return;
-
-    await this.authMailer.send(
-      superAdmins.map((superAdmin) => superAdmin.email),
-      AUTH_EMAILS.organizationRegistered(
-        organization,
-        { name: admin.name, email: admin.email, phone: admin.phone },
-        this.authMailer.validationPageUrl(),
+    const email = AUTH_EMAILS.organizationRegistered(
+      organization,
+      this.authMailer.validationPageUrl(),
+    );
+    await Promise.all(
+      superAdmins.map((superAdmin) =>
+        this.authMailer.send(superAdmin.email, email),
       ),
     );
   }
