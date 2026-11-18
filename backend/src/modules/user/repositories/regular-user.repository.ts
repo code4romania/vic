@@ -66,22 +66,4 @@ export class RegularUserRepositoryService implements IRegularUserRepository {
       newsLastSeenAt: () => 'now()',
     });
   }
-
-  async softDeleteAndAnonimize(id: string): Promise<IRegularUserModel> {
-    const userToUpdate = await this.regularUserRepository.preload({
-      id,
-      firstName: 'Deleted',
-      lastName: 'Deleted',
-      email: `account-deleted@${new Date().getTime()}.ro`,
-      phone: 'Deleted',
-      name: 'Deleted',
-      birthday: new Date(),
-    });
-
-    const updated = await this.regularUserRepository.save(userToUpdate);
-
-    await this.regularUserRepository.softDelete({ id: userToUpdate.id });
-
-    return updated ? RegularUserTransformer.fromEntity(updated) : null;
-  }
 }

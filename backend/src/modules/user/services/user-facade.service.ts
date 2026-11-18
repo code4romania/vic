@@ -61,12 +61,6 @@ export class UserFacadeService {
     return this.regularUserRepository.find(options);
   }
 
-  public async softDeleteAndAnonimizeRegularUser(
-    id: string,
-  ): Promise<IRegularUserModel> {
-    return this.regularUserRepository.softDeleteAndAnonimize(id);
-  }
-
   public async markNewsSeen(id: string): Promise<void> {
     return this.regularUserRepository.markNewsSeen(id);
   }

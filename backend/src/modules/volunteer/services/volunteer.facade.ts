@@ -127,10 +127,4 @@ export class VolunteerFacade {
   async deleteProfile(id: string): Promise<void> {
     return this.volunteerProfileRepositoryService.delete(id);
   }
-
-  async softDeleteManyAndProfiles(
-    userId: string,
-  ): Promise<{ deletedProfiles: string[]; deletedVolunteers: string[] }> {
-    return this.volunteerRepository.softDeleteManyAndProfiles(userId);
-  }
 }

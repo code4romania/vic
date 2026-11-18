@@ -24,7 +24,6 @@ describe('user use cases adapted to own auth', () => {
     users = {
       findRegularUser: jest.fn(),
       createRegularUser: jest.fn().mockResolvedValue({ id: 'new-user' }),
-      softDeleteAndAnonimizeRegularUser: jest.fn().mockResolvedValue({}),
     };
     identities = {
       findIdentity: jest.fn(),
