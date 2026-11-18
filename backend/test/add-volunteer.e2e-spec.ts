@@ -216,4 +216,45 @@ describe('Add a volunteer (e2e)', () => {
     );
     expect(volunteer.user_id).toBe(user.id);
   });
+
+  // #675: older accounts keep the case they were typed with; the form lowercases the email.
+  it('finds an existing person whose stored email differs only in case', async () => {
+    await testApp.dataSource.query(
+      `INSERT INTO "user" (type, name, first_name, last_name, email, has_account) VALUES ('regular', 'Maria I', 'Maria', 'I', 'Maria.Ionescu@Example.ro', true)`,
+    );
+
+    await add({ email: 'maria.ionescu@example.ro', status: 'active' }, 201);
+    const again = await add({ email: 'maria.ionescu@example.ro' }, 400);
+    expect(again.body.code_error).toBe('VOLUNTEER_009');
+
+    const [{ count }] = await testApp.dataSource.query(
+      `SELECT count(*)::int AS count FROM "user" WHERE lower(email) = 'maria.ionescu@example.ro'`,
+    );
+    expect(count).toBe(1);
+  });
+
+  it('the app claims a placeholder whose stored email differs only in case', async () => {
+    const [placeholder] = await testApp.dataSource.query(
+      `INSERT INTO "user" (type, name, first_name, last_name, email, has_account) VALUES ('regular', 'Maria I', 'Maria', 'I', 'Maria.Ionescu@Example.ro', false) RETURNING id`,
+    );
+    const identity = await testApp.app.get(AuthIdentityFacade).createIdentity({
+      realm: AuthRealm.MOBILE,
+      email: 'maria.ionescu@example.ro',
+      status: AuthIdentityStatus.ACTIVE,
+    });
+
+    await http()
+      .post('/mobile/user')
+      .set(
+        'Authorization',
+        `Bearer ${await testApp.mintAccessToken(identity, AuthRealm.MOBILE)}`,
+      )
+      .send({ firstName: 'Maria', lastName: 'Ionescu', birthday: '1995-04-12' })
+      .expect(201);
+
+    const [user] = await testApp.dataSource.query(
+      `SELECT id, has_account FROM "user" WHERE lower(email) = 'maria.ionescu@example.ro'`,
+    );
+    expect(user).toEqual({ id: placeholder.id, has_account: true });
+  });
 });

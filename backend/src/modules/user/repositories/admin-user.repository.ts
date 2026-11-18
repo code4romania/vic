@@ -5,7 +5,8 @@ import {
   Pagination,
   RepositoryWithPagination,
 } from 'src/infrastructure/base/repository-with-pagination.class';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager, FindOptionsWhere, Repository } from 'typeorm';
+import { emailIgnoringCase } from './email-where';
 import { AdminUserEntity } from '../entities/user.entity';
 import { IAdminUserRepository } from '../interfaces/admin-user-repository.interface';
 import {
@@ -48,7 +49,7 @@ export class AdminUserRepositoryService
 
   async find(options: IFindAdminUserModel): Promise<IAdminUserModel> {
     const userEntity = await this.adminUserRepository.findOne({
-      where: options,
+      where: emailIgnoringCase(options) as FindOptionsWhere<AdminUserEntity>,
     });
 
     // return user model
