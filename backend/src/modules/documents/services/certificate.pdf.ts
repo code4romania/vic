@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { format } from 'date-fns';
+import { formatBucharestDate } from 'src/common/helpers/bucharest-time';
 import PDFDocument = require('pdfkit');
 
 export interface ICertificateData {
@@ -27,7 +27,7 @@ const NAVY = '#1f2a44';
 const MUTED = '#6b7280';
 const TEXT = '#111827';
 
-const day = (date: Date): string => format(new Date(date), 'dd.MM.yyyy');
+const day = (date: Date): string => formatBucharestDate(new Date(date));
 
 // 12 -> "12", 12.5 -> "12,5"
 export const formatHours = (hours: number): string =>

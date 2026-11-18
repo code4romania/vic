@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { format } from 'date-fns';
+import { formatBucharestDate } from 'src/common/helpers/bucharest-time';
 import PDFDocument = require('pdfkit');
 
 export interface IVolunteerReportLog {
@@ -39,7 +39,7 @@ const MUTED = '#6b7280';
 const LINE = '#e5e7eb';
 
 export const reportDate = (date: Date | string | null): string =>
-  date ? format(new Date(date), 'dd.MM.yyyy') : '-';
+  date ? formatBucharestDate(new Date(date)) : '-';
 
 interface Column<T> {
   header: string;

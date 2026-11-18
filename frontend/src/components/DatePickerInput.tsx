@@ -3,6 +3,7 @@ import DatePicker, { DatePickerProps } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { CalendarIcon } from '@heroicons/react/24/outline';
 import { classNames } from '../common/utils/utils';
+import { typedDateFormats } from '../common/utils/date-input-formats';
 
 export type DatePickerInputProps = DatePickerProps & {
   label?: string;
@@ -31,7 +32,7 @@ const DatePickerInput: React.FC<DatePickerInputProps> = ({
             className || '',
             'block w-full border-cool-gray-300 rounded-lg text-base sm:text-sm h-[42px]',
           )}
-          dateFormat={dateFormat}
+          dateFormat={typeof dateFormat === 'string' ? typedDateFormats(dateFormat) : dateFormat}
         />
         <CalendarIcon
           className="sm:h-5 sm:w-5 h-4 w-4 text-cool-gray-500 absolute mt-[-2rem] right-2"
