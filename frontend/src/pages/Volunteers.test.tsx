@@ -66,6 +66,32 @@ describe('Volunteers (#475, #476)', () => {
     expect(params[0].has('status')).toBe(false);
   });
 
+  // #686: approved, but no profile filled in here yet
+  it('shows "Membru din" from the day they joined when there is no profile yet', async () => {
+    server.use(
+      http.get(api('/volunteer'), () =>
+        HttpResponse.json(
+          page([
+            {
+              ...volunteer('l', 'Lari Test', 'active', 0),
+              createdOn: '2026-11-17T10:00:00.000Z',
+              user: { id: 'u-l', name: 'Lari Test', email: 'lari@example.ro' },
+              profile: undefined,
+            },
+          ]),
+        ),
+      ),
+      http.get(api('/listing/*'), () => HttpResponse.json([])),
+    );
+
+    renderPage(<Volunteers query={{ limit: 10, page: 1 }} setQuery={vi.fn()} />);
+
+    expect(
+      await screen.findByText(t('volunteers:member_since', { date: '17.11.2026' })),
+    ).toBeInTheDocument();
+    expect(screen.getByText('lari@example.ro')).toBeInTheDocument();
+  });
+
   it('sends the status and activity filters from the URL', async () => {
     const params: URLSearchParams[] = [];
     server.use(

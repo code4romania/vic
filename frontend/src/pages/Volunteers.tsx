@@ -82,9 +82,12 @@ const VolunteersTableHeader = [
         <MediaCell
           logo={row.user?.profilePicture || ''}
           title={row.user.name}
+          // without a profile here yet, the day they joined the organization (#686)
           subtitle={
-            row.profile?.activeSince
-              ? `${i18n.t('volunteers:member_since', { date: formatDate(row.profile.activeSince) })}`
+            row.profile?.activeSince || row.createdOn
+              ? `${i18n.t('volunteers:member_since', {
+                  date: formatDate(row.profile?.activeSince || row.createdOn),
+                })}`
               : row.profile?.branch?.name || ''
           }
         />

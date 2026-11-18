@@ -34,9 +34,12 @@ export class GetVolunteersForDownloadUseCase
         Locație: volunteer.user.location
           ? `${volunteer.user.location.name}, jud. ${volunteer.user.location.county?.name}`
           : '',
-        Email: volunteer.volunteerProfile?.email,
+        // A volunteer who has not filled in a profile here yet (#686): the account's email and the
+        // day they joined, like the volunteer report.
+        Email: volunteer.volunteerProfile?.email || volunteer.user?.email,
         Telefon: volunteer.user?.phone,
-        'Activ din': volunteer.volunteerProfile?.activeSince,
+        'Activ din':
+          volunteer.volunteerProfile?.activeSince ?? volunteer.createdOn,
         'Nume filială': volunteer.volunteerProfile?.branch?.name,
         'Nume departament': volunteer.volunteerProfile?.department?.name,
         'Nume rol': volunteer.volunteerProfile?.role?.name,
