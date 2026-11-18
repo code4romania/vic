@@ -1,3 +1,20 @@
+// Romanian agreement for a number of hours (#712): "1 oră … a fost aprobată", "5 ore … au fost
+// aprobate", "20 de ore …" ("de" from 20 on, except when the last two digits are 01-19: "101 ore").
+const isOneHour = (hours: number): boolean => Number(hours) === 1;
+
+const hoursOfVolunteering = (hours: number, date: string): string => {
+  const value = Number(hours);
+  if (isOneHour(value)) return `1 oră de voluntariat din ${date}`;
+  const rest = value % 100;
+  const withDe =
+    Number.isInteger(value) && value >= 20 && (rest === 0 || rest >= 20);
+  const shown = String(hours).replace('.', ',');
+  return `${shown} ${withDe ? 'de ore' : 'ore'} de voluntariat din ${date}`;
+};
+
+const hoursDecided = (hours: number, verb: 'aprobat' | 'respins'): string =>
+  isOneHour(hours) ? `a fost ${verb}ă` : `au fost ${verb}e`;
+
 export const NOTIFICATIONS = {
   APPROVE_ACCESS_REQUEST: {
     PUSH: {
@@ -100,28 +117,30 @@ export const NOTIFICATIONS = {
     PUSH: {
       title: 'VIC',
       body: (hours: number, date: string): string =>
-        `${hours} ore de voluntariat din ${date} au fost aprobate`,
+        `${hoursOfVolunteering(hours, date)} ${hoursDecided(hours, 'aprobat')}`,
     },
     // #593
     EMAIL: {
       subject: (organizationName: string): string =>
         `Orele tale de voluntariat la ${organizationName} au fost aprobate`,
       body: (hours: number, date: string): string =>
-        `${hours} ore de voluntariat din ${date} au fost aprobate. Le găsești în aplicația VIC.`,
+        `${hoursOfVolunteering(hours, date)} ${hoursDecided(hours, 'aprobat')}. ${
+          isOneHour(hours) ? 'O găsești' : 'Le găsești'
+        } în aplicația VIC.`,
     },
   },
   REJECTED_HOURS: {
     PUSH: {
       title: 'VIC',
       body: (hours: number, date: string): string =>
-        `${hours} ore de voluntariat din ${date} au fost respinse`,
+        `${hoursOfVolunteering(hours, date)} ${hoursDecided(hours, 'respins')}`,
     },
     // #593
     EMAIL: {
       subject: (organizationName: string): string =>
         `Orele tale de voluntariat la ${organizationName} au fost respinse`,
       body: (hours: number, date: string, reason: string): string =>
-        `${hours} ore de voluntariat din ${date} au fost respinse. Motiv: ${reason}`,
+        `${hoursOfVolunteering(hours, date)} ${hoursDecided(hours, 'respins')}. Motiv: ${reason}`,
     },
   },
   NEW_CONTRACT: {
