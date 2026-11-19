@@ -698,6 +698,21 @@ describe('Ore: detaliu', () => {
     await renderApp('activity-log', detailParams);
     expect(await screen.findByText('Aprobată la 28 octombrie 2026')).toBeTruthy();
   });
+
+  it('a just-created entry approved meanwhile mounts a new status banner', async () => {
+    // the create mutation leaves the pending copy in the store; the fetch then brings "approved".
+    // Restyling the banner during its entering animation left it invisible on iOS.
+    detail(ActivityLogStatus.PENDING);
+    await renderApp('activity-log', detailParams);
+    const pending = await screen.findByTestId('log-status');
+    expect(within(pending).getByText(/Până atunci o poți edita sau șterge/)).toBeTruthy();
+
+    act(() => detail(ActivityLogStatus.APPROVED, { approvedOn: '19/11/2026' }));
+
+    const approved = await screen.findByText('Aprobată la 19 noiembrie 2026');
+    expect(approved).toBeTruthy();
+    expect(screen.getByTestId('log-status')).not.toBe(pending);
+  });
 });
 
 describe('activity log dates', () => {

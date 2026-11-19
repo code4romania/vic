@@ -160,7 +160,12 @@ const ActivityLog = ({ navigation, route }: any) => {
               </Enter>
 
               {statusNote && (
+                // Keyed by status: opening an entry that was just created shows the stored pending copy
+                // first, then the fetch (or the #711 push refresh) brings "approved". A style change
+                // while the entering animation runs leaves the banner at opacity 0 on iOS, so a new
+                // status mounts a new banner that fades in again.
                 <Enter
+                  key={log.status}
                   index={2}
                   style={[styles.note, { backgroundColor: statusNote.tone.bg }]}
                   testID="log-status"
