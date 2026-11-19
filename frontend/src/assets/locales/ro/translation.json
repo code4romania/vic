@@ -498,6 +498,7 @@
     "validated_on": "Validată la",
     "not_validated": "În așteptarea validării",
     "replace_logo": "Logo nou (opțional)",
+    "tax_id_locked": "CUI-ul a fost verificat la validare și nu se mai poate schimba.",
     "status": {
       "pending": "Email neconfirmat",
       "active": "Activă",

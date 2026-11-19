@@ -42,6 +42,9 @@ const Organization = () => {
   const { mutate: updateOrganization, isLoading: isSaving } = useUpdateOrganizationMutation();
 
   const schema = yup.object(organizationProfileSchema(organization?.taxId)).required();
+  // Same rule as the API (ORG_012): the CUI checked at validation stays locked. An NGO validated
+  // without one can still add it once (#685).
+  const taxIdLocked = !!organization?.validatedAt && !!organization?.taxId;
 
   const {
     handleSubmit,
@@ -93,7 +96,14 @@ const Organization = () => {
 
   const field = (
     name: Field,
-    options: { type?: string; textarea?: boolean; placeholder?: string; wide?: boolean } = {},
+    options: {
+      type?: string;
+      textarea?: boolean;
+      placeholder?: string;
+      wide?: boolean;
+      disabled?: boolean;
+      helper?: string;
+    } = {},
   ) => (
     <div className={options.wide ? 'md:col-span-2' : ''}>
       <Controller
@@ -117,6 +127,12 @@ const Organization = () => {
               onChange={onChange}
               onBlur={onBlur}
               className="max-w-none"
+              disabled={options.disabled}
+              helper={
+                options.helper ? (
+                  <p className="text-sm text-cool-gray-500">{options.helper}</p>
+                ) : undefined
+              }
               errorMessage={errors[name]?.message as string}
             />
           )
@@ -188,7 +204,11 @@ const Organization = () => {
                 {field('name')}
                 {field('email', { type: 'email' })}
                 {field('phone', { type: 'tel' })}
-                {field('taxId', { placeholder: 'RO12345678' })}
+                {field('taxId', {
+                  placeholder: 'RO12345678',
+                  disabled: taxIdLocked,
+                  helper: taxIdLocked ? i18n.t('organization:tax_id_locked') : undefined,
+                })}
                 {field('address', { wide: true })}
                 {field('website', { type: 'url', placeholder: 'https://', wide: true })}
                 {field('description', { textarea: true, wide: true })}
