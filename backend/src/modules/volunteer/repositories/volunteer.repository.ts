@@ -360,43 +360,6 @@ export class VolunteerRepositoryService
     });
   }
 
-  async softDeleteManyAndProfiles(
-    userId: string,
-  ): Promise<{ deletedProfiles: string[]; deletedVolunteers: string[] }> {
-    const volunteerRecords = await this.volunteerRepository.find({
-      where: { userId },
-      relations: { volunteerProfile: true },
-    });
-
-    let deletedProfiles;
-    // Anonimize emails before soft delete
-    const volunteerRecordsToDelete = volunteerRecords.filter(
-      (v) => v.volunteerProfile?.id,
-    );
-
-    if (volunteerRecordsToDelete.length) {
-      await this.volunteerProfileRepository.update(
-        volunteerRecordsToDelete.map((v) => v.volunteerProfile.id),
-        {
-          email: `account-deleted@${new Date().getTime()}.ro`,
-        },
-      );
-
-      // Soft Delete all associated profiles
-      deletedProfiles = await this.volunteerProfileRepository.softRemove(
-        volunteerRecordsToDelete,
-      );
-    }
-
-    const deletedVolunteerRecords =
-      await this.volunteerRepository.softRemove(volunteerRecords);
-
-    return {
-      deletedProfiles: deletedProfiles?.map((dp) => dp.id) || [],
-      deletedVolunteers: deletedVolunteerRecords?.map((dvr) => dvr.id) || [],
-    };
-  }
-
   private addAgeRangeConditionToQuery(
     query: SelectQueryBuilder<VolunteerEntity>,
     ageRange: AgeRangeEnum,

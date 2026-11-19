@@ -32,11 +32,13 @@
     "org:suspend": "ts-node -r tsconfig-paths/register src/commands/organization-status.command.ts --suspend",
     "org:unsuspend": "ts-node -r tsconfig-paths/register src/commands/organization-status.command.ts --unsuspend",
     "announce": "ts-node -r tsconfig-paths/register src/commands/announce.command.ts",
+    "users:finish-deletions": "ts-node -r tsconfig-paths/register src/commands/finish-account-deletions.command.ts",
     "auth:migrate:prod": "node dist/commands/migrate-identities.command.js",
     "auth:super-admin:prod": "node dist/commands/super-admin.command.js",
     "org:suspend:prod": "node dist/commands/organization-status.command.js --suspend",
     "org:unsuspend:prod": "node dist/commands/organization-status.command.js --unsuspend",
-    "announce:prod": "node dist/commands/announce.command.js"
+    "announce:prod": "node dist/commands/announce.command.js",
+    "users:finish-deletions:prod": "node dist/commands/finish-account-deletions.command.js"
   },
   "dependencies": {
     "@anchan828/typeorm-history": "1.0.38",

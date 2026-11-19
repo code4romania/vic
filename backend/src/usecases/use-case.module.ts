@@ -186,6 +186,7 @@ import { GetOneRegularUserProfileUseCase } from './user/get-regule-user-profile.
 import { SyncUserOrganizationsUsecase } from './user/sync-user-organizations.usecase';
 import { GetRejectedAccessRequestUsecase } from './access-request/get-rejected-access-request.usecase';
 import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
+import { FinishOldAccountDeletionsUseCase } from './user/finish-old-account-deletions.usecase';
 
 @Module({
   imports: [
@@ -267,6 +268,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     GetOneRegularUserProfileUseCase,
     SyncUserOrganizationsUsecase,
     DeleteAccountRegularUserUsecase,
+    FinishOldAccountDeletionsUseCase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -454,6 +456,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     GetOneRegularUserProfileUseCase,
     SyncUserOrganizationsUsecase,
     DeleteAccountRegularUserUsecase,
+    FinishOldAccountDeletionsUseCase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
