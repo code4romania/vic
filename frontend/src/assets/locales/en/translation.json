@@ -494,6 +494,7 @@
     "validated_on": "Validated on",
     "not_validated": "Awaiting validation",
     "replace_logo": "New logo (optional)",
+    "tax_id_locked": "The CUI was checked at validation and can no longer be changed.",
     "status": {
       "pending": "Email not confirmed",
       "active": "Active",

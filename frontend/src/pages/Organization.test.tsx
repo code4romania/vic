@@ -76,8 +76,9 @@ describe('Configurare organizație', () => {
   it('rejects a changed invalid CUI before saving', async () => {
     const patch = vi.fn(() => HttpResponse.json(ORGANIZATION));
     server.use(
+      // not validated yet: the CUI can still be corrected
       http.get(api('/organization'), () =>
-        HttpResponse.json({ ...ORGANIZATION, taxId: '12345678' }),
+        HttpResponse.json({ ...ORGANIZATION, taxId: '12345678', validatedAt: null }),
       ),
       http.patch(api('/organization'), patch),
       http.get(api('/organization-structure/:type'), () => HttpResponse.json(page([]))),
@@ -86,6 +87,7 @@ describe('Configurare organizație', () => {
     renderPage(<Organization />, { route: '/organization' });
 
     const taxId = await screen.findByDisplayValue('12345678');
+    expect(taxId).toBeEnabled();
     await userEvent.clear(taxId);
     await userEvent.type(taxId, '18547291');
     await userEvent.click(screen.getByRole('button', { name: t('organization:setup.save') }));
@@ -94,6 +96,30 @@ describe('Configurare organizație', () => {
       await screen.findByText(t('register_organization:form.tax_id_invalid')),
     ).toBeInTheDocument();
     expect(patch).not.toHaveBeenCalled();
+  });
+
+  it('shows the CUI as locked once the organization is validated with one', async () => {
+    server.use(
+      http.get(api('/organization'), () => HttpResponse.json(ORGANIZATION)),
+      http.get(api('/organization-structure/:type'), () => HttpResponse.json(page([]))),
+      http.get(api('/activity-type'), () => HttpResponse.json([])),
+    );
+    renderPage(<Organization />, { route: '/organization' });
+
+    expect(await screen.findByDisplayValue('RO18547290')).toBeDisabled();
+    expect(screen.getByText(t('organization:tax_id_locked'))).toBeInTheDocument();
+  });
+
+  it('lets a validated organization without a CUI add one (#685)', async () => {
+    server.use(
+      http.get(api('/organization'), () => HttpResponse.json({ ...ORGANIZATION, taxId: null })),
+      http.get(api('/organization-structure/:type'), () => HttpResponse.json(page([]))),
+      http.get(api('/activity-type'), () => HttpResponse.json([])),
+    );
+    renderPage(<Organization />, { route: '/organization' });
+
+    expect(await screen.findByPlaceholderText('RO12345678')).toBeEnabled();
+    expect(screen.queryByText(t('organization:tax_id_locked'))).not.toBeInTheDocument();
   });
 
   it('adds, renames and deletes departments as chips, through the existing endpoints', async () => {
