@@ -34,7 +34,8 @@ So before publishing, pick one:
    works); or
 3. Publish from an EAS Workflow `update` job (runs on EAS servers, where secret variables exist).
 
-Whichever: run `npx expo export --platform android` first and check the bundle contains
+Whichever: run `npx expo export --platform android --clear` first (without `--clear`, Metro can
+reuse a cached bundle with the values of an earlier export) and check the bundle contains
 `https://api-vic.ngohub.ro`, the Cognito domain (`amazoncognito.com`) and `eu-west-1_`, then publish.
 
 ## Staging check (before the cutover)
@@ -43,6 +44,17 @@ Whichever: run `npx expo export --platform android` first and check the bundle c
 3. Open the app twice (expo-updates applies on the next launch): the banner is on every screen,
    "Actualizează" opens the store. A VIC 2.0 preview build (other runtime) does not receive it.
 
+**Done 2026-11-23 on Android:** EAS preview build from `main` (1.0.19 / 22, exposdk:51.0.0, channel
+staging, build b8c2bd57) on the Pixel 8 emulator; `eas update --branch staging --clear-cache` with the
+eas.json preview values (group 5cd1da23): no banner on the first launch, banner on the second, on
+Landing and Login; "Actualizează" opens Google Play. The Note9 on the VIC 2.0 preview build (runtime
+2.0.0, same channel) did not get it. Undone with
+`eas update:roll-back-to-embedded --branch staging --runtime-version exposdk:51.0.0` (group a4a51bf2):
+banner gone on the second launch. iOS not tested (same mechanism).
+
 ## Production (cutover runbook)
-eas update --channel production --branch ota/update-now --message "Update now banner" --environment production
+The `production` channel serves branch `production` (check with `eas channel:view production`).
+With the nine values available (see Environment):
+eas update --branch production --message "Update now banner" --clear-cache
+Rollback on a no-go: eas update:roll-back-to-embedded --branch production --runtime-version exposdk:51.0.0
 Then `eas update:list --branch ota/update-now` shows one group for android + ios, runtime exposdk:51.0.0.
