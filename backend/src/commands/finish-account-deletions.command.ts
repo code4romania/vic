@@ -3,19 +3,24 @@ import { runCommand } from './command-runner';
 
 // #687: npm run users:finish-deletions          lists the accounts whose deletion stopped half way
 //       npm run users:finish-deletions -- --apply  erases them, like a deletion today
+//       add --only-profiles to keep only the half-finished ones (anonymized_profile) and leave the
+//       accounts the old code had already anonymized (anonymized_user) untouched
 // Run it without --apply first and check the list; it prints only ids and counts, no personal data.
 runCommand('users:finish-deletions', async (app, args) => {
   const apply = args.has('--apply');
+  const onlyProfiles = args.has('--only-profiles');
   const { found, erased, failed } = await app
     .get(FinishOldAccountDeletionsUseCase)
-    .execute(apply);
+    .execute(apply, { onlyProfiles });
 
   for (const item of found) {
     console.log(
       `${item.userId}  ${item.reason}  ${item.volunteers} volunteer record(s)`,
     );
   }
-  console.log(`${found.length} unfinished deletion(s)`);
+  console.log(
+    `${found.length} unfinished deletion(s)${onlyProfiles ? ' (only anonymized_profile)' : ''}`,
+  );
   if (!apply) {
     console.log('Nothing changed. Run again with --apply to erase them.');
     return;

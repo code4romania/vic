@@ -172,4 +172,35 @@ describe('Finish old account deletions (e2e)', () => {
     // nothing left to do the second time
     expect((await useCase.execute(true)).found).toEqual([]);
   });
+
+  it('--only-profiles finishes the half-finished deletions and leaves the old anonymized accounts', async () => {
+    const half = await volunteer(
+      'Louis Panera',
+      'louis@example.ro',
+      'account-deleted@1702900000000.ro',
+    );
+    const old = await volunteer(
+      'Deleted Deleted',
+      'account-deleted@1702900000001.ro',
+      null,
+    );
+    const useCase = testApp.app.get(FinishOldAccountDeletionsUseCase);
+
+    const dry = await useCase.execute(false, { onlyProfiles: true });
+    expect(dry.found.map(({ userId }) => userId)).toEqual([half.userId]);
+
+    const applied = await useCase.execute(true, { onlyProfiles: true });
+    expect(applied.erased).toEqual([half.userId]);
+
+    // the old anonymized account keeps its volunteer record and hours
+    const [{ count: logs }] = await q(
+      `SELECT count(*)::int AS count FROM activity_log WHERE volunteer_id = $1`,
+      [old.volunteerId],
+    );
+    expect(logs).toBe(1);
+    // and a full run still finds it
+    expect(
+      (await useCase.execute(false)).found.map(({ userId }) => userId),
+    ).toEqual([old.userId]);
+  });
 });

@@ -12,7 +12,7 @@ Two people (backend + database; web, stores, OTA + communication) plus one on th
 ## Before a date can be set
 
 - [ ] Rehearsal (issue 22): two clean runs on a production copy, timings recorded, rollback drill done.
-- [ ] #687 scope decided: finish **all** old deletions (`--apply` as is; hard-deletes their hours and contracts) or only the half-finished ones (`anonymized_profile`; needs a flag in the command).
+- [ ] #687 scope decided: finish **all** old deletions (`--apply` as is; hard-deletes their hours and contracts) or only the half-finished ones (`anonymized_profile`: add `--only-profiles` to both the dry run and `--apply`).
 - [ ] terraform-ngohub: the VIC 2.0 changes on `develop` (#149 own auth, #151/#152 release tags) reach `main` with production values in the Terrakube production workspace (`vic_jwt_key_id`, Google client ids, Apple ids, `vic_mobile_min_version`, `vic_maintenance_mode`) and the production secret in Secrets Manager (`jwt_private_key`, `jwt_public_key`, `auth_token_key`, `apple_private_key`, `maintenance_allowed_ips`); production web `VITE_GOOGLE_CLIENT_ID` (issue 20).
 - [ ] Mobile 2.0.0 production builds submitted to both stores, approved, held for manual release (issue 21).
 - [ ] Apple: the new app is signed by the same Apple team as the Cognito Apple federation ("Hide my email" addresses must match); the sending domain is registered under Sign in with Apple > Email sources, or relay users get no VIC email (issue 00).
