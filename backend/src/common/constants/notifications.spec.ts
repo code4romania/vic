@@ -45,3 +45,21 @@ describe('hours notifications', () => {
     );
   });
 });
+
+// #486: VIC no longer generates contracts; the NGO uploads them (or a certificate).
+describe('uploaded document notifications', () => {
+  const uploaded = NOTIFICATIONS.NEW_CONTRACT;
+
+  it('a contract is uploaded, not generated', () => {
+    expect(uploaded.PUSH.body('QA ONG')).toBe(
+      'QA ONG ți-a încărcat contractul de voluntariat. Îl găsești în aplicație, la Documente.',
+    );
+    expect(uploaded.EMAIL.subject('QA ONG')).toBe(uploaded.PUSH.body('QA ONG'));
+  });
+
+  it('a certificate has its own text', () => {
+    expect(uploaded.PUSH.body('QA ONG', true)).toBe(
+      'QA ONG ți-a încărcat o adeverință de voluntariat. O găsești în aplicație, la Documente.',
+    );
+  });
+});

@@ -25,6 +25,7 @@ export class DocumentsListener {
       contractId,
       userEmail,
       notificationsViaEmail,
+      isCertificate,
     } = payload;
 
     if (notificationsViaPush) {
@@ -39,18 +40,26 @@ export class DocumentsListener {
       this.pushNotificationsFacade.send({
         userIds: [userId],
         title: NOTIFICATIONS.NEW_CONTRACT.PUSH.title,
-        body: NOTIFICATIONS.NEW_CONTRACT.PUSH.body(organizationName),
+        body: NOTIFICATIONS.NEW_CONTRACT.PUSH.body(
+          organizationName,
+          isCertificate,
+        ),
         data: notificationData,
       });
     }
 
     if (notificationsViaEmail) {
-      // 4. Send mail to user with link to the volunteer profile for the organization
       await this.mailService.sendEmail({
         to: userEmail,
-        subject: NOTIFICATIONS.NEW_CONTRACT.EMAIL.subject(organizationName),
+        subject: NOTIFICATIONS.NEW_CONTRACT.EMAIL.subject(
+          organizationName,
+          isCertificate,
+        ),
         context: {
-          title: NOTIFICATIONS.NEW_CONTRACT.EMAIL.subject(organizationName),
+          title: NOTIFICATIONS.NEW_CONTRACT.EMAIL.subject(
+            organizationName,
+            isCertificate,
+          ),
           subtitle: NOTIFICATIONS.NEW_CONTRACT.EMAIL.body,
         },
       });
@@ -87,7 +96,6 @@ export class DocumentsListener {
     }
 
     if (notificationsViaEmail) {
-      // 4. Send mail to user with link to the volunteer profile for the organization
       await this.mailService.sendEmail({
         to: userEmail,
         subject: NOTIFICATIONS.APPROVE_CONTRACT.EMAIL.subject(organizationName),
@@ -130,7 +138,6 @@ export class DocumentsListener {
     }
 
     if (notificationsViaEmail) {
-      // 4. Send mail to user with link to the volunteer profile for the organization
       await this.mailService.sendEmail({
         to: userEmail,
         subject: NOTIFICATIONS.REJECT_CONTRACT.EMAIL.subject(

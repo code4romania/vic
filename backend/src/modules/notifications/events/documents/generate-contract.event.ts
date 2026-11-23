@@ -9,6 +9,7 @@ export default class GenerateContractEvent extends BaseEvent {
     _notificationsViaEmail: boolean,
     _userEmail: string,
     private _contractId: string,
+    private _isCertificate = false,
   ) {
     super(
       _organizationId,
@@ -22,5 +23,9 @@ export default class GenerateContractEvent extends BaseEvent {
 
   public get contractId(): string {
     return this._contractId;
+  }
+
+  public get isCertificate(): boolean {
+    return this._isCertificate;
   }
 }

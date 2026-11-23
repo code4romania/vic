@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { compareAsc } from 'date-fns';
 import { S3_FILE_PATHS } from 'src/common/constants/constants';
 import { JSONStringifyError } from 'src/common/helpers/utils';
@@ -12,6 +13,8 @@ import { ContractExceptionMessages } from 'src/modules/documents/exceptions/cont
 import { IContractModel } from 'src/modules/documents/models/contract.model';
 import { ContractFacade } from 'src/modules/documents/services/contract.facade';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
+import { EVENTS } from 'src/modules/notifications/constants/events.constants';
+import GenerateContractEvent from 'src/modules/notifications/events/documents/generate-contract.event';
 import { VolunteerExceptionMessages } from 'src/modules/volunteer/exceptions/volunteer.exceptions';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 import { assertVolunteerAcceptsDocuments } from 'src/modules/volunteer/volunteer-status.rules';
@@ -42,6 +45,7 @@ export class UploadContractUsecase {
     private readonly s3Service: S3Service,
     private readonly exceptionsService: ExceptionsService,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   public async execute(
@@ -137,6 +141,22 @@ export class UploadContractUsecase {
         contractNumber: contract.contractNumber,
       },
       admin,
+    );
+
+    // The volunteer gets a push and/or an email, as their settings allow; the tap opens Documente
+    const settings = volunteer.user.notificationsSettings;
+    this.eventEmitter.emit(
+      EVENTS.DOCUMENTS.GENERATE_CONTRACT,
+      new GenerateContractEvent(
+        organization.id,
+        volunteer.user.id,
+        organization.name,
+        settings?.notificationsViaPush ?? false,
+        settings?.notificationsViaEmail ?? false,
+        volunteer.user.email,
+        contract.id,
+        type === DocumentType.CERTIFICATE,
+      ),
     );
 
     return contract;
