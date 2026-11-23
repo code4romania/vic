@@ -61,6 +61,11 @@ describe('refreshAfterPush (#691)', () => {
     },
   );
 
+  it('an uploaded contract: the Documente list and the document counters load again', () => {
+    refreshAfterPush(EVENTS.DOCUMENTS.GENERATE_CONTRACT);
+    expect(invalidated()).toEqual(['contract-history', 'monthly-statistics', 'volunteer-stats']);
+  });
+
   it('other pushes and unknown payloads leave the data alone', () => {
     refreshAfterPush(EVENTS.OTHER.SEND_ANNOUNCEMENT);
     refreshAfterPush(undefined);
