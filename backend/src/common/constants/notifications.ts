@@ -15,6 +15,14 @@ const hoursOfVolunteering = (hours: number, date: string): string => {
 const hoursDecided = (hours: number, verb: 'aprobat' | 'respins'): string =>
   isOneHour(hours) ? `a fost ${verb}ă` : `au fost ${verb}e`;
 
+const uploadedDocument = (
+  organizationName: string,
+  isCertificate: boolean,
+): string =>
+  isCertificate
+    ? `${organizationName} ți-a încărcat o adeverință de voluntariat. O găsești în aplicație, la Documente.`
+    : `${organizationName} ți-a încărcat contractul de voluntariat. Îl găsești în aplicație, la Documente.`;
+
 export const NOTIFICATIONS = {
   APPROVE_ACCESS_REQUEST: {
     PUSH: {
@@ -143,15 +151,16 @@ export const NOTIFICATIONS = {
         `${hoursOfVolunteering(hours, date)} ${hoursDecided(hours, 'respins')}. Motiv: ${reason}`,
     },
   },
+  // #486: the NGO uploads a signed contract or a certificate; the volunteer finds it on Documente
   NEW_CONTRACT: {
     PUSH: {
       title: 'VIC',
-      body: (organizationName: string): string =>
-        `${organizationName} ți-a generat contractul de voluntariat. Intră în aplicație și descarcă documentul.`,
+      body: (organizationName: string, isCertificate = false): string =>
+        uploadedDocument(organizationName, isCertificate),
     },
     EMAIL: {
-      subject: (organizationName: string): string =>
-        `${organizationName} ți-a generat contractul de voluntariat. Intră în aplicație și descarcă documentul.`,
+      subject: (organizationName: string, isCertificate = false): string =>
+        uploadedDocument(organizationName, isCertificate),
       body: '',
     },
   },
