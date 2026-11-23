@@ -43,22 +43,21 @@ const UpdateNowBanner = () => {
 export default UpdateNowBanner;
 
 const styles = StyleSheet.create({
+  // stacked: the text gets the full width, the button its own row (a bigger target)
   banner: {
     backgroundColor: '#280056',
     paddingHorizontal: 16,
-    paddingBottom: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
+    paddingBottom: 14,
+    gap: 10,
   },
-  texts: { flex: 1, gap: 2 },
-  title: { color: '#FFFFFF' },
-  message: { color: '#E5E7EB' },
+  texts: { gap: 2 },
+  title: { color: '#FFFFFF', textAlign: 'center' },
+  message: { color: '#E5E7EB', textAlign: 'center' },
   button: {
     backgroundColor: '#FBBF24',
     borderRadius: 999,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingVertical: 12,
+    alignItems: 'center',
   },
-  buttonText: { color: '#1F2937' },
+  buttonText: { color: '#1F2937', fontFamily: 'roboto-bold', fontSize: 16, lineHeight: 20 },
 });
