@@ -21,6 +21,22 @@ import * as SplashScreen from 'expo-splash-screen';
 import * as Notifications from 'expo-notifications';
 import NotificationContextProvider from './src/contexts/notification/NotificationContextProvider';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import {
+  SafeAreaInsetsContext,
+  SafeAreaProvider,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
+import UpdateNowBanner from './src/components/UpdateNowBanner';
+
+// The banner takes the top safe area; the screens below must not add it a second time.
+const BelowBanner = ({ children }: { children: React.ReactNode }) => {
+  const insets = useSafeAreaInsets();
+  return (
+    <SafeAreaInsetsContext.Provider value={{ ...insets, top: 0 }}>
+      {children}
+    </SafeAreaInsetsContext.Provider>
+  );
+};
 
 // Configure Amplify for Login
 Amplify.configure(AMPLIFY_CONFIG as any);
@@ -67,19 +83,26 @@ export default () => {
         theme={{ ...eva.dark, ...theme } as any}
         customMapping={mapping}
       >
-        <GestureHandlerRootView style={styles.gestureHandler}>
-          <QueryClientProvider client={queryClient}>
-            <AuthContextProvider>
-              <NavigationContainer ref={navigationRef}>
-                <NotificationContextProvider navigation={navigationRef}>
-                  <Router />
-                </NotificationContextProvider>
-              </NavigationContainer>
-            </AuthContextProvider>
-          </QueryClientProvider>
-        </GestureHandlerRootView>
+        <SafeAreaProvider>
+          <GestureHandlerRootView style={styles.gestureHandler}>
+            {/* Update now (issue 18): on every screen of 1.0.x */}
+            <UpdateNowBanner />
+            <BelowBanner>
+              <QueryClientProvider client={queryClient}>
+                <AuthContextProvider>
+                  <NavigationContainer ref={navigationRef}>
+                    <NotificationContextProvider navigation={navigationRef}>
+                      <Router />
+                    </NotificationContextProvider>
+                  </NavigationContainer>
+                </AuthContextProvider>
+              </QueryClientProvider>
+            </BelowBanner>
+          </GestureHandlerRootView>
+        </SafeAreaProvider>
 
-        <ExpoStatusBar style="dark" />
+        {/* light icons: the Update now banner is always at the top, on dark purple */}
+        <ExpoStatusBar style="light" />
       </ApplicationProvider>
       <Toast config={toastConfig} />
     </>
