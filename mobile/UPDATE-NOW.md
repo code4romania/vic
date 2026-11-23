@@ -50,7 +50,7 @@ eas.json preview values (group 5cd1da23): no banner on the first launch, banner 
 Landing and Login; "Actualizează" opens Google Play. The Note9 on the VIC 2.0 preview build (runtime
 2.0.0, same channel) did not get it. Undone with
 `eas update:roll-back-to-embedded --branch staging --runtime-version exposdk:51.0.0` (group a4a51bf2):
-banner gone on the second launch. iOS not tested (same mechanism).
+banner gone on the second launch. iOS the same day: EAS simulator build from `main` (1.0.19, build 82587d50) on an iPhone 15 Pro simulator, iOS 17.2: banner on the second launch (Landing, Login), "Actualizează" opens https://apps.apple.com/ro/app/vic/id6474194051 (Safari on the simulator, the App Store on a phone); rolled back, banner gone.
 
 ## Production (cutover runbook)
 The `production` channel serves branch `production` (check with `eas channel:view production`).
