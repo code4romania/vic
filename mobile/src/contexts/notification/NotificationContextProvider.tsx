@@ -52,6 +52,12 @@ const HOURS: readonly (readonly unknown[])[] = [
   ['activity-log'],
   ['personal-statistics'],
 ];
+// the Documente list and the document counters on Acasă and on the organization page
+const DOCUMENTS: readonly (readonly unknown[])[] = [
+  queryKeys.contractHistoryAll,
+  ['monthly-statistics'],
+  ['volunteer-stats'],
+];
 const STALE_AFTER_PUSH: Record<string, readonly (readonly unknown[])[]> = {
   // the organization page, the list and myOrganizations: else "awaiting approval" stays (#691)
   [EVENTS.JOIN_NGO.APPROVE_REQUEST]: MEMBERSHIP,
@@ -60,6 +66,8 @@ const STALE_AFTER_PUSH: Record<string, readonly (readonly unknown[])[]> = {
   // the Ore list, its totals, the entry and the home impact: else they stay "pending" (#711)
   [EVENTS.VOLUNTEER_HOURS.APPROVE]: HOURS,
   [EVENTS.VOLUNTEER_HOURS.REJECT]: HOURS,
+  // the NGO uploaded a contract or a certificate (#719): else Documente opens on the old list
+  [EVENTS.DOCUMENTS.GENERATE_CONTRACT]: DOCUMENTS,
 };
 
 export const refreshAfterPush = (key: unknown): void => {

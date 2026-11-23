@@ -15,6 +15,7 @@ export const queryKeys = {
   activityLogCounters: (volunteerId: string | undefined) => ['logs-counters', volunteerId] as const,
   activityLogCountersAll: ['logs-counters'] as const,
   contractHistory: (volunteerId: string | undefined) => ['contract-history', volunteerId] as const,
+  contractHistoryAll: ['contract-history'] as const,
 };
 
 // react-query's refetch() runs even when the query is disabled: without an active organization
