@@ -18,8 +18,24 @@ EXPO_PUBLIC_API_URL, EXPO_PUBLIC_AWS_REGION, EXPO_PUBLIC_USER_POOL_ID, EXPO_PUBL
 EXPO_PUBLIC_AWS_DOMAIN, EXPO_PUBLIC_PRIVACY_POLICY_LINK, EXPO_PUBLIC_TERMS_AND_CONDITIONS_LINK,
 EXPO_PUBLIC_INFORMATION_LINK, EXPO_PUBLIC_CONTACT_EMAIL
 
-Use `--environment production` if they are set as EAS environment variables (check with
-`eas env:list --environment production`), or export them in the shell before publishing.
+**Checked 2026-11-23:** all nine exist in the EAS `production` environment, but only
+`EXPO_PUBLIC_API_URL` is readable outside EAS (visibility "sensitive"). The other eight
+(`AWS_DOMAIN`, `AWS_REGION`, `USER_POOL_ID`, `USER_POOL_CLIENT_ID`, `CONTACT_EMAIL` and the three
+links) have **secret** visibility: they exist only on EAS servers, so `eas update --environment
+production` run from a laptop bundles them **empty**. A local `npx expo export` with the pulled
+production env confirmed it: the API URL, the banner and the store link are in the bundle; the
+Cognito pool, region, domain, contact email and links are not.
+
+So before publishing, pick one:
+1. Get the eight production values from whoever owns the Expo project / AWS (none of them is
+   really secret: they ship inside every installed app) and put them in an untracked `.env.local`
+   next to the pulled API URL; or
+2. Change those variables' visibility to "sensitive" on expo.dev (then `--environment production`
+   works); or
+3. Publish from an EAS Workflow `update` job (runs on EAS servers, where secret variables exist).
+
+Whichever: run `npx expo export --platform android` first and check the bundle contains
+`https://api-vic.ngohub.ro`, the Cognito domain (`amazoncognito.com`) and `eu-west-1_`, then publish.
 
 ## Staging check (before the cutover)
 1. A phone with an old SDK 51 preview build (channel `staging`).
