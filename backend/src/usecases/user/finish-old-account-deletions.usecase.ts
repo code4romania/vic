@@ -58,12 +58,20 @@ export class FinishOldAccountDeletionsUseCase {
 
   // Without `apply` only lists them. Each person is erased in a transaction of their own, so one
   // failure leaves the others done; the S3 files go after each commit, best effort.
-  async execute(apply: boolean): Promise<{
+  // `onlyProfiles` keeps only the half-finished deletions (`anonymized_profile`, the #687 case) and
+  // leaves the accounts the old code had already anonymized (`anonymized_user`) as they are: erasing
+  // those removes their hours and contracts for good, so production chooses (runbook, issue 23).
+  async execute(
+    apply: boolean,
+    { onlyProfiles = false }: { onlyProfiles?: boolean } = {},
+  ): Promise<{
     found: IOldAccountDeletion[];
     erased: string[];
     failed: string[];
   }> {
-    const found = await this.findUnfinished();
+    const found = (await this.findUnfinished()).filter(
+      (item) => !onlyProfiles || item.reason === 'anonymized_profile',
+    );
     const erased: string[] = [];
     const failed: string[] = [];
     if (!apply) return { found, erased, failed };

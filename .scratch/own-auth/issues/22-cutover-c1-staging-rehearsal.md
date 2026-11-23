@@ -64,7 +64,7 @@ migrate-identities --dry-run      169 read · 46 admins · 116 volunteers · 0 s
 migrate-identities                same numbers, 162 transition emails held
 ```
 
-`anonymized_user` rows are accounts deleted by the old code (renamed "Deleted", soft deleted); `--apply` erases them with today's rules, which **hard-deletes their volunteer records, hours, contracts (and the PDFs) and event registrations**. `anonymized_profile` rows are the half-finished deletions of #687 (still shown as Activ). On production, decide before `--apply` whether to finish all of them or only `anonymized_profile`, and record the decision here.
+`anonymized_user` rows are accounts deleted by the old code (renamed "Deleted", soft deleted); `--apply` erases them with today's rules, which **hard-deletes their volunteer records, hours, contracts (and the PDFs) and event registrations**. `anonymized_profile` rows are the half-finished deletions of #687 (still shown as Activ). On production, decide before `--apply` whether to finish all of them or only `anonymized_profile` (`--only-profiles`, on both the dry run and `--apply`), and record the decision here.
 
 ## Smoke test
 
