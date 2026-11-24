@@ -12,6 +12,11 @@ export const getContractModels = async (): Promise<IContractModel[]> => {
   return API.get('template').then((res) => res.data);
 };
 
+// #726: the model's file, for the in-app viewer and the Download button
+export const getContractModelFile = async (id: string): Promise<Blob> => {
+  return API.get(`template/${id}/file`, { responseType: 'blob' }).then((res) => res.data);
+};
+
 export const uploadContractModel = async ({
   name,
   file,

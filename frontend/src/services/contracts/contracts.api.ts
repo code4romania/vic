@@ -52,6 +52,11 @@ export const getContractsForDownload = async (
   });
 };
 
+// #726: the stored file, for the in-app viewer and the Download button
+export const getContractFile = async (id: string): Promise<Blob> => {
+  return API.get(`contract/${id}/file`, { responseType: 'blob' }).then((res) => res.data);
+};
+
 export const getPendingContractsCount = async (): Promise<number> => {
   return API.get('contract/active').then((res) => res.data);
 };
