@@ -9,12 +9,14 @@ interface EmptyContentProps {
   icon?: ReactNode;
   // A button or link under the text (e.g. "Adaugă voluntar")
   action?: ReactNode;
+  // A failure with its own text (not the generic one): the same red warning icon
+  error?: boolean;
 }
 
 // Nothing to show: a gray icon in a circle, an optional title, a short text. The pages pass the
 // generic "error loading" text for failed requests: those get a warning icon and a title.
-const EmptyContent = ({ description, title, icon, action }: EmptyContentProps) => {
-  const isError = description === i18n.t('general:error.load_entries');
+const EmptyContent = ({ description, title, icon, action, error }: EmptyContentProps) => {
+  const isError = error ?? description === i18n.t('general:error.load_entries');
   const heading = title ?? (isError ? i18n.t('states:error_title') : undefined);
 
   return (

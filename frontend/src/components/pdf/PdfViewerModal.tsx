@@ -10,7 +10,7 @@ import {
 import i18n from '../../common/config/i18n';
 import { downloadBlob } from '../../common/utils/utils';
 import EmptyContent from '../EmptyContent';
-import LoadErrorContent from '../LoadErrorContent';
+import Button from '../Button';
 import LoadingContent from '../LoadingContent';
 
 const PdfDocument = lazy(() => import('./PdfDocument'));
@@ -187,7 +187,19 @@ const PdfViewerModal = ({ fileName, load, onClose }: PdfViewerModalProps) => {
           <div className="relative flex-1 min-h-0">
             {failed ? (
               <div className="p-6">
-                <LoadErrorContent onRetry={() => setAttempt((value) => value + 1)} />
+                <EmptyContent
+                  error
+                  title={t('error_title')}
+                  description={t('error')}
+                  action={
+                    <Button
+                      type="button"
+                      label={`${i18n.t('states:retry')}`}
+                      className="btn-outline-secondary"
+                      onClick={() => setAttempt((value) => value + 1)}
+                    />
+                  }
+                />
               </div>
             ) : !file ? (
               <LoadingContent />

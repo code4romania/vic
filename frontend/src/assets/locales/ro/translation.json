@@ -1900,7 +1900,9 @@
       "page_of": "{{page}} / {{total}}",
       "page_label": "Pagina {{page}} din {{total}}",
       "render_error": "Documentul nu poate fi afișat aici. Îl poți descărca.",
-      "download_error": "Documentul nu a putut fi descărcat. Încearcă din nou."
+      "download_error": "Documentul nu a putut fi descărcat. Încearcă din nou.",
+      "error_title": "Documentul nu a putut fi deschis",
+      "error": "Verifică conexiunea și încearcă din nou. Dacă problema persistă, documentul poate lipsi."
     }
   },
   "auth": {

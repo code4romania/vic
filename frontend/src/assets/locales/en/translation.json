@@ -1875,7 +1875,9 @@
       "page_of": "{{page}} / {{total}}",
       "page_label": "Page {{page}} of {{total}}",
       "render_error": "This document cannot be shown here. You can download it.",
-      "download_error": "The document could not be downloaded. Please try again."
+      "download_error": "The document could not be downloaded. Please try again.",
+      "error_title": "The document could not be opened",
+      "error": "Check your connection and try again. If it keeps happening, the document may be missing."
     }
   },
   "auth": {

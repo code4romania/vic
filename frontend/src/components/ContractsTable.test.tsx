@@ -141,6 +141,39 @@ describe('ContractsTable (#486, #488, #489)', () => {
     click.mockRestore();
   });
 
+  it('says when the document cannot be opened, and tries again', async () => {
+    let attempts = 0;
+    server.use(
+      http.get(api('/contract'), () => HttpResponse.json(page([contract({})]))),
+      http.get(api('/contract/c1/file'), () => {
+        attempts += 1;
+        return attempts === 1
+          ? HttpResponse.json({ code_error: 'CONTRACT_010' }, { status: 404 })
+          : new HttpResponse(new Blob(['%PDF-1.4']), {
+              headers: { 'Content-Type': 'application/pdf' },
+            });
+      }),
+    );
+    renderPage(<ContractsTable query={{ limit: 10, page: 1 }} setQuery={vi.fn()} />);
+
+    await userEvent.click(
+      await screen.findByRole('button', { name: `${t('documents:page.view')} Contract_1.pdf` }),
+    );
+    const viewer = await screen.findByTestId('pdf-viewer');
+    expect(await within(viewer).findByText(t('documents:viewer.error_title'))).toBeInTheDocument();
+    expect(
+      within(viewer).getByRole('button', {
+        name: `${t('documents:viewer.download')} Contract_1.pdf`,
+      }),
+    ).toBeDisabled();
+
+    await userEvent.click(within(viewer).getByRole('button', { name: t('states:retry') }));
+    expect(
+      await within(viewer).findByLabelText(t('documents:viewer.page_label', { page: 1, total: 3 })),
+    ).toBeInTheDocument();
+    expect(attempts).toBe(2);
+  });
+
   it('has no "Vezi" for an older Word contract, only its download (#688)', async () => {
     server.use(
       http.get(api('/contract'), () =>
