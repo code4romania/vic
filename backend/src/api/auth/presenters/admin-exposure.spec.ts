@@ -96,6 +96,7 @@ describe('admins shown to other users expose only id and name', () => {
       phone: '+40700000007',
       organizationId: 'org-id',
       superAdmin: true,
+      language: null,
     });
   });
 });

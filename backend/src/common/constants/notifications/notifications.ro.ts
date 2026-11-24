@@ -23,7 +23,8 @@ const uploadedDocument = (
     ? `${organizationName} ți-a încărcat o adeverință de voluntariat. O găsești în aplicație, la Documente.`
     : `${organizationName} ți-a încărcat contractul de voluntariat. Îl găsești în aplicație, la Documente.`;
 
-export const NOTIFICATIONS = {
+// The Romanian texts. notifications.en.ts must have the same shape (NotificationTexts).
+export const RO = {
   APPROVE_ACCESS_REQUEST: {
     PUSH: {
       title: 'VIC',
@@ -196,3 +197,5 @@ export const NOTIFICATIONS = {
     },
   },
 };
+
+export type NotificationTexts = typeof RO;

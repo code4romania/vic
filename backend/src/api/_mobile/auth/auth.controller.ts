@@ -19,7 +19,7 @@ import {
   RequestLoginDto,
 } from 'src/api/auth/dto/request-login.dto';
 import { SessionPresenter } from 'src/api/auth/presenters/session.presenter';
-import { requestClient } from 'src/api/auth/request-client';
+import { requestClient, requestLanguage } from 'src/api/auth/request-client';
 import { Public } from 'src/common/decorators/public.decorator';
 import { AuthRealm } from 'src/modules/auth/enums/auth.enums';
 import { MobileJwtAuthGuard } from 'src/modules/auth/guards/jwt-mobile.guard';
@@ -64,6 +64,7 @@ export class MobileAuthController {
         AuthRealm.MOBILE,
         email,
         requestClient(req).ip,
+        requestLanguage(req),
       ),
     );
   }

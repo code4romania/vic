@@ -163,6 +163,7 @@ import { DeleteVolunteerUsecase } from './volunteer/delete-volunteer.usecase';
 import { CertificateUsecase } from './documents/certificate.usecase';
 import { GetVolunteerContractHistoryUsecase } from './documents/get-volunteer-contract-history.usecase';
 import { UpdateRegularUserUsecase } from './user/update-regular-user.usecase';
+import { SetUserLanguageUseCase } from './user/set-user-language.usecase';
 import { GetVolunteerMonthlyNewsStatisticsUsecase } from './dashboard/get-volunteer-monthly-news.usecase';
 import { GetVicStatisticsUsecase } from './dashboard/get-vic-statistics.usecase';
 import { RespondToAnnouncementUseCase } from './announcement/respond-to-announcement.usecase';
@@ -266,6 +267,7 @@ import { FinishOldAccountDeletionsUseCase } from './user/finish-old-account-dele
     GetOneRegularUserUseCase,
     GetManyAdminUsersUseCase,
     UpdateRegularUserUsecase,
+    SetUserLanguageUseCase,
     GetOneRegularUserProfileUseCase,
     SyncUserOrganizationsUsecase,
     DeleteAccountRegularUserUsecase,
@@ -455,6 +457,7 @@ import { FinishOldAccountDeletionsUseCase } from './user/finish-old-account-dele
     GetOneRegularUserUseCase,
     GetManyAdminUsersUseCase,
     UpdateRegularUserUsecase,
+    SetUserLanguageUseCase,
     GetOneRegularUserProfileUseCase,
     SyncUserOrganizationsUsecase,
     DeleteAccountRegularUserUsecase,

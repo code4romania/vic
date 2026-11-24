@@ -4,6 +4,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Patch,
   Post,
   Req,
   Res,
@@ -37,7 +38,10 @@ import { RequestLoginDto } from './dto/request-login.dto';
 import { ResendVerificationDto } from './dto/resend-verification.dto';
 import { AdminProfilePresenter } from './presenters/admin-profile.presenter';
 import { SessionPresenter } from './presenters/session.presenter';
-import { requestClient } from './request-client';
+import { requestClient, requestLanguage } from './request-client';
+import { SetLanguageDto } from './dto/set-language.dto';
+import { LanguagePresenter } from './presenters/language.presenter';
+import { SetUserLanguageUseCase } from 'src/usecases/user/set-user-language.usecase';
 
 const AUTH_THROTTLE = { default: { limit: 10, ttl: 60000 } };
 
@@ -52,6 +56,7 @@ export class WebAuthController {
     private readonly logoutUseCase: LogoutUseCase,
     private readonly resendVerificationUseCase: ResendVerificationUseCase,
     private readonly webSocialLoginUseCase: WebSocialLoginUseCase,
+    private readonly setUserLanguageUseCase: SetUserLanguageUseCase,
     private readonly authConfig: AuthConfigService,
   ) {}
 
@@ -62,8 +67,16 @@ export class WebAuthController {
   @Throttle(AUTH_THROTTLE)
   @HttpCode(HttpStatus.NO_CONTENT)
   @Post('login/request')
-  async requestLogin(@Body() { email }: RequestLoginDto): Promise<void> {
-    await this.requestLoginUseCase.execute(AuthRealm.WEB, email);
+  async requestLogin(
+    @Body() { email }: RequestLoginDto,
+    @Req() req: Request,
+  ): Promise<void> {
+    await this.requestLoginUseCase.execute(
+      AuthRealm.WEB,
+      email,
+      undefined,
+      requestLanguage(req),
+    );
   }
 
   // Google or Apple (#512): an existing admin login only, by verified email. Same answer as a magic link:
@@ -138,8 +151,13 @@ export class WebAuthController {
   @Post('resend-verification')
   async resendVerification(
     @Body() { email }: ResendVerificationDto,
+    @Req() req: Request,
   ): Promise<void> {
-    await this.resendVerificationUseCase.execute(AuthRealm.WEB, email);
+    await this.resendVerificationUseCase.execute(
+      AuthRealm.WEB,
+      email,
+      requestLanguage(req),
+    );
   }
 
   // The web app's bootstrap call after a refresh; replaces the old POST /auth/login.
@@ -147,5 +165,17 @@ export class WebAuthController {
   @Get('me')
   me(@ExtractUser() user: IWebRequestUser): AdminProfilePresenter {
     return new AdminProfilePresenter(user);
+  }
+
+  // The admin's language: the web app, and the emails VIC sends them.
+  @ApiOkResponse({ type: LanguagePresenter })
+  @Patch('language')
+  async setLanguage(
+    @ExtractUser() user: IWebRequestUser,
+    @Body() { language, explicit }: SetLanguageDto,
+  ): Promise<LanguagePresenter> {
+    return new LanguagePresenter(
+      await this.setUserLanguageUseCase.execute(user.id, language, explicit),
+    );
   }
 }

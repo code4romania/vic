@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { EVENTS } from '../constants/events.constants';
-import { NOTIFICATIONS } from 'src/common/constants/notifications';
+import { localized, PUSH_TITLE } from 'src/common/constants/notifications';
 import { PushNotificationsFacade } from '../notifications.facade';
-import { MailService } from 'src/modules/mail/services/mail.service';
+import { NotificationMailerService } from '../services/notification-mailer.service';
+import { UserType } from 'src/modules/user/enums/user.enum';
 import GenerateContractEvent from '../events/documents/generate-contract.event';
 import ApproveContractEvent from '../events/documents/approve-contract.event';
 import RejectContractEvent from '../events/documents/reject-contract.event';
@@ -11,7 +12,7 @@ import RejectContractEvent from '../events/documents/reject-contract.event';
 @Injectable()
 export class DocumentsListener {
   constructor(
-    private readonly mailService: MailService,
+    private readonly notificationMailer: NotificationMailerService,
     private readonly pushNotificationsFacade: PushNotificationsFacade,
   ) {}
 
@@ -39,30 +40,26 @@ export class DocumentsListener {
 
       this.pushNotificationsFacade.send({
         userIds: [userId],
-        title: NOTIFICATIONS.NEW_CONTRACT.PUSH.title,
-        body: NOTIFICATIONS.NEW_CONTRACT.PUSH.body(
-          organizationName,
-          isCertificate,
+        title: PUSH_TITLE,
+        body: localized((t) =>
+          t.NEW_CONTRACT.PUSH.body(organizationName, isCertificate),
         ),
         data: notificationData,
       });
     }
 
     if (notificationsViaEmail) {
-      await this.mailService.sendEmail({
-        to: userEmail,
-        subject: NOTIFICATIONS.NEW_CONTRACT.EMAIL.subject(
-          organizationName,
-          isCertificate,
-        ),
-        context: {
-          title: NOTIFICATIONS.NEW_CONTRACT.EMAIL.subject(
+      await this.notificationMailer.send(
+        [userEmail],
+        UserType.REGULAR,
+        (t) => ({
+          subject: t.NEW_CONTRACT.EMAIL.subject(
             organizationName,
             isCertificate,
           ),
-          subtitle: NOTIFICATIONS.NEW_CONTRACT.EMAIL.body,
-        },
-      });
+          body: t.NEW_CONTRACT.EMAIL.body,
+        }),
+      );
     }
   }
 
@@ -89,21 +86,21 @@ export class DocumentsListener {
 
       this.pushNotificationsFacade.send({
         userIds: [userId],
-        title: NOTIFICATIONS.APPROVE_CONTRACT.PUSH.title,
-        body: NOTIFICATIONS.APPROVE_CONTRACT.PUSH.body(organizationName),
+        title: PUSH_TITLE,
+        body: localized((t) => t.APPROVE_CONTRACT.PUSH.body(organizationName)),
         data: notificationData,
       });
     }
 
     if (notificationsViaEmail) {
-      await this.mailService.sendEmail({
-        to: userEmail,
-        subject: NOTIFICATIONS.APPROVE_CONTRACT.EMAIL.subject(organizationName),
-        context: {
-          title: NOTIFICATIONS.APPROVE_CONTRACT.EMAIL.subject(organizationName),
-          subtitle: NOTIFICATIONS.APPROVE_CONTRACT.EMAIL.body,
-        },
-      });
+      await this.notificationMailer.send(
+        [userEmail],
+        UserType.REGULAR,
+        (t) => ({
+          subject: t.APPROVE_CONTRACT.EMAIL.subject(organizationName),
+          body: t.APPROVE_CONTRACT.EMAIL.body,
+        }),
+      );
     }
   }
 
@@ -131,27 +128,23 @@ export class DocumentsListener {
 
       this.pushNotificationsFacade.send({
         userIds: [userId],
-        title: NOTIFICATIONS.REJECT_CONTRACT.PUSH.title,
-        body: NOTIFICATIONS.REJECT_CONTRACT.PUSH.body(organizationName, reason),
+        title: PUSH_TITLE,
+        body: localized((t) =>
+          t.REJECT_CONTRACT.PUSH.body(organizationName, reason),
+        ),
         data: notificationData,
       });
     }
 
     if (notificationsViaEmail) {
-      await this.mailService.sendEmail({
-        to: userEmail,
-        subject: NOTIFICATIONS.REJECT_CONTRACT.EMAIL.subject(
-          organizationName,
-          reason,
-        ),
-        context: {
-          title: NOTIFICATIONS.REJECT_CONTRACT.EMAIL.subject(
-            organizationName,
-            reason,
-          ),
-          subtitle: NOTIFICATIONS.REJECT_CONTRACT.EMAIL.body,
-        },
-      });
+      await this.notificationMailer.send(
+        [userEmail],
+        UserType.REGULAR,
+        (t) => ({
+          subject: t.REJECT_CONTRACT.EMAIL.subject(organizationName, reason),
+          body: t.REJECT_CONTRACT.EMAIL.body,
+        }),
+      );
     }
   }
 }

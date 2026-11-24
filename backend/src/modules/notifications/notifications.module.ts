@@ -16,6 +16,8 @@ import { NotificationsSettingsEntity } from './entities/notifications-settings.e
 import { NotificationsSettingsRepository } from './repositories/notifications-settings.repository';
 import { NotificationsSettingsFacade } from './notifications-settings.facade';
 import { DocumentsListener } from './listeners/documents.listener';
+import { NotificationMailerService } from './services/notification-mailer.service';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
@@ -26,6 +28,8 @@ import { DocumentsListener } from './listeners/documents.listener';
       defaultJobOptions: SENSITIVE_JOB_OPTIONS,
     }),
     MailModule,
+    // each person's language, for the push notifications and the emails
+    UserModule,
   ],
   providers: [
     PushTokensRepository,
@@ -37,6 +41,7 @@ import { DocumentsListener } from './listeners/documents.listener';
     OthersListener,
     DocumentsListener,
     PushNotificationsService,
+    NotificationMailerService,
 
     PushTicketsCheckerProcessor,
 

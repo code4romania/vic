@@ -3,6 +3,7 @@ import { CityEntity } from 'src/modules/location/entities/city.entity';
 import { OrganizationEntity } from 'src/modules/organization/entities/organization.entity';
 import { VolunteerEntity } from 'src/modules/volunteer/entities/volunteer.entity';
 import {
+  Check,
   ChildEntity,
   Column,
   Entity,
@@ -14,13 +15,14 @@ import {
   PrimaryGeneratedColumn,
   TableInheritance,
 } from 'typeorm';
-import { SEX, UserType } from '../enums/user.enum';
+import { Language, SEX, UserType } from '../enums/user.enum';
 import { NotificationsSettingsEntity } from 'src/modules/notifications/entities/notifications-settings.entity';
 
 @Entity({ name: 'user' })
 // Emails are unique per type ignoring case: UNIQUE (type, lower(email)) WHERE deleted_on IS NULL.
 // Written by hand in the OwnAuthTables migration, because TypeORM cannot express lower().
 @Index('user_type_email_unique', { synchronize: false })
+@Check('user_language_check', `"language" IN ('ro', 'en')`)
 @TableInheritance({ column: { type: 'varchar', name: 'type', enum: UserType } }) // TODO: can include type in the entity response from the db?
 export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -44,6 +46,11 @@ export class UserEntity extends BaseEntity {
   // Becomes true when that email signs up and claims the row.
   @Column({ type: 'boolean', name: 'has_account', default: true })
   hasAccount: boolean;
+
+  // Null until the person's app reports a language or they choose one. Accounts used before the
+  // language switch existed were set to Romanian by the UserLanguage migration.
+  @Column({ type: 'varchar', length: 2, name: 'language', nullable: true })
+  language: Language | null;
 }
 
 @ChildEntity(UserType.ADMIN)

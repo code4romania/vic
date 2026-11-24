@@ -1,17 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { MailService } from 'src/modules/mail/services/mail.service';
+import { NotificationMailerService } from '../services/notification-mailer.service';
+import { UserType } from 'src/modules/user/enums/user.enum';
 import { EVENTS } from '../constants/events.constants';
 import AddNGOEventEvent from '../events/ngo-event/add-event.event';
 import VolunteerAddedToEventEvent from '../events/ngo-event/volunteer-added.event';
 import RegistrationDecidedEvent from '../events/ngo-event/registration-decided.event';
 import { PushNotificationsFacade } from '../notifications.facade';
-import { NOTIFICATIONS } from 'src/common/constants/notifications';
+import { localized, PUSH_TITLE } from 'src/common/constants/notifications';
 
 @Injectable()
 export class NGOEventListener {
   constructor(
-    private readonly mailService: MailService,
+    private readonly notificationMailer: NotificationMailerService,
     private readonly pushNotificationsFacade: PushNotificationsFacade,
   ) {}
 
@@ -30,23 +31,16 @@ export class NGOEventListener {
 
     this.pushNotificationsFacade.send({
       userIds: userIds,
-      title: NOTIFICATIONS.NEW_EVENT.PUSH.title,
-      body: NOTIFICATIONS.NEW_EVENT.PUSH.body(organizationName),
+      title: PUSH_TITLE,
+      body: localized((t) => t.NEW_EVENT.PUSH.body(organizationName)),
       data: notificationData,
     });
 
-    // add each email in a queue
-    userEmails.forEach(
-      async (email: string) =>
-        await this.mailService.sendEmail({
-          to: email,
-          subject: NOTIFICATIONS.NEW_EVENT.EMAIL.subject(organizationName),
-          context: {
-            title: NOTIFICATIONS.NEW_EVENT.EMAIL.subject(organizationName),
-            subtitle: NOTIFICATIONS.NEW_EVENT.EMAIL.body,
-          },
-        }),
-    );
+    // one email per volunteer, each in their own language
+    await this.notificationMailer.send(userEmails, UserType.REGULAR, (t) => ({
+      subject: t.NEW_EVENT.EMAIL.subject(organizationName),
+      body: t.NEW_EVENT.EMAIL.body,
+    }));
   }
 
   // #496
@@ -67,10 +61,9 @@ export class NGOEventListener {
     if (userIds.length) {
       this.pushNotificationsFacade.send({
         userIds,
-        title: NOTIFICATIONS.ADDED_TO_EVENT.PUSH.title,
-        body: NOTIFICATIONS.ADDED_TO_EVENT.PUSH.body(
-          organizationName,
-          eventName,
+        title: PUSH_TITLE,
+        body: localized((t) =>
+          t.ADDED_TO_EVENT.PUSH.body(organizationName, eventName),
         ),
         data: {
           key: EVENTS.NGO_EVENT.VOLUNTEER_ADDED,
@@ -79,21 +72,10 @@ export class NGOEventListener {
       });
     }
 
-    const subject = NOTIFICATIONS.ADDED_TO_EVENT.EMAIL.subject(
-      organizationName,
-      eventName,
-    );
-    userEmails.forEach(
-      async (email: string) =>
-        await this.mailService.sendEmail({
-          to: email,
-          subject,
-          context: {
-            title: subject,
-            subtitle: NOTIFICATIONS.ADDED_TO_EVENT.EMAIL.body,
-          },
-        }),
-    );
+    await this.notificationMailer.send(userEmails, UserType.REGULAR, (t) => ({
+      subject: t.ADDED_TO_EVENT.EMAIL.subject(organizationName, eventName),
+      body: t.ADDED_TO_EVENT.EMAIL.body,
+    }));
   }
 
   // #501
@@ -133,31 +115,39 @@ export class NGOEventListener {
       notificationsViaEmail,
     } = payload;
     const approved = key === EVENTS.NGO_EVENT.REGISTRATION_APPROVED;
-    const texts = approved
-      ? NOTIFICATIONS.REGISTRATION_APPROVED
-      : NOTIFICATIONS.REGISTRATION_REJECTED;
 
     if (notificationsViaPush) {
       this.pushNotificationsFacade.send({
         userIds: [userId],
-        title: texts.PUSH.title,
-        body: texts.PUSH.body(organizationName, eventName),
+        title: PUSH_TITLE,
+        body: localized((t) =>
+          (approved
+            ? t.REGISTRATION_APPROVED
+            : t.REGISTRATION_REJECTED
+          ).PUSH.body(organizationName, eventName),
+        ),
         data: { key, payload: { organizationId, eventId } },
       });
     }
 
     if (notificationsViaEmail && userEmail) {
-      const subject = texts.EMAIL.subject(organizationName, eventName);
-      await this.mailService.sendEmail({
-        to: userEmail,
-        subject,
-        context: {
-          title: subject,
-          subtitle: approved
-            ? NOTIFICATIONS.REGISTRATION_APPROVED.EMAIL.body
-            : NOTIFICATIONS.REGISTRATION_REJECTED.EMAIL.body(reason),
-        },
-      });
+      await this.notificationMailer.send([userEmail], UserType.REGULAR, (t) =>
+        approved
+          ? {
+              subject: t.REGISTRATION_APPROVED.EMAIL.subject(
+                organizationName,
+                eventName,
+              ),
+              body: t.REGISTRATION_APPROVED.EMAIL.body,
+            }
+          : {
+              subject: t.REGISTRATION_REJECTED.EMAIL.subject(
+                organizationName,
+                eventName,
+              ),
+              body: t.REGISTRATION_REJECTED.EMAIL.body(reason),
+            },
+      );
     }
   }
 }

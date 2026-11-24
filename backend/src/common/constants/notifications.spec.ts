@@ -1,9 +1,12 @@
 import { NOTIFICATIONS } from './notifications';
 
+const RO = NOTIFICATIONS.ro;
+const EN = NOTIFICATIONS.en;
+
 // #712: the hours pushes and emails agree with the number, as Romanian does.
 describe('hours notifications', () => {
-  const approved = NOTIFICATIONS.APPROVED_HOURS;
-  const rejected = NOTIFICATIONS.REJECTED_HOURS;
+  const approved = RO.APPROVED_HOURS;
+  const rejected = RO.REJECTED_HOURS;
 
   it('one hour is singular', () => {
     expect(rejected.PUSH.body(1, '17/11/2026')).toBe(
@@ -48,7 +51,7 @@ describe('hours notifications', () => {
 
 // #486: VIC no longer generates contracts; the NGO uploads them (or a certificate).
 describe('uploaded document notifications', () => {
-  const uploaded = NOTIFICATIONS.NEW_CONTRACT;
+  const uploaded = RO.NEW_CONTRACT;
 
   it('a contract is uploaded, not generated', () => {
     expect(uploaded.PUSH.body('QA ONG')).toBe(
@@ -61,5 +64,63 @@ describe('uploaded document notifications', () => {
     expect(uploaded.PUSH.body('QA ONG', true)).toBe(
       'QA ONG ți-a încărcat o adeverință de voluntariat. O găsești în aplicație, la Documente.',
     );
+  });
+});
+
+// The same notifications in English, for people who chose it.
+describe('English notifications', () => {
+  it('hours agree with the number', () => {
+    expect(EN.APPROVED_HOURS.PUSH.body(1, '17/11/2026')).toBe(
+      '1 hour of volunteering on 17/11/2026 was approved',
+    );
+    expect(EN.REJECTED_HOURS.PUSH.body(20, '18/11/2026')).toBe(
+      '20 hours of volunteering on 18/11/2026 were rejected',
+    );
+    expect(EN.APPROVED_HOURS.PUSH.body(1.5, '18/11/2026')).toBe(
+      '1.5 hours of volunteering on 18/11/2026 were approved',
+    );
+    expect(EN.APPROVED_HOURS.EMAIL.body(1, '17/11/2026')).toBe(
+      '1 hour of volunteering on 17/11/2026 was approved. You can find it in the VIC app.',
+    );
+    expect(EN.APPROVED_HOURS.EMAIL.body(3, '17/11/2026')).toBe(
+      '3 hours of volunteering on 17/11/2026 were approved. You can find them in the VIC app.',
+    );
+    expect(
+      EN.REJECTED_HOURS.EMAIL.body(2, '17/11/2026', 'did not happen'),
+    ).toBe(
+      '2 hours of volunteering on 17/11/2026 were rejected. Reason: did not happen',
+    );
+  });
+
+  it('an uploaded contract and a certificate have their own text', () => {
+    expect(EN.NEW_CONTRACT.PUSH.body('QA NGO')).toBe(
+      'QA NGO uploaded your volunteering contract. You can find it in the app, under Documents.',
+    );
+    expect(EN.NEW_CONTRACT.PUSH.body('QA NGO', true)).toBe(
+      'QA NGO uploaded a volunteering certificate for you. You can find it in the app, under Documents.',
+    );
+  });
+
+  // Every text of both languages, called with sample arguments: the English ones have no Romanian
+  // letters, and no text comes out empty in one language only.
+  it('every notification exists in both languages, and the English ones have no Romanian letters', () => {
+    const sample = (texts: typeof RO): string[] =>
+      Object.values(texts).flatMap((notification) =>
+        Object.values(notification).flatMap((channel) =>
+          Object.values(channel as Record<string, unknown>).map((text) =>
+            typeof text === 'function'
+              ? (text as (...args: unknown[]) => string)(2, 'x', 'y')
+              : (text as string),
+          ),
+        ),
+      );
+    const ro = sample(RO);
+    const en = sample(EN);
+
+    expect(en).toHaveLength(ro.length);
+    en.forEach((text, index) => {
+      expect(text).not.toMatch(/[ăâîșțĂÂÎȘȚ]/);
+      expect(text === '').toBe(ro[index] === '');
+    });
   });
 });

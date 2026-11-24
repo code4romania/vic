@@ -100,8 +100,9 @@ describe('Volunteer activities (e2e)', () => {
       `INSERT INTO notifications_settings (notifications_via_email, notifications_via_push) VALUES (false, false) RETURNING id`,
     );
     const [user] = await testApp.dataSource.query(
-      `INSERT INTO "user" (type, name, first_name, last_name, email, phone, notifications_settings_id, active_organization_id)
-       VALUES ('regular', 'Elena Pop', 'Elena', 'Pop', 'elena@example.ro', '+40722000000', $1, $2) RETURNING id`,
+      // language: a volunteer who uses VIC in Romanian (an undecided one gets the emails in both languages)
+      `INSERT INTO "user" (type, name, first_name, last_name, email, phone, notifications_settings_id, active_organization_id, language)
+       VALUES ('regular', 'Elena Pop', 'Elena', 'Pop', 'elena@example.ro', '+40722000000', $1, $2, 'ro') RETURNING id`,
       [settings.id, organizationId],
     );
     const [profile] = await testApp.dataSource.query(

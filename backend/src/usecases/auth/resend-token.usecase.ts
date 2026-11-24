@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Language } from 'src/modules/user/enums/user.enum';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { AUTH_EMAILS, AuthEmail } from 'src/modules/auth/constants/auth-emails';
 import { AUTH_TOKEN_TTL_MS } from 'src/modules/auth/auth.constants';
@@ -28,7 +29,8 @@ export class ResendTokenUseCase implements IUseCaseService<void> {
     private readonly adminContext: AdminContextHelper,
   ) {}
 
-  async execute(secret: string): Promise<void> {
+  // language: the language of the page that asked, for someone who has no account language yet.
+  async execute(secret: string, language?: Language | null): Promise<void> {
     const old = await this.oneTimeTokenService.findAnyByLink(secret);
     const identity = old?.identity;
     if (!identity || this.nothingToDo(old, identity)) return;
@@ -48,6 +50,7 @@ export class ResendTokenUseCase implements IUseCaseService<void> {
       await this.authMailer.send(
         identity.email,
         await this.email(old, identity, fresh),
+        (await this.authMailer.languageOfUser(identity.userId)) ?? language,
       );
     });
   }

@@ -58,7 +58,11 @@ describe('RequestLoginUseCase (VIC 2.0, #514)', () => {
     assertCanIssue: jest.Mock;
     assertCanRequestMobileCode: jest.Mock;
   };
-  let mailer: { send: jest.Mock; loginLinkUrl: jest.Mock };
+  let mailer: {
+    send: jest.Mock;
+    loginLinkUrl: jest.Mock;
+    languageOfUser: jest.Mock;
+  };
   let resendVerification: { execute: jest.Mock };
   let useCase: RequestLoginUseCase;
 
@@ -75,6 +79,7 @@ describe('RequestLoginUseCase (VIC 2.0, #514)', () => {
     mailer = {
       send: jest.fn(),
       loginLinkUrl: jest.fn((secret: string) => `https://vic.test/${secret}`),
+      languageOfUser: jest.fn().mockResolvedValue(null),
     };
     resendVerification = { execute: jest.fn() };
     useCase = new RequestLoginUseCase(
@@ -97,6 +102,34 @@ describe('RequestLoginUseCase (VIC 2.0, #514)', () => {
       form: AuthTokenForm.LINK,
     });
     expect(mailer.send).toHaveBeenCalledTimes(1);
+  });
+
+  it('the email goes out in the account language; without one, in the language of the screen that asked', async () => {
+    facade.findIdentity.mockResolvedValue(identity());
+
+    // the account has a language: it wins over the screen's
+    mailer.languageOfUser.mockResolvedValue('ro');
+    await useCase.execute(
+      AuthRealm.WEB,
+      'ana@example.ro',
+      undefined,
+      'en' as never,
+    );
+    expect(mailer.send.mock.calls.at(-1)[2]).toBe('ro');
+
+    // no account language yet: the screen's language
+    mailer.languageOfUser.mockResolvedValue(null);
+    await useCase.execute(
+      AuthRealm.MOBILE,
+      'ana@example.ro',
+      '1.2.3.4',
+      'en' as never,
+    );
+    expect(mailer.send.mock.calls.at(-1)[2]).toBe('en');
+
+    // neither: undefined, which AuthMailerService sends in both languages
+    await useCase.execute(AuthRealm.MOBILE, 'ana@example.ro');
+    expect(mailer.send.mock.calls.at(-1)[2] ?? null).toBeNull();
   });
 
   it('web: an unknown, disabled or rate-limited email gets the same answer and no email', async () => {
@@ -138,6 +171,7 @@ describe('RequestLoginUseCase (VIC 2.0, #514)', () => {
     expect(resendVerification.execute).toHaveBeenCalledWith(
       AuthRealm.WEB,
       'ana@example.ro',
+      undefined,
     );
     expect(tokens.issue).not.toHaveBeenCalled();
   });

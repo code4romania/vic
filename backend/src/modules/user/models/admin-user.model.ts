@@ -30,6 +30,7 @@ export class AdminUserTransformer {
       email: entity.email,
       phone: entity.phone,
       name: entity.name,
+      language: entity.language ?? null,
       organizationId: entity.organizationId,
       organization: OrganizationTransformer.fromEntity(entity.organization),
     };
@@ -42,6 +43,7 @@ export class AdminUserTransformer {
     entity.email = model.email;
     entity.phone = model.phone;
     entity.organizationId = model.organizationId;
+    entity.language = model.language ?? null;
     return entity;
   }
 }

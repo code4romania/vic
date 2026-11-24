@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Language } from 'src/modules/user/enums/user.enum';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { AUTH_EMAILS } from 'src/modules/auth/constants/auth-emails';
 import {
@@ -26,7 +27,12 @@ export class ResendVerificationUseCase implements IUseCaseService<void> {
     private readonly adminContext: AdminContextHelper,
   ) {}
 
-  async execute(realm: AuthRealm, email: string): Promise<void> {
+  // language: the language of the page that asked, for an admin who has no account language yet.
+  async execute(
+    realm: AuthRealm,
+    email: string,
+    language?: Language | null,
+  ): Promise<void> {
     const identity = await this.authIdentityFacade.findIdentity({
       realm,
       email,
@@ -59,6 +65,7 @@ export class ResendVerificationUseCase implements IUseCaseService<void> {
           url,
           (await this.adminContext.organizationName(identity)) ?? 'VIC',
         ),
+        (await this.authMailer.languageOfUser(identity.userId)) ?? language,
       );
     });
   }

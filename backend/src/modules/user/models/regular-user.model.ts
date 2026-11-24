@@ -72,6 +72,7 @@ export class RegularUserTransformer {
       email: entity.email,
       phone: entity.phone,
       name: entity.name,
+      language: entity.language ?? null,
       birthday: entity.birthday,
       sex: entity.sex,
       profilePicture: entity.profilePicture,

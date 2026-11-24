@@ -12,6 +12,8 @@ import { NotificationsSettingsFacade } from 'src/modules/notifications/notificat
 import { GetOneRegularUserProfileUseCase } from './get-regule-user-profile.usecase';
 import { AuthIdentityFacade } from 'src/modules/auth/services/auth-identity.facade';
 import { AuthRealm } from 'src/modules/auth/enums/auth.enums';
+import { Language } from 'src/modules/user/enums/user.enum';
+import { UserLanguageService } from 'src/modules/user/services/user-language.service';
 
 @Injectable()
 export class CreateRegularUsereUseCaseService
@@ -23,12 +25,15 @@ export class CreateRegularUsereUseCaseService
     private readonly notificationSettingsFacade: NotificationsSettingsFacade,
     private readonly getRegularUserProfileUsecase: GetOneRegularUserProfileUseCase,
     private readonly authIdentityFacade: AuthIdentityFacade,
+    private readonly userLanguageService: UserLanguageService,
   ) {}
 
   // The profile of the logged-in volunteer: one per mobile login, with the login's (confirmed) email.
+  // language: the language the app is in, which becomes the new account's language.
   async execute(
     newUser: Omit<CreateRegularUserOptions, 'email'>,
     identityId: string,
+    language?: Language | null,
   ): Promise<IRegularUserProfileModel> {
     // 1. the login must exist and not have a profile yet
     const identity = await this.authIdentityFacade.findIdentity({
@@ -48,7 +53,7 @@ export class CreateRegularUsereUseCaseService
       hasAccount: false,
     });
     if (placeholder) {
-      return this.claimPlaceholder(placeholder, newUser, identity.id);
+      return this.claimPlaceholder(placeholder, newUser, identity.id, language);
     }
 
     // 3. There is already an user with the same "phone"/"email", abort..
@@ -73,6 +78,7 @@ export class CreateRegularUsereUseCaseService
     await this.authIdentityFacade.updateIdentity(identity.id, {
       userId: user.id,
     });
+    if (language) await this.userLanguageService.fillIfEmpty(user.id, language);
 
     // 5. get user profile
     return this.getRegularUserProfileUsecase.execute({ id: user.id });
@@ -82,6 +88,7 @@ export class CreateRegularUsereUseCaseService
     placeholder: IRegularUserModel,
     profile: Omit<CreateRegularUserOptions, 'email'>,
     identityId: string,
+    language?: Language | null,
   ): Promise<IRegularUserProfileModel> {
     // The phone (optional) must not belong to another real account.
     const phoneOwner = profile.phone
@@ -111,6 +118,7 @@ export class CreateRegularUsereUseCaseService
       hasAccount: true,
     });
     await this.authIdentityFacade.updateIdentity(identityId, { userId });
+    if (language) await this.userLanguageService.fillIfEmpty(userId, language);
 
     return this.getRegularUserProfileUsecase.execute({ id: userId });
   }

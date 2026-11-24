@@ -5,11 +5,14 @@ import {
   Get,
   Patch,
   Post,
+  Req,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiConsumes } from '@nestjs/swagger';
+import { Request } from 'express';
+import { requestLanguage } from 'src/api/auth/request-client';
 import { CreateRegularUsereUseCaseService } from 'src/usecases/user/create-regular-user.usecase';
 import { CreateRegularUserDto } from './dto/create-regular-user.dto';
 import { MobileJwtAuthGuard } from 'src/modules/auth/guards/jwt-mobile.guard';
@@ -29,6 +32,9 @@ import { GetOneRegularUserProfileUseCase } from 'src/usecases/user/get-regule-us
 import { UserProfilePresenter } from './presenters/user-profile.presenter';
 import { DeleteAccountRegularUserUsecase } from 'src/usecases/user/delete-account.usecase';
 import { IMobileRequestUser } from 'src/modules/auth/interfaces/request-user.interface';
+import { SetLanguageDto } from 'src/api/auth/dto/set-language.dto';
+import { LanguagePresenter } from 'src/api/auth/presenters/language.presenter';
+import { SetUserLanguageUseCase } from 'src/usecases/user/set-user-language.usecase';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard)
@@ -39,6 +45,7 @@ export class MobileRegularUserController {
     private readonly getOneRegularUserProfileUseCase: GetOneRegularUserProfileUseCase,
     private readonly updateRegularUserUsecase: UpdateRegularUserUsecase,
     private readonly deleteAccountRegularUserUsecase: DeleteAccountRegularUserUsecase,
+    private readonly setUserLanguageUseCase: SetUserLanguageUseCase,
   ) {}
 
   @ApiBody({ type: CreateRegularUserDto })
@@ -46,6 +53,7 @@ export class MobileRegularUserController {
   async create(
     @Body() newUser: CreateRegularUserDto,
     @ExtractUser() data: IMobileRequestUser,
+    @Req() req: Request,
   ): Promise<UserProfilePresenter> {
     // The email comes from the login, not the body: it is the address that was confirmed.
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -53,6 +61,7 @@ export class MobileRegularUserController {
     const user = await this.createRegularUsereUseCaseService.execute(
       profile,
       data.identityId,
+      requestLanguage(req),
     );
 
     return new UserProfilePresenter(user);
@@ -95,6 +104,18 @@ export class MobileRegularUserController {
       file?.profilePicture,
     );
     return new UserProfilePresenter(regularUser);
+  }
+
+  // The volunteer's language: the app, the push notifications and the emails.
+  @UseGuards(MobileProfileGuard)
+  @Patch('language')
+  async setLanguage(
+    @ExtractUser() user: IRegularUserModel,
+    @Body() { language, explicit }: SetLanguageDto,
+  ): Promise<LanguagePresenter> {
+    return new LanguagePresenter(
+      await this.setUserLanguageUseCase.execute(user.id, language, explicit),
+    );
   }
 
   @UseGuards(MobileProfileGuard)

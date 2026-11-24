@@ -9,6 +9,7 @@ import {
 import { PushTokensEntity } from '../entities/push-tokens.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
+import { Language } from 'src/modules/user/enums/user.enum';
 
 @Injectable()
 export class PushTokensRepository implements IPushTokensRepository {
@@ -33,6 +34,22 @@ export class PushTokensRepository implements IPushTokensRepository {
       },
     });
     return tokens.map(({ token }) => token);
+  }
+
+  // Each device with the language of its user (null = the user has not chosen one yet).
+  async findByUserIdsWithLanguage(
+    userIds: string[],
+  ): Promise<{ token: string; language: Language | null }[]> {
+    if (!userIds?.length) return [];
+    const tokens = await this.pushTokensRepository.find({
+      select: { token: true, user: { id: true, language: true } },
+      relations: { user: true },
+      where: { userId: In(userIds) },
+    });
+    return tokens.map(({ token, user }) => ({
+      token,
+      language: user?.language ?? null,
+    }));
   }
 
   async findMany(

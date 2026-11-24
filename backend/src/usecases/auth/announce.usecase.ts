@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { AUTH_EMAILS, AuthEmail } from 'src/modules/auth/constants/auth-emails';
+import { renderMail } from 'src/modules/mail/mail-copy';
 import { AuthIdentityStatus } from 'src/modules/auth/enums/auth.enums';
 import { AuthMailerService } from 'src/modules/auth/services/auth-mailer.service';
 import { TransitionMailService } from 'src/modules/auth/services/transition-mail.service';
@@ -64,8 +65,8 @@ export class AnnounceUseCase {
     for (let i = 0; i < pushUserIds.length; i += PUSH_CHUNK) {
       await this.pushNotificationsFacade.send({
         userIds: pushUserIds.slice(i, i + PUSH_CHUNK),
-        title: email.context.title,
-        body: email.context.subtitle,
+        title: { ro: email.copy.ro.title, en: email.copy.en.title },
+        body: { ro: email.copy.ro.subtitle, en: email.copy.en.subtitle },
       });
     }
 
@@ -124,12 +125,13 @@ function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-// Plain-text preview of an AuthEmail for the dry runs.
+// Plain-text preview of an AuthEmail for the dry runs. The cutover emails go to everyone in both
+// languages, whatever the account language.
 export function renderEmailText(to: string, email: AuthEmail): string {
-  const { context } = email;
+  const { subject, context } = renderMail(email, 'bilingual');
   return [
     `To: ${to}`,
-    `Subject: ${email.subject}`,
+    `Subject: ${subject}`,
     '',
     context.title,
     context.subtitle,

@@ -72,7 +72,11 @@ export class ChangeEmailUsecase {
       form: AuthTokenForm.CODE,
       sentTo: newEmail,
     });
-    await this.authMailer.send(newEmail, AUTH_EMAILS.changeEmailCode(secret));
+    await this.authMailer.send(
+      newEmail,
+      AUTH_EMAILS.changeEmailCode(secret),
+      admin.language,
+    );
     const { maskedEmail } = await this.sensitiveAction.requestCode(
       admin,
       SensitiveAction.CHANGE_EMAIL,
@@ -117,7 +121,11 @@ export class ChangeEmailUsecase {
       );
     });
 
-    await this.authMailer.send(admin.email, AUTH_EMAILS.emailChanged(newEmail));
+    await this.authMailer.send(
+      admin.email,
+      AUTH_EMAILS.emailChanged(newEmail),
+      admin.language,
+    );
     return { email: newEmail };
   }
 }

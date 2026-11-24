@@ -119,6 +119,8 @@ export class AddVolunteerUseCase implements IUseCaseService<IVolunteerModel> {
       await this.authMailer.send(
         options.email,
         AUTH_EMAILS.volunteerInvitation(organization.name, user.hasAccount),
+        // Their own language; a person with no account yet gets both languages.
+        user.language,
       );
     }
 

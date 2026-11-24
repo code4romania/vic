@@ -1,4 +1,5 @@
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { UserLanguageService } from 'src/modules/user/services/user-language.service';
 import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
 import { AuthRealm } from 'src/modules/auth/enums/auth.enums';
 import { AuthIdentityFacade } from 'src/modules/auth/services/auth-identity.facade';
@@ -73,6 +74,7 @@ describe('user use cases adapted to own auth', () => {
         } as unknown as NotificationsSettingsFacade,
         profile as unknown as GetOneRegularUserProfileUseCase,
         identities as unknown as AuthIdentityFacade,
+        { fillIfEmpty: jest.fn() } as unknown as UserLanguageService,
       );
     });
 

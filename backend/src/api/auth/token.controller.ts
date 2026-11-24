@@ -25,7 +25,7 @@ import { AdminProfilePresenter } from './presenters/admin-profile.presenter';
 import { MobileRealmResultPresenter } from './presenters/mobile-realm-result.presenter';
 import { SessionPresenter } from './presenters/session.presenter';
 import { TokenInfoPresenter } from './presenters/token-info.presenter';
-import { requestClient } from './request-client';
+import { requestClient, requestLanguage } from './request-client';
 
 const AUTH_THROTTLE = { default: { limit: 10, ttl: 60000 } };
 
@@ -67,8 +67,11 @@ export class TokenController {
   @Throttle(AUTH_THROTTLE)
   @HttpCode(HttpStatus.OK)
   @Post('token/:secret/resend')
-  async resend(@Param('secret') secret: string): Promise<void> {
-    await this.resendTokenUseCase.execute(secret);
+  async resend(
+    @Param('secret') secret: string,
+    @Req() req: Request,
+  ): Promise<void> {
+    await this.resendTokenUseCase.execute(secret, requestLanguage(req));
   }
 
   @Throttle(AUTH_THROTTLE)

@@ -72,6 +72,7 @@ export class SensitiveActionUsecase {
     await this.authMailer.send(
       admin.email,
       AUTH_EMAILS.sensitiveActionCode(secret, ACTION_TEXT[action]),
+      admin.language,
     );
     return { maskedEmail: this.oneTimeTokenService.maskEmail(admin.email) };
   }

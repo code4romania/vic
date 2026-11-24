@@ -3,6 +3,7 @@ import {
   ConflictException,
   Injectable,
 } from '@nestjs/common';
+import { Language } from 'src/modules/user/enums/user.enum';
 import { S3_FILE_PATHS } from 'src/common/constants/constants';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
@@ -63,6 +64,8 @@ export class RegisterOrganizationUseCase
   async execute(
     options: RegisterOrganizationOptions,
     files: RegisterOrganizationFiles,
+    // The language of the registration page: the new admin's language, emails included.
+    language?: Language | null,
   ): Promise<{ maskedEmail: string }> {
     // 1. The logo, when given, is an image (#469: no statute, the CUI is what gets validated)
     if (files.logo && !isLogoImage(files.logo)) {
@@ -108,6 +111,7 @@ export class RegisterOrganizationUseCase
             email: options.adminEmail,
             phone: options.adminPhone.trim(),
             organizationId: organization.id,
+            language: language ?? null,
           },
           manager,
         );
@@ -148,6 +152,7 @@ export class RegisterOrganizationUseCase
         this.authMailer.confirmEmailUrl(secret),
         options.name.trim(),
       ),
+      language,
     );
 
     return { maskedEmail: this.oneTimeTokenService.maskEmail(admin.email) };
