@@ -1,6 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { S3_FILE_PATHS } from 'src/common/constants/constants';
 import { JSONStringifyError } from 'src/common/helpers/utils';
+import { contentTypeFor, IStoredFile } from 'src/common/helpers/file-response';
+import { sanitizeFileNamePart } from 'src/common/helpers/sanitize-file-name-part';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
 import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
@@ -73,6 +75,32 @@ export class ContractModelsUsecase {
         TemplateExceptionMessages.TEMPLATE_001,
       );
     }
+  }
+
+  // #724: the model's PDF, streamed through the API for the in-app viewer and the Download button
+  public async file(organizationId: string, id: string): Promise<IStoredFile> {
+    const template = organizationId
+      ? await this.templateFacade.findOne({ id, organizationId })
+      : null;
+    if (!template) {
+      this.exceptionsService.notFoundException(
+        TemplateExceptionMessages.TEMPLATE_002,
+      );
+    }
+
+    const file = await this.s3Service.getFile(template.path);
+    if (!file) {
+      this.exceptionsService.notFoundException(
+        TemplateExceptionMessages.TEMPLATE_004,
+      );
+    }
+
+    const extension = template.path.split('.').pop()?.toLowerCase() || 'pdf';
+    return {
+      ...file,
+      fileName: `${sanitizeFileNamePart(template.name)}.${extension}`,
+      contentType: contentTypeFor(template.path),
+    };
   }
 
   public async delete(organizationId: string, id: string): Promise<string> {

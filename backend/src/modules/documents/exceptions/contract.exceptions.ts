@@ -10,6 +10,7 @@ export enum ContractExceptionCodes {
   CONTRACT_007 = 'CONTRACT_007',
   CONTRACT_008 = 'CONTRACT_008',
   CONTRACT_009 = 'CONTRACT_009',
+  CONTRACT_010 = 'CONTRACT_010',
 }
 
 type ContractExceptionCodeType = keyof typeof ContractExceptionCodes;
@@ -54,5 +55,9 @@ export const ContractExceptionMessages: Record<
   [ContractExceptionCodes.CONTRACT_009]: {
     code_error: ContractExceptionCodes.CONTRACT_009,
     message: 'The end date must be after the start date',
+  },
+  [ContractExceptionCodes.CONTRACT_010]: {
+    code_error: ContractExceptionCodes.CONTRACT_010,
+    message: 'The contract file was not found in storage',
   },
 };

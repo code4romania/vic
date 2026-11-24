@@ -8,11 +8,18 @@ import {
   Post,
   Query,
   Res,
+  StreamableFile,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiParam } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiParam,
+  ApiQuery,
+} from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
 import { UploadContractUsecase } from 'src/usecases/documents/upload-contract.usecase';
@@ -29,6 +36,8 @@ import { CountPendingContractsUsecase } from 'src/usecases/documents/count-pendi
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { ContractListItemPresenter } from './presenters/contract-list-item.presenter';
 import { GetOneContractUsecase } from 'src/usecases/documents/get-one-contract.usecase';
+import { GetContractFileUsecase } from 'src/usecases/documents/get-contract-file.usecase';
+import { sendStoredFile } from 'src/common/helpers/file-response';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import {
   PDF_MAX_BYTES,
@@ -67,6 +76,7 @@ export class ContractController {
     private readonly deleteContractUsecase: DeleteContractUsecase,
     private readonly certificateUsecase: CertificateUsecase,
     private readonly countContractsByStatusUsecase: CountContractsByStatusUsecase,
+    private readonly getContractFileUsecase: GetContractFileUsecase,
   ) {}
 
   @Get()
@@ -164,6 +174,23 @@ export class ContractController {
     });
 
     return new ContractPresenter(contract);
+  }
+
+  // #724: the file itself, for the in-app viewer (inline) and the Download button (?download=true)
+  @ApiParam({ name: 'contractId', type: 'string' })
+  @ApiQuery({ name: 'download', required: false, type: Boolean })
+  @Get(':contractId/file')
+  async getContractFile(
+    @Param('contractId', UuidValidationPipe) contractId: string,
+    @Query('download') download: string | undefined,
+    @ExtractUser() { organizationId }: IAdminUserModel,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<StreamableFile> {
+    const file = await this.getContractFileUsecase.execute(
+      { id: contractId, organizationId },
+      { requireOrganization: true },
+    );
+    return sendStoredFile(res, file, download === 'true');
   }
 
   // #486: the NGO uploads a contract already signed, with its validity period

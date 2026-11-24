@@ -4,6 +4,7 @@ export enum TemplateExceptionCodes {
   TEMPLATE_001 = 'TEMPLATE_001',
   TEMPLATE_002 = 'TEMPLATE_002',
   TEMPLATE_003 = 'TEMPLATE_003',
+  TEMPLATE_004 = 'TEMPLATE_004',
 }
 
 type TemplateExceptionCodeType = keyof typeof TemplateExceptionCodes;
@@ -23,5 +24,9 @@ export const TemplateExceptionMessages: Record<
   [TemplateExceptionCodes.TEMPLATE_003]: {
     code_error: TemplateExceptionCodes.TEMPLATE_003,
     message: 'Could not delete the template file from s3!',
+  },
+  [TemplateExceptionCodes.TEMPLATE_004]: {
+    code_error: TemplateExceptionCodes.TEMPLATE_004,
+    message: 'The template file was not found in storage',
   },
 };

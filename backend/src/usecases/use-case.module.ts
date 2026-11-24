@@ -150,6 +150,7 @@ import { CountPendingContractsUsecase } from './documents/count-pending-contract
 import { CountContractsByStatusUsecase } from './documents/count-contracts-by-status.usecase';
 import { ContractModelsUsecase } from './documents/contract-models.usecase';
 import { GetOneContractUsecase } from './documents/get-one-contract.usecase';
+import { GetContractFileUsecase } from './documents/get-contract-file.usecase';
 import { GetContractsForDownloadUsecase } from './documents/get-contracts-for-download.usecase';
 import { DeleteContractUsecase } from './documents/delete-contract.usecase';
 import { UploadContractUsecase } from './documents/upload-contract.usecase';
@@ -383,6 +384,7 @@ import { FinishOldAccountDeletionsUseCase } from './user/finish-old-account-dele
     CountContractsByStatusUsecase,
     ContractModelsUsecase,
     GetOneContractUsecase,
+    GetContractFileUsecase,
     GetContractsForDownloadUsecase,
     DeleteContractUsecase,
     UploadContractUsecase,
@@ -571,6 +573,7 @@ import { FinishOldAccountDeletionsUseCase } from './user/finish-old-account-dele
     CountContractsByStatusUsecase,
     ContractModelsUsecase,
     GetOneContractUsecase,
+    GetContractFileUsecase,
     GetContractsForDownloadUsecase,
     DeleteContractUsecase,
     UploadContractUsecase,

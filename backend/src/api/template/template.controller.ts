@@ -5,6 +5,9 @@ import {
   Get,
   Param,
   Post,
+  Query,
+  Res,
+  StreamableFile,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -16,7 +19,14 @@ import {
   singleFileUpload,
 } from 'src/infrastructure/uploads/upload-options';
 import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
-import { ApiBearerAuth, ApiConsumes, ApiParam } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiConsumes,
+  ApiParam,
+  ApiQuery,
+} from '@nestjs/swagger';
+import { Response } from 'express';
+import { sendStoredFile } from 'src/common/helpers/file-response';
 import { IsString, MaxLength, MinLength } from 'class-validator';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
@@ -89,6 +99,20 @@ export class TemplateController {
         files?.template?.[0],
       ),
     );
+  }
+
+  // #724: the model's file, for the in-app viewer (inline) and the Download button (?download=true)
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiQuery({ name: 'download', required: false, type: Boolean })
+  @Get(':id/file')
+  async file(
+    @Param('id', UuidValidationPipe) id: string,
+    @Query('download') download: string | undefined,
+    @ExtractUser() { organizationId }: IAdminUserModel,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<StreamableFile> {
+    const file = await this.contractModelsUsecase.file(organizationId, id);
+    return sendStoredFile(res, file, download === 'true');
   }
 
   @ApiParam({ name: 'id', type: 'string' })

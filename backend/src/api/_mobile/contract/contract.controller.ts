@@ -1,5 +1,16 @@
-import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiParam } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Param,
+  Query,
+  Res,
+  StreamableFile,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { Response } from 'express';
+import { sendStoredFile } from 'src/common/helpers/file-response';
+import { GetContractFileUsecase } from 'src/usecases/documents/get-contract-file.usecase';
 import {
   ApiPaginatedResponse,
   PaginatedPresenter,
@@ -23,6 +34,7 @@ export class MobileContractController {
   constructor(
     private readonly getVolunteerContractHistoryUsecase: GetVolunteerContractHistoryUsecase,
     private readonly getOneContractUsecase: GetOneContractUsecase,
+    private readonly getContractFileUsecase: GetContractFileUsecase,
   ) {}
 
   @Get('history')
@@ -63,5 +75,22 @@ export class MobileContractController {
     });
 
     return new MobileContractPresenter(contract);
+  }
+
+  // #724: the file itself, for the in-app viewer (inline) and Download / Share (?download=true).
+  // ContractVolunteerGuard checked the contract is one of the user's own.
+  @ApiParam({ name: 'contractId', type: 'string' })
+  @ApiQuery({ name: 'download', required: false, type: Boolean })
+  @Get(':contractId/file')
+  async getFile(
+    @Param('contractId', UuidValidationPipe) contractId: string,
+    @Query('download') download: string | undefined,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<StreamableFile> {
+    const file = await this.getContractFileUsecase.execute(
+      { id: contractId },
+      { requireOrganization: false },
+    );
+    return sendStoredFile(res, file, download === 'true');
   }
 }
