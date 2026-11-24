@@ -72,6 +72,7 @@ const DocumentViewer = ({ navigation, route }: any) => {
     <View style={[styles.screen, { paddingTop: insets.top }]} testID="document-viewer">
       <PushedHeader
         title={title}
+        singleLineTitle
         onBack={navigation.goBack}
         backTestID="document-viewer-back"
         right={

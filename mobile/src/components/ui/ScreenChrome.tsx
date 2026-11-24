@@ -63,6 +63,11 @@ export interface PushedHeaderProps {
   backTestID?: string;
   /** a node at the right end of the bar (e.g. an edit link) */
   right?: React.ReactNode;
+  /**
+   * One line, shrinking to fit (then cut), instead of wrapping to two: for titles like
+   * „Contract PDF-TEST-02” next to buttons, which would otherwise break at the hyphen.
+   */
+  singleLineTitle?: boolean;
   testID?: string;
   style?: StyleProp<ViewStyle>;
 }
@@ -76,13 +81,21 @@ export const PushedHeader = ({
   onBack,
   backTestID,
   right,
+  singleLineTitle,
   testID,
   style,
 }: PushedHeaderProps) => (
   <View style={[styles.header, style]} testID={testID}>
     {onBack && <BackButton onPress={onBack} testID={backTestID} />}
     {!!title && (
-      <AppText variant="title" numberOfLines={2} accessibilityRole="header" style={styles.title}>
+      <AppText
+        variant="title"
+        numberOfLines={singleLineTitle ? 1 : 2}
+        adjustsFontSizeToFit={singleLineTitle}
+        minimumFontScale={singleLineTitle ? 0.75 : undefined}
+        accessibilityRole="header"
+        style={styles.title}
+      >
         {title}
       </AppText>
     )}
