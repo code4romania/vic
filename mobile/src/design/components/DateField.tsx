@@ -17,6 +17,7 @@ import { AppText } from './Text';
 import { Calendar, CalendarLanguage } from './Calendar';
 import { OptionChip } from './Chip';
 import { FormRevealContext } from './FormReveal';
+import { formatDateRo, useDesignLabels } from '../labels';
 import {
   FieldError,
   FieldHelper,
@@ -26,16 +27,11 @@ import {
   useFocusRing,
 } from './TextField';
 
-const DAYS = ['Dum', 'Lun', 'Mar', 'Mie', 'Joi', 'Vin', 'Sâm'];
-const MONTHS = ['ian', 'feb', 'mar', 'apr', 'mai', 'iun', 'iul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-
-/** "Vin, 13 nov 2026" */
-
 const FOLD_GAP = 8;
 /** the snappy spring has unfolded the calendar by then */
 const REVEAL_AFTER_MS = 350;
-export const formatDateRo = (date: Date) =>
-  `${DAYS[date.getDay()]}, ${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
+
+export { formatDateRo };
 
 const dayStart = (date: Date) => new Date(date.getFullYear(), date.getMonth(), date.getDate());
 const sameDay = (a?: Date | null, b?: Date | null) =>
@@ -59,8 +55,9 @@ export interface DateFieldProps {
   quickOptions?: boolean;
   /** month the calendar opens on when there is no value */
   initialVisibleDate?: Date;
-  /** names in the calendar (Romanian by default) */
+  /** names in the calendar (the app's language by default) */
   language?: CalendarLanguage;
+  /** how the chosen date is written in the field (the app's language by default) */
   formatDate?: (date: Date) => string;
   /** open the calendar on the year grid (e.g. for a birthday) */
   startView?: 'day' | 'year';
@@ -73,7 +70,7 @@ export const DateField = ({
   label,
   value,
   onChange,
-  placeholder = 'Alege data',
+  placeholder: placeholderProp,
   required,
   optional,
   error,
@@ -83,13 +80,17 @@ export const DateField = ({
   maximumDate,
   quickOptions = true,
   initialVisibleDate,
-  language = 'ro',
-  formatDate = formatDateRo,
+  language: languageProp,
+  formatDate: formatDateProp,
   startView,
   onBlur,
   testID = 'date-field',
   style,
 }: DateFieldProps) => {
+  const labels = useDesignLabels();
+  const placeholder = placeholderProp ?? labels.datePlaceholder;
+  const language = languageProp ?? labels.language;
+  const formatDate = formatDateProp ?? labels.formatDate;
   const reduced = useReducedMotion();
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -133,10 +134,10 @@ export const DateField = ({
     const today = dayStart(new Date());
     const yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
     return [
-      { key: 'today', label: 'Azi', date: today },
-      { key: 'yesterday', label: 'Ieri', date: yesterday },
+      { key: 'today', label: labels.today, date: today },
+      { key: 'yesterday', label: labels.yesterday, date: yesterday },
     ].filter((option) => inRange(option.date, minimumDate, maximumDate));
-  }, [minimumDate, maximumDate]);
+  }, [minimumDate, maximumDate, labels.today, labels.yesterday]);
 
   const choose = (date: Date) => {
     onChange(date);
@@ -164,8 +165,8 @@ export const DateField = ({
           onPress={toggle}
           disabled={disabled}
           accessibilityRole="button"
-          accessibilityLabel={`${label}, ${value ? formatDate(value) : 'nicio dată aleasă'}`}
-          accessibilityHint="Deschide calendarul"
+          accessibilityLabel={`${label}, ${value ? formatDate(value) : labels.dateEmpty}`}
+          accessibilityHint={labels.dateOpenCalendar}
           accessibilityState={{ disabled, expanded: open }}
         >
           <Animated.View

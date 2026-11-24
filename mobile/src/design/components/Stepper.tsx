@@ -26,6 +26,7 @@ import { palette } from '../tokens';
 import { duration, springTo } from '../motion';
 import { haptics } from '../haptics';
 import { MinusIcon, PlusIcon } from '../icons';
+import { useDesignLabels } from '../labels';
 import { FieldError, FieldLabel, useErrorShake } from './TextField';
 
 export interface StepperProps {
@@ -111,11 +112,14 @@ export const Stepper = ({
   disabled = false,
   hideLabel = false,
   required,
-  decrementLabel = 'Scade',
-  incrementLabel = 'Crește',
+  decrementLabel: decrementLabelProp,
+  incrementLabel: incrementLabelProp,
   testID = 'stepper',
   style,
 }: StepperProps) => {
+  const labels = useDesignLabels();
+  const decrementLabel = decrementLabelProp ?? labels.decrease;
+  const incrementLabel = incrementLabelProp ?? labels.increase;
   const reduced = useReducedMotion();
   const shake = useErrorShake(error);
   const current = Number.isFinite(value) ? value : 0;

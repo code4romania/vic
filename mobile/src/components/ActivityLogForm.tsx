@@ -45,25 +45,25 @@ export const HOURS_MAX = 24;
 
 export const activityLogSchema = yup
   .object({
-    activityTypeId: yup.string().required(`${i18n.t('activity_log:form.task.required')}`),
+    activityTypeId: yup.string().required(() => i18n.t('activity_log:form.task.required')),
     date: yup
       .date()
-      .required(`${i18n.t('activity_log:form.date.required')}`)
+      .required(() => i18n.t('activity_log:form.date.required'))
       .test(
         'not-future',
-        `${i18n.t('activity_log:form.date.future')}`,
+        () => i18n.t('activity_log:form.date.future'),
         (date) => !isFutureDay(date),
       ),
     hours: yup
       .number()
-      .typeError(`${i18n.t('activity_log:form.hours.number')}`)
-      .integer(`${i18n.t('activity_log:form.hours.integer')}`)
-      .required(`${i18n.t('activity_log:form.hours.required')}`)
-      .min(HOURS_MIN, `${i18n.t('activity_log:form.hours.min', { value: HOURS_MIN })}`)
-      .max(HOURS_MAX, `${i18n.t('activity_log:form.hours.max', { value: HOURS_MAX })}`),
+      .typeError(() => i18n.t('activity_log:form.hours.number'))
+      .integer(() => i18n.t('activity_log:form.hours.integer'))
+      .required(() => i18n.t('activity_log:form.hours.required'))
+      .min(HOURS_MIN, () => i18n.t('activity_log:form.hours.min', { value: HOURS_MIN }))
+      .max(HOURS_MAX, () => i18n.t('activity_log:form.hours.max', { value: HOURS_MAX })),
     mentions: yup
       .string()
-      .max(300, `${i18n.t('activity_log:form.mentions.max', { value: 300 })}`)
+      .max(300, () => i18n.t('activity_log:form.mentions.max', { value: 300 }))
       .nullable(),
   })
   .required();

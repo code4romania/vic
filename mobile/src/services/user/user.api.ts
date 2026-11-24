@@ -4,6 +4,7 @@ import { IUserProfile } from '../../common/interfaces/user-profile.interface';
 import { ICreateUserPayload } from '../../common/interfaces/create-user-payload.interface';
 import { AccountDataFormTypes } from '../../screens/AccountData';
 import { ImageAttachement } from '../../common/interfaces/image-attachement.interface';
+import type { AppLanguage } from '../../common/config/language';
 
 export const createUserProfile = async (userProfile: ICreateUserPayload): Promise<IUserProfile> => {
   return API.post('/mobile/user', userProfile).then((res) => res.data);
@@ -40,6 +41,15 @@ export const updateUserProfile = async (
   return API.patch('/mobile/user/profile', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   }).then((res) => res.data);
+};
+
+// `explicit`: a choice made in the switcher, which replaces the account's language. Without it the
+// backend only fills an account that has no language yet. Answers with the language it keeps.
+export const setUserLanguage = async (
+  language: AppLanguage,
+  explicit: boolean,
+): Promise<{ language: AppLanguage }> => {
+  return API.patch('/mobile/user/language', { language, explicit }).then((res) => res.data);
 };
 
 export const deleteAccount = async () => {

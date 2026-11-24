@@ -1,9 +1,6 @@
 import { format, isValid, parse } from 'date-fns';
-import { enUS, ro } from 'date-fns/locale';
-import i18n from '../config/i18n';
+import { dateLocale as locale } from './date-locale';
 import { shortMonth } from './event-format';
-
-const locale = () => (i18n.language === 'en' ? enUS : ro);
 
 /** The mobile API sends log dates as "08.11.2026" and approval dates as "28/10/2026". */
 export const parseLogDate = (value?: string | null): Date | undefined => {

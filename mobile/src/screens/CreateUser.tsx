@@ -17,7 +17,7 @@ import { useCreateUserProfileMutation } from '../services/user/user.service';
 import FormInput from '../components/FormInput';
 import FormSelect from '../components/FormSelect';
 import { Sex } from '../common/enums/sex.enum';
-import { SexOptions } from '../common/constants/sex-options';
+import { getSexOptions } from '../common/constants/sex-options';
 import FormDatePicker from '../components/FormDatePicker';
 import {
   BIRTHDAY_INITIAL_VISIBLE,
@@ -36,6 +36,7 @@ import { renderPhoneNumberPrefix } from '../components/InputPrefixes';
 import { normalizePhoneNumber } from '../common/utils/phone';
 import { usePaddingTop } from '../hooks/usePaddingTop';
 import { displayTitle } from '../layouts/displayTitle';
+import { useRevalidateOnLanguageChange } from '../hooks/useRevalidateOnLanguageChange';
 
 export type UserFormTypes = {
   firstName: string;
@@ -57,40 +58,38 @@ const openLink = (url?: string) => {
 const schema = yup.object({
   firstName: yup
     .string()
-    .required(`${i18n.t('register:create_user.form.first_name.required')}`)
-    .min(2, `${i18n.t('register:create_user.form.first_name.min', { value: '2' })}`)
-    .max(
-      50,
-      `${i18n.t('register:create_user.form.first_name.max', {
+    .required(() => i18n.t('register:create_user.form.first_name.required'))
+    .min(2, () => i18n.t('register:create_user.form.first_name.min', { value: '2' }))
+    .max(50, () =>
+      i18n.t('register:create_user.form.first_name.max', {
         value: '50',
-      })}`,
+      }),
     ),
   // Optional since VIC 2.0
   phone: yup
     .string()
     .transform((value) => (value ? value : undefined))
-    .matches(REGEX.NUMBERS_ONLY, `${i18n.t('register:create_account.form.phone.pattern')}`)
-    .length(9, `${i18n.t('register:create_account.form.phone.length', { number: 10 })}`),
+    .matches(REGEX.NUMBERS_ONLY, () => i18n.t('register:create_account.form.phone.pattern'))
+    .length(9, () => i18n.t('register:create_account.form.phone.length', { number: 10 })),
   // Mandatory since VIC 2.0 (replaces the ID card data)
   birthday: yup
     .date()
-    .typeError(`${i18n.t('register:create_user.form.birthday.required')}`)
-    .required(`${i18n.t('register:create_user.form.birthday.required')}`),
+    .typeError(() => i18n.t('register:create_user.form.birthday.required'))
+    .required(() => i18n.t('register:create_user.form.birthday.required')),
   lastName: yup
     .string()
-    .required(`${i18n.t('register:create_user.form.last_name.required')}`)
-    .min(2, `${i18n.t('register:create_user.form.last_name.min', { value: '2' })}`)
-    .max(
-      50,
-      `${i18n.t('register:create_user.form.last_name.max', {
+    .required(() => i18n.t('register:create_user.form.last_name.required'))
+    .min(2, () => i18n.t('register:create_user.form.last_name.min', { value: '2' }))
+    .max(50, () =>
+      i18n.t('register:create_user.form.last_name.max', {
         value: '50',
-      })}`,
+      }),
     ),
   // the account is created here: the terms and the privacy policy are accepted explicitly
   acceptTerms: yup
     .boolean()
-    .oneOf([true], `${i18n.t('register:create_account.form.terms.required')}`)
-    .required(`${i18n.t('register:create_account.form.terms.required')}`),
+    .oneOf([true], () => i18n.t('register:create_account.form.terms.required'))
+    .required(() => i18n.t('register:create_account.form.terms.required')),
 });
 
 const CreateUser = ({ navigation }: any) => {
@@ -106,12 +105,14 @@ const CreateUser = ({ navigation }: any) => {
     handleSubmit,
     watch,
     formState: { errors },
+    trigger,
   } = useForm<UserFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
     resolver: yupResolver(schema as any),
     defaultValues: { acceptTerms: false },
   });
+  useRevalidateOnLanguageChange(trigger, errors);
 
   const watchCountyId = watch('countyId');
 
@@ -227,7 +228,7 @@ const CreateUser = ({ navigation }: any) => {
             error={errors.sex}
             disabled={isLoading}
             placeholder={t('general:select')}
-            options={SexOptions}
+            options={getSexOptions()}
           />
           <Controller
             control={control}

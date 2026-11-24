@@ -15,6 +15,7 @@ import { useActivityLogsCounters } from '../services/activity-log/activity-log.s
 import { useActivateOrganization } from '../services/organization/organization.service';
 import { useUnreadNewsCountQuery } from '../services/news/news.service';
 import { getUserProfile } from '../services/user/user.api';
+import { syncLanguageWithAccount } from '../services/language/language.service';
 import { useGetUserProfileQuery } from '../services/user/user.service';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { EventType } from '../common/enums/event-type.enum';
@@ -128,7 +129,9 @@ const Home = ({ navigation }: any) => {
     refetchCounters();
     refetchUnreadNews();
     try {
-      setUserProfile(await getUserProfile());
+      const profile = await getUserProfile();
+      await syncLanguageWithAccount(profile.language);
+      setUserProfile(profile);
     } catch {
       // the profile stays as it was
     }

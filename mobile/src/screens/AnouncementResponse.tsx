@@ -13,6 +13,7 @@ import FormLayout from '../layouts/FormLayout';
 import PageLayout from '../layouts/PageLayout';
 import { usePaddingTop } from '../hooks/usePaddingTop';
 import { useRespondToAnouncementMutation } from '../services/anouncement/anouncement.service';
+import { useRevalidateOnLanguageChange } from '../hooks/useRevalidateOnLanguageChange';
 
 type ResponseForm = { comment: string };
 
@@ -20,8 +21,8 @@ const schema = yup.object({
   comment: yup
     .string()
     .trim()
-    .required(`${i18n.t('anouncement_response:comment.required')}`)
-    .max(500, `${i18n.t('anouncement_response:comment.max')}`),
+    .required(() => i18n.t('anouncement_response:comment.required'))
+    .max(500, () => i18n.t('anouncement_response:comment.max')),
 });
 
 // VIC 2.0 (#504): the volunteer answers an announcement with a comment, once
@@ -35,12 +36,14 @@ const AnouncementResponse = ({ navigation, route }: any) => {
     control,
     handleSubmit,
     formState: { errors },
+    trigger,
   } = useForm<ResponseForm>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
     resolver: yupResolver(schema),
     defaultValues: { comment: '' },
   });
+  useRevalidateOnLanguageChange(trigger, errors);
 
   const onSubmit = ({ comment }: ResponseForm) =>
     respond(

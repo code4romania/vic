@@ -1,8 +1,6 @@
 import { differenceInMinutes, format, isSameDay } from 'date-fns';
-import { enUS, ro } from 'date-fns/locale';
 import i18n from '../config/i18n';
-
-const locale = () => (i18n.language === 'en' ? enUS : ro);
+import { dateLocale as locale } from './date-locale';
 
 // date-fns abbreviates November as "noi." in Romanian; the canvas and most apps use "nov".
 const RO_SHORT_MONTHS = [
@@ -23,7 +21,7 @@ const RO_SHORT_MONTHS = [
 /** "nov" (ro) or "Nov" (en), without a dot. */
 export const shortMonth = (value: string | Date) =>
   i18n.language === 'en'
-    ? format(new Date(value), 'MMM', { locale: enUS })
+    ? format(new Date(value), 'MMM', { locale: locale() })
     : RO_SHORT_MONTHS[new Date(value).getMonth()];
 
 const capitalize = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);

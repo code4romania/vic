@@ -4,6 +4,11 @@ import { render, screen, within } from '@testing-library/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { BottomSheetScrollView, BottomSheetView } from '@gorhom/bottom-sheet';
 import { Sheet } from './Sheet';
+import { DEFAULT_DESIGN_LABELS, setDesignLabels } from '../labels';
+
+// The components are tested with the texts they carry themselves (Romanian), whatever language
+// the rest of the suite runs in; the app replaces them through `setDesignLabels`.
+beforeEach(() => setDesignLabels(DEFAULT_DESIGN_LABELS));
 
 jest.mock('@gorhom/bottom-sheet', () => {
   const mock = require('@gorhom/bottom-sheet/mock');

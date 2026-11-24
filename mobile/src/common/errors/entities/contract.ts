@@ -1,4 +1,3 @@
-import i18n from '../../config/i18n';
 import { ErrorClass } from '../base-error.class';
 
 export enum CONTRACT_ERRORS {
@@ -14,11 +13,11 @@ export class ContractErrors extends ErrorClass<CONTRACT_ERRORS> {
 
   private constructor() {
     super({
-      [CONTRACT_ERRORS.CONTRACT_001]: i18n.t('documents:contract.errors.CONTRACT_001'),
-      [CONTRACT_ERRORS.CONTRACT_002]: i18n.t('documents:contract.errors.CONTRACT_002'),
-      [CONTRACT_ERRORS.CONTRACT_003]: i18n.t('documents:contract.errors.CONTRACT_003'),
-      [CONTRACT_ERRORS.CONTRACT_007]: i18n.t('documents:contract.errors.CONTRACT_007'),
-      [CONTRACT_ERRORS.TEMPLATE_002]: i18n.t('documents:contract.errors.TEMPLATE_002'),
+      [CONTRACT_ERRORS.CONTRACT_001]: 'documents:contract.errors.CONTRACT_001',
+      [CONTRACT_ERRORS.CONTRACT_002]: 'documents:contract.errors.CONTRACT_002',
+      [CONTRACT_ERRORS.CONTRACT_003]: 'documents:contract.errors.CONTRACT_003',
+      [CONTRACT_ERRORS.CONTRACT_007]: 'documents:contract.errors.CONTRACT_007',
+      [CONTRACT_ERRORS.TEMPLATE_002]: 'documents:contract.errors.TEMPLATE_002',
     });
   }
 

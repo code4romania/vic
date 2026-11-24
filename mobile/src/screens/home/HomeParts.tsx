@@ -14,9 +14,8 @@ import { BlurView } from 'expo-blur';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { format } from 'date-fns';
-import { enUS, ro } from 'date-fns/locale';
 import { StyleSheet } from 'react-native-unistyles';
-import i18n from '../../common/config/i18n';
+import { dateLocale } from '../../common/utils/date-locale';
 import { EventRegistrationStatus } from '../../common/enums/event-registration-status.enum';
 import { IEventListItem } from '../../common/interfaces/event-list-item.interface';
 import { formatEventWhen, shortMonth } from '../../common/utils/event-format';
@@ -369,7 +368,6 @@ export const SectionHead = ({
 const CARD_WIDTH = 292;
 const CARD_GAP = 10;
 
-const dateLocale = () => (i18n.language === 'en' ? enUS : ro);
 const dow = (value: string) =>
   format(new Date(value), 'EEE', { locale: dateLocale() }).replace('.', '').toUpperCase();
 const dayMonth = (value: string) => ({

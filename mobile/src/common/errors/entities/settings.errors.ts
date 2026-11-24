@@ -1,4 +1,3 @@
-import i18n from '../../config/i18n';
 import { ErrorClass } from '../base-error.class';
 
 export enum SETTINGS_ERRORS {
@@ -10,7 +9,7 @@ export class SettingsErrors extends ErrorClass<SETTINGS_ERRORS> {
 
   private constructor() {
     super({
-      [SETTINGS_ERRORS.NOTIFICATIONS_002]: i18n.t('notifications:errors.NOTIFICATIONS_002'),
+      [SETTINGS_ERRORS.NOTIFICATIONS_002]: 'notifications:errors.NOTIFICATIONS_002',
     });
   }
 

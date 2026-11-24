@@ -12,6 +12,7 @@ import ActivityLogForm, {
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useUserProfile } from '../store/profile/profile.selector';
+import { useRevalidateOnLanguageChange } from '../hooks/useRevalidateOnLanguageChange';
 
 const AddActivityLog = ({ navigation }: any) => {
   // translations
@@ -25,6 +26,7 @@ const AddActivityLog = ({ navigation }: any) => {
     control,
     handleSubmit,
     formState: { errors, isDirty },
+    trigger,
   } = useForm<ActivityLogFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
@@ -32,6 +34,7 @@ const AddActivityLog = ({ navigation }: any) => {
     // the canvas starts from today and one hour
     defaultValues: { date: new Date(), hours: '1' },
   });
+  useRevalidateOnLanguageChange(trigger, errors);
 
   const allowLeave = useConfirmDiscard(navigation, isDirty);
 

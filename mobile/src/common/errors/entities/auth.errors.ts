@@ -1,4 +1,3 @@
-import i18n from '../../config/i18n';
 import { ErrorClass } from '../base-error.class';
 
 // The backend's AUTH_001 to AUTH_015 (backend/docs/auth.md, Error codes).
@@ -25,7 +24,7 @@ export class AuthErrors extends ErrorClass<AUTH_ERRORS> {
   private constructor() {
     super(
       Object.fromEntries(
-        Object.values(AUTH_ERRORS).map((code) => [code, i18n.t(`auth:errors.${code}`)]),
+        Object.values(AUTH_ERRORS).map((code) => [code, `auth:errors.${code}`]),
       ) as Record<AUTH_ERRORS, string>,
     );
   }

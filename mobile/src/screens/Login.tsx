@@ -24,6 +24,8 @@ import { isMigrationNoticeActive } from '../common/utils/migration-notice';
 import { displayTitle } from '../layouts/displayTitle';
 import { getAuthErrorCode } from '../common/utils/auth-error';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import i18n from '../common/config/i18n';
+import { LanguageToggle } from '../components/LanguageSwitcher';
 
 // A new code can be asked for once a minute (the backend answers AUTH_010 sooner).
 export const RESEND_AFTER_SECONDS = 60;
@@ -71,7 +73,8 @@ const Login = ({ navigation, route }: any) => {
   const codeRef = useRef<CodeInputHandle>(null);
 
   const [email, setEmail] = useState<string>(linkEmail ?? '');
-  const [emailError, setEmailError] = useState<string | undefined>();
+  // a function, read when the field is drawn: the message follows a change of language
+  const [emailError, setEmailError] = useState<(() => string) | undefined>();
   // set once a code was sent: the screen shows the code step
   const [maskedEmail, setMaskedEmail] = useState<string | null>(sentTo ?? null);
   const [code, setCode] = useState('');
@@ -123,7 +126,8 @@ const Login = ({ navigation, route }: any) => {
     } catch (error) {
       const errorCode = getAuthErrorCode(error);
       setEmailError(
-        errorCode ? InternalErrors.AUTH_ERRORS.getError(errorCode) : `${t('auth:errors.login')}`,
+        () => () =>
+          errorCode ? InternalErrors.AUTH_ERRORS.getError(errorCode) : i18n.t('auth:errors.login'),
       );
       return false;
     } finally {
@@ -134,11 +138,11 @@ const Login = ({ navigation, route }: any) => {
   const onSubmitEmail = async () => {
     const value = email.trim();
     if (!value) {
-      setEmailError(`${t('form.email.required')}`);
+      setEmailError(() => () => i18n.t('login:form.email.required'));
       return;
     }
     if (!EMAIL_PATTERN.test(value)) {
-      setEmailError(`${t('form.email.pattern')}`);
+      setEmailError(() => () => i18n.t('login:form.email.pattern'));
       return;
     }
     setEmailError(undefined);
@@ -202,13 +206,15 @@ const Login = ({ navigation, route }: any) => {
           contentContainerStyle={[styles.content, contentPadding]}
           keyboardShouldPersistTaps="handled"
         >
-          <RoundIconButton
-            icon="back"
-            onPress={onChangeEmail}
-            accessibilityLabel={`${t('code.change_email')}`}
-            testID="login-back"
-            style={styles.back}
-          />
+          <View style={styles.topRow}>
+            <RoundIconButton
+              icon="back"
+              onPress={onChangeEmail}
+              accessibilityLabel={`${t('code.change_email')}`}
+              testID="login-back"
+            />
+            <LanguageToggle tone="onPaper" testID="login-language" />
+          </View>
           {!keyboardOpen && (
             <Animated.View entering={enter(0, reduced)}>
               <MailHexagon />
@@ -305,15 +311,19 @@ const Login = ({ navigation, route }: any) => {
         contentContainerStyle={[styles.content, contentPadding]}
         keyboardShouldPersistTaps="handled"
       >
-        {navigation.canGoBack() && (
-          <RoundIconButton
-            icon="back"
-            onPress={navigation.goBack}
-            accessibilityLabel={`${t('general:back')}`}
-            testID="login-back"
-            style={styles.back}
-          />
-        )}
+        <View style={styles.topRow}>
+          {navigation.canGoBack() ? (
+            <RoundIconButton
+              icon="back"
+              onPress={navigation.goBack}
+              accessibilityLabel={`${t('general:back')}`}
+              testID="login-back"
+            />
+          ) : (
+            <View />
+          )}
+          <LanguageToggle tone="onPaper" testID="login-language" />
+        </View>
         <Animated.View entering={enter(0, reduced)} style={styles.intro}>
           <AppText variant="largeTitle" accessibilityRole="header" style={styles.title}>
             {t('title')}
@@ -334,7 +344,7 @@ const Login = ({ navigation, route }: any) => {
               setEmail(text);
               setEmailError(undefined);
             }}
-            error={emailError}
+            error={emailError?.()}
             editable={!isLoading}
             keyboardType="email-address"
             autoCapitalize="none"
@@ -368,8 +378,13 @@ export default Login;
 const styles = StyleSheet.create((theme) => ({
   screen: { flex: 1, backgroundColor: theme.colors.background },
   content: { flexGrow: 1, paddingHorizontal: theme.space.gutter + 2, gap: 20 },
-  // the round button keeps its own 44pt, not the column's width
-  back: { alignSelf: 'flex-start' },
+  // the back button on the left (when there is somewhere to go back to), the language on the right
+  topRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    minHeight: 44,
+  },
   intro: { gap: 10 },
   title: displayTitle(40),
   mailHex: { width: 64, height: 70, alignItems: 'center', justifyContent: 'center' },

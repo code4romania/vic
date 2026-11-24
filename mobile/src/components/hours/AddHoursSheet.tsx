@@ -34,6 +34,7 @@ import { Button } from '../../design/components/Button';
 import { Sheet } from '../../design/components/Sheet';
 import { tight, useEffectiveFontScale } from '../../design/components/Text';
 import { SubmitSuccess } from './SubmitSuccess';
+import { useRevalidateOnLanguageChange } from '../../hooks/useRevalidateOnLanguageChange';
 
 /** How long „Trimis spre aprobare” stays before the sheet closes (prototype: 1.7 s). */
 export const SUCCESS_DWELL_MS = 1700;
@@ -98,12 +99,14 @@ export const AddHoursSheet = forwardRef<AddHoursSheetHandle, AddHoursSheetProps>
       handleSubmit,
       reset,
       formState: { errors, isDirty },
+      trigger,
     } = useForm<ActivityLogFormTypes>({
       mode: 'onSubmit',
       reValidateMode: 'onChange',
       resolver: yupResolver(activityLogSchema) as any,
       defaultValues: defaultValues(),
     });
+    useRevalidateOnLanguageChange(trigger, errors);
 
     useEffect(
       () => () => {

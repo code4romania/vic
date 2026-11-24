@@ -30,6 +30,7 @@ import { haptics } from '../design/haptics';
 import { ArrowRightIcon } from '../design/icons';
 import { fontScaleCap, palette } from '../design/tokens';
 import { VicLogo } from '../components/brand/VicLogo';
+import { LanguageToggle } from '../components/LanguageSwitcher';
 import { HexMotifShape } from '../components/auth/LoginHero';
 import { StoryScenes } from '../components/onboarding/StoryScenes';
 import { markOnboardingSeen } from '../common/utils/onboarding';
@@ -156,21 +157,27 @@ const Onboarding = ({ navigation }: any) => {
       <View style={styles.header}>
         <View style={styles.brand}>
           <VicLogo size={28} dark={palette.white} />
-          <Text maxFontSizeMultiplier={fontScaleCap.display} style={styles.brandText}>
-            VIC
-          </Text>
+          {/* on a 320pt phone the wordmark gives its place to the language switch */}
+          {width >= 360 && (
+            <Text maxFontSizeMultiplier={fontScaleCap.display} style={styles.brandText}>
+              VIC
+            </Text>
+          )}
         </View>
-        <Pressable
-          onPress={finish}
-          hitSlop={12}
-          accessibilityRole="button"
-          style={styles.skip}
-          testID="onboarding-skip"
-        >
-          <AppText variant="label" color={palette.white}>
-            {t('skip')}
-          </AppText>
-        </Pressable>
+        <View style={styles.headerActions}>
+          <LanguageToggle testID="onboarding-language" />
+          <Pressable
+            onPress={finish}
+            hitSlop={12}
+            accessibilityRole="button"
+            style={styles.skip}
+            testID="onboarding-skip"
+          >
+            <AppText variant="label" color={palette.white}>
+              {t('skip')}
+            </AppText>
+          </Pressable>
+        </View>
       </View>
 
       <Pressable
@@ -267,6 +274,8 @@ const styles = StyleSheet.create((theme) => ({
     zIndex: 3,
   },
   brand: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  // 12 apart: the hit slop of „Sari peste” must not reach over the language switch
+  headerActions: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   brandText: {
     fontFamily: theme.fontFamily.display,
     fontSize: 20,

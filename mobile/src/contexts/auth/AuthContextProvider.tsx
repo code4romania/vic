@@ -27,6 +27,7 @@ import { AUTH_ERRORS } from '../../common/errors/entities/auth.errors';
 import { InternalErrors } from '../../common/errors/internal-errors.class';
 import { USER_ERRORS } from '../../common/errors/entities/user.errors';
 import { clearSessionData } from '../../services/auth/session-cleanup';
+import { syncLanguageWithAccount } from '../../services/language/language.service';
 import {
   forgetPushToken,
   getPushToken,
@@ -107,6 +108,8 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const getProfile = async () => {
     try {
       const profile = await getUserProfile();
+      // before the private screens show: they open in the account's language
+      await syncLanguageWithAccount(profile.language);
       setUserProfile(profile);
       return profile;
     } catch (error: any) {

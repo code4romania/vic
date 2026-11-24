@@ -7,6 +7,7 @@ import { IUserProfile } from '../../common/interfaces/user-profile.interface';
 import useStore from '../../store/store';
 import { useUserProfile } from '../../store/profile/profile.selector';
 import { hasProfileChanged } from './profile-changes';
+import { syncLanguageWithAccount } from '../language/language.service';
 
 export const useCreateUserProfileMutation = () => {
   const { setUserProfile } = useStore();
@@ -15,6 +16,8 @@ export const useCreateUserProfileMutation = () => {
     (userProfile: ICreateUserPayload) => createUserProfile(userProfile),
     {
       onSuccess: (data: IUserProfile) => {
+        // a new account takes the language the app is in
+        syncLanguageWithAccount(data.language);
         setUserProfile({ ...data, myOrganizations: data.myOrganizations ?? [] });
       },
     },
@@ -26,6 +29,8 @@ export const useGetUserProfileQuery = () => {
   const { userProfile } = useUserProfile();
   return useQuery(['user-profile'], () => getUserProfile(), {
     onSuccess: (data: IUserProfile) => {
+      // a language chosen on another device arrives with the profile
+      syncLanguageWithAccount(data.language);
       if (hasProfileChanged(userProfile, data)) {
         setUserProfile({ ...data });
       }

@@ -5,11 +5,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
-import '../common/config/i18n';
+import i18n from '../common/config/i18n';
 import Login from './Login';
 import Onboarding from './Onboarding';
 import Landing from './Landing';
 import { CodeInput } from '../components/auth/CodeInput';
+import { TEST_LANGUAGE, containing, t } from '../test/i18n';
 
 // The official mock finishes every animation at once, which would skip the auto-advancing stories to
 // the end; here timing animations never finish, so only taps move between stories.
@@ -96,9 +97,9 @@ describe('CodeInput', () => {
 describe('Login, code step', () => {
   it('shows where the code went and logs in when the 6th digit is typed', async () => {
     await renderStack('login', { email: 'ana@example.ro', maskedEmail: 'a***@e***.ro' });
-    expect(await screen.findByText('Verifică-ți emailul')).toBeTruthy();
+    expect(await screen.findByText(t('login:code.title'))).toBeTruthy();
     expect(screen.getByText('a***@e***.ro')).toBeTruthy();
-    expect(screen.getByText(/Poți cere un cod nou în 60 s/)).toBeTruthy();
+    expect(screen.getByText(containing(t('login:code.resend_in', { seconds: 60 })))).toBeTruthy();
 
     await act(async () => {
       await fireEvent.changeText(await screen.findByTestId('login-code'), '654321');
@@ -132,18 +133,78 @@ describe('Login, code step', () => {
 
   it('"Alt email" goes back to the email step with the address kept', async () => {
     await renderStack('login', { email: 'ana@example.ro', maskedEmail: 'a***@e***.ro' });
-    await fireEvent.press(await screen.findByText('Alt email'));
+    await fireEvent.press(await screen.findByText(t('login:code.other_email')));
     expect(await screen.findByDisplayValue('ana@example.ro')).toBeTruthy();
+  });
+});
+
+describe('the language before login', () => {
+  const other = TEST_LANGUAGE === 'ro' ? 'en' : 'ro';
+  const inOther = (key: string, options?: Record<string, unknown>) =>
+    `${i18n.t(key, { ...options, lng: other })}`;
+
+  it('the intro can be switched from its first screen and goes on in the new language', async () => {
+    await renderStack('onboarding');
+    await screen.findByTestId('onboarding');
+    expect(screen.getByText(t('onboarding:stories.organizations.title'))).toBeTruthy();
+
+    await fireEvent.press(screen.getByTestId(`onboarding-language-${other}`));
+
+    expect(await screen.findByText(inOther('onboarding:stories.organizations.title'))).toBeTruthy();
+    expect(screen.getByText(inOther('onboarding:skip'))).toBeTruthy();
+    await fireEvent.press(screen.getByTestId('onboarding-next'));
+    expect(screen.getByText(inOther('onboarding:stories.events.title'))).toBeTruthy();
+    // remembered as a choice, for the account that logs in later
+    expect(JSON.parse((await AsyncStorage.getItem('vic.language')) as string)).toEqual({
+      language: other,
+      pending: true,
+    });
+  });
+
+  it('the entry screen has the switch too', async () => {
+    await AsyncStorage.setItem('vic.onboarding.seen', '1');
+    await renderStack('landing');
+    await waitFor(() => expect(screen.getByTestId('login-google')).toBeTruthy());
+    expect(screen.getByText(t('landing:title'))).toBeTruthy();
+
+    await fireEvent.press(screen.getByTestId(`landing-language-${other}`));
+
+    expect(await screen.findByText(inOther('landing:title'))).toBeTruthy();
+    expect(screen.getByText(inOther('landing:social.google'))).toBeTruthy();
+    expect(screen.getByText(inOther('landing:terms_link'))).toBeTruthy();
+  });
+
+  it('the login screen switches with an error on screen, and the error follows', async () => {
+    await renderStack('login');
+    await fireEvent.changeText(await screen.findByTestId('login-email-input'), 'nu-e-email');
+    await act(async () => {
+      await fireEvent.press(screen.getByTestId('login-send'));
+    });
+    expect(screen.getByText(t('login:form.email.pattern'))).toBeTruthy();
+
+    await fireEvent.press(screen.getByTestId(`login-language-${other}`));
+
+    expect(await screen.findByText(inOther('login:form.email.pattern'))).toBeTruthy();
+    expect(screen.getByText(inOther('login:title'))).toBeTruthy();
+    // what was typed is still there
+    expect(screen.getByDisplayValue('nu-e-email')).toBeTruthy();
+  });
+
+  it('the code step keeps the switch beside the back button', async () => {
+    await renderStack('login', { email: 'ana@example.ro', maskedEmail: 'a***@e***.ro' });
+    expect(await screen.findByText(t('login:code.title'))).toBeTruthy();
+
+    await fireEvent.press(screen.getByTestId(`login-language-${other}`));
+
+    expect(await screen.findByText(inOther('login:code.title'))).toBeTruthy();
+    expect(screen.getByTestId('login-back')).toBeTruthy();
   });
 });
 
 describe('Login, email step', () => {
   it.each([
-    [new Error('Network Error'), 'Eroare la autentificare, vă rugăm încercați din nou'],
-    [
-      { response: { status: 429, data: {} } },
-      'Prea multe cereri. Încearcă din nou peste un minut.',
-    ],
+    [new Error('Network Error'), t('auth:errors.login')],
+    [{ response: { status: 429, data: {} } }, t('auth:errors.AUTH_010')],
   ])('keeps a failed send visible at the email field', async (error, message) => {
     mockAuth.requestLoginCode.mockRejectedValueOnce(error);
     await renderStack('login');
@@ -161,14 +222,14 @@ describe('Login, email step', () => {
       await fireEvent.press(screen.getByTestId('login-send'));
     });
     expect(mockAuth.requestLoginCode).not.toHaveBeenCalled();
-    expect(screen.getByText('Formatul email-ului nu este valid')).toBeTruthy();
+    expect(screen.getByText(t('login:form.email.pattern'))).toBeTruthy();
 
     await fireEvent.changeText(screen.getByTestId('login-email-input'), 'ana@example.ro');
     await act(async () => {
       await fireEvent.press(screen.getByTestId('login-send'));
     });
     expect(mockAuth.requestLoginCode).toHaveBeenCalledWith('ana@example.ro');
-    expect(await screen.findByText('Verifică-ți emailul')).toBeTruthy();
+    expect(await screen.findByText(t('login:code.title'))).toBeTruthy();
   });
 
   it('opens the terms and the privacy policy, not the VIC information page (audit #11)', async () => {
@@ -191,12 +252,10 @@ describe('Landing', () => {
     await renderStack('landing');
     await fireEvent.changeText(await screen.findByTestId('email-input'), 'ana@example.ro');
     await fireEvent.press(screen.getByTestId('email-send'));
-    expect(
-      await screen.findByText('Eroare la autentificare, vă rugăm încercați din nou'),
-    ).toBeTruthy();
+    expect(await screen.findByText(t('auth:errors.login'))).toBeTruthy();
     expect(screen.queryByTestId('button-spinner')).toBeNull();
     await fireEvent.press(screen.getByTestId('email-send'));
-    expect(await screen.findByText('Verifică-ți emailul')).toBeTruthy();
+    expect(await screen.findByText(t('login:code.title'))).toBeTruthy();
   });
 
   it('opens the intro on the first start only', async () => {
@@ -231,7 +290,7 @@ describe('Landing', () => {
       await fireEvent.press(screen.getByTestId('email-send'));
     });
     expect(mockAuth.requestLoginCode).toHaveBeenCalledWith('ana@example.ro');
-    expect(await screen.findByText('Verifică-ți emailul')).toBeTruthy();
+    expect(await screen.findByText(t('login:code.title'))).toBeTruthy();
   });
 });
 
@@ -239,13 +298,13 @@ describe('Onboarding', () => {
   it('moves through the four stories and remembers it was seen', async () => {
     await renderStack('landing');
     await screen.findByTestId('onboarding');
-    expect(screen.getByText('Alătură-te organizațiilor care contează pentru tine.')).toBeTruthy();
+    expect(screen.getByText(t('onboarding:stories.organizations.title'))).toBeTruthy();
 
     await fireEvent.press(screen.getByTestId('onboarding-next'));
-    expect(screen.getByText('Vezi ce urmează și înscrie-te dintr-o atingere.')).toBeTruthy();
+    expect(screen.getByText(t('onboarding:stories.events.title'))).toBeTruthy();
     await fireEvent.press(screen.getByTestId('onboarding-next'));
     await fireEvent.press(screen.getByTestId('onboarding-next'));
-    expect(screen.getByText('Contractele și adeverințele tale, mereu la tine.')).toBeTruthy();
+    expect(screen.getByText(t('onboarding:stories.documents.title'))).toBeTruthy();
     expect(screen.queryByTestId('onboarding-next')).toBeNull();
 
     await act(async () => {
@@ -259,9 +318,9 @@ describe('Onboarding', () => {
     await renderStack('onboarding');
     const stage = await screen.findByTestId('onboarding-stage');
     await fireEvent.press(stage, { nativeEvent: { locationX: 300 } });
-    expect(screen.getByText('Vezi ce urmează și înscrie-te dintr-o atingere.')).toBeTruthy();
+    expect(screen.getByText(t('onboarding:stories.events.title'))).toBeTruthy();
     await fireEvent.press(stage, { nativeEvent: { locationX: 40 } });
-    expect(screen.getByText('Alătură-te organizațiilor care contează pentru tine.')).toBeTruthy();
+    expect(screen.getByText(t('onboarding:stories.organizations.title'))).toBeTruthy();
   });
 
   it('"Sari peste" closes the intro', async () => {

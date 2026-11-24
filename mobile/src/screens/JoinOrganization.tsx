@@ -8,7 +8,7 @@ import FormSelect from '../components/FormSelect';
 import { REFERRAL } from '../common/enums/refferal.enum';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ReferralOptions } from '../common/constants/referral-options';
+import { getReferralOptions } from '../common/constants/referral-options';
 import FormInput from '../components/FormInput';
 import { useCreateAccessrequestMutation } from '../services/access-request/access-request.service';
 import { InternalErrors } from '../common/errors/internal-errors.class';
@@ -21,6 +21,7 @@ import { EventIcon } from '../components/events/EventIcons';
 import InlineLink from '../components/InlineLink';
 import { colors, spacing } from '../common/theme/tokens';
 import { usePaddingTop } from '../hooks/usePaddingTop';
+import { useRevalidateOnLanguageChange } from '../hooks/useRevalidateOnLanguageChange';
 
 export type JoinNgoFormTypes = {
   referral: REFERRAL;
@@ -28,12 +29,12 @@ export type JoinNgoFormTypes = {
 };
 
 const schema = yup.object({
-  referral: yup.string().required(`${i18n.t('join_ngo:form.referral.required')}`),
+  referral: yup.string().required(() => i18n.t('join_ngo:form.referral.required')),
   motivation: yup
     .string()
-    .required(`${i18n.t('join_ngo:form.motivation.required')}`)
-    .min(2, `${i18n.t('join_ngo:form.motivation.min', { value: 2 })}`)
-    .max(50, `${i18n.t('join_ngo:form.motivation.max', { value: 50 })}`),
+    .required(() => i18n.t('join_ngo:form.motivation.required'))
+    .min(2, () => i18n.t('join_ngo:form.motivation.min', { value: 2 }))
+    .max(50, () => i18n.t('join_ngo:form.motivation.max', { value: 50 })),
 });
 
 const JoinOrganization = ({ navigation, route }: any) => {
@@ -51,11 +52,13 @@ const JoinOrganization = ({ navigation, route }: any) => {
     control,
     handleSubmit,
     formState: { errors },
+    trigger,
   } = useForm<JoinNgoFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
     resolver: yupResolver(schema) as any,
   });
+  useRevalidateOnLanguageChange(trigger, errors);
 
   const onSubmit = (payload: JoinNgoFormTypes) => {
     // build the access request payload
@@ -110,7 +113,7 @@ const JoinOrganization = ({ navigation, route }: any) => {
               label={t('form.referral.label')}
               error={errors.referral}
               name="referral"
-              options={ReferralOptions}
+              options={getReferralOptions()}
               placeholder={t('general:select')}
               disabled={isCreatingAccessRequest}
             />

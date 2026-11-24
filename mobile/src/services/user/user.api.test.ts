@@ -1,8 +1,22 @@
 import API from '../api';
 import { Sex } from '../../common/enums/sex.enum';
-import { updateUserProfile } from './user.api';
+import { setUserLanguage, updateUserProfile } from './user.api';
 
 jest.mock('../api', () => ({ __esModule: true, default: { patch: jest.fn() } }));
+
+describe('setUserLanguage', () => {
+  it.each([true, false])('sends the language and whether it is a choice (%p)', async (explicit) => {
+    (API.patch as jest.Mock).mockResolvedValue({ data: { language: 'ro' } });
+
+    // the answer is the language the account keeps, which may differ from the one sent
+    expect(await setUserLanguage('en', explicit)).toEqual({ language: 'ro' });
+
+    expect(API.patch).toHaveBeenLastCalledWith('/mobile/user/language', {
+      language: 'en',
+      explicit,
+    });
+  });
+});
 
 describe('updateUserProfile', () => {
   it.each([

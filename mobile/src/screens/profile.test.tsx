@@ -3,13 +3,18 @@ import { Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { fireEvent, render, screen, within } from '@testing-library/react-native';
-import '../common/config/i18n';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
+import i18n from '../common/config/i18n';
 import Settings from './Settings';
 import Volunteer from './Volunteer';
 import useStore from '../store/store';
+import { TEST_LANGUAGE, containing, t } from '../test/i18n';
 
 jest.mock('@gorhom/bottom-sheet', () => require('@gorhom/bottom-sheet/mock'));
+const mockSetUserLanguage = jest.fn(async (language: string, _explicit: boolean) => ({ language }));
+jest.mock('../services/user/user.api', () => ({
+  setUserLanguage: (language: string, explicit: boolean) => mockSetUserLanguage(language, explicit),
+}));
 jest.mock('expo-linking', () => ({
   createURL: (p: string) => p,
   openURL: jest.fn(async () => true),
@@ -113,7 +118,7 @@ describe('Profil', () => {
   it('opens with your hexagon, „Profilul tău” and your first name as the title', async () => {
     await renderApp();
     const header = within(screen.getByTestId('settings-header'));
-    expect(header.getByText('Profilul tău')).toBeTruthy();
+    expect(header.getByText(t('settings:your_profile'))).toBeTruthy();
     expect(header.getByRole('header', { name: 'Ana' })).toBeTruthy();
     // the yellow hexagon shows the first initial
     expect(header.getByText('A', { includeHiddenElements: true })).toBeTruthy();
@@ -121,8 +126,8 @@ describe('Profil', () => {
 
   it('keeps delete and log out apart from the other settings', async () => {
     await renderApp();
-    expect(screen.getByText('Setări')).toBeTruthy();
-    expect(screen.getByText('Ajutor și informații')).toBeTruthy();
+    expect(screen.getByText(t('settings:section_settings'))).toBeTruthy();
+    expect(screen.getByText(t('settings:information'))).toBeTruthy();
     expect(screen.getByTestId('profile-delete')).toBeTruthy();
     await fireEvent.press(screen.getByTestId('profile-delete'));
     expect(await screen.findByText('page:delete-account')).toBeTruthy();
@@ -138,7 +143,7 @@ describe('Profil', () => {
     });
     await renderApp();
     const row = await screen.findByTestId('profile-organization-org-3');
-    expect(within(row).getByText('În așteptare')).toBeTruthy();
+    expect(within(row).getByText(t('settings:waiting'))).toBeTruthy();
   });
 
   it('refetches the profile on focus', async () => {
@@ -151,13 +156,13 @@ describe('Profil', () => {
     expect(await screen.findByText('Ana')).toBeTruthy();
     expect(screen.getByText('ana@example.com · București')).toBeTruthy();
     const active = screen.getByTestId('profile-organization-org-1');
-    expect(within(active).getByText('Activă')).toBeTruthy();
+    expect(within(active).getByText(t('settings:active'))).toBeTruthy();
     const other = screen.getByTestId('profile-organization-org-2');
-    expect(within(other).queryByText('Activă')).toBeNull();
-    expect(within(other).getByText('Profil de voluntar incomplet')).toBeTruthy();
-    expect(screen.getByText('Date personale')).toBeTruthy();
-    expect(screen.getByText('Notificări')).toBeTruthy();
-    expect(screen.getByText('Alătură-te unei organizații')).toBeTruthy();
+    expect(within(other).queryByText(t('settings:active'))).toBeNull();
+    expect(within(other).getByText(t('settings:volunteer_profile_missing'))).toBeTruthy();
+    expect(screen.getByText(t('settings:heading'))).toBeTruthy();
+    expect(screen.getByText(t('settings:notification'))).toBeTruthy();
+    expect(screen.getByText(t('settings:join_organization'))).toBeTruthy();
   });
 
   it('shows approved hours, events and years in VIC, and refreshes them on focus', async () => {
@@ -165,18 +170,28 @@ describe('Profil', () => {
     await renderApp();
     expect(within(await screen.findByTestId('profile-stat-hours')).getByText('145')).toBeTruthy();
     expect(within(screen.getByTestId('profile-stat-events')).getByText('18')).toBeTruthy();
-    expect(within(screen.getByTestId('profile-stat-years')).getByText('2 ani')).toBeTruthy();
+    expect(
+      within(screen.getByTestId('profile-stat-years')).getByText(
+        t('settings:stats.years', { count: 2 }),
+      ),
+    ).toBeTruthy();
     expect(mockRefetchPersonal).toHaveBeenCalled();
   });
 
   it('says "<1 an" in the first year, "20 de ani" later, and a dash while loading', async () => {
     mockPersonal = { approvedHours: 0, events: 0, memberSince: '2026-10-01', yearsInVic: 0 };
     await renderApp();
-    expect(within(await screen.findByTestId('profile-stat-years')).getByText('<1 an')).toBeTruthy();
+    expect(
+      within(await screen.findByTestId('profile-stat-years')).getByText(
+        t('settings:stats.years_less'),
+      ),
+    ).toBeTruthy();
     mockPersonal = { approvedHours: 0, events: 0, memberSince: '2006-10-01', yearsInVic: 20 };
     await renderApp();
     expect(
-      within(await screen.findByTestId('profile-stat-years')).getByText('20 de ani'),
+      within(await screen.findByTestId('profile-stat-years')).getByText(
+        t('settings:stats.years_de', { count: 20 }),
+      ),
     ).toBeTruthy();
     mockPersonal = undefined;
     await renderApp();
@@ -194,7 +209,31 @@ describe('Profil', () => {
     await renderApp();
     await fireEvent.press(await screen.findByTestId('profile-organization-org-1'));
     expect(mockSwitch).not.toHaveBeenCalled();
-    expect(await screen.findByText('Profil voluntar')).toBeTruthy();
+    expect(await screen.findByText(t('volunteer:menu_items.volunteer_profile.title'))).toBeTruthy();
+  });
+
+  it('„Limba aplicației” sits with the settings and changes the whole screen at once', async () => {
+    await renderApp();
+    const row = await screen.findByTestId('profile-language');
+    expect(row).toHaveTextContent(containing(t('language:title')));
+
+    await fireEvent.press(row);
+    const other = TEST_LANGUAGE === 'ro' ? 'en' : 'ro';
+    await fireEvent.press(screen.getByTestId(`language-option-${other}`));
+
+    // no restart: the texts already on screen are redrawn in the other language
+    const inOther = (key: string) => `${i18n.t(key, { lng: other })}`;
+    expect(await screen.findByText(inOther('settings:section_settings'))).toBeTruthy();
+    expect(screen.getByText(inOther('settings:your_profile'))).toBeTruthy();
+    expect(screen.getByTestId('profile-language')).toHaveTextContent(
+      containing(inOther('language:title')),
+    );
+    expect(inOther('settings:your_profile')).not.toBe(
+      t('settings:your_profile', { lng: TEST_LANGUAGE }),
+    );
+    // and the account gets it as a choice
+    await waitFor(() => expect(mockSetUserLanguage).toHaveBeenCalledWith(other, true));
+    expect(useStore.getState().userProfile?.language).toBe(other);
   });
 
   it('log out asks first, then signs out', async () => {
@@ -212,7 +251,9 @@ describe('Profil în organizație', () => {
     expect(await screen.findByText('Asociația Exemplu')).toBeTruthy();
     expect(within(screen.getByTestId('volunteer-stat-logs')).getByText('1')).toBeTruthy();
     expect(within(screen.getByTestId('volunteer-stat-documents')).getByText('2')).toBeTruthy();
-    expect(screen.getByText('1 cerere așteaptă aprobare')).toBeTruthy();
+    expect(
+      screen.getByText(t('volunteer:menu_items.activity_log.subtitle.one', { number: 1 })),
+    ).toBeTruthy();
     expect(screen.queryByTestId('volunteer-profile-prompt')).toBeNull();
     await fireEvent.press(screen.getByTestId('volunteer-leave'));
     expect(await screen.findByText('page:leave-organization')).toBeTruthy();
@@ -221,7 +262,7 @@ describe('Profil în organizație', () => {
   it('asks to complete the volunteer profile when it is missing', async () => {
     mockStats = { ...mockStats, volunteerProfileId: null };
     await renderApp('volunteer');
-    expect(await screen.findByText('Completează profilul de voluntar')).toBeTruthy();
+    expect(await screen.findByText(t('volunteer:prompt.title'))).toBeTruthy();
     await fireEvent.press(screen.getByTestId('volunteer-profile-complete'));
     expect(await screen.findByText('page:volunteer-profile')).toBeTruthy();
   });
@@ -231,7 +272,7 @@ describe('Profil în organizație', () => {
       userProfile: { firstName: 'Ana', activeOrganization: null, myOrganizations: [] } as any,
     });
     await renderApp('volunteer');
-    await fireEvent.press(await screen.findByText('Alătură-te unei organizații'));
+    await fireEvent.press(await screen.findByText(t('volunteer:join_organization')));
     expect(await screen.findByText('page:search')).toBeTruthy();
   });
 });
