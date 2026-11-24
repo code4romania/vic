@@ -60,6 +60,23 @@ export const refreshAccessToken = (): Promise<string> => {
   return refreshing;
 };
 
+// The backend refused the refresh token: sign out, the same way for every caller.
+export const endSessionIfRefused = async (error: unknown): Promise<void> => {
+  if (error instanceof SessionEndedError) {
+    await clearTokens();
+    authEvents.emit('logout');
+  }
+};
+
+// #727: for requests made outside axios (a file downloaded straight to disk).
+export const getAuthHeaders = async (): Promise<Record<string, string>> => {
+  const token = await getAccessToken();
+  return {
+    'x-app-version': APP_VERSION,
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
+};
+
 API.interceptors.request.use(async (request) => {
   request.headers.set('x-app-version', APP_VERSION);
   if (!request.headers.has('Authorization')) {
@@ -103,10 +120,7 @@ API.interceptors.response.use(
         original.headers.set('Authorization', `Bearer ${token}`);
         return API(original);
       } catch (refreshError) {
-        if (refreshError instanceof SessionEndedError) {
-          await clearTokens();
-          authEvents.emit('logout');
-        }
+        await endSessionIfRefused(refreshError);
       }
     }
 

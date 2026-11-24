@@ -14,6 +14,8 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
+    "@config-plugins/react-native-blob-util": "^14.0.2",
+    "@config-plugins/react-native-pdf": "^14.0.2",
     "@expo-google-fonts/bricolage-grotesque": "^0.4.1",
     "@expo-google-fonts/manrope": "^0.4.3",
     "@expo/vector-icons": "^15.0.2",
@@ -62,9 +64,11 @@
     "react-hook-form": "^7.43.9",
     "react-i18next": "^12.2.2",
     "react-native": "0.86.3",
+    "react-native-blob-util": "^1.1.1",
     "react-native-gesture-handler": "~2.32.0",
     "react-native-keyboard-controller": "1.21.9",
     "react-native-nitro-modules": "^0.37.2",
+    "react-native-pdf": "^7.0.5",
     "react-native-reanimated": "4.5.1",
     "react-native-safe-area-context": "~5.7.0",
     "react-native-screens": "~4.26.0",
