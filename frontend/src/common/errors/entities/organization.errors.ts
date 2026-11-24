@@ -1,4 +1,3 @@
-import i18n from '../../config/i18n';
 import { ErrorClass } from '../base-error.class';
 
 export enum ORGANIZATION_ERRORS {
@@ -22,19 +21,19 @@ export class OrganizationError extends ErrorClass<ORGANIZATION_ERRORS> {
 
   private constructor() {
     super({
-      [ORGANIZATION_ERRORS.ORG_001]: i18n.t('organization:errors.ORG_001'),
-      [ORGANIZATION_ERRORS.ORG_003]: i18n.t('organization:errors.ORG_003'),
-      [ORGANIZATION_ERRORS.ORG_004]: i18n.t('organization:errors.ORG_004'),
-      [ORGANIZATION_ERRORS.ORG_005]: i18n.t('organization:errors.ORG_005'),
-      [ORGANIZATION_ERRORS.ORG_008]: i18n.t('organization:errors.ORG_008'),
-      [ORGANIZATION_ERRORS.ORG_009]: i18n.t('organization:errors.ORG_009'),
-      [ORGANIZATION_ERRORS.ORG_010]: i18n.t('organization:errors.ORG_010'),
-      [ORGANIZATION_ERRORS.ORG_011]: i18n.t('organization:errors.ORG_011'),
-      [ORGANIZATION_ERRORS.ORG_012]: i18n.t('organization:errors.ORG_012'),
-      [ORGANIZATION_ERRORS.ORG_013]: i18n.t('organization:errors.ORG_013'),
-      [ORGANIZATION_ERRORS.ACCESS_CODE_001]: i18n.t('access_code:errors.ACCESS_CODE_001'),
-      [ORGANIZATION_ERRORS.ACCESS_CODE_002]: i18n.t('access_code:errors.ACCESS_CODE_002'),
-      [ORGANIZATION_ERRORS.ACCESS_CODE_003]: i18n.t('access_code:errors.ACCESS_CODE_003'),
+      [ORGANIZATION_ERRORS.ORG_001]: 'organization:errors.ORG_001',
+      [ORGANIZATION_ERRORS.ORG_003]: 'organization:errors.ORG_003',
+      [ORGANIZATION_ERRORS.ORG_004]: 'organization:errors.ORG_004',
+      [ORGANIZATION_ERRORS.ORG_005]: 'organization:errors.ORG_005',
+      [ORGANIZATION_ERRORS.ORG_008]: 'organization:errors.ORG_008',
+      [ORGANIZATION_ERRORS.ORG_009]: 'organization:errors.ORG_009',
+      [ORGANIZATION_ERRORS.ORG_010]: 'organization:errors.ORG_010',
+      [ORGANIZATION_ERRORS.ORG_011]: 'organization:errors.ORG_011',
+      [ORGANIZATION_ERRORS.ORG_012]: 'organization:errors.ORG_012',
+      [ORGANIZATION_ERRORS.ORG_013]: 'organization:errors.ORG_013',
+      [ORGANIZATION_ERRORS.ACCESS_CODE_001]: 'access_code:errors.ACCESS_CODE_001',
+      [ORGANIZATION_ERRORS.ACCESS_CODE_002]: 'access_code:errors.ACCESS_CODE_002',
+      [ORGANIZATION_ERRORS.ACCESS_CODE_003]: 'access_code:errors.ACCESS_CODE_003',
     });
   }
 

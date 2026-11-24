@@ -24,10 +24,10 @@ const render = () =>
 describe('AddVolunteer (#471)', () => {
   beforeEach(() => vi.clearAllMocks());
 
-  it('requires first name, last name and email, in Romanian', async () => {
+  it('requires first name, last name and email, with a translated message', async () => {
     render();
     await submit();
-    expect(await screen.findAllByText('Câmpul este obligatoriu')).toHaveLength(3);
+    expect(await screen.findAllByText(t('volunteers:add.required'))).toHaveLength(3);
   });
 
   it('sends a Candidate with only the fields filled in, then opens the volunteer', async () => {

@@ -13,8 +13,8 @@ const schema = yup.object({
   reason: yup
     .string()
     .trim()
-    .required(`${i18n.t('events:registrations.reject.required')}`)
-    .max(500, `${i18n.t('events:registrations.reject.max', { value: 500 })}`),
+    .required(() => i18n.t('events:registrations.reject.required'))
+    .max(500, () => i18n.t('events:registrations.reject.max', { value: 500 })),
 });
 
 interface RejectRegistrationModalProps {

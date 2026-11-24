@@ -37,18 +37,21 @@ describe('RegisterOrganization', () => {
     );
   });
 
-  it.each(['12345678', 'RO 185 472 91'])('rejects invalid CUI %s on registration', async (taxId) => {
-    renderPage(<RegisterOrganization />, { auth: { isAuthenticated: false } });
-    await userEvent.type(screen.getByLabelText(f('taxId')), taxId);
-    await submit();
-    expect(
-      await screen.findByText(t('register_organization:form.tax_id_invalid')),
-    ).toBeInTheDocument();
-    await userEvent.clear(screen.getByLabelText(f('taxId')));
-    await userEvent.type(screen.getByLabelText(f('taxId')), 'RO 185 472 90');
-    await submit();
-    expect(screen.queryByText(t('register_organization:form.tax_id_invalid'))).toBeNull();
-  });
+  it.each(['12345678', 'RO 185 472 91'])(
+    'rejects invalid CUI %s on registration',
+    async (taxId) => {
+      renderPage(<RegisterOrganization />, { auth: { isAuthenticated: false } });
+      await userEvent.type(screen.getByLabelText(f('taxId')), taxId);
+      await submit();
+      expect(
+        await screen.findByText(t('register_organization:form.tax_id_invalid')),
+      ).toBeInTheDocument();
+      await userEvent.clear(screen.getByLabelText(f('taxId')));
+      await userEvent.type(screen.getByLabelText(f('taxId')), 'RO 185 472 90');
+      await submit();
+      expect(screen.queryByText(t('register_organization:form.tax_id_invalid'))).toBeNull();
+    },
+  );
 
   it('asks only the minimum: no description, address, website, logo or statute (#469)', () => {
     renderPage(<RegisterOrganization />, { auth: { isAuthenticated: false } });
@@ -96,9 +99,7 @@ describe('RegisterOrganization', () => {
     API.interceptors.request.eject(interceptor);
   });
 
-  it.each([
-    ['ORG_004', 409],
-  ])('shows the %s message', async (code, status) => {
+  it.each([['ORG_004', 409]])('shows the %s message', async (code, status) => {
     server.use(http.post(api('/organizations/register'), () => businessError(status, code)));
     renderPage(<RegisterOrganization />, { auth: { isAuthenticated: false } });
     await fillAll();

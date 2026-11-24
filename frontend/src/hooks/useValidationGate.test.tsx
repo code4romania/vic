@@ -24,7 +24,10 @@ describe('validation gate (blocker 5)', () => {
     expect(button('manage_contracts')).toBeEnabled();
     expect(button('add_volunteer')).toHaveAttribute('title', t('organization:validation_required'));
     expect(button('add_announcement')).toBeDisabled();
-    expect(button('add_announcement')).toHaveAttribute('title', t('organization:validation_required'));
+    expect(button('add_announcement')).toHaveAttribute(
+      'title',
+      t('organization:validation_required'),
+    );
   });
 
   it('leaves everything enabled for a validated organization', async () => {

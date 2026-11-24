@@ -35,8 +35,18 @@ import { VolunteerStatus } from '../common/enums/volunteer-status.enum';
 import { ICON_MAPPER, ImageOption } from './ImagePicker';
 
 const StatusOptions: SelectItem<ActivityLogStatus>[] = [
-  { key: ActivityLogStatus.APPROVED, value: i18n.t('activity_log:display_status.approved') },
-  { key: ActivityLogStatus.REJECTED, value: i18n.t('activity_log:display_status.rejected') },
+  {
+    key: ActivityLogStatus.APPROVED,
+    get value() {
+      return i18n.t('activity_log:display_status.approved');
+    },
+  },
+  {
+    key: ActivityLogStatus.REJECTED,
+    get value() {
+      return i18n.t('activity_log:display_status.rejected');
+    },
+  },
 ];
 
 const STATUS_TONE = ACTIVITY_LOG_STATUS_TONE;
@@ -70,7 +80,9 @@ const ActivityTypeCell = ({ item }: { item: IActivityLogListItem }) => (
 const PendingVolunteerActivityLogTableHeader = [
   {
     id: 'activityType.name',
-    name: i18n.t('activity_log:header.task'),
+    get name() {
+      return i18n.t('activity_log:header.task');
+    },
     sortable: true,
     grow: 3,
     minWidth: '10rem',
@@ -78,7 +90,9 @@ const PendingVolunteerActivityLogTableHeader = [
   },
   {
     id: 'hours',
-    name: i18n.t('general:hours'),
+    get name() {
+      return i18n.t('general:hours');
+    },
     sortable: true,
     grow: 1,
     minWidth: '5rem',
@@ -86,7 +100,9 @@ const PendingVolunteerActivityLogTableHeader = [
   },
   {
     id: 'date',
-    name: i18n.t('activity_log:header.execution_date'),
+    get name() {
+      return i18n.t('activity_log:header.execution_date');
+    },
     sortable: true,
     grow: 1,
     minWidth: '8.5rem',
@@ -94,7 +110,9 @@ const PendingVolunteerActivityLogTableHeader = [
   },
   {
     id: 'createdOn',
-    name: i18n.t('activity_log:header.registration_date'),
+    get name() {
+      return i18n.t('activity_log:header.registration_date');
+    },
     sortable: true,
     grow: 1,
     minWidth: '8.5rem',
@@ -105,7 +123,9 @@ const PendingVolunteerActivityLogTableHeader = [
 const PastVolunteerActivityLogTableHeader = [
   {
     id: 'activityType.name',
-    name: i18n.t('activity_log:header.task'),
+    get name() {
+      return i18n.t('activity_log:header.task');
+    },
     sortable: true,
     grow: 3,
     minWidth: '10rem',
@@ -113,7 +133,9 @@ const PastVolunteerActivityLogTableHeader = [
   },
   {
     id: 'hours',
-    name: i18n.t('general:hours'),
+    get name() {
+      return i18n.t('general:hours');
+    },
     sortable: true,
     grow: 1,
     minWidth: '5rem',
@@ -121,7 +143,9 @@ const PastVolunteerActivityLogTableHeader = [
   },
   {
     id: 'date',
-    name: i18n.t('activity_log:header.execution_date'),
+    get name() {
+      return i18n.t('activity_log:header.execution_date');
+    },
     sortable: true,
     grow: 1,
     minWidth: '8.5rem',
@@ -129,7 +153,9 @@ const PastVolunteerActivityLogTableHeader = [
   },
   {
     id: 'status',
-    name: i18n.t('activity_log:status'),
+    get name() {
+      return i18n.t('activity_log:status');
+    },
     sortable: true,
     grow: 1,
     minWidth: '8.5rem',
@@ -148,7 +174,9 @@ const PendingActivityLogTableHeader = [
     id: 'activityType.name',
     // phones: the volunteer and the action; the side panel shows the rest
     hide: Media.SM,
-    name: i18n.t('activity_log:header.task'),
+    get name() {
+      return i18n.t('activity_log:header.task');
+    },
     sortable: true,
     grow: 3,
     minWidth: '9rem',
@@ -157,7 +185,9 @@ const PendingActivityLogTableHeader = [
   {
     id: 'hours',
     hide: Media.SM,
-    name: i18n.t('general:hours'),
+    get name() {
+      return i18n.t('general:hours');
+    },
     sortable: true,
     grow: 1,
     minWidth: '4rem',
@@ -167,7 +197,9 @@ const PendingActivityLogTableHeader = [
     id: 'date',
     // tablets: the volunteer's name keeps its room; the side panel shows the date
     hide: Media.MD,
-    name: i18n.t('activity_log:header.execution_date'),
+    get name() {
+      return i18n.t('activity_log:header.execution_date');
+    },
     sortable: true,
     grow: 1,
     minWidth: '7.5rem',
@@ -175,7 +207,9 @@ const PendingActivityLogTableHeader = [
   },
   {
     id: 'user.name',
-    name: i18n.t('volunteer:name', { status: '' }),
+    get name() {
+      return i18n.t('volunteer:name', { status: '' });
+    },
     sortable: true,
     grow: 2,
     minWidth: '11rem',
@@ -186,7 +220,9 @@ const PendingActivityLogTableHeader = [
     id: 'createdOn',
     // laptops and tablets: the "Revizuiește" button stays in view; the side panel has the date
     hide: 1300,
-    name: i18n.t('activity_log:header.registration_date'),
+    get name() {
+      return i18n.t('activity_log:header.registration_date');
+    },
     sortable: true,
     grow: 1,
     minWidth: '8.5rem',
@@ -199,7 +235,9 @@ const PastActivityLogTableHeader = [
     id: 'activityType.name',
     // phones: the volunteer and the action; the side panel shows the rest
     hide: Media.SM,
-    name: i18n.t('activity_log:header.task'),
+    get name() {
+      return i18n.t('activity_log:header.task');
+    },
     sortable: true,
     grow: 3,
     minWidth: '9rem',
@@ -209,7 +247,9 @@ const PastActivityLogTableHeader = [
     id: 'hours',
     // tablets: the status and "Fișă de activitate" stay in view; the side panel has the rest
     hide: Media.MD,
-    name: i18n.t('general:hours'),
+    get name() {
+      return i18n.t('general:hours');
+    },
     sortable: true,
     grow: 1,
     minWidth: '4rem',
@@ -218,7 +258,9 @@ const PastActivityLogTableHeader = [
   {
     id: 'date',
     hide: Media.MD,
-    name: i18n.t('activity_log:header.execution_date'),
+    get name() {
+      return i18n.t('activity_log:header.execution_date');
+    },
     sortable: true,
     grow: 1,
     minWidth: '8.5rem',
@@ -226,7 +268,9 @@ const PastActivityLogTableHeader = [
   },
   {
     id: 'user.name',
-    name: i18n.t('volunteer:name', { status: '' }),
+    get name() {
+      return i18n.t('volunteer:name', { status: '' });
+    },
     sortable: true,
     grow: 2,
     minWidth: '11rem',
@@ -235,7 +279,9 @@ const PastActivityLogTableHeader = [
   },
   {
     id: 'status',
-    name: i18n.t('activity_log:status'),
+    get name() {
+      return i18n.t('activity_log:status');
+    },
     sortable: true,
     grow: 0,
     minWidth: '8rem',

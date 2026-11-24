@@ -22,11 +22,21 @@ export const handlers = [
   http.get(api('/listing/structures/:type'), () =>
     HttpResponse.json({ items: [{ id: 'dep-1', name: 'Logistică', numberOfMembers: 0 }] }),
   ),
-  http.get(api('/location/city'), () => HttpResponse.json({ items: [], meta: { itemCount: 0, totalItems: 0, itemsPerPage: 10, totalPages: 0, currentPage: 1 } })),
+  http.get(api('/location/city'), () =>
+    HttpResponse.json({
+      items: [],
+      meta: { itemCount: 0, totalItems: 0, itemsPerPage: 10, totalPages: 0, currentPage: 1 },
+    }),
+  ),
   http.post(api('/auth/web/refresh'), () => businessError(401, 'AUTH_008')),
   http.post(api('/auth/web/login/request'), () => new HttpResponse(null, { status: 204 })),
   http.post(api('/auth/web/logout'), () => new HttpResponse(null, { status: 204 })),
   http.get(api('/auth/web/me'), () => HttpResponse.json(ADMIN)),
+  // answers with the language it was sent, as the API does for an account that has none yet
+  http.patch(api('/auth/web/language'), async ({ request }) => {
+    const { language } = (await request.json()) as { language: string };
+    return HttpResponse.json({ language });
+  }),
   http.post(api('/auth/web/resend-verification'), () => new HttpResponse(null, { status: 200 })),
   http.get(api('/auth/token/:secret'), () =>
     HttpResponse.json({

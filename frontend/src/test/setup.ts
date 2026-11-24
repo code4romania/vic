@@ -1,8 +1,8 @@
 import '@testing-library/jest-dom/vitest';
-import { afterAll, afterEach, beforeAll, vi } from 'vitest';
+import { afterAll, afterEach, beforeAll, beforeEach, vi } from 'vitest';
 import { cleanup } from '@testing-library/react';
 import { setLogger } from 'react-query';
-import '../common/config/i18n';
+import i18n from '../common/config/i18n';
 import { server } from './server';
 import { tokenStore } from '../services/auth/token.store';
 import API from '../services/api';
@@ -52,7 +52,16 @@ URL.revokeObjectURL = URL.revokeObjectURL ?? (() => {});
 // Failed queries are expected in these specs; react-query would print each one.
 setLogger({ log: () => {}, warn: () => {}, error: () => {} });
 
+// The suite runs in one language, whatever jsdom's browser language is: Romanian by default,
+// English with TEST_LANG=en (the specs look their texts up, so both runs must pass). A spec that
+// switches language or stores a choice starts the next one clean.
+export const TEST_LANGUAGE = process.env.TEST_LANG === 'en' ? 'en' : 'ro';
+
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+beforeEach(async () => {
+  window.localStorage.clear();
+  if (i18n.language !== TEST_LANGUAGE) await i18n.changeLanguage(TEST_LANGUAGE);
+});
 afterEach(() => {
   cleanup();
   server.resetHandlers();

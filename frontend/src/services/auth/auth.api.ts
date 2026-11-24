@@ -4,6 +4,7 @@ import {
   IWebSession,
   LinkResult,
 } from '../../common/interfaces/auth.interface';
+import { Language } from '../../common/config/language';
 import API from '../api';
 
 // One function per web auth route of the backend (docs/auth.md, Endpoints).
@@ -34,6 +35,14 @@ export const logout = async (): Promise<void> => {
 
 export const getMe = async (): Promise<IAdminProfile> =>
   API.get('/auth/web/me').then((res) => res.data);
+
+// The account's language. explicit: the admin picked it, so it replaces what the account has; without
+// it the API only fills an account that has no language yet. Answers with the language now saved.
+export const setLanguage = async (
+  language: Language,
+  explicit: boolean,
+): Promise<{ language: Language }> =>
+  API.patch('/auth/web/language', { language, explicit }).then((res) => res.data);
 
 export const resendVerification = async (email: string): Promise<void> => {
   await API.post('/auth/web/resend-verification', { email });

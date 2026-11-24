@@ -56,7 +56,9 @@ enum SettingsTab {
 
 const TABS: TabItem<SettingsTab>[] = Object.values(SettingsTab).map((key) => ({
   key,
-  value: t(`tabs.${key}`),
+  get value() {
+    return t(`tabs.${key}`);
+  },
 }));
 
 // Read at render time, so the links follow the deployed config.

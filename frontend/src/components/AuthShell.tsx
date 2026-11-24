@@ -10,6 +10,7 @@ import {
 import logo from '../assets/images/app_logo.svg';
 import logoLight from '../assets/images/app_logo_light.svg';
 import { classNames } from '../common/utils/utils';
+import LanguageSwitcher from './LanguageSwitcher';
 
 interface AuthShellProps {
   title: string;
@@ -37,9 +38,12 @@ const AuthShell = ({ title, subtitle, icon, wide, children }: AuthShellProps) =>
         )}
       >
         <div className="h-full flex flex-col gap-10 px-4 py-4 sm:px-8 lg:px-12 lg:py-12">
-          <Link to="/" className="self-start" aria-label="VIC">
-            <img src={logoLight} alt="VIC" className="h-9 lg:h-12" />
-          </Link>
+          <div className="flex items-center justify-between gap-4">
+            <Link to="/" aria-label="VIC">
+              <img src={logoLight} alt="VIC" className="h-9 lg:h-12" />
+            </Link>
+            <LanguageSwitcher tone="dark" />
+          </div>
           <div className="hidden lg:flex flex-col gap-6 my-auto">
             <p className="font-titilliumBold text-[2rem] leading-[2.5rem] text-white max-w-md">
               {t('shell.headline')}

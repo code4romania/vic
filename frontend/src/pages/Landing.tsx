@@ -9,6 +9,7 @@ import {
   UsersIcon,
 } from '@heroicons/react/24/outline';
 import logo from '../assets/images/app_logo.svg';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 
 const FEATURES: { key: 'volunteers' | 'events' | 'hours' | 'documents'; icon: ReactNode }[] = [
   { key: 'volunteers', icon: <UsersIcon className="w-6 h-6" aria-hidden="true" /> },
@@ -28,9 +29,12 @@ const Landing = () => {
       <header className="w-full bg-white border-b border-cool-gray-200">
         <div className="max-w-6xl mx-auto px-4 sm:px-8 h-16 flex items-center justify-between gap-4">
           <img src={logo} alt="VIC" className="h-9" />
-          <Link to="/login" className="btn-outline-secondary">
-            {t('login')}
-          </Link>
+          <div className="flex items-center gap-3">
+            <LanguageSwitcher />
+            <Link to="/login" className="btn-outline-secondary">
+              {t('login')}
+            </Link>
+          </div>
         </div>
       </header>
 

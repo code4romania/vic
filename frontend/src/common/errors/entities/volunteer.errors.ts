@@ -1,4 +1,3 @@
-import i18n from '../../config/i18n';
 import { ErrorClass } from '../base-error.class';
 
 export enum VOLUNTEER_ERRORS {
@@ -21,17 +20,17 @@ export class VolunteerError extends ErrorClass<VOLUNTEER_ERRORS> {
 
   private constructor() {
     super({
-      [VOLUNTEER_ERRORS.VOLUNTEER_001]: i18n.t('volunteers:errors.VOLUNTEER_001'),
-      [VOLUNTEER_ERRORS.VOLUNTEER_002]: i18n.t('volunteers:errors.VOLUNTEER_002'),
-      [VOLUNTEER_ERRORS.VOLUNTEER_003]: i18n.t('volunteers:errors.VOLUNTEER_003'),
-      [VOLUNTEER_ERRORS.VOLUNTEER_004]: i18n.t('volunteers:errors.VOLUNTEER_004'),
-      [VOLUNTEER_ERRORS.VOLUNTEER_006]: i18n.t('volunteers:errors.VOLUNTEER_006'),
-      [VOLUNTEER_ERRORS.VOLUNTEER_007]: i18n.t('volunteers:errors.VOLUNTEER_007'),
-      [VOLUNTEER_ERRORS.VOLUNTEER_009]: i18n.t('volunteers:errors.VOLUNTEER_009'),
-      [VOLUNTEER_ERRORS.VOLUNTEER_010]: i18n.t('volunteers:errors.VOLUNTEER_010'),
-      [VOLUNTEER_ERRORS.VOLUNTEER_PROFILE_001]: i18n.t('volunteers:errors.VOLUNTEER_PROFILE_001'),
-      [VOLUNTEER_ERRORS.VOLUNTEER_PROFILE_002]: i18n.t('volunteers:errors.VOLUNTEER_PROFILE_002'),
-      [VOLUNTEER_ERRORS.VOLUNTEER_PROFILE_003]: i18n.t('volunteers:errors.VOLUNTEER_PROFILE_003'),
+      [VOLUNTEER_ERRORS.VOLUNTEER_001]: 'volunteers:errors.VOLUNTEER_001',
+      [VOLUNTEER_ERRORS.VOLUNTEER_002]: 'volunteers:errors.VOLUNTEER_002',
+      [VOLUNTEER_ERRORS.VOLUNTEER_003]: 'volunteers:errors.VOLUNTEER_003',
+      [VOLUNTEER_ERRORS.VOLUNTEER_004]: 'volunteers:errors.VOLUNTEER_004',
+      [VOLUNTEER_ERRORS.VOLUNTEER_006]: 'volunteers:errors.VOLUNTEER_006',
+      [VOLUNTEER_ERRORS.VOLUNTEER_007]: 'volunteers:errors.VOLUNTEER_007',
+      [VOLUNTEER_ERRORS.VOLUNTEER_009]: 'volunteers:errors.VOLUNTEER_009',
+      [VOLUNTEER_ERRORS.VOLUNTEER_010]: 'volunteers:errors.VOLUNTEER_010',
+      [VOLUNTEER_ERRORS.VOLUNTEER_PROFILE_001]: 'volunteers:errors.VOLUNTEER_PROFILE_001',
+      [VOLUNTEER_ERRORS.VOLUNTEER_PROFILE_002]: 'volunteers:errors.VOLUNTEER_PROFILE_002',
+      [VOLUNTEER_ERRORS.VOLUNTEER_PROFILE_003]: 'volunteers:errors.VOLUNTEER_PROFILE_003',
     });
   }
 

@@ -56,14 +56,26 @@ export const fileTypeLabel = (fileName: string | undefined, fallback: string): s
 export const ContractStatusOptions: SelectItem<ContractFilterStatus>[] = [
   ...Object.values(ContractStatus).map((status) => ({
     key: status as ContractFilterStatus,
-    value: `${i18n.t(`documents:contract.status.${status}`)}`,
+    get value() {
+      return i18n.t(`documents:contract.status.${status}`);
+    },
   })),
-  { key: EXPIRING_SOON, value: `${i18n.t('documents:contract.expiring_soon')}` },
+  {
+    key: EXPIRING_SOON,
+    get value() {
+      return i18n.t('documents:contract.expiring_soon');
+    },
+  },
 ];
 
 // #490: contracts and certificates live in the same list
 export const DocumentTypeOptions: SelectItem<DocumentType>[] = Object.values(DocumentType).map(
-  (type) => ({ key: type, value: `${i18n.t(`documents:contract.type.${type}`)}` }),
+  (type) => ({
+    key: type,
+    get value() {
+      return i18n.t(`documents:contract.type.${type}`);
+    },
+  }),
 );
 
 const STATUS_TONE: Record<ContractStatus, BadgeTone> = {
@@ -104,7 +116,9 @@ const numberColumn: TableColumn<IContractListItem> = {
   id: 'contractNumber',
   // the type and number are on the document itself: laptops keep room for the actions
   hide: 1300,
-  name: i18n.t('documents:page.headers.document'),
+  get name() {
+    return i18n.t('documents:page.headers.document');
+  },
   sortable: true,
   minWidth: '10rem',
   cell: (row) => (
@@ -125,7 +139,9 @@ const numberColumn: TableColumn<IContractListItem> = {
 
 const volunteerColumn: TableColumn<IContractListItem> = {
   id: 'volunteer',
-  name: i18n.t('documents:page.headers.volunteer'),
+  get name() {
+    return i18n.t('documents:page.headers.volunteer');
+  },
   grow: 2,
   minWidth: '13rem',
   cell: (row) => (
@@ -147,7 +163,9 @@ const volunteerColumn: TableColumn<IContractListItem> = {
 
 const statusColumn: TableColumn<IContractListItem> = {
   id: 'status',
-  name: i18n.t('documents:page.headers.status'),
+  get name() {
+    return i18n.t('documents:page.headers.status');
+  },
   minWidth: '9rem',
   cell: (row) => <ContractStatusCell row={row} />,
 };
@@ -155,7 +173,9 @@ const statusColumn: TableColumn<IContractListItem> = {
 const periodColumn: TableColumn<IContractListItem> = {
   id: 'startDate',
   hide: Media.MD,
-  name: i18n.t('documents:page.headers.period'),
+  get name() {
+    return i18n.t('documents:page.headers.period');
+  },
   minWidth: '14rem',
   sortable: true,
   cell: (row) => <ContractPeriodCell row={row} />,

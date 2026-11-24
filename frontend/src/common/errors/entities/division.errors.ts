@@ -1,4 +1,3 @@
-import i18n from '../../config/i18n';
 import { ErrorClass } from '../base-error.class';
 
 export enum DIVISION_ERRORS {
@@ -11,12 +10,8 @@ export class DivisionError extends ErrorClass<DIVISION_ERRORS> {
 
   private constructor() {
     super({
-      [DIVISION_ERRORS.ORGANIZATION_STRUCTURE_001]: i18n.t(
-        'division:errors.ORGANIZATION_STRUCTURE_001',
-      ),
-      [DIVISION_ERRORS.ORGANIZATION_STRUCTURE_002]: i18n.t(
-        'division:errors.ORGANIZATION_STRUCTURE_002',
-      ),
+      [DIVISION_ERRORS.ORGANIZATION_STRUCTURE_001]: 'division:errors.ORGANIZATION_STRUCTURE_001',
+      [DIVISION_ERRORS.ORGANIZATION_STRUCTURE_002]: 'division:errors.ORGANIZATION_STRUCTURE_002',
     });
   }
 

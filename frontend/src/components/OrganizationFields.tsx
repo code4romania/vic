@@ -13,16 +13,20 @@ export const LOGO_MAX_BYTES = 5 * 1024 * 1024;
 const t = (key: string, options?: Record<string, unknown>) =>
   i18n.t(`register_organization:form.${key}`, options) as string;
 
+// Schema messages as functions: yup calls them when a field fails, so the text is in the language of
+// that moment, not of the moment this file was loaded.
+const m = (key: string, options?: Record<string, unknown>) => () => t(key, options);
+
 const optionalText = () => yup.string().ensure().trim();
 
 const taxIdSchema = (initialTaxId?: string | null) =>
   yup
     .string()
     .trim()
-    .required(t('required'))
+    .required(m('required'))
     .test(
       'cui',
-      t('tax_id_invalid'),
+      m('tax_id_invalid'),
       (value) =>
         !value ||
         (initialTaxId != null && normalizeCui(value) === normalizeCui(initialTaxId)) ||
@@ -35,15 +39,15 @@ export const organizationFieldsSchema = {
   name: yup
     .string()
     .trim()
-    .required(t('required'))
-    .min(2, t('min', { value: 2 }))
-    .max(100, t('max', { value: 100 })),
-  email: yup.string().trim().required(t('required')).email(t('email_invalid')),
+    .required(m('required'))
+    .min(2, m('min', { value: 2 }))
+    .max(100, m('max', { value: 100 })),
+  email: yup.string().trim().required(m('required')).email(m('email_invalid')),
   phone: yup
     .string()
     .trim()
-    .required(t('required'))
-    .max(20, t('max', { value: 20 })),
+    .required(m('required'))
+    .max(20, m('max', { value: 20 })),
   taxId: taxIdSchema(),
 };
 
@@ -53,15 +57,15 @@ export const organizationProfileSchema = (initialTaxId?: string | null) => ({
   taxId: taxIdSchema(initialTaxId),
   address: optionalText().test(
     'length',
-    t('min', { value: 2 }),
+    m('min', { value: 2 }),
     (value) => !value || (value.length >= 2 && value.length <= 500),
   ),
   website: optionalText()
-    .max(300, t('max', { value: 300 }))
-    .test('url', t('website_invalid'), (value) => !value || /^https?:\/\/\S+\.\S+/.test(value)),
+    .max(300, m('max', { value: 300 }))
+    .test('url', m('website_invalid'), (value) => !value || /^https?:\/\/\S+\.\S+/.test(value)),
   description: optionalText().test(
     'length',
-    t('description.length'),
+    m('description.length'),
     (value) => !value || (value.length >= 50 && value.length <= 250),
   ),
 });

@@ -33,15 +33,21 @@ const DEFAULT_PAGE_SIZE = 10;
 const tabs: SelectItem<EventRegistrationStatus>[] = [
   {
     key: EventRegistrationStatus.PENDING,
-    value: i18n.t('events:registrations.tabs.pending'),
+    get value() {
+      return i18n.t('events:registrations.tabs.pending');
+    },
   },
   {
     key: EventRegistrationStatus.APPROVED,
-    value: i18n.t('events:registrations.tabs.approved'),
+    get value() {
+      return i18n.t('events:registrations.tabs.approved');
+    },
   },
   {
     key: EventRegistrationStatus.REJECTED,
-    value: i18n.t('events:registrations.tabs.rejected'),
+    get value() {
+      return i18n.t('events:registrations.tabs.rejected');
+    },
   },
 ];
 

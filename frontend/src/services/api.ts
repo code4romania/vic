@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import { IBusinessException } from '../common/interfaces/business-exception.interface';
 import { tokenStore } from './auth/token.store';
+import i18n from '../common/config/i18n';
 
 // https://vitejs.dev/guide/env-and-mode.html
 const API = axios.create({
@@ -74,6 +75,9 @@ API.interceptors.request.use((request) => {
   if (token && !request.headers.Authorization) {
     request.headers.Authorization = `Bearer ${token}`;
   }
+  // The language on screen: an email asked for from a page before login (the login link, the
+  // registration confirmation) is written in it.
+  request.headers['Accept-Language'] = i18n.resolvedLanguage ?? i18n.language;
   return request;
 });
 

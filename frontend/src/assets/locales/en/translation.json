@@ -1,6 +1,6 @@
 {
   "general": {
-    "yes": "From",
+    "yes": "Yes",
     "no": "No",
     "download_table": "Download table",
     "created_by": "Created by",
@@ -10,24 +10,24 @@
     "people": "People",
     "contract": "Contract",
     "age": "Age",
-    "hours": "Ore",
+    "hours": "Hours",
     "daily": "Daily",
-    "monthly": "Lunar",
-    "yearly": "Annual",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
     "date": "Date",
     "target": "Target",
     "answers": "Answers",
     "answer": "Answer",
-    "created_on": "Date of creation",
+    "created_on": "Created on",
     "all_organization": "The whole organization",
     "event": "Event",
     "add": "Add {{item}}",
-    "category": "Categories",
+    "category": "Category",
     "select": "Select {{item}}",
     "download": "Download {{item}}",
     "choose": "Choose {{item}}",
-    "image": "Imagine",
-    "reason": "Motiv",
+    "image": "Image",
+    "reason": "Reason",
     "task": "Task",
     "unspecified": "Unspecified",
     "activity": "Activity",
@@ -41,18 +41,18 @@
     "archive": "Archive {{item}}",
     "delete": "Delete",
     "location": "Location",
-    "back": "Back to",
+    "back": "Back",
     "send": "Send",
-    "reject": "Rejects",
+    "reject": "Reject",
     "templates": "Templates",
     "approve": "Approve",
     "save_changes": "Save changes",
     "save": "Save",
     "description": "Description",
-    "required": "Field is mandatory",
+    "required": "This field is required",
     "contracts": "Contracts",
     "anytime": "Anytime",
-    "contact": "Date contact",
+    "contact": "Contact details",
     "error": {
       "load_entries": "Error loading data",
       "unknown": "An unknown error has occurred",
@@ -67,7 +67,7 @@
     "cancel": "Cancel",
     "years_old": "{{age}} years",
     "sex": "Sex {{sex_type}}",
-    "male": "Manly",
+    "male": "Male",
     "female": "Female",
     "phone": "Phone",
     "email": "Contact email",
@@ -79,7 +79,7 @@
     "search": "Search...",
     "publish": "Publish",
     "filters": {
-      "show": "Filter",
+      "show": "Filters",
       "reset": "Reset filters",
       "hide": "Hide filters",
       "title": "Filters and search",
@@ -98,7 +98,16 @@
     "type_for_options": "Type for options...",
     "actions": "Actions",
     "more": "More",
-    "empty_filtered": "No results for this search or these filters. Try another search or reset the filters."
+    "empty_filtered": "No results for this search or these filters. Try another search or reset the filters.",
+    "validation": {
+      "invalid": "The value is not valid",
+      "min": "At least {{value}} characters",
+      "max": "At most {{value}} characters"
+    },
+    "language": {
+      "label": "Language"
+    },
+    "time": "Time"
   },
   "header": {
     "login": "Login",
@@ -134,7 +143,7 @@
       "all_organizations": "All organizations",
       "all_volunteers": "All volunteers"
     },
-    "collapse": "Narrow the menu",
+    "collapse": "Collapse menu",
     "aria": "Main menu",
     "sections": {
       "vic_admin": "VIC administration"
@@ -144,12 +153,12 @@
   "volunteer": {
     "all": "All volunteers",
     "title": "View profile",
-    "card_title": "Voluntary information",
-    "name": "Voluntar {{status}}",
-    "volunteer_from": "Added to VIC at",
+    "card_title": "Volunteer information",
+    "name": "Volunteer {{status}}",
+    "volunteer_from": "Added to VIC on",
     "status": {
       "active": "active",
-      "blocked": "locked",
+      "blocked": "blocked",
       "inactive": "inactive",
       "candidate": "candidate",
       "archived": "archived"
@@ -178,11 +187,11 @@
       "rejoin": "A former volunteer of the organization, asking to rejoin."
     },
     "errors": {
-      "VOL_001": "Could not upload volunteer application"
+      "VOL_001": "The volunteer application could not be loaded"
     },
     "form": {
       "name": {
-        "label": "Voluntary name*"
+        "label": "Volunteer name*"
       },
       "email": {
         "label": "Contact email*",
@@ -260,14 +269,16 @@
       "success": "{{name}} was deleted, together with their data in the organization.",
       "view": "View contract"
     },
-    "status_in_vic": "Status in VIC"
+    "status_in_vic": "Status in VIC",
+    "status_name": "{{status}} volunteer",
+    "since": "Volunteer since"
   },
   "volunteers": {
     "department_and_role": "Department and role",
-    "blocked_on": "Date of blocking",
+    "blocked_on": "Blocked on",
     "tabs": {
       "active": "Active volunteers",
-      "blocked": "Volunteers stuck",
+      "blocked": "Blocked volunteers",
       "inactive": "Inactive volunteers",
       "candidate": "Candidates"
     },
@@ -280,9 +291,9 @@
       "view": "View profile",
       "archive": "Mark as inactive",
       "activate_candidate": "Activate volunteer",
-      "activate": "Voluntary reactivation",
+      "activate": "Reactivate volunteer",
       "delete": "Delete from NGO",
-      "block": "Voluntary blocking"
+      "block": "Block volunteer"
     },
     "modal": {
       "block": {
@@ -293,7 +304,7 @@
     "submit": {
       "archive": "The volunteer was marked as inactive",
       "activate": "The volunteer has been activated",
-      "block": "The volunteer was stuck"
+      "block": "The volunteer was blocked"
     },
     "errors": {
       "VOLUNTEER_001": "Volunteer not found",
@@ -470,7 +481,7 @@
     "description_placeholder": "The organization description is shown on the organization's profile in the VIC app. Write it for volunteers: what you do and how they can help.",
     "errors": {
       "ORG_001": "The organization has not been found",
-      "no_data": "Organization data could not be uploaded",
+      "no_data": "The organization data could not be loaded",
       "ORG_004": "An organization with the same name, email, phone or tax ID already exists.",
       "ORG_005": "The organization is not validated yet. This will be possible after the VIC team validates it.",
       "ORG_008": "This administrator is not in your organization.",
@@ -478,7 +489,7 @@
       "ORG_010": "You cannot change your own status.",
       "ORG_011": "Type the organization's name exactly to delete it.",
       "ORG_003": "The logo is not valid: pick a PNG, JPG, GIF or WEBP image of at most 5 MB.",
-      "ORG_012": "The tax id cannot change after the organization was validated.",
+      "ORG_012": "The tax ID cannot change after the organization was validated.",
       "ORG_013": "Another admin changed the team meanwhile. Reload the page and try again."
     },
     "form": {
@@ -496,7 +507,7 @@
     "validated_on": "Validated on",
     "not_validated": "Awaiting validation",
     "replace_logo": "New logo (optional)",
-    "tax_id_locked": "The CUI was checked at validation and can no longer be changed.",
+    "tax_id_locked": "The tax ID (CUI) was checked at validation and can no longer be changed.",
     "status": {
       "pending": "Email not confirmed",
       "active": "Active",
@@ -565,13 +576,13 @@
   },
   "pagination": {
     "rows_per_page": "Rows per page",
-    "range_separator_text": "from"
+    "range_separator_text": "of"
   },
   "access_requests": {
     "date": "Access request date",
     "rejected_date": "Date rejected",
     "approved_date": "Date approved",
-    "rejected_message": "This application was rejected at {{date}}",
+    "rejected_message": "This application was rejected on {{date}}",
     "approved_message": "This application was approved on {{date}}",
     "tabs": {
       "requests": "Requests",
@@ -585,13 +596,13 @@
     "popover": {
       "view": "View application",
       "approve": "Approve application",
-      "reject": "Dismisses the application",
+      "reject": "Reject application",
       "delete": "Remove from list",
       "change_to_rejected": "Change to rejected",
       "change_to_approved": "Change to approved"
     },
     "errors": {
-      "no_data": "Applications could not be uploaded",
+      "no_data": "The applications could not be loaded",
       "ACCESS_REQUEST_001": "There is already an application for your organization",
       "ACCESS_REQUEST_002": "Request not found",
       "ACCESS_REQUEST_003": "The application must be rejected in order to be deleted",
@@ -603,7 +614,7 @@
       "description": "This action will permanently delete this request and all information associated with it",
       "button_label": "Delete request"
     },
-    "download": "Applications-Access.xlsx"
+    "download": "Access-requests.xlsx"
   },
   "access_code": {
     "name": "Access code",
@@ -611,7 +622,7 @@
     "title": "Access code information",
     "description": "Enter a new access code. Using the access code, a VIC user can join the organization as a volunteer, without having to approve the application manually.",
     "start_date": "Valid from date*",
-    "end_date": "End of validity date",
+    "end_date": "Valid until",
     "modal": {
       "title": "Are you sure you want to delete this code?",
       "description": "This action will permanently delete this access code and all information associated with it",
@@ -619,13 +630,13 @@
     },
     "form": {
       "code": {
-        "required": "The code is mandatory",
+        "required": "The code is required",
         "min": "The code can be a minimum of {{value}} characters",
         "max": "The code can have a maximum of {{value}} characters",
         "pattern": "The code has an invalid format"
       },
       "start_date": {
-        "required": "Start date is mandatory"
+        "required": "The start date is required"
       },
       "end_date": {
         "min": "The end date cannot be before the start date"
@@ -663,22 +674,22 @@
     }
   },
   "reject_modal": {
-    "title": "Argue the refusal",
-    "description": "Send a message to the volunteer explaining the reason for refusal.",
+    "title": "Explain the rejection",
+    "description": "Send the volunteer a message explaining why the request is rejected.",
     "send": "Send without message",
     "form": {
-      "required": "The message is mandatory",
+      "required": "The message is required",
       "max": "The message must be a maximum of 225 characters",
       "min": "The message must be at least 50 characters long",
-      "error": "Refusal of the application failed"
+      "error": "The request could not be rejected"
     }
   },
   "activity_types": {
     "info": "Category has been archived",
     "form": {
       "name": {
-        "label": "Name type of activity*",
-        "required": "The name is mandatory",
+        "label": "Activity type name*",
+        "required": "The name is required",
         "min": "The name can be a minimum of {{value}} characters",
         "max": "The name can have a maximum of {{value}} characters",
         "placeholder": "Name"
@@ -731,7 +742,7 @@
     }
   },
   "events": {
-    "past_events": "Closed events",
+    "past_events": "Past events",
     "status": "Display status",
     "hours": "Hours reported",
     "participate": "Participate",
@@ -739,7 +750,7 @@
     "details": "Event details",
     "volunteer": "Volunteer in the organization",
     "responses_list": "List of answers",
-    "observation": "Mention if the event registration is simple, or if you want extra mentions from your volunteers.",
+    "observation": "Say whether registering for the event is simple, or whether you want extra details from your volunteers.",
     "draft": {
       "subtitle": "The event is not published (draft)",
       "description": "You have saved the event as a draft, so volunteers can no longer view it in the mobile app. "
@@ -783,7 +794,7 @@
       },
       "end_date": {
         "label": "End date",
-        "min": "The End date must be greater than the start date."
+        "min": "The end date must be after the start date."
       },
       "submit": {
         "published": "The event was successfully published",
@@ -801,9 +812,9 @@
         "public": "Public event",
         "all": "The whole organization",
         "placeholder": "Choose all that apply",
-        "disclaimer": "Disclaimer: If no department is selected, then 'Whole organization' will be selected",
+        "disclaimer": "Note: if you choose no department, the event is for the whole organization.",
         "locked": "The audience of a published event cannot change: volunteers have already been notified.",
-        "required": "Departments are mandatory",
+        "required": "Departments are required",
         "select": "Select departments"
       },
       "description": {
@@ -811,15 +822,16 @@
       },
       "logo": {
         "label": "Event image",
-        "required": "Event image is mandatory"
+        "required": "The event image is required",
+        "button_label": "Upload image"
       },
       "mention": {
-        "label": "Mention",
+        "label": "Note",
         "description": "Ask the volunteers a question.",
-        "empty": "No mention.",
-        "required": "The mention is mandatory",
-        "min": "The mention can be a minimum of {{value}} characters",
-        "max": "The mention can have a maximum of {{value}} characters"
+        "empty": "No note.",
+        "required": "The note is required",
+        "min": "The note must have at least {{value}} characters",
+        "max": "The note can have at most {{value}} characters"
       },
       "capacity": {
         "label": "Capacity (maximum number of volunteers)",
@@ -833,7 +845,7 @@
       "EVENT_001": "Event not found",
       "EVENT_002": "Target departments not found",
       "EVENT_003": "Tasks are not correct",
-      "EVENT_004": "We cannot change the target audience for published events",
+      "EVENT_004": "The audience of a published event cannot be changed",
       "EVENT_005": "Only DRAFT or ARCHIVED events can be published",
       "EVENT_006": "Only published events can be archived",
       "EVENT_007": "This event has recorded volunteer hours and cannot be deleted!",
@@ -848,7 +860,7 @@
       "EVENT_011": "The capacity cannot be lower than the number of approved volunteers."
     },
     "download_open": "Active events.xlsx",
-    "download_past": "Closed events.xlsx",
+    "download_past": "Past events.xlsx",
     "download_rsvp": "List of answers.xlsx",
     "tabs": {
       "upcoming": "Upcoming",
@@ -1021,16 +1033,17 @@
         "start_date": "dd.mm.yy hh:mm",
         "end_date": "dd.mm.yy hh:mm"
       }
-    }
+    },
+    "download": "Events.xlsx"
   },
   "announcement": {
-    "title": "Ads history",
-    "name": "ad",
+    "title": "Announcement history",
+    "name": "announcement",
     "header": {
-      "name": "Ad Title",
-      "updated_on": "Edited at",
+      "name": "Announcement title",
+      "updated_on": "Edited on",
       "status": "Display status",
-      "published_on": "Published at",
+      "published_on": "Published on",
       "type": "Type",
       "volunteers_needed": "Volunteers needed",
       "display_period": "Display period"
@@ -1043,17 +1056,17 @@
     "form": {
       "title": "Announcement",
       "name": {
-        "required": "The name of the ad is required",
-        "min": "The ad name can have a minimum of {{value}} characters",
-        "max": "The ad name can have a maximum of {{value}} characters",
+        "required": "The announcement title is required",
+        "min": "The title must have at least {{value}} characters",
+        "max": "The title can have at most {{value}} characters",
         "placeholder": "e.g. We are looking for 2 marketing volunteers",
         "label": "Title"
       },
       "description": {
         "label": "Description",
-        "required": "The description of the advertisement is required",
-        "min": "The description can be a minimum of {{value}} characters",
-        "max": "The ad description can have a maximum of {{value}} characters",
+        "required": "The announcement description is required",
+        "min": "The description must have at least {{value}} characters",
+        "max": "The description can have at most {{value}} characters",
         "placeholder": "Describe the announcement and its requirements..."
       },
       "type": {
@@ -1080,12 +1093,12 @@
       "target": {
         "label": "Target",
         "placeholder": "Choose all that apply",
-        "disclaimer": "Disclaimer: If no department is selected, then 'Whole organization' will be selected"
+        "disclaimer": "Note: if you choose no department, the announcement is for the whole organization."
       }
     },
     "submit": {
       "messages": {
-        "delete": "Ad successfully deleted",
+        "delete": "Announcement deleted",
         "create": "Announcement created (inactive)",
         "activate": "Announcement activated",
         "deactivate": "Announcement deactivated",
@@ -1094,11 +1107,11 @@
       }
     },
     "modal": {
-      "title": "Are you sure you want to delete the ad?",
-      "description": "This action will permanently delete this ad and all information associated with it."
+      "title": "Are you sure you want to delete the announcement?",
+      "description": "This action will permanently delete this announcement and all information associated with it."
     },
     "error": {
-      "ANNOUNCEMENT_001": "The ad was not found",
+      "ANNOUNCEMENT_001": "The announcement was not found",
       "ANNOUNCEMENT_002": "The announcement is archived and can no longer be changed",
       "ANNOUNCEMENT_003": "Incorrect department selection, only departments can be chosen as targets",
       "ANNOUNCEMENT_005": "The display period must end after it starts"
@@ -1206,11 +1219,11 @@
     "pending_header": "{{hours}} hours pending approval",
     "past": "History of volunteer hours",
     "past_header": "{{hours}} volunteer hours approved, {{rejected}} rejected",
-    "description": "View the list of all your volunteer contracts in VIC. The volunteer contract has a predefined structure. You can create multiple contract templates (e.g. volunteer contract &gt;16 years, volunteer contract &lt;16 years).",
+    "description": "Here you can see the volunteering hours logged for your organization's volunteers",
     "add": "Add hours",
     "header": {
       "task": "Task",
-      "execution_date": "Date of performance",
+      "execution_date": "Activity date",
       "registration_date": "Date of registration"
     },
     "display_status": {
@@ -1224,14 +1237,14 @@
     },
     "filters": {
       "execution": "Task period",
-      "registration": "Period Registration",
+      "registration": "Registration period",
       "approved_rejected": "Approved/Rejected by",
       "search": "Search by volunteer, activity or event",
       "found_one": "{{count}} entry found",
       "found_other": "{{count}} entries found"
     },
     "modal": {
-      "title": "Arguments for rejection",
+      "title": "Explain the rejection",
       "description": "Write why you reject these hours. The volunteer sees it in the app and by email."
     },
     "side_panel": {
@@ -1241,44 +1254,44 @@
       "title": "Activity sheet",
       "event": "At the event",
       "created_by": "Registered by",
-      "registration_date": "Date of registration hours",
+      "registration_date": "Hours registration date",
       "approved_by": "Approved by",
-      "approve_date": "Approval date hours",
+      "approve_date": "Hours approval date",
       "rejected_by": "Rejected by",
-      "reject_date": "Reject hours date",
+      "reject_date": "Hours rejection date",
       "reject_reason": "Reason for rejection",
-      "mention": "Mention"
+      "mention": "Note"
     },
     "form": {
       "description": "Choose the event for which you want to add volunteer hours",
       "volunteer": {
-        "required": "Choice of volunteer is mandatory"
+        "required": "Choose the volunteer"
       },
       "task": {
-        "required": "Choice of task is mandatory"
+        "required": "Choose the activity"
       },
       "date": {
-        "required": "Date is mandatory"
+        "required": "The date is required"
       },
       "hours": {
-        "required": "The number of hours is compulsory",
+        "required": "The number of hours is required",
         "min": "The number of hours must be greater than 0",
         "max": "At most {{value}} hours in a day",
-        "integer": "The number of hours must be whole"
+        "integer": "The number of hours must be a whole number"
       },
       "submit": {
         "messages": {
           "add": "Volunteer hours successfully added",
-          "edit": "Volunteer hours data successfully amended",
+          "edit": "The volunteer hours were updated",
           "approve": "Volunteer hours have been approved",
           "reject": "Volunteer hours were rejected"
         }
       }
     },
     "errors": {
-      "no_data": "Volunteer hours could not be uploaded",
+      "no_data": "The volunteer hours could not be loaded",
       "ACTIVITY_LOG_001": "Activity not found!",
-      "ACTIVITY_LOG_002": "Volunteer must have profile to log in hours",
+      "ACTIVITY_LOG_002": "The volunteer must have a profile to log hours",
       "ACTIVITY_LOG_003": "No changes can be made to requests in Approved or Rejected status",
       "ACTIVITY_LOG_005": "Hours can only be added to an active volunteer",
       "ACTIVITY_LOG_006": "Write why you reject these hours",
@@ -1313,7 +1326,7 @@
   },
   "actions_archive": {
     "card_title": "Action history",
-    "area": "Type Action",
+    "area": "Action type",
     "author": "Author",
     "filters": {
       "execution": "Action period",
@@ -1328,7 +1341,7 @@
     "CREATE_ORGANIZATION_STRUCTURE": {
       "label": "Create Organization Structure",
       "branch": "A branch has been created under the name <inlineLink>{{organizationStructureName}}</inlineLink>.",
-      "department": "The department named <inlineLink>{{organizationStructureName}}</inlineLink>.",
+      "department": "The department named <inlineLink>{{organizationStructureName}}</inlineLink> has been created.",
       "role": "The role has been created with the name <inlineLink>{{organizationStructureName}}</inlineLink>."
     },
     "UPDATE_ORGANIZATION_STRUCTURE": {
@@ -1368,24 +1381,24 @@
       "description": "The volunteer {{volunteerName}} was deleted, together with {{activityLogs}} hour entries, {{contracts}} documents and {{registrations}} event registrations."
     },
     "REGISTER_ACTIVITY_LOG": {
-      "label": "Register Activity Log",
+      "label": "Log Volunteer Hours",
       "description": "Volunteer <inlineLink>{{volunteerName}}</inlineLink> logged volunteer hours."
     },
     "CHANGE_ACTIVITY_LOG_STATUS": {
-      "label": "Change Activity Log Status",
+      "label": "Change Volunteer Hours Status",
       "rejected": "Volunteer hours for <inlineLink>{{volunteerName}}</inlineLink> have been rejected",
       "approved": "Volunteer hours for <inlineLink>{{volunteerName}}</inlineLink> have been approved"
     },
     "CREATE_ACTIVITY_TYPE": {
-      "label": "Create Activity Type",
+      "label": "Create Activity Category",
       "description": "Category of activity <inlineLink>{{activityTypeName}}</inlineLink> has been created."
     },
     "UPDATE_ACTIVITY_TYPE": {
-      "label": "Update Activity Type",
+      "label": "Update Activity Category",
       "description": "Category of activity <inlineLink>{{activityTypeName}}</inlineLink> has been modified."
     },
     "CHANGE_ACTIVITY_TYPE_STATUS": {
-      "label": "Change Activity Type Status",
+      "label": "Change Activity Category Status",
       "description": "Activity category status <inlineLink>{{activityTypeName}}</inlineLink> has been changed from {{oldStatus}} to {{newStatus}}."
     },
     "CREATE_EVENT": {
@@ -1393,7 +1406,7 @@
       "description": "Event <inlineLink>{{eventName}}</inlineLink> was created."
     },
     "UPDATE_EVENT": {
-      "label": "Event Update",
+      "label": "Update Event",
       "description": "Event <inlineLink>{{eventName}}</inlineLink> has been modified."
     },
     "DELETE_EVENT": {
@@ -1410,7 +1423,7 @@
     },
     "DELETE_ANNOUNCEMENT": {
       "label": "Delete Announcement",
-      "description": "The ad {{announcementTitle}} has been deleted."
+      "description": "The announcement {{announcementTitle}} has been deleted."
     },
     "PUBLISH_ANNOUNCEMENT": {
       "label": "Publish Announcement",
@@ -1569,18 +1582,18 @@
     "template": {
       "add": {
         "heading": "Add template",
-        "card_header": "Template contract",
+        "card_header": "Contract template",
         "form": {
           "name": {
             "label": "Template name",
             "placeholder": "Contract 2023",
-            "required": "The name is mandatory",
+            "required": "The name is required",
             "min": "The name can be a minimum of {{value}} characters",
             "max": "The name can have a maximum of {{value}} characters"
           },
           "contract": {
             "label": "Upload document",
-            "required": "The contract is binding",
+            "required": "The contract is required",
             "format": "Template must have .pdf or .doc extension"
           },
           "submit": {
@@ -1593,7 +1606,7 @@
       },
       "edit": {
         "heading": "Edit template",
-        "card_header": "Template contract",
+        "card_header": "Contract template",
         "form": {
           "submit": {
             "success": "The template has been updated!",
@@ -1625,7 +1638,7 @@
       },
       "headers": {
         "contract_number": "Contract number",
-        "volunteer": "Voluntar",
+        "volunteer": "Volunteer",
         "status": "Status",
         "start_date": "Start date",
         "end_date": "End date",
@@ -1643,25 +1656,25 @@
       "add": {
         "form": {
           "volunteer": {
-            "label": "Voluntar*",
-            "required": "Choice of volunteer is mandatory"
+            "label": "Volunteer*",
+            "required": "Choose the volunteer"
           },
           "template": {
             "label": "Template*",
-            "required": "Choice of template is mandatory"
+            "required": "Choose the template"
           },
           "contract_number": {
             "label": "Contract number*",
-            "required": "The number is mandatory",
+            "required": "The number is required",
             "max": "The number must have a maximum of 9 characters"
           },
           "start_date": {
             "label": "Contract start date*",
-            "required": "Start date is mandatory"
+            "required": "The start date is required"
           },
           "end_date": {
             "label": "Contract end date*",
-            "required": "End date is mandatory"
+            "required": "The end date is required"
           }
         },
         "submit": {
@@ -1692,8 +1705,8 @@
         "reject_no_message": "Refuse without message"
       },
       "reject_modal": {
-        "title": "Arguments for rejection",
-        "description": "Send a message to the volunteer explaining the reason for refusal."
+        "title": "Explain the rejection",
+        "description": "Send the volunteer a message explaining why the contract is rejected."
       },
       "delete_modal": {
         "title": "Are you sure you want to delete this contract?",
@@ -2046,7 +2059,7 @@
       "max": "At most {{value}} characters",
       "email_invalid": "The email address is not valid",
       "website_invalid": "Enter a full address, starting with https://",
-      "tax_id_invalid": "The tax id is not valid. Check the digits; it may start with RO, spaces do not matter.",
+      "tax_id_invalid": "The tax ID is not valid. Check the digits; it may start with RO, spaces do not matter.",
       "name": {
         "label": "Organization name"
       },
@@ -2202,7 +2215,7 @@
         "info": "Have not logged in yet"
       },
       "disabled": {
-        "label": "Disabled",
+        "label": "Disabled admins",
         "info": "No access until re-enabled"
       }
     },
@@ -2217,7 +2230,7 @@
     "description": "Organizations that confirmed their email and wait for validation. Check the tax ID (CUI) before validating.",
     "columns": {
       "name": "Organization",
-      "tax_id": "CUI",
+      "tax_id": "Tax ID (CUI)",
       "registered_on": "Registered on",
       "first_admin": "First admin"
     },

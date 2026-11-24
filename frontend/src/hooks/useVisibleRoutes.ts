@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ROUTES } from '../common/constants/routes';
 import { AdminRole, IChildRoute, IRoute } from '../common/interfaces/route.interface';
 import { useAuth } from './useAuth';
@@ -9,6 +10,9 @@ const canSee = (route: IChildRoute, roles: AdminRole[]): boolean =>
 // The menu entries the logged-in admin may see (SideMenu and SlidingMenu).
 export const useVisibleRoutes = (): IRoute[] => {
   const { isSuperAdmin } = useAuth();
+  // a copied route keeps the name it had when it was copied
+  const { i18n } = useTranslation();
+  const language = i18n.resolvedLanguage;
 
   return useMemo(() => {
     const roles: AdminRole[] = isSuperAdmin ? ['super_admin'] : [];
@@ -17,7 +21,7 @@ export const useVisibleRoutes = (): IRoute[] => {
         ? { ...route, childRoutes: route.childRoutes.filter((child) => canSee(child, roles)) }
         : route,
     );
-  }, [isSuperAdmin]);
+  }, [isSuperAdmin, language]);
 };
 
 // The menu entry for a path: "/admin/validation" belongs to the "admin/validation" entry.

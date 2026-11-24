@@ -5,9 +5,10 @@ import { http, HttpResponse } from 'msw';
 import ContractsTable, { fileTypeLabel } from './ContractsTable';
 import DivisionChips from './DivisionChips';
 import Volunteers from '../pages/Volunteers';
-import { renderPage, t } from '../test/render';
+import { renderPage } from '../test/render';
 import { api, server } from '../test/server';
 import { DivisionType } from '../common/enums/division-type.enum';
+import i18n from '../common/config/i18n';
 
 vi.mock('../hooks/useToast', () => ({ useErrorToast: vi.fn(), useSuccessToast: vi.fn() }));
 
@@ -24,26 +25,42 @@ const page = (items: unknown[]) => ({
   },
 });
 
+// The wording checks below are about one language's grammar, so each names its language instead of
+// following the one the suite runs in.
+const say = (lng: 'ro' | 'en', key: string, options?: Record<string, unknown>): string =>
+  i18n.t(key, { ...options, lng }) as string;
+
 describe('event capacity counts (#679)', () => {
   it.each([
-    [1, '1 înscris, fără limită'],
-    [2, '2 înscriși, fără limită'],
-    [20, '20 de înscriși, fără limită'],
-  ])('%i → %s', (going, text) => {
-    expect(t('events:detail.capacity_unlimited', { going, count: going })).toBe(text);
+    ['ro', 1, '1 înscris, fără limită'],
+    ['ro', 2, '2 înscriși, fără limită'],
+    ['ro', 20, '20 de înscriși, fără limită'],
+    ['en', 1, '1 registered, no limit'],
+    ['en', 20, '20 registered, no limit'],
+  ] as const)('%s: %i → %s', (lng, going, text) => {
+    expect(say(lng, 'events:detail.capacity_unlimited', { going, count: going })).toBe(text);
   });
 });
 
 describe('event form copy (#680)', () => {
-  it('says "evenimentul", and explains why a published event keeps its audience', () => {
-    expect(t('events:form.target.disclaimer')).toContain('evenimentul');
-    expect(t('events:form.target.locked')).not.toContain('events:');
-  });
+  it.each([
+    ['ro', 'evenimentul'],
+    ['en', 'the event'],
+  ] as const)(
+    '%s: says "%s", and explains why a published event keeps its audience',
+    (lng, word) => {
+      expect(say(lng, 'events:form.target.disclaimer')).toContain(word);
+      expect(say(lng, 'events:form.target.locked')).not.toContain('events:');
+    },
+  );
 });
 
 describe('old volunteer status in the action archive (#682)', () => {
-  it('translates "archived"', () => {
-    expect(t('volunteer:status.archived')).toBe('arhivat');
+  it.each([
+    ['ro', 'arhivat'],
+    ['en', 'archived'],
+  ] as const)('%s: translates "archived"', (lng, text) => {
+    expect(say(lng, 'volunteer:status.archived')).toBe(text);
   });
 });
 
@@ -85,21 +102,31 @@ describe('contract download button names the file type (#688)', () => {
 
 describe('small UI fixes (#689)', () => {
   it.each([
-    [DivisionType.BRANCH, 'Cluj', 'Șterge filiala', 'această filială'],
-    [DivisionType.DEPARTMENT, 'Logistică', 'Șterge departamentul', 'acest departament'],
-  ])('asks to delete a %s with the right grammar', async (type, name, title, phrase) => {
-    server.use(
-      http.get(api(`/organization-structure/${type}`), () =>
-        HttpResponse.json(page([{ id: 'd1', name, numberOfMembers: 0 }])),
-      ),
-    );
-    renderPage(<DivisionChips type={type} />);
+    ['ro', DivisionType.BRANCH, 'Cluj', 'Șterge filiala', 'această filială'],
+    ['ro', DivisionType.DEPARTMENT, 'Logistică', 'Șterge departamentul', 'acest departament'],
+    ['en', DivisionType.BRANCH, 'Cluj', 'Delete branch', 'this branch'],
+    ['en', DivisionType.DEPARTMENT, 'Logistică', 'Delete department', 'this department'],
+  ] as const)(
+    '%s: asks to delete a %s with the right grammar',
+    async (lng, type, name, title, phrase) => {
+      await i18n.changeLanguage(lng);
+      server.use(
+        http.get(api(`/organization-structure/${type}`), () =>
+          HttpResponse.json(page([{ id: 'd1', name, numberOfMembers: 0 }])),
+        ),
+      );
+      renderPage(<DivisionChips type={type} />);
 
-    await userEvent.click(await screen.findByRole('button', { name: `Șterge ${name}` }));
+      await userEvent.click(
+        await screen.findByRole('button', {
+          name: say(lng, 'organization:setup.chips.remove', { name }),
+        }),
+      );
 
-    expect(await screen.findByText(title)).toBeInTheDocument();
-    expect(screen.getByText(new RegExp(phrase))).toBeInTheDocument();
-  });
+      expect(await screen.findByText(title)).toBeInTheDocument();
+      expect(screen.getByText(new RegExp(phrase))).toBeInTheDocument();
+    },
+  );
 
   it('the volunteer name opens the profile', async () => {
     server.use(

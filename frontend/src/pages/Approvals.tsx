@@ -31,9 +31,24 @@ const COUNTER: Record<ApprovalType, keyof IPendingApprovals> = {
 type HoursTab = 'pending' | ActivityLogStatus.APPROVED | ActivityLogStatus.REJECTED;
 
 const HOURS_TABS: SelectItem<HoursTab>[] = [
-  { key: 'pending', value: i18n.t('approvals:status.pending') },
-  { key: ActivityLogStatus.APPROVED, value: i18n.t('approvals:status.approved') },
-  { key: ActivityLogStatus.REJECTED, value: i18n.t('approvals:status.rejected') },
+  {
+    key: 'pending',
+    get value() {
+      return i18n.t('approvals:status.pending');
+    },
+  },
+  {
+    key: ActivityLogStatus.APPROVED,
+    get value() {
+      return i18n.t('approvals:status.approved');
+    },
+  },
+  {
+    key: ActivityLogStatus.REJECTED,
+    get value() {
+      return i18n.t('approvals:status.rejected');
+    },
+  },
 ];
 
 // Hours requests: Pending / Approved / Rejected on top of the activity log table

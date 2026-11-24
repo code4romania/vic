@@ -21,17 +21,17 @@ import { EventStatus } from '../common/enums/event-status';
 export const eventValidationSchema = yup.object({
   name: yup
     .string()
-    .required(`${i18n.t('division:form.name.required')}`)
-    .min(2, `${i18n.t('division:form.name.min', { value: '2' })}`)
-    .max(50, `${i18n.t('division:form.name.max', { value: '50' })}`),
+    .required(() => i18n.t('division:form.name.required'))
+    .min(2, () => i18n.t('division:form.name.min', { value: '2' }))
+    .max(50, () => i18n.t('division:form.name.max', { value: '50' })),
   startDate: yup
     .date()
-    .required(`${i18n.t('access_code:form.start_date.required')}`)
-    .typeError(`${i18n.t('general:invalid_date')}`),
+    .required(() => i18n.t('access_code:form.start_date.required'))
+    .typeError(() => i18n.t('general:invalid_date')),
 
   endDate: yup
     .date()
-    .typeError(`${i18n.t('general:invalid_date')}`)
+    .typeError(() => i18n.t('general:invalid_date'))
     .when('startDate', ([startDate], schema) => {
       return startDate
         ? schema.min(yup.ref('startDate'), `${i18n.t('events:form.end_date.min')}`)
@@ -40,13 +40,13 @@ export const eventValidationSchema = yup.object({
 
   location: yup
     .string()
-    .min(2, `${i18n.t('events:form.location.min', { value: '2' })}`)
-    .max(300, `${i18n.t('events:form.location.max', { value: '300' })}`),
+    .min(2, () => i18n.t('events:form.location.min', { value: '2' }))
+    .max(300, () => i18n.t('events:form.location.max', { value: '300' })),
   description: yup
     .string()
-    .required(`${i18n.t('organization:form.description.required')}`)
-    .min(2, `${i18n.t('organization:form.description.min', { value: '2' })}`)
-    .max(1500, `${i18n.t('organization:form.description.max', { value: '1500' })}`),
+    .required(() => i18n.t('organization:form.description.required'))
+    .min(2, () => i18n.t('organization:form.description.min', { value: '2' }))
+    .max(1500, () => i18n.t('organization:form.description.max', { value: '1500' })),
   targetType: yup.mixed<TargetType>().oneOf(Object.values(TargetType)).required(),
   targets: yup.array().when('targetType', {
     is: TargetType.SELECT,
@@ -59,8 +59,8 @@ export const eventValidationSchema = yup.object({
     .number()
     .nullable()
     .transform((value, original) => (original === '' || original === null ? null : value))
-    .integer(`${i18n.t('events:form.capacity.integer')}`)
-    .min(1, `${i18n.t('events:form.capacity.min', { value: '1' })}`),
+    .integer(() => i18n.t('events:form.capacity.integer'))
+    .min(1, () => i18n.t('events:form.capacity.min', { value: '1' })),
 });
 
 const AddEvent = () => {

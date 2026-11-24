@@ -36,7 +36,9 @@ const label = (type: DocumentType, key: string): string =>
 
 const TypeOptions = Object.values(DocumentType).map((type) => ({
   key: type,
-  value: `${i18n.t(`documents:contract.type.${type}`)}`,
+  get value() {
+    return i18n.t(`documents:contract.type.${type}`);
+  },
 }));
 
 const schema = (withVolunteer: boolean, type: DocumentType) =>

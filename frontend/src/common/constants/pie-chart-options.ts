@@ -15,11 +15,15 @@ export const PIE_CHART_LEGEND_COLORS = [
 
 export const PIE_CHART_FILTER_OPTIONS = [
   {
-    value: i18n.t('general:age'),
+    get value() {
+      return i18n.t('general:age');
+    },
     key: PieChartOption.AGE,
   },
   {
-    value: i18n.t('general:sex', { sex_type: '' }),
+    get value() {
+      return i18n.t('general:sex', { sex_type: '' });
+    },
     key: PieChartOption.SEX,
   },
 ];

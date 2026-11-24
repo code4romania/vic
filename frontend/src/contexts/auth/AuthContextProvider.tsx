@@ -8,6 +8,7 @@ import { IAdminProfile, IWebSession } from '../../common/interfaces/auth.interfa
 import * as authApi from '../../services/auth/auth.api';
 import { apiEvents, refreshAccessToken } from '../../services/api';
 import { tokenStore } from '../../services/auth/token.store';
+import { syncAccountLanguage } from '../../services/auth/language.service';
 import Maintenance from '../../pages/Maintenance';
 import AccessBlocked from '../../pages/AccessBlocked';
 
@@ -63,11 +64,18 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, [queryClient, t]);
 
+  // Every profile the API returns passes through here: the account's language is settled before the
+  // app is drawn, so an admin never sees a page flash in the other language.
+  const applyProfile = useCallback(async (me: IAdminProfile) => {
+    await syncAccountLanguage(me.language);
+    setProfile(me);
+  }, []);
+
   useEffect(() => {
     const bootstrap = async () => {
       try {
         await refreshAccessToken();
-        setProfile(await authApi.getMe());
+        await applyProfile(await authApi.getMe());
       } catch {
         tokenStore.clear();
       } finally {
@@ -75,7 +83,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
     bootstrap();
-  }, []);
+  }, [applyProfile]);
 
   // Queries don't refetch on focus, so a tab left open would keep showing the cached pages of an
   // admin who was disabled (or an NGO suspended) meanwhile, until their next click (#690). When the
@@ -89,9 +97,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       lastCheck = Date.now();
       authApi
         .getMe()
-        .then((me) => {
-          if (isAuthenticatedRef.current) setProfile(me);
-        })
+        .then((me) => (isAuthenticatedRef.current ? applyProfile(me) : undefined))
         .catch(() => undefined);
     };
     document.addEventListener('visibilitychange', onVisible);
@@ -100,16 +106,19 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       document.removeEventListener('visibilitychange', onVisible);
       window.removeEventListener('focus', onVisible);
     };
-  }, []);
+  }, [applyProfile]);
 
-  const startSession = useCallback(async (session: IWebSession) => {
-    tokenStore.set(session.accessToken);
-    setProfile(session.user ?? (await authApi.getMe()));
-  }, []);
+  const startSession = useCallback(
+    async (session: IWebSession) => {
+      tokenStore.set(session.accessToken);
+      await applyProfile(session.user ?? (await authApi.getMe()));
+    },
+    [applyProfile],
+  );
 
   const refreshProfile = useCallback(async () => {
-    setProfile(await authApi.getMe());
-  }, []);
+    await applyProfile(await authApi.getMe());
+  }, [applyProfile]);
 
   const logout = useCallback(async () => {
     try {

@@ -73,16 +73,20 @@ describe('Dashboard (#466, #467)', () => {
     render();
     expect(await screen.findByText('12')).toBeInTheDocument();
     expect(screen.getByText(t('dashboard:statistics.volunteers.label'))).toBeInTheDocument();
-    expect(screen.getByText('3 cereri noi')).toBeInTheDocument();
+    expect(
+      screen.getByText(t('dashboard:statistics.volunteers.info', { count: 3 })),
+    ).toBeInTheDocument();
     expect(
       screen.getByText(t('dashboard:statistics.events.label'), { selector: 'p' }),
     ).toBeInTheDocument();
     expect(screen.getByText('4')).toBeInTheDocument();
     expect(screen.getByText(t('dashboard:statistics.contracts.label'))).toBeInTheDocument();
     expect(screen.getByText('340')).toBeInTheDocument();
-    expect(screen.getByText('15 ore de aprobat')).toBeInTheDocument();
-    expect(screen.queryByText('Număr voluntari')).not.toBeInTheDocument();
-    expect(screen.queryByText('Statistici voluntari organizație')).not.toBeInTheDocument();
+    expect(
+      screen.getByText(t('dashboard:statistics.hours.info', { count: 15 })),
+    ).toBeInTheDocument();
+    // the old volunteer charts are gone
+    expect(document.querySelector('.recharts-wrapper, .recharts-responsive-container')).toBeNull();
   });
 
   it('opens the pending contracts from their counter', async () => {
@@ -96,10 +100,16 @@ describe('Dashboard (#466, #467)', () => {
   it('lists the next events with registrations, and the latest responses', async () => {
     render();
     expect(await screen.findByText('Curățenie în parc')).toBeInTheDocument();
-    expect(screen.getByText('8/20 înscriși')).toBeInTheDocument();
-    expect(screen.getByText('2 înscriși')).toBeInTheDocument();
+    expect(
+      screen.getByText(t('dashboard:upcoming_events.going_capacity', { going: 8, capacity: 20 })),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(t('dashboard:upcoming_events.going', { going: 2 })),
+    ).toBeInTheDocument();
     expect(await screen.findByText('Vin și eu cu mașina')).toBeInTheDocument();
-    expect(screen.getByText('la „Strângere de fonduri”')).toBeInTheDocument();
+    expect(
+      screen.getByText(t('dashboard:announcement_responses.on', { name: 'Strângere de fonduri' })),
+    ).toBeInTheDocument();
 
     await userEvent.click(screen.getByText('Curățenie în parc'));
     expect(await screen.findByText('at /events/e1')).toBeInTheDocument();

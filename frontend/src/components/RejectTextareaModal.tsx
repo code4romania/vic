@@ -27,9 +27,9 @@ const schema = yup
   .object({
     rejectMessage: yup
       .string()
-      .required(`${i18n.t('reject_modal:form.required')}`)
-      .min(50, `${i18n.t('reject_modal:form.min')}`)
-      .max(225, `${i18n.t('reject_modal:form.max')}`),
+      .required(() => i18n.t('reject_modal:form.required'))
+      .min(50, () => i18n.t('reject_modal:form.min'))
+      .max(225, () => i18n.t('reject_modal:form.max')),
   })
   .required();
 
@@ -38,8 +38,8 @@ const requiredReasonSchema = yup
     rejectMessage: yup
       .string()
       .trim()
-      .required(`${i18n.t('reject_modal:form.required')}`)
-      .max(225, `${i18n.t('reject_modal:form.max')}`),
+      .required(() => i18n.t('reject_modal:form.required'))
+      .max(225, () => i18n.t('reject_modal:form.max')),
   })
   .required();
 

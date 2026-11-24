@@ -4,6 +4,7 @@ import { ArrowRightOnRectangleIcon, ChevronUpDownIcon } from '@heroicons/react/2
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
 import { classNames } from '../common/utils/utils';
+import { LanguageMenuItems } from './LanguageSwitcher';
 
 interface UserMenuProps {
   isNarrow?: boolean;
@@ -18,7 +19,7 @@ export const initialsOf = (name?: string) =>
     .map((part) => part[0]?.toUpperCase())
     .join('');
 
-// The signed-in admin, with the logout action. Sits at the bottom of the side menu and in the
+// The signed-in admin, with the language choice and the logout action. Sits at the bottom of the side menu and in the
 // header on small screens.
 const UserMenu = ({ isNarrow, placement = 'up' }: UserMenuProps) => {
   const { logout, profile } = useAuth();
@@ -65,6 +66,7 @@ const UserMenu = ({ isNarrow, placement = 'up' }: UserMenuProps) => {
             'absolute z-20 w-56 rounded-lg bg-white shadow-menu ring-1 ring-cool-gray-200 py-1 focus:outline-none',
           )}
         >
+          <LanguageMenuItems />
           <Menu.Item>
             {({ active }) => (
               <button

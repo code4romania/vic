@@ -48,7 +48,9 @@ const ANSWER_TONE: Record<RsvpAnswer, BadgeTone> = {
 const TableHeader = [
   {
     id: 'user.name',
-    name: i18n.t('general:name'),
+    get name() {
+      return i18n.t('general:name');
+    },
     sortable: true,
     minWidth: '10rem',
     grow: 2,
@@ -56,7 +58,9 @@ const TableHeader = [
   },
   {
     id: 'going',
-    name: i18n.t('general:answer'),
+    get name() {
+      return i18n.t('general:answer');
+    },
     minWidth: '9rem',
     grow: 1,
     sortable: true,
@@ -73,7 +77,9 @@ const TableHeader = [
   {
     id: 'createdOn',
     hide: Media.SM,
-    name: i18n.t('events:registrations.header.registered_on'),
+    get name() {
+      return i18n.t('events:registrations.header.registered_on');
+    },
     minWidth: '8rem',
     grow: 1,
     selector: (row: IRsvp) => formatDate(row.createdOn),
@@ -81,7 +87,9 @@ const TableHeader = [
   {
     id: 'volunteerId',
     hide: Media.SM,
-    name: i18n.t('events:volunteer'),
+    get name() {
+      return i18n.t('events:volunteer');
+    },
     minWidth: '8rem',
     grow: 1,
     selector: (row: IRsvp) => (row.volunteerId ? i18n.t('general:yes') : i18n.t('general:no')),
@@ -89,7 +97,9 @@ const TableHeader = [
   {
     id: 'mention',
     hide: Media.MD,
-    name: i18n.t('events:form.mention.label'),
+    get name() {
+      return i18n.t('events:form.mention.label');
+    },
     minWidth: '9rem',
     grow: 1,
     sortable: true,
@@ -104,8 +114,18 @@ const TableHeader = [
 ];
 
 const ResponseSelectOptions: SelectItem<RSVPGoingEnum>[] = [
-  { key: RSVPGoingEnum.YES, value: i18n.t('events:participate') },
-  { key: RSVPGoingEnum.NO, value: i18n.t('events:not_participate') },
+  {
+    key: RSVPGoingEnum.YES,
+    get value() {
+      return i18n.t('events:participate');
+    },
+  },
+  {
+    key: RSVPGoingEnum.NO,
+    get value() {
+      return i18n.t('events:not_participate');
+    },
+  },
 ];
 
 interface RsvpTableProps extends RsvpTableBasicProps {

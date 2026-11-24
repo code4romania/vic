@@ -13,6 +13,8 @@ const SHARED_ERRORS: Record<string, string> = {
   INTERNAL_ERROR: 'general:error.codes.INTERNAL_ERROR',
 };
 
+// Every class keeps translation keys and translates when asked, so a message follows the language
+// the admin switched to (the classes are singletons, built once).
 export abstract class ErrorClass<T extends number | string | symbol> {
   constructor(private errors: Record<T, string>) {}
 
@@ -21,10 +23,12 @@ export abstract class ErrorClass<T extends number | string | symbol> {
       return i18n.t('general:error.unknown');
     }
 
-    const shared = SHARED_ERRORS[String(code)];
-    return (
-      this.errors[code] ||
-      (shared ? i18n.t(shared) : i18n.t('general:error.generic_error', { code }))
-    );
+    const key = this.errors[code] || SHARED_ERRORS[String(code)];
+    return key ? i18n.t(key) : i18n.t('general:error.generic_error', { code });
+  }
+
+  // The translation keys this class (and the shared codes) can show; read by the locale parity test.
+  public getKeys(): string[] {
+    return [...(Object.values(this.errors) as string[]), ...Object.values(SHARED_ERRORS)];
   }
 }

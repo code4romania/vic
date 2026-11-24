@@ -44,37 +44,40 @@ export type AddVolunteerFormTypes = {
 const t = (key: string, options?: Record<string, unknown>) =>
   i18n.t(`volunteers:add.${key}`, options) as string;
 
+// Schema messages as functions: yup calls them when a field fails, so they follow the language.
+const m = (key: string, options?: Record<string, unknown>) => () => t(key, options);
+
 const name = () =>
   yup
     .string()
     .trim()
-    .required(t('required'))
-    .min(2, t('min', { value: 2 }))
-    .max(50, t('max', { value: 50 }));
+    .required(m('required'))
+    .min(2, m('min', { value: 2 }))
+    .max(50, m('max', { value: 50 }));
 
 // The same rules as backend AddVolunteerDto.
 const schema = yup.object({
   firstName: name(),
   lastName: name(),
-  email: yup.string().trim().required(t('required')).email(t('email_invalid')),
+  email: yup.string().trim().required(m('required')).email(m('email_invalid')),
   phone: yup
     .string()
     .trim()
-    .max(20, t('max', { value: 20 })),
+    .max(20, m('max', { value: 20 })),
   birthday: yup
     .date()
     .nullable()
     .optional()
-    .typeError(t('invalid_date'))
-    .max(new Date(), t('birthday_future')),
+    .typeError(m('invalid_date'))
+    .max(new Date(), m('birthday_future')),
   notes: yup
     .string()
     .trim()
-    .max(1000, t('max', { value: 1000 })),
+    .max(1000, m('max', { value: 1000 })),
   status: yup
     .mixed<VolunteerStatus.CANDIDATE | VolunteerStatus.ACTIVE>()
     .oneOf([VolunteerStatus.CANDIDATE, VolunteerStatus.ACTIVE])
-    .required(t('required')),
+    .required(m('required')),
 });
 
 // #471: one form for adding a volunteer. Active sends the invitation email; Candidate sends nothing and

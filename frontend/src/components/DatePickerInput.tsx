@@ -4,6 +4,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { CalendarIcon } from '@heroicons/react/24/outline';
 import { classNames } from '../common/utils/utils';
 import { typedDateFormats } from '../common/utils/date-input-formats';
+import { dateLocale } from '../common/config/date-locale';
+import i18n from '../common/config/i18n';
 
 export type DatePickerInputProps = DatePickerProps & {
   label?: string;
@@ -25,6 +27,8 @@ const DatePickerInput: React.FC<DatePickerInputProps> = ({
       {label && <label htmlFor={inputId}>{label}</label>}
       <div className="relative">
         <DatePicker
+          locale={dateLocale()}
+          timeCaption={i18n.t('general:time')}
           {...datePickerProps}
           id={inputId}
           wrapperClassName="w-full"

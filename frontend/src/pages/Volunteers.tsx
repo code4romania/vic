@@ -54,7 +54,12 @@ const STATUS_OPTIONS: SelectItem<string>[] = [
   VolunteerStatus.INACTIVE,
   VolunteerStatus.CANDIDATE,
   VolunteerStatus.BLOCKED,
-].map((status) => ({ key: status, value: i18n.t(`volunteers:status_label.${status}`) }));
+].map((status) => ({
+  key: status,
+  get value() {
+    return i18n.t(`volunteers:status_label.${status}`);
+  },
+}));
 
 const STATUS_TONE: Record<VolunteerStatus, BadgeTone> = {
   [VolunteerStatus.ACTIVE]: 'green',
@@ -72,7 +77,9 @@ const Chip = ({ children }: { children: React.ReactNode }) => (
 const VolunteersTableHeader = [
   {
     id: 'user.firstName',
-    name: i18n.t('general:name'),
+    get name() {
+      return i18n.t('general:name');
+    },
     sortable: true,
     grow: 2,
     minWidth: '13rem',
@@ -98,7 +105,9 @@ const VolunteersTableHeader = [
     id: 'volunteerProfile.email',
     // shown on wide screens only, so status and the menu fit on a laptop (the profile has it)
     hide: 1300,
-    name: i18n.t('general:contact'),
+    get name() {
+      return i18n.t('general:contact');
+    },
     sortable: true,
     grow: 2,
     minWidth: '13rem',
@@ -114,7 +123,9 @@ const VolunteersTableHeader = [
   {
     id: 'department.name',
     hide: Media.SM,
-    name: i18n.t('volunteers:department_and_role'),
+    get name() {
+      return i18n.t('volunteers:department_and_role');
+    },
     sortable: true,
     grow: 2,
     minWidth: '13rem',
@@ -133,7 +144,9 @@ const VolunteersTableHeader = [
   {
     id: 'totalHours',
     hide: Media.MD,
-    name: i18n.t('volunteers:hours'),
+    get name() {
+      return i18n.t('volunteers:hours');
+    },
     sortable: false,
     grow: 0,
     minWidth: '5rem',
@@ -143,7 +156,9 @@ const VolunteersTableHeader = [
   },
   {
     id: 'status',
-    name: i18n.t('volunteers:status'),
+    get name() {
+      return i18n.t('volunteers:status');
+    },
     sortable: true,
     grow: 0,
     minWidth: '8rem',
@@ -162,7 +177,9 @@ const VolunteersTableHeader = [
   {
     id: 'source',
     hide: Media.SM,
-    name: i18n.t('volunteers:source'),
+    get name() {
+      return i18n.t('volunteers:source');
+    },
     sortable: true,
     grow: 1,
     minWidth: '7rem',

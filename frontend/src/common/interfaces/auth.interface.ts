@@ -1,3 +1,5 @@
+import { Language } from '../config/language';
+
 // The logged-in NGO admin (POST /auth/login-link `user`, GET /auth/web/me). Not the volunteer IUser.
 export interface IAdminProfile {
   id: string;
@@ -6,6 +8,9 @@ export interface IAdminProfile {
   phone: string;
   organizationId: string;
   superAdmin: boolean;
+  // The language saved on the account (emails follow it); null until the admin's first login
+  // after VIC became bilingual.
+  language?: Language | null;
 }
 
 export interface IWebSession {
