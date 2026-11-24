@@ -28,6 +28,12 @@ jest.mock('../common/utils/download-contract', () => ({
   downloadContract: (...args: any[]) => mockDownload(...args),
 }));
 
+// #727: true on binaries with the viewer's native code; false on older ones (over-the-air JS)
+let mockViewerAvailable = false;
+jest.mock('../components/documents/pdf-viewer-available', () => ({
+  isPdfViewerAvailable: () => mockViewerAvailable,
+}));
+
 const contract = (
   id: string,
   status: ClientContractStatus,
@@ -85,6 +91,7 @@ const renderApp = (initialRouteName = 'docs', initialParams = {}) =>
 
 beforeEach(() => {
   jest.clearAllMocks();
+  mockViewerAvailable = false;
   mockDownload.mockResolvedValue(undefined);
   mockSigned = [
     contract('3', ClientContractStatus.SIGNED),
@@ -155,7 +162,8 @@ describe('Documente', () => {
     expect(within(featured).getByText('7 zile rămase')).toBeTruthy();
     expect(within(featured).getByText('Expiră în curând')).toBeTruthy();
     expect(within(featured).getByText('soon/2026')).toBeTruthy();
-    expect(within(featured).getByText('Descarcă contractul')).toBeTruthy();
+    // #727: a tap opens the contract; the round button downloads it
+    expect(within(featured).getByText('Vezi contractul')).toBeTruthy();
     // the other one that expires soon stays a row with the orange chip
     const later = screen.getByTestId('document-row-late');
     expect(within(later).queryByText(/rămase/)).toBeNull();
@@ -211,6 +219,70 @@ describe('Documente', () => {
         expect.objectContaining({ type: 'error', text1: expect.stringContaining('descărca') }),
       ),
     );
+  });
+
+  // #727
+  describe('viewer and Download', () => {
+    const ViewerProbe = ({ route }: any) => {
+      const { Text } = require('react-native');
+      return <Text testID="viewer-probe">{route.params.contract.id}</Text>;
+    };
+    const renderWithViewer = () =>
+      render(
+        <SafeAreaProvider
+          initialMetrics={{
+            frame: { x: 0, y: 0, width: 390, height: 844 },
+            insets: { top: 47, left: 0, right: 0, bottom: 34 },
+          }}
+        >
+          <NavigationContainer>
+            <Navigator initialRouteName="docs" screenOptions={{ headerShown: false }}>
+              <Screen name="docs" component={Documents} />
+              <Screen name="document-viewer" component={ViewerProbe} />
+            </Navigator>
+          </NavigationContainer>
+        </SafeAreaProvider>,
+      );
+
+    it('a tap opens a PDF in the viewer; the round button downloads without opening it', async () => {
+      mockViewerAvailable = true;
+      await renderWithViewer();
+
+      await fireEvent.press(await screen.findByTestId('document-download-3'));
+      expect(mockDownload).toHaveBeenCalledWith(expect.objectContaining({ id: '3' }));
+      expect(screen.queryByTestId('viewer-probe')).toBeNull();
+
+      await fireEvent.press(screen.getByTestId('document-row-2'));
+      expect(await screen.findByTestId('viewer-probe')).toHaveTextContent('2');
+      expect(mockDownload).toHaveBeenCalledTimes(1);
+    });
+
+    it('a Word contract and a build without the viewer download on tap (#688)', async () => {
+      mockViewerAvailable = true;
+      mockSigned[0] = contract('3', ClientContractStatus.SIGNED, {
+        contractFileName: 'contract-3.docx',
+      });
+      mockHistory = page(mockSigned);
+      await renderWithViewer();
+      await fireEvent.press(await screen.findByTestId('document-row-3'));
+      expect(mockDownload).toHaveBeenCalledWith(expect.objectContaining({ id: '3' }));
+      expect(screen.queryByTestId('viewer-probe')).toBeNull();
+
+      mockViewerAvailable = false;
+      await fireEvent.press(screen.getByTestId('document-row-2'));
+      expect(mockDownload).toHaveBeenCalledWith(expect.objectContaining({ id: '2' }));
+      expect(screen.queryByTestId('viewer-probe')).toBeNull();
+    });
+
+    it('labels the card with what a tap does, and the button with the document', async () => {
+      mockViewerAvailable = true;
+      await renderWithViewer();
+      const row = await screen.findByTestId('document-row-3');
+      expect(row.props.accessibilityLabel).toMatch(/, deschide$/);
+      expect(screen.getByTestId('document-download-3').props.accessibilityLabel).toBe(
+        'Descarcă Contract 3/2026',
+      );
+    });
   });
 
   it('fetches the next page from the list', async () => {

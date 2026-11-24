@@ -26,6 +26,8 @@ export {
   Info as InfoIcon,
   ShieldCheck as ShieldIcon,
   Download as DownloadIcon,
+  Share as ShareIcon,
+  Share2 as ShareAndroidIcon,
   Zap as ZapIcon,
   Hexagon as HexagonIcon,
   Mail as MailIcon,

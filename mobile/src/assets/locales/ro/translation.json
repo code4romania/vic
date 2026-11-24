@@ -865,7 +865,7 @@
     "documents": {
         "contract_prefix": "Contract",
         "certificate_prefix": "Adeverință",
-        "description": "Contractele semnate cu organizația. Le poți descărca oricând.",
+        "description": "Contractele semnate cu organizația. Le poți vedea și descărca oricând.",
         "contract_status": {
             "active": "activ",
             "closed": "încheiat",
@@ -895,7 +895,18 @@
         "days_left_one": "1 zi rămasă",
         "days_left": "{{count}} zile rămase",
         "days_left_de": "{{count}} de zile rămase",
-        "featured_action": "Descarcă contractul"
+        "featured_action": "Vezi contractul",
+        "view": "deschide",
+        "download_named": "Descarcă {{name}}",
+        "featured_action_download": "Descarcă contractul",
+        "viewer": {
+            "download": "Descarcă",
+            "share": "Partajează",
+            "error": "Nu am putut deschide documentul.",
+            "retry": "Încearcă din nou",
+            "page": "{{page}} / {{total}}",
+            "page_a11y": "Pagina {{page}} din {{total}}"
+        }
     },
     "notifications": {
         "header": "Setări notificări",

@@ -22,6 +22,7 @@ import Tabs from './Tabs';
 import CreateVolunteer from '../screens/CreateVolunteer';
 import JoinByAccessCode from '../screens/JoinByAccessCode';
 import Documents from '../screens/Documents';
+import DocumentViewer from '../screens/DocumentViewer';
 import Anouncements from '../screens/Anouncements';
 import AnouncementResponse from '../screens/AnouncementResponse';
 import RequestRejectedReason from '../screens/RequestRejectedReason';
@@ -55,6 +56,12 @@ const Private = () => (
       <Screen name="account-data" component={AccountData} />
       <Screen name="notifications-settings" component={NotificationsSettings} />
       <Screen name="documents" component={Documents} />
+      {/* #727: a full-width back swipe would fight panning a zoomed page; the edge swipe stays */}
+      <Screen
+        name="document-viewer"
+        component={DocumentViewer}
+        options={{ fullScreenGestureEnabled: false }}
+      />
     </Group>
     <Group screenOptions={{ presentation: 'modal', animation: 'default' }}>
       <Screen name="leave-organization" component={LeaveOrganization} />

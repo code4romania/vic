@@ -95,6 +95,9 @@ const expoConfig: ExpoConfig = {
     'expo-apple-authentication',
     ...socialPlugins,
     'expo-font',
+    // #727: the in-app PDF viewer (react-native-pdf needs react-native-blob-util)
+    '@config-plugins/react-native-blob-util',
+    '@config-plugins/react-native-pdf',
     [
       'expo-notifications',
       {

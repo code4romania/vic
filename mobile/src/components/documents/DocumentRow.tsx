@@ -1,7 +1,7 @@
 // Documente „Îndrăzneț”: the contract that expires soonest as an orange card, the others as white
 // rows with a status chip, their period and a validity bar that fills when the screen opens.
 import React, { useCallback } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { View } from 'react-native';
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -20,9 +20,11 @@ import { shortMonth } from '../../common/utils/event-format';
 import { romanianNeedsDe } from '../../common/utils/plural';
 import { AppText } from '../../design/components/Text';
 import { StatusChip, StatusKind } from '../../design/components/Chip';
-import { AlertIcon, ArrowRightIcon, ICON_STROKE } from '../../design/icons';
+import { AlertIcon, DownloadIcon } from '../../design/icons';
 import { palette } from '../../design/tokens';
 import { PressableScale } from '../ui/PressableScale';
+import { isPdfContract } from '../../common/utils/is-pdf-contract';
+import { DocumentActionButton } from './DocumentActionButton';
 
 // #488: Semnat / În așteptare / Expirat; a signed contract in its last month shows "Expiră în curând"
 const STATUS: Record<ClientContractStatus, { kind: StatusKind; label: string }> = {
@@ -164,13 +166,23 @@ export const ValidityBar = ({
 
 export interface DocumentRowProps {
   contract: IContractListItem;
-  /** downloads the contract */
+  /** #727: opens the PDF in the viewer (a Word contract downloads instead) */
   onPress: (contract: IContractListItem) => void;
+  /** the round Download button */
+  onDownload: (contract: IContractListItem) => void;
+  /** the download is running */
   busy?: boolean;
 }
 
-/** A contract or a certificate as a white row: title and status chip, period, validity bar. */
-export const DocumentRow = ({ contract, onPress, busy }: DocumentRowProps) => {
+/** The end of a card's spoken label: what a tap on the card does. */
+const tapAction = (contract: IContractListItem, t: (key: string) => string) =>
+  t(isPdfContract(contract) ? 'view' : 'download');
+
+/**
+ * A contract or a certificate as a white row: title and status chip, period, validity bar. A tap
+ * opens it; the round button on the right downloads it (#727).
+ */
+export const DocumentRow = ({ contract, onPress, onDownload, busy }: DocumentRowProps) => {
   const { t, period, title } = useContractTexts(contract);
   const status = contract.expiringSoon
     ? { kind: 'soon' as StatusKind, label: 'expiring_soon' }
@@ -184,104 +196,119 @@ export const DocumentRow = ({ contract, onPress, busy }: DocumentRowProps) => {
         ? palette.slate
         : palette.navy;
   return (
-    <PressableScale
-      onPress={() => onPress(contract)}
-      disabled={busy}
-      pressedScale={PRESSED}
-      style={styles.row}
-      accessibilityLabel={`${title}, ${status ? `${t(status.label)}, ` : ''}${period}, ${t('download')}`}
-      testID={`document-row-${contract.id}`}
-    >
-      <View style={styles.rowHead}>
-        <AppText
-          variant="headline"
-          color={expired ? palette.ink2 : palette.ink}
-          style={styles.rowTitle}
-        >
-          {title}
-        </AppText>
-        {busy ? (
-          <ActivityIndicator color={palette.navy} testID={`document-busy-${contract.id}`} />
-        ) : (
-          status && (
+    <View style={styles.row}>
+      <PressableScale
+        onPress={() => onPress(contract)}
+        pressedScale={PRESSED}
+        style={styles.rowBody}
+        accessibilityRole="button"
+        accessibilityLabel={`${title}, ${status ? `${t(status.label)}, ` : ''}${period}, ${tapAction(contract, t)}`}
+        testID={`document-row-${contract.id}`}
+      >
+        <View style={styles.rowHead}>
+          <AppText
+            variant="headline"
+            color={expired ? palette.ink2 : palette.ink}
+            style={styles.rowTitle}
+          >
+            {title}
+          </AppText>
+          {status && (
             <StatusChip label={`${t(status.label)}`} kind={status.kind} style={styles.chip} />
-          )
+          )}
+        </View>
+        <AppText variant="caption" color={palette.ink2} style={styles.period}>
+          {period}
+        </AppText>
+        {progress !== null && (
+          <ValidityBar
+            progress={progress}
+            fill={fill}
+            track={contract.status === ClientContractStatus.SIGNED ? palette.paper : NAVY_TRACK}
+            testID={`document-bar-${contract.id}`}
+          />
         )}
-      </View>
-      <AppText variant="caption" color={palette.ink2} style={styles.period}>
-        {period}
-      </AppText>
-      {progress !== null && (
-        <ValidityBar
-          progress={progress}
-          fill={fill}
-          track={contract.status === ClientContractStatus.SIGNED ? palette.paper : NAVY_TRACK}
-          testID={`document-bar-${contract.id}`}
-        />
-      )}
-    </PressableScale>
+      </PressableScale>
+      <DocumentActionButton
+        icon={DownloadIcon}
+        onPress={() => onDownload(contract)}
+        busy={busy}
+        accessibilityLabel={`${t('download_named', { name: title })}`}
+        testID={`document-download-${contract.id}`}
+        style={styles.rowDownload}
+      />
+    </View>
   );
 };
 
-/** The contract that expires soonest: orange card, days left in Bricolage 46, navy bar. */
-export const FeaturedContract = ({ contract, onPress, busy }: DocumentRowProps) => {
+/**
+ * The contract that expires soonest: orange card, days left in Bricolage 46, navy bar. A tap opens
+ * it; the navy round button in the corner downloads it (#727).
+ */
+export const FeaturedContract = ({ contract, onPress, onDownload, busy }: DocumentRowProps) => {
   const { t, period, title } = useContractTexts(contract);
   const days = daysLeft(contract) ?? 0;
   const remaining =
     days === 1
       ? `${t('days_left_one')}`
       : `${t(romanianNeedsDe(days) ? 'days_left_de' : 'days_left', { count: days })}`;
+  const pdf = isPdfContract(contract);
   return (
-    <PressableScale
-      onPress={() => onPress(contract)}
-      disabled={busy}
-      pressedScale={PRESSED}
-      style={styles.feature}
-      accessibilityLabel={`${title}, ${t('expiring_soon')}, ${remaining}, ${period}, ${t('download')}`}
-      testID={`document-row-${contract.id}`}
-    >
-      <View style={styles.featureHead}>
-        <StatusChip
-          kind="act"
-          label={`${t('expiring_soon')}`}
-          icon={<AlertIcon size={14} color={palette.yellow} strokeWidth={2.5} />}
-        />
-        {!!contract.contractNumber && (
-          <AppText variant="overline" color={palette.navy} style={styles.number}>
-            {contract.contractNumber}
-          </AppText>
-        )}
-      </View>
-      <AppText
-        variant="display"
-        color={palette.navy}
-        style={styles.big}
-        testID="document-days-left"
+    <View style={styles.feature}>
+      <PressableScale
+        onPress={() => onPress(contract)}
+        pressedScale={PRESSED}
+        accessibilityRole="button"
+        accessibilityLabel={`${title}, ${t('expiring_soon')}, ${remaining}, ${period}, ${tapAction(contract, t)}`}
+        testID={`document-row-${contract.id}`}
       >
-        {remaining}
-      </AppText>
-      <AppText variant="label" color={palette.navy} style={styles.featureDates}>
-        {period}
-      </AppText>
-      <ValidityBar
-        progress={contractProgress(contract) ?? 1}
-        fill={palette.navy}
-        track={NAVY_TRACK}
-        testID={`document-bar-${contract.id}`}
-      />
-      <View style={styles.featureFoot}>
-        <AppText variant="label" color={palette.navy} style={styles.featureAction}>
-          {t('featured_action')}
-        </AppText>
-        <View style={styles.go}>
-          {busy ? (
-            <ActivityIndicator color={palette.yellow} testID={`document-busy-${contract.id}`} />
-          ) : (
-            <ArrowRightIcon size={20} color={palette.yellow} strokeWidth={ICON_STROKE + 0.5} />
+        <View style={styles.featureHead}>
+          <StatusChip
+            kind="act"
+            label={`${t('expiring_soon')}`}
+            icon={<AlertIcon size={14} color={palette.yellow} strokeWidth={2.5} />}
+          />
+          {!!contract.contractNumber && (
+            <AppText variant="overline" color={palette.navy} style={styles.number}>
+              {contract.contractNumber}
+            </AppText>
           )}
         </View>
-      </View>
-    </PressableScale>
+        <AppText
+          variant="display"
+          color={palette.navy}
+          style={styles.big}
+          testID="document-days-left"
+        >
+          {remaining}
+        </AppText>
+        <AppText variant="label" color={palette.navy} style={styles.featureDates}>
+          {period}
+        </AppText>
+        <ValidityBar
+          progress={contractProgress(contract) ?? 1}
+          fill={palette.navy}
+          track={NAVY_TRACK}
+          testID={`document-bar-${contract.id}`}
+        />
+        <View style={styles.featureFoot}>
+          <AppText variant="label" color={palette.navy} style={styles.featureAction}>
+            {t(pdf ? 'featured_action' : 'featured_action_download')}
+          </AppText>
+          {/* room for the Download button, which sits over this corner */}
+          <View style={styles.go} />
+        </View>
+      </PressableScale>
+      <DocumentActionButton
+        icon={DownloadIcon}
+        tone="navy"
+        onPress={() => onDownload(contract)}
+        busy={busy}
+        accessibilityLabel={`${t('download_named', { name: title })}`}
+        testID={`document-download-${contract.id}`}
+        style={styles.featureDownload}
+      />
+    </View>
   );
 };
 
@@ -292,7 +319,12 @@ const styles = StyleSheet.create((theme) => ({
     backgroundColor: theme.colors.card,
     borderRadius: theme.radius.row,
     padding: theme.space.l,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.space.m,
   },
+  rowBody: { flex: 1, minWidth: 0 },
+  rowDownload: { alignSelf: 'center' },
   rowHead: { flexDirection: 'row', alignItems: 'flex-start', gap: theme.space.s },
   // the title wraps (never clips) beside the 28pt chip; 4pt centres one line on the chip
   rowTitle: { flex: 1, minWidth: 0, paddingTop: 4 },
@@ -338,12 +370,7 @@ const styles = StyleSheet.create((theme) => ({
     marginTop: theme.space.m,
   },
   featureAction: { flex: 1, minWidth: 0, fontFamily: theme.fontFamily.textBold },
-  go: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: theme.colors.navy,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  go: { width: 44, height: 44 },
+  // over the footer's spacer: a sibling of the card body, so screen readers reach it on its own
+  featureDownload: { position: 'absolute', right: 16, bottom: 16 },
 }));

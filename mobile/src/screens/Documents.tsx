@@ -17,6 +17,9 @@ import {
   pickExpiringSoon,
 } from '../components/documents/DocumentRow';
 import { useDownloadContract } from '../components/documents/useDownloadContract';
+import { isPdfViewerAvailable } from '../components/documents/pdf-viewer-available';
+import { isPdfContract } from '../common/utils/is-pdf-contract';
+import { IContractListItem } from '../common/interfaces/contract-list-item.interface';
 import { BackButton, CompactTitleBar, useLargeTitleCollapse } from '../components/ui/ScreenChrome';
 import { StatusBarScrim } from '../components/ui/StatusBarScrim';
 import { EmptyState } from '../components/ui';
@@ -41,7 +44,7 @@ const DocumentsSkeleton = () => (
  * Documente „Îndrăzneț” (handbook prototype "Documente"): „Contractele tale” as a large title that
  * scrolls away under a compact glass bar; the contract that expires soonest as an orange card with
  * the days left; the others as white rows with a status chip and a validity bar. Contracts load in
- * pages of 15 (#486, #488) and each one downloads as a file.
+ * pages of 15 (#486, #488). A tap opens one in the viewer, the round button downloads it (#727).
  */
 const Documents = ({ navigation, route }: any) => {
   const { t } = useTranslation('documents');
@@ -57,6 +60,19 @@ const Documents = ({ navigation, route }: any) => {
   const volunteerId: string | undefined = route.params?.volunteerId || organization?.volunteerId;
   const { downloadingId, download } = useDownloadContract();
   const isTab = isTabRoute(route);
+
+  // #727: a PDF opens in the viewer; a Word contract (#688), or a binary without the viewer's native
+  // code (an over-the-air update to an older build), downloads as before
+  const open = useCallback(
+    (contract: IContractListItem) => {
+      if (isPdfContract(contract) && isPdfViewerAvailable()) {
+        navigation.navigate('document-viewer', { contract });
+      } else {
+        download(contract);
+      }
+    },
+    [navigation, download],
+  );
 
   const history = useContractHistoryInfiniteQuery(volunteerId);
   const { reloadFirstPage: reloadHistory } = history;
@@ -138,7 +154,8 @@ const Documents = ({ navigation, route }: any) => {
         <Animated.View entering={enter(1, reduced)} style={styles.featured}>
           <FeaturedContract
             contract={featured}
-            onPress={download}
+            onPress={open}
+            onDownload={download}
             busy={downloadingId === featured.id}
           />
         </Animated.View>
@@ -155,7 +172,12 @@ const Documents = ({ navigation, route }: any) => {
         ListHeaderComponent={header}
         renderItem={({ item, index }) => (
           <Animated.View entering={enter(index + 2, reduced)} style={styles.item}>
-            <DocumentRow contract={item} onPress={download} busy={downloadingId === item.id} />
+            <DocumentRow
+              contract={item}
+              onPress={open}
+              onDownload={download}
+              busy={downloadingId === item.id}
+            />
           </Animated.View>
         )}
         ListEmptyComponent={items.length ? null : renderEmpty}
