@@ -91,11 +91,101 @@ describe('ContractsTable (#486, #488, #489)', () => {
     expect(await screen.findByText('elena@pop.ro')).toBeInTheDocument();
     expect(screen.getByText('EP')).toBeInTheDocument();
     expect(screen.getByText('Nr. 1/2026')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: t('documents:page.view') })).toHaveAttribute(
-      'href',
-      'https://files/c1.pdf',
-    );
+    expect(
+      screen.getByRole('button', { name: `${t('documents:page.view')} Contract_1.pdf` }),
+    ).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /PDF Contract_1.pdf/ })).toBeInTheDocument();
+  });
+
+  // #726: "Vezi" opens the PDF in the app; Download saves it through the API under its own name
+  it('opens the PDF in the viewer with Download in its header, and downloads from the row', async () => {
+    let fileRequests = 0;
+    server.use(
+      http.get(api('/contract'), () => HttpResponse.json(page([contract({})]))),
+      http.get(api('/contract/c1/file'), () => {
+        fileRequests += 1;
+        return new HttpResponse(new Blob(['%PDF-1.4'], { type: 'application/pdf' }), {
+          headers: { 'Content-Type': 'application/pdf' },
+        });
+      }),
+    );
+    const saved: string[] = [];
+    const click = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(function (
+      this: HTMLAnchorElement,
+    ) {
+      saved.push(this.getAttribute('download') ?? '');
+    });
+    renderPage(<ContractsTable query={{ limit: 10, page: 1 }} setQuery={vi.fn()} />);
+
+    await userEvent.click(
+      await screen.findByRole('button', { name: `${t('documents:page.view')} Contract_1.pdf` }),
+    );
+    const viewer = await screen.findByTestId('pdf-viewer');
+    expect(within(viewer).getByRole('heading', { name: 'Contract_1.pdf' })).toBeInTheDocument();
+    expect(
+      await within(viewer).findByLabelText(t('documents:viewer.page_label', { page: 1, total: 3 })),
+    ).toHaveTextContent('1 / 3');
+    await userEvent.click(
+      within(viewer).getByRole('button', {
+        name: `${t('documents:viewer.download')} Contract_1.pdf`,
+      }),
+    );
+    expect(saved).toEqual(['Contract_1.pdf']);
+    expect(fileRequests).toBe(1);
+
+    await userEvent.click(within(viewer).getByRole('button', { name: t('general:close') }));
+    await waitFor(() => expect(screen.queryByTestId('pdf-viewer')).not.toBeInTheDocument());
+    await userEvent.click(screen.getByRole('button', { name: /PDF Contract_1.pdf/ }));
+    await waitFor(() => expect(saved).toEqual(['Contract_1.pdf', 'Contract_1.pdf']));
+    expect(fileRequests).toBe(2);
+    click.mockRestore();
+  });
+
+  it('says when the document cannot be opened, and tries again', async () => {
+    let attempts = 0;
+    server.use(
+      http.get(api('/contract'), () => HttpResponse.json(page([contract({})]))),
+      http.get(api('/contract/c1/file'), () => {
+        attempts += 1;
+        return attempts === 1
+          ? HttpResponse.json({ code_error: 'CONTRACT_010' }, { status: 404 })
+          : new HttpResponse(new Blob(['%PDF-1.4']), {
+              headers: { 'Content-Type': 'application/pdf' },
+            });
+      }),
+    );
+    renderPage(<ContractsTable query={{ limit: 10, page: 1 }} setQuery={vi.fn()} />);
+
+    await userEvent.click(
+      await screen.findByRole('button', { name: `${t('documents:page.view')} Contract_1.pdf` }),
+    );
+    const viewer = await screen.findByTestId('pdf-viewer');
+    expect(await within(viewer).findByText(t('documents:viewer.error_title'))).toBeInTheDocument();
+    expect(
+      within(viewer).getByRole('button', {
+        name: `${t('documents:viewer.download')} Contract_1.pdf`,
+      }),
+    ).toBeDisabled();
+
+    await userEvent.click(within(viewer).getByRole('button', { name: t('states:retry') }));
+    expect(
+      await within(viewer).findByLabelText(t('documents:viewer.page_label', { page: 1, total: 3 })),
+    ).toBeInTheDocument();
+    expect(attempts).toBe(2);
+  });
+
+  it('has no "Vezi" for an older Word contract, only its download (#688)', async () => {
+    server.use(
+      http.get(api('/contract'), () =>
+        HttpResponse.json(page([contract({ fileName: 'Contract_1.docx' })])),
+      ),
+    );
+    renderPage(<ContractsTable query={{ limit: 10, page: 1 }} setQuery={vi.fn()} />);
+
+    expect(await screen.findByRole('button', { name: /DOCX Contract_1.docx/ })).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: new RegExp(`^${t('documents:page.view')} `) }),
+    ).not.toBeInTheDocument();
   });
 
   it('on the profile: no volunteer column, no filter, and uploads a signed PDF with its period', async () => {
@@ -207,6 +297,17 @@ describe('ContractsTable (#486, #488, #489)', () => {
       purpose: 'Dosar de admitere',
       registrationNumber: '45/2026',
     });
+    // #726: the generated certificate opens in the viewer, ready to download; closing it ends the flow
+    const viewer = await screen.findByTestId('pdf-viewer');
+    expect(
+      within(viewer).getByRole('heading', { name: 'Adeverinta-Elena-Pop.pdf' }),
+    ).toBeInTheDocument();
+    expect(
+      within(viewer).getByRole('button', {
+        name: `${t('documents:viewer.download')} Adeverinta-Elena-Pop.pdf`,
+      }),
+    ).toBeInTheDocument();
+    await userEvent.click(within(viewer).getByRole('button', { name: t('general:close') }));
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
   });
 

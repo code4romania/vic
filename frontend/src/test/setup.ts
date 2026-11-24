@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/vitest';
-import { afterAll, afterEach, beforeAll } from 'vitest';
+import { afterAll, afterEach, beforeAll, vi } from 'vitest';
 import { cleanup } from '@testing-library/react';
 import { setLogger } from 'react-query';
 import '../common/config/i18n';
@@ -31,6 +31,23 @@ window.matchMedia =
       removeEventListener: () => {},
       dispatchEvent: () => false,
     }) as MediaQueryList);
+
+// #726: pdf.js needs a real browser (canvas, DOMMatrix, a worker). Specs get a stand-in that reports
+// three pages, so the viewer's header, Download and page counter can be tested.
+vi.mock('../components/pdf/PdfDocument', async () => {
+  const { useEffect } = await import('react');
+  const { createElement } = await import('react');
+  return {
+    default: ({ onPages }: { onPages: (total: number) => void }) => {
+      useEffect(() => onPages(3), []);
+      return createElement('div', { 'data-testid': 'pdf-document' });
+    },
+  };
+});
+
+// jsdom has no object URLs; downloads and the print frame use them.
+URL.createObjectURL = URL.createObjectURL ?? (() => 'blob:test');
+URL.revokeObjectURL = URL.revokeObjectURL ?? (() => {});
 
 // Failed queries are expected in these specs; react-query would print each one.
 setLogger({ log: () => {}, warn: () => {}, error: () => {} });

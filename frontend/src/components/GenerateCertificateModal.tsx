@@ -5,7 +5,7 @@ import * as yup from 'yup';
 import i18n from '../common/config/i18n';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { ListItem } from '../common/interfaces/list-item.interface';
-import { downloadExcel, formatDate } from '../common/utils/utils';
+import { formatDate } from '../common/utils/utils';
 import VolunteerSelect from '../containers/VolunteerSelect';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import {
@@ -17,6 +17,7 @@ import FormDatePicker from './FormDatePicker';
 import FormInput from './FormInput';
 import FormTextarea from './FormTextarea';
 import Modal from './Modal';
+import PdfViewerModal from './pdf/PdfViewerModal';
 
 type GenerateCertificateForm = {
   volunteer?: ListItem;
@@ -57,6 +58,8 @@ const GenerateCertificateModal = ({ volunteerId, onClose }: GenerateCertificateM
   const [selected, setSelected] = useState<string | undefined>(volunteerId);
   const { data: prefill, isFetching } = useCertificatePrefillQuery(selected);
   const { mutate: generate, isLoading } = useGenerateCertificateMutation();
+  // #726: the generated PDF opens in the viewer (with Download) instead of downloading at once
+  const [generated, setGenerated] = useState<{ data: Blob; fileName: string } | null>(null);
 
   const {
     control,
@@ -82,16 +85,25 @@ const GenerateCertificateModal = ({ volunteerId, onClose }: GenerateCertificateM
         issueDate: data.issueDate,
       },
       {
-        onSuccess: ({ data: pdf, fileName }) => {
-          downloadExcel(pdf, fileName);
+        onSuccess: (certificate) => {
           useSuccessToast(t('success'));
-          onClose(true);
+          setGenerated(certificate);
         },
         onError: (error) =>
           useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error)),
       },
     );
   };
+
+  if (generated) {
+    return (
+      <PdfViewerModal
+        fileName={generated.fileName}
+        load={() => Promise.resolve(generated.data)}
+        onClose={() => onClose(true)}
+      />
+    );
+  }
 
   return (
     <Modal title={t('title')} onClose={() => onClose()}>

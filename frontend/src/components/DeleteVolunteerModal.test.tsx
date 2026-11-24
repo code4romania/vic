@@ -49,6 +49,10 @@ describe('DeleteVolunteerModal (#484)', () => {
           ]),
         );
       }),
+      http.get(
+        api('/contract/c1/file'),
+        () => new HttpResponse('%PDF-1.4', { headers: { 'Content-Type': 'application/pdf' } }),
+      ),
     );
     const onConfirm = vi.fn();
     renderPage(
@@ -65,8 +69,15 @@ describe('DeleteVolunteerModal (#484)', () => {
     expect(await screen.findByText(t('volunteer:delete.download_hint'))).toBeInTheDocument();
     expect(types).toContain('CONTRACT');
 
+    // #726: the contract can be read in the viewer first; Escape closes only the viewer
+    await userEvent.click(screen.getByRole('button', { name: t('volunteer:delete.view') }));
+    expect(await screen.findByTestId('pdf-viewer')).toBeInTheDocument();
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() => expect(screen.queryByTestId('pdf-viewer')).not.toBeInTheDocument());
+    expect(screen.getByText(t('volunteer:delete.download_hint'))).toBeInTheDocument();
+
     await userEvent.click(screen.getByRole('button', { name: t('volunteer:delete.download') }));
-    expect(saved).toEqual(['Contract_7.pdf']);
+    await waitFor(() => expect(saved).toEqual(['Contract_7.pdf']));
     expect(onConfirm).not.toHaveBeenCalled();
 
     await userEvent.click(screen.getByRole('button', { name: t('volunteer:delete.confirm') }));

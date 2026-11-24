@@ -71,24 +71,23 @@ export const formatEventDate = (
   return `${start}\u00a0– ${end}`;
 };
 
-export const downloadExcel = (data: BlobPart, name: string): void => {
-  const url = URL.createObjectURL(new Blob([data]));
+// Saves data under the given name. The object URL is revoked once the click has started the save.
+export const downloadBlob = (data: BlobPart, name: string, type?: string): void => {
+  const blob = data instanceof Blob && !type ? data : new Blob([data], type ? { type } : {});
+  const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
   link.setAttribute('download', name);
   document.body.appendChild(link);
   link.click();
   link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 0);
 };
 
-export const downloadFile = (uri: string, name: string) => {
-  const link = document.createElement('a');
-  link.href = uri;
-  link.setAttribute('download', name);
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-};
+export const downloadExcel = (data: BlobPart, name: string): void => downloadBlob(data, name);
+
+// #726: only PDFs open in the in-app viewer; older Word contracts (#688) are download-only
+export const isPdfFile = (fileName?: string): boolean => /\.pdf$/i.test(fileName ?? '');
 
 export const formatStartDateISO9075 = (startDate: Date) => formatISO9075(startDate);
 

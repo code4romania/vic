@@ -1,11 +1,15 @@
-import React from 'react';
-import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
+import React, { useState } from 'react';
+import { ArrowDownTrayIcon, EyeIcon } from '@heroicons/react/24/outline';
 import i18n from '../common/config/i18n';
 import { DocumentType } from '../common/enums/document-type.enum';
-import { downloadFile, formatDate } from '../common/utils/utils';
+import { IContractListItem } from '../common/interfaces/contract.interface';
+import { formatDate, isPdfFile } from '../common/utils/utils';
+import { getContractFile } from '../services/contracts/contracts.api';
 import { useContractsQuery } from '../services/contracts/contracts.service';
 import Button from './Button';
 import Modal from './Modal';
+import PdfViewerModal from './pdf/PdfViewerModal';
+import { useFileDownload } from './pdf/useFileDownload';
 
 const t = (key: string, options?: Record<string, unknown>): string =>
   `${i18n.t(`volunteer:delete.${key}`, options)}`;
@@ -33,6 +37,9 @@ const DeleteVolunteerModal = ({
     page: 1,
     limit: 20,
   });
+  // #726: a contract can be read before it is downloaded
+  const [viewing, setViewing] = useState<IContractListItem | null>(null);
+  const { downloadingId, download } = useFileDownload();
 
   return (
     <Modal title={t('title', { name: volunteerName })} onClose={onClose}>
@@ -42,20 +49,35 @@ const DeleteVolunteerModal = ({
           <div className="flex flex-col gap-3 rounded-md bg-yellow-50 p-4">
             <p className="text-yellow-800">{t('download_hint')}</p>
             <div className="flex flex-wrap gap-2">
-              {contracts.items.map((contract) => (
-                <Button
-                  key={contract.id}
-                  type="button"
-                  className="btn-outline-secondary"
-                  icon={<ArrowDownTrayIcon className="h-5 w-5" />}
-                  label={
-                    contracts.items.length === 1
-                      ? t('download')
-                      : `${t('download')} ${contract.contractNumber ?? formatDate(contract.startDate)}`
-                  }
-                  onClick={() => downloadFile(contract.uri, contract.fileName)}
-                />
-              ))}
+              {contracts.items.map((contract) => {
+                const name =
+                  contracts.items.length === 1
+                    ? ''
+                    : ` ${contract.contractNumber ?? formatDate(contract.startDate)}`;
+                return (
+                  <div key={contract.id} className="flex flex-wrap gap-2">
+                    {isPdfFile(contract.fileName) && (
+                      <Button
+                        type="button"
+                        className="btn-outline-secondary"
+                        icon={<EyeIcon className="h-5 w-5" />}
+                        label={`${t('view')}${name}`}
+                        onClick={() => setViewing(contract)}
+                      />
+                    )}
+                    <Button
+                      type="button"
+                      className="btn-outline-secondary"
+                      icon={<ArrowDownTrayIcon className="h-5 w-5" />}
+                      label={`${t('download')}${name}`}
+                      disabled={downloadingId === contract.id}
+                      onClick={() =>
+                        download(contract.id, () => getContractFile(contract.id), contract.fileName)
+                      }
+                    />
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
@@ -75,6 +97,13 @@ const DeleteVolunteerModal = ({
           />
         </div>
       </div>
+      {viewing && (
+        <PdfViewerModal
+          fileName={viewing.fileName}
+          load={() => getContractFile(viewing.id)}
+          onClose={() => setViewing(null)}
+        />
+      )}
     </Modal>
   );
 };

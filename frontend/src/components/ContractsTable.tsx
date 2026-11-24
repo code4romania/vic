@@ -20,12 +20,12 @@ import { DocumentType } from '../common/enums/document-type.enum';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { IContractListItem } from '../common/interfaces/contract.interface';
-import { downloadExcel, downloadFile, formatDate, formatDateRange } from '../common/utils/utils';
+import { downloadExcel, formatDate, formatDateRange, isPdfFile } from '../common/utils/utils';
 import { ContractsTableBasicProps } from '../containers/query/ContractsTableWithQueryParams';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import Card from '../layouts/CardLayout';
 import CellLayout from '../layouts/CellLayout';
-import { getContractsForDownload } from '../services/contracts/contracts.api';
+import { getContractFile, getContractsForDownload } from '../services/contracts/contracts.api';
 import {
   useContractsQuery,
   useDeleteContractMutation,
@@ -37,6 +37,8 @@ import ConfirmationModal from './ConfirmationModal';
 import DataTableComponent, { useNarrowScreen } from './DataTableComponent';
 import LinkCell from './LinkCell';
 import Popover from './Popover';
+import PdfViewerModal from './pdf/PdfViewerModal';
+import { useFileDownload } from './pdf/useFileDownload';
 import Select, { SelectItem } from './Select';
 import StatusBadge, { BadgeTone } from './StatusBadge';
 import InitialsAvatar from './InitialsAvatar';
@@ -180,6 +182,9 @@ const ContractsTable = ({
   const [showUpload, setShowUpload] = useState(false);
   const [showCertificate, setShowCertificate] = useState(false);
   const [toDelete, setToDelete] = useState<IContractListItem | null>(null);
+  // #726: the document open in the viewer
+  const [viewing, setViewing] = useState<IContractListItem | null>(null);
+  const { downloadingId, download } = useFileDownload();
   const { mutate: deleteContract, isLoading: isDeleting } = useDeleteContractMutation();
   const queryClient = useQueryClient();
 
@@ -248,20 +253,25 @@ const ContractsTable = ({
     allowOverflow: true,
     cell: (row) => (
       <div className="flex items-center justify-end gap-1 !overflow-visible">
-        <a
-          href={row.uri}
-          target="_blank"
-          rel="noreferrer"
-          className="flex shrink-0 items-center gap-1.5 px-2 py-1.5 rounded-lg text-sm font-robotoMedium text-cool-gray-700 whitespace-nowrap hover:bg-cool-gray-100 hover:text-cool-gray-900"
-        >
-          <EyeIcon className="w-4 h-4" aria-hidden="true" />
-          <span className="sr-only sm:not-sr-only">{t('page.view')}</span>
-        </a>
+        {/* #726: PDFs open in the viewer; older Word contracts (#688) are download-only */}
+        {isPdfFile(row.fileName) && (
+          <button
+            type="button"
+            aria-label={`${t('page.view')} ${row.fileName}`}
+            className="flex shrink-0 items-center gap-1.5 px-2 py-1.5 rounded-lg text-sm font-robotoMedium text-cool-gray-700 whitespace-nowrap hover:bg-cool-gray-100 hover:text-cool-gray-900"
+            onClick={() => setViewing(row)}
+          >
+            <EyeIcon className="w-4 h-4" aria-hidden="true" />
+            <span className="sr-only sm:not-sr-only">{t('page.view')}</span>
+          </button>
+        )}
         <button
           type="button"
           aria-label={`${fileTypeLabel(row.fileName, t('page.pdf'))} ${row.fileName}`}
-          className="flex shrink-0 items-center gap-1.5 px-2 py-1.5 rounded-lg text-sm font-robotoMedium text-cool-gray-700 whitespace-nowrap hover:bg-cool-gray-100 hover:text-cool-gray-900"
-          onClick={() => downloadFile(row.uri, row.fileName)}
+          className="flex shrink-0 items-center gap-1.5 px-2 py-1.5 rounded-lg text-sm font-robotoMedium text-cool-gray-700 whitespace-nowrap hover:bg-cool-gray-100 hover:text-cool-gray-900 disabled:opacity-60"
+          disabled={downloadingId === row.id}
+          aria-busy={downloadingId === row.id}
+          onClick={() => download(row.id, () => getContractFile(row.id), row.fileName)}
         >
           <ArrowDownTrayIcon className="w-4 h-4" aria-hidden="true" />
           <span className="sr-only sm:not-sr-only">
@@ -442,6 +452,13 @@ const ContractsTable = ({
         <GenerateCertificateModal
           volunteerId={volunteerId}
           onClose={() => setShowCertificate(false)}
+        />
+      )}
+      {viewing && (
+        <PdfViewerModal
+          fileName={viewing.fileName}
+          load={() => getContractFile(viewing.id)}
+          onClose={() => setViewing(null)}
         />
       )}
       {toDelete && (

@@ -247,7 +247,8 @@
     "report": {
       "download": "Download full report (PDF)",
       "loading": "Generating the report…",
-      "error": "The report could not be generated. Please try again."
+      "error": "The report could not be generated. Please try again.",
+      "view": "View full report (PDF)"
     },
     "delete": {
       "action": "Delete volunteer",
@@ -256,7 +257,8 @@
       "download_hint": "We recommend downloading the contract before deleting it, to keep a copy in your archive.",
       "download": "Download contract",
       "confirm": "Delete for good",
-      "success": "{{name}} was deleted, together with their data in the organization."
+      "success": "{{name}} was deleted, together with their data in the organization.",
+      "view": "View contract"
     },
     "status_in_vic": "Status in VIC"
   },
@@ -1780,7 +1782,7 @@
         "issue_date": "Issue date*",
         "date_required": "The issue date is required",
         "submit": "Generate PDF",
-        "success": "The certificate was downloaded. Once signed, upload it from \"Upload contract\", as a certificate."
+        "success": "The certificate was generated. Download it, sign it, then upload it from \"Upload contract\" as a certificate."
       }
     },
     "page": {
@@ -1864,6 +1866,18 @@
       "deleted": "The template was deleted",
       "upload_error": "The template could not be uploaded. Make sure it is a PDF.",
       "delete_error": "The template could not be deleted"
+    },
+    "viewer": {
+      "download": "Download",
+      "print": "Print",
+      "zoom_in": "Zoom in",
+      "zoom_out": "Zoom out",
+      "page_of": "{{page}} / {{total}}",
+      "page_label": "Page {{page}} of {{total}}",
+      "render_error": "This document cannot be shown here. You can download it.",
+      "download_error": "The document could not be downloaded. Please try again.",
+      "error_title": "The document could not be opened",
+      "error": "Check your connection and try again. If it keeps happening, the document may be missing."
     }
   },
   "auth": {

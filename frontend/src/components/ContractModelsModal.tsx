@@ -1,17 +1,26 @@
 import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { ArrowDownTrayIcon, DocumentTextIcon, TrashIcon } from '@heroicons/react/24/outline';
+import {
+  ArrowDownTrayIcon,
+  DocumentTextIcon,
+  EyeIcon,
+  TrashIcon,
+} from '@heroicons/react/24/outline';
 import { useTranslation } from 'react-i18next';
-import { downloadFile, formatDate } from '../common/utils/utils';
+import { formatDate } from '../common/utils/utils';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import {
+  IContractModel,
   deleteContractModel,
+  getContractModelFile,
   getContractModels,
   uploadContractModel,
 } from '../services/template/template.api';
 import FileUpload from './FileUpload';
 import FormInput from './FormInput';
 import Modal from './Modal';
+import PdfViewerModal from './pdf/PdfViewerModal';
+import { useFileDownload } from './pdf/useFileDownload';
 
 // "Template-uri": blank contract models the NGO uploads once and downloads when it needs one.
 // VIC does not fill them in or sign them (#486); the signed contract is uploaded with "Încarcă contract".
@@ -23,6 +32,10 @@ const ContractModelsModal = ({ onClose }: { onClose: () => void }) => {
   const [submitted, setSubmitted] = useState(false);
   // a new key empties the drop zone after each upload
   const [uploadKey, setUploadKey] = useState(0);
+  // #726: the model open in the viewer, on top of this modal
+  const [viewing, setViewing] = useState<IContractModel | null>(null);
+  const { downloadingId, download } = useFileDownload();
+  const fileNameOf = (model: IContractModel) => `${model.name}.pdf`;
   const { data: models, isLoading } = useQuery(['contract-models'], getContractModels);
   const refresh = () => queryClient.invalidateQueries(['contract-models']);
 
@@ -79,11 +92,24 @@ const ContractModelsModal = ({ onClose }: { onClose: () => void }) => {
                 </span>
                 <button
                   type="button"
-                  aria-label={`${t('models.download')} ${model.name}`}
+                  aria-label={`${t('page.view')} ${model.name}`}
+                  title={t('page.view')}
                   className="p-2 rounded-lg text-cool-gray-600 hover:bg-cool-gray-100"
-                  onClick={() => downloadFile(model.uri, `${model.name}.pdf`)}
+                  onClick={() => setViewing(model)}
                 >
-                  <ArrowDownTrayIcon className="w-5 h-5" />
+                  <EyeIcon className="w-5 h-5" aria-hidden="true" />
+                </button>
+                <button
+                  type="button"
+                  aria-label={`${t('models.download')} ${model.name}`}
+                  title={t('models.download')}
+                  className="p-2 rounded-lg text-cool-gray-600 hover:bg-cool-gray-100 disabled:opacity-60"
+                  disabled={downloadingId === model.id}
+                  onClick={() =>
+                    download(model.id, () => getContractModelFile(model.id), fileNameOf(model))
+                  }
+                >
+                  <ArrowDownTrayIcon className="w-5 h-5" aria-hidden="true" />
                 </button>
                 <button
                   type="button"
@@ -131,6 +157,13 @@ const ContractModelsModal = ({ onClose }: { onClose: () => void }) => {
           </div>
         </div>
       </div>
+      {viewing && (
+        <PdfViewerModal
+          fileName={fileNameOf(viewing)}
+          load={() => getContractModelFile(viewing.id)}
+          onClose={() => setViewing(null)}
+        />
+      )}
     </Modal>
   );
 };

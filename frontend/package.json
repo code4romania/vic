@@ -28,6 +28,7 @@
     "react-feather": "^2.0.10",
     "react-hook-form": "^7.52.1",
     "react-i18next": "14.1.2",
+    "react-pdf": "~10.5.0",
     "react-query": "^3.39.3",
     "react-router-dom": "^7.18.5",
     "react-select": "^5.8.0",
