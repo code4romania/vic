@@ -510,4 +510,101 @@ describe('Contracts (e2e)', () => {
     expect((await auth(http().get('/template')).expect(200)).body).toEqual([]);
     await auth(http().patch(`/template/${created.id}`)).expect(404);
   });
+
+  // #724: the in-app viewer and the Download button read the file through the API
+  describe('document files', () => {
+    const readBody = (r: request.Test): request.Test =>
+      r.buffer(true).parse((res, done) => {
+        const chunks: Buffer[] = [];
+        res.on('data', (chunk: Buffer) => chunks.push(chunk));
+        res.on('end', () => done(null, Buffer.concat(chunks)));
+      });
+
+    it('streams an uploaded contract inline, or as an attachment with ?download=true', async () => {
+      const { body: contract } = await upload({
+        startDate: '2026-01-01',
+        endDate: '2026-12-31',
+        contractNumber: '12/2026',
+      }).expect(201);
+
+      const inline = await readBody(
+        auth(http().get(`/contract/${contract.id}/file`)),
+      ).expect(200);
+      expect(Buffer.compare(inline.body, PDF)).toBe(0);
+      expect(inline.headers['content-type']).toBe('application/pdf');
+      expect(inline.headers['content-length']).toBe(String(PDF.length));
+      expect(inline.headers['cache-control']).toBe('private, no-store');
+      expect(inline.headers['content-disposition']).toBe(
+        `inline; filename="Contract_12-2026.pdf"; filename*=UTF-8''Contract_12-2026.pdf`,
+      );
+
+      const download = await auth(
+        http().get(`/contract/${contract.id}/file?download=true`),
+      ).expect(200);
+      expect(download.headers['content-disposition']).toMatch(
+        /^attachment; filename="Contract_12-2026\.pdf"/,
+      );
+    });
+
+    it("hides another NGO's contract and a missing file; checks the id and the token", async () => {
+      const [foreign] = await testApp.dataSource.query(
+        `INSERT INTO contract (contract_number, path, start_date, status, organization_id, volunteer_id)
+         SELECT 'X-1', 'contracts/x.pdf', now(), 'ACTIVE', organization_id, id FROM volunteer WHERE id = $1
+         RETURNING id`,
+        [otherVolunteerId],
+      );
+      const notFound = await auth(
+        http().get(`/contract/${foreign.id}/file`),
+      ).expect(404);
+      expect(notFound.body.code_error).toBe('CONTRACT_002');
+
+      // a row whose object is not in storage (the e2e insert() helper stores no file)
+      await insert('ACTIVE', days(-10), null, 'FARA-FISIER');
+      const [{ id: missing }] = await testApp.dataSource.query(
+        `SELECT id FROM contract WHERE contract_number = 'FARA-FISIER'`,
+      );
+      const gone = await auth(http().get(`/contract/${missing}/file`)).expect(
+        404,
+      );
+      expect(gone.body.code_error).toBe('CONTRACT_010');
+
+      await auth(http().get('/contract/nu-e-uuid/file')).expect(400);
+      await http().get(`/contract/${missing}/file`).expect(401);
+    });
+
+    it("streams a contract model under its own name; another NGO's is not found", async () => {
+      const { body: created } = await auth(
+        http()
+          .post('/template')
+          .field('name', 'Model „școală” 2026')
+          .attach('template', PDF, {
+            filename: 'model.pdf',
+            contentType: 'application/pdf',
+          }),
+      ).expect(201);
+
+      const file = await readBody(
+        auth(http().get(`/template/${created.id}/file?download=true`)),
+      ).expect(200);
+      expect(Buffer.compare(file.body, PDF)).toBe(0);
+      expect(file.headers['content-type']).toBe('application/pdf');
+      expect(file.headers['content-disposition']).toBe(
+        `attachment; filename="Model _scoala_ 2026.pdf"; filename*=UTF-8''${encodeURIComponent(
+          'Model „școală” 2026.pdf',
+        )}`,
+      );
+
+      const [other] = await testApp.dataSource.query(
+        `SELECT id FROM organization WHERE email = 'org@alt.ro'`,
+      );
+      const [foreign] = await testApp.dataSource.query(
+        `INSERT INTO template (name, path, organization_id) VALUES ('Alt model', 'templates/x.pdf', $1) RETURNING id`,
+        [other.id],
+      );
+      const notFound = await auth(
+        http().get(`/template/${foreign.id}/file`),
+      ).expect(404);
+      expect(notFound.body.code_error).toBe('TEMPLATE_002');
+    });
+  });
 });

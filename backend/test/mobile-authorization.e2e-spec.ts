@@ -266,6 +266,20 @@ describe('Mobile authorization (e2e)', () => {
       await e.get(`/mobile/contract/${elenaContract}`).expect(200);
     });
 
+    // #724: the file behind the viewer, Download and Share
+    it("cannot read another volunteer's contract file", async () => {
+      const ionContract = await insertContract(ion.volunteerId, 'C-ION');
+      const elenaContract = await insertContract(elena.volunteerId, 'C-EL');
+      const e = as(elena.token);
+
+      await e.get(`/mobile/contract/${ionContract}/file`).expect(404);
+      // her own contract passes the guard; the e2e row has no stored object behind it
+      const own = await e
+        .get(`/mobile/contract/${elenaContract}/file`)
+        .expect(404);
+      expect(own.body.code_error).toBe('CONTRACT_010');
+    });
+
     it('a volunteer without an active organization gets an empty history', async () => {
       await insertContract(elena.volunteerId, 'C-EL');
       await noActiveOrganization(elena.userId);

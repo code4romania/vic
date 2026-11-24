@@ -10,6 +10,7 @@ import {
 import { FILE_URL_EXPIRATION_TIME } from './s3.constants';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { v4 as uuid } from 'uuid';
+import { Readable } from 'stream';
 
 @Injectable()
 export class S3Service {
@@ -41,6 +42,32 @@ export class S3Service {
     return getSignedUrl(this.s3, command, {
       expiresIn: FILE_URL_EXPIRATION_TIME,
     });
+  }
+
+  // Streams a stored file to the client (#724: the in-app PDF viewer reads files through the API,
+  // the private bucket has no CORS). Null when the object is gone; other S3 errors are thrown.
+  public async getFile(
+    key: string,
+    bucket?: string,
+  ): Promise<{ body: Readable; contentLength?: number } | null> {
+    try {
+      const { Body, ContentLength } = await this.s3.send(
+        new GetObjectCommand({
+          Bucket: bucket || this.options.defaultBucket,
+          Key: key,
+        }),
+      );
+      return { body: Body as Readable, contentLength: ContentLength };
+    } catch (error) {
+      if (
+        error?.name === 'NoSuchKey' ||
+        error?.$metadata?.httpStatusCode === 404
+      ) {
+        return null;
+      }
+      this.logger.error('Error reading file from S3: ', error);
+      throw error;
+    }
   }
 
   public async uploadFile(
