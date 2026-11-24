@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import ContractsTable from './ContractsTable';
 import { renderPage, t } from '../test/render';
+import { formatDate } from '../common/utils/utils';
 import { api, server } from '../test/server';
 import API from '../services/api';
 
@@ -52,7 +53,11 @@ describe('ContractsTable (#486, #488, #489)', () => {
     expect(screen.getByText(t('documents:contract.status.PENDING'))).toBeInTheDocument();
     expect(screen.getByText(t('documents:contract.status.EXPIRED'))).toBeInTheDocument();
     expect(screen.getAllByText(t('documents:contract.expiring_soon'))).toHaveLength(1);
-    expect(screen.getByText(/fără dată de final/)).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        t('documents:contracts.period_open', { start: formatDate('2026-01-01T00:00:00.000Z') }),
+      ),
+    ).toBeInTheDocument();
     expect(screen.getAllByText('Elena Pop')).toHaveLength(3);
   });
 
@@ -73,7 +78,9 @@ describe('ContractsTable (#486, #488, #489)', () => {
       />,
     );
     await waitFor(() => expect(sent).toContainEqual({ status: 'EXPIRED', search: 'elena' }));
-    expect(await screen.findByText('0 documente găsite')).toBeInTheDocument();
+    expect(
+      await screen.findByText(t('documents:page.filters.found', { count: 0 })),
+    ).toBeInTheDocument();
 
     await userEvent.clear(screen.getByLabelText(t('documents:page.filters.search')));
     await userEvent.type(screen.getByLabelText(t('documents:page.filters.search')), 'R-1');
@@ -90,7 +97,7 @@ describe('ContractsTable (#486, #488, #489)', () => {
 
     expect(await screen.findByText('elena@pop.ro')).toBeInTheDocument();
     expect(screen.getByText('EP')).toBeInTheDocument();
-    expect(screen.getByText('Nr. 1/2026')).toBeInTheDocument();
+    expect(screen.getByText(t('documents:page.number', { number: '1/2026' }))).toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: `${t('documents:page.view')} Contract_1.pdf` }),
     ).toBeInTheDocument();
@@ -277,7 +284,11 @@ describe('ContractsTable (#486, #488, #489)', () => {
     const dialog = await screen.findByRole('dialog');
     const hours = within(dialog).getByLabelText(t('documents:certificate.form.hours'));
     await waitFor(() => expect(hours).toHaveValue(42));
-    expect(within(dialog).getByText(/42 ore aprobate în VIC, din 01.02.2026/)).toBeInTheDocument();
+    expect(
+      within(dialog).getByText(
+        t('documents:certificate.form.hours_hint', { hours: 42, since: '01.02.2026' }),
+      ),
+    ).toBeInTheDocument();
     await userEvent.clear(hours);
     await userEvent.type(hours, '50');
     await userEvent.type(

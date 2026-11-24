@@ -57,7 +57,9 @@ export const accessCodeStatus = (code: IAccessCode, now = new Date()): AccessCod
 const AccessCodeTableHeader: TableColumn<IAccessCode>[] = [
   {
     id: 'code',
-    name: i18n.t('access_code:name'),
+    get name() {
+      return i18n.t('access_code:name');
+    },
     sortable: true,
     minWidth: '10rem',
     cell: (row: IAccessCode) => (
@@ -71,7 +73,9 @@ const AccessCodeTableHeader: TableColumn<IAccessCode>[] = [
   },
   {
     id: 'startDate',
-    name: i18n.t('general:availability'),
+    get name() {
+      return i18n.t('general:availability');
+    },
     sortable: true,
     grow: 2,
     minWidth: '15rem',
@@ -91,7 +95,9 @@ const AccessCodeTableHeader: TableColumn<IAccessCode>[] = [
   {
     id: 'usageCount',
     hide: Media.SM,
-    name: i18n.t('general:uses'),
+    get name() {
+      return i18n.t('general:uses');
+    },
     sortable: true,
     minWidth: '6rem',
     cell: (row: IAccessCode) => (
@@ -105,7 +111,9 @@ const AccessCodeTableHeader: TableColumn<IAccessCode>[] = [
   {
     id: 'createdOn',
     hide: 1100,
-    name: i18n.t('general:created_on'),
+    get name() {
+      return i18n.t('general:created_on');
+    },
     sortable: true,
     minWidth: '8rem',
     cell: (row: IAccessCode) => <CellLayout>{formatDate(row.createdOn)}</CellLayout>,
@@ -113,7 +121,9 @@ const AccessCodeTableHeader: TableColumn<IAccessCode>[] = [
   {
     id: 'createdBy.name',
     hide: Media.MD,
-    name: i18n.t('general:created_by'),
+    get name() {
+      return i18n.t('general:created_by');
+    },
     sortable: true,
     minWidth: '12rem',
     cell: (row: IAccessCode) => (

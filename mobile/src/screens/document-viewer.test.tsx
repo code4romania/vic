@@ -5,6 +5,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import '../common/config/i18n';
 import DocumentViewer from './DocumentViewer';
+import { t } from '../test/i18n';
 
 // #727: the viewer screen. react-native-pdf is native: a stand-in reports the pages and can fail.
 const mockFetch = jest.fn();
@@ -78,7 +79,7 @@ describe('DocumentViewer (#727)', () => {
     expect(screen.getByText('Contract 1/2026')).toBeTruthy();
     expect(screen.getByTestId('document-viewer-page')).toHaveTextContent('2 / 5');
     expect(screen.getByTestId('document-viewer-page').props.accessibilityLabel).toBe(
-      'Pagina 2 din 5',
+      t('documents:viewer.page_a11y', { page: 2, total: 5 }),
     );
     expect(mockFetch).toHaveBeenCalledWith(expect.objectContaining({ id: 'c1' }));
   });
@@ -87,9 +88,9 @@ describe('DocumentViewer (#727)', () => {
     await renderViewer();
     await screen.findByTestId('pdf-document');
 
-    await fireEvent.press(screen.getByLabelText('Descarcă'));
+    await fireEvent.press(screen.getByLabelText(t('documents:viewer.download')));
     expect(mockDownload).toHaveBeenCalledWith(expect.objectContaining({ id: 'c1' }));
-    await fireEvent.press(screen.getByLabelText('Partajează'));
+    await fireEvent.press(screen.getByLabelText(t('documents:viewer.share')));
     expect(mockShare).toHaveBeenCalledWith(expect.objectContaining({ id: 'c1' }));
   });
 
@@ -97,9 +98,9 @@ describe('DocumentViewer (#727)', () => {
     mockFetch.mockRejectedValueOnce(new Error('offline'));
     await renderViewer();
 
-    expect(await screen.findByText('Nu am putut deschide documentul.')).toBeTruthy();
+    expect(await screen.findByText(t('documents:viewer.error'))).toBeTruthy();
     expect(screen.queryByTestId('document-viewer-page')).toBeNull();
-    await fireEvent.press(screen.getByText('Încearcă din nou'));
+    await fireEvent.press(screen.getByText(t('documents:viewer.retry')));
     expect(await screen.findByTestId('pdf-document')).toBeTruthy();
     expect(mockFetch).toHaveBeenCalledTimes(2);
   });
@@ -108,7 +109,7 @@ describe('DocumentViewer (#727)', () => {
     mockRenderFails = true;
     await renderViewer();
 
-    expect(await screen.findByText('Nu am putut deschide documentul.')).toBeTruthy();
+    expect(await screen.findByText(t('documents:viewer.error'))).toBeTruthy();
     await waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(2));
   });
 });

@@ -27,15 +27,14 @@ const schema = yup
   .object({
     name: yup
       .string()
-      .required(`${i18n.t('division:form.name.required')}`)
-      .min(2, `${i18n.t('division:form.name.min', { value: '2' })}`)
-      .max(
-        50,
-        `${i18n.t('division:form.name.max', {
+      .required(() => i18n.t('division:form.name.required'))
+      .min(2, () => i18n.t('division:form.name.min', { value: '2' }))
+      .max(50, () =>
+        i18n.t('division:form.name.max', {
           value: '50',
-        })}`,
+        }),
       )
-      .matches(REGEX.NAME_REGEX, `${i18n.t('division:form.name.pattern')}`),
+      .matches(REGEX.NAME_REGEX, () => i18n.t('division:form.name.pattern')),
   })
   .required();
 

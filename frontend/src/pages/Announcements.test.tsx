@@ -83,7 +83,9 @@ describe('Announcements (#502)', () => {
     const setQuery = vi.fn();
     renderPage(<Announcements query={{ limit: 10, page: 1 }} setQuery={setQuery} />);
 
-    const archived = await screen.findByRole('tab', { name: /Arhivate/ });
+    const archived = await screen.findByRole('tab', {
+      name: new RegExp(t('announcement:tabs.archived')),
+    });
     await waitFor(() => expect(within(archived).getByText('5')).toBeInTheDocument());
     await userEvent.click(archived);
     expect(setQuery).toHaveBeenCalledWith({ status: 'archived', page: 1 });
@@ -107,21 +109,26 @@ describe('Announcements (#502)', () => {
 });
 
 describe('announcement validation gate (#620)', () => {
-  const unvalidated = () => server.use(
-    http.get(api('/organization'), () => HttpResponse.json({ id: 'org-1', validatedAt: null })),
-  );
+  const unvalidated = () =>
+    server.use(
+      http.get(api('/organization'), () => HttpResponse.json({ id: 'org-1', validatedAt: null })),
+    );
 
   it('disables both new-announcement actions with the explanation', async () => {
     useApi();
     unvalidated();
-    server.use(http.get(api('/announcement'), () => HttpResponse.json({ items: [], meta: meta(0) })));
+    server.use(
+      http.get(api('/announcement'), () => HttpResponse.json({ items: [], meta: meta(0) })),
+    );
     renderPage(<Announcements query={{ limit: 10, page: 1 }} setQuery={vi.fn()} />);
 
     await screen.findByText(t('announcement:page.empty_title'));
     const buttons = screen.getAllByRole('button', { name: t('announcement:page.add') });
     expect(buttons).toHaveLength(2);
     await waitFor(() => buttons.forEach((button) => expect(button).toBeDisabled()));
-    buttons.forEach((button) => expect(button).toHaveAttribute('title', t('organization:validation_required')));
+    buttons.forEach((button) =>
+      expect(button).toHaveAttribute('title', t('organization:validation_required')),
+    );
   });
 
   it('disables creation on direct navigation, when publish now is turned off', async () => {

@@ -75,6 +75,8 @@ export class SendInviteUseCase
         organization?.name ?? 'VIC',
         caller.name,
       ),
+      // The invited person's own language; someone who never logged in gets both languages.
+      target.language,
     );
 
     return { maskedEmail: this.oneTimeTokenService.maskEmail(identity.email) };

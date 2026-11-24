@@ -67,7 +67,9 @@ interface AccessRequestTableProps extends AccessRequestsTableProps {
 const PendingAccessRequestsTableHeader = [
   {
     id: 'requestedBy.name',
-    name: i18n.t('general:name'),
+    get name() {
+      return i18n.t('general:name');
+    },
     sortable: true,
     grow: 2,
     cell: (row: IAccessRequest) => (
@@ -77,7 +79,9 @@ const PendingAccessRequestsTableHeader = [
   {
     id: 'requestedBy.email',
     hide: Media.SM,
-    name: i18n.t('general:contact'),
+    get name() {
+      return i18n.t('general:contact');
+    },
     sortable: true,
     minWidth: '12rem',
     selector: (row: IAccessRequest) =>
@@ -86,14 +90,18 @@ const PendingAccessRequestsTableHeader = [
   {
     id: 'location.name',
     hide: Media.SM,
-    name: i18n.t('general:location'),
+    get name() {
+      return i18n.t('general:location');
+    },
     sortable: true,
     selector: (row: IAccessRequest) => formatLocation(row.requestedBy.location),
   },
   {
     id: 'createdOn',
     hide: Media.SM,
-    name: i18n.t('access_requests:date'),
+    get name() {
+      return i18n.t('access_requests:date');
+    },
     sortable: true,
     cell: (row: IAccessRequest) => <CellLayout>{formatDate(row.createdOn)}</CellLayout>,
   },
@@ -104,7 +112,9 @@ const RejectedAccessRequestsTableHeader = [
   {
     id: 'updatedOn',
     hide: Media.SM,
-    name: i18n.t('access_requests:rejected_date'),
+    get name() {
+      return i18n.t('access_requests:rejected_date');
+    },
     sortable: true,
     cell: (row: IAccessRequest) => <CellLayout>{formatDate(row.updatedOn)}</CellLayout>,
   },
@@ -116,7 +126,9 @@ const ApprovedAccessRequestsTableHeader = [
   {
     id: 'updatedOn',
     hide: Media.SM,
-    name: i18n.t('access_requests:approved_date'),
+    get name() {
+      return i18n.t('access_requests:approved_date');
+    },
     sortable: true,
     cell: (row: IAccessRequest) => <CellLayout>{formatDate(row.updatedOn)}</CellLayout>,
   },

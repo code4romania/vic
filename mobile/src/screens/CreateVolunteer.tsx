@@ -9,6 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { useQueryClient } from 'react-query';
+import { useRevalidateOnLanguageChange } from '../hooks/useRevalidateOnLanguageChange';
 
 const CreateVolunteer = ({ navigation, route }: any) => {
   // get user profile data
@@ -25,11 +26,13 @@ const CreateVolunteer = ({ navigation, route }: any) => {
     formState: { errors },
     handleSubmit,
     reset,
+    trigger,
   } = useForm<VolunteerFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
     resolver: yupResolver(volunteerSchema as any),
   });
+  useRevalidateOnLanguageChange(trigger, errors);
 
   const { isLoading: isCreatingProfile, mutate: createVolunteerProfile } =
     useCreateVolunteerProfileMutation();

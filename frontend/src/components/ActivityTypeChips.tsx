@@ -12,6 +12,7 @@ import {
 } from '../services/activity-type/activity-type.service';
 import ChipCard, { ChipItem } from './ChipCard';
 import ConfirmationModal from './ConfirmationModal';
+import { dateLocale } from '../common/config/date-locale';
 
 const t = (key: string, options?: Record<string, unknown>): string =>
   `${i18n.t(`organization:setup.chips.${key}`, options)}`;
@@ -40,7 +41,7 @@ const ActivityTypeChips = () => {
 
   const items: ChipItem[] = (data ?? [])
     .filter((type) => type.status === ActivityTypeStatus.ACTIVE)
-    .sort((a, b) => a.name.localeCompare(b.name, 'ro'))
+    .sort((a, b) => a.name.localeCompare(b.name, dateLocale()))
     .map(({ id, name }) => ({ id, name }));
 
   const showError = (error: unknown) =>

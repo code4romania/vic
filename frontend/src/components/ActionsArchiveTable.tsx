@@ -41,7 +41,9 @@ export const actionArea = (eventName: string): string | undefined =>
 const TableHeader = [
   {
     id: 'eventName',
-    name: i18n.t('actions_archive:area'),
+    get name() {
+      return i18n.t('actions_archive:area');
+    },
     sortable: true,
     grow: 2,
     minWidth: '12rem',
@@ -64,7 +66,9 @@ const TableHeader = [
 
   {
     id: 'author.name',
-    name: i18n.t('actions_archive:author'),
+    get name() {
+      return i18n.t('actions_archive:author');
+    },
     sortable: true,
     grow: 1,
     minWidth: '11rem',
@@ -77,7 +81,9 @@ const TableHeader = [
   },
   {
     id: 'eventData',
-    name: i18n.t('general:description'),
+    get name() {
+      return i18n.t('general:description');
+    },
     sortable: false,
     grow: 2,
     minWidth: '15rem',
@@ -91,7 +97,9 @@ const TableHeader = [
   },
   {
     id: 'createdOn',
-    name: i18n.t('general:date'),
+    get name() {
+      return i18n.t('general:date');
+    },
     sortable: true,
     grow: 1,
     minWidth: '10rem',

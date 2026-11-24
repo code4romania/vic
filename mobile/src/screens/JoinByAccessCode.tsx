@@ -19,6 +19,7 @@ import { EventIcon } from '../components/events/EventIcons';
 import InlineLink from '../components/InlineLink';
 import { colors, spacing } from '../common/theme/tokens';
 import { usePaddingTop } from '../hooks/usePaddingTop';
+import { useRevalidateOnLanguageChange } from '../hooks/useRevalidateOnLanguageChange';
 
 type AccessCodeFormTypes = {
   code: string;
@@ -28,13 +29,12 @@ const schema = yup
   .object({
     code: yup
       .string()
-      .required(`${i18n.t('access_code:form.code.required')}`)
-      .min(4, `${i18n.t('access_code:form.code.min', { value: 4 })}`)
-      .max(
-        10,
-        `${i18n.t('access_code:form.code.max', {
+      .required(() => i18n.t('access_code:form.code.required'))
+      .min(4, () => i18n.t('access_code:form.code.min', { value: 4 }))
+      .max(10, () =>
+        i18n.t('access_code:form.code.max', {
           value: '10',
-        })}`,
+        }),
       ),
   })
   .required();
@@ -60,11 +60,13 @@ const JoinByAccessCode = ({ navigation }: any) => {
     control,
     handleSubmit,
     formState: { errors },
+    trigger,
   } = useForm<AccessCodeFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
     resolver: yupResolver(schema),
   });
+  useRevalidateOnLanguageChange(trigger, errors);
 
   const onSubmit = (payload: AccessCodeFormTypes) => {
     // build the access request payload

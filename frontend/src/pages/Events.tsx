@@ -58,9 +58,24 @@ import { DivisionType } from '../common/enums/division-type.enum';
 
 // VIC 2.0 (#495): upcoming (not started), ongoing (started, not ended) and finished, each paginated
 const EventsTabsOptions: SelectItem<EventState>[] = [
-  { key: EventState.UPCOMING, value: i18n.t('events:tabs.upcoming') },
-  { key: EventState.ONGOING, value: i18n.t('events:tabs.ongoing') },
-  { key: EventState.PAST, value: i18n.t('events:tabs.past') },
+  {
+    key: EventState.UPCOMING,
+    get value() {
+      return i18n.t('events:tabs.upcoming');
+    },
+  },
+  {
+    key: EventState.ONGOING,
+    get value() {
+      return i18n.t('events:tabs.ongoing');
+    },
+  },
+  {
+    key: EventState.PAST,
+    get value() {
+      return i18n.t('events:tabs.past');
+    },
+  },
 ];
 
 const currentTab = (state?: string): SelectItem<EventState> =>
@@ -68,7 +83,9 @@ const currentTab = (state?: string): SelectItem<EventState> =>
 
 const nameColumn: TableColumn<IEvent> = {
   id: 'name',
-  name: i18n.t('events:table.event'),
+  get name() {
+    return i18n.t('events:table.event');
+  },
   sortable: true,
   minWidth: '10rem',
   grow: 2,
@@ -79,7 +96,9 @@ const nameColumn: TableColumn<IEvent> = {
 
 const periodColumn: TableColumn<IEvent> = {
   id: 'startDate',
-  name: i18n.t('events:table.period'),
+  get name() {
+    return i18n.t('events:table.period');
+  },
   hide: Media.SM,
   minWidth: '13rem',
   grow: 1,
@@ -89,7 +108,9 @@ const periodColumn: TableColumn<IEvent> = {
 
 const locationColumn: TableColumn<IEvent> = {
   id: 'location',
-  name: i18n.t('events:table.location'),
+  get name() {
+    return i18n.t('events:table.location');
+  },
   // tablets and phones: name, status and the actions stay visible
   hide: 1100,
   minWidth: '10rem',
@@ -99,7 +120,9 @@ const locationColumn: TableColumn<IEvent> = {
 
 const departmentsColumn: TableColumn<IEvent> = {
   id: 'target',
-  name: i18n.t('events:table.departments'),
+  get name() {
+    return i18n.t('events:table.departments');
+  },
   hide: 1300,
   minWidth: '9rem',
   grow: 1,
@@ -108,7 +131,9 @@ const departmentsColumn: TableColumn<IEvent> = {
 
 const participantsColumn: TableColumn<IEvent> = {
   id: 'going',
-  name: i18n.t('events:table.participants'),
+  get name() {
+    return i18n.t('events:table.participants');
+  },
   hide: Media.MD,
   minWidth: '8rem',
   grow: 1,
@@ -120,7 +145,9 @@ const participantsColumn: TableColumn<IEvent> = {
 // finished events: the hours the volunteers logged for them
 const hoursColumn: TableColumn<IEvent> = {
   id: 'hours',
-  name: i18n.t('events:table.hours'),
+  get name() {
+    return i18n.t('events:table.hours');
+  },
   hide: Media.MD,
   minWidth: '7rem',
   grow: 0,
@@ -138,7 +165,9 @@ const hoursColumn: TableColumn<IEvent> = {
 
 const statusColumn: TableColumn<IEvent> = {
   id: 'status',
-  name: i18n.t('events:table.status'),
+  get name() {
+    return i18n.t('events:table.status');
+  },
   minWidth: '9.5rem',
   grow: 0,
   sortable: true,

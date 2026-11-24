@@ -56,7 +56,9 @@ const COUNTERS: { key: CounterKey; Icon: HeroIcon; color: string }[] = [
 
 const TYPE_OPTIONS: SelectItem<string>[] = Object.values(AnnouncementType).map((type) => ({
   key: type,
-  value: i18n.t(`announcement:type.${type}`),
+  get value() {
+    return i18n.t(`announcement:type.${type}`);
+  },
 }));
 
 // Name reads best A to Z; dates newest first.
@@ -65,7 +67,12 @@ const SORT_OPTIONS: SelectItem<string>[] = [
   'publishedOn',
   'displayStartDate',
   'name',
-].map((key) => ({ key, value: i18n.t(`announcement:page.sort_options.${key}`) }));
+].map((key) => ({
+  key,
+  get value() {
+    return i18n.t(`announcement:page.sort_options.${key}`);
+  },
+}));
 
 const isStatus = (value?: string | null): value is AnnouncementStatus =>
   Object.values(AnnouncementStatus).includes(value as AnnouncementStatus);

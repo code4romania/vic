@@ -1,6 +1,8 @@
 import { readFileSync, readdirSync } from 'fs';
 import * as Handlebars from 'handlebars';
 import { join } from 'path';
+import { MailMode, renderMail } from 'src/modules/mail/mail-copy';
+import { Language } from 'src/modules/user/enums/user.enum';
 import { AuthEmail, AUTH_EMAILS } from './auth-emails';
 
 const TEMPLATES = join(__dirname, '../../mail/templates');
@@ -8,7 +10,7 @@ const URL = 'https://vic.test/set-password?token=secret';
 
 // Renders mail-template.hbs the way MailService and the Handlebars adapter do: strict mode, the
 // asset_url helper, the partials, and contactEmail added to every context.
-function render(email: AuthEmail): string {
+function renderContext(context: object): string {
   const handlebars = Handlebars.create();
   handlebars.registerHelper(
     'asset_url',
@@ -25,8 +27,13 @@ function render(email: AuthEmail): string {
     { strict: true },
   );
 
-  return template({ ...email.context, contactEmail: 'contact@vic.test' });
+  return template({ ...context, contactEmail: 'contact@vic.test' });
 }
+
+const render = (email: AuthEmail, mode: MailMode = 'bilingual'): string =>
+  renderContext(renderMail(email, mode).context);
+
+const DIACRITICS = /[ăâîșțĂÂÎȘȚ]/;
 
 const organization = {
   id: 'org-id',
@@ -71,55 +78,144 @@ const builders: Array<[string, AuthEmail, string | null]> = [
 
 describe('AUTH_EMAILS', () => {
   it.each(builders)(
-    '%s has a subject, both languages, cta and code keys, and renders under strict mode',
+    '%s has both languages and renders bilingual under strict mode',
     (_, email, link) => {
-      expect(email.subject).toBeTruthy();
-      expect(email.context.title).toBeTruthy();
-      expect(email.context.subtitle).toBeTruthy();
-      expect(email.context.english.title).toBeTruthy();
-      expect(email.context.english.subtitle).toBeTruthy();
-      expect(email.context).toHaveProperty('cta');
-      expect(email.context).toHaveProperty('code');
-      expect(email.context.cta?.link ?? null).toBe(link);
+      for (const language of [Language.RO, Language.EN]) {
+        expect(email.copy[language].subject).toBeTruthy();
+        expect(email.copy[language].title).toBeTruthy();
+        expect(email.copy[language].subtitle).toBeTruthy();
+        // a button has a label in each language
+        expect(!!email.copy[language].ctaLabel).toBe(!!link);
+      }
+      expect(email.ctaLink ?? null).toBe(link);
+
+      const { subject, context } = renderMail(email, 'bilingual');
+      expect(subject).toBe(
+        `${email.copy.ro.subject} / ${email.copy.en.subject}`,
+      );
+      expect(context).toHaveProperty('cta');
+      expect(context).toHaveProperty('code');
+      expect(context.english).toEqual({
+        title: email.copy.en.title,
+        subtitle: email.copy.en.subtitle,
+      });
 
       // Handlebars escapes values (= becomes &#x3D;); browsers decode them again inside href.
       const html = render(email);
-      expect(html).toContain(
-        Handlebars.escapeExpression(email.context.english.title),
-      );
+      expect(html).toContain('<html lang="ro">');
+      expect(html).toContain(Handlebars.escapeExpression(email.copy.ro.title));
+      expect(html).toContain(Handlebars.escapeExpression(email.copy.en.title));
       expect(html).toContain('contact@vic.test');
-      if (link) expect(html).toContain(Handlebars.escapeExpression(link));
+      // the footer in both languages
+      expect(html).toContain('Întrebări?');
+      expect(html).toContain('Questions?');
+      if (link) {
+        expect(html).toContain(Handlebars.escapeExpression(link));
+        // the button and the line under it in both languages
+        expect(html).toContain(
+          Handlebars.escapeExpression(
+            `${email.copy.ro.ctaLabel} / ${email.copy.en.ctaLabel}`,
+          ),
+        );
+        expect(html).toContain('Dacă butonul nu merge');
+        expect(html).toContain('If the button does not work');
+      }
     },
   );
+
+  it.each(builders)('%s in English has no Romanian text', (_, email, link) => {
+    const { subject, context } = renderMail(email, Language.EN);
+    expect(subject).toBe(email.copy.en.subject);
+    expect(context.english).toBeNull();
+
+    const html = render(email, Language.EN);
+    expect(html).toContain('<html lang="en">');
+    expect(html).toContain(Handlebars.escapeExpression(email.copy.en.title));
+    expect(html).not.toContain('class="divider"');
+    expect(html).toContain('Questions?');
+    for (const romanian of [
+      'Întrebări?',
+      'este dezvoltat',
+      'Dacă butonul nu merge',
+    ]) {
+      expect(html).not.toContain(romanian);
+    }
+    if (link) {
+      expect(html).toContain(
+        `>${Handlebars.escapeExpression(email.copy.en.ctaLabel)}</a>`,
+      );
+      expect(html).toContain('If the button does not work');
+    }
+  });
+
+  it.each(builders)('%s in Romanian has no English text', (_, email, link) => {
+    const { subject, context } = renderMail(email, Language.RO);
+    expect(subject).toBe(email.copy.ro.subject);
+    expect(context.english).toBeNull();
+
+    const html = render(email, Language.RO);
+    expect(html).toContain('<html lang="ro">');
+    expect(html).toContain(Handlebars.escapeExpression(email.copy.ro.title));
+    expect(html).not.toContain('class="divider"');
+    expect(html).toContain('Întrebări?');
+    for (const english of ['Questions?', 'If the button does not work']) {
+      expect(html).not.toContain(english);
+    }
+    if (link) {
+      expect(html).toContain(
+        `>${Handlebars.escapeExpression(email.copy.ro.ctaLabel)}</a>`,
+      );
+    }
+  });
+
+  it('the English texts have no Romanian letters', () => {
+    const fixed = [
+      ...builders.map(([, email]) => email),
+      AUTH_EMAILS.volunteerInvitation('Test', true),
+      AUTH_EMAILS.volunteerInvitation('Test', false),
+      AUTH_EMAILS.sensitiveActionCode('123456', { ro: 'x', en: 'x' }),
+      AUTH_EMAILS.changeEmailCode('123456'),
+      AUTH_EMAILS.emailChanged('ana@example.ro'),
+      AUTH_EMAILS.organizationDeleted(
+        { name: 'Test', taxId: null },
+        { name: 'Ana', email: 'ana@example.ro' },
+      ),
+    ];
+    for (const { copy } of fixed) {
+      expect(Object.values(copy.en).join(' ')).not.toMatch(DIACRITICS);
+    }
+  });
 
   it('the login code email shows the code, leading zero included, and has no button', () => {
     const email = AUTH_EMAILS.loginCode('012345');
 
-    expect(email.context.cta).toBeNull();
-    const html = render(email);
-    expect(html).toMatch(/class="code"[^>]*>012345<\/td>/);
-    expect(html).not.toContain('class="cta"');
+    expect(renderMail(email, 'bilingual').context.cta).toBeNull();
+    for (const mode of ['bilingual', Language.RO, Language.EN] as MailMode[]) {
+      const html = render(email, mode);
+      expect(html).toMatch(/class="code"[^>]*>012345<\/td>/);
+      expect(html).not.toContain('class="cta"');
+    }
   });
 
   it('the admin transition email asks to review the Team page', () => {
-    const { context } = AUTH_EMAILS.transitionLinkAdmin(URL);
+    const { copy } = AUTH_EMAILS.transitionLinkAdmin(URL);
 
-    expect(context.subtitle).toContain('pagina Echipă');
-    expect(context.english.subtitle).toContain('Team page');
+    expect(copy.ro.subtitle).toContain('pagina Echipă');
+    expect(copy.en.subtitle).toContain('Team page');
   });
 
   it('the volunteer transition email explains the email code and offers social sign-in, without a link', () => {
-    const { context } = AUTH_EMAILS.transitionLinkVolunteer();
+    const email = AUTH_EMAILS.transitionLinkVolunteer();
 
-    expect(context.cta).toBeNull();
-    expect(context.english.subtitle).toContain('No more passwords');
-    expect(context.english.subtitle).toContain('Google or Apple');
-    expect(context.subtitle).toContain('Google sau Apple');
+    expect(email.ctaLink).toBeUndefined();
+    expect(email.copy.en.subtitle).toContain('No more passwords');
+    expect(email.copy.en.subtitle).toContain('Google or Apple');
+    expect(email.copy.ro.subtitle).toContain('Google sau Apple');
   });
 
   it('no email talks about choosing or changing a password (VIC 2.0, #514)', () => {
     for (const [, email] of builders) {
-      expect(email.context.english.subtitle).not.toMatch(
+      expect(email.copy.en.subtitle).not.toMatch(
         /set (a|your|a new) password|choose a (new )?password/i,
       );
     }
@@ -127,15 +223,16 @@ describe('AUTH_EMAILS', () => {
 
   // #710: an email is kept and forwarded; the details stay on the validation page, behind the login
   it('the new-NGO email names the NGO and its CUI, and nothing else', () => {
-    const { context } = AUTH_EMAILS.organizationRegistered(
+    const email = AUTH_EMAILS.organizationRegistered(
       organization,
       'https://vic.test/admin/validation',
     );
-    const text = `${context.subtitle} ${context.english.subtitle}`;
+    const text = `${email.copy.ro.subtitle} ${email.copy.en.subtitle}`;
 
-    expect(context.title).toContain('Asociatia Test');
-    expect(context.subtitle).toContain('CUI RO123');
-    expect(context.cta.link).toBe('https://vic.test/admin/validation');
+    expect(email.copy.ro.title).toContain('Asociatia Test');
+    expect(email.copy.ro.subtitle).toContain('CUI RO123');
+    expect(email.copy.en.subtitle).toContain('CUI RO123');
+    expect(email.ctaLink).toBe('https://vic.test/admin/validation');
     for (const hidden of [
       'contact@test.ro',
       'Str. Test 1',
@@ -147,13 +244,14 @@ describe('AUTH_EMAILS', () => {
     }
   });
 
-  it('an existing email without cta, code or english still renders', () => {
-    const html = render({
-      subject: 's',
-      context: { title: 'Titlu', subtitle: 'Text' } as AuthEmail['context'],
-    });
+  // An email queued before the languages existed has only these keys: it must still render, in Romanian.
+  it('an existing email without cta, code, english or isEnglish still renders', () => {
+    const html = renderContext({ title: 'Titlu', subtitle: 'Text' });
 
     expect(html).toContain('Titlu');
+    expect(html).toContain('<html lang="ro">');
+    expect(html).toContain('Întrebări?');
+    expect(html).not.toContain('Questions?');
     expect(html).not.toContain('class="code"');
     expect(html).not.toContain('class="divider"');
     expect(html).not.toContain('class="cta"');

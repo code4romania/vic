@@ -1,5 +1,8 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { TFunction } from 'i18next';
 import { Stepper } from '../../design/components/Stepper';
+import { romanianNeedsDe } from '../../common/utils/plural';
 
 export interface HoursStepperProps {
   label: string;
@@ -12,13 +15,16 @@ export interface HoursStepperProps {
   testID?: string;
 }
 
-// „o oră”, „5 ore”, „20 de ore” (Romanian adds „de” from 20 up)
-const spokenHours = (hours: number) =>
+// „o oră”, „5 ore”, „20 de ore” (Romanian adds „de” from 20 up); "one hour", "5 hours"
+export const spokenHours = (t: TFunction, hours: number): string =>
   hours === 1
-    ? 'o oră'
-    : hours % 100 >= 20 || (hours > 0 && hours % 100 === 0)
-      ? `${hours} de ore`
-      : `${hours} ore`;
+    ? `${t('activity_log:form.hours.spoken_one')}`
+    : `${t(
+        romanianNeedsDe(hours)
+          ? 'activity_log:form.hours.spoken_de'
+          : 'activity_log:form.hours.spoken',
+        { hours },
+      )}`;
 
 /** "Număr de ore" on the „Îndrăzneț” Stepper: − and +, the value „4h” rolls between them. */
 export const HoursStepper = ({
@@ -30,21 +36,24 @@ export const HoursStepper = ({
   error,
   disabled,
   testID = 'hours-stepper',
-}: HoursStepperProps) => (
-  <Stepper
-    label={label}
-    value={value || 0}
-    onChange={onChange}
-    min={min}
-    max={max}
-    error={error}
-    disabled={disabled}
-    formatValue={(hours) => `${hours}h`}
-    accessibilityValueText={spokenHours}
-    decrementLabel="O oră mai puțin"
-    incrementLabel="O oră în plus"
-    testID={testID}
-  />
-);
+}: HoursStepperProps) => {
+  const { t } = useTranslation();
+  return (
+    <Stepper
+      label={label}
+      value={value || 0}
+      onChange={onChange}
+      min={min}
+      max={max}
+      error={error}
+      disabled={disabled}
+      formatValue={(hours) => `${hours}h`}
+      accessibilityValueText={(hours) => spokenHours(t, hours)}
+      decrementLabel={`${t('activity_log:form.hours.one_less')}`}
+      incrementLabel={`${t('activity_log:form.hours.one_more')}`}
+      testID={testID}
+    />
+  );
+};
 
 export default HoursStepper;

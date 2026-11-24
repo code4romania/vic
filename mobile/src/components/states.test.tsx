@@ -7,6 +7,7 @@ import SystemState from './SystemState';
 import LoadingScreen from './LoadingScreen';
 import { toastConfig } from '../common/config/toast';
 import { palette } from '../design/tokens';
+import { t } from '../test/i18n';
 
 const metrics = {
   frame: { x: 0, y: 0, width: 390, height: 844 },
@@ -77,7 +78,7 @@ describe('VIC 2.0 states', () => {
   it('the loading screen is the VIC hexagon on paper, announced as loading', async () => {
     await render(<LoadingScreen />);
     expect(screen.getByTestId('loading-screen')).toHaveStyle({ backgroundColor: palette.paper });
-    expect(screen.getByLabelText('Se încarcă...')).toBeTruthy();
+    expect(screen.getByLabelText(t('general:loading'))).toBeTruthy();
   });
 
   it('toasts are navy pills with an icon circle for success, error and info', async () => {

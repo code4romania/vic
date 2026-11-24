@@ -1,4 +1,3 @@
-import i18n from '../../config/i18n';
 import { ErrorClass } from '../base-error.class';
 
 export enum ORGANIZATION_ERRORS {
@@ -15,14 +14,12 @@ export class OrganizationErrors extends ErrorClass<ORGANIZATION_ERRORS> {
 
   private constructor() {
     super({
-      [ORGANIZATION_ERRORS.VOLUNTEER_001]: i18n.t(
-        'create_volunteer:form.submit.errors.VOLUNTEER_001',
-      ),
-      [ORGANIZATION_ERRORS.VOLUNTEER_003]: i18n.t('volunteer:errors.VOLUNTEER_003'),
-      [ORGANIZATION_ERRORS.VOLUNTEER_004]: i18n.t('volunteer:errors.VOLUNTEER_004'),
-      [ORGANIZATION_ERRORS.USER_001]: i18n.t('user:errors.USER_001'),
-      [ORGANIZATION_ERRORS.ORG_001]: i18n.t('join_ngo:errors.ORG_001'),
-      [ORGANIZATION_ERRORS.VOLUNTEER_005]: i18n.t('volunteer:errors.VOLUNTEER_005'),
+      [ORGANIZATION_ERRORS.VOLUNTEER_001]: 'create_volunteer:form.submit.errors.VOLUNTEER_001',
+      [ORGANIZATION_ERRORS.VOLUNTEER_003]: 'volunteer:errors.VOLUNTEER_003',
+      [ORGANIZATION_ERRORS.VOLUNTEER_004]: 'volunteer:errors.VOLUNTEER_004',
+      [ORGANIZATION_ERRORS.USER_001]: 'user:errors.USER_001',
+      [ORGANIZATION_ERRORS.ORG_001]: 'join_ngo:errors.ORG_001',
+      [ORGANIZATION_ERRORS.VOLUNTEER_005]: 'volunteer:errors.VOLUNTEER_005',
     });
   }
 

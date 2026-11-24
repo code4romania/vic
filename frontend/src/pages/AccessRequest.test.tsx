@@ -63,9 +63,7 @@ describe('AccessRequest (#500)', () => {
 
   it('changes an approval into a rejection, and explains when the volunteer already has activity', async () => {
     server.use(
-      http.post(api('/access-request/ar-1/reject'), () =>
-        businessError(400, 'ACCESS_REQUEST_005'),
-      ),
+      http.post(api('/access-request/ar-1/reject'), () => businessError(400, 'ACCESS_REQUEST_005')),
     );
     show('approved');
 

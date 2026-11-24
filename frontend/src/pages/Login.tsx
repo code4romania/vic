@@ -17,6 +17,7 @@ import AuthShell, { AuthNotice } from '../components/AuthShell';
 import OpenAppBox from '../components/OpenAppBox';
 import SocialLoginButtons, { SocialProvider } from '../components/SocialLoginButtons';
 import { useAuth } from '../hooks/useAuth';
+import { useRevalidateOnLanguageChange } from '../hooks/useRevalidateOnLanguageChange';
 
 type LoginForm = { email: string };
 
@@ -46,11 +47,14 @@ const Login = () => {
   const {
     control,
     handleSubmit,
+    trigger,
     formState: { errors },
   } = useForm<LoginForm>({
     defaultValues: { email: '' },
     resolver: yupResolver(schema),
   });
+  // messages already shown follow the language switcher
+  useRevalidateOnLanguageChange(trigger, errors);
 
   const send = (email: string, onSent?: () => void) => {
     setError(null);

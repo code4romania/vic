@@ -95,8 +95,9 @@ describe('Volunteer applications (e2e)', () => {
     );
     organizationId = organization.id;
     const [adminUser] = await testApp.dataSource.query(
-      `INSERT INTO "user" (type, name, email, phone, organization_id)
-       VALUES ('admin', 'Ana Admin', 'ana@crucea.ro', '+40711111111', $1) RETURNING id`,
+      // language: an admin who uses VIC in Romanian (an undecided one gets the emails in both languages)
+      `INSERT INTO "user" (type, name, email, phone, organization_id, language)
+       VALUES ('admin', 'Ana Admin', 'ana@crucea.ro', '+40711111111', $1, 'ro') RETURNING id`,
       [organizationId],
     );
     admin = await testApp.app.get(AuthIdentityFacade).createIdentity({

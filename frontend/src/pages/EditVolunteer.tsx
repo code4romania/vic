@@ -37,14 +37,14 @@ const schema = yup.object({
   name: yup.string().required(),
   email: yup
     .string()
-    .email(`${i18n.t('volunteer:form.email.pattern')}`)
-    .max(75, `${i18n.t('volunteer:form.email.max')}`)
-    .required(`${i18n.t('volunteer:form.email.required')}`),
+    .email(() => i18n.t('volunteer:form.email.pattern'))
+    .max(75, () => i18n.t('volunteer:form.email.max'))
+    .required(() => i18n.t('volunteer:form.email.required')),
   activeSince: yup
     .date()
     .optional()
     .nullable()
-    .typeError(`${i18n.t('general:invalid_date')}`),
+    .typeError(() => i18n.t('general:invalid_date')),
 });
 
 const EditVolunteer = () => {

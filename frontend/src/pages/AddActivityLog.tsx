@@ -27,29 +27,29 @@ export const activityLogValidationSchema = yup
     volunteer: yup
       .object()
       .shape({
-        label: yup.string().required(`${i18n.t('activity_log:form.volunteer.required')}`),
-        value: yup.string().required(`${i18n.t('activity_log:form.volunteer.required')}`),
+        label: yup.string().required(() => i18n.t('activity_log:form.volunteer.required')),
+        value: yup.string().required(() => i18n.t('activity_log:form.volunteer.required')),
       })
-      .required(`${i18n.t('activity_log:form.volunteer.required')}`),
+      .required(() => i18n.t('activity_log:form.volunteer.required')),
     task: yup
       .object()
       .shape({
-        label: yup.string().required(`${i18n.t('activity_log:form.task.required')}`),
-        value: yup.string().required(`${i18n.t('activity_log:form.task.required')}`),
+        label: yup.string().required(() => i18n.t('activity_log:form.task.required')),
+        value: yup.string().required(() => i18n.t('activity_log:form.task.required')),
       })
-      .required(`${i18n.t('activity_log:form.task.required')}`),
+      .required(() => i18n.t('activity_log:form.task.required')),
     hours: yup
       .number()
-      .typeError(`${i18n.t('activity_log:form.hours.required')}`)
-      .integer(`${i18n.t('activity_log:form.hours.integer')}`)
-      .min(1, `${i18n.t('activity_log:form.hours.min')}`)
-      .max(24, `${i18n.t('activity_log:form.hours.max', { value: 24 })}`)
-      .required(`${i18n.t('activity_log:form.hours.required')}`),
+      .typeError(() => i18n.t('activity_log:form.hours.required'))
+      .integer(() => i18n.t('activity_log:form.hours.integer'))
+      .min(1, () => i18n.t('activity_log:form.hours.min'))
+      .max(24, () => i18n.t('activity_log:form.hours.max', { value: 24 }))
+      .required(() => i18n.t('activity_log:form.hours.required')),
     date: yup
       .date()
-      .required(`${i18n.t('activity_log:form.date.required')}`)
-      .typeError(`${i18n.t('general:invalid_date')}`),
-    mentions: yup.string().max(300, `${i18n.t('events:form.mention.max', { value: '300' })}`),
+      .required(() => i18n.t('activity_log:form.date.required'))
+      .typeError(() => i18n.t('general:invalid_date')),
+    mentions: yup.string().max(300, () => i18n.t('events:form.mention.max', { value: '300' })),
   })
   .required();
 

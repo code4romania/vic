@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { UserType } from 'src/modules/user/enums/user.enum';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import {
   AuthIdentityStatus,
@@ -117,10 +118,10 @@ export class ConfirmEmailUseCase implements IUseCaseService<LinkResult> {
       organization,
       this.authMailer.validationPageUrl(),
     );
-    await Promise.all(
-      superAdmins.map((superAdmin) =>
-        this.authMailer.send(superAdmin.email, email),
-      ),
+    await this.authMailer.sendToEach(
+      superAdmins.map((superAdmin) => superAdmin.email),
+      UserType.ADMIN,
+      email,
     );
   }
 }

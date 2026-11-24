@@ -2,6 +2,7 @@ import { http, HttpResponse } from 'msw';
 import API, { apiEvents } from './api';
 import { tokenStore } from './auth/token.store';
 import { api, businessError, server } from '../test/server';
+import i18n from '../common/config/i18n';
 
 // GET /volunteer answers 401 until the access token is the refreshed one.
 const protectedRoute = (path: string) =>
@@ -23,6 +24,22 @@ describe('API client', () => {
     tokenStore.set('access-1');
     await API.get('/volunteer');
     expect(seen).toBe('Bearer access-1');
+  });
+
+  it('sends the language on screen with every request, logged in or not', async () => {
+    const seen: (string | null)[] = [];
+    server.use(
+      http.post(api('/auth/web/login/request'), ({ request }) => {
+        seen.push(request.headers.get('accept-language'));
+        return new HttpResponse(null, { status: 204 });
+      }),
+    );
+    await i18n.changeLanguage('ro');
+    await API.post('/auth/web/login/request', { email: 'ana@ong.test' });
+    await i18n.changeLanguage('en');
+    await API.post('/auth/web/login/request', { email: 'ana@ong.test' });
+
+    expect(seen).toEqual(['ro', 'en']);
   });
 
   it('runs one refresh for three parallel 401s, then retries each', async () => {

@@ -10,6 +10,7 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import { StyleSheet } from 'react-native-unistyles';
+import { useDesignLabels } from '../labels';
 import { palette } from '../tokens';
 import { springTo } from '../motion';
 import { haptics } from '../haptics';
@@ -65,7 +66,7 @@ export function Select<K extends SelectKey>({
   options,
   value,
   onChange,
-  placeholder = 'Alege',
+  placeholder: placeholderProp,
   required,
   optional,
   error,
@@ -79,6 +80,8 @@ export function Select<K extends SelectKey>({
   accessibilityLabel,
   style,
 }: SelectProps<K>) {
+  const labels = useDesignLabels();
+  const placeholder = placeholderProp ?? labels.selectPlaceholder;
   const reduced = useReducedMotion();
   const [open, setOpen] = useState(false);
   // rows stay mounted after the first opening so the menu can fold away
@@ -143,7 +146,7 @@ export function Select<K extends SelectKey>({
           accessibilityLabel={
             accessibilityLabel ?? `${label}${selected ? `, ${selected.label}` : ''}`
           }
-          accessibilityHint={sheetMode ? 'Deschide lista de opțiuni' : 'Deschide meniul'}
+          accessibilityHint={sheetMode ? labels.selectOpenList : labels.selectOpenMenu}
           accessibilityState={{ disabled, expanded: sheetMode ? undefined : open }}
         >
           <Animated.View

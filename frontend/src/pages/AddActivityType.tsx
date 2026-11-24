@@ -21,13 +21,12 @@ export const ActivityTypeFormSchema = yup
   .object({
     name: yup
       .string()
-      .required(`${i18n.t('activity_types:form.name.required')}`)
-      .min(2, `${i18n.t('activity_types:form.name.min', { value: '2' })}`)
-      .max(
-        50,
-        `${i18n.t('activity_types:form.name.max', {
+      .required(() => i18n.t('activity_types:form.name.required'))
+      .min(2, () => i18n.t('activity_types:form.name.min', { value: '2' }))
+      .max(50, () =>
+        i18n.t('activity_types:form.name.max', {
           value: '50',
-        })}`,
+        }),
       ),
     department: yup.object().shape({ key: yup.string(), value: yup.string() }).optional(),
     branch: yup.object().shape({ key: yup.string(), value: yup.string() }).optional(),

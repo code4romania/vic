@@ -6,7 +6,7 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 import AuthContextProvider from './AuthContextProvider';
 import { AuthContext } from './AuthContext';
 import * as authApi from '../../services/auth/auth.api';
-import { getUserProfile } from '../../services/user/user.api';
+import { getUserProfile, setUserLanguage } from '../../services/user/user.api';
 import { getAccessToken, getRefreshToken, setTokens } from '../../services/auth/token.storage';
 import { authEvents } from '../../services/auth/auth.events';
 import useStore from '../../store/store';
@@ -16,14 +16,19 @@ import * as Notifications from 'expo-notifications';
 import { unregisterPushToken } from '../../services/settings/settings.api';
 import { getPushToken, setPushToken } from '../../services/push/push-token';
 import { queryClient } from '../../services/query-client';
+import { applyLanguage } from '../../common/config/language';
 
 jest.mock('../../services/auth/auth.api');
-jest.mock('../../services/user/user.api', () => ({ getUserProfile: jest.fn() }));
+jest.mock('../../services/user/user.api', () => ({
+  getUserProfile: jest.fn(),
+  setUserLanguage: jest.fn(),
+}));
 jest.mock('../../services/settings/settings.api', () => ({ unregisterPushToken: jest.fn() }));
 jest.mock('expo-notifications', () => ({ unregisterForNotificationsAsync: jest.fn() }));
 
 const api = authApi as jest.Mocked<typeof authApi>;
 const profileCall = getUserProfile as jest.Mock;
+const languageCall = setUserLanguage as jest.Mock;
 const toast = Toast.show as jest.Mock;
 
 const SESSION = { accessToken: 'access', refreshToken: 'refresh', expiresIn: 900 };
@@ -65,6 +70,8 @@ beforeEach(() => {
   setPushToken(undefined);
   unregisterCall.mockResolvedValue(undefined);
   osUnregister.mockResolvedValue(undefined);
+  // the account answers with the language it keeps: by default, the one it was sent
+  languageCall.mockImplementation(async (language: string) => ({ language }));
   queryClient.clear();
 });
 
@@ -86,6 +93,77 @@ describe('AuthContextProvider', () => {
     const ctx = await setup();
 
     await waitFor(() => expect(ctx.current.isAuthenticated).toBe(true));
+  });
+
+  describe('the language of the account', () => {
+    beforeEach(() => i18n.changeLanguage('ro'));
+
+    it('opens the private screens in the language of the account', async () => {
+      await loggedInBefore();
+      profileCall.mockResolvedValue({ ...PROFILE, language: 'en' });
+
+      const ctx = await setup();
+
+      await waitFor(() => expect(ctx.current.isAuthenticated).toBe(true));
+      expect(i18n.language).toBe('en');
+      expect(languageCall).not.toHaveBeenCalled();
+    });
+
+    it('an existing account (Romanian) stays Romanian on an app that started in English', async () => {
+      await applyLanguage('en', false);
+      await loggedInBefore();
+      profileCall.mockResolvedValue({ ...PROFILE, language: 'ro' });
+
+      const ctx = await setup();
+
+      await waitFor(() => expect(ctx.current.isAuthenticated).toBe(true));
+      expect(i18n.language).toBe('ro');
+      expect(languageCall).not.toHaveBeenCalled();
+    });
+
+    it('an account with no language takes the one the app is in, without overwriting', async () => {
+      await applyLanguage('en', false);
+      await loggedInBefore();
+      profileCall.mockResolvedValue({ ...PROFILE, language: null });
+
+      const ctx = await setup();
+
+      await waitFor(() => expect(ctx.current.isAuthenticated).toBe(true));
+      await waitFor(() => expect(languageCall).toHaveBeenCalledWith('en', false));
+      expect(i18n.language).toBe('en');
+    });
+
+    it('a language chosen before login is sent to the account after login', async () => {
+      await applyLanguage('en', true);
+      api.requestLogin.mockResolvedValue({ maskedEmail: 'e•••@seed.test' });
+      api.loginWithCode.mockResolvedValue(SESSION);
+      profileCall.mockResolvedValue({ ...PROFILE, language: 'ro' });
+      const ctx = await setup();
+      await act(async () => {
+        await ctx.current.requestLoginCode('elena@seed.test');
+      });
+
+      await act(async () => {
+        await ctx.current.loginWithCode('123456');
+      });
+
+      await waitFor(() => expect(languageCall).toHaveBeenCalledWith('en', true));
+      expect(i18n.language).toBe('en');
+      expect(ctx.current.isAuthenticated).toBe(true);
+    });
+
+    it('logs in even when the language cannot be saved', async () => {
+      await applyLanguage('en', true);
+      await loggedInBefore();
+      languageCall.mockRejectedValue(httpError(500));
+      profileCall.mockResolvedValue({ ...PROFILE, language: 'ro' });
+
+      const ctx = await setup();
+
+      await waitFor(() => expect(ctx.current.isAuthenticated).toBe(true));
+      expect(i18n.language).toBe('en');
+      expect(toast).not.toHaveBeenCalled();
+    });
   });
 
   describe('requestLoginCode (#514)', () => {

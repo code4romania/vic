@@ -3,15 +3,16 @@ import { OnEvent } from '@nestjs/event-emitter';
 import { EVENTS } from '../constants/events.constants';
 import ApproveHoursEvent from '../events/volunteer-hours/approve-hours.event';
 import RejectHoursEvent from '../events/volunteer-hours/reject-hours.event';
-import { NOTIFICATIONS } from 'src/common/constants/notifications';
+import { localized, PUSH_TITLE } from 'src/common/constants/notifications';
 import { PushNotificationsFacade } from '../notifications.facade';
-import { MailService } from 'src/modules/mail/services/mail.service';
+import { NotificationMailerService } from '../services/notification-mailer.service';
+import { UserType } from 'src/modules/user/enums/user.enum';
 import { format } from 'date-fns';
 
 @Injectable()
 export class VolunteerHoursListener {
   constructor(
-    private readonly mailService: MailService,
+    private readonly notificationMailer: NotificationMailerService,
     private readonly pushNotificationsFacade: PushNotificationsFacade,
   ) {}
 
@@ -43,10 +44,9 @@ export class VolunteerHoursListener {
 
       this.pushNotificationsFacade.send({
         userIds: [userId],
-        title: NOTIFICATIONS.APPROVED_HOURS.PUSH.title,
-        body: NOTIFICATIONS.APPROVED_HOURS.PUSH.body(
-          hours,
-          format(date, 'dd/MM/yyy'),
+        title: PUSH_TITLE,
+        body: localized((t) =>
+          t.APPROVED_HOURS.PUSH.body(hours, format(date, 'dd/MM/yyy')),
         ),
         data: notificationData,
       });
@@ -54,17 +54,14 @@ export class VolunteerHoursListener {
 
     // #593: the decision also goes by email, for a volunteer with push turned off
     if (notificationsViaEmail) {
-      await this.mailService.sendEmail({
-        to: userEmail,
-        subject: NOTIFICATIONS.APPROVED_HOURS.EMAIL.subject(organizationName),
-        context: {
-          title: NOTIFICATIONS.APPROVED_HOURS.EMAIL.subject(organizationName),
-          subtitle: NOTIFICATIONS.APPROVED_HOURS.EMAIL.body(
-            hours,
-            format(date, 'dd/MM/yyy'),
-          ),
-        },
-      });
+      await this.notificationMailer.send(
+        [userEmail],
+        UserType.REGULAR,
+        (t) => ({
+          subject: t.APPROVED_HOURS.EMAIL.subject(organizationName),
+          body: t.APPROVED_HOURS.EMAIL.body(hours, format(date, 'dd/MM/yyy')),
+        }),
+      );
     }
   }
 
@@ -97,10 +94,9 @@ export class VolunteerHoursListener {
 
       this.pushNotificationsFacade.send({
         userIds: [userId],
-        title: NOTIFICATIONS.REJECTED_HOURS.PUSH.title,
-        body: NOTIFICATIONS.REJECTED_HOURS.PUSH.body(
-          hours,
-          format(date, 'dd/MM/yyy'),
+        title: PUSH_TITLE,
+        body: localized((t) =>
+          t.REJECTED_HOURS.PUSH.body(hours, format(date, 'dd/MM/yyy')),
         ),
         data: notificationData,
       });
@@ -108,18 +104,18 @@ export class VolunteerHoursListener {
 
     // #593: the decision also goes by email, with the reason
     if (notificationsViaEmail) {
-      await this.mailService.sendEmail({
-        to: userEmail,
-        subject: NOTIFICATIONS.REJECTED_HOURS.EMAIL.subject(organizationName),
-        context: {
-          title: NOTIFICATIONS.REJECTED_HOURS.EMAIL.subject(organizationName),
-          subtitle: NOTIFICATIONS.REJECTED_HOURS.EMAIL.body(
+      await this.notificationMailer.send(
+        [userEmail],
+        UserType.REGULAR,
+        (t) => ({
+          subject: t.REJECTED_HOURS.EMAIL.subject(organizationName),
+          body: t.REJECTED_HOURS.EMAIL.body(
             hours,
             format(date, 'dd/MM/yyy'),
             rejectionReason,
           ),
-        },
-      });
+        }),
+      );
     }
   }
 }

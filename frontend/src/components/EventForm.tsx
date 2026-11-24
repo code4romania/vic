@@ -26,15 +26,21 @@ export enum TargetType {
 const TargetRadioOptions = [
   {
     key: TargetType.PUBLIC,
-    value: i18n.t('events:form.target.public'),
+    get value() {
+      return i18n.t('events:form.target.public');
+    },
   },
   {
     key: TargetType.ALL,
-    value: i18n.t('events:form.target.all'),
+    get value() {
+      return i18n.t('events:form.target.all');
+    },
   },
   {
     key: TargetType.SELECT,
-    value: i18n.t('events:form.target.select'),
+    get value() {
+      return i18n.t('events:form.target.select');
+    },
   },
 ];
 

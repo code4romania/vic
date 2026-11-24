@@ -98,7 +98,16 @@
     "type_for_options": "Începeți să scrieți pentru opțiuni...",
     "actions": "Acțiuni",
     "more": "Mai multe",
-    "empty_filtered": "Niciun rezultat pentru căutarea sau filtrele alese. Încearcă altă căutare sau resetează filtrele."
+    "empty_filtered": "Niciun rezultat pentru căutarea sau filtrele alese. Încearcă altă căutare sau resetează filtrele.",
+    "validation": {
+      "invalid": "Valoarea nu este validă",
+      "min": "Minimum {{value}} caractere",
+      "max": "Maximum {{value}} caractere"
+    },
+    "language": {
+      "label": "Limbă"
+    },
+    "time": "Ora"
   },
   "header": {
     "login": "Login",
@@ -260,7 +269,9 @@
       "success": "{{name}} a fost șters, împreună cu datele lui din organizație.",
       "view": "Vezi contract"
     },
-    "status_in_vic": "Status în VIC"
+    "status_in_vic": "Status în VIC",
+    "status_name": "Voluntar {{status}}",
+    "since": "Voluntar din"
   },
   "volunteers": {
     "department_and_role": "Departament și rol",
@@ -819,7 +830,8 @@
       },
       "logo": {
         "label": "Imagine eveniment",
-        "required": "Imaginea evenimentului este obligatorie"
+        "required": "Imaginea evenimentului este obligatorie",
+        "button_label": "Încarcă imagine"
       },
       "mention": {
         "label": "Mențiune",
@@ -1036,7 +1048,8 @@
         "start_date": "zz.ll.aa oo:mm",
         "end_date": "zz.ll.aa oo:mm"
       }
-    }
+    },
+    "download": "Evenimente.xlsx"
   },
   "announcement": {
     "title": "Istoric anunțuri",

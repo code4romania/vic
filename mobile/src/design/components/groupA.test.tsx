@@ -5,6 +5,11 @@ import { Text, View } from 'react-native';
 import { Button, Select, StatusChip, statusKind, Stepper, TextField } from './groupA';
 import { palette, status } from '../tokens';
 import { ArrowRightIcon } from '../icons';
+import { DEFAULT_DESIGN_LABELS, setDesignLabels } from '../labels';
+
+// The components are tested with the texts they carry themselves (Romanian), whatever language
+// the rest of the suite runs in; the app replaces them through `setDesignLabels`.
+beforeEach(() => setDesignLabels(DEFAULT_DESIGN_LABELS));
 
 /** A stand-in lucide icon that shows the props the button draws it with. */
 const probeIcon =

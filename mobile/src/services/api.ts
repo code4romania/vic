@@ -1,6 +1,7 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import * as Application from 'expo-application';
 import useStore from '../store/store';
+import i18n from '../common/config/i18n';
 import { authEvents } from './auth/auth.events';
 import { clearTokens, getAccessToken, getRefreshToken, setTokens } from './auth/token.storage';
 
@@ -68,17 +69,23 @@ export const endSessionIfRefused = async (error: unknown): Promise<void> => {
   }
 };
 
+// The language the app is in: the backend writes in it to someone who has no account yet (the
+// login code of a sign-up).
+const requestLanguage = (): string => (i18n.language === 'en' ? 'en' : 'ro');
+
 // #727: for requests made outside axios (a file downloaded straight to disk).
 export const getAuthHeaders = async (): Promise<Record<string, string>> => {
   const token = await getAccessToken();
   return {
     'x-app-version': APP_VERSION,
+    'Accept-Language': requestLanguage(),
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
 };
 
 API.interceptors.request.use(async (request) => {
   request.headers.set('x-app-version', APP_VERSION);
+  request.headers.set('Accept-Language', requestLanguage());
   if (!request.headers.has('Authorization')) {
     const token = await getAccessToken();
     if (token) {

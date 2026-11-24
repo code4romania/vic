@@ -25,8 +25,18 @@ export type AnnouncementFormTypes = {
 };
 
 const TypeOptions = [
-  { key: AnnouncementType.RECRUITMENT, value: i18n.t('announcement:type.recruitment') },
-  { key: AnnouncementType.ACTIVITY, value: i18n.t('announcement:type.activity') },
+  {
+    key: AnnouncementType.RECRUITMENT,
+    get value() {
+      return i18n.t('announcement:type.recruitment');
+    },
+  },
+  {
+    key: AnnouncementType.ACTIVITY,
+    get value() {
+      return i18n.t('announcement:type.activity');
+    },
+  },
 ];
 
 // Title, description, type and volunteers needed, the display period, and (on create) whether

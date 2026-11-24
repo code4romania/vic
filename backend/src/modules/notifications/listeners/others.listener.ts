@@ -3,7 +3,7 @@ import { OnEvent } from '@nestjs/event-emitter';
 import { EVENTS } from '../constants/events.constants';
 import SendAnnouncementEvent from '../events/others/send-announcement.event';
 import { PushNotificationsFacade } from '../notifications.facade';
-import { NOTIFICATIONS } from 'src/common/constants/notifications';
+import { localized, PUSH_TITLE } from 'src/common/constants/notifications';
 
 @Injectable()
 export class OthersListener {
@@ -27,8 +27,8 @@ export class OthersListener {
 
     this.pushNotificationsFacade.send({
       userIds: userIds,
-      title: NOTIFICATIONS.NEW_ANNOUCEMENT.PUSH.title,
-      body: NOTIFICATIONS.NEW_ANNOUCEMENT.PUSH.body(organizationName),
+      title: PUSH_TITLE,
+      body: localized((t) => t.NEW_ANNOUCEMENT.PUSH.body(organizationName)),
       data: notificationData,
     });
   }

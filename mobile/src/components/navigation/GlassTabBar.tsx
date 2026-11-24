@@ -21,6 +21,7 @@ import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { elevation, fontFamily, fontScaleCap, glass, palette, tabBar } from '../../design/tokens';
 import { duration, easing, spring, springTo } from '../../design/motion';
 import { haptics } from '../../design/haptics';
+import i18n from '../../common/config/i18n';
 import {
   CalendarIcon,
   ClockIcon,
@@ -70,7 +71,8 @@ const ACCESSORY_GAP = 10;
 export const useGlassTabBarInset = ({ accessory = false }: { accessory?: boolean } = {}) =>
   useBarBottom() + tabBar.height + 16 + (accessory ? ACCESSORY_HEIGHT + ACCESSORY_GAP : 0);
 
-const EXPAND_HINT = 'Arată toate tab-urile';
+// read when the bar is drawn, so it follows the language
+const expandHint = () => i18n.t('tabs:expand_hint');
 const LABEL_LINE = 13;
 // how far a label may reach into the neighbouring slots („Evenimente” is 63pt, a slot at 320pt
 // width is 56pt; its neighbours „Acasă” and „Ore” leave more than that free)
@@ -337,7 +339,7 @@ export const GlassTabBar = ({ state, navigation, items }: GlassTabBarProps) => {
           <Pressable
             accessibilityRole="button"
             accessibilityLabel={activeItem?.label}
-            accessibilityHint={EXPAND_HINT}
+            accessibilityHint={expandHint()}
             onPress={expand}
             style={StyleSheet.absoluteFill}
           >
@@ -440,7 +442,7 @@ const TabButton = ({
         accessibilityRole="tab"
         accessibilityState={{ selected: focused }}
         accessibilityLabel={item.label}
-        accessibilityHint={collapsed && focused ? EXPAND_HINT : undefined}
+        accessibilityHint={collapsed && focused ? expandHint() : undefined}
         accessibilityElementsHidden={hiddenWhenCollapsed}
         importantForAccessibility={hiddenWhenCollapsed ? 'no-hide-descendants' : 'auto'}
         // big Dynamic Type: a long press shows the label in the iOS Large Content Viewer

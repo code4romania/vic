@@ -2,7 +2,8 @@ import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
-import ImportVolunteers, { IMPORT_TEMPLATE } from './ImportVolunteers';
+import ImportVolunteers, { IMPORT_TEMPLATES, importTemplate } from './ImportVolunteers';
+import i18n from '../common/config/i18n';
 import { renderPage, t } from '../test/render';
 import { api, businessError, server } from '../test/server';
 import { useErrorToast } from '../hooks/useToast';
@@ -21,10 +22,23 @@ const pickAndImport = async () => {
 };
 
 describe('ImportVolunteers (#473)', () => {
-  it('has a template whose header the backend reads', () => {
-    expect(IMPORT_TEMPLATE.split('\r\n')[0]).toBe(
+  // the names in backend/src/usecases/volunteer/import-volunteers.usecase.ts (HEADERS)
+  it('has a template whose header the backend reads, in both languages', () => {
+    expect(IMPORT_TEMPLATES.ro.split('\r\n')[0]).toBe(
       'Prenume,Nume,Email,Telefon,Localitate,Județ,Departament',
     );
+    expect(IMPORT_TEMPLATES.en.split('\r\n')[0]).toBe(
+      'First name,Last name,Email,Phone,City,County,Department',
+    );
+  });
+
+  it('hands out the template in the language on screen', async () => {
+    const before = i18n.language;
+    await i18n.changeLanguage('en');
+    expect(importTemplate()).toBe(IMPORT_TEMPLATES.en);
+    await i18n.changeLanguage('ro');
+    expect(importTemplate()).toBe(IMPORT_TEMPLATES.ro);
+    await i18n.changeLanguage(before);
   });
 
   it('uploads the file and lists what was imported, skipped and refused, by row', async () => {

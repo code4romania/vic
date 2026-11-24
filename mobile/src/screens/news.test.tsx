@@ -11,6 +11,7 @@ import useStore from '../store/store';
 import { NewsType } from '../common/enums/news-type.enum';
 import { TrackedEventName } from '../common/enums/tracked-event-name.enum';
 import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
+import { containing, t } from '../test/i18n';
 
 const mockSwitch = jest.fn();
 const mockNewsCalls: NewsType[] = [];
@@ -142,23 +143,23 @@ beforeEach(() => {
 describe('Noutăți', () => {
   it('opens on the kind it was asked for and switches with the segmented control', async () => {
     await renderApp('news', { type: NewsType.LOGGED_HOURS });
-    expect(await screen.findByText('Noutăți')).toBeTruthy();
+    expect(await screen.findByText(t('news:title'))).toBeTruthy();
     // with the organization and when it happened (audit #22)
-    expect(screen.getByText(/Orele tale de la/)).toBeTruthy();
+    expect(screen.getByText(containing(t('news:item.logs.at')))).toBeTruthy();
     expect(screen.getByText('Verde Mare')).toBeTruthy();
-    expect(screen.getByText(/^Azi, \d\d:\d\d$/)).toBeTruthy();
-    await fireEvent.press(screen.getByText('Organizații'));
+    expect(screen.getByText(new RegExp(`^${t('general:today')}, \\d\\d:\\d\\d$`))).toBeTruthy();
+    await fireEvent.press(screen.getByText(t('news:tabs.organizations')));
     expect(mockNewsCalls[mockNewsCalls.length - 1]).toBe(NewsType.ORGANIZATIONS);
     expect(await screen.findByText('Crucea Verde')).toBeTruthy();
-    await fireEvent.press(screen.getByText('Documente'));
-    expect(await screen.findByText('Nicio noutate aici încă')).toBeTruthy();
+    await fireEvent.press(screen.getByText(t('news:tabs.documents')));
+    expect(await screen.findByText(t('news:empty'))).toBeTruthy();
   });
 
   it('opening Noutăți marks the news seen once (the Home badge goes back to 0)', async () => {
     await renderApp('news', { type: NewsType.LOGGED_HOURS });
-    expect(await screen.findByText('Noutăți')).toBeTruthy();
+    expect(await screen.findByText(t('news:title'))).toBeTruthy();
     expect(mockMarkSeen).toHaveBeenCalledTimes(1);
-    await fireEvent.press(screen.getByText('Organizații'));
+    await fireEvent.press(screen.getByText(t('news:tabs.organizations')));
     expect(mockMarkSeen).toHaveBeenCalledTimes(1);
   });
 

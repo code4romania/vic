@@ -1,4 +1,5 @@
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { UserLanguageService } from 'src/modules/user/services/user-language.service';
 import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
 import { AuthIdentityFacade } from 'src/modules/auth/services/auth-identity.facade';
 import { AuthRealm } from 'src/modules/auth/enums/auth.enums';
@@ -191,6 +192,7 @@ describe('CreateRegularUsereUseCaseService claims a Candidate (#472)', () => {
       settings as unknown as NotificationsSettingsFacade,
       profile as unknown as GetOneRegularUserProfileUseCase,
       identities as unknown as AuthIdentityFacade,
+      { fillIfEmpty: jest.fn() } as unknown as UserLanguageService,
     );
 
     await useCase.execute(

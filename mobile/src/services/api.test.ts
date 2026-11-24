@@ -1,5 +1,6 @@
 import { AxiosError, AxiosHeaders, InternalAxiosRequestConfig } from 'axios';
-import API, { isPublicAuthRoute } from './api';
+import API, { getAuthHeaders, isPublicAuthRoute } from './api';
+import i18n from '../common/config/i18n';
 import { authEvents } from './auth/auth.events';
 import { getAccessToken, getRefreshToken, setTokens } from './auth/token.storage';
 import useStore from '../store/store';
@@ -38,6 +39,20 @@ describe('API client', () => {
 
     expect(bearer(calls[0])).toBe('Bearer old-access');
     expect(AxiosHeaders.from(calls[0].headers).get('x-app-version')).toBe('1.1.0');
+  });
+
+  it('says which language the app is in on every request (Accept-Language)', async () => {
+    serve(() => ({ status: 200, data: {} }));
+
+    await i18n.changeLanguage('ro');
+    await API.post('/mobile/auth/login/request', { email: 'ana@example.ro' });
+    await i18n.changeLanguage('en');
+    await API.post('/mobile/auth/login/request', { email: 'ana@example.ro' });
+
+    expect(AxiosHeaders.from(calls[0].headers).get('Accept-Language')).toBe('ro');
+    expect(AxiosHeaders.from(calls[1].headers).get('Accept-Language')).toBe('en');
+    // and on the files downloaded outside axios
+    expect((await getAuthHeaders())['Accept-Language']).toBe('en');
   });
 
   it('refreshes once for parallel 401s and retries each request with the new token', async () => {

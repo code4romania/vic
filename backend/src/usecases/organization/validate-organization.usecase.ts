@@ -3,6 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { UserType } from 'src/modules/user/enums/user.enum';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { AUTH_EMAILS } from 'src/modules/auth/constants/auth-emails';
 import { AuthIdentityFacade } from 'src/modules/auth/services/auth-identity.facade';
@@ -48,8 +49,10 @@ export class ValidateOrganizationUseCase
       organization.id,
     );
     if (admins.length) {
-      await this.authMailer.send(
+      // one email per admin, each in their own language
+      await this.authMailer.sendToEach(
         admins.map((admin) => admin.email),
+        UserType.ADMIN,
         AUTH_EMAILS.organizationValidated(
           organization.name,
           this.authMailer.loginUrl(),

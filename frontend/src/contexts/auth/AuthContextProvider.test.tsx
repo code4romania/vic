@@ -9,6 +9,8 @@ import { ADMIN, api, businessError, server } from '../../test/server';
 import { newQueryClient, t } from '../../test/render';
 import API from '../../services/api';
 import { tokenStore } from '../../services/auth/token.store';
+import i18n from '../../common/config/i18n';
+import { readStoredLanguage, storeLanguage } from '../../common/config/language';
 
 const Probe = () => {
   const { isAuthenticated, isSuperAdmin, profile, logout } = useAuth();
@@ -180,6 +182,90 @@ describe('AuthContextProvider', () => {
       expect(await screen.findByText('Nume nou')).toBeInTheDocument();
       expect(screen.getByText('in')).toBeInTheDocument();
       expect(me).toHaveBeenCalledTimes(2); // bootstrap + one check
+    });
+  });
+  describe('the account language', () => {
+    const bootAs = (language: 'ro' | 'en' | null) => {
+      const saves: unknown[] = [];
+      server.use(
+        http.post(api('/auth/web/refresh'), () =>
+          HttpResponse.json({ accessToken: 'boot', expiresIn: 900 }),
+        ),
+        http.get(api('/auth/web/me'), () => HttpResponse.json({ ...ADMIN, language })),
+        http.patch(api('/auth/web/language'), async ({ request }) => {
+          const body = (await request.json()) as { language: string };
+          saves.push(body);
+          return HttpResponse.json({ language: body.language });
+        }),
+      );
+      return saves;
+    };
+
+    it('an existing admin opens the app in the language of the account, not of the browser', async () => {
+      await i18n.changeLanguage('en'); // an English browser
+      const saves = bootAs('ro');
+      renderProvider();
+
+      expect(await screen.findByText('in')).toBeInTheDocument();
+      expect(i18n.language).toBe('ro');
+      expect(document.documentElement.lang).toBe('ro');
+      expect(readStoredLanguage()).toEqual({ language: 'ro', pending: false });
+      expect(saves).toEqual([]);
+    });
+
+    it('a language picked on the login page is saved on the account after login', async () => {
+      await i18n.changeLanguage('en');
+      storeLanguage('en', true);
+      const saves = bootAs('ro');
+      renderProvider();
+
+      expect(await screen.findByText('in')).toBeInTheDocument();
+      expect(i18n.language).toBe('en');
+      await waitFor(() => expect(saves).toEqual([{ language: 'en', explicit: true }]));
+    });
+
+    it('a new account takes the language on screen, without overwriting', async () => {
+      await i18n.changeLanguage('en');
+      const saves = bootAs(null);
+      renderProvider();
+
+      expect(await screen.findByText('in')).toBeInTheDocument();
+      await waitFor(() => expect(saves).toEqual([{ language: 'en', explicit: false }]));
+      expect(i18n.language).toBe('en');
+    });
+
+    it('a failing language request never blocks the session', async () => {
+      await i18n.changeLanguage('en');
+      storeLanguage('en', true);
+      server.use(
+        http.post(api('/auth/web/refresh'), () =>
+          HttpResponse.json({ accessToken: 'boot', expiresIn: 900 }),
+        ),
+        http.patch(api('/auth/web/language'), () => businessError(500, 'INTERNAL_ERROR')),
+      );
+      renderProvider();
+
+      expect(await screen.findByText('in')).toBeInTheDocument();
+      expect(readStoredLanguage()).toEqual({ language: 'en', pending: true });
+    });
+
+    it('a change made on another browser arrives when the tab comes back into view', async () => {
+      let language: 'ro' | 'en' = 'ro';
+      server.use(
+        http.post(api('/auth/web/refresh'), () =>
+          HttpResponse.json({ accessToken: 'boot', expiresIn: 900 }),
+        ),
+        http.get(api('/auth/web/me'), () => HttpResponse.json({ ...ADMIN, language })),
+      );
+      renderProvider();
+      await screen.findByText('in');
+      expect(i18n.language).toBe('ro');
+
+      language = 'en';
+      window.dispatchEvent(new Event('focus'));
+
+      await waitFor(() => expect(i18n.language).toBe('en'));
+      expect(screen.getByText('in')).toBeInTheDocument();
     });
   });
 });

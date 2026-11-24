@@ -34,6 +34,7 @@ import { duration, easing, springTo } from '../motion';
 import { haptics } from '../haptics';
 import { AlertIcon } from '../icons';
 import { AppText } from './Text';
+import { useDesignLabels } from '../labels';
 
 // ── shared field pieces ──────────────────────────────────────────────────────────────────────────
 
@@ -45,21 +46,24 @@ export interface FieldLabelProps {
 }
 
 /** The label above a field: "Activitate *" or "Telefon opțional". */
-export const FieldLabel = ({ label, required, optional, nativeID }: FieldLabelProps) => (
-  <AppText variant="label" nativeID={nativeID} style={fieldStyles.label}>
-    {label}
-    {required ? (
-      <AppText variant="label" color={palette.red}>
-        {' *'}
-      </AppText>
-    ) : null}
-    {optional && !required ? (
-      <AppText variant="label" color={palette.ink2} style={fieldStyles.optional}>
-        {' opțional'}
-      </AppText>
-    ) : null}
-  </AppText>
-);
+export const FieldLabel = ({ label, required, optional, nativeID }: FieldLabelProps) => {
+  const labels = useDesignLabels();
+  return (
+    <AppText variant="label" nativeID={nativeID} style={fieldStyles.label}>
+      {label}
+      {required ? (
+        <AppText variant="label" color={palette.red}>
+          {' *'}
+        </AppText>
+      ) : null}
+      {optional && !required ? (
+        <AppText variant="label" color={palette.ink2} style={fieldStyles.optional}>
+          {` ${labels.optional}`}
+        </AppText>
+      ) : null}
+    </AppText>
+  );
+};
 
 const SHAKE = [-8, 7, -5, 3, 0];
 // keyframes at 15 / 35 / 55 / 75 / 100% of 420 ms

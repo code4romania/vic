@@ -72,7 +72,7 @@ describe('MigrateIdentitiesUseCase (database)', () => {
       webAppUrl: 'https://vic.test',
     } as unknown as AuthConfigService;
     const tokens = new OneTimeTokenService(facade, authConfig, dataSource);
-    const mailer = new AuthMailerService(null, authConfig);
+    const mailer = new AuthMailerService(null, authConfig, null);
     const transitionMail = {
       hold: jest.fn(async (emails: ISendMailOptions[]) => {
         held.push(...emails);

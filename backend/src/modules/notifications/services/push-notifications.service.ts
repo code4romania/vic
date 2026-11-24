@@ -5,7 +5,14 @@ import { PushTokensRepository } from '../repositories/push-tokens.repository';
 import { Queue } from 'bull';
 import { InjectQueue } from '@nestjs/bull';
 import { QUEUES } from 'src/common/constants/constants';
-import { SendNotificationData } from '../models/send-notification-data.model';
+import {
+  PushText,
+  SendNotificationData,
+} from '../models/send-notification-data.model';
+import { DEFAULT_LANGUAGE, Language } from 'src/modules/user/enums/user.enum';
+
+const textIn = (text: PushText, language: Language): string =>
+  typeof text === 'string' ? text : text[language] ?? text[DEFAULT_LANGUAGE];
 
 @Injectable()
 export class PushNotificationsService {
@@ -29,21 +36,29 @@ export class PushNotificationsService {
     body,
     data,
   }: SendNotificationData): Promise<void> => {
-    // 1. Find all push tokens for the given user ids
-    const tokens = await this.pushTokensRepository.findByUserIds(userIds);
-    // 2. Send the notifications
-    const tickets = await this.expoPushNotificationsService.send(
-      tokens,
-      title,
-      body,
-      data,
-    );
+    // 1. Find all push tokens for the given user ids, with each user's language
+    const devices =
+      await this.pushTokensRepository.findByUserIdsWithLanguage(userIds);
 
-    const tokenAndTickets: { ticket: ExpoPushTicket; token: string }[] =
-      tickets.map((ticket, index) => ({
-        ticket,
-        token: tokens[index],
-      }));
+    // 2. Send the notifications: one batch per language, each phone in the language of its user
+    // (Romanian for a user who has not chosen one)
+    const tokenAndTickets: { ticket: ExpoPushTicket; token: string }[] = [];
+    for (const language of Object.values(Language)) {
+      const tokens = devices
+        .filter((device) => (device.language ?? DEFAULT_LANGUAGE) === language)
+        .map((device) => device.token);
+      if (!tokens.length) continue;
+
+      const tickets = await this.expoPushNotificationsService.send(
+        tokens,
+        textIn(title, language),
+        textIn(body, language),
+        data,
+      );
+      tickets.forEach((ticket, index) =>
+        tokenAndTickets.push({ ticket, token: tokens[index] }),
+      );
+    }
 
     // 3. Add the tickets in the queue to be checked after 30 minutes
     await this.pushTicketsQueue.add(tokenAndTickets, {

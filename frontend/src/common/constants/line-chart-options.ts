@@ -2,8 +2,12 @@ import i18n from '../config/i18n';
 
 export const LINE_CHART_OPTIONS = {
   LABELS: {
-    ACTIVE: i18n.t('volunteers:tabs.active'),
-    ARCHIVED: i18n.t('volunteers:tabs.inactive'),
+    get ACTIVE() {
+      return i18n.t('volunteers:tabs.active');
+    },
+    get ARCHIVED() {
+      return i18n.t('volunteers:tabs.inactive');
+    },
   },
   COLOURS: {
     ACTIVE: '#0AA5A5',
@@ -24,15 +28,21 @@ export enum LineChartOption {
 
 export const LINE_CHART_FILTER_OPTIONS = [
   {
-    value: i18n.t('general:daily'),
+    get value() {
+      return i18n.t('general:daily');
+    },
     key: LineChartOption.DAILY,
   },
   {
-    value: i18n.t('general:monthly'),
+    get value() {
+      return i18n.t('general:monthly');
+    },
     key: LineChartOption.MONTHLY,
   },
   {
-    value: i18n.t('general:yearly'),
+    get value() {
+      return i18n.t('general:yearly');
+    },
     key: LineChartOption.YEARLY,
   },
 ];

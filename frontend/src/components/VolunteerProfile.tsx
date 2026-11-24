@@ -100,8 +100,10 @@ const VolunteerProfile = ({
             <FormReadOnlyElement value={branch} label={i18n.t('division:entity.branch')} />
             <div className="flex gap-2.5 flex-col">
               <small className="text-cool-gray-500">{i18n.t('volunteer:status_in_vic')}</small>
-              <p className={`${VolunteerProfileStatusTextColorMapper[status]}`}>
-                {i18n.t(`volunteer:name`, {
+              <p
+                className={`${VolunteerProfileStatusTextColorMapper[status]} first-letter:uppercase`}
+              >
+                {i18n.t('volunteer:status_name', {
                   status: i18n.t(`volunteer:status.${status}`),
                 })}
               </p>
@@ -112,9 +114,7 @@ const VolunteerProfile = ({
             <FormReadOnlyElement value={department} label={i18n.t('division:entity.department')} />
             <FormReadOnlyElement
               value={startedOn ? formatDate(startedOn) : '–'}
-              label={i18n.t('volunteer:name', {
-                status: i18n.t('pagination:range_separator_text'),
-              })}
+              label={i18n.t('volunteer:since')}
             />
             <FormReadOnlyElement value={role} label={i18n.t('division:entity.role')} />
             <FormReadOnlyElement

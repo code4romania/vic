@@ -52,7 +52,8 @@ describe('AnnounceUseCase', () => {
     expect(push.send).toHaveBeenCalledWith(
       expect.objectContaining({
         userIds: ['u1', 'u2'],
-        title: 'VIC funcționează din nou',
+        // each phone in its user's language
+        title: { ro: 'VIC funcționează din nou', en: 'VIC is back' },
       }),
     );
   });
@@ -69,7 +70,8 @@ describe('AnnounceUseCase', () => {
     });
 
     expect(query.mock.calls.at(-1)[0]).toContain('FROM "user"');
-    expect(report.sample.email.subject).toContain('12 decembrie 2026');
+    expect(report.sample.email.copy.ro.subject).toContain('12 decembrie 2026');
+    expect(report.sample.email.copy.en.subject).toContain('12 decembrie 2026');
     expect(report.pushUsers).toBe(0);
   });
 

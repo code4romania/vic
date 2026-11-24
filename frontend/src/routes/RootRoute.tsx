@@ -1,5 +1,6 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
 import MainLayout from '../layouts/MainLayout';
 import Landing from '../pages/Landing';
@@ -9,9 +10,13 @@ import Landing from '../pages/Landing';
 const RootRoute = () => {
   const { isAuthenticated } = useAuth();
   const location = useLocation();
+  const { i18n } = useTranslation();
 
   if (isAuthenticated) {
-    return <MainLayout />;
+    // Most of the app reads its texts while drawing, without listening for a language change. The
+    // key draws the whole logged-in area again in the new language: no reload, the session and the
+    // loaded data stay, but what was typed in an unsaved form on the open page is lost.
+    return <MainLayout key={i18n.resolvedLanguage} />;
   }
 
   if (location.pathname === '/') {

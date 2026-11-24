@@ -553,8 +553,6 @@
         "participants_label": "{{n}} persoane participă",
         "participants_label_of": "{{n}} de persoane participă",
         "participants_label_one": "O persoană participă",
-        "attending_few": "",
-        "attending_other": "",
         "type": {
             "public": "Eveniment public",
             "all_organization": "Toată organizația"
@@ -696,7 +694,12 @@
                 "required": "Numărul de ore este obligatoriu",
                 "min": "Numărul de ore trebuie să fie cel puțin {{value}}",
                 "max": "Poți înregistra cel mult {{value}} de ore pe zi",
-                "integer": "Numărul de ore trebuie să fie întreg"
+                "integer": "Numărul de ore trebuie să fie întreg",
+                "spoken_one": "o oră",
+                "spoken": "{{hours}} ore",
+                "spoken_de": "{{hours}} de ore",
+                "one_less": "O oră mai puțin",
+                "one_more": "O oră în plus"
             },
             "mentions": {
                 "label": "Mențiuni",
@@ -752,7 +755,8 @@
         "account_settings": "Setări cont",
         "hours": "Ore",
         "documents": "Documente",
-        "profile": "Profil"
+        "profile": "Profil",
+        "expand_hint": "Arată toate tab-urile"
     },
     "home": {
         "greeting": "Salut, {{name}}!",
@@ -906,6 +910,15 @@
             "retry": "Încearcă din nou",
             "page": "{{page}} / {{total}}",
             "page_a11y": "Pagina {{page}} din {{total}}"
+        },
+        "contract": {
+            "errors": {
+                "CONTRACT_001": "Contractul nu a putut fi încărcat. Încearcă din nou.",
+                "CONTRACT_002": "Contractul nu a fost găsit.",
+                "CONTRACT_003": "Fișierul contractului nu a putut fi șters.",
+                "CONTRACT_007": "Poți anula doar un contract care așteaptă răspunsul organizației.",
+                "TEMPLATE_002": "Modelul de contract nu a fost găsit."
+            }
         }
     },
     "notifications": {
@@ -1070,6 +1083,28 @@
             "cert_title": "Adeverință de voluntariat",
             "cert_meta": "Nr. 128/2026 · Asociația Exemplu",
             "signed": "SEMNATĂ"
+        }
+    },
+    "language": {
+        "title": "Limba aplicației",
+        "hint": "Notificările și emailurile de la VIC vin în limba aleasă.",
+        "selected": "selectată"
+    },
+    "fields": {
+        "optional": "opțional",
+        "select": {
+            "placeholder": "Alege",
+            "open_list": "Deschide lista de opțiuni",
+            "open_menu": "Deschide meniul"
+        },
+        "date": {
+            "placeholder": "Alege data",
+            "empty": "nicio dată aleasă",
+            "open_calendar": "Deschide calendarul"
+        },
+        "stepper": {
+            "decrease": "Scade",
+            "increase": "Crește"
         }
     }
 }

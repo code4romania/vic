@@ -1,6 +1,7 @@
 import React, { ReactNode, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useRevalidateOnLanguageChange } from '../hooks/useRevalidateOnLanguageChange';
 import * as yup from 'yup';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -68,8 +69,11 @@ const RegisterOrganization = () => {
   const {
     control,
     handleSubmit,
+    trigger,
     formState: { errors },
   } = useForm<RegisterForm>({ defaultValues: DEFAULTS, resolver: yupResolver(schema) });
+  // messages already shown follow the language switcher
+  useRevalidateOnLanguageChange(trigger, errors);
 
   const onSubmit = (form: RegisterForm) => {
     setError(null);

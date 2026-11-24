@@ -9,6 +9,7 @@ import Home from './Home';
 import useStore from '../store/store';
 import { EventType } from '../common/enums/event-type.enum';
 import { NewsType } from '../common/enums/news-type.enum';
+import { containing, t } from '../test/i18n';
 
 const mockEventCalls: any[][] = [];
 let mockGoing: any[] = [];
@@ -151,15 +152,15 @@ describe('Acasă', () => {
     const content = within(screen.getByTestId('home'));
     expect(content.getByTestId('home-org')).toBeTruthy();
     expect(content.getByText('Asociația Exemplu')).toBeTruthy();
-    expect(content.getByText('Organizația ta')).toBeTruthy();
+    expect(content.getByText(t('home:org.overline'))).toBeTruthy();
     expect(content.getByTestId('home-news')).toBeTruthy();
-    expect(content.getByRole('header', { name: 'Bună, Ana' })).toBeTruthy();
+    expect(content.getByRole('header', { name: t('home:hello', { name: 'Ana' }) })).toBeTruthy();
     // the compact bar sits outside the scroll content and stays out of the accessibility tree
     expect(content.queryByTestId('home-compact-bar', { includeHiddenElements: true })).toBeNull();
     expect(screen.queryByTestId('home-compact-bar')).toBeNull();
     expect(
       within(screen.getByTestId('home-compact-bar', { includeHiddenElements: true })).getByText(
-        'Acasă',
+        t('tabs:home'),
         { includeHiddenElements: true },
       ),
     ).toBeTruthy();
@@ -181,7 +182,7 @@ describe('Acasă', () => {
   it('the bell has no badge when everything is read', async () => {
     mockUnread = 0;
     await renderHome();
-    expect(screen.getByTestId('home-news').props.accessibilityLabel).toBe('Noutăți');
+    expect(screen.getByTestId('home-news').props.accessibilityLabel).toBe(t('home:news'));
     expect(screen.queryByTestId('home-news-badge', { includeHiddenElements: true })).toBeNull();
     // the count is fetched again each time Acasă gets the focus
     expect(mockRefetchUnread).toHaveBeenCalled();
@@ -189,9 +190,9 @@ describe('Acasă', () => {
 
   it('the bell shows the unread news in a red badge, „9+” above 9', async () => {
     for (const [count, label, badge] of [
-      [3, 'Noutăți, 3 necitite', '3'],
-      [1, 'Noutăți, 1 necitită', '1'],
-      [14, 'Noutăți, 14 necitite', '9+'],
+      [3, t('home:news_unread', { n: 3 }), '3'],
+      [1, t('home:news_unread_one'), '1'],
+      [14, t('home:news_unread', { n: 14 }), '9+'],
     ] as const) {
       mockUnread = count;
       const view = await renderHome();
@@ -217,12 +218,16 @@ describe('Acasă', () => {
     expect(mockCounterCalls[0]).toBe('v1');
     const card = screen.getByTestId('home-impact');
     expect(card.props.accessibilityLabel).toBe(
-      '42 de ore aprobate, 5 în așteptare, 1 respinsă. Deschide Ore',
+      [
+        t('home:impact.a11y_approved_de', { n: 42 }),
+        t('home:impact.a11y_pending', { n: 5 }),
+        `${t('home:impact.a11y_rejected_singular')}. ${t('home:impact.a11y_open')}`,
+      ].join(', '),
     );
-    expect(within(card).getByText('Impactul tău')).toBeTruthy();
-    expect(within(card).getByText('ore aprobate')).toBeTruthy();
-    expect(within(card).getByText('5h în așteptare')).toBeTruthy();
-    expect(within(card).getByText('1h respinsă')).toBeTruthy();
+    expect(within(card).getByText(t('home:impact.overline'))).toBeTruthy();
+    expect(within(card).getByText(t('home:impact.label'))).toBeTruthy();
+    expect(within(card).getByText(t('home:impact.pending_chip', { n: 5 }))).toBeTruthy();
+    expect(within(card).getByText(t('home:impact.rejected_chip_singular', { n: 1 }))).toBeTruthy();
     await fireEvent.press(card);
     expect(await screen.findByText('page:hours')).toBeTruthy();
   });
@@ -238,9 +243,15 @@ describe('Acasă', () => {
     mockCounters = { approved: 3, pending: 0, rejected: 0 };
     await renderHome();
     const card = screen.getByTestId('home-impact');
-    expect(card.props.accessibilityLabel).toBe('3 ore aprobate. Deschide Ore');
-    expect(within(card).queryByText(/în așteptare/)).toBeNull();
-    expect(within(card).queryByText(/respins/)).toBeNull();
+    expect(card.props.accessibilityLabel).toBe(
+      `${t('home:impact.a11y_approved', { n: 3 })}. ${t('home:impact.a11y_open')}`,
+    );
+    expect(
+      within(card).queryByText(containing(t('home:impact.pending_chip', { n: '' }))),
+    ).toBeNull();
+    expect(
+      within(card).queryByText(containing(t('home:impact.rejected_chip', { n: '' }))),
+    ).toBeNull();
   });
 
   it('switches the organization from the row when you have more than one', async () => {
@@ -274,7 +285,7 @@ describe('Acasă', () => {
 
   it('greets the volunteer and shows this month and the announcements', async () => {
     await renderHome();
-    expect(await screen.findByText('Bună, Ana')).toBeTruthy();
+    expect(await screen.findByText(t('home:hello', { name: 'Ana' }))).toBeTruthy();
     expect(within(screen.getByTestId('home-stat-events')).getByText('4')).toBeTruthy();
     expect(within(screen.getByTestId('home-stat-hours')).getByText('2')).toBeTruthy();
     expect(screen.getByText('Căutăm 50 de voluntari')).toBeTruthy();
@@ -286,16 +297,16 @@ describe('Acasă', () => {
     mockStats = { ...mockStats, numberOfUpcomingEvents: 1, numberOfActivityLogUpdates: 1 };
     await renderHome();
     expect(screen.getByTestId('home-stat-events').props.accessibilityLabel).toBe(
-      '1 eveniment luna aceasta',
+      `1 ${t('home:statistics.events.short_one')}`,
     );
     expect(screen.getByTestId('home-stat-hours').props.accessibilityLabel).toBe(
-      '1 actualizare la ore',
+      `1 ${t('home:statistics.hours.short_one')}`,
     );
     expect(screen.getByTestId('home-stat-documents').props.accessibilityLabel).toBe(
-      '1 actualizare la documente',
+      `1 ${t('home:statistics.documents.short_one')}`,
     );
     expect(screen.getByTestId('home-stat-organizations').props.accessibilityLabel).toBe(
-      '3 actualizări la organizații',
+      `3 ${t('home:statistics.organizations.short')}`,
     );
   });
 
@@ -304,7 +315,7 @@ describe('Acasă', () => {
     await renderHome();
     const ghost = screen.getByTestId('home-stat-organizations');
     expect(ghost.props.accessibilityRole).toBeUndefined();
-    expect(ghost.props.accessibilityLabel).toBe('0 actualizări la organizații');
+    expect(ghost.props.accessibilityLabel).toBe(`0 ${t('home:statistics.organizations.short')}`);
     expect(screen.getByTestId('home-stat-events').props.accessibilityRole).toBe('button');
   });
 
@@ -329,7 +340,7 @@ describe('Acasă', () => {
     ];
     await renderHome();
     expect(mockEventCalls[0][2]).toBe(EventType.GOING);
-    expect(await screen.findByText('Urmează')).toBeTruthy();
+    expect(await screen.findByText(t('home:next.title'))).toBeTruthy();
     expect(screen.getByText('Ziua Pământului')).toBeTruthy();
     expect(screen.queryByText('Eveniment trecut')).toBeNull();
     const card = within(screen.getByTestId('event-card-e1'));
@@ -337,29 +348,31 @@ describe('Acasă', () => {
     expect(card.getByText('22')).toBeTruthy();
     expect(card.getByText('NOV')).toBeTruthy();
     expect(card.getByText('Pădurea Băneasa')).toBeTruthy();
-    expect(card.getByText('Public')).toBeTruthy();
-    expect(card.getByText('Înscris')).toBeTruthy();
+    expect(
+      card.getByText(t('events:card.public').replace(/^./, (c) => c.toUpperCase())),
+    ).toBeTruthy();
+    expect(card.getByText(t('events:card.going'))).toBeTruthy();
     await fireEvent.press(screen.getByTestId('event-card-e1'));
     expect(await screen.findByText('page:event')).toBeTruthy();
   });
 
   it('"De făcut" shows sending hours, and no contracts to sign (#486)', async () => {
     await renderHome();
-    expect(await screen.findByText('Trimite orele de voluntariat')).toBeTruthy();
+    expect(await screen.findByText(t('home:todo.hours.title'))).toBeTruthy();
     expect(screen.queryByTestId('home-todo-contracts')).toBeNull();
   });
 
   it('"De făcut" asks for the volunteer profile before hours', async () => {
     setProfile(org(null));
     await renderHome();
-    expect(await screen.findByText('Completează profilul de voluntar')).toBeTruthy();
-    expect(screen.queryByText('Trimite orele de voluntariat')).toBeNull();
+    expect(await screen.findByText(t('home:todo.profile.title'))).toBeTruthy();
+    expect(screen.queryByText(t('home:todo.hours.title'))).toBeNull();
   });
 
   it('without an organization offers to find one and hides organization-only parts', async () => {
     setProfile(null);
     await renderHome();
-    expect(await screen.findByText('Nu ai adăugat încă nicio organizație')).toBeTruthy();
+    expect(await screen.findByText(t('home:no_ngo_title'))).toBeTruthy();
     expect(screen.queryByTestId('home-impact')).toBeNull();
     expect(screen.queryByTestId('home-org')).toBeNull();
     expect(screen.queryByTestId('home-stat-hours')).toBeNull();

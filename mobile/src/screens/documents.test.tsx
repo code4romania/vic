@@ -17,6 +17,7 @@ import {
   formatContractDay,
   pickExpiringSoon,
 } from '../components/documents/DocumentRow';
+import { containing, inLanguage, shortMonthName, t } from '../test/i18n';
 
 jest.mock('../services/api', () => ({
   __esModule: true,
@@ -114,18 +115,25 @@ beforeEach(() => {
   });
 });
 
+// the short name of January in the language the test runs in
+const JAN = shortMonthName(0);
+
 describe('Documente', () => {
   it('lists the uploaded contracts with their period and status (#486, #488)', async () => {
     await renderApp();
     const header = within(await screen.findByTestId('documents-header'));
-    expect(header.getByRole('header', { name: 'Contractele tale' })).toBeTruthy();
-    expect(header.getByText('La Asociația Exemplu')).toBeTruthy();
+    expect(header.getByRole('header', { name: t('documents:title_large') })).toBeTruthy();
+    expect(header.getByText(t('activity_logs:at', { name: 'Asociația Exemplu' }))).toBeTruthy();
     // the large title scrolls with the list; the compact bar repeats the tab name
     expect(
-      within(screen.getByTestId('documents-list')).getByText('Contractele\ntale'),
+      within(screen.getByTestId('documents-list')).getByText(
+        t('documents:title_large').replace(/ (?=\S+$)/, '\n'),
+      ),
     ).toBeTruthy();
     const bar = screen.getByTestId('documents-compact-bar', { includeHiddenElements: true });
-    expect(within(bar).getByText('Documente', { includeHiddenElements: true })).toBeTruthy();
+    expect(
+      within(bar).getByText(t('general:documents'), { includeHiddenElements: true }),
+    ).toBeTruthy();
     // The status area stays covered even before the compact bar fades in at 48pt.
     expect(screen.getByTestId('status-bar-scrim')).toHaveStyle({
       height: 47,
@@ -136,16 +144,22 @@ describe('Documente', () => {
     ).toBeNull();
     const signed = screen.getByTestId('document-row-3');
     expect(within(signed).getByText('Contract 3/2026')).toBeTruthy();
-    expect(within(signed).getByText('15 ian 2026 – 15 ian 2027')).toBeTruthy();
-    expect(within(signed).getByText('Semnat')).toBeTruthy();
-    expect(within(screen.getByTestId('document-row-2')).getByText('Expiră în curând')).toBeTruthy();
+    expect(within(signed).getByText(`15 ${JAN} 2026 – 15 ${JAN} 2027`)).toBeTruthy();
+    expect(within(signed).getByText(t('documents:status.SIGNED'))).toBeTruthy();
+    expect(
+      within(screen.getByTestId('document-row-2')).getByText(t('documents:expiring_soon')),
+    ).toBeTruthy();
     const pending = screen.getByTestId('document-row-1');
-    expect(within(pending).getByText('În așteptare')).toBeTruthy();
-    expect(within(pending).getByText('Din 15 ian 2026 · fără dată de final')).toBeTruthy();
+    expect(within(pending).getByText(t('documents:status.PENDING'))).toBeTruthy();
+    expect(
+      within(pending).getByText(t('documents:period_open', { start: `15 ${JAN} 2026` })),
+    ).toBeTruthy();
     expect(screen.getByTestId('documents')).toBeTruthy();
     expect(screen.queryByTestId('documents-back')).toBeNull();
-    expect(within(screen.getByTestId('document-row-0')).getByText('Expirat')).toBeTruthy();
-    expect(screen.queryByText(/Vezi toate/)).toBeNull();
+    expect(
+      within(screen.getByTestId('document-row-0')).getByText(t('documents:status.EXPIRED')),
+    ).toBeTruthy();
+    expect(screen.queryByText(containing(t('home:anouncements.section.see_all')))).toBeNull();
     expect(screen.queryByText(/semnătura ta/)).toBeNull();
   });
 
@@ -159,15 +173,17 @@ describe('Documente', () => {
     mockHistory = page(mockSigned);
     await renderApp();
     const featured = await screen.findByTestId('document-row-soon');
-    expect(within(featured).getByText('7 zile rămase')).toBeTruthy();
-    expect(within(featured).getByText('Expiră în curând')).toBeTruthy();
+    expect(within(featured).getByText(t('documents:days_left', { count: 7 }))).toBeTruthy();
+    expect(within(featured).getByText(t('documents:expiring_soon'))).toBeTruthy();
     expect(within(featured).getByText('soon/2026')).toBeTruthy();
     // #727: a tap opens the contract; the round button downloads it
-    expect(within(featured).getByText('Vezi contractul')).toBeTruthy();
+    expect(within(featured).getByText(t('documents:featured_action'))).toBeTruthy();
     // the other one that expires soon stays a row with the orange chip
     const later = screen.getByTestId('document-row-late');
-    expect(within(later).queryByText(/rămase/)).toBeNull();
-    expect(within(later).getByText('Expiră în curând')).toBeTruthy();
+    expect(
+      within(later).queryByText(containing(t('documents:days_left', { count: '' }).trim())),
+    ).toBeNull();
+    expect(within(later).getByText(t('documents:expiring_soon'))).toBeTruthy();
     await fireEvent.press(featured);
     expect(mockDownload).toHaveBeenCalledWith(expect.objectContaining({ id: 'soon' }));
   });
@@ -203,9 +219,11 @@ describe('Documente', () => {
     mockHistory = page(mockSigned);
     await renderApp();
     const row = await screen.findByTestId('document-row-9');
-    expect(within(row).getByText('Adeverință 45/2026')).toBeTruthy();
-    expect(within(row).getByText('emisă la 15 ian 2026')).toBeTruthy();
-    expect(within(row).getByText('Semnat')).toBeTruthy();
+    expect(within(row).getByText(`${t('documents:certificate_prefix')} 45/2026`)).toBeTruthy();
+    expect(
+      within(row).getByText(t('documents:issued_on', { date: `15 ${JAN} 2026` })),
+    ).toBeTruthy();
+    expect(within(row).getByText(t('documents:status.SIGNED'))).toBeTruthy();
   });
 
   it('a signed contract downloads, and a failed download says so', async () => {
@@ -216,7 +234,7 @@ describe('Documente', () => {
     await fireEvent.press(screen.getByTestId('document-row-2'));
     await waitFor(() =>
       expect(Toast.show).toHaveBeenCalledWith(
-        expect.objectContaining({ type: 'error', text1: expect.stringContaining('descărca') }),
+        expect.objectContaining({ type: 'error', text1: t('documents:download_error') }),
       ),
     );
   });
@@ -278,9 +296,9 @@ describe('Documente', () => {
       mockViewerAvailable = true;
       await renderWithViewer();
       const row = await screen.findByTestId('document-row-3');
-      expect(row.props.accessibilityLabel).toMatch(/, deschide$/);
+      expect(row.props.accessibilityLabel).toMatch(new RegExp(`, ${t('documents:view')}$`));
       expect(screen.getByTestId('document-download-3').props.accessibilityLabel).toBe(
-        'Descarcă Contract 3/2026',
+        t('documents:download_named', { name: 'Contract 3/2026' }),
       );
     });
   });
@@ -334,8 +352,8 @@ describe('Documente', () => {
     mockHistory = page([]);
     await renderApp();
     expect(await screen.findByTestId('documents-empty')).toBeTruthy();
-    expect(screen.getByText('Niciun document încă')).toBeTruthy();
-    expect(screen.getByText('Contractele încărcate de organizație apar aici.')).toBeTruthy();
+    expect(screen.getByText(t('documents:empty.title'))).toBeTruthy();
+    expect(screen.getByText(t('documents:empty.description'))).toBeTruthy();
   });
 
   it('shows an error and retries the request', async () => {
@@ -343,7 +361,7 @@ describe('Documente', () => {
     mockHistory.error = new Error('offline');
     await renderApp();
     const empty = screen.getByTestId('documents-empty');
-    expect(within(empty).getByText('Eroare la încărcarea documentelor')).toBeTruthy();
+    expect(within(empty).getByText(t('documents:errors.generic'))).toBeTruthy();
     // Focus also reloads the query; isolate the explicit retry.
     mockHistory.reloadFirstPage.mockClear();
     await fireEvent.press(within(empty).getByRole('button'));
@@ -365,7 +383,7 @@ describe('Documente', () => {
     expect(
       within(screen.getByTestId('documents-header')).getByTestId('documents-back'),
     ).toBeTruthy();
-    expect(screen.getByTestId('documents-back').props.accessibilityLabel).toBe('Înapoi');
+    expect(screen.getByTestId('documents-back').props.accessibilityLabel).toBe(t('general:back'));
   });
 
   it('shows row skeletons while the first page loads', async () => {
@@ -406,8 +424,16 @@ describe('Documente', () => {
     ).toBe('y');
   });
 
-  it('formats contract days with Romanian short months', () => {
-    expect(formatContractDay('2026-11-01T10:00:00.000Z')).toBe('1 nov 2026');
+  it('formats contract days with Romanian short months', async () => {
+    await inLanguage('ro', () =>
+      expect(formatContractDay('2026-11-01T10:00:00.000Z')).toBe('1 nov 2026'),
+    );
     expect(formatContractDay(null)).toBe('');
+  });
+
+  it('and with English short months when the app is in English', async () => {
+    await inLanguage('en', () =>
+      expect(formatContractDay('2026-11-01T10:00:00.000Z')).toBe('1 Nov 2026'),
+    );
   });
 });

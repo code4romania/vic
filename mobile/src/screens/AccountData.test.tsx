@@ -10,6 +10,7 @@ import { Sex } from '../common/enums/sex.enum';
 import useStore from '../store/store';
 import { updateUserProfile } from '../services/user/user.api';
 import AccountData from './AccountData';
+import { t } from '../test/i18n';
 
 jest.mock('@gorhom/bottom-sheet', () => require('@gorhom/bottom-sheet/mock'));
 jest.mock('../services/user/user.api', () => ({ updateUserProfile: jest.fn() }));
@@ -96,7 +97,7 @@ describe('Date personale discard guard', () => {
       await fireEvent.press(screen.getByTestId('page-action'));
       await waitFor(() =>
         expect(Toast.show).toHaveBeenCalledWith({
-          text1: 'Datele au fost modificate!',
+          text1: t('account_data:submit.success'),
           type: 'success',
         }),
       );

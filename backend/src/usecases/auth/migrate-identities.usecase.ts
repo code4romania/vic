@@ -2,6 +2,7 @@ import { ISendMailOptions } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
 import { AUTH_TOKEN_TTL_MS } from 'src/modules/auth/auth.constants';
 import { AUTH_EMAILS, AuthEmail } from 'src/modules/auth/constants/auth-emails';
+import { renderMail } from 'src/modules/mail/mail-copy';
 import {
   AuthIdentityStatus,
   AuthProvider,
@@ -276,10 +277,12 @@ export class MigrateIdentitiesUseCase {
       email = AUTH_EMAILS.transitionLinkVolunteer();
     }
 
+    // The transition email goes to everyone in both languages.
+    const { subject, context } = renderMail(email, 'bilingual');
     emails.push({
       to: identity.email,
-      subject: email.subject,
-      context: { ...email.context },
+      subject,
+      context: { ...context },
     });
   }
 

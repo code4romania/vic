@@ -18,18 +18,29 @@ import { IImportVolunteersResult } from '../common/interfaces/volunteer.interfac
 import { useImportVolunteersMutation } from '../services/volunteer/volunteer.service';
 import { useErrorToast } from '../hooks/useToast';
 import { useValidationGate } from '../hooks/useValidationGate';
+import { Language } from '../common/config/language';
+import { currentLanguage } from '../services/auth/language.service';
 
 export const IMPORT_MAX_BYTES = 1024 * 1024;
 
 const t = (key: string, options?: Record<string, unknown>) =>
   i18n.t(`volunteers:import.${key}`, options) as string;
 
-// The template's header row is what the backend reads (ImportVolunteersUseCase); the example row shows
-// the format and can be deleted.
-export const IMPORT_TEMPLATE = [
-  'Prenume,Nume,Email,Telefon,Localitate,Județ,Departament',
-  'Maria,Ionescu,maria.ionescu@exemplu.ro,+40722000000,Cluj-Napoca,Cluj,Logistică',
-].join('\r\n');
+// The template's header row is what the backend reads (ImportVolunteersUseCase accepts both the
+// Romanian and the English column names); the example row shows the format and can be deleted.
+export const IMPORT_TEMPLATES: Record<Language, string> = {
+  ro: [
+    'Prenume,Nume,Email,Telefon,Localitate,Județ,Departament',
+    'Maria,Ionescu,maria.ionescu@exemplu.ro,+40722000000,Cluj-Napoca,Cluj,Logistică',
+  ].join('\r\n'),
+  en: [
+    'First name,Last name,Email,Phone,City,County,Department',
+    'Maria,Ionescu,maria.ionescu@example.org,+40722000000,Cluj-Napoca,Cluj,Logistics',
+  ].join('\r\n'),
+};
+
+// The template in the language the admin works in.
+export const importTemplate = (): string => IMPORT_TEMPLATES[currentLanguage()];
 
 // #473: the NGO imports volunteers from a CSV or Excel file. Everyone becomes a Candidate: no email is
 // sent and only people who already have a VIC account have one.
@@ -42,7 +53,7 @@ const ImportVolunteers = () => {
 
   const onDownloadTemplate = () =>
     // The BOM makes Excel open the diacritics as UTF-8.
-    downloadExcel(`\uFEFF${IMPORT_TEMPLATE}\r\n`, t('template_name'));
+    downloadExcel(`\uFEFF${importTemplate()}\r\n`, t('template_name'));
 
   const onImport = () => {
     if (!file) return;

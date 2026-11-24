@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
+import { Language } from 'src/modules/user/enums/user.enum';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 
 // The logged-in admin (login and GET /auth/web/me). AdminUserPresenter stays { id, name }, because the
@@ -12,6 +13,7 @@ export class AdminProfilePresenter {
     this.phone = admin.phone;
     this.organizationId = admin.organizationId;
     this.superAdmin = admin.superAdmin === true;
+    this.language = admin.language ?? null;
   }
 
   @Expose()
@@ -40,4 +42,13 @@ export class AdminProfilePresenter {
   @Expose()
   @ApiProperty({ description: 'Sees the NGO validation page' })
   superAdmin: boolean;
+
+  @Expose()
+  @ApiProperty({
+    enum: Language,
+    nullable: true,
+    description:
+      'The language of the web app and of the emails; null = not chosen yet',
+  })
+  language: Language | null;
 }

@@ -9,6 +9,11 @@ import {
   useCountUp,
 } from './ImpactHexagon';
 import { palette } from '../tokens';
+import { DEFAULT_DESIGN_LABELS, setDesignLabels } from '../labels';
+
+// The components are tested with the texts they carry themselves (Romanian), whatever language
+// the rest of the suite runs in; the app replaces them through `setDesignLabels`.
+beforeEach(() => setDesignLabels(DEFAULT_DESIGN_LABELS));
 
 // size 108 on Acasă: H = 119, R = 52, corners at y 7.5 and 111.5, headroom 21
 const TOP = 7.5;

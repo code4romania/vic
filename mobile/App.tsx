@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 // Unistyles themes must be configured before any StyleSheet is created
 import './src/design/theme';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import * as Font from 'expo-font';
 import {
   BricolageGrotesque_700Bold,
@@ -26,6 +26,7 @@ import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import AuthContextProvider from './src/contexts/auth/AuthContextProvider';
 import Router from './src/routes/Router';
 import './src/common/config/i18n';
+import { resolveInitialLanguage } from './src/common/config/language';
 import { ToastHost } from './src/common/config/toast';
 import { QueryClientProvider } from 'react-query';
 import { queryClient } from './src/services/query-client';
@@ -73,7 +74,14 @@ export default () => {
     Manrope_800ExtraBold,
   });
 
-  return fontsLoaded ? (
+  // The language is known before the first screen draws (the splash is still up) and before
+  // AuthContextProvider mounts: its legacy cleanup writes the flag that marks an existing install.
+  const [languageReady, setLanguageReady] = useState(false);
+  useEffect(() => {
+    resolveInitialLanguage().finally(() => setLanguageReady(true));
+  }, []);
+
+  return fontsLoaded && languageReady ? (
     <>
       {/* the Maintenance / UpdateRequired screens render outside the navigators, which otherwise
             provide the safe area */}

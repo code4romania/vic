@@ -26,7 +26,9 @@ const PAGE_SIZE = 10;
 const columns: TableColumn<IActivityLogListItem>[] = [
   {
     id: 'activityType.name',
-    name: i18n.t('activity_log:header.task'),
+    get name() {
+      return i18n.t('activity_log:header.task');
+    },
     grow: 3,
     minWidth: '10rem',
     cell: (row) => (
@@ -49,7 +51,9 @@ const columns: TableColumn<IActivityLogListItem>[] = [
   {
     id: 'hours',
     hide: Media.SM,
-    name: i18n.t('general:hours'),
+    get name() {
+      return i18n.t('general:hours');
+    },
     grow: 1,
     minWidth: '5rem',
     cell: (row) => <CellLayout>{`${row.hours}h`}</CellLayout>,
@@ -57,14 +61,18 @@ const columns: TableColumn<IActivityLogListItem>[] = [
   {
     id: 'date',
     hide: Media.SM,
-    name: i18n.t('activity_log:header.execution_date'),
+    get name() {
+      return i18n.t('activity_log:header.execution_date');
+    },
     grow: 1,
     minWidth: '8rem',
     selector: (row) => formatDate(row.date),
   },
   {
     id: 'status',
-    name: i18n.t('activity_log:status'),
+    get name() {
+      return i18n.t('activity_log:status');
+    },
     grow: 1,
     minWidth: '8rem',
     cell: (row) => (

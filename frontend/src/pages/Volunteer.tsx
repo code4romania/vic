@@ -37,10 +37,30 @@ export enum VolunteerTabsOptions {
 }
 
 const VolunteerTabsOptons: SelectItem<VolunteerTabsOptions>[] = [
-  { key: VolunteerTabsOptions.ACTIVITIES, value: i18n.t('volunteer:activities.tab') },
-  { key: VolunteerTabsOptions.HOURS, value: i18n.t('volunteer:hours_history.tab') },
-  { key: VolunteerTabsOptions.EVENTS, value: i18n.t('volunteer:events.tab') },
-  { key: VolunteerTabsOptions.DOCUMENTS, value: i18n.t('side_menu:options.documents') },
+  {
+    key: VolunteerTabsOptions.ACTIVITIES,
+    get value() {
+      return i18n.t('volunteer:activities.tab');
+    },
+  },
+  {
+    key: VolunteerTabsOptions.HOURS,
+    get value() {
+      return i18n.t('volunteer:hours_history.tab');
+    },
+  },
+  {
+    key: VolunteerTabsOptions.EVENTS,
+    get value() {
+      return i18n.t('volunteer:events.tab');
+    },
+  },
+  {
+    key: VolunteerTabsOptions.DOCUMENTS,
+    get value() {
+      return i18n.t('side_menu:options.documents');
+    },
+  },
 ];
 
 const Volunteer = ({ query, setQuery }: VolunteerProps) => {

@@ -14,8 +14,15 @@ const SHARED_ERRORS: Record<string, string> = {
   VOLUNTEER_005: 'general:error.VOLUNTEER_005',
 };
 
+// Each class holds translation keys, not text: the message is looked up when it is shown, so it
+// follows the language the app is in at that moment.
 export abstract class ErrorClass<T extends number | string | symbol> {
   constructor(private errors: Record<T, string>) {}
+
+  // every translation key this class can show (the key-parity test checks them in both languages)
+  public getKeys(): string[] {
+    return [...(Object.values(this.errors) as string[]), ...Object.values(SHARED_ERRORS)];
+  }
 
   public getError(code?: T): string {
     if (!code) {
@@ -23,7 +30,7 @@ export abstract class ErrorClass<T extends number | string | symbol> {
     }
 
     if (this.errors[code]) {
-      return this.errors[code];
+      return i18n.t(this.errors[code]);
     }
 
     const shared = SHARED_ERRORS[code as string];

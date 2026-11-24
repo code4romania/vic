@@ -9,6 +9,7 @@ import Organizations from './Organizations';
 import OrganizationProfile from './OrganizationProfile';
 import useStore from '../store/store';
 import { OrganizatinVolunteerStatus } from '../common/enums/organization-volunteer-status.enum';
+import { t } from '../test/i18n';
 
 jest.mock('@gorhom/bottom-sheet', () => require('@gorhom/bottom-sheet/mock'));
 jest.mock('expo-linking', () => ({
@@ -136,11 +137,11 @@ describe('Organizații', () => {
     );
     const header = within(screen.getByTestId('organizations-header'));
     expect(header.getByTestId('organizations-back')).toBeTruthy();
-    expect(header.getByRole('header', { name: 'Organizații' })).toBeTruthy();
-    expect(header.getByText('2 organizații')).toBeTruthy();
+    expect(header.getByRole('header', { name: t('organizations:heading') })).toBeTruthy();
+    expect(header.getByText(t('organizations:count', { n: 2 }))).toBeTruthy();
     const list = within(screen.getByTestId('organizations-list'));
-    expect(list.queryByRole('header', { name: 'Organizații' })).toBeNull();
-    expect(list.queryByText('Organizații')).toBeNull();
+    expect(list.queryByRole('header', { name: t('organizations:heading') })).toBeNull();
+    expect(list.queryByText(t('organizations:heading'))).toBeNull();
 
     await fireEvent.press(header.getByTestId('organizations-back'));
     expect(screen.queryByTestId('organizations-header')).toBeNull();
@@ -150,7 +151,7 @@ describe('Organizații', () => {
     await renderApp();
     const header = screen.getByTestId('organizations-header');
     expect(within(header).queryByTestId('organizations-back')).toBeNull();
-    expect(within(header).getByRole('header', { name: 'Organizații' })).toBeTruthy();
+    expect(within(header).getByRole('header', { name: t('organizations:heading') })).toBeTruthy();
     const input = screen.getByTestId('organizations-search');
     await fireEvent.changeText(input, 'Crucea');
     await fireEvent(header, 'layout', { nativeEvent: { layout: { height: 120 } } });
@@ -166,12 +167,16 @@ describe('Organizații', () => {
 
   it('lists organizations with volunteers and marks the ones you belong to', async () => {
     await renderApp();
-    expect(await screen.findByText('Organizații')).toBeTruthy();
-    expect(screen.getByText('2 organizații')).toBeTruthy();
+    expect(await screen.findByText(t('organizations:heading'))).toBeTruthy();
+    expect(screen.getByText(t('organizations:count', { n: 2 }))).toBeTruthy();
     const mine = screen.getByTestId('organization-row-org-1');
-    expect(within(mine).getByText('120 de voluntari')).toBeTruthy();
-    expect(within(mine).getByText('Membru')).toBeTruthy();
-    expect(within(screen.getByTestId('organization-row-org-3')).queryByText('Membru')).toBeNull();
+    expect(
+      within(mine).getByText(t('organization_profile:volunteers', { count: 120 })),
+    ).toBeTruthy();
+    expect(within(mine).getByText(t('organizations:member'))).toBeTruthy();
+    expect(
+      within(screen.getByTestId('organization-row-org-3')).queryByText(t('organizations:member')),
+    ).toBeNull();
   });
 
   it('searches as you type, can clear, and shows the empty state', async () => {
@@ -183,7 +188,7 @@ describe('Organizații', () => {
         jest.advanceTimersByTime(400);
       });
       expect(mockSearches[mockSearches.length - 1]).toBe('xyz');
-      expect(await screen.findByText('Nu există rezultate')).toBeTruthy();
+      expect(await screen.findByText(t('organizations:empty.title'))).toBeTruthy();
       await fireEvent.press(screen.getByTestId('organizations-search-clear'));
       await act(async () => {
         jest.advanceTimersByTime(400);
@@ -202,7 +207,7 @@ describe('Organizații', () => {
       await act(async () => {
         jest.advanceTimersByTime(400);
       });
-      expect(await screen.findByText('1 organizație')).toBeTruthy();
+      expect(await screen.findByText(t('organizations:count_one'))).toBeTruthy();
     } finally {
       jest.useRealTimers();
     }
@@ -232,12 +237,12 @@ describe('Organizație', () => {
 
   it('shows the description, contacts and "Am un cod" + "Vreau să ajut" for a new volunteer', async () => {
     await renderApp('organization-profile');
-    expect(await screen.findByText('Despre')).toBeTruthy();
+    expect(await screen.findByText(t('organization_profile:about'))).toBeTruthy();
     expect(screen.getByText('contact@exemplu.ro')).toBeTruthy();
     expect(screen.getByText('Str. Lungă 1, București')).toBeTruthy();
-    expect(screen.getByText('Nu sunt evenimente de afișat')).toBeTruthy();
-    expect(screen.getByText('Am un cod')).toBeTruthy();
-    expect(screen.getByText('Vreau să ajut')).toBeTruthy();
+    expect(screen.getByText(t('organization_profile:no_events'))).toBeTruthy();
+    expect(screen.getByText(t('organization_profile:bar.have_code'))).toBeTruthy();
+    expect(screen.getByText(t('organization_profile:bar.join'))).toBeTruthy();
     expect(screen.queryByTestId('organization-leave')).toBeNull();
   });
 
@@ -245,14 +250,16 @@ describe('Organizație', () => {
     setOrganization(undefined, null);
     await renderApp('organization-profile');
     await fireEvent.press(await screen.findByTestId('organization-join'));
-    expect(screen.getByText('Completează datele')).toBeTruthy();
+    expect(
+      screen.getByText(t('organization_profile:modal.birthday_missing.action_label')),
+    ).toBeTruthy();
   });
 
   it('a pending request can be withdrawn after confirming', async () => {
     setOrganization(OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING);
     await renderApp('organization-profile');
     expect(
-      await screen.findByText('Înscrierea ta așteaptă aprobare de la organizație'),
+      await screen.findByText(t('organization_profile:disclaimer.access_request_pending')),
     ).toBeTruthy();
     await fireEvent.press(screen.getByTestId('organization-withdraw'));
     await fireEvent.press(screen.getByTestId('organization-cancel-confirm'));
@@ -265,8 +272,10 @@ describe('Organizație', () => {
     const bar = await screen.findByTestId('organization-bar');
     // status and date stacked in one block, next to "Vezi evenimente"
     const member = within(within(bar).getByTestId('organization-member'));
-    expect(member.getByText('Membru')).toBeTruthy();
-    expect(member.getByText('din 01.03.2025')).toBeTruthy();
+    expect(member.getByText(t('organization_profile:bar.member'))).toBeTruthy();
+    expect(
+      member.getByText(t('organization_profile:bar.member_since', { date: '01.03.2025' })),
+    ).toBeTruthy();
     expect(within(bar).getByTestId('organization-events')).toBeTruthy();
     expect(screen.getByTestId('organization-leave')).toBeTruthy();
   });
@@ -282,7 +291,7 @@ describe('Organizație', () => {
     setOrganization(OrganizatinVolunteerStatus.BLOCKED_VOLUNTEER);
     await renderApp('organization-profile');
     expect(
-      await screen.findByText('Accesul tău la organizație a fost restricționat.'),
+      await screen.findByText(t('organization_profile:disclaimer.volunteer_blocked')),
     ).toBeTruthy();
     expect(screen.queryByTestId('organization-bar')).toBeNull();
   });
@@ -305,7 +314,7 @@ describe('Organizație', () => {
       setOrganization(OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING);
       await renderApp('organization-profile');
       expect(
-        await screen.findByText('Înscrierea ta așteaptă aprobare de la organizație'),
+        await screen.findByText(t('organization_profile:disclaimer.access_request_pending')),
       ).toBeTruthy();
 
       await act(async () => listeners.forEach((listener) => listener('background')));
@@ -313,8 +322,10 @@ describe('Organizație', () => {
       await act(async () => listeners.forEach((listener) => listener('active')));
 
       expect(mockRefetch).toHaveBeenCalled();
-      expect(await screen.findByText('Membru')).toBeTruthy();
-      expect(screen.queryByText('Înscrierea ta așteaptă aprobare de la organizație')).toBeNull();
+      expect(await screen.findByText(t('organization_profile:bar.member'))).toBeTruthy();
+      expect(
+        screen.queryByText(t('organization_profile:disclaimer.access_request_pending')),
+      ).toBeNull();
       AppState.addEventListener = original;
     });
 

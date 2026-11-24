@@ -44,6 +44,12 @@ if (process.env.EAS_BUILD) {
   }
 }
 
+// Why the app asks for the photo library, in the two languages of the app (see `locales` below).
+const PHOTOS_PERMISSION = {
+  ro: 'VIC folosește galeria foto doar pentru a-ți alege fotografia de profil.',
+  en: 'VIC uses your photo library only to let you choose your profile picture.',
+};
+
 const socialPlugins: NonNullable<ExpoConfig['plugins']> = [
   ...(googleIosUrlScheme
     ? [['@react-native-google-signin/google-signin', { iosUrlScheme: googleIosUrlScheme }] as const]
@@ -89,8 +95,15 @@ const expoConfig: ExpoConfig = {
   web: {
     favicon: './src/assets/images/favicon.png',
   },
+  // The two languages of the app, for the system: iOS shows „Limbă preferată” for VIC in Settings
+  // and writes its own dialogs (the photo permission) in the phone's language. In effect from the
+  // next store build; the switcher inside the app works without it.
+  locales: {
+    ro: { ios: { NSPhotoLibraryUsageDescription: PHOTOS_PERMISSION.ro } },
+    en: { ios: { NSPhotoLibraryUsageDescription: PHOTOS_PERMISSION.en } },
+  },
   plugins: [
-    'expo-localization',
+    ['expo-localization', { supportedLocales: ['ro', 'en'] }],
     'expo-secure-store',
     'expo-apple-authentication',
     ...socialPlugins,
@@ -126,7 +139,7 @@ const expoConfig: ExpoConfig = {
       'expo-image-picker',
       {
         // the profile photo is picked from the gallery only: no camera, no microphone
-        photosPermission: 'VIC folosește galeria foto doar pentru a-ți alege fotografia de profil.',
+        photosPermission: PHOTOS_PERMISSION.ro,
         cameraPermission: false,
         microphonePermission: false,
       },

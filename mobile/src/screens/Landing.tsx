@@ -12,6 +12,7 @@ import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import { LoginHero } from '../components/auth/LoginHero';
 import { SocialButton } from '../components/auth/SocialButton';
 import { VicLogo } from '../components/brand/VicLogo';
+import { LanguageToggle } from '../components/LanguageSwitcher';
 import { Sheet } from '../components/ui/Sheet';
 import { AppText } from '../design/components/Text';
 import { Button } from '../design/components/Button';
@@ -24,6 +25,7 @@ import { isMigrationNoticeActive } from '../common/utils/migration-notice';
 import { displayTitle } from '../layouts/displayTitle';
 import { getAuthErrorCode } from '../common/utils/auth-error';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import i18n from '../common/config/i18n';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -44,7 +46,8 @@ const Landing = ({ navigation }: any) => {
   useFocusedStatusBarStyle('light');
   const sheetRef = useRef<BottomSheetModal>(null);
   const [email, setEmail] = useState('');
-  const [emailError, setEmailError] = useState<string | undefined>();
+  // a function, read when the field is drawn: the message follows a change of language
+  const [emailError, setEmailError] = useState<(() => string) | undefined>();
   const [isSending, setIsSending] = useState(false);
 
   useEffect(() => {
@@ -71,7 +74,7 @@ const Landing = ({ navigation }: any) => {
   const onSendCode = async () => {
     const value = email.trim();
     if (!EMAIL_PATTERN.test(value)) {
-      setEmailError(`${t('login:form.email.pattern')}`);
+      setEmailError(() => () => i18n.t('login:form.email.pattern'));
       return;
     }
     setEmailError(undefined);
@@ -82,7 +85,10 @@ const Landing = ({ navigation }: any) => {
       navigation.navigate('login', { email: value, maskedEmail });
     } catch (error) {
       const code = getAuthErrorCode(error);
-      setEmailError(code ? InternalErrors.AUTH_ERRORS.getError(code) : `${t('auth:errors.login')}`);
+      setEmailError(
+        () => () =>
+          code ? InternalErrors.AUTH_ERRORS.getError(code) : i18n.t('auth:errors.login'),
+      );
     } finally {
       setIsSending(false);
     }
@@ -180,6 +186,9 @@ const Landing = ({ navigation }: any) => {
             />
           </Animated.View>
         </View>
+        <Animated.View entering={enter(8, reduced)} style={styles.language}>
+          <LanguageToggle testID="landing-language" />
+        </Animated.View>
         <Animated.View entering={enter(8, reduced)} style={styles.links}>
           <Pressable
             onPress={() => openLink(process.env.EXPO_PUBLIC_TERMS_AND_CONDITIONS_LINK)}
@@ -217,7 +226,7 @@ const Landing = ({ navigation }: any) => {
             setEmail(text);
             setEmailError(undefined);
           }}
-          error={emailError}
+          error={emailError?.()}
           keyboardType="email-address"
           autoCapitalize="none"
           autoComplete="email"
@@ -267,13 +276,14 @@ const styles = StyleSheet.create((theme) => ({
   },
   spacer: { flex: 1, minHeight: 20 },
   buttons: { gap: 10 },
+  language: { alignItems: 'center', marginTop: 14 },
   links: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
     columnGap: 22,
     rowGap: 8,
-    marginTop: 18,
+    marginTop: 10,
   },
   link: { color: palette.white, textDecorationLine: 'underline' },
   footer: {

@@ -8,6 +8,7 @@ import Event from './Event';
 import useStore from '../store/store';
 import { EventVolunteerStatus } from '../common/enums/event-volunteer-status.enum';
 import { EventRegistrationStatus } from '../common/enums/event-registration-status.enum';
+import { containing, t } from '../test/i18n';
 
 // The event page shows who is coming as overlapping initials in the places row (handbook `.avs`).
 
@@ -33,6 +34,8 @@ jest.mock('../services/event/event.service', () => ({
 }));
 
 const { Navigator, Screen } = createNativeStackNavigator();
+
+const participants = (n: number) => t('event:participants_label', { n });
 
 const renderEvent = () =>
   render(
@@ -87,14 +90,16 @@ describe('Eveniment: cine participă', () => {
       registrationStatus: EventRegistrationStatus.APPROVED,
     });
     await renderEvent();
-    expect(await screen.findByLabelText('18 persoane participă')).toBeTruthy();
+    expect(await screen.findByLabelText(participants(18))).toBeTruthy();
 
     await fireEvent.press(await screen.findByTestId('event-cancel'));
 
     // caption, faces and their label agree straight away
-    expect(await screen.findByLabelText('17 persoane participă')).toBeTruthy();
+    expect(await screen.findByLabelText(participants(17))).toBeTruthy();
     expect(screen.getByText('+14')).toBeTruthy();
-    expect(screen.getByText(/17 persoane participă!/)).toBeTruthy();
+    expect(
+      screen.getByText(containing(t('event:attending', { numberOfVolunteer: 17 }))),
+    ).toBeTruthy();
     // and the initials come fresh from the API
     expect(mockRefetch).toHaveBeenCalled();
   });
@@ -103,13 +108,15 @@ describe('Eveniment: cine participă', () => {
     setEvent();
     await renderEvent();
     const row = await screen.findByTestId('event-capacity');
-    const faces = within(row).getByLabelText('18 persoane participă');
+    const faces = within(row).getByLabelText(participants(18));
     expect(within(faces).getAllByTestId('event-participants-face')).toHaveLength(3);
     expect(within(faces).getByText('ȘT')).toBeTruthy();
     expect(within(faces).getByText('+15')).toBeTruthy();
     // the caption and the places are still there
-    expect(within(row).getByText('50 de locuri')).toBeTruthy();
-    expect(within(row).getByText(/18 persoane participă!/)).toBeTruthy();
+    expect(within(row).getByText(t('event:capacity_places_de', { places: 50 }))).toBeTruthy();
+    expect(
+      within(row).getByText(containing(t('event:attending', { numberOfVolunteer: 18 }))),
+    ).toBeTruthy();
   });
 
   it('uses „de” from 20', async () => {
@@ -118,7 +125,7 @@ describe('Eveniment: cine participă', () => {
       participants: { total: 20, preview: [{ initials: 'AP' }] },
     });
     await renderEvent();
-    expect(await screen.findByLabelText('20 de persoane participă')).toBeTruthy();
+    expect(await screen.findByLabelText(t('event:participants_label_of', { n: 20 }))).toBeTruthy();
     expect(screen.getByText('+19')).toBeTruthy();
   });
 
@@ -128,7 +135,7 @@ describe('Eveniment: cine participă', () => {
       participants: { total: 1, preview: [{ initials: 'AP' }] },
     });
     await renderEvent();
-    expect(await screen.findByLabelText('O persoană participă')).toBeTruthy();
+    expect(await screen.findByLabelText(t('event:participants_label_one'))).toBeTruthy();
     expect(screen.queryByTestId('event-participants-more')).toBeNull();
   });
 
@@ -144,14 +151,16 @@ describe('Eveniment: cine participă', () => {
     await renderEvent();
     await screen.findByTestId('event-capacity');
     expect(screen.queryByTestId('event-participants')).toBeNull();
-    expect(screen.getByText(/18 persoane participă!/)).toBeTruthy();
+    expect(
+      screen.getByText(containing(t('event:attending', { numberOfVolunteer: 18 }))),
+    ).toBeTruthy();
   });
 
   it('at large text sizes the faces move under the caption and show all five', async () => {
     mockFontScale = 1.6;
     setEvent();
     await renderEvent();
-    const faces = await screen.findByLabelText('18 persoane participă');
+    const faces = await screen.findByLabelText(participants(18));
     expect(within(faces).getAllByTestId('event-participants-face')).toHaveLength(5);
     expect(within(faces).getByText('+13')).toBeTruthy();
   });

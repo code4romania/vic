@@ -25,4 +25,6 @@ export interface IUserProfile {
   // Mandatory since VIC 2.0; older accounts may not have it yet
   birthday?: Date;
   notificationsSettings: INotificationsSettings;
+  // The language of the account (pushes and emails follow it); null until an app sets it
+  language?: 'ro' | 'en' | null;
 }

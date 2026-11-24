@@ -24,7 +24,7 @@ describe('ErrorClass', () => {
     'USER_007',
     'NOTIFICATIONS_001',
     'VOLUNTEER_005',
-  ])('%s has a Romanian message, not the generic one with the code', (code) => {
+  ])('%s has its own message, not the generic one with the code', (code) => {
     const text = InternalErrors.ACTIVITY_LOG_ERRORS.getError(code as never);
     expect(text).toBe(i18n.t(`general:error.${code}`));
     expect(text).not.toContain(code);

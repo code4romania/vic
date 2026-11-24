@@ -25,6 +25,7 @@ import { useTabBarScroll } from '../components/navigation/TabBarScroll';
 import { useGlassTabBarInset } from '../components/navigation/GlassTabBar';
 import { CompactTitleBar } from '../components/ui/ScreenChrome';
 import { Sheet, VButton } from '../components/ui';
+import { LanguageRow } from '../components/LanguageSwitcher';
 import { AppText, Group, HexAvatar, ListRow, RowChevron, StatusChip } from '../design/components';
 import { enter } from '../design/motion';
 import { palette } from '../design/tokens';
@@ -292,6 +293,7 @@ const Settings = ({ navigation }: any) => {
               onPress={() => navigation.navigate(SETTINGS_ROUTES.NOTIFICATIONS_SETTINGS)}
               testID="profile-notifications"
             />
+            <LanguageRow />
             <ListRow
               icon={InfoIcon}
               title={`${t('information')}`}

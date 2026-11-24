@@ -15,6 +15,7 @@ import { NavigationContext } from '@react-navigation/native';
 import { toHours } from '../../common/utils/hours';
 import { palette } from '../tokens';
 import { springTo } from '../motion';
+import { impactHexagonLabelRo, useDesignLabels } from '../labels';
 
 export type ImpactHexagonTone = 'onNavy' | 'onLight';
 
@@ -66,25 +67,8 @@ export const HEXAGON_TONES: Record<
   },
 };
 
-/** Romanian count: „1 oră”, „5 ore”, „42 de ore” (20+ and round hundreds take „de”). */
-const roHours = (n: number) => {
-  if (n === 1) {
-    return '1 oră';
-  }
-  const rest = Math.abs(n) % 100;
-  return `${n} ${n !== 0 && (rest === 0 || rest >= 20) ? 'de ' : ''}ore`;
-};
-
-export const impactHexagonLabel = (approved: number, pending: number, rejected = 0) => {
-  const parts = [`${roHours(approved)} ${approved === 1 ? 'aprobată' : 'aprobate'}`];
-  if (pending > 0) {
-    parts.push(`${roHours(pending)} în așteptare`);
-  }
-  if (rejected > 0) {
-    parts.push(`${roHours(rejected)} ${rejected === 1 ? 'respinsă' : 'respinse'}`);
-  }
-  return parts.join(', ');
-};
+/** The Romanian label („42 de ore aprobate, 3 ore în așteptare”); the app's language comes from labels. */
+export const impactHexagonLabel = impactHexagonLabelRo;
 
 /** Rounded pointy-top hexagon (the prototype's roundedHex): corners cut and joined by a curve. */
 export const roundedHexPath = (cx: number, cy: number, r: number, corner: number) => {
@@ -192,6 +176,7 @@ export const ImpactHexagon = ({
   accessibilityLabel,
   testID,
 }: ImpactHexagonProps) => {
+  const labels = useDesignLabels();
   const reduced = useReducedMotion();
   const focused = useScreenFocused();
   const colors = HEXAGON_TONES[tone];
@@ -267,7 +252,7 @@ export const ImpactHexagon = ({
       testID={testID}
       accessible
       accessibilityRole="image"
-      accessibilityLabel={accessibilityLabel ?? impactHexagonLabel(approved, pending, rejected)}
+      accessibilityLabel={accessibilityLabel ?? labels.impactHexagon(approved, pending, rejected)}
       style={{ width: W, height: H }}
     >
       <Canvas style={{ width: W, height: H }} pointerEvents="none">

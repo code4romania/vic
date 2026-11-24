@@ -40,6 +40,7 @@ import { fontScaleCap, palette, radius } from '../tokens';
 import { duration, spring } from '../motion';
 import { haptics } from '../haptics';
 import { CloseIcon, ICON_STROKE } from '../icons';
+import { useDesignLabels } from '../labels';
 import { useHideTabBarWhile } from '../../components/navigation/tab-bar-overlay';
 import { useBackToClose } from '../../hooks/useBackToClose';
 
@@ -87,7 +88,7 @@ export const Sheet = forwardRef<BottomSheetModal, SheetProps>(
       variant = 'auto',
       footer,
       showClose = true,
-      closeLabel = 'Închide',
+      closeLabel: closeLabelProp,
       scroll = true,
       scrollable = false,
       bodyStyle,
@@ -98,6 +99,8 @@ export const Sheet = forwardRef<BottomSheetModal, SheetProps>(
     },
     ref,
   ) => {
+    const labels = useDesignLabels();
+    const closeLabel = closeLabelProp ?? labels.close;
     const insets = useSafeAreaInsets();
     const { height } = useWindowDimensions();
     const reduced = useReducedMotion();

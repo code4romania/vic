@@ -22,31 +22,29 @@ import { useValidationGate } from '../hooks/useValidationGate';
 export const AddAccessCodeValidationSchema = yup.object({
   code: yup
     .string()
-    .required(`${i18n.t('access_code:form.code.required')}`)
-    .min(
-      4,
-      `${i18n.t('access_code:form.code.min', {
+    .required(() => i18n.t('access_code:form.code.required'))
+    .min(4, () =>
+      i18n.t('access_code:form.code.min', {
         value: '4',
-      })}`,
+      }),
     )
-    .max(
-      10,
-      `${i18n.t('access_code:form.code.max', {
+    .max(10, () =>
+      i18n.t('access_code:form.code.max', {
         value: '10',
-      })}`,
+      }),
     )
-    .matches(REGEX.NAME_REGEX, `${i18n.t('access_code:form.code.pattern')}`),
+    .matches(REGEX.NAME_REGEX, () => i18n.t('access_code:form.code.pattern')),
   startDate: yup
     .date()
-    .typeError(`${i18n.t('general:invalid_date')}`)
-    .required(`${i18n.t('access_code:form.start_date.required')}`),
+    .typeError(() => i18n.t('general:invalid_date'))
+    .required(() => i18n.t('access_code:form.start_date.required')),
   endDate: yup
     .date()
-    .typeError(`${i18n.t('general:invalid_date')}`)
+    .typeError(() => i18n.t('general:invalid_date'))
     .nullable()
     .optional()
     // #593: a code cannot end before it starts
-    .min(yup.ref('startDate'), `${i18n.t('access_code:form.end_date.min')}`),
+    .min(yup.ref('startDate'), () => i18n.t('access_code:form.end_date.min')),
 });
 
 const AddAccessCode = () => {

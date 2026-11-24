@@ -10,7 +10,7 @@ import { Sex } from '../common/enums/sex.enum';
 import FormDatePicker from '../components/FormDatePicker';
 import { BIRTHDAY_INITIAL_VISIBLE, BIRTHDAY_MIN, birthdayMax } from '../common/utils/birthday';
 import FormSelect from '../components/FormSelect';
-import { SexOptions } from '../common/constants/sex-options';
+import { getSexOptions } from '../common/constants/sex-options';
 import { Linking, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useUpdateUserProfileMutation } from '../services/user/user.service';
@@ -28,6 +28,7 @@ import { normalizePhoneNumber } from '../common/utils/phone';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { usePaddingTop } from '../hooks/usePaddingTop';
 import { useConfirmDiscard } from '../hooks/useConfirmDiscard';
+import { useRevalidateOnLanguageChange } from '../hooks/useRevalidateOnLanguageChange';
 
 export type AccountDataFormTypes = {
   firstName: string;
@@ -43,35 +44,33 @@ export type AccountDataFormTypes = {
 const schema = yup.object({
   firstName: yup
     .string()
-    .required(`${i18n.t('register:create_user.form.first_name.required')}`)
-    .min(2, `${i18n.t('register:create_user.form.first_name.min', { value: '2' })}`)
-    .max(
-      50,
-      `${i18n.t('register:create_user.form.first_name.max', {
+    .required(() => i18n.t('register:create_user.form.first_name.required'))
+    .min(2, () => i18n.t('register:create_user.form.first_name.min', { value: '2' }))
+    .max(50, () =>
+      i18n.t('register:create_user.form.first_name.max', {
         value: '50',
-      })}`,
+      }),
     ),
   lastName: yup
     .string()
-    .required(`${i18n.t('register:create_user.form.last_name.required')}`)
-    .min(2, `${i18n.t('register:create_user.form.last_name.min', { value: '2' })}`)
-    .max(
-      50,
-      `${i18n.t('register:create_user.form.last_name.max', {
+    .required(() => i18n.t('register:create_user.form.last_name.required'))
+    .min(2, () => i18n.t('register:create_user.form.last_name.min', { value: '2' }))
+    .max(50, () =>
+      i18n.t('register:create_user.form.last_name.max', {
         value: '50',
-      })}`,
+      }),
     ),
   // Optional since VIC 2.0
   phone: yup
     .string()
     .transform((value) => (value ? value : undefined))
-    .matches(REGEX.NUMBERS_ONLY, `${i18n.t('register:create_account.form.phone.pattern')}`)
-    .length(9, `${i18n.t('register:create_account.form.phone.length', { number: 10 })}`),
+    .matches(REGEX.NUMBERS_ONLY, () => i18n.t('register:create_account.form.phone.pattern'))
+    .length(9, () => i18n.t('register:create_account.form.phone.length', { number: 10 })),
   // Mandatory since VIC 2.0 (replaces the ID card data)
   birthday: yup
     .date()
-    .typeError(`${i18n.t('register:create_user.form.birthday.required')}`)
-    .required(`${i18n.t('register:create_user.form.birthday.required')}`),
+    .typeError(() => i18n.t('register:create_user.form.birthday.required'))
+    .required(() => i18n.t('register:create_user.form.birthday.required')),
 });
 
 const AccountData = ({ navigation }: any) => {
@@ -93,11 +92,13 @@ const AccountData = ({ navigation }: any) => {
     watch,
     reset,
     getValues,
+    trigger,
   } = useForm<AccountDataFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
     resolver: yupResolver(schema as any),
   });
+  useRevalidateOnLanguageChange(trigger, errors);
   useConfirmDiscard(navigation, isDirty || !!selectedProfilePicture);
 
   const { isLoading: isUpdatingProfile, mutate: updateUserProfile } =
@@ -292,7 +293,7 @@ const AccountData = ({ navigation }: any) => {
             label={t('general:sex_label')}
             error={errors.sex}
             placeholder={t('general:select')}
-            options={SexOptions}
+            options={getSexOptions()}
             disabled={isUpdatingProfile}
           />
         </View>

@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { EventRegistrationStatus } from '../../common/enums/event-registration-status.enum';
 import { IEventListItem } from '../../common/interfaces/event-list-item.interface';
 import { dateTile, formatEventWhen, formatShortDay } from '../../common/utils/event-format';
+import { localeTag } from '../../common/utils/date-locale';
 import { AppText, StatusChip, StatusKind } from '../../design/components';
 import { ClockIcon, GlobeIcon, LockIcon, PinIcon } from '../../design/icons';
 import { palette } from '../../design/tokens';
@@ -30,7 +31,8 @@ export interface EventCardProps {
 }
 
 /** "SÂM" from "Sâm, 22 nov". */
-const weekday = (value: string) => formatShortDay(value).split(',')[0].toLocaleUpperCase('ro-RO');
+const weekday = (value: string) =>
+  formatShortDay(value).split(',')[0].toLocaleUpperCase(localeTag());
 
 /** The date block: day of the week, a big Bricolage day and the month. */
 export const DateBlock = ({

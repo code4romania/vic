@@ -1,4 +1,5 @@
 import { HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { UserType } from 'src/modules/user/enums/user.enum';
 import { DataSource } from 'typeorm';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
@@ -170,8 +171,9 @@ export class DeleteOrganizationUsecase {
     const superAdmins = await this.authIdentityFacade.findSuperAdmins();
     if (superAdmins.length) {
       await this.authMailer
-        .send(
+        .sendToEach(
           superAdmins.map((identity) => identity.email),
+          UserType.ADMIN,
           AUTH_EMAILS.organizationDeleted(
             { name: organization.name, taxId: organization.taxId ?? null },
             { name: admin.name, email: admin.email },

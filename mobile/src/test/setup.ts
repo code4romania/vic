@@ -90,7 +90,27 @@ jest.mock('expo-apple-authentication', () => ({
   AppleAuthenticationScope: { EMAIL: 1, FULL_NAME: 0 },
 }));
 
-beforeEach(() => {
+// The phone's language: Romanian unless a test says otherwise (`mockDeviceLanguage('en')`).
+jest.mock('expo-localization', () => ({
+  getLocales: jest.fn(() => [{ languageCode: 'ro', languageTag: 'ro-RO' }]),
+}));
+
+// Every test starts in the same language whatever the previous one did: Romanian, or the one in
+// TEST_LANG (`TEST_LANG=en npm test` runs the whole suite in English, which proves the tests look
+// their texts up instead of spelling them out in one language).
+const TEST_LANGUAGE: 'ro' | 'en' = process.env.TEST_LANG === 'en' ? 'en' : 'ro';
+
+// also before the test file itself is read, so a text looked up while the tests are being
+// declared (an `it.each` table) is already in the test language
+require('../common/config/i18n').default.changeLanguage(TEST_LANGUAGE);
+
+beforeEach(async () => {
   (require('expo-secure-store') as any).__store.clear();
-  return mockAsyncStorage.clear();
+  await mockAsyncStorage.clear();
+  require('../common/config/language').resetLanguageState();
+  require('../services/language/language.service').resetLanguageSync();
+  const i18n = require('../common/config/i18n').default;
+  if (i18n.language !== TEST_LANGUAGE) {
+    await i18n.changeLanguage(TEST_LANGUAGE);
+  }
 });

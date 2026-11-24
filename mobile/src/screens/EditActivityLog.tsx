@@ -14,6 +14,7 @@ import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { CONSTANTS } from '../common/constants/constants';
 import { useConfirmDiscard } from '../hooks/useConfirmDiscard';
+import { useRevalidateOnLanguageChange } from '../hooks/useRevalidateOnLanguageChange';
 
 const EditActivityLog = ({ navigation }: any) => {
   const { t } = useTranslation();
@@ -27,11 +28,13 @@ const EditActivityLog = ({ navigation }: any) => {
     handleSubmit,
     formState: { errors, isDirty },
     reset,
+    trigger,
   } = useForm<ActivityLogFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
     resolver: yupResolver(activityLogSchema) as any,
   });
+  useRevalidateOnLanguageChange(trigger, errors);
   const allowLeave = useConfirmDiscard(navigation, isDirty);
 
   useEffect(() => {

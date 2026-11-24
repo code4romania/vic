@@ -5,6 +5,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import i18n from '../common/config/i18n';
 import { typedDateFormats } from '../common/utils/date-input-formats';
+import { dateLocale } from '../common/config/date-locale';
 
 interface DateRangePickerProps {
   id?: string;
@@ -43,6 +44,7 @@ const DateRangePicker = ({ label, value, onChange, id }: DateRangePickerProps) =
         </div>
 
         <DatePicker
+          locale={dateLocale()}
           wrapperClassName="w-full"
           className="block w-full h-[42px] pr-10 border-cool-gray-300 rounded-lg focus:ring-navy focus:border-navy text-base sm:text-sm max-w-[37rem] py-2 pl-3"
           selectsRange={true}

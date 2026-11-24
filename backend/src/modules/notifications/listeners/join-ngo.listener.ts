@@ -1,18 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { MailService } from 'src/modules/mail/services/mail.service';
+import { NotificationMailerService } from '../services/notification-mailer.service';
+import { UserType } from 'src/modules/user/enums/user.enum';
 import { EVENTS } from '../constants/events.constants';
 import ApproveRequestEvent from '../events/join-ngo/approve-request.event';
 import ArchiveVolunteerEvent from '../events/join-ngo/archive-volunteer.event';
 import RejectRequestEvent from '../events/join-ngo/reject-request.event';
 import VolunteerLeftEvent from '../events/join-ngo/volunteer-left.event';
 import { PushNotificationsFacade } from '../notifications.facade';
-import { NOTIFICATIONS } from 'src/common/constants/notifications';
+import { localized, PUSH_TITLE } from 'src/common/constants/notifications';
 
 @Injectable()
 export class JoinNGOListener {
   constructor(
-    private readonly mailService: MailService,
+    private readonly notificationMailer: NotificationMailerService,
     private readonly pushNotificationsFacade: PushNotificationsFacade,
   ) {}
 
@@ -44,26 +45,24 @@ export class JoinNGOListener {
 
       this.pushNotificationsFacade.send({
         userIds: [userId],
-        title: NOTIFICATIONS.APPROVE_ACCESS_REQUEST.PUSH.title,
-        body: NOTIFICATIONS.APPROVE_ACCESS_REQUEST.PUSH.body(organizationName),
+        title: PUSH_TITLE,
+        body: localized((t) =>
+          t.APPROVE_ACCESS_REQUEST.PUSH.body(organizationName),
+        ),
         data: notificationData,
       });
     }
 
     if (notificationsViaEmail) {
       // 4. Send mail to user with link to the volunteer profile for the organization
-      await this.mailService.sendEmail({
-        to: userEmail,
-        subject:
-          NOTIFICATIONS.APPROVE_ACCESS_REQUEST.EMAIL.subject(organizationName),
-        context: {
-          title:
-            NOTIFICATIONS.APPROVE_ACCESS_REQUEST.EMAIL.subject(
-              organizationName,
-            ),
-          subtitle: NOTIFICATIONS.APPROVE_ACCESS_REQUEST.EMAIL.body,
-        },
-      });
+      await this.notificationMailer.send(
+        [userEmail],
+        UserType.REGULAR,
+        (t) => ({
+          subject: t.APPROVE_ACCESS_REQUEST.EMAIL.subject(organizationName),
+          body: t.APPROVE_ACCESS_REQUEST.EMAIL.body,
+        }),
+      );
     }
   }
 
@@ -92,10 +91,9 @@ export class JoinNGOListener {
 
       this.pushNotificationsFacade.send({
         userIds: [userId],
-        title: NOTIFICATIONS.REJECT_ACCESS_REQUEST.PUSH.title,
-        body: NOTIFICATIONS.REJECT_ACCESS_REQUEST.PUSH.body(
-          organizationName,
-          rejectionReason,
+        title: PUSH_TITLE,
+        body: localized((t) =>
+          t.REJECT_ACCESS_REQUEST.PUSH.body(organizationName, rejectionReason),
         ),
         data: notificationData,
       });
@@ -103,17 +101,14 @@ export class JoinNGOListener {
 
     if (notificationsViaEmail) {
       // 4. Send mail to user with link to the volunteer profile for the organization
-      await this.mailService.sendEmail({
-        to: userEmail,
-        subject:
-          NOTIFICATIONS.REJECT_ACCESS_REQUEST.EMAIL.subject(organizationName),
-        context: {
-          title:
-            NOTIFICATIONS.REJECT_ACCESS_REQUEST.EMAIL.subject(organizationName),
-          subtitle:
-            NOTIFICATIONS.REJECT_ACCESS_REQUEST.EMAIL.body(rejectionReason),
-        },
-      });
+      await this.notificationMailer.send(
+        [userEmail],
+        UserType.REGULAR,
+        (t) => ({
+          subject: t.REJECT_ACCESS_REQUEST.EMAIL.subject(organizationName),
+          body: t.REJECT_ACCESS_REQUEST.EMAIL.body(rejectionReason),
+        }),
+      );
     }
   }
 
@@ -140,24 +135,22 @@ export class JoinNGOListener {
 
       this.pushNotificationsFacade.send({
         userIds: [userId],
-        title: NOTIFICATIONS.ARCHIVE_VOLUNTEER.PUSH.title,
-        body: NOTIFICATIONS.ARCHIVE_VOLUNTEER.PUSH.body(organizationName),
+        title: PUSH_TITLE,
+        body: localized((t) => t.ARCHIVE_VOLUNTEER.PUSH.body(organizationName)),
         data: notificationData,
       });
     }
 
     if (notificationsViaEmail) {
       // 4. Send mail to user with link to the volunteer profile for the organization
-      await this.mailService.sendEmail({
-        to: userEmail,
-        subject:
-          NOTIFICATIONS.ARCHIVE_VOLUNTEER.EMAIL.subject(organizationName),
-        context: {
-          title:
-            NOTIFICATIONS.ARCHIVE_VOLUNTEER.EMAIL.subject(organizationName),
-          subtitle: NOTIFICATIONS.ARCHIVE_VOLUNTEER.EMAIL.body,
-        },
-      });
+      await this.notificationMailer.send(
+        [userEmail],
+        UserType.REGULAR,
+        (t) => ({
+          subject: t.ARCHIVE_VOLUNTEER.EMAIL.subject(organizationName),
+          body: t.ARCHIVE_VOLUNTEER.EMAIL.body,
+        }),
+      );
     }
   }
 
@@ -168,21 +161,10 @@ export class JoinNGOListener {
   ): Promise<void> {
     const { organizationName, userEmails, volunteerName } = payload;
 
-    // one email per admin, so they do not see each other's address
-    await Promise.all(
-      userEmails.map((email) =>
-        this.mailService.sendEmail({
-          to: email,
-          subject: NOTIFICATIONS.VOLUNTEER_LEFT.EMAIL.subject(volunteerName),
-          context: {
-            title: NOTIFICATIONS.VOLUNTEER_LEFT.EMAIL.subject(volunteerName),
-            subtitle: NOTIFICATIONS.VOLUNTEER_LEFT.EMAIL.body(
-              volunteerName,
-              organizationName,
-            ),
-          },
-        }),
-      ),
-    );
+    // one email per admin, so they do not see each other's address; each in the admin's own language
+    await this.notificationMailer.send(userEmails, UserType.ADMIN, (t) => ({
+      subject: t.VOLUNTEER_LEFT.EMAIL.subject(volunteerName),
+      body: t.VOLUNTEER_LEFT.EMAIL.body(volunteerName, organizationName),
+    }));
   }
 }

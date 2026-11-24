@@ -14,8 +14,18 @@ import { useActivityLogCounterQuery } from '../services/activity-log/activity-lo
 import { useValidationGate } from '../hooks/useValidationGate';
 
 const ActivityLogTabsOptions: TabItem<ActivityLogResolutionStatus>[] = [
-  { key: ActivityLogResolutionStatus.NEW, value: i18n.t('activity_log:pending') },
-  { key: ActivityLogResolutionStatus.SOLVED, value: i18n.t('activity_log:past') },
+  {
+    key: ActivityLogResolutionStatus.NEW,
+    get value() {
+      return i18n.t('activity_log:pending');
+    },
+  },
+  {
+    key: ActivityLogResolutionStatus.SOLVED,
+    get value() {
+      return i18n.t('activity_log:past');
+    },
+  },
 ];
 
 // Hours, not entries: the API counts the hours in each state.

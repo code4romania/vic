@@ -20,6 +20,7 @@ import { queryKeys } from '../services/query-keys';
 import GlassTabBar from '../components/navigation/GlassTabBar';
 import { TabBarScrollProvider } from '../components/navigation/TabBarScroll';
 import { SUCCESS_DWELL_MS } from '../components/hours/AddHoursSheet';
+import { TEST_LANGUAGE, byLanguage, inLanguage, shortMonthName, t } from '../test/i18n';
 
 // the bottom-sheet mock renders a modal's content but not its sticky footer: draw it too
 jest.mock('@gorhom/bottom-sheet', () => {
@@ -228,9 +229,9 @@ describe('Ore', () => {
     expect(titleRow.getByRole('header', { name: i18n.t('activity_logs:title') })).toBeTruthy();
     expect(titleRow.getByTestId('hours-add')).toBeTruthy();
     // „Adaugă” with a lucide Plus before it, not a typed „+”
-    expect(titleRow.getByText('Adaugă')).toBeTruthy();
+    expect(titleRow.getByText(t('activity_logs:add_short'))).toBeTruthy();
     expect(titleRow.queryByText(/\+/)).toBeNull();
-    expect(titleRow.getByTestId('hours-add').props.accessibilityLabel).toBe('Adaugă ore');
+    expect(titleRow.getByTestId('hours-add').props.accessibilityLabel).toBe(t('activity_logs:add'));
   });
 
   it('as the Ore tab, has no back button and puts „Adaugă ore” beside the tab bar', async () => {
@@ -240,8 +241,8 @@ describe('Ore', () => {
     expect(titleRow.queryByTestId('hours-add')).toBeNull();
     const bar = within(screen.getByTestId('glass-tab-bar'));
     const add = bar.getByTestId('hours-add');
-    expect(add.props.accessibilityLabel).toBe('Adaugă ore');
-    expect(bar.getByText('Adaugă ore')).toBeTruthy();
+    expect(add.props.accessibilityLabel).toBe(t('activity_logs:add'));
+    expect(bar.getByText(t('activity_logs:add'))).toBeTruthy();
     expect(
       StyleSheet.flatten(screen.getByTestId('hours-list').props.contentContainerStyle)
         .paddingBottom,
@@ -261,9 +262,9 @@ describe('Ore', () => {
     expect(summary.getByTestId('impact-hexagon', { includeHiddenElements: true })).toBeTruthy();
     // the large title and the compact one that comes in after scrolling
     // (the compact one is hidden from VoiceOver: the large title is the header)
-    expect(screen.getAllByText('Ore de voluntariat', { includeHiddenElements: true })).toHaveLength(
-      2,
-    );
+    expect(
+      screen.getAllByText(t('activity_logs:title'), { includeHiddenElements: true }),
+    ).toHaveLength(2);
   });
 
   it('refetches the current list and counters on initial focus and when returning', async () => {
@@ -367,8 +368,10 @@ describe('Ore', () => {
 
   it('shows the organization, the totals and the pending entries first, newest first', async () => {
     await renderApp();
-    expect(await screen.findAllByText('Ore de voluntariat')).toBeTruthy();
-    expect(screen.getByLabelText('La Asociația Exemplu')).toBeTruthy();
+    expect(await screen.findAllByText(t('activity_logs:title'))).toBeTruthy();
+    expect(
+      screen.getByLabelText(t('activity_logs:at', { name: 'Asociația Exemplu' })),
+    ).toBeTruthy();
     expect(
       within(screen.getByTestId('hours-organization')).getByText('Asociația Exemplu'),
     ).toBeTruthy();
@@ -386,22 +389,26 @@ describe('Ore', () => {
     const row = screen.getByTestId('log-row-1');
     expect(within(row).getByText('6h')).toBeTruthy();
     expect(within(row).getByText('Asistență medicală')).toBeTruthy();
-    expect(within(row).getByText('Training: Prim ajutor · 8 nov')).toBeTruthy();
-    expect(within(row).getByText('În așteptare')).toBeTruthy();
+    expect(within(row).getByText(`Training: Prim ajutor · 8 ${shortMonthName(10)}`)).toBeTruthy();
+    expect(within(row).getByText(t('activity_log:status.pending'))).toBeTruthy();
     // no task and no event: "Altă opțiune" and only the day
-    expect(within(screen.getByTestId('log-row-2')).getByText('Altă opțiune')).toBeTruthy();
-    expect(within(screen.getByTestId('log-row-2')).getByText('8 nov')).toBeTruthy();
+    expect(within(screen.getByTestId('log-row-2')).getByText(t('activity_log:other'))).toBeTruthy();
+    expect(
+      within(screen.getByTestId('log-row-2')).getByText(`8 ${shortMonthName(10)}`),
+    ).toBeTruthy();
     // the number of pending entries on its segment
     expect(within(screen.getByTestId('hours-status')).getByText('2')).toBeTruthy();
   });
 
   it('switches status with the segmented control and shows an empty state', async () => {
     await renderApp();
-    await fireEvent.press(await screen.findByText('Aprobate'));
+    await fireEvent.press(await screen.findByText(t('activity_logs:tabs.approved')));
     expect(mockListCalls[mockListCalls.length - 1][3]).toBe(ActivityLogStatus.APPROVED);
-    expect(within(await screen.findByTestId('log-row-3')).getByText('Aprobat')).toBeTruthy();
-    await fireEvent.press(screen.getByText('Respinse'));
-    expect(await screen.findByText('Nicio înregistrare refuzată')).toBeTruthy();
+    expect(
+      within(await screen.findByTestId('log-row-3')).getByText(t('activity_log:status.approved')),
+    ).toBeTruthy();
+    await fireEvent.press(screen.getByText(t('activity_logs:tabs.rejected')));
+    expect(await screen.findByText(t('activity_logs:empty.rejected.title'))).toBeTruthy();
   });
 
   it('without an active organization shows an empty state and asks nothing (audit #7)', async () => {
@@ -436,7 +443,7 @@ describe('Ore', () => {
     setProfile(null);
     await renderApp();
     await fireEvent.press(await screen.findByTestId('hours-add'));
-    expect(screen.getByText('Completează datele')).toBeTruthy();
+    expect(screen.getByText(t('activity_logs:error_modal.action_btn_label'))).toBeTruthy();
     expect(screen.queryByTestId('hours-add-sheet')).toBeNull();
   });
 
@@ -465,7 +472,7 @@ describe('Ore', () => {
     });
     await renderApp();
     expect(screen.getByTestId('hours-organization').props.accessibilityHint).toBe(
-      'Schimbă organizația',
+      t('activity_logs:switch_organization'),
     );
     expect(screen.getByTestId('hours-organization-org-1')).toBeTruthy();
     expect(screen.queryByTestId('hours-organization-org-3')).toBeNull();
@@ -477,15 +484,15 @@ describe('Ore', () => {
   it('opens „Adaugă ore” as a sheet with the form of the prototype', async () => {
     await renderApp();
     const sheet = await openAddSheet();
-    expect(sheet.getByRole('header', { name: 'Adaugă ore' })).toBeTruthy();
+    expect(sheet.getByRole('header', { name: t('activity_logs:add') })).toBeTruthy();
     expect(sheet.getByTestId('hours-stepper-value').props.children).toBe('1h');
-    expect(sheet.getByText(/^Activitate/)).toBeTruthy();
+    expect(sheet.getByText(new RegExp(`^${t('activity_log:form.task.label')}`))).toBeTruthy();
     expect(sheet.getByTestId('select-activityTypeId')).toBeTruthy();
     expect(screen.getByTestId('hours-submit').props.accessibilityLabel).toBe(
-      'Trimite spre aprobare',
+      t('activity_log:submit'),
     );
     // the arrow is a lucide icon after the label, not a typed „→”
-    expect(screen.getByText('Trimite spre aprobare')).toBeTruthy();
+    expect(screen.getByText(t('activity_log:submit'))).toBeTruthy();
     expect(screen.queryByText(/→/)).toBeNull();
   });
 
@@ -527,7 +534,7 @@ describe('Ore', () => {
     await renderApp();
     await openAddSheet();
     await fireEvent.press(screen.getByTestId('hours-submit'));
-    expect(await screen.findByText('Alegerea activității este obligatorie')).toBeTruthy();
+    expect(await screen.findByText(t('activity_log:form.task.required'))).toBeTruthy();
     expect(mockCreate).not.toHaveBeenCalled();
   });
 
@@ -569,7 +576,7 @@ describe('Ore', () => {
     });
     await renderApp();
     const hexagon = screen.getByTestId('impact-hexagon', { includeHiddenElements: true });
-    await fireEvent.press(await screen.findByText('Aprobate'));
+    await fireEvent.press(await screen.findByText(t('activity_logs:tabs.approved')));
     const sheet = await openAddSheet();
     await pickActivity();
     await fireEvent.press(sheet.getByTestId('hours-stepper-plus'));
@@ -587,10 +594,10 @@ describe('Ore', () => {
       expect.any(Object),
     );
     const done = within(await screen.findByTestId('hours-sent'));
-    expect(done.getByText('Trimis spre aprobare')).toBeTruthy();
+    expect(done.getByText(t('activity_log:success.title'))).toBeTruthy();
     expect(
       done.getByText(
-        '3 ore la Asociația Exemplu. Primești notificare când coordonatorul le aprobă.',
+        t('activity_log:success.description', { count: 3, name: 'Asociația Exemplu' }),
       ),
     ).toBeTruthy();
     expect(Haptics.notificationAsync).toHaveBeenCalledWith('success');
@@ -610,7 +617,7 @@ describe('Ore', () => {
     await waitFor(() =>
       expect(Toast.show).toHaveBeenCalledWith({
         type: 'success',
-        text1: '3h trimise spre aprobare',
+        text1: t('activity_logs:sent_toast', { n: 3 }),
       }),
     );
     // no event chosen: no empty event id is sent
@@ -621,7 +628,7 @@ describe('Ore', () => {
 describe('Adaugă ore (add-activity-log route)', () => {
   it('still opens as a screen for deep links and other callers', async () => {
     await renderApp('add-activity-log');
-    expect(await screen.findByText('Adaugă ore de voluntariat')).toBeTruthy();
+    expect(await screen.findByText(t('activity_log:add_title'))).toBeTruthy();
     expect(screen.getByTestId('hours-stepper-value').props.children).toBe('1h');
   });
 });
@@ -652,7 +659,7 @@ describe('Ore: detaliu', () => {
       expect(screen.getByText(expected)).toBeTruthy();
     } finally {
       await act(async () => {
-        await i18n.changeLanguage('ro');
+        await i18n.changeLanguage(TEST_LANGUAGE);
       });
     }
   });
@@ -660,12 +667,20 @@ describe('Ore: detaliu', () => {
   it('a pending entry can be deleted after confirming', async () => {
     detail(ActivityLogStatus.PENDING);
     await renderApp('activity-log', detailParams);
-    expect(await screen.findByText('8 noiembrie 2026')).toBeTruthy();
-    expect(screen.getByText(/Până atunci o poți edita sau șterge/)).toBeTruthy();
+    expect(
+      await screen.findByText(byLanguage({ ro: '8 noiembrie 2026', en: '8 November 2026' })),
+    ).toBeTruthy();
+    expect(screen.getByText(t('activity_log:disclaimer.pending_editable'))).toBeTruthy();
     expect(screen.getByText('Am ajutat la standul de prim ajutor.')).toBeTruthy();
     await fireEvent.press(screen.getByTestId('log-delete'));
     expect(
-      screen.getByText('Cele 6 ore de la Asistență medicală nu mai ajung la organizație.'),
+      screen.getByText(
+        t('activity_log:confirmation_modal.description', {
+          count: 6,
+          hours: 6,
+          title: 'Asistență medicală',
+        }),
+      ),
     ).toBeTruthy();
     await fireEvent.press(screen.getByTestId('log-delete-confirm'));
     expect(mockCancel).toHaveBeenCalledWith({ activityLogId: '1' }, expect.any(Object));
@@ -687,7 +702,13 @@ describe('Ore: detaliu', () => {
       rejectionReason: 'Transportul a fost făcut în altă zi.',
     });
     await renderApp('activity-log', detailParams);
-    expect(await screen.findByText('Respinsă la 14 octombrie 2026')).toBeTruthy();
+    expect(
+      await screen.findByText(
+        t('activity_log:disclaimer.rejected', {
+          date: byLanguage({ ro: '14 octombrie 2026', en: '14 October 2026' }),
+        }),
+      ),
+    ).toBeTruthy();
     expect(screen.getByText(/Transportul a fost făcut în altă zi\./)).toBeTruthy();
     expect(screen.queryByTestId('log-edit')).toBeNull();
     expect(screen.queryByTestId('log-delete')).toBeNull();
@@ -696,7 +717,13 @@ describe('Ore: detaliu', () => {
   it('an approved entry shows when it was approved', async () => {
     detail(ActivityLogStatus.APPROVED, { approvedOn: '28/10/2026' });
     await renderApp('activity-log', detailParams);
-    expect(await screen.findByText('Aprobată la 28 octombrie 2026')).toBeTruthy();
+    expect(
+      await screen.findByText(
+        t('activity_log:disclaimer.approved', {
+          date: byLanguage({ ro: '28 octombrie 2026', en: '28 October 2026' }),
+        }),
+      ),
+    ).toBeTruthy();
   });
 
   it('a just-created entry approved meanwhile mounts a new status banner', async () => {
@@ -705,21 +732,34 @@ describe('Ore: detaliu', () => {
     detail(ActivityLogStatus.PENDING);
     await renderApp('activity-log', detailParams);
     const pending = await screen.findByTestId('log-status');
-    expect(within(pending).getByText(/Până atunci o poți edita sau șterge/)).toBeTruthy();
+    expect(within(pending).getByText(t('activity_log:disclaimer.pending_editable'))).toBeTruthy();
 
     act(() => detail(ActivityLogStatus.APPROVED, { approvedOn: '19/11/2026' }));
 
-    const approved = await screen.findByText('Aprobată la 19 noiembrie 2026');
+    const approved = await screen.findByText(
+      t('activity_log:disclaimer.approved', {
+        date: byLanguage({ ro: '19 noiembrie 2026', en: '19 November 2026' }),
+      }),
+    );
     expect(approved).toBeTruthy();
     expect(screen.getByTestId('log-status')).not.toBe(pending);
   });
 });
 
 describe('activity log dates', () => {
-  it('reads the API formats and keeps unknown text', () => {
-    expect(formatLogShortDay('08.11.2026')).toBe('8 nov');
-    expect(formatLogLongDay('28/10/2026')).toBe('28 octombrie 2026');
+  it('reads the API formats and keeps unknown text', async () => {
+    await inLanguage('ro', () => {
+      expect(formatLogShortDay('08.11.2026')).toBe('8 nov');
+      expect(formatLogLongDay('28/10/2026')).toBe('28 octombrie 2026');
+    });
     expect(formatLogLongDay('')).toBe('');
     expect(formatLogShortDay('ieri')).toBe('ieri');
+  });
+
+  it('writes the months in English when the app is in English', async () => {
+    await inLanguage('en', () => {
+      expect(formatLogShortDay('08.11.2026')).toBe('8 Nov');
+      expect(formatLogLongDay('28/10/2026')).toBe('28 October 2026');
+    });
   });
 });

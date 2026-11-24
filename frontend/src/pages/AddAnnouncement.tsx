@@ -20,28 +20,28 @@ import { useValidationGate } from '../hooks/useValidationGate';
 export const anouncementFormValidationSchema = yup.object({
   name: yup
     .string()
-    .required(`${i18n.t('announcement:form.name.required')}`)
-    .min(2, `${i18n.t('announcement:form.name.min', { value: '2' })}`)
-    .max(30, `${i18n.t('announcement:form.name.max', { value: '30' })}`),
+    .required(() => i18n.t('announcement:form.name.required'))
+    .min(2, () => i18n.t('announcement:form.name.min', { value: '2' }))
+    .max(30, () => i18n.t('announcement:form.name.max', { value: '30' })),
   description: yup
     .string()
-    .required(`${i18n.t('announcement:form.description.required')}`)
-    .min(2, `${i18n.t('announcement:form.description.min', { value: '2' })}`)
-    .max(225, `${i18n.t('announcement:form.description.max', { value: '225' })}`),
+    .required(() => i18n.t('announcement:form.description.required'))
+    .min(2, () => i18n.t('announcement:form.description.min', { value: '2' }))
+    .max(225, () => i18n.t('announcement:form.description.max', { value: '225' })),
   type: yup
     .mixed<AnnouncementType>()
     .oneOf(Object.values(AnnouncementType))
-    .required(`${i18n.t('announcement:form.type.required')}`),
+    .required(() => i18n.t('announcement:form.type.required')),
   volunteersNeeded: yup
     .number()
     .nullable()
     .transform((value, original) => (original === '' || original === null ? null : value))
-    .integer(`${i18n.t('announcement:form.volunteers_needed.integer')}`)
-    .min(1, `${i18n.t('announcement:form.volunteers_needed.min', { value: '1' })}`),
+    .integer(() => i18n.t('announcement:form.volunteers_needed.integer'))
+    .min(1, () => i18n.t('announcement:form.volunteers_needed.min', { value: '1' })),
   displayStartDate: yup
     .date()
-    .typeError(`${i18n.t('announcement:form.display_start_date.required')}`)
-    .required(`${i18n.t('announcement:form.display_start_date.required')}`),
+    .typeError(() => i18n.t('announcement:form.display_start_date.required'))
+    .required(() => i18n.t('announcement:form.display_start_date.required')),
   displayEndDate: yup
     .date()
     .nullable()

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Language } from 'src/modules/user/enums/user.enum';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { AUTH_EMAILS } from 'src/modules/auth/constants/auth-emails';
 import {
@@ -40,20 +41,24 @@ export class RequestLoginUseCase
   ) {}
 
   // ip: the client's address, for the app's per-client limit (the web sends links to known admins only).
+  // language: the language of the app screen that asked. The email goes out in the account's language;
+  // someone with no account language yet gets it in the language of the screen they are looking at.
   async execute(
     realm: AuthRealm,
     email: string,
     ip?: string,
+    language?: Language | null,
   ): Promise<RequestLoginResult> {
     const maskedEmail = this.oneTimeTokenService.maskEmail(email);
     return realm === AuthRealm.WEB
-      ? this.requestWeb(email, maskedEmail)
-      : this.requestMobile(email, maskedEmail, ip);
+      ? this.requestWeb(email, maskedEmail, language)
+      : this.requestMobile(email, maskedEmail, ip, language);
   }
 
   private async requestWeb(
     email: string,
     maskedEmail: string,
+    language?: Language | null,
   ): Promise<RequestLoginResult> {
     const identity = await this.authIdentityFacade.findIdentity({
       realm: AuthRealm.WEB,
@@ -74,7 +79,7 @@ export class RequestLoginUseCase
     // A newly registered NGO whose admin never confirmed the email: the confirmation link again, since
     // it is the one that activates the organization (and logs in).
     if (!identity.emailVerifiedAt) {
-      await this.resendVerification.execute(AuthRealm.WEB, email);
+      await this.resendVerification.execute(AuthRealm.WEB, email, language);
       return { maskedEmail };
     }
 
@@ -88,6 +93,7 @@ export class RequestLoginUseCase
       await this.authMailer.send(
         identity.email,
         AUTH_EMAILS.loginLink(this.authMailer.loginLinkUrl(secret)),
+        (await this.authMailer.languageOfUser(identity.userId)) ?? language,
       );
     });
 
@@ -98,6 +104,7 @@ export class RequestLoginUseCase
     email: string,
     maskedEmail: string,
     ip?: string,
+    language?: Language | null,
   ): Promise<RequestLoginResult> {
     // Before anything is created: a client sending codes to many addresses stops here (AUTH_010)
     await this.rateLimit.assertCanRequestMobileCode(ip);
@@ -124,7 +131,11 @@ export class RequestLoginUseCase
       type: AuthTokenType.LOGIN,
       form: AuthTokenForm.CODE,
     });
-    await this.authMailer.send(identity.email, AUTH_EMAILS.loginCode(secret));
+    await this.authMailer.send(
+      identity.email,
+      AUTH_EMAILS.loginCode(secret),
+      (await this.authMailer.languageOfUser(identity.userId)) ?? language,
+    );
 
     return { maskedEmail };
   }

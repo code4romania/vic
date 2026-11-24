@@ -24,16 +24,16 @@ export type AddHoursForm = {
 const schema = yup.object({
   hours: yup
     .number()
-    .typeError(`${i18n.t('activity_log:form.hours.required')}`)
-    .integer(`${i18n.t('activity_log:form.hours.integer')}`)
-    .min(1, `${i18n.t('activity_log:form.hours.min')}`)
-    .max(24, `${i18n.t('activity_log:form.hours.max', { value: 24 })}`)
-    .required(`${i18n.t('activity_log:form.hours.required')}`),
+    .typeError(() => i18n.t('activity_log:form.hours.required'))
+    .integer(() => i18n.t('activity_log:form.hours.integer'))
+    .min(1, () => i18n.t('activity_log:form.hours.min'))
+    .max(24, () => i18n.t('activity_log:form.hours.max', { value: 24 }))
+    .required(() => i18n.t('activity_log:form.hours.required')),
   date: yup
     .date()
-    .typeError(`${i18n.t('general:invalid_date')}`)
-    .required(`${i18n.t('activity_log:form.date.required')}`),
-  mentions: yup.string().max(300, `${i18n.t('events:form.mention.max', { value: '300' })}`),
+    .typeError(() => i18n.t('general:invalid_date'))
+    .required(() => i18n.t('activity_log:form.date.required')),
+  mentions: yup.string().max(300, () => i18n.t('events:form.mention.max', { value: '300' })),
 });
 
 interface AddHoursModalProps {
