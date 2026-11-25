@@ -6,6 +6,83 @@ import { Language } from 'src/modules/user/enums/user.enum';
 // or in both (Romanian first, English below) when VIC does not know it: renderMail in mail-copy.ts.
 export type AuthEmail = LocalizedMail;
 
+// The cutover date as each language writes it, e.g. { ro: 'sâmbătă, 12 decembrie', en: 'Saturday 12 December' }.
+export interface CutoverDate {
+  ro: string;
+  en: string;
+}
+
+const RO_DAYS = [
+  'duminică',
+  'luni',
+  'marți',
+  'miercuri',
+  'joi',
+  'vineri',
+  'sâmbătă',
+];
+const EN_DAYS = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];
+const RO_MONTHS = [
+  'ianuarie',
+  'februarie',
+  'martie',
+  'aprilie',
+  'mai',
+  'iunie',
+  'iulie',
+  'august',
+  'septembrie',
+  'octombrie',
+  'noiembrie',
+  'decembrie',
+];
+const EN_MONTHS = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
+const capitalize = (text: string): string =>
+  text.charAt(0).toUpperCase() + text.slice(1);
+
+// `--date 2026-12-12` → the date in both languages. The names are spelled out here rather than taken
+// from Intl, so the result does not depend on the ICU data of the Node build that runs the command.
+export function cutoverDate(iso: string): CutoverDate {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso ?? '');
+  const date = match
+    ? new Date(Date.UTC(+match[1], +match[2] - 1, +match[3]))
+    : null;
+  if (
+    !date ||
+    date.getUTCDate() !== +match[3] ||
+    date.getUTCMonth() !== +match[2] - 1
+  ) {
+    throw new Error(`--date must be a day as YYYY-MM-DD, got "${iso}"`);
+  }
+  const day = date.getUTCDate();
+  return {
+    ro: `${RO_DAYS[date.getUTCDay()]}, ${day} ${RO_MONTHS[date.getUTCMonth()]}`,
+    en: `${EN_DAYS[date.getUTCDay()]} ${day} ${EN_MONTHS[date.getUTCMonth()]}`,
+  };
+}
+
 export interface OrganizationRegisteredAdmin {
   name: string;
   email: string;
@@ -202,54 +279,55 @@ export const AUTH_EMAILS = {
       { ctaLink: loginUrl },
     ),
 
-  // T-7, sent with `npm run announce -- --template announce --date <date>` (decisions R3).
-  announce: (date: string): AuthEmail =>
+  // T-7, sent with `npm run announce -- --template announce --date <YYYY-MM-DD>` (decisions R3).
+  announce: (date: CutoverDate): AuthEmail =>
     email(
       {
-        subject: `Pe ${date} VIC are un nou sistem de autentificare`,
-        title: `Pe ${date} VIC are un nou sistem de autentificare`,
+        subject: `${capitalize(date.ro)}, VIC are un nou sistem de autentificare`,
+        title: `${capitalize(date.ro)}, VIC are un nou sistem de autentificare`,
         subtitle:
           'În acea zi, VIC va fi indisponibil câteva ore. După aceea, actualizează aplicația și intră cu adresa de email: primești un link sau un cod, fără parolă.',
       },
       {
-        subject: `On ${date} VIC gets a new login`,
-        title: `On ${date} VIC gets a new login`,
+        subject: `On ${date.en} VIC gets a new login`,
+        title: `On ${date.en} VIC gets a new login`,
         subtitle:
           'VIC will be unavailable for a few hours that day. Afterwards, update the app and log in with your email address: you get a link or a code, no password.',
       },
     ),
 
-  // T-1, sent with `npm run announce -- --template reminder --date <date>` (decisions R3).
-  reminder: (date: string): AuthEmail =>
+  // T-1, sent with `npm run announce -- --template reminder --date <YYYY-MM-DD>` (decisions R3).
+  reminder: (date: CutoverDate): AuthEmail =>
     email(
       {
-        subject: `Mâine, ${date}: noul sistem de autentificare VIC`,
-        title: `Mâine, ${date}, VIC are un nou sistem de autentificare`,
+        subject: `Mâine, ${date.ro}: noul sistem de autentificare VIC`,
+        title: `Mâine, ${date.ro}, VIC are un nou sistem de autentificare`,
         subtitle:
           'VIC va fi indisponibil câteva ore. După aceea, actualizează aplicația și intră cu adresa de email: primești un link sau un cod, fără parolă.',
       },
       {
-        subject: `Tomorrow, ${date}: VIC's new login`,
-        title: `Tomorrow, ${date}, VIC gets a new login`,
+        subject: `Tomorrow, ${date.en}: VIC's new login`,
+        title: `Tomorrow, ${date.en}, VIC gets a new login`,
         subtitle:
           'VIC will be unavailable for a few hours. Afterwards, update the app and log in with your email address: you get a link or a code, no password.',
       },
     ),
 
-  // After go, sent with `npm run announce -- --template back`.
+  // After go, sent with `npm run announce -- --template back` to every login, admins (web) and
+  // volunteers (app) alike, so it explains both ways in.
   back: (): AuthEmail =>
     email(
       {
         subject: 'VIC funcționează din nou',
         title: 'VIC funcționează din nou',
         subtitle:
-          'Actualizează aplicația VIC din magazin, apoi intră cu adresa de email: primești un cod, fără parolă.',
+          'Nu mai folosești parolă. Pe web, la vic.ngohub.ro, introdu adresa de email și primești un link de autentificare. În aplicație, actualizeaz-o din magazin, introdu adresa de email și primești un cod; poți intra și cu Google sau Apple.',
       },
       {
         subject: 'VIC is back',
         title: 'VIC is back',
         subtitle:
-          'Update the VIC app from the store, then log in with your email address: you get a code, no password.',
+          'No more passwords. On the web, at vic.ngohub.ro, enter your email address and you get a login link. In the app, update it from the store, enter your email address and you get a code; you can also sign in with Google or Apple.',
       },
     ),
 

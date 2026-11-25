@@ -65,14 +65,39 @@ describe('AnnounceUseCase', () => {
 
     const report = await useCase.execute({
       template: 'announce',
-      date: '12 decembrie 2026',
+      date: '2026-12-12',
       dryRun: true,
     });
 
     expect(query.mock.calls.at(-1)[0]).toContain('FROM "user"');
-    expect(report.sample.email.copy.ro.subject).toContain('12 decembrie 2026');
-    expect(report.sample.email.copy.en.subject).toContain('12 decembrie 2026');
+    // each language writes the date its own way, once
+    expect(report.sample.email.copy.ro.subject).toBe(
+      'Sâmbătă, 12 decembrie, VIC are un nou sistem de autentificare',
+    );
+    expect(report.sample.email.copy.en.subject).toBe(
+      'On Saturday 12 December VIC gets a new login',
+    );
     expect(report.pushUsers).toBe(0);
+  });
+
+  it('refuses a date that is not a real YYYY-MM-DD day', async () => {
+    for (const date of ['12 decembrie', '2026-02-30', '2026-12-1']) {
+      await expect(
+        useCase.execute({ template: 'reminder', date, dryRun: true }),
+      ).rejects.toThrow('YYYY-MM-DD');
+    }
+  });
+
+  it('back tells admins about the web link and volunteers about the app code; the push only about the app', async () => {
+    await useCase.execute({ template: 'back' });
+
+    const email = mailer.send.mock.calls[0][1];
+    expect(email.copy.ro.subtitle).toContain('vic.ngohub.ro');
+    expect(email.copy.ro.subtitle).toContain('link');
+    expect(email.copy.en.subtitle).toContain('code');
+    const { body } = push.send.mock.calls[0][0];
+    expect(body.ro).not.toContain('vic.ngohub.ro');
+    expect(body.en).toContain('app');
   });
 
   it('release-transition resumes the held queue', async () => {
