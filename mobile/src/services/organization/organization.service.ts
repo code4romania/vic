@@ -10,6 +10,8 @@ import { OrderDirection } from '../../common/enums/order-direction.enum';
 import useStore from '../../store/store';
 import { IOrganization } from '../../common/interfaces/organization.interface';
 import { getUserProfile } from '../user/user.api';
+import { queryClient } from '../query-client';
+import { queryKeys } from '../query-keys';
 import { IOrganizationVolunteer } from '../../common/interfaces/organization-list-item.interface';
 
 export const useOrganizationsInfiniteQuery = (orderDirection: OrderDirection, search: string) => {
@@ -63,6 +65,15 @@ export const useActivateOrganization = () => {
       }
       throw error;
     }
+    // These endpoints answer for the active organization saved on the server, not for the one in
+    // the request. The screens asked again as soon as the local switch above changed their keys,
+    // before the server had it, and cached the previous organization's answers under the new
+    // keys („Impactul tău” kept the old hours). Now that the server has it, ask once more.
+    await Promise.all([
+      queryClient.invalidateQueries(queryKeys.activityLogCountersAll),
+      queryClient.invalidateQueries(queryKeys.activityLogsAll),
+      queryClient.invalidateQueries(queryKeys.contractHistoryAll),
+    ]);
   };
   return { activate, isLoading };
 };
