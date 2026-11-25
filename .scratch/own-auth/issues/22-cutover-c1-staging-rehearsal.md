@@ -36,7 +36,7 @@ Never run `announce --release-transition` (or `--template announce/reminder/back
 - [ ] Staging secrets from issue 20 applied, including `MAINTENANCE_ALLOWED_IPS` with the smoke-test team's network.
 - [ ] Builds: the **2.0.0** preview app against staging on one iPhone and one Android phone; one device on an old **SDK 51** preview build for the Update now OTA check (issue 18).
 - [ ] Test accounts on the production copy: a migrated admin, a migrated volunteer, a migrated Google volunteer and a migrated Apple volunteer (with a "Hide my email" address), a throwaway NGO, one super admin set with `auth:super-admin`.
-- [ ] `announce --template announce --date "..." --dry-run` against the copy: recipient count from the `user` table, deduplicated by `lower(email)`; sample rendered into the sink (R3).
+- [ ] `announce --template announce --date YYYY-MM-DD --dry-run` against the copy: recipient count from the `user` table, deduplicated by `lower(email)`; sample rendered into the sink (R3).
 - [ ] Social users on the copy, to compare with `auth:migrate`'s "social provider links" (issue 00):
   `SELECT split_part(cognito_id, '_', 1), count(*) FROM "user" WHERE type = 'regular' AND deleted_on IS NULL GROUP BY 1`
 
