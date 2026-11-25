@@ -4,6 +4,8 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { useActivateOrganization } from './organization.service';
 import { switchOrganization } from './organization.api';
 import useStore from '../../store/store';
+import { queryClient } from '../query-client';
+import { queryKeys } from '../query-keys';
 
 jest.mock('./organization.api', () => ({ switchOrganization: jest.fn() }));
 
@@ -56,6 +58,41 @@ describe('useActivateOrganization (audit #23)', () => {
       await expect(result.current.activate(org('b'))).rejects.toThrow('offline');
     });
     expect(useStore.getState().userProfile?.activeOrganization?.id).toBe('a');
+  });
+
+  it('asks again for the hours and contracts once the backend has the new organization', async () => {
+    let finish: () => void = () => undefined;
+    switchCall.mockImplementation(() => new Promise<void>((resolve) => (finish = resolve)));
+    const invalidate = jest.spyOn(queryClient, 'invalidateQueries').mockResolvedValue(undefined);
+    const result = await setup();
+
+    let pending: Promise<void> = Promise.resolve();
+    await act(async () => {
+      pending = result.current.activate(org('b'));
+    });
+    // not before: an answer fetched now would still be the previous organization's
+    expect(invalidate).not.toHaveBeenCalled();
+
+    await act(async () => {
+      finish();
+      await pending;
+    });
+    expect(invalidate).toHaveBeenCalledWith(queryKeys.activityLogCountersAll);
+    expect(invalidate).toHaveBeenCalledWith(queryKeys.activityLogsAll);
+    expect(invalidate).toHaveBeenCalledWith(queryKeys.contractHistoryAll);
+    invalidate.mockRestore();
+  });
+
+  it('a failed switch asks for nothing again', async () => {
+    switchCall.mockRejectedValue(new Error('offline'));
+    const invalidate = jest.spyOn(queryClient, 'invalidateQueries');
+    const result = await setup();
+
+    await act(async () => {
+      await expect(result.current.activate(org('b'))).rejects.toThrow('offline');
+    });
+    expect(invalidate).not.toHaveBeenCalled();
+    invalidate.mockRestore();
   });
 
   it('the active organization is not switched again', async () => {
