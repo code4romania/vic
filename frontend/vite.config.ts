@@ -8,6 +8,22 @@ export default defineConfig({
   define: {
     APP_VERSION: JSON.stringify(process.env.npm_package_version),
   },
+  build: {
+    rollupOptions: {
+      output: {
+        // The pdf.js worker ships as .mjs, but the Amplify rewrite (terraform-ngohub modules/amplify)
+        // serves index.html for every extension outside css|gif|ico|jpg|js|png|txt|svg|webp|woff|ttf|
+        // map|json, so a .mjs worker arrives as text/html and the viewer cannot start (#726). Publishing
+        // it as .js keeps it a real file on every Amplify app; it is still loaded as a module worker.
+        assetFileNames: (assetInfo) => {
+          const name = assetInfo.names?.[0] ?? '';
+          return name.endsWith('.mjs')
+            ? 'assets/[name]-[hash].js'
+            : 'assets/[name]-[hash][extname]';
+        },
+      },
+    },
+  },
   plugins: [
     react(),
     // npm run lint is the gate; under Vitest the plugin would only slow every transform.
