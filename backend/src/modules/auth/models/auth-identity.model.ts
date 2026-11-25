@@ -51,7 +51,8 @@ export type UpsertAuthIdentityResult = {
 export type FindAuthIdentityOptions =
   | Pick<IAuthIdentityModel, 'id'>
   | Pick<IAuthIdentityModel, 'realm' | 'email'>
-  | Pick<IAuthIdentityModel, 'userId'>;
+  | Pick<IAuthIdentityModel, 'userId'>
+  | Pick<IAuthIdentityModel, 'realm' | 'legacyCognitoUsername'>;
 
 export class AuthIdentityTransformer {
   static normalizeEmail(email: string): string {

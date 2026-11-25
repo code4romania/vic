@@ -16,6 +16,11 @@ One PR per repository plus the infrastructure steps. Day 30 is also when the tra
 - [ ] `announce --release-transition` has emptied the transition queue (`announce --status`); remove the paused queue's leftovers in `/admin/queues` if any.
 - [ ] `backend/README.md`: own login with links and codes, env vars and key generation (`backend/docs/auth.md`), Google / Apple credentials, the commands (`auth:migrate`, `users:finish-deletions`, `auth:super-admin`, `org:suspend`, `announce`), the maintenance switch, how to run the unit and e2e tests.
 
+- [ ] End of the old store app's transition (decided 25 Nov 2026): remove `LegacyCognitoMobileStrategy`, the
+      `LEGACY_*` settings and every route or field marked LEGACY (`/mobile/contract/pending|:id/sign|:id/cancel`,
+      `/mobile/user/personal-data`, the event's `tasks`); terraform: drop `vic_legacy_mobile_until` and the two
+      `LEGACY_*` variables. Do this before the Cognito pool is deleted below.
+
 ## Web and mobile (vic)
 
 - [ ] Remove the migration notices: web `VITE_MIGRATION_NOTICE_UNTIL` (terraform `vic_migration_notice_until`) and mobile `EXPO_PUBLIC_MIGRATION_NOTICE_UNTIL` (`mobile/eas.json`), with their components and translation keys in both languages (ro, en).

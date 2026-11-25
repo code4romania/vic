@@ -148,6 +148,18 @@ class EnvironmentVariables {
   CORS_ORIGINS: string; // comma separated
   @IsString()
   MOBILE_MIN_VERSION: string;
+  // Old store app (Cognito login) keeps working until this date (ISO, e.g. 2027-01-15). Empty: off.
+  @IsOptional()
+  @IsString()
+  LEGACY_MOBILE_UNTIL: string;
+  // The old VIC mobile user pool, e.g. https://cognito-idp.eu-west-1.amazonaws.com/eu-west-1_XXXX
+  @IsOptional()
+  @IsString()
+  LEGACY_COGNITO_MOBILE_ISSUER: string;
+  // Optional: the old app's Cognito app client id; when set, other clients' tokens are refused
+  @IsOptional()
+  @IsString()
+  LEGACY_COGNITO_MOBILE_CLIENT_ID: string;
   @IsBooleanString()
   MAINTENANCE_MODE: string;
   @IsOptional()

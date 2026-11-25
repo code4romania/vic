@@ -1,6 +1,8 @@
 export enum AUTH_STRATEGIES {
   MOBILE = 'mobile-jwt',
   WEB = 'web-jwt',
+  // Old store app (1.0.x): Cognito access tokens, accepted only until LEGACY_MOBILE_UNTIL
+  MOBILE_LEGACY = 'mobile-cognito-legacy',
 }
 
 const MINUTE_MS = 60 * 1000;

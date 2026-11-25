@@ -91,7 +91,14 @@ export class MobileEventPresenter {
 
     this.displayStatus = getEventDisplayStatus(event);
     this.capacity = event.capacity ?? null;
+    this.tasks = [];
   }
+
+  // LEGACY (old store app 1.0.x, until LEGACY_MOBILE_UNTIL): its event screen calls event.tasks.map().
+  // Events have no linked activities since 2.0 (#492). Remove with the legacy strategy (issue 25).
+  @Expose()
+  @ApiProperty({ type: [Object], deprecated: true })
+  tasks: never[];
 
   @Expose()
   @ApiProperty({
