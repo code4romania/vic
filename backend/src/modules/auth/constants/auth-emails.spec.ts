@@ -3,7 +3,7 @@ import * as Handlebars from 'handlebars';
 import { join } from 'path';
 import { MailMode, renderMail } from 'src/modules/mail/mail-copy';
 import { Language } from 'src/modules/user/enums/user.enum';
-import { AuthEmail, AUTH_EMAILS } from './auth-emails';
+import { AuthEmail, AUTH_EMAILS, cutoverDate } from './auth-emails';
 
 const TEMPLATES = join(__dirname, '../../mail/templates');
 const URL = 'https://vic.test/set-password?token=secret';
@@ -71,8 +71,8 @@ const builders: Array<[string, AuthEmail, string | null]> = [
     'https://vic.test/login',
   ],
   // The bulk messages around the cutover go to every user: render them too.
-  ['announce', AUTH_EMAILS.announce('15 decembrie 2026'), null],
-  ['reminder', AUTH_EMAILS.reminder('15 decembrie 2026'), null],
+  ['announce', AUTH_EMAILS.announce(cutoverDate('2026-12-15')), null],
+  ['reminder', AUTH_EMAILS.reminder(cutoverDate('2026-12-15')), null],
   ['back', AUTH_EMAILS.back(), null],
 ];
 

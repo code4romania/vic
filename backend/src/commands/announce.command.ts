@@ -5,8 +5,8 @@ import {
 } from 'src/usecases/auth/announce.usecase';
 import { runCommand } from './command-runner';
 
-// npm run announce -- --template announce --date "12 decembrie / 12 December" [--dry-run]   (T-7)
-// npm run announce -- --template reminder --date "..." [--dry-run]                          (T-1)
+// npm run announce -- --template announce --date 2026-12-12 [--dry-run]   (T-7; the date is written out in each language)
+// npm run announce -- --template reminder --date 2026-12-12 [--dry-run]   (T-1)
 // npm run announce -- --release-transition    (go: sends the held transition emails at 10/s)
 // npm run announce -- --template back [--dry-run]   (after go: email every identity, push every device)
 // npm run announce -- --status                (the held queue: paused or not, job counts)

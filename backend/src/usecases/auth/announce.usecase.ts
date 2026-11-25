@@ -1,5 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { AUTH_EMAILS, AuthEmail } from 'src/modules/auth/constants/auth-emails';
+import {
+  AUTH_EMAILS,
+  AuthEmail,
+  cutoverDate,
+} from 'src/modules/auth/constants/auth-emails';
 import { renderMail } from 'src/modules/mail/mail-copy';
 import { AuthIdentityStatus } from 'src/modules/auth/enums/auth.enums';
 import { AuthMailerService } from 'src/modules/auth/services/auth-mailer.service';
@@ -11,7 +15,7 @@ export type AnnounceTemplate = 'announce' | 'reminder' | 'back';
 
 export interface AnnounceOptions {
   template: AnnounceTemplate;
-  date?: string; // the cutover date, printed in announce and reminder
+  date?: string; // the cutover day as YYYY-MM-DD, printed in each language in announce and reminder
   dryRun?: boolean;
   perSecond?: number;
 }
@@ -26,6 +30,12 @@ export interface AnnounceReport {
 }
 
 const PUSH_CHUNK = 500;
+
+// The push goes only to phones, so it speaks of the app alone (the email also explains the web).
+const BACK_PUSH_BODY = {
+  ro: 'Actualizează aplicația din magazin, apoi intră cu adresa de email: primești un cod, fără parolă.',
+  en: 'Update the app from the store, then log in with your email address: you get a code, no password.',
+};
 
 // The announcement emails around the cutover. announce (T-7) and reminder (T-1) read the user table,
 // since no identity exists yet (decisions R3); back (after go) reads the identities and also pushes to
@@ -66,7 +76,7 @@ export class AnnounceUseCase {
       await this.pushNotificationsFacade.send({
         userIds: pushUserIds.slice(i, i + PUSH_CHUNK),
         title: { ro: email.copy.ro.title, en: email.copy.en.title },
-        body: { ro: email.copy.ro.subtitle, en: email.copy.en.subtitle },
+        body: BACK_PUSH_BODY,
       });
     }
 
@@ -89,7 +99,7 @@ export class AnnounceUseCase {
         if (!options.date) {
           throw new Error(`--template ${options.template} needs --date`);
         }
-        return AUTH_EMAILS[options.template](options.date);
+        return AUTH_EMAILS[options.template](cutoverDate(options.date));
       case 'back':
         return AUTH_EMAILS.back();
       default:
