@@ -9,8 +9,8 @@ import { colors, fonts, radius, spacing } from '../common/theme/tokens';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import NewsItemSkeleton from '../components/skeleton/news-item.skeleton';
 import { formatPostedAt } from '../common/utils/event-format';
-import { Avatar, EmptyState, Enter, StatusBarScrim, VText } from '../components/ui';
-import { BackButton } from '../components/ui/ScreenChrome';
+import { Avatar, EmptyState, Enter, VText } from '../components/ui';
+import { PushedHeader } from '../components/ui/ScreenChrome';
 
 /**
  * VIC 2.0 Anunțuri (canvas board "Anunțuri"): announcements from the volunteer's organizations, each
@@ -105,25 +105,18 @@ const Anouncements = ({ navigation }: any) => {
   };
 
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, { paddingTop: insets.top }]}>
+      {/* fixed above the list: the way back stays in reach however far the volunteer scrolls */}
+      <PushedHeader
+        title={`${t('home:anouncements.section.title')}`}
+        onBack={navigation.goBack}
+        backTestID="anouncements-back"
+        testID="anouncements-header"
+      />
       <Animated.FlatList
         data={items}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
-        ListHeaderComponent={
-          <View style={styles.header}>
-            <BackButton
-              onPress={navigation.goBack}
-              accessibilityLabel={`${t('back')}`}
-              testID="anouncements-back"
-            />
-            <Enter>
-              <VText variant="largeTitle" accessibilityRole="header">
-                {t('home:anouncements.section.title')}
-              </VText>
-            </Enter>
-          </View>
-        }
         ListEmptyComponent={renderEmpty}
         ListFooterComponent={
           isFetchingNextPage ? <ActivityIndicator color={colors.navy} style={styles.more} /> : null
@@ -131,14 +124,10 @@ const Anouncements = ({ navigation }: any) => {
         onEndReached={() => hasNextPage && !isFetching && fetchNextPage()}
         onEndReachedThreshold={0.4}
         refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={() => refetch()} />}
-        contentContainerStyle={[
-          styles.list,
-          { paddingTop: insets.top + 12, paddingBottom: insets.bottom + 24 },
-        ]}
+        contentContainerStyle={[styles.list, { paddingBottom: insets.bottom + 24 }]}
         showsVerticalScrollIndicator={false}
         testID="anouncements"
       />
-      <StatusBarScrim />
     </View>
   );
 };
@@ -147,8 +136,7 @@ export default Anouncements;
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.canvas },
-  list: { paddingHorizontal: spacing.gutter, flexGrow: 1, gap: 12 },
-  header: { paddingBottom: 8, gap: 16 },
+  list: { paddingHorizontal: spacing.gutter, paddingTop: 4, flexGrow: 1, gap: 12 },
   card: {
     borderRadius: radius.card,
     backgroundColor: colors.white,
