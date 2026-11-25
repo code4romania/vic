@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint . --max-warnings=0",
     "start": "vite --port 3000",
-    "build": "tsc && vite build",
+    "build": "rm -rf dist && mkdir -p dist && cp maintenance/index.html public/logo.svg dist/",
     "preview": "vite preview",
     "commit": "git-cz"
   },

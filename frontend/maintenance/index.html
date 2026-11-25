@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>VIC · Mentenanță</title>
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<style>
+  :root { --navy:#01344F; --yellow:#FFD209; --ink:#0F1B24; --muted:#4B5B67; --bg:#EEF2F6; --card:#FFFFFF; }
+  @media (prefers-color-scheme: dark) { :root { --ink:#F1F5F8; --muted:#C5D6E2; --bg:#01283D; --card:#01344F; } }
+  * { box-sizing:border-box; }
+  html,body { margin:0; min-height:100%; }
+  body { background:var(--bg); color:var(--ink); font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+         display:flex; align-items:center; justify-content:center; min-height:100vh; padding:24px 16px; }
+  main { background:var(--card); max-width:560px; width:100%; border-radius:20px; padding:40px 32px;
+         box-shadow:0 10px 30px rgba(1,52,79,.12); border-top:6px solid var(--yellow); }
+  .logo { width:64px; height:56px; display:block; margin-bottom:24px; }
+  h1 { font-size:26px; line-height:1.25; margin:0 0 12px; }
+  p { margin:0 0 12px; color:var(--muted); }
+  hr { border:0; border-top:1px solid rgba(127,140,150,.3); margin:28px 0; }
+  .lang { font-size:12px; letter-spacing:.08em; text-transform:uppercase; font-weight:700; color:var(--muted); margin-bottom:6px; }
+  button { margin-top:8px; background:var(--yellow); color:#01344F; border:0; border-radius:999px; padding:12px 22px;
+           font:600 15px/1 inherit; font-family:inherit; cursor:pointer; }
+  button:focus-visible { outline:3px solid var(--navy); outline-offset:3px; }
+</style>
+</head>
+<body>
+<main>
+  <svg class="logo" viewBox="0 0 355 310" aria-label="VIC" role="img"><path d="M275.562 296.5L177.25 309.089L78.6828 296.496L0 156.9L78.6828 17.3053L177.25 0L275.562 17.3093L354.246 156.904L275.562 296.5Z" fill="#231F20"/><path d="M257.813 78.2374L194.517 259.654H159.65L96.6208 78.2374H145.165L177.35 179.648L209.001 78.2374H257.813Z" fill="#FAD00A"/></svg>
+
+  <section lang="ro">
+    <div class="lang">Română</div>
+    <h1>VIC este în mentenanță</h1>
+    <p>Lansăm o versiune nouă a VIC, cu un sistem nou de autentificare. Revenim în câteva ore.</p>
+    <p>După lansare primești un email cu pașii de urmat. Datele organizației și ale voluntarilor rămân neschimbate.</p>
+  </section>
+
+  <hr>
+
+  <section lang="en">
+    <div class="lang">English</div>
+    <h1>VIC is under maintenance</h1>
+    <p>We are launching a new version of VIC, with a new login system. We'll be back in a few hours.</p>
+    <p>After the launch you will get an email with the next steps. Your organization's and volunteers' data stay as they are.</p>
+  </section>
+
+  <button type="button" onclick="location.reload()">Încearcă din nou · Try again</button>
+</main>
+</body>
+</html>
