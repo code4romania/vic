@@ -70,7 +70,12 @@ export const LanguageToggle = ({
             style={styles.half}
             testID={`${testID}-${language}`}
           >
-            <View style={[styles.code, selected ? styles.codeSelected : null]}>
+            {/* Android keeps the corners only for a background present when the view is mounted:
+                re-styled in place, the yellow lozenge turned square. A new key mounts it again. */}
+            <View
+              key={selected ? 'selected' : 'idle'}
+              style={[styles.code, selected ? styles.codeSelected : null]}
+            >
               <AppText
                 variant="label"
                 color={selected || tone === 'onPaper' ? palette.navy : palette.white}
