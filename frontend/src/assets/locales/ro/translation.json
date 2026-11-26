@@ -1509,6 +1509,14 @@
     "ENABLE_ADMIN": {
       "label": "Activează Administrator",
       "description": "Administratorul <inlineLink>{{adminName}}</inlineLink> a fost activat."
+    },
+    "NGOHUB_ADMIN_JOINED": {
+      "label": "Administrator nou prin NGO Hub",
+      "description": "<inlineLink>{{adminName}}</inlineLink> a intrat cu contul NGO Hub al organizației și a devenit administrator."
+    },
+    "NGOHUB_ADMIN_REVOKED": {
+      "label": "Acces retras unui administrator NGO Hub",
+      "description": "Accesul lui <inlineLink>{{adminName}}</inlineLink> a fost retras din emailul „Nu am fost noi”."
     }
   },
   "dashboard": {
@@ -1934,7 +1942,12 @@
       "AUTH_012": "Acesta este un cont de voluntar. Folosește aplicația mobilă VIC.",
       "AUTH_013": "Autentificarea cu acest cont nu a reușit.",
       "AUTH_014": "Nu există niciun cont de administrator cu emailul acestui cont. Folosește emailul organizației sau înregistrează organizația.",
-      "AUTH_015": "Codul nu este corect. Verifică emailul și încearcă din nou."
+      "AUTH_015": "Codul nu este corect. Verifică emailul și încearcă din nou.",
+      "AUTH_016": "Contul tău VIC aparține altei organizații decât cea din NGO Hub.",
+      "AUTH_017": "Doar administratorii din NGO Hub pot intra direct. Cere o invitație de la un administrator al organizației tale în VIC.",
+      "AUTH_018": "Contul tău VIC este deja legat de alt cont NGO Hub.",
+      "AUTH_019": "Autentificarea cu NGO Hub nu a reușit sau a expirat. Încearcă din nou.",
+      "AUTH_020": "Autentificarea cu NGO Hub nu este disponibilă acum."
     },
     "maintenance": {
       "title": "VIC este în mentenanță",
@@ -2003,7 +2016,8 @@
       "google": "Continuă cu Google",
       "apple": "Continuă cu Apple",
       "or": "sau cu emailul"
-    }
+    },
+    "ngohub": "Continuă cu NGO Hub"
   },
   "login_link": {
     "title": {
@@ -2553,5 +2567,35 @@
     "loading": "Se încarcă…",
     "error_title": "Datele nu au putut fi încărcate",
     "retry": "Încearcă din nou"
+  },
+  "ngohub": {
+    "callback": {
+      "title": "Autentificare cu NGO Hub",
+      "loading": "Verificăm contul tău NGO Hub…",
+      "failed_title": "Autentificarea nu a reușit",
+      "cancelled": "Ai anulat autentificarea în NGO Hub.",
+      "retry": "Încearcă din nou cu NGO Hub",
+      "back_to_login": "Înapoi la autentificare"
+    },
+    "register": {
+      "title": "Înregistrează organizația din NGO Hub",
+      "description": "Am completat datele din NGO Hub. Verifică-le și completează ce lipsește. Organizația intră direct în VIC, fără validare.",
+      "locked": "Din NGO Hub, nu se pot schimba aici",
+      "organization_card": "Organizația",
+      "admin_card": "Administratorul",
+      "logo": "Folosește sigla din NGO Hub",
+      "submit": "Înregistrează organizația",
+      "expired_title": "Formularul a expirat",
+      "expired": "Formularul este valabil 30 de minute după autentificarea în NGO Hub și poate fi trimis o singură dată. Autentifică-te din nou cu NGO Hub."
+    },
+    "not_us": {
+      "title": "Retrage accesul",
+      "description": "Cineva a intrat în VIC cu contul NGO Hub al organizației voastre și a devenit administrator. Dacă nu cunoașteți persoana, retrageți-i accesul.",
+      "confirm": "Nu am fost noi, retrage accesul",
+      "done_title": "Accesul a fost retras",
+      "done": "Persoana nu mai poate intra în VIC. Dacă a fost o greșeală, o puteți reactiva din pagina Echipă.",
+      "expired": "Linkul nu mai este valabil: a expirat sau a fost deja folosit. Puteți dezactiva persoana din pagina Echipă.",
+      "back_to_login": "Mergi la autentificare"
+    }
   }
 }
