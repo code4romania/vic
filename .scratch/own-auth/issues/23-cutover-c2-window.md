@@ -52,6 +52,22 @@ Two people (backend + database; web, stores, OTA + communication) plus one on th
 - **1:45 Go / no-go.** No-go: restore the snapshot, redeploy the previous backend image with the old env vars at its normal task count and the previous web build (revert `main`, or redeploy the previous Amplify build), drop the queued emails. Nobody has been emailed, and nothing changed in the stores or in the old app.
 - **2:00 Maintenance off:** `MAINTENANCE_MODE=false` and redeploy; check from a non-allow-listed network; log in once on web (link) and app (code). NGO Hub switches its link, `announce --release-transition` (`announce --status` until the queue is empty): admins get their 30-day link; volunteers get the transition email, which says the new app reaches the stores in the following days and the current app keeps working. **No `announce --template back`** in this plan. Team channel post. Same morning: submit the 2.0 builds for review (iOS App Store Connect, Android production track as a draft for review).
 
+## Commit Global accounts (Maria Leuștean, decided 26 Nov 2026)
+
+One person sees VIC from every side through email aliases. A web identity is admin of one organization only, and the web and mobile realms are separate, so the same address can also be a volunteer.
+
+| Account | Realm | Role | How it exists |
+|---|---|---|---|
+| `maria.leustean@commitglobal.org` | web | admin of Asociatia Code for Romania + **super admin** (validation, all organizations, all volunteers) | imported at 0:25; `auth:super-admin:prod` right after |
+| `maria.leustean+urbanesc@commitglobal.org` | web | admin of Asociația Urbanesc | imported at 0:25 |
+| `maria.leustean+mobifree@commitglobal.org` | web | admin of Disaster Responders Organisations | imported at 0:25 |
+| `maria.leustean@commitglobal.org` | mobile | volunteer (sees the app as volunteers do) | first login in the 2.0 app with the email code; then an access request to Code for Romania, approved by her web account |
+| `maria.leustean+ongtest@commitglobal.org` | web | first admin of a throwaway NGO (tests registration and validation) | `/register` after go; validated by her super admin account; deleted from Setări after the check |
+
+- [ ] 2:00: log in once with each web account (link) and check the super admin menu on the first.
+- [ ] Store day: the mobile account, the access request and its approval.
+- Super admin pages only list other organizations and volunteers; their own pages (events, hours, contracts) are visible only to their admins. Being added as admin to another NGO needs that NGO's consent (Team page there).
+
 ## Store day (when both stores have approved 2.0.0, usually 1–3 days after go)
 
 - [ ] Release 2.0.0 in both stores (manual release).
