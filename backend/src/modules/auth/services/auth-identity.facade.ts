@@ -231,6 +231,16 @@ export class AuthIdentityFacade {
     );
   }
 
+  public async findProviderLinkOf(
+    identityId: string,
+    provider: AuthProvider,
+  ): Promise<IAuthIdentityProviderModel> {
+    return this.authIdentityProviderRepository.findByIdentity(
+      identityId,
+      provider,
+    );
+  }
+
   public async linkProvider(
     options: CreateAuthIdentityProviderOptions,
     manager?: EntityManager,

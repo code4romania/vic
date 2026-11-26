@@ -60,6 +60,8 @@ export class ResendTokenUseCase implements IUseCaseService<void> {
     identity: IAuthIdentityModel,
   ): boolean {
     if (identity.status === AuthIdentityStatus.DISABLED) return true;
+    // The "it was not us" link went to the other admins; a resend would mail it to the admin it revokes.
+    if (token.type === AuthTokenType.NGOHUB_REVOKE) return true;
     // Links are web only since VIC 2.0 (#514): the app logs in with a code.
     if (identity.realm !== AuthRealm.WEB) return true;
     if (token.type === AuthTokenType.VERIFY_EMAIL)

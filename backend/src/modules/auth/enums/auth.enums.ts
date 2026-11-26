@@ -20,6 +20,8 @@ export enum AuthTokenType {
   // NGO, add an admin), and the code that confirms a new email address
   SENSITIVE_ACTION = 'sensitive_action',
   CHANGE_EMAIL = 'change_email',
+  // Login with NGO Hub: the "it was not us" link to the other admins when an NGO Hub admin joined by CUI
+  NGOHUB_REVOKE = 'ngohub_revoke',
 }
 
 export enum AuthTokenForm {

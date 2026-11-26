@@ -15,6 +15,7 @@ export const AUTH_TOKEN_TTL_MS = {
   INVITE_LINK: 14 * DAY_MS, // Team page
   TRANSITION_LINK: 30 * DAY_MS, // the invite the cutover script sends
   SENSITIVE_CODE: 10 * MINUTE_MS, // #508
+  NGOHUB_REVOKE_LINK: 30 * DAY_MS, // "it was not us" after an NGO Hub admin joined
 };
 
 // A wrong code counts an attempt; the fifth ends the code.

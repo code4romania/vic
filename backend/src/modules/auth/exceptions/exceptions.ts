@@ -17,6 +17,9 @@ export enum AuthExceptionCodes {
   AUTH_013 = 'AUTH_013',
   AUTH_014 = 'AUTH_014',
   AUTH_015 = 'AUTH_015',
+  AUTH_016 = 'AUTH_016',
+  AUTH_017 = 'AUTH_017',
+  AUTH_018 = 'AUTH_018',
   AUTH_019 = 'AUTH_019',
   AUTH_020 = 'AUTH_020',
 }
@@ -88,6 +91,20 @@ export const AuthExceptionMessages: Record<
     code_error: AuthExceptionCodes.AUTH_015,
     message: 'Wrong code',
   },
+  [AuthExceptionCodes.AUTH_016]: {
+    code_error: AuthExceptionCodes.AUTH_016,
+    message:
+      'This VIC login belongs to another organization than the NGO Hub account',
+  },
+  [AuthExceptionCodes.AUTH_017]: {
+    code_error: AuthExceptionCodes.AUTH_017,
+    message:
+      'Only NGO Hub admins can join; ask an admin of your organization for an invite',
+  },
+  [AuthExceptionCodes.AUTH_018]: {
+    code_error: AuthExceptionCodes.AUTH_018,
+    message: 'This VIC login is already linked to another NGO Hub account',
+  },
   [AuthExceptionCodes.AUTH_019]: {
     code_error: AuthExceptionCodes.AUTH_019,
     message: 'NGO Hub login failed or expired, start again',
@@ -115,6 +132,9 @@ export const AuthExceptionStatus: Record<AuthExceptionCodes, number> = {
   [AuthExceptionCodes.AUTH_013]: HttpStatus.UNAUTHORIZED,
   [AuthExceptionCodes.AUTH_014]: HttpStatus.NOT_FOUND,
   [AuthExceptionCodes.AUTH_015]: HttpStatus.BAD_REQUEST,
+  [AuthExceptionCodes.AUTH_016]: HttpStatus.FORBIDDEN,
+  [AuthExceptionCodes.AUTH_017]: HttpStatus.FORBIDDEN,
+  [AuthExceptionCodes.AUTH_018]: HttpStatus.CONFLICT,
   [AuthExceptionCodes.AUTH_019]: HttpStatus.UNAUTHORIZED,
   [AuthExceptionCodes.AUTH_020]: HttpStatus.NOT_FOUND,
 };

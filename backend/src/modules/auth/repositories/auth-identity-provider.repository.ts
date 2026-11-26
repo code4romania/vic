@@ -32,6 +32,19 @@ export class AuthIdentityProviderRepository
     return AuthIdentityProviderTransformer.fromEntity(entity);
   }
 
+  public async findByIdentity(
+    identityId: string,
+    provider: AuthProvider,
+  ): Promise<IAuthIdentityProviderModel> {
+    if (!identityId || !provider) return null;
+
+    const entity = await this.authIdentityProviderRepository.findOne({
+      where: { identityId, provider },
+    });
+
+    return AuthIdentityProviderTransformer.fromEntity(entity);
+  }
+
   public async linkProvider(
     options: CreateAuthIdentityProviderOptions,
     manager?: EntityManager,

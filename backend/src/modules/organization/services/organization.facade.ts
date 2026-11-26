@@ -45,6 +45,16 @@ export class OrganizationFacadeService {
     return this.organizationRepository.create(organization, manager);
   }
 
+  public async findForNgoHub(
+    ngohubOrganizationId: number,
+    taxId: string,
+  ): Promise<IOrganizationModel> {
+    return this.organizationRepository.findForNgoHub(
+      ngohubOrganizationId,
+      taxId,
+    );
+  }
+
   public async findConflicts(
     fields: OrganizationUniqueFields,
     exceptId?: string,

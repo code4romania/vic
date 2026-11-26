@@ -5,6 +5,8 @@ import {
   NgoHubOidcService,
 } from 'src/modules/auth/services/ngohub/ngohub-oidc.service';
 import { createTestAuthConfig } from './utils/auth-test-config';
+import { api } from './utils/http';
+import { createTestApp } from './utils/test-app';
 import {
   FAKE_NGOHUB_CLIENT_ID,
   FAKE_NGOHUB_CLIENT_SECRET,
@@ -161,5 +163,20 @@ describe('NGO Hub OIDC client (e2e)', () => {
     const profile = await service.callback(await login());
     expect(profile.emailVerified).toBe(false);
     expect(profile.organization).toBeUndefined();
+  });
+
+  it('sends the browser from /start back to the login page when the feature is off', async () => {
+    const off = await createTestApp({ authConfig: {} });
+    try {
+      const response = await api(off.app)
+        .get('/auth/web/ngohub/start')
+        .expect(302);
+      expect(response.headers.location).toBe(
+        `https://vic.test/login?ngohub_error=${AuthExceptionCodes.AUTH_020}`,
+      );
+      expect(response.headers['set-cookie']).toBeUndefined();
+    } finally {
+      await off.close();
+    }
   });
 });
