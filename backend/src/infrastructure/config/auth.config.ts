@@ -67,6 +67,30 @@ export class AuthConfigService implements JwtOptionsFactory {
     return this.configService.get('MOBILE_MIN_VERSION');
   }
 
+  // Old store app (Cognito login), kept for a transition period after the 2.0 launch.
+  get legacyCognitoIssuer(): string {
+    return (
+      this.configService.get<string>('LEGACY_COGNITO_MOBILE_ISSUER') ?? ''
+    ).replace(/\/+$/, '');
+  }
+
+  get legacyCognitoClientId(): string {
+    return (
+      this.configService.get<string>('LEGACY_COGNITO_MOBILE_CLIENT_ID') || null
+    );
+  }
+
+  legacyMobileEnabled(now = new Date()): boolean {
+    const until = Date.parse(
+      this.configService.get<string>('LEGACY_MOBILE_UNTIL') ?? '',
+    );
+    return (
+      !!this.legacyCognitoIssuer &&
+      !Number.isNaN(until) &&
+      now.getTime() < until
+    );
+  }
+
   get maintenanceMode(): boolean {
     return this.configService.get('MAINTENANCE_MODE') === 'true';
   }

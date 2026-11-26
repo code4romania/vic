@@ -118,6 +118,29 @@ Organizations: `POST /organizations/register` (public, multipart with `logo` and
 | `GOOGLE_CLIENT_IDS`, `APPLE_BUNDLE_ID`, `APPLE_SERVICES_ID` | social token verification (Google audiences: web, iOS and Android client ids; Apple audiences: the bundle id and the web Services ID) |
 | `APPLE_TEAM_ID`, `APPLE_KEY_ID`, `APPLE_PRIVATE_KEY`, `APPLE_WEB_REDIRECT_URI` | optional; App Store 5.1.1(v): the Sign in with Apple key (the .p8, base64 on one line) that exchanges the `authorizationCode` sent with an Apple sign-in for a refresh token (kept AES-GCM encrypted in `auth_identity.apple_refresh_token`, key derived from `AUTH_TOKEN_KEY`) and revokes it when the account (or the NGO, for admins) is deleted. Without the first three nothing is exchanged or revoked |
 | `MAIL_CONTACT` | the address shown in emails and policy pages |
+| `LEGACY_MOBILE_UNTIL`, `LEGACY_COGNITO_MOBILE_ISSUER`, `LEGACY_COGNITO_MOBILE_CLIENT_ID` | optional; the transition period for the old store app, see below |
+
+### Old store app (1.0.x) during the transition
+
+Decided 25 Nov 2026: after the launch the old store app keeps working for 30 days, so volunteers who have not
+updated yet can still log hours. The old app logs in with Cognito (the pool stays, but sign-ups are closed in
+terraform) and sends a Cognito access token. `MobileJwtAuthGuard` tries our own token first and then
+`LegacyCognitoMobileStrategy`, which:
+
+- does nothing unless `LEGACY_COGNITO_MOBILE_ISSUER` is set and today is before `LEGACY_MOBILE_UNTIL` (no JWKS
+  request for any other token);
+- checks the token against the pool's JWKS (`<issuer>/.well-known/jwks.json`), `token_use = access` and, if
+  `LEGACY_COGNITO_MOBILE_CLIENT_ID` is set, the app client;
+- maps `username` to the migrated identity (`auth_identity.legacy_cognito_username`, realm mobile, not disabled,
+  with a profile). Anyone else gets 401, so an account created in Cognito after the cutover cannot get in.
+
+Routes the old app calls that 2.0 removed answer harmlessly: `GET /mobile/contract/pending` an empty page,
+`PATCH /mobile/contract/:id/sign|cancel` and `PATCH /mobile/user/personal-data` 410, and the mobile event carries
+an empty `tasks` list (the old event screen maps it). Tested on a production copy on 25 Nov 2026 with
+Cognito-shaped tokens: profile, organizations, hours (list, counters, create), events (lists, detail, RSVP),
+announcements, news, contracts, statistics and push registration answer as the old app expects; an admin's,
+an expired or an unknown token gets 401. Old builds send no `x-app-version`, so `MOBILE_MIN_VERSION=2.0.0`
+does not stop them. Everything marked LEGACY in the code goes away on day 30 (issue 25).
 
 Removed in Layer 9 (with `src/infrastructure/providers/cognito/`, `src/modules/onghub/` and `@aws-sdk/client-cognito-identity-provider`): `COGNITO_*` (six variables) and `ONG_HUB_API`. `AWS_*` stay for S3; `jwks-rsa` stays for the Apple verifier (R24). Old `.env` files may still list them; they are ignored.
 

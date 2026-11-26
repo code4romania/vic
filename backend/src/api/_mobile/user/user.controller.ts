@@ -9,6 +9,7 @@ import {
   UploadedFiles,
   UseGuards,
   UseInterceptors,
+  GoneException,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { Request } from 'express';
@@ -107,6 +108,14 @@ export class MobileRegularUserController {
   }
 
   // The volunteer's language: the app, the push notifications and the emails.
+  // LEGACY (old store app 1.0.x, until LEGACY_MOBILE_UNTIL): its ID card form for contract signing.
+  // VIC 2.0 keeps no ID card data (#478). Remove with the legacy strategy (issue 25).
+  @UseGuards(MobileProfileGuard)
+  @Patch('personal-data')
+  updatePersonalDataLegacy(): never {
+    throw new GoneException('VIC no longer keeps ID card data');
+  }
+
   @UseGuards(MobileProfileGuard)
   @Patch('language')
   async setLanguage(

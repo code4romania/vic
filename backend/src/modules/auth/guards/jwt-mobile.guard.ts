@@ -6,7 +6,11 @@ import { AUTH_STRATEGIES } from '../auth.constants';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class MobileJwtAuthGuard extends AuthGuard(AUTH_STRATEGIES.MOBILE) {
+export class MobileJwtAuthGuard extends AuthGuard([
+  AUTH_STRATEGIES.MOBILE,
+  // tried only when the token is not one of ours: the old store app's Cognito token
+  AUTH_STRATEGIES.MOBILE_LEGACY,
+]) {
   constructor(private reflector: Reflector) {
     super();
   }

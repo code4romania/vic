@@ -106,7 +106,9 @@ Other one-off commands: `org:suspend:prod -- <id> [--reason "..."]`, `org:unsusp
 - [ ] Invite an admin; the invitation email arrives and the link logs in.
 - [ ] Magic link login on the web; email code login on mobile.
 - [ ] Google login and Apple login (web and mobile).
-- [ ] An old mobile app (below `MOBILE_MIN_VERSION`) gets 426 and the update screen.
+- [ ] The old store app (1.0.x, Cognito login) still logs in and lists hours until `LEGACY_MOBILE_UNTIL`; a new
+      sign-up in it fails (Cognito sign-ups are closed). A 2.x app below `MOBILE_MIN_VERSION` gets 426 and the
+      update screen.
 - [ ] Delete the test organization and its accounts.
 
 ## 8. Open

@@ -1,7 +1,9 @@
 import {
   Controller,
   Get,
+  GoneException,
   Param,
+  Patch,
   Query,
   Res,
   StreamableFile,
@@ -62,6 +64,34 @@ export class MobileContractController {
         (contract) => new MobileContractListItemPresenter(contract),
       ),
     });
+  }
+
+  // LEGACY (old store app 1.0.x, until LEGACY_MOBILE_UNTIL): in-app signing is gone in 2.0 (#486), so
+  // there is never a contract waiting for the volunteer. Declared before ':contractId' so it is not taken
+  // for an id. Remove with the legacy strategy (issue 25).
+  @Get('pending')
+  @ApiPaginatedResponse(MobileContractListItemPresenter)
+  async getManyPendingLegacy(
+    @Query() filters: GetVolunteerContractsDto,
+  ): Promise<PaginatedPresenter<MobileContractListItemPresenter>> {
+    return new PaginatedPresenter(emptyPagination(filters.limit));
+  }
+
+  // LEGACY: the old app's sign / reject buttons. Contracts are uploaded already signed by the NGO (#486).
+  @ApiParam({ name: 'contractId', type: 'string' })
+  @Patch(':contractId/sign')
+  signLegacy(): never {
+    throw new GoneException(
+      'Contracts are signed outside the app since VIC 2.0',
+    );
+  }
+
+  @ApiParam({ name: 'contractId', type: 'string' })
+  @Patch(':contractId/cancel')
+  cancelLegacy(): never {
+    throw new GoneException(
+      'Contracts are signed outside the app since VIC 2.0',
+    );
   }
 
   @ApiParam({ name: 'contractId', type: 'string' })

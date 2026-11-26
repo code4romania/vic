@@ -13,6 +13,7 @@ import { AppleTokenService } from './services/social/apple-token.service';
 import { SocialTokenVerifierService } from './services/social/social-token-verifier.service';
 import { MobileJwtStrategy } from './strategies/jwt-mobile.strategy';
 import { WebJwtStrategy } from './strategies/jwt-web.strategy';
+import { LegacyCognitoMobileStrategy } from './strategies/legacy-cognito-mobile.strategy';
 import { AuthIdentityEntity } from './entities/auth-identity.entity';
 import { AuthTokenEntity } from './entities/auth-token.entity';
 import { RefreshTokenEntity } from './entities/refresh-token.entity';
@@ -55,6 +56,7 @@ import { AuthCleanupProcessor } from './jobs/auth-cleanup.processor';
   providers: [
     WebJwtStrategy,
     MobileJwtStrategy,
+    LegacyCognitoMobileStrategy,
     AuthIdentityRepository,
     AuthTokenRepository,
     RefreshTokenRepository,
