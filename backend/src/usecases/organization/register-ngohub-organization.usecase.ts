@@ -80,8 +80,8 @@ export class RegisterNgoHubOrganizationUseCase
       throw new BadRequestException(OrganizationExceptionMessages.ORG_003);
     }
 
-    // Used up here, whatever happens next: a ticket never works twice.
-    const profile = await this.tickets.take(ticket, flowCookie);
+    // Read, not used up yet: a form refused below (ORG_004) can be corrected and sent again.
+    const profile = await this.tickets.peek(ticket, flowCookie);
     const claim = profile.organization;
     if (!claim?.id || claim.role !== 'admin' || !profile.email) {
       throw new AuthException(AuthExceptionCodes.AUTH_019);
@@ -114,6 +114,9 @@ export class RegisterNgoHubOrganizationUseCase
       (options.useNgoHubLogo && claim.logo_url
         ? await this.logoFetcher.fetch(claim.logo_url)
         : null);
+
+    // Every check passed: used up now, so it never works twice (of two racing requests, one gets it).
+    await this.tickets.take(ticket, flowCookie);
 
     const identity = await this.dataSource
       .transaction(async (manager) => {

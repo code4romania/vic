@@ -487,15 +487,25 @@ describe('Login with NGO Hub (e2e)', () => {
       const { ticket, cookie } = await ticketFor();
       const other = await register(ticket, 'vic_ngohub_flow=someone-else');
       expect(errorOf(other)).toBe(AuthExceptionCodes.AUTH_019);
-      // The failed attempt used it up as well.
+      // Another browser cannot use it, nor burn it for the one that logged in.
+      expect((await register(ticket, cookie)).status).toBe(200);
       expect(errorOf(await register(ticket, cookie))).toBe(
         AuthExceptionCodes.AUTH_019,
       );
+    });
 
-      const fresh = await ticketFor();
-      expect((await register(fresh.ticket, fresh.cookie)).status).toBe(200);
-      const again = await register(fresh.ticket, fresh.cookie);
-      expect(errorOf(again)).toBe(AuthExceptionCodes.AUTH_019);
+    it('keeps the ticket when the form is refused, so the admin can correct it', async () => {
+      await organization(); // an NGO VIC knows, with org@vic.ro
+      const { ticket, cookie } = await ticketFor();
+
+      const taken = await register(ticket, cookie, { email: 'org@vic.ro' });
+      expect(taken.status).toBe(409);
+      expect(errorOf(taken)).toBe('ORG_004');
+
+      expect((await register(ticket, cookie)).status).toBe(200);
+      expect(errorOf(await register(ticket, cookie))).toBe(
+        AuthExceptionCodes.AUTH_019,
+      );
     });
 
     it('refuses when the NGO was registered in the meantime (ORG_004)', async () => {

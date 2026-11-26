@@ -37,12 +37,14 @@ export class NgoHubTicketService {
     return ticket;
   }
 
-  // The profile, once. AUTH_019 when the ticket is unknown, used, expired or from another browser.
-  async take(ticket: string, flowCookie: string): Promise<NgoHubProfile> {
+  // The profile, without using the ticket up: the registration checks the form first, so a refused form
+  // (an email another NGO has) can be corrected. AUTH_019 when the ticket is unknown, used, expired or
+  // from another browser; another browser never burns it.
+  async peek(ticket: string, flowCookie: string): Promise<NgoHubProfile> {
     if (typeof ticket !== 'string' || !ticket || !flowCookie) {
       throw new AuthException(AuthExceptionCodes.AUTH_019);
     }
-    const raw = await this.redis.getdel(this.key(ticket));
+    const raw = await this.redis.get(this.key(ticket));
     if (!raw) throw new AuthException(AuthExceptionCodes.AUTH_019);
     const stored: StoredTicket = JSON.parse(raw);
     const expected = Buffer.from(stored.cookieHash);
@@ -54,6 +56,15 @@ export class NgoHubTicketService {
       throw new AuthException(AuthExceptionCodes.AUTH_019);
     }
     return stored.profile;
+  }
+
+  // The profile, once (GETDEL after the browser check): of two requests racing, only one gets it.
+  async take(ticket: string, flowCookie: string): Promise<NgoHubProfile> {
+    const profile = await this.peek(ticket, flowCookie);
+    if (!(await this.redis.getdel(this.key(ticket)))) {
+      throw new AuthException(AuthExceptionCodes.AUTH_019);
+    }
+    return profile;
   }
 
   private key(ticket: string): string {
