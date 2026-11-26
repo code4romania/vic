@@ -100,6 +100,22 @@ describe('AnnounceUseCase', () => {
     expect(body.en).toContain('app');
   });
 
+  it('app emails only the volunteers (mobile identities) and pushes to every device', async () => {
+    const report = await useCase.execute({ template: 'app' });
+
+    expect(query.mock.calls[0][0]).toContain('realm = $2');
+    expect(query.mock.calls[0][1]).toEqual(['disabled', 'mobile']);
+    expect(report).toMatchObject({ emailsQueued: 3, pushUsers: 2 });
+    expect(push.send).toHaveBeenCalledWith(
+      expect.objectContaining({
+        title: {
+          ro: 'Aplicația VIC nouă e în magazine',
+          en: 'The new VIC app is in the stores',
+        },
+      }),
+    );
+  });
+
   it('release-transition resumes the held queue', async () => {
     await expect(useCase.releaseTransition()).resolves.toBe(42);
   });
