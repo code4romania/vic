@@ -1,7 +1,7 @@
 # Maintenance page for the launch window (0:00 – 0:45)
 
 The old web (vic `main`, 1.1.0) has no maintenance mode, and from 0:00 its API is scaled to 0.
-This commit replaces the web build with one static page (`index.html` here, ro + en): `npm run build`
+Commit d47c2237 replaces the web build with one static page (`index.html` here, ro + en): `npm run build`
 only copies it to `dist/`. Amplify's SPA rewrite already sends every path to `/index.html`, so every
 URL of vic.ngohub.ro shows it. No terraform or Amplify console change is needed.
 
@@ -19,13 +19,13 @@ link such as https://vic.ngohub.ro/volunteers: both show the maintenance page.
 Revert this commit, then merge `develop` (main is an ancestor of develop, so the merge has no conflicts):
 
     git checkout main && git pull --ff-only
-    git revert --no-edit $(git rev-parse origin/launch/maintenance-page)
+    git revert --no-edit d47c2237   # the maintenance page commit (the branch tip is a merge of main)
     git merge --no-ff origin/develop -m "Release VIC 2.0.0"
     git diff origin/develop --stat      # must print nothing: main == develop
     git push origin main
 
 ## No-go before 0:45
 
-    git checkout main && git pull --ff-only && git revert --no-edit $(git rev-parse origin/launch/maintenance-page) && git push origin main
+    git checkout main && git pull --ff-only && git revert --no-edit d47c2237   # the maintenance page commit (the branch tip is a merge of main) && git push origin main
 
 Amplify rebuilds the old web (1.1.0) as it was.
