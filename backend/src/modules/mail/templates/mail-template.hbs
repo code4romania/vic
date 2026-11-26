@@ -67,6 +67,11 @@
     <div id="content">
       <h1>{{title}}</h1>
       <p class="p1">{{subtitle}}</p>
+      {{#if english}}
+      <hr style="border:0; border-top:1px solid #E5E7EB; margin:24px 0;" />
+      <h1>{{english.title}}</h1>
+      <p class="p1">{{english.subtitle}}</p>
+      {{/if}}
       {{#if cta}}
       <a href={{cta.link}} target="_blank">
         <button type="button">{{cta.label}}</button>
