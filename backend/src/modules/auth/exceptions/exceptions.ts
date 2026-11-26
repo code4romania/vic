@@ -17,6 +17,8 @@ export enum AuthExceptionCodes {
   AUTH_013 = 'AUTH_013',
   AUTH_014 = 'AUTH_014',
   AUTH_015 = 'AUTH_015',
+  AUTH_019 = 'AUTH_019',
+  AUTH_020 = 'AUTH_020',
 }
 
 type AuthExceptionCodeType = keyof typeof AuthExceptionCodes;
@@ -86,6 +88,14 @@ export const AuthExceptionMessages: Record<
     code_error: AuthExceptionCodes.AUTH_015,
     message: 'Wrong code',
   },
+  [AuthExceptionCodes.AUTH_019]: {
+    code_error: AuthExceptionCodes.AUTH_019,
+    message: 'NGO Hub login failed or expired, start again',
+  },
+  [AuthExceptionCodes.AUTH_020]: {
+    code_error: AuthExceptionCodes.AUTH_020,
+    message: 'Login with NGO Hub is not available',
+  },
 };
 
 // HttpStatus in this Nest version has no LOCKED (423) or UPGRADE_REQUIRED (426), hence plain numbers.
@@ -105,6 +115,8 @@ export const AuthExceptionStatus: Record<AuthExceptionCodes, number> = {
   [AuthExceptionCodes.AUTH_013]: HttpStatus.UNAUTHORIZED,
   [AuthExceptionCodes.AUTH_014]: HttpStatus.NOT_FOUND,
   [AuthExceptionCodes.AUTH_015]: HttpStatus.BAD_REQUEST,
+  [AuthExceptionCodes.AUTH_019]: HttpStatus.UNAUTHORIZED,
+  [AuthExceptionCodes.AUTH_020]: HttpStatus.NOT_FOUND,
 };
 
 // ExceptionsService only covers 400/401/403/404/500; auth needs 409, 423, 426 and 429 too.

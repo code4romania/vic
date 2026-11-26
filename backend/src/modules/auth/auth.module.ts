@@ -30,6 +30,7 @@ import { AuthMailerService } from './services/auth-mailer.service';
 import { TransitionMailService } from './services/transition-mail.service';
 import { AuthTransitionProcessor } from './jobs/auth-transition.processor';
 import { AuthCleanupProcessor } from './jobs/auth-cleanup.processor';
+import { NgoHubOidcService } from './services/ngohub/ngohub-oidc.service';
 
 @Module({
   imports: [
@@ -73,8 +74,10 @@ import { AuthCleanupProcessor } from './jobs/auth-cleanup.processor';
     AppleTokenVerifier,
     AppleTokenService,
     SocialTokenVerifierService,
+    NgoHubOidcService,
   ],
   exports: [
+    NgoHubOidcService,
     AuthIdentityFacade,
     AuthConfigService,
     OneTimeTokenService,
