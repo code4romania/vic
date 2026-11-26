@@ -5,8 +5,15 @@
 export type AnnounceTemplate = 'announce' | 'reminder';
 
 export interface CutoverDate {
+  // "marți, 1 decembrie" / "Tuesday 1 December"
   ro: string;
   en: string;
+  // "1 decembrie" / "1 December"
+  dayRo: string;
+  dayEn: string;
+  // The window starts at 00:00 on the cutover day: "noaptea de 30 noiembrie spre 1 decembrie"
+  nightRo: string;
+  nightEn: string;
 }
 
 export interface AnnounceCopy {
@@ -83,16 +90,27 @@ export function cutoverDate(iso: string): CutoverDate {
     throw new Error(`--date must be a day as YYYY-MM-DD, got "${iso}"`);
   }
   const day = date.getUTCDate();
+  const eve = new Date(date.getTime() - 24 * 60 * 60 * 1000);
+  const dayRo = `${day} ${RO_MONTHS[date.getUTCMonth()]}`;
+  const dayEn = `${day} ${EN_MONTHS[date.getUTCMonth()]}`;
+  const eveRo = `${eve.getUTCDate()} ${RO_MONTHS[eve.getUTCMonth()]}`;
+  const eveEn = `${eve.getUTCDate()} ${EN_MONTHS[eve.getUTCMonth()]}`;
   return {
-    ro: `${RO_DAYS[date.getUTCDay()]}, ${day} ${RO_MONTHS[date.getUTCMonth()]}`,
-    en: `${EN_DAYS[date.getUTCDay()]} ${day} ${EN_MONTHS[date.getUTCMonth()]}`,
+    ro: `${RO_DAYS[date.getUTCDay()]}, ${dayRo}`,
+    en: `${EN_DAYS[date.getUTCDay()]} ${dayEn}`,
+    dayRo,
+    dayEn,
+    nightRo: `noaptea de ${eveRo} spre ${dayRo}`,
+    nightEn: `the night of ${eveEn} to ${dayEn}`,
   };
 }
 
+// The window is 00:00–02:00 on the cutover day. The new app reaches the stores a few days later (it is
+// reviewed against the live 2.0 backend), so these emails do not ask people to update yet.
 const RO_AFTER =
-  'După aceea intri cu adresa de email: primești un link sau un cod, fără parolă. Actualizează aplicația din magazin; versiunea veche mai merge 30 de zile.';
+  'După aceea intri cu adresa de email: primești un link sau un cod, fără parolă. Aplicația nouă apare în magazine în zilele următoare; versiunea veche mai merge 30 de zile.';
 const EN_AFTER =
-  'Afterwards you log in with your email address: you get a link or a code, no password. Update the app from the store; the old version keeps working for 30 days.';
+  'Afterwards you log in with your email address: you get a link or a code, no password. The new app reaches the stores in the following days; the old version keeps working for 30 days.';
 
 export function announceCopy(
   template: AnnounceTemplate,
@@ -104,31 +122,32 @@ export function announceCopy(
         email: {
           subject: `${capitalize(date.ro)}, VIC are un nou sistem de autentificare`,
           title: `${capitalize(date.ro)}, VIC are un nou sistem de autentificare`,
-          subtitle: `În acea zi, VIC va fi indisponibil câteva ore. ${RO_AFTER}`,
+          subtitle: `În ${date.nightRo}, între 00:00 și 02:00, VIC va fi indisponibil. ${RO_AFTER}`,
           english: {
             title: `On ${date.en} VIC gets a new login`,
-            subtitle: `VIC will be unavailable for a few hours that day. ${EN_AFTER}`,
+            subtitle: `VIC will be unavailable on ${date.nightEn}, from 00:00 to 02:00 (Romanian time). ${EN_AFTER}`,
           },
         },
         push: {
           title: 'VIC are un nou sistem de autentificare',
-          body: `Din ${date.ro} intri cu adresa de email, fără parolă. Detalii pe email.`,
+          body: `Din ${date.dayRo} intri cu adresa de email, fără parolă. Detalii pe email.`,
         },
       };
+    // Sent the day before the window (the evening of the eve)
     case 'reminder':
       return {
         email: {
-          subject: `Mâine, ${date.ro}: noul sistem de autentificare VIC`,
-          title: `Mâine, ${date.ro}, VIC are un nou sistem de autentificare`,
-          subtitle: `VIC va fi indisponibil câteva ore. ${RO_AFTER}`,
+          subject: 'Diseară: noul sistem de autentificare VIC',
+          title: 'Diseară VIC trece la noul sistem de autentificare',
+          subtitle: `La noapte, între 00:00 și 02:00, VIC va fi indisponibil. ${RO_AFTER}`,
           english: {
-            title: `Tomorrow, ${date.en}, VIC gets a new login`,
-            subtitle: `VIC will be unavailable for a few hours. ${EN_AFTER}`,
+            title: 'Tonight VIC switches to its new login',
+            subtitle: `VIC will be unavailable tonight, from 00:00 to 02:00 (Romanian time). ${EN_AFTER}`,
           },
         },
         push: {
-          title: 'Mâine VIC trece la noul sistem de autentificare',
-          body: 'VIC va fi indisponibil câteva ore. Apoi intri cu adresa de email și primești un cod, fără parolă.',
+          title: 'La noapte VIC trece la noul sistem de autentificare',
+          body: 'VIC va fi indisponibil între 00:00 și 02:00. Apoi intri cu adresa de email și primești un cod, fără parolă.',
         },
       };
     default:

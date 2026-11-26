@@ -8,6 +8,7 @@ import { AnnounceTemplate, announceCopy, cutoverDate } from './announce-copy';
 // T-7 and T-1 announcements of the VIC 2.0 login, run on production 1.x (decisions R3):
 //   npm run announce -- --template announce --date 2026-12-12 [--dry-run] [--no-email] [--no-push]
 //   npm run announce -- --template reminder --date 2026-12-12 [--dry-run] [--no-email] [--no-push]
+//   (--date is the day the 00:00–02:00 window starts; send the reminder on the evening before it)
 // In the image: npm run announce:prod -- ... (dist/commands/announce.command.js).
 // Emails: every user not deleted, one per address (lower case), through the mail queue at 10 per second.
 // Push: every device with a push token, in batches of 500 users. --dry-run counts and prints, sends nothing.
