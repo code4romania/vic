@@ -6,7 +6,7 @@ import AuthShell, { AuthNotice } from '../components/AuthShell';
 import LoadingContent from '../components/LoadingContent';
 import NgoHubLoginButton from '../components/NgoHubLoginButton';
 import { useAuth } from '../hooks/useAuth';
-import { useNgoHubCallbackMutation } from '../services/auth/auth.service';
+import { ngohubCallback } from '../services/auth/auth.api';
 import { isNgoHubRegistration } from '../common/interfaces/auth.interface';
 import { getAuthErrorCode } from '../common/utils/auth-error';
 import { InternalErrors } from '../common/errors/internal-errors.class';
@@ -38,7 +38,6 @@ const NgoHubCallback = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { startSession } = useAuth();
-  const callback = useNgoHubCallbackMutation();
   const sent = useRef(false);
   const [failure, setFailure] = useState<string | null>(null);
   useNoReferrer();
@@ -75,27 +74,25 @@ const NgoHubCallback = () => {
       setFailure(InternalErrors.AUTH_ERRORS.getError(AUTH_ERRORS.AUTH_019));
       return;
     }
-    callback.mutate(
-      { code: params.code, state: params.state, ...(params.iss ? { iss: params.iss } : {}) },
-      {
-        onSuccess: async (result) => {
-          if (isNgoHubRegistration(result)) {
-            navigate('/register/ngohub', { replace: true, state: result.registration });
-            return;
-          }
-          await startSession(result);
-          navigate('/', { replace: true });
-        },
-        onError: (error) => {
-          const code = getAuthErrorCode(error);
-          setFailure(
-            code
-              ? InternalErrors.AUTH_ERRORS.getError(code)
-              : InternalErrors.AUTH_ERRORS.getError(AUTH_ERRORS.AUTH_019),
-          );
-        },
-      },
-    );
+    // A plain call, not a react-query mutation: the code works once, and a mutation's callbacks are
+    // dropped when React (StrictMode in development) remounts the page while the request runs.
+    ngohubCallback({
+      code: params.code,
+      state: params.state,
+      ...(params.iss ? { iss: params.iss } : {}),
+    })
+      .then(async (result) => {
+        if (isNgoHubRegistration(result)) {
+          navigate('/register/ngohub', { replace: true, state: result.registration });
+          return;
+        }
+        await startSession(result);
+        navigate('/', { replace: true });
+      })
+      .catch((error) => {
+        const code = getAuthErrorCode(error);
+        setFailure(InternalErrors.AUTH_ERRORS.getError(code ?? AUTH_ERRORS.AUTH_019));
+      });
   }, []);
 
   if (!failure) {

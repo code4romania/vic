@@ -8,7 +8,6 @@ import {
   getTokenInfo,
   loginWithLink,
   loginWithSocial,
-  ngohubCallback,
   ngohubNotUs,
   registerNgoHubOrganization,
   requestLogin,
@@ -60,11 +59,6 @@ export const useLoginWithSocialMutation = () =>
       onError: (error: AuthApiError) => Promise.resolve(error),
     },
   );
-
-export const useNgoHubCallbackMutation = () =>
-  useMutation((params: { code: string; state: string; iss?: string }) => ngohubCallback(params), {
-    onError: (error: AuthApiError) => Promise.resolve(error),
-  });
 
 export const useRegisterNgoHubOrganizationMutation = () =>
   useMutation(

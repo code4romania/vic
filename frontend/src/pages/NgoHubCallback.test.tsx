@@ -62,6 +62,24 @@ describe('NGO Hub callback page', () => {
     expect(await screen.findByTestId('location')).toHaveTextContent(/^\/$/);
   });
 
+  it('finishes under StrictMode, which mounts the page twice, with one request', async () => {
+    const bodies = capture(() => HttpResponse.json(SESSION));
+    const { auth } = renderPage(
+      <React.StrictMode>
+        <NgoHubCallback />
+      </React.StrictMode>,
+      {
+        route: ROUTE,
+        path: '/login/ngohub/callback',
+        auth: { isAuthenticated: false },
+        routes: <Route path="/" element={<LocationProbe />} />,
+      },
+    );
+    expect(await screen.findByTestId('location')).toHaveTextContent(/^\/$/);
+    expect(auth.startSession).toHaveBeenCalledTimes(1);
+    expect(bodies).toHaveLength(1);
+  });
+
   it('takes an unknown NGO to the prefilled registration, with the ticket in the history state', async () => {
     capture(() => HttpResponse.json({ registration: REGISTRATION }));
     const { auth } = render();
