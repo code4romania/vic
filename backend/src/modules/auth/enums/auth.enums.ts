@@ -31,4 +31,6 @@ export enum AuthProvider {
   GOOGLE = 'google',
   FACEBOOK = 'facebook',
   APPLE = 'apple',
+  // Login with NGO Hub (OIDC) for NGO admins; subject = the NGO Hub user id
+  NGOHUB = 'ngohub',
 }
