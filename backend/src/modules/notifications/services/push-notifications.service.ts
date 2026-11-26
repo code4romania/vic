@@ -30,7 +30,11 @@ export class PushNotificationsService {
     data,
   }: SendNotificationData): Promise<void> => {
     // 1. Find all push tokens for the given user ids
-    const tokens = await this.pushTokensRepository.findByUserIds(userIds);
+    // (a token that is not an Expo token would end up as null in the batch and fail every message in it)
+    const tokens = (
+      await this.pushTokensRepository.findByUserIds(userIds)
+    ).filter((token) => Expo.isExpoPushToken(token));
+    if (!tokens.length) return;
     // 2. Send the notifications
     const tickets = await this.expoPushNotificationsService.send(
       tokens,
