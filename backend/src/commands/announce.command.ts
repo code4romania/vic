@@ -9,6 +9,7 @@ import { runCommand } from './command-runner';
 // npm run announce -- --template reminder --date 2026-12-12 [--dry-run]   (T-1)
 // npm run announce -- --release-transition    (go: sends the held transition emails at 10/s)
 // npm run announce -- --template back [--dry-run]   (after go: email every identity, push every device)
+// npm run announce -- --template app [--dry-run]    (the new app is in the stores: email the volunteers, push every device)
 // npm run announce -- --status                (the held queue: paused or not, job counts)
 runCommand('announce', async (app, args) => {
   const announce = app.get(AnnounceUseCase);
@@ -38,7 +39,7 @@ runCommand('announce', async (app, args) => {
 
   console.log(
     `${report.dryRun ? 'DRY RUN ' : ''}${report.template}: ${report.recipients} recipients` +
-      (report.template === 'back'
+      (report.template === 'back' || report.template === 'app'
         ? `, ${report.pushUsers} users with push tokens`
         : '') +
       (report.dryRun ? '' : `; ${report.emailsQueued} emails queued`),

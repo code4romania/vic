@@ -5,13 +5,16 @@ import {
   cutoverDate,
 } from 'src/modules/auth/constants/auth-emails';
 import { renderMail } from 'src/modules/mail/mail-copy';
-import { AuthIdentityStatus } from 'src/modules/auth/enums/auth.enums';
+import {
+  AuthIdentityStatus,
+  AuthRealm,
+} from 'src/modules/auth/enums/auth.enums';
 import { AuthMailerService } from 'src/modules/auth/services/auth-mailer.service';
 import { TransitionMailService } from 'src/modules/auth/services/transition-mail.service';
 import { PushNotificationsFacade } from 'src/modules/notifications/notifications.facade';
 import { DataSource } from 'typeorm';
 
-export type AnnounceTemplate = 'announce' | 'reminder' | 'back';
+export type AnnounceTemplate = 'announce' | 'reminder' | 'back' | 'app';
 
 export interface AnnounceOptions {
   template: AnnounceTemplate;
@@ -36,10 +39,15 @@ const BACK_PUSH_BODY = {
   ro: 'Actualizează aplicația din magazin, apoi intră cu adresa de email: primești un cod, fără parolă.',
   en: 'Update the app from the store, then log in with your email address: you get a code, no password.',
 };
+const PUSHES: Partial<Record<AnnounceTemplate, { ro: string; en: string }>> = {
+  back: BACK_PUSH_BODY,
+  app: BACK_PUSH_BODY,
+};
 
 // The announcement emails around the cutover. announce (T-7) and reminder (T-1) read the user table,
 // since no identity exists yet (decisions R3); back (after go) reads the identities and also pushes to
-// every device with a push token. Every email goes through the mail queue at `perSecond` (10 by default).
+// every device with a push token. app (the new app is in the stores, a few days after go: the store
+// review runs against the live backend) emails the volunteers' identities and pushes to every device. Every email goes through the mail queue at `perSecond` (10 by default).
 @Injectable()
 export class AnnounceUseCase {
   constructor(
@@ -52,8 +60,8 @@ export class AnnounceUseCase {
   async execute(options: AnnounceOptions): Promise<AnnounceReport> {
     const email = this.build(options);
     const recipients = await this.recipients(options.template);
-    const pushUserIds =
-      options.template === 'back' ? await this.pushUserIds() : [];
+    const pushBody = PUSHES[options.template];
+    const pushUserIds = pushBody ? await this.pushUserIds() : [];
 
     const report: AnnounceReport = {
       template: options.template,
@@ -76,7 +84,7 @@ export class AnnounceUseCase {
       await this.pushNotificationsFacade.send({
         userIds: pushUserIds.slice(i, i + PUSH_CHUNK),
         title: { ro: email.copy.ro.title, en: email.copy.en.title },
-        body: BACK_PUSH_BODY,
+        body: pushBody,
       });
     }
 
@@ -102,6 +110,8 @@ export class AnnounceUseCase {
         return AUTH_EMAILS[options.template](cutoverDate(options.date));
       case 'back':
         return AUTH_EMAILS.back();
+      case 'app':
+        return AUTH_EMAILS.app();
       default:
         throw new Error(`Unknown template: ${options.template}`);
     }
@@ -116,10 +126,16 @@ export class AnnounceUseCase {
               WHERE status <> $1 ORDER BY 1`,
             [AuthIdentityStatus.DISABLED],
           )
-        : await this.dataSource.query(
-            `SELECT DISTINCT lower(trim(email)) AS email FROM "user"
+        : template === 'app'
+          ? await this.dataSource.query(
+              `SELECT DISTINCT lower(email) AS email FROM auth_identity
+              WHERE status <> $1 AND realm = $2 ORDER BY 1`,
+              [AuthIdentityStatus.DISABLED, AuthRealm.MOBILE],
+            )
+          : await this.dataSource.query(
+              `SELECT DISTINCT lower(trim(email)) AS email FROM "user"
               WHERE deleted_on IS NULL AND coalesce(trim(email), '') <> '' ORDER BY 1`,
-          );
+            );
     return rows.map((row) => row.email);
   }
 

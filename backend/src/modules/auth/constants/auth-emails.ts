@@ -124,13 +124,13 @@ export const AUTH_EMAILS = {
         subject: 'VIC are un nou sistem de autentificare',
         title: 'VIC are un nou sistem de autentificare',
         subtitle:
-          'Actualizează aplicația VIC din magazin. Nu mai folosești parolă: introdu adresa de email în aplicație și primești un cod de autentificare. Poți intra în continuare și cu Google sau Apple.',
+          'Nu mai folosești parolă: în aplicația VIC introduci adresa de email și primești un cod de autentificare. Poți intra în continuare și cu Google sau Apple. Aplicația nouă apare în magazine în zilele următoare și te anunțăm când e disponibilă; până atunci, aplicația pe care o ai funcționează ca până acum.',
       },
       {
         subject: 'VIC has a new login',
         title: 'VIC has a new login',
         subtitle:
-          'Update the VIC app from the store. No more passwords: enter your email in the app and you will get a login code. You can still sign in with Google or Apple.',
+          'No more passwords: in the VIC app you enter your email and get a login code. You can still sign in with Google or Apple. The new app reaches the stores in the following days and we will let you know when it is there; until then, the app you have works as before.',
       },
     ),
 
@@ -328,6 +328,23 @@ export const AUTH_EMAILS = {
         title: 'VIC is back',
         subtitle:
           'No more passwords. On the web, at vic.ngohub.ro, enter your email address and you get a login link. In the app, update it from the store, enter your email address and you get a code; you can also sign in with Google or Apple.',
+      },
+    ),
+
+  // The new app is in the stores (sent when the store review is done, a few days after go): volunteers only.
+  app: (): AuthEmail =>
+    email(
+      {
+        subject: 'Aplicația VIC nouă e în magazine',
+        title: 'Aplicația VIC nouă e în magazine',
+        subtitle:
+          'Actualizează aplicația VIC din App Store sau Google Play. Intri cu adresa de email și primești un cod de autentificare, fără parolă; poți intra și cu Google sau Apple. Contul și datele tale rămân aceleași. Versiunea veche mai funcționează doar câteva săptămâni.',
+      },
+      {
+        subject: 'The new VIC app is in the stores',
+        title: 'The new VIC app is in the stores',
+        subtitle:
+          'Update the VIC app from the App Store or Google Play. You log in with your email address and get a code, no password; you can also sign in with Google or Apple. Your account and data stay the same. The old version keeps working only a few more weeks.',
       },
     ),
 
