@@ -139,6 +139,13 @@ export class AuthConfigService implements JwtOptionsFactory {
     };
   }
 
+  // Hosts a registration may copy the NGO Hub logo from (the NGO Hub S3 bucket), exact names, https only.
+  get ngohubLogoHosts(): string[] {
+    return splitList(this.configService.get('NGOHUB_LOGO_HOSTS')).map((host) =>
+      host.toLowerCase(),
+    );
+  }
+
   createJwtOptions(): JwtModuleOptions {
     return {
       privateKey: this.privateKey,

@@ -9,9 +9,11 @@ import {
   Query,
   Req,
   Res,
+  UploadedFiles,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOkResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiConsumes, ApiOkResponse } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import { Request, Response } from 'express';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
@@ -38,7 +40,16 @@ import {
   setNgoHubFlowCookie,
   setRefreshCookie,
 } from './cookies';
-import { NgoHubCallbackDto, NgoHubRevokeDto } from './dto/ngohub.dto';
+import {
+  NgoHubCallbackDto,
+  NgoHubRevokeDto,
+  RegisterNgoHubOrganizationDto,
+} from './dto/ngohub.dto';
+import {
+  OrganizationFilesInterceptor,
+  OrganizationUploads,
+} from 'src/api/organization/organization-files';
+import { RegisterNgoHubOrganizationUseCase } from 'src/usecases/organization/register-ngohub-organization.usecase';
 import { NgoHubOidcService } from 'src/modules/auth/services/ngohub/ngohub-oidc.service';
 import { NGOHUB_TICKET_TTL_SECONDS } from 'src/modules/auth/services/ngohub/ngohub-ticket.service';
 import {
@@ -73,6 +84,7 @@ export class WebAuthController {
     private readonly ngohubOidc: NgoHubOidcService,
     private readonly ngohubLoginUseCase: NgoHubLoginUseCase,
     private readonly revokeNgoHubAdminUseCase: RevokeNgoHubAdminUseCase,
+    private readonly registerNgoHubOrganizationUseCase: RegisterNgoHubOrganizationUseCase,
   ) {}
 
   // VIC 2.0 (#514): emails a magic link (15 minutes) to an existing admin login. Same answer for any
@@ -178,6 +190,39 @@ export class WebAuthController {
     return new SessionPresenter(result.login.tokens, {
       includeRefreshToken: false,
       user: new AdminProfilePresenter(result.login.admin),
+    });
+  }
+
+  // The prefilled form of an NGO VIC does not know yet, with the ticket from the callback. The NGO starts
+  // active and validated, its admin is logged in (same answer as the callback's session).
+  @Public()
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
+  @HttpCode(HttpStatus.OK)
+  @ApiConsumes('multipart/form-data')
+  @ApiOkResponse({ type: SessionPresenter })
+  @UseInterceptors(OrganizationFilesInterceptor())
+  @Post('ngohub/register')
+  async ngohubRegister(
+    @Body() dto: RegisterNgoHubOrganizationDto,
+    @UploadedFiles() files: OrganizationUploads,
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<SessionPresenter> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { ticket, acceptedTerms, ...options } = dto;
+    const result = await this.registerNgoHubOrganizationUseCase.execute(
+      ticket,
+      req.cookies?.[NGOHUB_FLOW_COOKIE],
+      options,
+      { logo: files?.logo?.[0] },
+      requestLanguage(req),
+      requestClient(req),
+    );
+    clearNgoHubFlowCookie(res);
+    setRefreshCookie(res, result.tokens.refreshToken, this.authConfig);
+    return new SessionPresenter(result.tokens, {
+      includeRefreshToken: false,
+      user: new AdminProfilePresenter(result.admin),
     });
   }
 

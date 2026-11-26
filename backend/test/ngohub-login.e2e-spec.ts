@@ -398,4 +398,131 @@ describe('Login with NGO Hub (e2e)', () => {
     expect(response.status).toBe(401);
     expect(errorOf(response)).toBe(AuthExceptionCodes.AUTH_019);
   });
+
+  describe('registering an NGO from NGO Hub', () => {
+    const form = {
+      email: 'contact@ngohub-org.ro',
+      phone: '+40712345678',
+      address: 'Str. Exemplu 1, Cluj-Napoca',
+      website: 'https://ngohub-org.ro',
+      firstName: 'Ana',
+      lastName: 'Pop',
+      adminPhone: '+40711111112',
+      acceptedTerms: 'true',
+    };
+
+    const register = (
+      ticket: string,
+      cookie: string,
+      fields: Record<string, string> = {},
+    ): Promise<Response> => {
+      let request = http
+        .post('/auth/web/ngohub/register')
+        .set('Cookie', cookie);
+      for (const [key, value] of Object.entries({
+        ...form,
+        ticket,
+        ...fields,
+      })) {
+        request = request.field(key, value);
+      }
+      return request;
+    };
+
+    const ticketFor = async (
+      user: FakeNgoHubUser = ngohubAdmin(),
+    ): Promise<{ ticket: string; cookie: string }> => {
+      const response = await loginAs(user);
+      expect(response.status).toBe(200);
+      return {
+        ticket: response.body.registration.ticket,
+        cookie: response.cookie,
+      };
+    };
+
+    it('creates the NGO active and validated, from the ticket, and logs the admin in', async () => {
+      const { ticket, cookie } = await ticketFor();
+
+      // The locked fields sent in the body are dropped: the ticket decides.
+      const response = await register(ticket, cookie, {
+        name: 'Alt Nume',
+        taxId: '87654321',
+        adminEmail: 'altcineva@ngo.ro',
+      });
+
+      expect(response.status).toBe(200);
+      expect(response.body.accessToken).toBeDefined();
+      expect(response.body.user.email).toBe('ana@ngo.ro');
+      expect(refreshCookie(response)).toBeDefined();
+      const [organization] = await testApp.dataSource.query(
+        `SELECT name, tax_id, status, validated_at IS NOT NULL AS validated,
+                self_declared_at, ngohub_organization_id, email, logo
+           FROM organization`,
+      );
+      expect(organization).toEqual({
+        name: 'Asociatia din NGO Hub',
+        tax_id: CUI,
+        status: 'active',
+        validated: true,
+        self_declared_at: null,
+        ngohub_organization_id: 501,
+        email: 'contact@ngohub-org.ro',
+        logo: null,
+      });
+      const [identity] = await testApp.dataSource.query(
+        `SELECT i.status, i.email, u.phone FROM auth_identity i JOIN "user" u ON u.id = i.user_id`,
+      );
+      expect(identity).toEqual({
+        status: 'active',
+        email: 'ana@ngo.ro',
+        phone: '+40711111112',
+      });
+      expect(await links()).toHaveLength(1);
+
+      // Next time the same NGO Hub account just logs in.
+      expect((await loginAs(ngohubAdmin())).body.accessToken).toBeDefined();
+    });
+
+    it('refuses a ticket used twice, or from another browser (AUTH_019)', async () => {
+      const { ticket, cookie } = await ticketFor();
+      const other = await register(ticket, 'vic_ngohub_flow=someone-else');
+      expect(errorOf(other)).toBe(AuthExceptionCodes.AUTH_019);
+      // The failed attempt used it up as well.
+      expect(errorOf(await register(ticket, cookie))).toBe(
+        AuthExceptionCodes.AUTH_019,
+      );
+
+      const fresh = await ticketFor();
+      expect((await register(fresh.ticket, fresh.cookie)).status).toBe(200);
+      const again = await register(fresh.ticket, fresh.cookie);
+      expect(errorOf(again)).toBe(AuthExceptionCodes.AUTH_019);
+    });
+
+    it('refuses when the NGO was registered in the meantime (ORG_004)', async () => {
+      const { ticket, cookie } = await ticketFor();
+      await organization({ taxId: CUI });
+      const response = await register(ticket, cookie);
+      expect(response.status).toBe(409);
+      expect(errorOf(response)).toBe('ORG_004');
+    });
+
+    it('does not copy a logo from a host that is not allowed', async () => {
+      const { ticket, cookie } = await ticketFor(
+        ngohubAdmin({
+          organization: fakeOrganization({
+            cui: CUI,
+            logo_url: 'https://evil.example/logo.png',
+          }),
+        }),
+      );
+      const response = await register(ticket, cookie, {
+        useNgoHubLogo: 'true',
+      });
+      expect(response.status).toBe(200);
+      const [{ logo }] = await testApp.dataSource.query(
+        `SELECT logo FROM organization`,
+      );
+      expect(logo).toBeNull();
+    });
+  });
 });

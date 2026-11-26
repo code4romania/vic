@@ -25,6 +25,8 @@ import { SocialLoginUseCase } from './auth/social-login.usecase';
 import { WebSocialLoginUseCase } from './auth/web-social-login.usecase';
 import { NgoHubLoginUseCase } from './auth/ngohub-login.usecase';
 import { RevokeNgoHubAdminUseCase } from './auth/revoke-ngohub-admin.usecase';
+import { RegisterNgoHubOrganizationUseCase } from './organization/register-ngohub-organization.usecase';
+import { NgoHubLogoFetcher } from './organization/ngohub-logo.fetcher';
 import { RequestLoginUseCase } from './auth/request-login.usecase';
 import { LoginWithLinkUseCase } from './auth/login-with-link.usecase';
 import { LoginWithCodeUseCase } from './auth/login-with-code.usecase';
@@ -236,6 +238,8 @@ import { FinishOldAccountDeletionsUseCase } from './user/finish-old-account-dele
     WebSocialLoginUseCase,
     NgoHubLoginUseCase,
     RevokeNgoHubAdminUseCase,
+    NgoHubLogoFetcher,
+    RegisterNgoHubOrganizationUseCase,
     RequestLoginUseCase,
     LoginWithLinkUseCase,
     LoginWithCodeUseCase,
@@ -430,6 +434,7 @@ import { FinishOldAccountDeletionsUseCase } from './user/finish-old-account-dele
     WebSocialLoginUseCase,
     NgoHubLoginUseCase,
     RevokeNgoHubAdminUseCase,
+    RegisterNgoHubOrganizationUseCase,
     RequestLoginUseCase,
     LoginWithLinkUseCase,
     LoginWithCodeUseCase,
