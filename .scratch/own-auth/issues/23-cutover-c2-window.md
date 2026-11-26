@@ -71,7 +71,7 @@ One person sees VIC from every side through email aliases. A web identity is adm
 
 ## Store day (when both stores have approved 2.0.0, usually 1–3 days after go)
 
-- [ ] Release 2.0.0 in both stores (manual release).
+- [ ] Release 2.0.0 in both stores (manual release). Use the **production** builds: iOS 2.0.0 (40) and Android versionCode 31 (already uploaded, built with the production profile). TestFlight also has 2.0.0 (41) and Play internal testing runs versionCode 32: those are **staging** builds for the client's testing (staging API) and must never go to review. On Play, create the production release from bundle 31 in the app bundle library; do not promote the internal release.
 - [ ] Publish the Update now OTA to the old app: `eas update --branch production --message "Update now banner" --clear-cache` from the `ota/update-now` branch, with all nine `EXPO_PUBLIC_*` production values available (`--environment production` alone is **not** enough: only the API URL is readable outside EAS; use the method chosen at T-1, `mobile/UPDATE-NOW.md` on that branch). Undo if needed: `eas update:roll-back-to-embedded --branch production --runtime-version exposdk:51.0.0`.
 - [ ] `announce --template app --dry-run`, then real: the volunteers' identities get "Aplicația VIC nouă e în magazine" and every device a push.
 - [ ] Check a 2.0 install logs in with the email code on both platforms, and an old install shows the banner on its second launch.
