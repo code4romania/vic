@@ -201,7 +201,7 @@ describe('MigrateIdentitiesUseCase (database)', () => {
     const volunteerEmail = held.find((e) => e.to === 'vol@x.ro');
     expect(volunteerEmail.context.cta).toBeNull();
     expect(volunteerEmail.context.english.subtitle).toContain(
-      'enter your email in the app and you will get a login code',
+      'in the VIC app you enter your email and get a login code',
     );
   });
 
