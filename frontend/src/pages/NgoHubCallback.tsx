@@ -59,18 +59,19 @@ const NgoHubCallback = () => {
       window.history.replaceState(window.history.state, '', window.location.pathname);
     }
   }, []);
+  // "Cancel" in NGO Hub was the user's choice, not a failure: back to the login page, no error. Done
+  // here, not in the effect below: StrictMode runs effects twice, and a second run of this one would
+  // take the browser back to the callback (a spinner) after the other had left for /login.
+  const cancelled = params.error === 'access_denied';
   useEffect(() => {
-    if (location.search) navigate(location.pathname, { replace: true });
+    if (cancelled) navigate('/login', { replace: true });
+    else if (location.search) navigate(location.pathname, { replace: true });
   }, []);
 
   useEffect(() => {
     if (sent.current) return;
     sent.current = true;
-    // "Cancel" in NGO Hub was the user's choice, not a failure: back to the login page, no error.
-    if (params.error === 'access_denied') {
-      navigate('/login', { replace: true });
-      return;
-    }
+    if (cancelled) return;
     if (!params.code || !params.state) {
       setFailure(InternalErrors.AUTH_ERRORS.getError(AUTH_ERRORS.AUTH_019));
       return;

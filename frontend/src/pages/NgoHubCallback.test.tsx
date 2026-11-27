@@ -120,6 +120,23 @@ describe('NGO Hub callback page', () => {
     expect(bodies).toEqual([]);
   });
 
+  it('a cancel under StrictMode, which runs the effects twice, still ends on the login page', async () => {
+    renderPage(
+      <React.StrictMode>
+        <NgoHubCallback />
+      </React.StrictMode>,
+      {
+        route: '/login/ngohub/callback?error=access_denied&state=s',
+        path: '/login/ngohub/callback',
+        auth: { isAuthenticated: false },
+        routes: <Route path="/login" element={<LocationProbe />} />,
+      },
+    );
+    await waitFor(() => expect(screen.getByTestId('location')).toHaveTextContent(/^\/login$/));
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    expect(screen.getByTestId('location')).toHaveTextContent(/^\/login$/);
+  });
+
   it('hides the page URL from the Referer while it is shown', async () => {
     capture(() => businessError(401, 'AUTH_019'));
     const { unmount } = render();
