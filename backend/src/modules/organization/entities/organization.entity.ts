@@ -18,6 +18,10 @@ import { OrganizationStatus } from '../enums/organization-status.enum';
   unique: true,
   where: '"tax_id" IS NOT NULL AND "deleted_on" IS NULL',
 })
+@Index('organization_ngohub_organization_id_unique', ['ngohubOrganizationId'], {
+  unique: true,
+  where: '"ngohub_organization_id" IS NOT NULL AND "deleted_on" IS NULL',
+})
 export class OrganizationEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -74,6 +78,10 @@ export class OrganizationEntity extends BaseEntity {
 
   @Column({ type: 'timestamptz', name: 'suspended_at', nullable: true })
   suspendedAt: Date;
+
+  // The organization's id in NGO Hub, set when it registers or links through NGO Hub
+  @Column({ type: 'integer', name: 'ngohub_organization_id', nullable: true })
+  ngohubOrganizationId: number;
 
   @OneToMany(() => VolunteerEntity, (volunteer) => volunteer.organization)
   volunteers: VolunteerEntity[];

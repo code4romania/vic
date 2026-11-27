@@ -10,7 +10,7 @@ Single-context repo: the backend, web app and mobile app share one vocabulary. T
 
 ## Login
 
-- **Identity**: one login, one row in `auth_identity`: a realm, an email, a password hash (empty until set), a status (`pending_password`, `active`, `disabled`) and a link to the profile (`user_id`). A login exists before its profile, and one email can be both an admin and a volunteer, so the login is not stored on `user`.
+- **Identity**: one login, one row in `auth_identity`: a realm, an email, a status (`pending` until the first login, `active`, `disabled`) and a link to the profile (`user_id`). Since VIC 2.0 (#514) there are no passwords: admins log in with an emailed link, volunteers with an emailed code. A login exists before its profile, and one email can be both an admin and a volunteer, so the login is not stored on `user`.
 - **Realm**: which app a login belongs to, `web` (admins) or `mobile` (volunteers). Access tokens carry it as the audience `vic-web` or `vic-mobile`; a token for one realm never opens the other.
 - **Access token**: a 15-minute RS256 JWT sent with every request. Not stored.
 - **Session**: one logged-in browser or phone, one row in `refresh_token`. The refresh token rotates on every use; a replayed old token revokes the session. "Log out everywhere" revokes every session of an identity.
@@ -20,6 +20,15 @@ Single-context repo: the backend, web app and mobile app share one vocabulary. T
 - **Invite**: an `invite` token for someone who has an account but no password yet. Sent when an admin is added, re-sent with *Send invite*, and sent to everyone at the cutover as the **transition link**.
 - **Lockout**: five wrong passwords lock an identity for 15 minutes (AUTH_002).
 - **Social sign-in**: Google, Facebook or Apple in the mobile app; the provider's token is verified server-side and linked to the mobile identity in `auth_identity_provider`.
+
+## Login with NGO Hub
+
+- **Login with NGO Hub**: "Continuă cu NGO Hub" on the web login, for NGO admins. NGO Hub (OpenID Connect, issuer `NGOHUB_ISSUER`) only says who the person is and which organization they belong to; VIC decides what they get ([ADR 0002](docs/adr/0002-login-with-ngohub.md)). Not in the mobile app.
+- **NGO Hub link**: an `auth_identity_provider` row with provider `ngohub` and the NGO Hub user id as subject, on a web login. One NGO Hub account per VIC login and the other way round.
+- **NGO Hub organization id**: `organization.ngohub_organization_id`, set when an NGO is first matched (by exact normalized CUI), registers from NGO Hub, or is linked by `ngohub:link-orgs`. Matching never uses name, email or phone.
+- **Joining as admin**: an NGO Hub admin of an organization VIC knows, without a VIC login, becomes its admin at the first NGO Hub login. An NGO Hub employee is told to ask for an invite.
+- **"Nu am fost noi"** (it was not us): the email every other admin gets when someone joins as admin; its link (`ngohub_revoke` token, 30 days, single use) disables that admin.
+- **Registration ticket**: what an NGO Hub admin of an NGO VIC does not know gets instead of a session: 30 minutes, single use, bound to the browser, holding the NGO Hub data. The **prefilled form** (`/register/ngohub`) shows CUI, name and admin email locked; the NGO starts active and validated.
 
 ## Organizations
 

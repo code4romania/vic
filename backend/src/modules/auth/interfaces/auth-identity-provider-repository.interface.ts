@@ -10,6 +10,10 @@ export interface IAuthIdentityProviderRepository {
     provider: AuthProvider,
     subject: string,
   ): Promise<IAuthIdentityProviderModel>;
+  findByIdentity(
+    identityId: string,
+    provider: AuthProvider,
+  ): Promise<IAuthIdentityProviderModel>;
   linkProvider(
     options: CreateAuthIdentityProviderOptions,
     manager?: EntityManager,

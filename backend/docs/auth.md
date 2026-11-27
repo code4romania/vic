@@ -2,6 +2,8 @@
 
 How login works once Cognito and NGO Hub are replaced. Written 16 October 2026 from the design and checked against the code as each layer landed (Layers 1 to 3 on 30 October 2026, Layers 4 to 9 by 4 November 2026) (`.scratch/own-auth/issues/`). The full step-by-step is in the Implementation Guide (https://claude.ai/code/artifact/02645619-109a-4538-9358-b61ffb680134); the reasons are in the design doc (https://claude.ai/code/artifact/db39a7ad-1dd1-4ea4-b50f-ebc22ada9a7e). Decisions taken after the design (resolutions R1 to R36) are in `.scratch/own-auth/decisions.md`, which wins where the documents differ; this page follows it.
 
+> **Since VIC 2.0 (#514) there are no passwords.** Admins log in with an emailed link (15 minutes), volunteers with an emailed 6-digit code, both also with Google / Apple; identity statuses are `pending`, `active`, `disabled`. The parts of this page about passwords, set-password, forgot / reset / change password and lockout describe the design before 2.0 and are kept for history until they are rewritten; the code (`src/usecases/auth/`) is the reference. Login with NGO Hub is described in its own section below.
+
 ## Overview
 
 The backend checks email and password itself and issues its own tokens through `@nestjs/passport`. The two JWT strategies keep their names (`AUTH_STRATEGIES.WEB`, `AUTH_STRATEGIES.MOBILE`) and still put the same user object on `request.user`, so controllers do not change. They also add `identityId` and `sessionId` (from the `sid` claim), which change-password uses to keep the current session. Web tokens and mobile tokens carry a different audience, so a volunteer's token can never open admin pages.
@@ -92,6 +94,11 @@ Organizations: `POST /organizations/register` (public, multipart with `logo` and
 | AUTH_013 | Social token invalid or email not verified | 401 |
 | AUTH_014 | No admin account for this email (web social sign-in) | 404 |
 | AUTH_015 | Wrong code (sensitive actions and email change; the app login still answers AUTH_005) | 400 |
+| AUTH_016 | NGO Hub: the VIC login belongs to another organization than the NGO Hub account | 403 |
+| AUTH_017 | NGO Hub: an employee without a VIC login (ask an admin for an invite) | 403 |
+| AUTH_018 | NGO Hub: the VIC login is already linked to another NGO Hub account | 409 |
+| AUTH_019 | NGO Hub: the flow failed or expired (state, cookie, token checks, registration ticket) | 401 |
+| AUTH_020 | NGO Hub: login with NGO Hub is off (no configuration) or NGO Hub cannot be reached | 404 |
 | ORG_004 | An organization with the same name, email, phone or tax id exists | 409 |
 | ORG_005 | Organization not validated | 403 |
 | ORG_007 | Statute missing or not a PDF | 400 |
@@ -166,6 +173,7 @@ Scripts in `src/commands/`, run with ts-node like the TypeORM scripts; each boot
 | `npm run announce -- --template <announce\|reminder> --date YYYY-MM-DD [--dry-run]` | T-7 and T-1 emails to the `user` table (`deleted_on IS NULL`, one per `lower(trim(email))`). The plan ships these to `main` in a separate PR before the cutover (R3); for the local proof they live on this branch |
 | `npm run announce -- --template back [--dry-run]` | after go: emails every identity not disabled, one per email across realms, at 10 per second, and pushes the same text to every user in `push_tokens` |
 | `npm run org:suspend -- <id> [--reason "..."]`, `npm run org:unsuspend -- <id>` | the Layer 8 use cases: while suspended its admins cannot log in and their sessions are revoked; identity status is not changed; the reason is printed |
+| `npm run ngohub:link-orgs -- --file <export.json> [--report <file>] [--apply]` | links organizations from before the NGO Hub login to NGO Hub (see Login with NGO Hub); dry run without `--apply` |
 | `npm run auth:super-admin -- [<email>] [--remove]` | sets or clears the super admin flag on a web identity (guards read it on every request), then prints the current super admins; with no email it only prints them |
 
 Every `--dry-run` prints the recipient count and the first email as text.
@@ -182,6 +190,32 @@ Every `--dry-run` prints the recipient count and the first email as text.
 - one-time tokens used, replaced or expired more than 90 days ago;
 - organizations still `pending` (email never confirmed) after 7 days, with their admin users and identities, one transaction per NGO; then the statute (private bucket) and the logo (public bucket, only when it is one of ours) are deleted from S3; an NGO that cannot be deleted is logged and skipped;
 - mobile identities with no user and no confirmed email after 7 days.
+
+## Login with NGO Hub
+
+ADR 0002 has the decisions; `.scratch/ngohub-oidc/` the spec and issues. Off unless all four `NGOHUB_*` settings are set (AUTH_020); the web app shows the button only with `VITE_NGOHUB_ENABLED=true`.
+
+| Variable | Meaning |
+|---|---|
+| `NGOHUB_ISSUER` | e.g. `https://id-staging.ngohub.ro`; discovery is read from it and must name the same issuer |
+| `NGOHUB_CLIENT_ID`, `NGOHUB_CLIENT_SECRET` | from `npm run oidc:register-client` in NGO Hub (first party, scopes `openid email profile organization`) |
+| `NGOHUB_REDIRECT_URI` | the web app's `/login/ngohub/callback`, registered exactly at NGO Hub |
+| `NGOHUB_LOGO_HOSTS` | hosts a registration may copy the NGO Hub logo from (the NGO Hub bucket), comma separated; empty = never |
+
+Routes, `/auth/web/ngohub` (public, rate limited; the `vic_ngohub_flow` cookie lives on this path):
+
+| Route | Does |
+|---|---|
+| `GET start[?prompt=login]` | sets the flow cookie, 302 to NGO Hub; when off or unreachable, 302 to `/login?ngohub_error=AUTH_0xx` |
+| `POST callback { code, state, iss? }` | `NgoHubLoginUseCase`: a session (like the other logins) or `{ registration: { ticket, prefill } }` |
+| `POST register` (multipart, optional `logo`) | `RegisterNgoHubOrganizationUseCase` with the ticket: the NGO (active, validated) and its admin, logged in |
+| `POST not-us { token }` | `RevokeNgoHubAdminUseCase`: disables the admin who joined, like Disable on the Team page |
+
+Code: `src/modules/auth/services/ngohub/` (OIDC client, registration tickets), `src/usecases/auth/ngohub-login.usecase.ts`, `revoke-ngohub-admin.usecase.ts`, `src/usecases/organization/register-ngohub-organization.usecase.ts`, `ngohub-logo.fetcher.ts`, `link-ngohub-organizations.usecase.ts`. Data: provider `ngohub` in `auth_identity_provider`, `organization.ngohub_organization_id` (unique among live rows), token type `ngohub_revoke`, history events `NGOHUB_ADMIN_JOINED` / `NGOHUB_ADMIN_REVOKED` (migration `NgoHubLink1794470000000`).
+
+Linking organizations from before: in NGO Hub `npm run oidc:export-orgs -- --out orgs.json`, then in VIC `npm run ngohub:link-orgs -- --file orgs.json [--report report.json]` (dry run), review, then again with `--apply`. Only exact normalized CUI matches, unique on both sides, are written.
+
+Tests: `test/utils/fake-ngohub.ts` is a small RS256 provider on 127.0.0.1 with knobs that break one check at a time; specs `ngohub-oidc`, `ngohub-login` (scenarios, registration, "nu am fost noi"), `ngohub-link`, `ngohub-link-orgs`. The five scenarios were also run by hand in Chrome against NGO Hub's real provider (26 November 2026).
 
 ## Tests
 

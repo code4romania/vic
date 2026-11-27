@@ -55,4 +55,11 @@ export class CommandArgs {
   }
 }
 
-const OPTIONS_WITH_VALUE = ['--reason', '--template', '--date', '--batch-size'];
+const OPTIONS_WITH_VALUE = [
+  '--reason',
+  '--template',
+  '--date',
+  '--batch-size',
+  '--file',
+  '--report',
+];

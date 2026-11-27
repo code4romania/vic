@@ -65,6 +65,10 @@ export enum TrackedEventName {
   // Admins (Team page)
   DISABLE_ADMIN = 'DISABLE_ADMIN',
   ENABLE_ADMIN = 'ENABLE_ADMIN',
+
+  // Login with NGO Hub: an NGO Hub admin of the same CUI joined by themselves; another admin said it was not them
+  NGOHUB_ADMIN_JOINED = 'NGOHUB_ADMIN_JOINED',
+  NGOHUB_ADMIN_REVOKED = 'NGOHUB_ADMIN_REVOKED',
 }
 
 export interface TrackedEventData {
@@ -270,6 +274,16 @@ export interface TrackedEventData {
     adminName: string;
   };
   [TrackedEventName.ENABLE_ADMIN]: {
+    adminId: string;
+    adminName: string;
+  };
+  [TrackedEventName.NGOHUB_ADMIN_JOINED]: {
+    adminId: string;
+    adminName: string;
+    ngohubOrganizationId: number;
+    taxId: string;
+  };
+  [TrackedEventName.NGOHUB_ADMIN_REVOKED]: {
     adminId: string;
     adminName: string;
   };

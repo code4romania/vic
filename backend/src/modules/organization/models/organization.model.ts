@@ -18,6 +18,7 @@ export interface IOrganizationModel {
   website: string;
   selfDeclaredAt: Date;
   suspendedAt: Date;
+  ngohubOrganizationId: number;
   createdOn?: Date;
 }
 
@@ -31,9 +32,13 @@ export type ICreateOrganizationModel = Omit<
   | 'website'
   | 'selfDeclaredAt'
   | 'suspendedAt'
+  | 'ngohubOrganizationId'
 > &
   Partial<
-    Pick<IOrganizationModel, 'status' | 'taxId' | 'website' | 'selfDeclaredAt'>
+    Pick<
+      IOrganizationModel,
+      'status' | 'taxId' | 'website' | 'selfDeclaredAt' | 'ngohubOrganizationId'
+    >
   >;
 
 export type UpdateOrganizationOptions = Partial<
@@ -52,6 +57,7 @@ export type UpdateOrganizationOptions = Partial<
     | 'taxId'
     | 'website'
     | 'suspendedAt'
+    | 'ngohubOrganizationId'
   >
 >;
 
@@ -90,6 +96,7 @@ export class OrganizationTransformer {
       website: organizationEntity.website,
       selfDeclaredAt: organizationEntity.selfDeclaredAt,
       suspendedAt: organizationEntity.suspendedAt,
+      ngohubOrganizationId: organizationEntity.ngohubOrganizationId,
       createdOn: organizationEntity.createdOn,
     };
   }
@@ -109,6 +116,8 @@ export class OrganizationTransformer {
     organizationEntity.taxId = organizationModel.taxId;
     organizationEntity.website = organizationModel.website;
     organizationEntity.selfDeclaredAt = organizationModel.selfDeclaredAt;
+    organizationEntity.ngohubOrganizationId =
+      organizationModel.ngohubOrganizationId ?? null;
     return organizationEntity;
   }
 }

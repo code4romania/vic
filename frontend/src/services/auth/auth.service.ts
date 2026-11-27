@@ -2,11 +2,14 @@ import { AxiosError } from 'axios';
 import { useMutation, useQuery } from 'react-query';
 import { AUTH_ERRORS } from '../../common/errors/entities/auth.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
+import { INgoHubRegisterForm } from '../../common/interfaces/auth.interface';
 import {
   confirmEmail,
   getTokenInfo,
   loginWithLink,
   loginWithSocial,
+  ngohubNotUs,
+  registerNgoHubOrganization,
   requestLogin,
   resendToken,
   resendVerification,
@@ -56,3 +59,15 @@ export const useLoginWithSocialMutation = () =>
       onError: (error: AuthApiError) => Promise.resolve(error),
     },
   );
+
+export const useRegisterNgoHubOrganizationMutation = () =>
+  useMutation(
+    ({ ticket, form, logo }: { ticket: string; form: INgoHubRegisterForm; logo?: File }) =>
+      registerNgoHubOrganization(ticket, form, logo),
+    { onError: (error: AuthApiError) => Promise.resolve(error) },
+  );
+
+export const useNgoHubNotUsMutation = () =>
+  useMutation((token: string) => ngohubNotUs(token), {
+    onError: (error: AuthApiError) => Promise.resolve(error),
+  });

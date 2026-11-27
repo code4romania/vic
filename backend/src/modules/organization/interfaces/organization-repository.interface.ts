@@ -26,6 +26,10 @@ export interface IOrganizationRepository
     options: UpdateOrganizationOptions,
     manager?: EntityManager,
   ): Promise<IOrganizationModel>;
+  findForNgoHub(
+    ngohubOrganizationId: number,
+    taxId: string,
+  ): Promise<IOrganizationModel>;
   findConflicts(
     fields: OrganizationUniqueFields,
     exceptId?: string,

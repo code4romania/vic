@@ -1488,6 +1488,14 @@
     "ENABLE_ADMIN": {
       "label": "Enable Admin",
       "description": "Admin <inlineLink>{{adminName}}</inlineLink> was enabled."
+    },
+    "NGOHUB_ADMIN_JOINED": {
+      "label": "New admin through NGO Hub",
+      "description": "<inlineLink>{{adminName}}</inlineLink> logged in with the organization's NGO Hub account and became an admin."
+    },
+    "NGOHUB_ADMIN_REVOKED": {
+      "label": "NGO Hub admin access removed",
+      "description": "Access for <inlineLink>{{adminName}}</inlineLink> was removed from the \"It was not us\" email."
     }
   },
   "dashboard": {
@@ -1909,7 +1917,12 @@
       "AUTH_012": "This is a volunteer account. Use the VIC mobile app.",
       "AUTH_013": "Signing in with this account failed.",
       "AUTH_014": "There is no admin account with this account's email. Use your organization email or register your organization.",
-      "AUTH_015": "The code is not correct. Check your email and try again."
+      "AUTH_015": "The code is not correct. Check your email and try again.",
+      "AUTH_016": "Your VIC account belongs to another organization than the one in NGO Hub.",
+      "AUTH_017": "Only NGO Hub admins can join directly. Ask an admin of your organization in VIC for an invite.",
+      "AUTH_018": "Your VIC account is already linked to another NGO Hub account.",
+      "AUTH_019": "Logging in with NGO Hub failed or expired. Please try again.",
+      "AUTH_020": "Logging in with NGO Hub is not available right now."
     },
     "maintenance": {
       "title": "VIC is under maintenance",
@@ -1978,7 +1991,8 @@
       "google": "Continue with Google",
       "apple": "Continue with Apple",
       "or": "or with your email"
-    }
+    },
+    "ngohub": "Continue with NGO Hub"
   },
   "login_link": {
     "title": {
@@ -2522,5 +2536,34 @@
     "loading": "Loading…",
     "error_title": "The data could not be loaded",
     "retry": "Try again"
+  },
+  "ngohub": {
+    "callback": {
+      "title": "Log in with NGO Hub",
+      "loading": "Checking your NGO Hub account…",
+      "failed_title": "Login failed",
+      "retry": "Try again with NGO Hub",
+      "back_to_login": "Back to login"
+    },
+    "register": {
+      "title": "Register your organization from NGO Hub",
+      "description": "We filled in the details from NGO Hub. Check them and complete what is missing. The organization joins VIC right away, without validation.",
+      "locked": "From NGO Hub, cannot be changed here",
+      "organization_card": "Organization",
+      "admin_card": "Admin",
+      "logo": "Use the logo from NGO Hub",
+      "submit": "Register the organization",
+      "expired_title": "The form expired",
+      "expired": "The form is valid for 30 minutes after logging in with NGO Hub and can be sent once. Log in with NGO Hub again."
+    },
+    "not_us": {
+      "title": "Remove access",
+      "description": "Someone logged in to VIC with your organization's NGO Hub account and became an admin. If you do not know this person, remove their access.",
+      "confirm": "It was not us, remove access",
+      "done_title": "Access removed",
+      "done": "This person can no longer log in to VIC. If it was a mistake, you can enable them again from the Team page.",
+      "expired": "The link is no longer valid: it expired or was already used. You can disable the person from the Team page.",
+      "back_to_login": "Go to login"
+    }
   }
 }

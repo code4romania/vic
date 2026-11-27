@@ -330,6 +330,8 @@ export const mapEventDataToActionDescription = (
       );
     case TrackedEventName.DISABLE_ADMIN:
     case TrackedEventName.ENABLE_ADMIN:
+    case TrackedEventName.NGOHUB_ADMIN_JOINED:
+    case TrackedEventName.NGOHUB_ADMIN_REVOKED:
       return (
         <Trans
           i18nKey={`actions_archive:${eventName}.description`}

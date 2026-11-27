@@ -10,6 +10,7 @@ import { apiEvents, refreshAccessToken } from '../../services/api';
 import { tokenStore } from '../../services/auth/token.store';
 import { syncAccountLanguage } from '../../services/auth/language.service';
 import Maintenance from '../../pages/Maintenance';
+import { markNgoHubPromptLogin } from '../../components/NgoHubLoginButton';
 import AccessBlocked from '../../pages/AccessBlocked';
 
 // focus and visibilitychange often fire together: one check is enough
@@ -121,6 +122,8 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   }, [applyProfile]);
 
   const logout = useCallback(async () => {
+    // The next "Continue with NGO Hub" asks NGO Hub for a fresh login (shared computers).
+    markNgoHubPromptLogin();
     try {
       await authApi.logout();
     } finally {

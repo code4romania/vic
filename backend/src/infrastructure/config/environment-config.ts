@@ -187,6 +187,22 @@ class EnvironmentVariables {
   @IsOptional()
   @IsString()
   APPLE_WEB_REDIRECT_URI: string; // the redirect URI of the web Sign in with Apple, if it uses one
+  // Login with NGO Hub (OIDC) for NGO admins; all four or none (the feature is off without them)
+  @IsOptional()
+  @IsString()
+  NGOHUB_ISSUER: string; // e.g. https://id-staging.ngohub.ro
+  @IsOptional()
+  @IsString()
+  NGOHUB_CLIENT_ID: string;
+  @IsOptional()
+  @IsString()
+  NGOHUB_CLIENT_SECRET: string;
+  @IsOptional()
+  @IsString()
+  NGOHUB_REDIRECT_URI: string; // <web app>/login/ngohub/callback, registered exactly at NGO Hub
+  @IsOptional()
+  @IsString()
+  NGOHUB_LOGO_HOSTS: string; // comma separated, e.g. the NGO Hub bucket's host; empty = logos are not copied
   @IsString()
   @NotEmptyWhenDeployed()
   MAIL_CONTACT: string;

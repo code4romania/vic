@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { EnvelopeIcon, EnvelopeOpenIcon } from '@heroicons/react/24/outline';
@@ -16,6 +16,7 @@ import { getAuthErrorCode } from '../common/utils/auth-error';
 import AuthShell, { AuthNotice } from '../components/AuthShell';
 import OpenAppBox from '../components/OpenAppBox';
 import SocialLoginButtons, { SocialProvider } from '../components/SocialLoginButtons';
+import NgoHubLoginButton from '../components/NgoHubLoginButton';
 import { useAuth } from '../hooks/useAuth';
 import { useRevalidateOnLanguageChange } from '../hooks/useRevalidateOnLanguageChange';
 
@@ -32,7 +33,12 @@ const showMigrationNotice = (): boolean => {
 // (AUTH_012: use the app). Google and Apple (#512) sign an existing admin in by the verified email.
 const Login = () => {
   const { t } = useTranslation('login');
-  const [error, setError] = useState<AUTH_ERRORS | 'generic' | null>(null);
+  const [searchParams] = useSearchParams();
+  // /auth/web/ngohub/start sends the browser back here with ?ngohub_error= when NGO Hub is unavailable.
+  const [error, setError] = useState<AUTH_ERRORS | 'generic' | null>(() => {
+    const code = searchParams.get('ngohub_error') as AUTH_ERRORS | null;
+    return code && Object.values(AUTH_ERRORS).includes(code) ? code : null;
+  });
   const [sentTo, setSentTo] = useState<string | null>(null);
   const [submittedEmail, setSubmittedEmail] = useState<string>('');
   const requestLogin = useRequestLoginMutation();
@@ -144,6 +150,8 @@ const Login = () => {
           email={submittedEmail || undefined}
         />
       )}
+
+      <NgoHubLoginButton disabled={loginWithSocial.isLoading} />
 
       <SocialLoginButtons
         onToken={onSocialToken}

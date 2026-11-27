@@ -215,6 +215,29 @@ export const AUTH_EMAILS = {
       { ctaLink: url },
     ),
 
+  // Login with NGO Hub: to every other admin when an admin of the same CUI in NGO Hub joined by themselves.
+  ngohubAdminJoined: (
+    url: string,
+    organizationName: string,
+    adminName: string,
+    adminEmail: string,
+  ): AuthEmail =>
+    email(
+      {
+        subject: `Admin nou în ${organizationName} pe VIC, prin NGO Hub`,
+        title: `${adminName} administrează acum ${organizationName}`,
+        subtitle: `${adminName} (${adminEmail}) a intrat în VIC cu contul NGO Hub al organizației și a devenit admin. Dacă nu cunoașteți această persoană, retrageți-i accesul cu butonul de mai jos (valabil 30 de zile) sau din pagina Echipă.`,
+        ctaLabel: 'Nu am fost noi, retrage accesul',
+      },
+      {
+        subject: `New admin in ${organizationName} on VIC, through NGO Hub`,
+        title: `${adminName} now manages ${organizationName}`,
+        subtitle: `${adminName} (${adminEmail}) logged in to VIC with the organization's NGO Hub account and became an admin. If you do not know this person, remove their access with the button below (valid for 30 days) or from the Team page.`,
+        ctaLabel: 'It was not us, remove access',
+      },
+      { ctaLink: url },
+    ),
+
   confirmOrganizationLink: (url: string, organizationName: string): AuthEmail =>
     email(
       {

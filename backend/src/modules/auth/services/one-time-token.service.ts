@@ -238,6 +238,8 @@ export class OneTimeTokenService {
       case AuthTokenType.SENSITIVE_ACTION:
       case AuthTokenType.CHANGE_EMAIL:
         return AUTH_TOKEN_TTL_MS.SENSITIVE_CODE;
+      case AuthTokenType.NGOHUB_REVOKE:
+        return AUTH_TOKEN_TTL_MS.NGOHUB_REVOKE_LINK;
     }
   }
 }

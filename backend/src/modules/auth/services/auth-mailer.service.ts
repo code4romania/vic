@@ -25,6 +25,11 @@ export class AuthMailerService {
     return `${this.authConfig.webAppUrl}/confirm-email?token=${encodeURIComponent(secret)}`;
   }
 
+  // Login with NGO Hub: "it was not us", to the other admins when an NGO Hub admin joined by CUI.
+  public ngohubRevokeUrl(secret: string): string {
+    return `${this.authConfig.webAppUrl}/login/ngohub/not-us?token=${encodeURIComponent(secret)}`;
+  }
+
   // The super admins' page for pending NGOs: their details, to validate or suspend.
   public validationPageUrl(): string {
     return `${this.authConfig.webAppUrl}/admin/validation`;

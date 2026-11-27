@@ -26,3 +26,29 @@ export function setRefreshCookie(
 export function clearRefreshCookie(res: Response): void {
   res.clearCookie(REFRESH_COOKIE, cookieOptions());
 }
+
+// Login with NGO Hub: binds the flow (and a registration ticket) to the browser that started it. Only sent
+// to /auth/web/ngohub; the top-level redirect from /start sets it, the web app's callback POST sends it back.
+export const NGOHUB_FLOW_COOKIE = 'vic_ngohub_flow';
+
+const ngohubCookieOptions = (): CookieOptions => ({
+  httpOnly: true,
+  secure: process.env.NODE_ENV !== 'local',
+  sameSite: 'lax',
+  path: '/auth/web/ngohub',
+});
+
+export function setNgoHubFlowCookie(
+  res: Response,
+  value: string,
+  ttlSeconds: number,
+): void {
+  res.cookie(NGOHUB_FLOW_COOKIE, value, {
+    ...ngohubCookieOptions(),
+    maxAge: ttlSeconds * 1000,
+  });
+}
+
+export function clearNgoHubFlowCookie(res: Response): void {
+  res.clearCookie(NGOHUB_FLOW_COOKIE, ngohubCookieOptions());
+}

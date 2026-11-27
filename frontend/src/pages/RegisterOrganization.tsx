@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import FormInput from '../components/FormInput';
 import Button from '../components/Button';
+import TermsLabel from '../components/TermsLabel';
 import AuthShell, { AuthNotice } from '../components/AuthShell';
 import { BuildingOffice2Icon, CheckBadgeIcon, EnvelopeOpenIcon } from '@heroicons/react/24/outline';
 import { OrganizationFields, organizationFieldsSchema } from '../components/OrganizationFields';
@@ -116,9 +117,6 @@ const RegisterOrganization = () => {
     />
   );
 
-  const termsUrl = import.meta.env.VITE_TERMS_URL;
-  const privacyUrl = import.meta.env.VITE_PRIVACY_URL;
-
   const checkbox = (checked: boolean, onChange: (value: boolean) => void, label: ReactNode) => (
     <label
       className={`flex items-start gap-3 rounded-lg border p-4 text-sm cursor-pointer ${
@@ -216,36 +214,7 @@ const RegisterOrganization = () => {
           <Controller
             name="acceptedTerms"
             control={control}
-            render={({ field: { onChange, value } }) =>
-              checkbox(
-                value,
-                onChange,
-                <>
-                  {t('form.terms.label')}{' '}
-                  {termsUrl && (
-                    <a
-                      className="text-sm text-navy underline"
-                      href={termsUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {t('form.terms.terms')}
-                    </a>
-                  )}
-                  {termsUrl && privacyUrl && ` ${t('form.terms.and')} `}
-                  {privacyUrl && (
-                    <a
-                      className="text-sm text-navy underline"
-                      href={privacyUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {t('form.terms.privacy')}
-                    </a>
-                  )}
-                </>,
-              )
-            }
+            render={({ field: { onChange, value } }) => checkbox(value, onChange, <TermsLabel />)}
           />
           {errors.acceptedTerms && (
             <p className="text-red-500 text-sm">{errors.acceptedTerms.message}</p>

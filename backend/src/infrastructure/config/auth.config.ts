@@ -143,6 +143,33 @@ export class AuthConfigService implements JwtOptionsFactory {
     return splitList(this.configService.get('APPLE_SERVICES_ID'))[0];
   }
 
+  // Login with NGO Hub (OIDC). Without all four settings the feature is off.
+  get ngohub(): {
+    issuer: string;
+    clientId: string;
+    clientSecret: string;
+    redirectUri: string;
+  } | null {
+    const issuer = this.configService.get<string>('NGOHUB_ISSUER');
+    const clientId = this.configService.get<string>('NGOHUB_CLIENT_ID');
+    const clientSecret = this.configService.get<string>('NGOHUB_CLIENT_SECRET');
+    const redirectUri = this.configService.get<string>('NGOHUB_REDIRECT_URI');
+    if (!issuer || !clientId || !clientSecret || !redirectUri) return null;
+    return {
+      issuer: issuer.replace(/\/+$/, ''),
+      clientId,
+      clientSecret,
+      redirectUri,
+    };
+  }
+
+  // Hosts a registration may copy the NGO Hub logo from (the NGO Hub S3 bucket), exact names, https only.
+  get ngohubLogoHosts(): string[] {
+    return splitList(this.configService.get('NGOHUB_LOGO_HOSTS')).map((host) =>
+      host.toLowerCase(),
+    );
+  }
+
   createJwtOptions(): JwtModuleOptions {
     return {
       privateKey: this.privateKey,

@@ -41,5 +41,47 @@ export interface IMobileRealmResult {
 
 export type LinkResult = IWebSession | IMobileRealmResult;
 
+// Login with NGO Hub: what the registration form starts from when NGO Hub's organization is new to VIC.
+// The CUI, the organization's name and the admin's email are locked (the API takes them from the ticket).
+export interface INgoHubPrefill {
+  organization: {
+    name: string;
+    taxId: string;
+    email: string;
+    phone: string;
+    address: string;
+    description: string;
+    website: string;
+    logoUrl: string | null;
+  };
+  admin: { email: string; firstName: string; lastName: string };
+}
+
+export interface INgoHubRegistration {
+  ticket: string;
+  prefill: INgoHubPrefill;
+}
+
+// POST /auth/web/ngohub/callback: a session, or a registration for an NGO VIC does not know yet.
+export type NgoHubCallbackResult = IWebSession | { registration: INgoHubRegistration };
+
+export const isNgoHubRegistration = (
+  result: NgoHubCallbackResult,
+): result is { registration: INgoHubRegistration } =>
+  !!(result as { registration?: INgoHubRegistration }).registration;
+
+export interface INgoHubRegisterForm {
+  email: string;
+  phone: string;
+  address: string;
+  description: string;
+  website: string;
+  firstName: string;
+  lastName: string;
+  adminPhone: string;
+  useNgoHubLogo: boolean;
+  acceptedTerms: boolean;
+}
+
 export const isMobileRealmResult = (result: LinkResult): result is IMobileRealmResult =>
   (result as IMobileRealmResult).realm === 'mobile';

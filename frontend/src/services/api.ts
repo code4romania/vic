@@ -20,6 +20,7 @@ const NO_REFRESH_ROUTES = [
   /^\/?auth\/web\/(login\/request|refresh|logout|resend-verification)$/,
   /^\/?auth\/token\//,
   /^\/?auth\/(login-link|confirm-email)$/,
+  /^\/?auth\/web\/ngohub\//,
 ];
 
 const isPublicAuthRoute = (url = ''): boolean =>

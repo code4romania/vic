@@ -44,6 +44,9 @@ const NotFound = lazy(() => import('../pages/NotFound'));
 const RegisterOrganization = lazy(() => import('../pages/RegisterOrganization'));
 const Team = lazy(() => import('../pages/Team'));
 const OrganizationValidation = lazy(() => import('../pages/OrganizationValidation'));
+const NgoHubCallback = lazy(() => import('../pages/NgoHubCallback'));
+const NgoHubNotUs = lazy(() => import('../pages/NgoHubNotUs'));
+const RegisterNgoHubOrganization = lazy(() => import('../pages/RegisterNgoHubOrganization'));
 
 const SetPasswordRedirect = () => {
   const { search } = useLocation();
@@ -63,6 +66,13 @@ const Router = () => {
             {/* Links emailed before the switch to magic links (#514) pointed here. */}
             <Route path="/set-password" element={<SetPasswordRedirect />} />
             <Route path="/confirm-email" element={<ConfirmEmail />} />
+            {/* Login with NGO Hub: the OIDC callback, the prefilled registration, "it was not us" */}
+            <Route path="/login/ngohub/callback" element={<NgoHubCallback />} />
+            <Route
+              path="/register/ngohub"
+              element={<PublicRoute element={<RegisterNgoHubOrganization />} />}
+            />
+            <Route path="/login/ngohub/not-us" element={<NgoHubNotUs />} />
             <Route path="/" element={<RootRoute />}>
               <Route index element={<Dashboard />}></Route>
               <Route path="organization" element={<Outlet />}>

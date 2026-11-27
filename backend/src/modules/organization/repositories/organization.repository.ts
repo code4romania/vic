@@ -133,6 +133,26 @@ export class OrganizationRepositoryService
     return entities.map(OrganizationTransformer.fromEntity);
   }
 
+  // Login with NGO Hub: the organization already linked to this NGO Hub id, else the one with exactly
+  // this normalized CUI that is not linked to another NGO Hub organization. Never by name, email or phone.
+  public async findForNgoHub(
+    ngohubOrganizationId: number,
+    taxId: string,
+  ): Promise<IOrganizationModel> {
+    const linked = await this.organizationRepository.findOne({
+      where: { ngohubOrganizationId },
+    });
+    if (linked) return OrganizationTransformer.fromEntity(linked);
+    if (!taxId) return null;
+
+    const byTaxId = await this.organizationRepository
+      .createQueryBuilder('organization')
+      .where('organization.taxId = :taxId', { taxId })
+      .andWhere('organization.ngohubOrganizationId IS NULL')
+      .getOne();
+    return OrganizationTransformer.fromEntity(byTaxId);
+  }
+
   public async find(
     options:
       | Partial<IFindOrganizationModel>
