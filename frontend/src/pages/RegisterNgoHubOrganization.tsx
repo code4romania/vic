@@ -10,6 +10,7 @@ import Button from '../components/Button';
 import FormInput from '../components/FormInput';
 import FormTextarea from '../components/FormTextarea';
 import NgoHubLoginButton from '../components/NgoHubLoginButton';
+import TermsLabel from '../components/TermsLabel';
 import { organizationProfileSchema } from '../components/OrganizationFields';
 import { useAuth } from '../hooks/useAuth';
 import { useRevalidateOnLanguageChange } from '../hooks/useRevalidateOnLanguageChange';
@@ -236,9 +237,7 @@ const RegisterNgoHubOrganization = () => {
           <Controller
             name="acceptedTerms"
             control={control}
-            render={({ field: { onChange, value } }) =>
-              checkbox(value, onChange, t('register_organization:form.terms.label'))
-            }
+            render={({ field: { onChange, value } }) => checkbox(value, onChange, <TermsLabel />)}
           />
           {errors.acceptedTerms && (
             <p className="text-red-500 text-sm">{errors.acceptedTerms.message}</p>

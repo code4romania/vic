@@ -46,7 +46,12 @@ const fillAndSubmit = async () => {
     screen.getByLabelText(t('register_organization:form.adminPhone.label')),
     '+40711111112',
   );
-  await userEvent.click(screen.getByLabelText(t('register_organization:form.terms.label')));
+  // the label goes on with the terms and privacy links when they are configured
+  await userEvent.click(
+    screen.getByRole('checkbox', {
+      name: new RegExp(`^${t('register_organization:form.terms.label')}`),
+    }),
+  );
   await userEvent.click(screen.getByRole('button', { name: t('ngohub:register.submit') }));
 };
 
@@ -58,6 +63,19 @@ describe('Register an NGO from NGO Hub', () => {
     expect(screen.getByText('ana@ngo.test')).toBeInTheDocument();
     expect(screen.queryByDisplayValue('Asociatia din NGO Hub')).toBeNull();
     expect(screen.getByDisplayValue('contact@ngo.test')).toBeInTheDocument();
+  });
+
+  it('links the terms and the privacy policy next to the checkbox, like /register', () => {
+    vi.stubEnv('VITE_TERMS_URL', 'https://ngohub.test/terms');
+    vi.stubEnv('VITE_PRIVACY_URL', 'https://ngohub.test/privacy');
+    render();
+    expect(
+      screen.getByRole('link', { name: t('register_organization:form.terms.terms') }),
+    ).toHaveAttribute('href', 'https://ngohub.test/terms');
+    expect(
+      screen.getByRole('link', { name: t('register_organization:form.terms.privacy') }),
+    ).toHaveAttribute('href', 'https://ngohub.test/privacy');
+    vi.unstubAllEnvs();
   });
 
   it('sends the ticket and the editable fields only, then starts the session', async () => {
