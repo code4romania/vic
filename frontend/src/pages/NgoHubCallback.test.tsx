@@ -35,6 +35,7 @@ const render = (route = ROUTE) =>
       <>
         <Route path="/" element={<LocationProbe />} />
         <Route path="/register/ngohub" element={<LocationProbe />} />
+        <Route path="/login" element={<LocationProbe />} />
       </>
     ),
   });
@@ -111,10 +112,11 @@ describe('NGO Hub callback page', () => {
     await screen.findByText(t('auth:errors.AUTH_019'));
   });
 
-  it('a cancel in NGO Hub calls nothing', async () => {
+  it('a cancel in NGO Hub goes back to the login page, without an error and without calling the API', async () => {
     const bodies = capture(() => HttpResponse.json(SESSION));
     render('/login/ngohub/callback?error=access_denied&state=s');
-    expect(await screen.findByText(t('ngohub:callback.cancelled'))).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByTestId('location')).toHaveTextContent(/^\/login$/));
+    expect(screen.queryByText(t('ngohub:callback.failed_title'))).toBeNull();
     expect(bodies).toEqual([]);
   });
 

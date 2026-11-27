@@ -2573,7 +2573,6 @@
       "title": "Autentificare cu NGO Hub",
       "loading": "Verificăm contul tău NGO Hub…",
       "failed_title": "Autentificarea nu a reușit",
-      "cancelled": "Ai anulat autentificarea în NGO Hub.",
       "retry": "Încearcă din nou cu NGO Hub",
       "back_to_login": "Înapoi la autentificare"
     },

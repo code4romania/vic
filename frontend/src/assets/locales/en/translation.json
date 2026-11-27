@@ -2542,7 +2542,6 @@
       "title": "Log in with NGO Hub",
       "loading": "Checking your NGO Hub account…",
       "failed_title": "Login failed",
-      "cancelled": "You cancelled the login in NGO Hub.",
       "retry": "Try again with NGO Hub",
       "back_to_login": "Back to login"
     },

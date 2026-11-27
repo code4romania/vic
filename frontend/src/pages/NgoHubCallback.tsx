@@ -66,8 +66,9 @@ const NgoHubCallback = () => {
   useEffect(() => {
     if (sent.current) return;
     sent.current = true;
+    // "Cancel" in NGO Hub was the user's choice, not a failure: back to the login page, no error.
     if (params.error === 'access_denied') {
-      setFailure(t('callback.cancelled'));
+      navigate('/login', { replace: true });
       return;
     }
     if (!params.code || !params.state) {
