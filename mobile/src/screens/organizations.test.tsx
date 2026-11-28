@@ -219,18 +219,31 @@ describe('Organizații', () => {
 });
 
 describe('Organizație', () => {
-  it('pins the back button and compact name while keeping the large title as the header', async () => {
+  it('shows back, the name and the volunteer count in the header; the large title is the header', async () => {
     await renderApp('organization-profile');
-    const bar = await screen.findByTestId('organization-bar-top');
-    expect(within(bar).getByTestId('organization-back')).toBeTruthy();
+    const header = await screen.findByTestId('organization-bar-top');
+    expect(within(header).getByTestId('organization-back')).toBeTruthy();
+    // the large title is the screen's header; the compact copy is hidden from screen readers
+    expect(within(header).getByRole('header', { name: 'Asociația Exemplu' })).toBeTruthy();
     expect(
-      within(bar).getByText('Asociația Exemplu', { includeHiddenElements: true }),
-    ).toBeTruthy();
-    expect(within(bar).queryByText('Asociația Exemplu')).toBeNull();
-    expect(screen.getByRole('header', { name: 'Asociația Exemplu' })).toBeTruthy();
+      within(header).getAllByText('Asociația Exemplu', { includeHiddenElements: true }),
+    ).toHaveLength(2);
+    expect(within(header).getAllByText('Asociația Exemplu')).toHaveLength(1);
     expect(
-      within(bar).queryByRole('header', { name: 'Asociația Exemplu', includeHiddenElements: true }),
-    ).toBeNull();
+      within(header).getAllByText(t('organization_profile:volunteers', { count: 120 }), {
+        includeHiddenElements: true,
+      }).length,
+    ).toBeGreaterThan(0);
+  });
+
+  it('writes the volunteer count with the Romanian plural („de” from 20 on)', () => {
+    const count = (n: number) => t('organization_profile:volunteers', { count: n, lng: 'ro' });
+    expect(count(1)).toBe('1 voluntar');
+    expect(count(3)).toBe('3 voluntari');
+    expect(count(19)).toBe('19 voluntari');
+    expect(count(20)).toBe('20 de voluntari');
+    expect(count(101)).toBe('101 voluntari');
+    expect(count(120)).toBe('120 de voluntari');
   });
 
   it('shows the description, contacts and "Am un cod" + "Vreau să ajut" for a new volunteer', async () => {

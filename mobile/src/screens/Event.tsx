@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
-import { Platform, Pressable, ScrollView, Text, useWindowDimensions, View } from 'react-native';
+import { Platform, Pressable, useWindowDimensions, View } from 'react-native';
 import * as Linking from 'expo-linking';
 import Animated, { FadeIn, FadeInDown, useReducedMotion } from 'react-native-reanimated';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
@@ -30,22 +30,15 @@ import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import EventSkeleton from '../components/skeleton/event-skeleton';
 import MissingEntity from './MissingEntity';
 import { TAB_ROUTES } from '../routes/tab-routes';
-import { Sheet, StatusBarScrim } from '../components/ui';
+import { CollapsingHeader, Sheet, useCollapsingHeader } from '../components/ui';
 import { GlassSurface, useBarBottom } from '../components/navigation/GlassTabBar';
 import { DateBlock } from '../components/events/EventCard';
-import { fitTitleSize, TITLE_MAX_SIZE } from '../common/utils/title-fit';
 
-const titleSizeStyle = (size: number) => ({
-  fontSize: size,
-  lineHeight: Math.round(size * 0.96),
-  letterSpacing: -size * 0.035,
-});
 import ParticipantAvatars from '../components/events/ParticipantAvatars';
 import { AppText, Button, HexAvatar, StatusChip, statusKind } from '../design/components';
 import {
   CalendarIcon,
   CheckIcon,
-  ChevronLeftIcon,
   ChevronRightIcon,
   GlobeIcon,
   ICON_STROKE,
@@ -54,7 +47,7 @@ import {
   PinIcon,
   UsersIcon,
 } from '../design/icons';
-import { elevation, fontScaleCap, palette } from '../design/tokens';
+import { elevation, palette } from '../design/tokens';
 import { duration, enter, spring } from '../design/motion';
 import { haptics } from '../design/haptics';
 
@@ -164,6 +157,9 @@ const InfoRow = ({
  * volunteer's status and "Particip" / "Retrage răspuns". Joining shows a confirmation sheet, and
  * #501 registrations that wait for the organization say so.
  */
+// the expanded header's height before it is measured (one-line title, chips)
+const HEADER_ESTIMATE = 150;
+
 const Event = ({ navigation, route }: any) => {
   const { t } = useTranslation('event');
   // Romanian: "1 loc", "5 locuri", but "20 de locuri"
@@ -177,10 +173,7 @@ const Event = ({ navigation, route }: any) => {
   const reduced = useReducedMotion();
   // at large text sizes the action bar stacks: status above, buttons below (nothing is cut)
   const { fontScale } = useWindowDimensions();
-  // the title shrinks until its longest word fits beside the date block (no "supermarketur / i")
-  const [titleWidth, setTitleWidth] = useState(0);
   const stackedBar = fontScale >= 1.25;
-  // light text over the navy hero
   // the white Code for Romania band sits under the status bar: dark icons
   useFocusedStatusBarStyle('dark');
   const { userProfile } = useUserProfile();
@@ -188,11 +181,7 @@ const Event = ({ navigation, route }: any) => {
   const { event: storedEvent } = useEvent();
   // the store keeps the last event opened: never show another event while this one loads
   const event = storedEvent?.id === eventId ? storedEvent : undefined;
-  const titleSize = fitTitleSize(
-    event?.name ?? '',
-    titleWidth,
-    Math.min(Math.max(fontScale, 1), fontScaleCap.display),
-  );
+  const { scrollY, onScroll, headerHeight, setHeaderHeight } = useCollapsingHeader();
   const { declineEvent, canceRsvp, joinEvent } = useStore();
   const { activate } = useActivateOrganization();
   const confirmRef = useRef<BottomSheetModal>(null);
@@ -368,87 +357,56 @@ const Event = ({ navigation, route }: any) => {
         : t('bar.going')
       : t('bar.not_going');
 
+  // under the header's title: the Public / Doar membri and status chips, and a rejection reason
+  const heroExtra = event ? (
+    <>
+      <Animated.View entering={heroEnter(110, reduced)} style={styles.heroChips}>
+        {event.isPublic ? (
+          <StatusChip
+            kind="glass"
+            label={`${t('type.public')}`}
+            icon={<GlobeIcon size={14} color={palette.white} />}
+          />
+        ) : (
+          <StatusChip
+            kind="glass"
+            label={`${t('bar.members')}`}
+            icon={<LockIcon size={14} color={palette.white} />}
+          />
+        )}
+        {finished && <StatusChip kind="exp" label={`${t('events:card.finished')}`} />}
+        {!finished && joined && registration && (
+          <StatusChip
+            kind={statusKind(registration)}
+            label={`${t(`registration.${registration}`)}`}
+          />
+        )}
+        {!finished && joined && !registration && (
+          <StatusChip kind="ok" label={`${t('events:card.going')}`} />
+        )}
+      </Animated.View>
+      {joined && registration === EventRegistrationStatus.REJECTED && !!event.rejectionReason && (
+        <Animated.View entering={heroEnter(150, reduced)}>
+          <AppText variant="caption" color="rgba(255,255,255,0.8)" style={styles.reason}>
+            {t('registration.reason', { reason: event.rejectionReason })}
+          </AppText>
+        </Animated.View>
+      )}
+    </>
+  ) : null;
+
   return (
     <View style={styles.screen}>
-      <ScrollView
-        contentContainerStyle={{ paddingBottom: barSpace }}
+      <Animated.ScrollView
+        onScroll={onScroll}
+        scrollEventThrottle={16}
+        contentContainerStyle={{
+          paddingTop: headerHeight || insets.top + HEADER_ESTIMATE,
+          paddingBottom: barSpace,
+        }}
         showsVerticalScrollIndicator={false}
         testID="event-scroll"
       >
-        <View style={[styles.hero, { paddingTop: insets.top + 8 }]}>
-          {/* the back button shares its row with the chips: no row of its own */}
-          <View style={styles.heroTop}>
-            <Pressable
-              onPress={navigation.goBack}
-              accessibilityRole="button"
-              accessibilityLabel={`${t('general:back')}`}
-              hitSlop={4}
-              style={({ pressed }) => [styles.back, pressed ? styles.backPressed : null]}
-              testID="event-back"
-            >
-              <ChevronLeftIcon size={22} color={palette.white} strokeWidth={ICON_STROKE + 0.4} />
-            </Pressable>
-            {event && (
-              <Animated.View entering={heroEnter(110, reduced)} style={styles.heroChips}>
-                {event.isPublic ? (
-                  <StatusChip
-                    kind="glass"
-                    label={`${t('type.public')}`}
-                    icon={<GlobeIcon size={14} color={palette.white} />}
-                  />
-                ) : (
-                  <StatusChip
-                    kind="glass"
-                    label={`${t('bar.members')}`}
-                    icon={<LockIcon size={14} color={palette.white} />}
-                  />
-                )}
-                {finished && <StatusChip kind="exp" label={`${t('events:card.finished')}`} />}
-                {!finished && joined && registration && (
-                  <StatusChip
-                    kind={statusKind(registration)}
-                    label={`${t(`registration.${registration}`)}`}
-                  />
-                )}
-                {!finished && joined && !registration && (
-                  <StatusChip kind="ok" label={`${t('events:card.going')}`} />
-                )}
-              </Animated.View>
-            )}
-          </View>
-          {event && (
-            <>
-              <View style={styles.heroRow}>
-                <Animated.View entering={heroEnter(0, reduced)}>
-                  <DateBlock date={event.startDate} tone="yellow" size="hero" />
-                </Animated.View>
-                <Animated.View
-                  entering={heroEnter(60, reduced)}
-                  style={styles.heroTitle}
-                  onLayout={(layoutEvent) => setTitleWidth(layoutEvent.nativeEvent.layout.width)}
-                >
-                  <Text
-                    accessibilityRole="header"
-                    maxFontSizeMultiplier={fontScaleCap.display}
-                    style={[styles.title, titleSizeStyle(titleSize)]}
-                  >
-                    {event.name}
-                  </Text>
-                </Animated.View>
-              </View>
-              {joined &&
-                registration === EventRegistrationStatus.REJECTED &&
-                !!event.rejectionReason && (
-                  <Animated.View entering={heroEnter(150, reduced)}>
-                    <AppText variant="caption" color="rgba(255,255,255,0.8)" style={styles.reason}>
-                      {t('registration.reason', { reason: event.rejectionReason })}
-                    </AppText>
-                  </Animated.View>
-                )}
-            </>
-          )}
-        </View>
-
         {isLoadingEvent && !event && (
           <View style={styles.skeleton}>
             <EventSkeleton />
@@ -530,9 +488,31 @@ const Event = ({ navigation, route }: any) => {
             )}
           </View>
         )}
-      </ScrollView>
-      {/* the content scrolls under the clock otherwise; navy, like the hero it continues */}
-      <StatusBarScrim color={palette.navy} />
+      </Animated.ScrollView>
+      {event ? (
+        <CollapsingHeader
+          testID="event-header"
+          scrollY={scrollY}
+          title={event.name}
+          subtitle={formatEventWhen(event.startDate, event.endDate)}
+          trailing={<DateBlock date={event.startDate} tone="yellow" />}
+          titleLines={3}
+          extra={heroExtra}
+          onBack={navigation.goBack}
+          backTestID="event-back"
+          backLabel={`${t('general:back')}`}
+          onExpandedHeight={setHeaderHeight}
+        />
+      ) : (
+        <CollapsingHeader
+          testID="event-header"
+          scrollY={scrollY}
+          title=""
+          onBack={navigation.goBack}
+          backTestID="event-back"
+          backLabel={`${t('general:back')}`}
+        />
+      )}
 
       {event && !finished && (
         <Animated.View
@@ -633,41 +613,7 @@ export default Event;
 
 const styles = StyleSheet.create((theme) => ({
   screen: { flex: 1, backgroundColor: theme.colors.paper },
-  hero: {
-    backgroundColor: theme.colors.navy,
-    paddingHorizontal: theme.space.gutter,
-    paddingBottom: 22,
-    borderBottomLeftRadius: 32,
-    borderBottomRightRadius: 32,
-  },
-  back: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: 'rgba(255,255,255,0.14)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  backPressed: { backgroundColor: 'rgba(255,255,255,0.24)' },
-  heroTop: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  heroRow: { flexDirection: 'row', alignItems: 'flex-end', gap: 14, marginTop: 14 },
-  heroTitle: { flex: 1, minWidth: 0 },
-  // handbook: Bricolage, line-height .96, -0.035em; the size comes from fitTitleSize (32 at most)
-  title: {
-    fontFamily: theme.fontFamily.display,
-    fontSize: TITLE_MAX_SIZE,
-    lineHeight: Math.round(TITLE_MAX_SIZE * 0.96),
-    letterSpacing: -TITLE_MAX_SIZE * 0.035,
-    color: theme.colors.white,
-    includeFontPadding: false,
-  },
-  heroChips: {
-    flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'flex-end',
-    gap: 6,
-  },
+  heroChips: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   reason: { marginTop: 8 },
   skeleton: { paddingHorizontal: theme.space.gutter, paddingTop: 16 },
   cards: { paddingHorizontal: theme.space.gutter, paddingTop: 14, gap: 10 },

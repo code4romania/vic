@@ -17,3 +17,4 @@ export * from './StateIcon';
 export * from './Group';
 export * from './StatusBarScrim';
 export * from './Checkbox';
+export * from './CollapsingHeader';
