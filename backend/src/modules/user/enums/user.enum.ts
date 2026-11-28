@@ -15,4 +15,7 @@ export const DEFAULT_LANGUAGE = Language.RO;
 export enum SEX {
   MALE = 'male',
   FEMALE = 'female',
+  // Maria, 27 Nov 2026: "Non-binar" and "Prefer să nu spun" (a varchar column: no migration)
+  NON_BINARY = 'non_binary',
+  UNDISCLOSED = 'undisclosed',
 }

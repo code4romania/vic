@@ -36,7 +36,7 @@ const ProfileCard = ({ name, logo, age, sex, location, children }: ProfileCardPr
           {!!age && (
             <small className="text-cool-gray-500">{i18n.t('general:years_old', { age })}</small>
           )}
-          {sex && (
+          {sex && sex !== Sex.UNDISCLOSED && (
             <small className="text-cool-gray-500">
               {i18n.t('general:sex', { sex_type: i18n.t(`general:${sex}`) })}
             </small>

@@ -14,6 +14,7 @@ import { useVolunteer } from '../store/volunteer/volunteer.selector';
 import VolunteerProfileSkeleton from '../components/skeleton/volunteer-profile.skeleton';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { usePaddingTop } from '../hooks/usePaddingTop';
+import { Sex } from '../common/enums/sex.enum';
 import { colors, spacing } from '../common/theme/tokens';
 import { Group, VText } from '../components/ui';
 import { AppText } from '../design/components';
@@ -107,7 +108,7 @@ const VolunteerProfile = ({ navigation }: any) => {
     if (userProfile?.birthday || age > 0) {
       parts.push(`${t('age', { years: age })}`);
     }
-    if (sex) {
+    if (sex && sex !== Sex.UNDISCLOSED) {
       parts.push(`${t('general:sex', { sex_type: t(`general:${sex}`) })}`);
     }
     if (location?.name) {
