@@ -1,15 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { AppState, RefreshControl, StyleSheet, View } from 'react-native';
-import Animated, {
-  Extrapolation,
-  interpolate,
-  runOnJS,
-  useAnimatedReaction,
-  useAnimatedScrollHandler,
-  useAnimatedStyle,
-  useDerivedValue,
-  useSharedValue,
-} from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 import * as Linking from 'expo-linking';
 import { format } from 'date-fns';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
@@ -23,20 +14,22 @@ import {
 import { useCancelAccessRequestMutation } from '../services/access-request/access-request.service';
 import { OrganizatinVolunteerStatus } from '../common/enums/organization-volunteer-status.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { colors, fonts, radius, shadows, spacing, StatusTone } from '../common/theme/tokens';
+import { colors, fonts, radius, spacing, StatusTone } from '../common/theme/tokens';
 import { useOrganization } from '../store/organization/organization.selector';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
-import { MAX_FONT_SCALE } from '../common/constants/constants';
 import { TAB_ROUTES } from '../routes/tab-routes';
 import OrganizationSkeleton from '../components/skeleton/organization-skeleton';
 import { EventCard } from '../components/events/EventCard';
 import { Avatar, Enter, Group, Sheet, VButton, VText } from '../components/ui';
-import { BackButton } from '../components/ui/ScreenChrome';
+import { CollapsingHeader, useCollapsingHeader } from '../components/ui/CollapsingHeader';
 import { Group as RowGroup, ListRow } from '../design/components';
 import { GlobeIcon, LogOutIcon, MailIcon, PhoneIcon, PinIcon } from '../design/icons';
 
 type Banner = { tone: StatusTone; text: string };
+
+// the expanded header's height before it is measured (one-line name)
+const HEADER_ESTIMATE = 104;
 
 /**
  * VIC 2.0 organization page (canvas board "Organizație"): navy header with the logo, the name and
@@ -51,51 +44,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
   useFocusedStatusBarStyle('dark');
   const { userProfile } = useUserProfile();
   const { organization } = useOrganization();
-  const heroHeight = insets.top + 160;
-  const barHeight = insets.top + 56;
-  const scrollY = useSharedValue(0);
-  const titleBottom = useSharedValue(0);
-  const titleHeight = useSharedValue(0);
-  const [compactAccessible, setCompactAccessible] = useState(false);
-  const onScroll = useAnimatedScrollHandler((event) => {
-    scrollY.value = event.contentOffset.y;
-  });
-  const compactOpacity = useDerivedValue(() =>
-    // Fade from the title's top reaching the bar bottom to its bottom passing under it.
-    // Scroll range: [titleBottom - barHeight - titleHeight, titleBottom - barHeight].
-    titleHeight.value > 0
-      ? interpolate(
-          scrollY.value,
-          [titleBottom.value - barHeight - titleHeight.value, titleBottom.value - barHeight],
-          [0, 1],
-          Extrapolation.CLAMP,
-        )
-      : 0,
-  );
-  const compactStyle = useAnimatedStyle(() => ({ opacity: compactOpacity.value }));
-  useAnimatedReaction(
-    () => compactOpacity.value > 0.5,
-    (visible, previous) => {
-      if (visible !== previous) {
-        runOnJS(setCompactAccessible)(visible);
-      }
-    },
-  );
-  const barStyle = useAnimatedStyle(() => {
-    const threshold = heroHeight - barHeight;
-    const progress = interpolate(
-      scrollY.value,
-      [threshold, threshold + 16],
-      [0, 1],
-      Extrapolation.CLAMP,
-    );
-    return {
-      borderBottomLeftRadius: radius.sheet * progress,
-      borderBottomRightRadius: radius.sheet * progress,
-      shadowOpacity: Number(shadows.card.shadowOpacity ?? 0) * progress,
-      elevation: (shadows.card.elevation ?? 0) * progress,
-    };
-  });
+  const { scrollY, onScroll, headerHeight, setHeaderHeight } = useCollapsingHeader();
   const birthdaySheet = useRef<BottomSheetModal>(null);
   const cancelSheet = useRef<BottomSheetModal>(null);
 
@@ -301,25 +250,20 @@ const OrganizationProfile = ({ navigation, route }: any) => {
         testID="organization-scroll"
         onScroll={onScroll}
         scrollEventThrottle={16}
-        contentContainerStyle={{ paddingBottom: insets.bottom + (bar ? 120 : 40) }}
+        contentContainerStyle={{
+          paddingTop: headerHeight || insets.top + HEADER_ESTIMATE,
+          paddingBottom: insets.bottom + (bar ? 120 : 40),
+        }}
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
             refreshing={pulling}
             onRefresh={onPullToRefresh}
             tintColor={colors.white}
-            progressViewOffset={insets.top}
+            progressViewOffset={headerHeight || insets.top + HEADER_ESTIMATE}
           />
         }
       >
-        <View style={[styles.hero, { height: heroHeight }]}>
-          {loaded && (
-            <View style={styles.logo}>
-              <Avatar name={organization.name} uri={organization.logo} size={80} shape="rounded" />
-            </View>
-          )}
-        </View>
-
         {!loaded && isFetchingOrganization && (
           <View style={styles.body}>
             <OrganizationSkeleton />
@@ -328,25 +272,6 @@ const OrganizationProfile = ({ navigation, route }: any) => {
 
         {loaded && (
           <View style={styles.body}>
-            <Enter style={styles.gap6}>
-              <VText
-                variant="largeTitle"
-                style={styles.name}
-                accessibilityRole="header"
-                onLayout={(event) => {
-                  const { y, height } = event.nativeEvent.layout;
-                  // Enter is the body's first child, starting at its top padding.
-                  titleBottom.value = heroHeight + styles.body.paddingTop + y + height;
-                  titleHeight.value = height;
-                }}
-              >
-                {organization.name}
-              </VText>
-              <VText variant="sub">
-                {t('volunteers', { count: organization.numberOfVolunteers })}
-              </VText>
-            </Enter>
-
             {statusBanner && (
               <Enter
                 index={1}
@@ -465,44 +390,28 @@ const OrganizationProfile = ({ navigation, route }: any) => {
           </View>
         )}
       </Animated.ScrollView>
-      <Animated.View
+      <CollapsingHeader
         testID="organization-bar-top"
-        pointerEvents="box-none"
-        style={[
-          styles.pinnedBar,
-          shadows.card,
-          styles.barBorder,
-          { height: barHeight, paddingTop: insets.top },
-          barStyle,
-        ]}
-      >
-        <View style={styles.topRow} pointerEvents="box-none">
-          <BackButton
-            tone="glass"
-            onPress={navigation.goBack}
-            accessibilityLabel={`${t('general:back')}`}
-            testID="organization-back"
-          />
-          {loaded && (
-            <Animated.View
-              pointerEvents="none"
-              accessibilityElementsHidden={!compactAccessible}
-              importantForAccessibility={compactAccessible ? 'auto' : 'no-hide-descendants'}
-              style={[styles.compactOrganization, compactStyle]}
-            >
-              <Avatar name={organization.name} uri={organization.logo} size={32} shape="rounded" />
-              <VText
-                color={colors.white}
-                style={styles.compactName}
-                numberOfLines={1}
-                maxFontSizeMultiplier={MAX_FONT_SCALE.title}
-              >
-                {organization.name}
-              </VText>
-            </Animated.View>
-          )}
-        </View>
-      </Animated.View>
+        scrollY={scrollY}
+        title={loaded ? organization.name : ''}
+        subtitle={
+          loaded ? `${t('volunteers', { count: organization.numberOfVolunteers })}` : undefined
+        }
+        leading={
+          loaded ? (
+            <Avatar name={organization.name} uri={organization.logo} size={48} shape="rounded" />
+          ) : undefined
+        }
+        compactLeading={
+          loaded ? (
+            <Avatar name={organization.name} uri={organization.logo} size={32} shape="rounded" />
+          ) : undefined
+        }
+        onBack={navigation.goBack}
+        backTestID="organization-back"
+        backLabel={`${t('general:back')}`}
+        onExpandedHeight={setHeaderHeight}
+      />
 
       {bar && (
         <View
@@ -559,40 +468,11 @@ export default OrganizationProfile;
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.canvas },
-  hero: { backgroundColor: colors.navy },
-  logo: {
-    position: 'absolute',
-    left: spacing.gutter,
-    bottom: -32,
-    borderRadius: 24,
-    backgroundColor: colors.white,
-    padding: 0,
-  },
-  body: { paddingHorizontal: spacing.gutter, paddingTop: 48, gap: 20 },
-  gap6: { gap: 6 },
-  name: { fontSize: 28, lineHeight: 34 },
+  body: { paddingHorizontal: spacing.gutter, paddingTop: 20, gap: 20 },
   banner: { borderRadius: radius.button, padding: 14 },
   bannerWait: { borderWidth: 2, borderColor: colors.navy },
   section: { gap: 10 },
   paragraph: { lineHeight: 23 },
-  pinnedBar: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 10,
-    backgroundColor: colors.navy,
-  },
-  barBorder: { borderWidth: 0 },
-  topRow: { height: 56, flexDirection: 'row', alignItems: 'center', paddingLeft: 16, gap: 12 },
-  compactOrganization: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    paddingRight: spacing.gutter,
-  },
-  compactName: { fontFamily: fonts.title, fontSize: 17, flexShrink: 1 },
   bar: {
     position: 'absolute',
     left: 0,
