@@ -33,6 +33,13 @@ import { TAB_ROUTES } from '../routes/tab-routes';
 import { Sheet, StatusBarScrim } from '../components/ui';
 import { GlassSurface } from '../components/navigation/GlassTabBar';
 import { DateBlock } from '../components/events/EventCard';
+import { fitTitleSize, TITLE_MAX_SIZE } from '../common/utils/title-fit';
+
+const titleSizeStyle = (size: number) => ({
+  fontSize: size,
+  lineHeight: Math.round(size * 0.96),
+  letterSpacing: -size * 0.035,
+});
 import ParticipantAvatars from '../components/events/ParticipantAvatars';
 import { AppText, Button, HexAvatar, StatusChip, statusKind } from '../design/components';
 import {
@@ -170,6 +177,8 @@ const Event = ({ navigation, route }: any) => {
   const reduced = useReducedMotion();
   // at large text sizes the action bar stacks: status above, buttons below (nothing is cut)
   const { fontScale } = useWindowDimensions();
+  // the title shrinks until its longest word fits beside the date block (no "supermarketur / i")
+  const [titleWidth, setTitleWidth] = useState(0);
   const stackedBar = fontScale >= 1.25;
   // light text over the navy hero
   // the white Code for Romania band sits under the status bar: dark icons
@@ -179,6 +188,11 @@ const Event = ({ navigation, route }: any) => {
   const { event: storedEvent } = useEvent();
   // the store keeps the last event opened: never show another event while this one loads
   const event = storedEvent?.id === eventId ? storedEvent : undefined;
+  const titleSize = fitTitleSize(
+    event?.name ?? '',
+    titleWidth,
+    Math.min(Math.max(fontScale, 1), fontScaleCap.display),
+  );
   const { declineEvent, canceRsvp, joinEvent } = useStore();
   const { activate } = useActivateOrganization();
   const confirmRef = useRef<BottomSheetModal>(null);
@@ -378,11 +392,15 @@ const Event = ({ navigation, route }: any) => {
                 <Animated.View entering={heroEnter(0, reduced)}>
                   <DateBlock date={event.startDate} tone="yellow" size="hero" />
                 </Animated.View>
-                <Animated.View entering={heroEnter(60, reduced)} style={styles.heroTitle}>
+                <Animated.View
+                  entering={heroEnter(60, reduced)}
+                  style={styles.heroTitle}
+                  onLayout={(layoutEvent) => setTitleWidth(layoutEvent.nativeEvent.layout.width)}
+                >
                   <Text
                     accessibilityRole="header"
                     maxFontSizeMultiplier={fontScaleCap.display}
-                    style={styles.title}
+                    style={[styles.title, titleSizeStyle(titleSize)]}
                   >
                     {event.name}
                   </Text>
@@ -628,12 +646,12 @@ const styles = StyleSheet.create((theme) => ({
   backPressed: { backgroundColor: 'rgba(255,255,255,0.24)' },
   heroRow: { flexDirection: 'row', alignItems: 'flex-end', gap: 14, marginTop: 18 },
   heroTitle: { flex: 1, minWidth: 0 },
-  // handbook: Bricolage 38, line-height .96, -0.035em
+  // handbook: Bricolage, line-height .96, -0.035em; the size comes from fitTitleSize (32 at most)
   title: {
     fontFamily: theme.fontFamily.display,
-    fontSize: 38,
-    lineHeight: 37,
-    letterSpacing: -1.33,
+    fontSize: TITLE_MAX_SIZE,
+    lineHeight: Math.round(TITLE_MAX_SIZE * 0.96),
+    letterSpacing: -TITLE_MAX_SIZE * 0.035,
     color: theme.colors.white,
     includeFontPadding: false,
   },
