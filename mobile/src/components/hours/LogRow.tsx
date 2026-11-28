@@ -210,7 +210,7 @@ const styles = StyleSheet.create((theme) => ({
   text: { flex: 1, minWidth: 0 },
   // `.hrow b` 800 15.5 and the 13pt 600 meta, both at line-height 1.35
   title: { fontSize: 15.5, lineHeight: 21 },
-  // title → subtitle 2, block → chip 8
-  meta: { lineHeight: 17.5, marginTop: 2 },
-  stackedChip: { marginTop: 8 },
+  // title → subtitle 4, block → chip 10
+  meta: { lineHeight: 18, marginTop: 4 },
+  stackedChip: { marginTop: 10 },
 }));

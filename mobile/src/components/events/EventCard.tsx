@@ -219,13 +219,13 @@ const styles = StyleSheet.create((theme) => ({
     includeFontPadding: false,
   },
   dateDayHero: { fontSize: 40, lineHeight: 40, letterSpacing: -1.6 },
-  // spacing scale (handbook): title → first meta line 4, between meta lines 2, block → chips 10
+  // spacing (handbook scale): title → first meta line 6, between the meta lines 6, block → chips 12
   body: { flex: 1, minWidth: 0 },
   meta: { flexDirection: 'row', alignItems: 'center', gap: 5 },
-  firstMeta: { marginTop: 4 },
-  nextMeta: { marginTop: 2 },
+  firstMeta: { marginTop: 6 },
+  nextMeta: { marginTop: 6 },
   metaText: { flex: 1, minWidth: 0 },
-  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 10 },
+  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 12 },
   // the plain chip on a white card: a hairline so it still reads as a chip
   plainChip: { borderWidth: 1, borderColor: theme.colors.line },
 }));
