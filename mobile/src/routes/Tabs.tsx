@@ -15,14 +15,15 @@ import { HIDDEN_TAB_ROUTES, TAB_ROUTES } from './tab-routes';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
-// VIC 2.0 tabs (approved redesign): Acasă, Evenimente, Ore, Documente, Profil.
-// "Voluntar" (the volunteer's page at an organization) and "Caută" (organizations) stay routes of
-// this navigator, so navigate('volunteer') / navigate('search') keep
-// working, but they have no button in the bar: they are reached from Profil.
+// VIC 2.0 tabs (approved redesign): Acasă, Evenimente, Ore, Organizații, Documente, Profil.
+// Organizații came back to the bar (Maria, 27 Nov 2026): next to the short „Ore”, so the long
+// labels never touch. "Voluntar" (the volunteer's page at an organization) stays a route of this
+// navigator, so navigate('volunteer') keeps working, but it has no button: it opens from Profil.
 const items = (t: TFunction): Record<string, GlassTabBarItem> => ({
   [TAB_ROUTES.HOME]: { icon: 'home', label: t('tabs:home') },
   [TAB_ROUTES.EVENTS]: { icon: 'events', label: t('tabs:events') },
   [TAB_ROUTES.HOURS]: { icon: 'hours', label: t('tabs:hours') },
+  [TAB_ROUTES.ORGANIZATIONS]: { icon: 'organizations', label: t('tabs:organizations') },
   [TAB_ROUTES.DOCUMENTS]: { icon: 'documents', label: t('tabs:documents') },
   [TAB_ROUTES.PROFILE]: { icon: 'profile', label: t('tabs:profile') },
 });
@@ -46,10 +47,10 @@ const Tabs = () => {
         <Screen name={TAB_ROUTES.HOME} component={Home} />
         <Screen name={TAB_ROUTES.EVENTS} component={Events} />
         <Screen name={TAB_ROUTES.HOURS} component={ActivityLogs} />
+        <Screen name={TAB_ROUTES.ORGANIZATIONS} component={Organizations} />
         <Screen name={TAB_ROUTES.DOCUMENTS} component={Documents} />
         <Screen name={TAB_ROUTES.PROFILE} component={Settings} />
         <Screen name={HIDDEN_TAB_ROUTES.VOLUNTEER} component={Volunteer} />
-        <Screen name={HIDDEN_TAB_ROUTES.ORGANIZATIONS} component={Organizations} />
       </Navigator>
     </TabBarScrollProvider>
   );

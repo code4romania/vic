@@ -38,6 +38,7 @@ import {
   VText,
 } from '../components/ui';
 import { BackButton } from '../components/ui/ScreenChrome';
+import { isTabRoute } from '../routes/tab-routes';
 import { StatusChip } from '../design/components';
 import OrganizationSkeleton from '../components/skeleton/organization-skeleton';
 import { romanianNeedsDe } from '../common/utils/plural';
@@ -48,7 +49,9 @@ const SEARCH_DEBOUNCE_MS = 300;
  * VIC 2.0 Organizații (canvas board "Organizații"): pinned title, a search that filters as you
  * type, and rows with the logo, the number of volunteers and "Membru" for your organizations.
  */
-const Organizations = ({ navigation }: any) => {
+const Organizations = ({ navigation, route }: any) => {
+  // a tab of the bar again (Maria, 27 Nov 2026): no back button there, even after a tab switch
+  const canGoBack = !isTabRoute(route) && navigation.canGoBack();
   const { t } = useTranslation('organizations');
   const insets = useSafeAreaInsets();
   const bottomInset = useGlassTabBarInset();
@@ -231,7 +234,7 @@ const Organizations = ({ navigation }: any) => {
         onLayout={(e) => setMeasuredHeaderHeight(e.nativeEvent.layout.height)}
       >
         <View style={styles.topRow}>
-          {navigation.canGoBack() && (
+          {canGoBack && (
             <BackButton
               onPress={navigation.goBack}
               accessibilityLabel={`${t('general:back')}`}

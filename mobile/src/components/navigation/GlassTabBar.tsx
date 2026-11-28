@@ -28,17 +28,19 @@ import {
   DocumentIcon,
   HomeIcon,
   LucideIcon,
+  OrganizationIcon,
   UserIcon,
 } from '../../design/icons';
 import { useTabBarAccessoryValue, useTabBarCollapsed } from './TabBarScroll';
 import { useTabBarOverlayOpen } from './tab-bar-overlay';
 
-export type TabIconName = 'home' | 'events' | 'hours' | 'documents' | 'profile';
+export type TabIconName = 'home' | 'events' | 'hours' | 'organizations' | 'documents' | 'profile';
 
 const ICONS: Record<TabIconName, LucideIcon> = {
   home: HomeIcon,
   events: CalendarIcon,
   hours: ClockIcon,
+  organizations: OrganizationIcon,
   documents: DocumentIcon,
   profile: UserIcon,
 };
@@ -305,6 +307,7 @@ export const GlassTabBar = ({ state, navigation, items }: GlassTabBarProps) => {
                 index={index}
                 activeIndex={activeIndex}
                 slot={slot}
+                compact={routes.length > 5}
                 progress={pSnap}
                 reducedMotion={reducedMotion}
                 hiddenWhenCollapsed={isCollapsed && !focused}
@@ -363,6 +366,8 @@ interface TabButtonProps {
   slot: number;
   progress: SharedValue<number>;
   reducedMotion: boolean;
+  /** six tabs: smaller labels, so „Organizații” and „Documente” side by side fit at 360pt */
+  compact?: boolean;
   hiddenWhenCollapsed: boolean;
   /** the bar is minimised: this slot is the pill and a tap expands it */
   collapsed: boolean;
@@ -377,6 +382,7 @@ const TabButton = ({
   index,
   activeIndex,
   slot,
+  compact,
   progress,
   reducedMotion,
   hiddenWhenCollapsed,
@@ -474,6 +480,7 @@ const TabButton = ({
           minimumFontScale={0.8}
           style={[
             styles.label,
+            compact ? styles.labelCompact : null,
             { color, fontFamily: focused ? fontFamily.textHeavy : fontFamily.textBold },
             labelStyle,
           ]}
@@ -512,6 +519,7 @@ const styles = StyleSheet.create({
     marginHorizontal: -LABEL_OVERHANG,
     textAlign: 'center',
   },
+  labelCompact: { fontSize: 9.5, letterSpacing: 0 },
   accessoryWrap: {
     position: 'absolute',
     left: -tabBar.side,
