@@ -5,7 +5,7 @@ import { ContractFacade } from 'src/modules/documents/services/contract.facade';
 
 export type ContractCounters = Record<ClientContractStatus, number>;
 
-// The counters on top of "Contracte și documente": signed, pending and expired.
+// The counters on top of "Contracte și documente": signed, expiring soon and expired.
 @Injectable()
 export class CountContractsByStatusUsecase
   implements IUseCaseService<ContractCounters>

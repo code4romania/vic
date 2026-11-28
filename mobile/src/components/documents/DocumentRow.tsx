@@ -26,10 +26,9 @@ import { PressableScale } from '../ui/PressableScale';
 import { isPdfContract } from '../../common/utils/is-pdf-contract';
 import { DocumentActionButton } from './DocumentActionButton';
 
-// #488: Semnat / În așteptare / Expirat; a signed contract in its last month shows "Expiră în curând"
+// #488: Semnat / Expirat; a signed contract in its last month shows "Expiră în curând"
 const STATUS: Record<ClientContractStatus, { kind: StatusKind; label: string }> = {
   [ClientContractStatus.SIGNED]: { kind: 'ok', label: 'status.SIGNED' },
-  [ClientContractStatus.PENDING]: { kind: 'wait', label: 'status.PENDING' },
   [ClientContractStatus.EXPIRED]: { kind: 'exp', label: 'status.EXPIRED' },
 };
 

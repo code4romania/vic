@@ -35,13 +35,13 @@ const contract = (over: Record<string, unknown>) => ({
 });
 
 describe('ContractsTable (#486, #488, #489)', () => {
-  it('shows Semnat / În așteptare / Expirat, the period and the "Expiră în curând" tag', async () => {
+  it('shows Semnat / Expirat, the period and the "Expiră în curând" tag', async () => {
     server.use(
       http.get(api('/contract'), () =>
         HttpResponse.json(
           page([
             contract({ id: 'a', contractNumber: 'A', expiringSoon: true }),
-            contract({ id: 'b', contractNumber: null, status: 'PENDING', endDate: null }),
+            contract({ id: 'b', contractNumber: null, endDate: null }),
             contract({ id: 'c', contractNumber: 'C', status: 'EXPIRED' }),
           ]),
         ),
@@ -49,8 +49,7 @@ describe('ContractsTable (#486, #488, #489)', () => {
     );
     renderPage(<ContractsTable query={{ limit: 10, page: 1 }} setQuery={vi.fn()} />);
 
-    expect(await screen.findByText(t('documents:contract.status.SIGNED'))).toBeInTheDocument();
-    expect(screen.getByText(t('documents:contract.status.PENDING'))).toBeInTheDocument();
+    expect(await screen.findAllByText(t('documents:contract.status.SIGNED'))).toHaveLength(2);
     expect(screen.getByText(t('documents:contract.status.EXPIRED'))).toBeInTheDocument();
     expect(screen.getAllByText(t('documents:contract.expiring_soon'))).toHaveLength(1);
     expect(

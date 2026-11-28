@@ -122,9 +122,10 @@ describe('Dashboard overview (e2e)', () => {
       );
     }
     await q(
-      `INSERT INTO contract (contract_number, path, start_date, status, organization_id, volunteer_id) VALUES
-         ('1', 'x', now(), 'INACTIVE', $1, $2),
-         ('2', 'x', now(), 'ACTIVE', $1, $3)`,
+      `INSERT INTO contract (contract_number, path, start_date, end_date, status, organization_id, volunteer_id) VALUES
+         ('1', 'x', now(), now() + interval '10 days', 'INACTIVE', $1, $2),
+         ('2', 'x', now(), now() + interval '10 days', 'ACTIVE', $1, $3),
+         ('3', 'x', now(), now() + interval '90 days', 'ACTIVE', $1, $3)`,
       [organizationId, v1.id, v2.id],
     );
     for (const [start, status, org] of [
@@ -153,7 +154,7 @@ describe('Dashboard overview (e2e)', () => {
       activeVolunteers: 2,
       pendingAccessRequests: 1,
       upcomingEvents: 2,
-      pendingContracts: 1,
+      expiringContracts: 1,
       approvedHours: 10,
       pendingHours: 3,
     });

@@ -51,12 +51,12 @@ const DashboardStatistics = () => {
       />
       <StatisticsCard
         label={t('contracts.label')}
-        value={value(data?.pendingContracts)}
+        value={value(data?.expiringContracts)}
         icon={icon(DocumentTextIcon, 'text-navy')}
         subtitle={t('contracts.subtitle')}
         action={{
           label: t('contracts.action'),
-          onClick: () => navigate('/documents/contracts?status=PENDING'),
+          onClick: () => navigate('/documents/contracts?status=EXPIRING_SOON'),
         }}
       />
       <StatisticsCard

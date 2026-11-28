@@ -146,7 +146,6 @@ import { GetEventsByOrganizationUsecase } from './event/get-events-by-organizati
 import { CancelActivityLogUsecase } from './activity-log/cancel-activity-log.usecase';
 import { DocumentsModule } from 'src/modules/documents/documents.module';
 import { GetManyContractsUsecase } from './documents/get-many-contracts.usecase';
-import { CountPendingContractsUsecase } from './documents/count-pending-contracts.usecase';
 import { CountContractsByStatusUsecase } from './documents/count-contracts-by-status.usecase';
 import { ContractModelsUsecase } from './documents/contract-models.usecase';
 import { GetOneContractUsecase } from './documents/get-one-contract.usecase';
@@ -382,7 +381,6 @@ import { FinishOldAccountDeletionsUseCase } from './user/finish-old-account-dele
     GetVicStatisticsUsecase,
     // Contracts
     GetManyContractsUsecase,
-    CountPendingContractsUsecase,
     CountContractsByStatusUsecase,
     ContractModelsUsecase,
     GetOneContractUsecase,
@@ -572,7 +570,6 @@ import { FinishOldAccountDeletionsUseCase } from './user/finish-old-account-dele
     GetVolunteerMonthlyNewsStatisticsUsecase,
     // Contracts
     GetManyContractsUsecase,
-    CountPendingContractsUsecase,
     CountContractsByStatusUsecase,
     ContractModelsUsecase,
     GetOneContractUsecase,

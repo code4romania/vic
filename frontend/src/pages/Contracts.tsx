@@ -5,7 +5,6 @@ import {
   ClockIcon,
   DocumentCheckIcon,
   DocumentMinusIcon,
-  DocumentTextIcon,
   InformationCircleIcon,
   RectangleStackIcon,
 } from '@heroicons/react/24/outline';
@@ -21,7 +20,6 @@ import ContractModelsModal from '../components/ContractModelsModal';
 
 const COUNTERS = [
   { status: ContractStatus.SIGNED, Icon: DocumentCheckIcon, color: 'text-navy' },
-  { status: ContractStatus.PENDING, Icon: DocumentTextIcon, color: 'text-figure-amber' },
   { status: EXPIRING_SOON, Icon: ClockIcon, color: 'text-figure-amber' },
   { status: ContractStatus.EXPIRED, Icon: DocumentMinusIcon, color: 'text-cool-gray-500' },
 ] as const;

@@ -17,7 +17,7 @@ describe('Dashboard (#466, #467)', () => {
           activeVolunteers: 12,
           pendingAccessRequests: 3,
           upcomingEvents: 4,
-          pendingContracts: 2,
+          expiringContracts: 2,
           approvedHours: 340,
           pendingHours: 15,
         }),
@@ -89,12 +89,14 @@ describe('Dashboard (#466, #467)', () => {
     expect(document.querySelector('.recharts-wrapper, .recharts-responsive-container')).toBeNull();
   });
 
-  it('opens the pending contracts from their counter', async () => {
+  it('opens the contracts that expire soon from their counter', async () => {
     render();
     await userEvent.click(
       await screen.findByRole('button', { name: t('dashboard:statistics.contracts.action') }),
     );
-    expect(await screen.findByText('at /documents/contracts?status=PENDING')).toBeInTheDocument();
+    expect(
+      await screen.findByText('at /documents/contracts?status=EXPIRING_SOON'),
+    ).toBeInTheDocument();
   });
 
   it('lists the next events with registrations, and the latest responses', async () => {
@@ -126,7 +128,7 @@ describe('Dashboard (#466, #467)', () => {
               activeVolunteers: 12,
               pendingAccessRequests: 0,
               upcomingEvents: 4,
-              pendingContracts: 2,
+              expiringContracts: 2,
               approvedHours: 340,
               pendingHours: 0,
             });

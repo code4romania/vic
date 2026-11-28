@@ -5,7 +5,8 @@ export interface IDashboardOverview {
   activeVolunteers: number;
   pendingAccessRequests: number;
   upcomingEvents: number;
-  pendingContracts: number;
+  // signed contracts that end within 30 days
+  expiringContracts: number;
   approvedHours: number;
   pendingHours: number;
 }

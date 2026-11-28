@@ -99,7 +99,7 @@ beforeEach(() => {
   mockStats = {
     volunteerId: 'v-org-1',
     activityLogCount: 1,
-    contractCount: 2,
+    signedContractCount: 2,
     volunteerProfileId: 'p1',
   };
   useStore.setState({

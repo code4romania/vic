@@ -114,7 +114,7 @@ const Volunteer = ({ navigation }: any) => {
 
   const profileMissing = stats ? !stats.volunteerProfileId : !organization.volunteerProfileId;
   const pendingLogs = Number(stats?.activityLogCount) || 0;
-  const pendingDocuments = Number(stats?.contractCount) || 0;
+  const signedDocuments = Number(stats?.signedContractCount) || 0;
 
   return (
     <View style={styles.screen}>
@@ -168,9 +168,9 @@ const Volunteer = ({ navigation }: any) => {
             </VText>
           </View>
           <View style={styles.stat} testID="volunteer-stat-documents">
-            <VText style={styles.statValue}>{`${pendingDocuments}`}</VText>
+            <VText style={styles.statValue}>{`${signedDocuments}`}</VText>
             <VText variant="cap" color={colors.muted} style={styles.statLabel}>
-              {t('stats.pending_documents')}
+              {t('stats.signed_documents')}
             </VText>
           </View>
         </Enter>
@@ -231,11 +231,6 @@ const Volunteer = ({ navigation }: any) => {
             <ListRow
               icon={DocumentIcon}
               title={`${t('general:documents')}`}
-              subtitle={
-                pendingDocuments
-                  ? `${t('menu_items.documents.subtitle', { number: pendingDocuments })}`
-                  : undefined
-              }
               onPress={() => navigation.navigate('documents')}
               testID="volunteer-documents"
             />

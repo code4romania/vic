@@ -75,6 +75,11 @@ export class ContractRepositoryService
       .leftJoinAndMapOne('volunteer.user', 'volunteer.user', 'user')
       .select()
       .where('contract.organizationId = :organizationId', { organizationId })
+      // Only signed contracts are documents (#486: uploaded already signed). The unsigned ones
+      // carried over from VIC 1 (pending or rejected there) are no longer shown anywhere.
+      .andWhere('contract.status = :signedStatus', {
+        signedStatus: ContractStatus.ACTIVE,
+      })
       // newest first unless asked otherwise: an uploaded contract shows at the top (#681)
       .orderBy(
         this.buildOrderByQuery(orderBy || 'createdOn', 'contract'),
@@ -180,7 +185,7 @@ export class ContractRepositoryService
     return null;
   }
 
-  // #488: how many contracts of an organization show the given status ("În așteptare" on the dashboard)
+  // #488: how many contracts of an organization show the given status (the counters, the dashboard)
   async countByStatus(
     organizationId: string,
     status: ClientContractStatus,
@@ -190,6 +195,9 @@ export class ContractRepositoryService
         .createQueryBuilder('contract')
         .innerJoin('contract.volunteer', 'volunteer')
         .where('contract.organizationId = :organizationId', { organizationId })
+        .andWhere('contract.status = :signedStatus', {
+          signedStatus: ContractStatus.ACTIVE,
+        })
         // B9: the same contracts as the list
         .andWhere('volunteer.status IN (:...listedVolunteerStatuses)', {
           listedVolunteerStatuses: CONTRACT_LIST_VOLUNTEER_STATUSES,
@@ -230,6 +238,6 @@ export const contractStatusCondition = (
       // #489: signed, and its last day within the next EXPIRING_SOON_DAYS days
       return `(${alias}.status = :activeStatus AND NOT ${pastEnd} AND ${alias}.endDate IS NOT NULL AND ${day(`${alias}.endDate`)} <= ${today} + ${EXPIRING_SOON_DAYS})`;
     default:
-      return `(${alias}.status <> :activeStatus AND NOT ${pastEnd})`;
+      return 'FALSE';
   }
 };

@@ -97,7 +97,7 @@ beforeEach(() => {
   mockSigned = [
     contract('3', ClientContractStatus.SIGNED),
     contract('2', ClientContractStatus.SIGNED, { expiringSoon: true }),
-    contract('1', ClientContractStatus.PENDING, { contractNumber: null, endDate: null }),
+    contract('1', ClientContractStatus.SIGNED, { contractNumber: null, endDate: null }),
     contract('0', ClientContractStatus.EXPIRED),
   ];
   mockHistory = page(mockSigned);
@@ -149,10 +149,12 @@ describe('Documente', () => {
     expect(
       within(screen.getByTestId('document-row-2')).getByText(t('documents:expiring_soon')),
     ).toBeTruthy();
-    const pending = screen.getByTestId('document-row-1');
-    expect(within(pending).getByText(t('documents:status.PENDING'))).toBeTruthy();
+    const openEnded = screen.getByTestId('document-row-1');
     expect(
-      within(pending).getByText(t('documents:period_open', { start: `15 ${JAN} 2026` })),
+      // signed and open-ended: "Din 15 ian. 2026 · activ de N de zile"
+      within(openEnded).getByText(
+        new RegExp(`^${t('documents:period_open', { start: `15 ${JAN} 2026` })}`),
+      ),
     ).toBeTruthy();
     expect(screen.getByTestId('documents')).toBeTruthy();
     expect(screen.queryByTestId('documents-back')).toBeNull();

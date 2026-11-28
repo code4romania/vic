@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
-import { CountPendingContractsUsecase } from '../documents/count-pending-contracts.usecase';
+import { ContractFacade } from 'src/modules/documents/services/contract.facade';
+import { ClientContractStatus } from 'src/modules/documents/enums/client-contract-status.enum';
 
 export interface IDashboardOverview {
   activeVolunteers: number;
   pendingAccessRequests: number;
   upcomingEvents: number;
-  pendingContracts: number;
+  // signed contracts ending within the next 30 days ("Expiră în curând")
+  expiringContracts: number;
   approvedHours: number;
   pendingHours: number;
 }
@@ -40,7 +42,7 @@ const DASHBOARD_LIST_SIZE = 3;
 export class GetDashboardOverviewUsecase {
   constructor(
     private readonly dataSource: DataSource,
-    private readonly countPendingContractsUsecase: CountPendingContractsUsecase,
+    private readonly contractFacade: ContractFacade,
   ) {}
 
   public async overview(organizationId: string): Promise<IDashboardOverview> {
@@ -64,9 +66,10 @@ export class GetDashboardOverviewUsecase {
       activeVolunteers: +row.activeVolunteers,
       pendingAccessRequests: +row.pendingAccessRequests,
       upcomingEvents: +row.upcomingEvents,
-      pendingContracts: await this.countPendingContractsUsecase.execute({
+      expiringContracts: await this.contractFacade.countByStatus(
         organizationId,
-      }),
+        ClientContractStatus.EXPIRING_SOON,
+      ),
       approvedHours: +row.approvedHours,
       pendingHours: +row.pendingHours,
     };

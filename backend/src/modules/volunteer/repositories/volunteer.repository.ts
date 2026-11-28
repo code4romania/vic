@@ -318,17 +318,17 @@ export class VolunteerRepositoryService
       .addSelect('volunteerProfile.id', 'volunteerProfileId')
       .addSelect((subQuery) => {
         return subQuery
-          .select('COUNT(contract.id)', 'contractCount')
+          .select('COUNT(contract.id)', 'signedContractCount')
           .from(ContractEntity, 'contract')
           .where('contract.volunteerId = :volunteerId', { volunteerId })
           .andWhere(
-            contractStatusCondition(ClientContractStatus.PENDING, 'contract'),
+            contractStatusCondition(ClientContractStatus.SIGNED, 'contract'),
             {
               statusNow: new Date(),
               activeStatus: ContractStatus.ACTIVE,
             },
           );
-      }, 'contractCount')
+      }, 'signedContractCount')
       .addSelect((subQuery) => {
         return subQuery
           .select('COUNT(activityLog.id)', 'activityLogCount')

@@ -80,7 +80,6 @@ export const DocumentTypeOptions: SelectItem<DocumentType>[] = Object.values(Doc
 
 const STATUS_TONE: Record<ContractStatus, BadgeTone> = {
   [ContractStatus.SIGNED]: 'green',
-  [ContractStatus.PENDING]: 'amber',
   [ContractStatus.EXPIRED]: 'gray',
 };
 

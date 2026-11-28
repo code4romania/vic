@@ -166,10 +166,10 @@ export const mapContractStatusToClientContractStatus = (
   contract: Pick<IContractModel, 'status' | 'endDate'>,
   now: Date = new Date(),
 ): ClientContractStatus => {
-  if (isPastEnd(contract, now)) return ClientContractStatus.EXPIRED;
-  return contract.status === ContractStatus.ACTIVE
-    ? ClientContractStatus.SIGNED
-    : ClientContractStatus.PENDING;
+  // an unsigned contract from VIC 1 is never listed; if one is ever shown, it is not valid
+  if (isPastEnd(contract, now) || contract.status !== ContractStatus.ACTIVE)
+    return ClientContractStatus.EXPIRED;
+  return ClientContractStatus.SIGNED;
 };
 
 export const isContractExpiringSoon = (

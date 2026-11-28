@@ -32,7 +32,6 @@ import {
 } from 'src/infrastructure/presenters/generic-paginated.presenter';
 import { GetManyContractsDto } from './dto/get-many-contracts.dto';
 import { GetManyContractsUsecase } from 'src/usecases/documents/get-many-contracts.usecase';
-import { CountPendingContractsUsecase } from 'src/usecases/documents/count-pending-contracts.usecase';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { ContractListItemPresenter } from './presenters/contract-list-item.presenter';
 import { GetOneContractUsecase } from 'src/usecases/documents/get-one-contract.usecase';
@@ -70,7 +69,6 @@ export class ContractController {
   constructor(
     private readonly uploadContractUsecase: UploadContractUsecase,
     private readonly getManyContractsUsecase: GetManyContractsUsecase,
-    private readonly countPendingContractsUsecase: CountPendingContractsUsecase,
     private readonly getOneContractUsecase: GetOneContractUsecase,
     private readonly getContractsForDownloadUsecase: GetContractsForDownloadUsecase,
     private readonly deleteContractUsecase: DeleteContractUsecase,
@@ -122,15 +120,6 @@ export class ContractController {
     @ExtractUser() { organizationId }: IAdminUserModel,
   ): Promise<ContractCounters> {
     return this.countContractsByStatusUsecase.execute({ organizationId });
-  }
-
-  @Get('active')
-  async getActivContractsCount(
-    @ExtractUser() { organizationId }: IAdminUserModel,
-  ): Promise<number> {
-    return this.countPendingContractsUsecase.execute({
-      organizationId,
-    });
   }
 
   // #490: the certificate form opens with the volunteer's approved hours
