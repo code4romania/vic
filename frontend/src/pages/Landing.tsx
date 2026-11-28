@@ -10,6 +10,7 @@ import {
 } from '@heroicons/react/24/outline';
 import logo from '../assets/images/app_logo.svg';
 import LanguageSwitcher from '../components/LanguageSwitcher';
+import { APP_STORE_URL, PLAY_STORE_URL } from '../common/config/store-links';
 
 const FEATURES: { key: 'volunteers' | 'events' | 'hours' | 'documents'; icon: ReactNode }[] = [
   { key: 'volunteers', icon: <UsersIcon className="w-6 h-6" aria-hidden="true" /> },
@@ -21,8 +22,8 @@ const FEATURES: { key: 'volunteers' | 'events' | 'hours' | 'documents'; icon: Re
 // "/" when logged out (R29). NGO Hub's link and the announcement emails point here.
 const Landing = () => {
   const { t } = useTranslation('landing');
-  const appStore = import.meta.env.VITE_APP_STORE_URL;
-  const playStore = import.meta.env.VITE_PLAY_STORE_URL;
+  const appStore = APP_STORE_URL;
+  const playStore = PLAY_STORE_URL;
 
   return (
     <div className="min-h-below-band w-full bg-canvas flex flex-col">

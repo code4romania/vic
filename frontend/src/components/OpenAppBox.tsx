@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DevicePhoneMobileIcon } from '@heroicons/react/24/outline';
+import { APP_STORE_URL, PLAY_STORE_URL } from '../common/config/store-links';
 
 export const isMobileDevice = (): boolean => /android|iphone|ipad|ipod/i.test(navigator.userAgent);
 
@@ -14,8 +15,8 @@ interface OpenAppBoxProps {
 // A volunteer belongs in the mobile app: an Open the app button on phones, the store links everywhere.
 const OpenAppBox = ({ title, description, email }: OpenAppBoxProps) => {
   const { t } = useTranslation('auth');
-  const appStore = import.meta.env.VITE_APP_STORE_URL;
-  const playStore = import.meta.env.VITE_PLAY_STORE_URL;
+  const appStore = APP_STORE_URL;
+  const playStore = PLAY_STORE_URL;
   const deepLink = `vic://login${email ? `?email=${encodeURIComponent(email)}` : ''}`;
 
   return (
