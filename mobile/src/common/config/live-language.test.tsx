@@ -82,12 +82,22 @@ describe('texts follow the language without a restart', () => {
   });
 
   it('the options of the selects', async () => {
-    expect(getSexOptions().map((option) => option.label)).toEqual(['Bărbătesc', 'Feminin']);
+    expect(getSexOptions().map((option) => option.label)).toEqual([
+      'Bărbătesc',
+      'Feminin',
+      'Non-binar',
+      'Prefer să nu spun',
+    ]);
     expect(getReferralOptions()[0].label).toBe('Rețelele de socializare');
 
     await switchTo('en');
 
-    expect(getSexOptions().map((option) => option.label)).toEqual(['Male', 'Female']);
+    expect(getSexOptions().map((option) => option.label)).toEqual([
+      'Male',
+      'Female',
+      'Non-binary',
+      'Prefer not to say',
+    ]);
     expect(getReferralOptions()[0].label).toBe('Social networks');
   });
 

@@ -6,6 +6,9 @@ module.exports = {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      // the screen under the "Un proiect Code for Romania/Commit Global" band (BrandBand, 2.5rem)
+      height: { 'below-band': 'calc(100vh - 2.5rem)' },
+      minHeight: { 'below-band': 'calc(100vh - 2.5rem)' },
       colors: {
         current: 'currentColor',
         transparent: 'transparent',

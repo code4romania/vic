@@ -119,7 +119,6 @@ export const EventStatusMarkerColorMapper = {
 
 export const ContractStatusMarkerColorMapper = {
   [ContractStatus.SIGNED]: 'bg-green-500',
-  [ContractStatus.PENDING]: 'bg-yellow-500',
   [ContractStatus.EXPIRED]: 'bg-cool-gray-800',
 };
 

@@ -151,12 +151,9 @@ describe('Contracts (e2e)', () => {
         c.status,
       ]),
     ).toEqual([
+      // the unsigned ones (3 to 6) are no longer documents: nothing is "În așteptare" (Maria, 27 Nov)
       ['1', 'SIGNED'],
       ['2', 'EXPIRED'],
-      ['3', 'PENDING'],
-      ['4', 'PENDING'],
-      ['5', 'PENDING'],
-      ['6', 'EXPIRED'],
     ]);
   });
 
@@ -184,7 +181,6 @@ describe('Contracts (e2e)', () => {
       later: ['SIGNED', false],
       forever: ['SIGNED', false],
       gone: ['EXPIRED', false],
-      waiting: ['PENDING', false],
     });
 
     const filtered = async (status: string): Promise<string[]> =>
@@ -194,18 +190,14 @@ describe('Contracts (e2e)', () => {
         .map((c: { contractNumber: string }) => c.contractNumber)
         .sort();
     expect(await filtered('SIGNED')).toEqual(['forever', 'later', 'soon']);
-    expect(await filtered('PENDING')).toEqual(['waiting']);
+    await auth(http().get('/contract?status=PENDING')).expect(400);
     expect(await filtered('EXPIRED')).toEqual(['gone']);
     await auth(http().get('/contract?status=APPROVED')).expect(400);
 
-    // the dashboard's pending count
-    expect((await auth(http().get('/contract/active')).expect(200)).text).toBe(
-      '1',
-    );
     // the counters on top of the contracts page
     expect(
       (await auth(http().get('/contract/counters')).expect(200)).body,
-    ).toEqual({ SIGNED: 3, PENDING: 1, EXPIRED: 1, EXPIRING_SOON: 1 });
+    ).toEqual({ SIGNED: 3, EXPIRED: 1, EXPIRING_SOON: 1 });
     // #489: the "Expiră în curând" filter
     expect(await filtered('EXPIRING_SOON')).toEqual(['soon']);
 
@@ -218,7 +210,7 @@ describe('Contracts (e2e)', () => {
         ),
       ).expect(200)
     ).body.items;
-    expect(byEmail).toHaveLength(5);
+    expect(byEmail).toHaveLength(4);
   });
 
   it("lists an inactive volunteer's contracts like the counters; a contract is valid through its last day in Bucharest", async () => {

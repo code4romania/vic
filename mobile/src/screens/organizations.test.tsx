@@ -117,7 +117,7 @@ beforeEach(() => {
 });
 
 describe('Organizații', () => {
-  it('pins the back button, compact title and count above the scrolling list', async () => {
+  it('pins the compact title and count above the scrolling list, with no back button as a tab', async () => {
     await render(
       <SafeAreaProvider
         initialMetrics={{
@@ -136,15 +136,13 @@ describe('Organizații', () => {
       </SafeAreaProvider>,
     );
     const header = within(screen.getByTestId('organizations-header'));
-    expect(header.getByTestId('organizations-back')).toBeTruthy();
+    // a tab of the bar: a tab switch is not a step back
+    expect(header.queryByTestId('organizations-back')).toBeNull();
     expect(header.getByRole('header', { name: t('organizations:heading') })).toBeTruthy();
     expect(header.getByText(t('organizations:count', { n: 2 }))).toBeTruthy();
     const list = within(screen.getByTestId('organizations-list'));
     expect(list.queryByRole('header', { name: t('organizations:heading') })).toBeNull();
     expect(list.queryByText(t('organizations:heading'))).toBeNull();
-
-    await fireEvent.press(header.getByTestId('organizations-back'));
-    expect(screen.queryByTestId('organizations-header')).toBeNull();
   });
 
   it('keeps the title without a back stack and preserves the search input after header layout', async () => {

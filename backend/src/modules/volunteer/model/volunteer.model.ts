@@ -46,7 +46,8 @@ export interface IVolunteerModel extends IBaseModel {
 export interface IVolunteerStats {
   volunteerId: string;
   activityLogCount: number;
-  contractCount: number;
+  // the signed contracts still in their period
+  signedContractCount: number;
   volunteerProfileId: string | null;
 }
 

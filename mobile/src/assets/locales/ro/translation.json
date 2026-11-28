@@ -21,6 +21,9 @@
         "sex_label": "Sex",
         "male": "Bărbătesc",
         "female": "Feminin",
+        "brand_band": "Un proiect Code for Romania/Commit Global",
+        "non_binary": "Non-binar",
+        "undisclosed": "Prefer să nu spun",
         "register": "Înregistrează-te",
         "continue": "Continuă",
         "save": "Salvează",
@@ -414,8 +417,7 @@
                 }
             },
             "documents": {
-                "title": "Documente",
-                "subtitle": "{{number}} documente așteaptă răspuns"
+                "title": "Documente"
             },
             "volunteer_profile": {
                 "title": "Profil voluntar",
@@ -443,7 +445,7 @@
         "leave": "Părăsește organizația",
         "stats": {
             "pending_logs": "cereri de ore în așteptare",
-            "pending_documents": "documente așteaptă răspuns"
+            "signed_documents": "contracte active"
         },
         "prompt": {
             "title": "Completează profilul de voluntar",
@@ -754,6 +756,7 @@
         "search": "Caută",
         "account_settings": "Setări cont",
         "hours": "Ore",
+        "organizations": "Organizații",
         "documents": "Documente",
         "profile": "Profil",
         "expand_hint": "Arată toate tab-urile"
@@ -879,7 +882,6 @@
         "download_error": "Nu am putut descărca documentul. Încearcă din nou.",
         "status": {
             "SIGNED": "Semnat",
-            "PENDING": "În așteptare",
             "EXPIRED": "Expirat"
         },
         "empty": {

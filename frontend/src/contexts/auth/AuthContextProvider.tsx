@@ -146,7 +146,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       {!isLoading ? (
         children
       ) : (
-        <div role="status" className="h-[100vh] w-full flex items-center justify-center">
+        <div role="status" className="h-below-band w-full flex items-center justify-center">
           <svg
             aria-hidden="true"
             className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-navy"

@@ -214,11 +214,39 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(
       style,
       editable,
       multiline,
+      value,
+      defaultValue,
+      onChangeText,
       ...props
     },
     ref,
   ) => {
     const Input: React.ComponentType<any> = InputComponent ?? TextInput;
+    // In a sheet (BottomSheetTextInput) a controlled `value` lags behind fast typing on Android:
+    // each keystroke's re-render sends back an older text and the cursor jumps one letter back,
+    // so the letters come out in the wrong order. There the field stays uncontrolled: it keeps
+    // what is typed, and only a change made from outside (a reset) remounts it with the new text.
+    const uncontrolled = !!InputComponent && value !== undefined;
+    const typed = useRef(value);
+    // the text the input mounted with: a later echo of what was typed is never sent back to it
+    const mounted = useRef(value);
+    const [generation, setGeneration] = useState(0);
+    useEffect(() => {
+      if (uncontrolled && value !== typed.current) {
+        typed.current = value;
+        mounted.current = value;
+        setGeneration((current) => current + 1);
+      }
+    }, [uncontrolled, value]);
+    const valueProps = uncontrolled
+      ? {
+          defaultValue: mounted.current,
+          onChangeText: (text: string) => {
+            typed.current = text;
+            onChangeText?.(text);
+          },
+        }
+      : { value, defaultValue, onChangeText };
     const inputRef = useRef<TextInput>(null);
     useImperativeHandle(ref, () => inputRef.current as TextInput);
     const [focused, setFocused] = useState(false);
@@ -244,6 +272,7 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(
             >
               {leading}
               <Input
+                key={uncontrolled ? generation : undefined}
                 ref={inputRef}
                 allowFontScaling
                 maxFontSizeMultiplier={fontScaleCap.text}
@@ -252,6 +281,7 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(
                 editable={editable}
                 multiline={multiline}
                 {...props}
+                {...valueProps}
                 onFocus={(event: any) => {
                   setFocused(true);
                   onFocus?.(event);

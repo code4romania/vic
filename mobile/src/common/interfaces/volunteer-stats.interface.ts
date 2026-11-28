@@ -1,6 +1,7 @@
 export interface IVolunteerStats {
   volunteerId: string;
   activityLogCount: number;
-  contractCount: number;
+  // signed contracts still in their period
+  signedContractCount?: number;
   volunteerProfileId: string | null;
 }

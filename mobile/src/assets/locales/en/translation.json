@@ -21,6 +21,9 @@
     "sex_label": "Sex",
     "male": "Male",
     "female": "Female",
+    "brand_band": "A Code for Romania/Commit Global project",
+    "non_binary": "Non-binary",
+    "undisclosed": "Prefer not to say",
     "register": "Register",
     "continue": "Continue",
     "save": "Save",
@@ -414,8 +417,7 @@
         }
       },
       "documents": {
-        "title": "Documents",
-        "subtitle": "{{number}} documents await response"
+        "title": "Documents"
       },
       "volunteer_profile": {
         "title": "Volunteer profile",
@@ -443,7 +445,7 @@
     "leave": "Leave the organization",
     "stats": {
       "pending_logs": "hour requests pending",
-      "pending_documents": "documents awaiting a reply"
+      "signed_documents": "active contracts"
     },
     "prompt": {
       "title": "Complete your volunteer profile",
@@ -750,6 +752,7 @@
     "search": "Search",
     "account_settings": "Account settings",
     "hours": "Hours",
+    "organizations": "Organizations",
     "documents": "Documents",
     "profile": "Profile",
     "expand_hint": "Shows all the tabs"
@@ -875,7 +878,6 @@
     "download_error": "We could not download the document. Try again.",
     "status": {
       "SIGNED": "Signed",
-      "PENDING": "Pending",
       "EXPIRED": "Expired"
     },
     "empty": {

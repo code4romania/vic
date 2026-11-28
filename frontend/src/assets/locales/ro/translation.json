@@ -69,6 +69,9 @@
     "sex": "Sex {{sex_type}}",
     "male": "Bărbătesc",
     "female": "Feminin",
+    "brand_band": "Un proiect Code for Romania/Commit Global",
+    "non_binary": "Non-binar",
+    "undisclosed": "Prefer să nu spună",
     "phone": "Telefon",
     "email": "Email de contact",
     "availability": "Valabilitate",
@@ -1528,9 +1531,9 @@
         "subtitle": "evenimente planificate"
       },
       "contracts": {
-        "label": "Contracte în așteptare",
+        "label": "Contracte care expiră",
         "action": "Vezi contractele",
-        "subtitle": "necesită semnare"
+        "subtitle": "în următoarele 30 de zile"
       },
       "hours": {
         "label": "Ore voluntariat",
@@ -1712,7 +1715,6 @@
       },
       "status": {
         "SIGNED": "Semnat",
-        "PENDING": "În așteptare",
         "EXPIRED": "Expirat"
       },
       "period": "Perioada contract",
@@ -1830,10 +1832,6 @@
           "label": "Contracte semnate",
           "info": "active"
         },
-        "PENDING": {
-          "label": "În așteptare",
-          "info": "așteaptă copia semnată"
-        },
         "EXPIRED": {
           "label": "Expirate",
           "info": "necesită reînnoire"
@@ -1879,7 +1877,6 @@
           "title": "Statusuri",
           "items": [
             "Semnat: contractul e activ și în perioadă.",
-            "În așteptare: lipsește copia semnată.",
             "Expiră în curând: mai puțin de o lună până la final.",
             "Expirat: perioada s-a încheiat; încarcă un contract nou."
           ]

@@ -10,7 +10,7 @@ const MainLayout = () => {
   const [isSlidingMenuOpen, setSlidingMenuOpen] = useState<boolean>(false);
 
   return (
-    <div className="min-h-screen w-full flex bg-canvas">
+    <div className="min-h-below-band w-full flex bg-canvas">
       <div className="hidden lg:block shrink-0 bg-white border-r border-cool-gray-200">
         <SideMenu />
       </div>

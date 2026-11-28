@@ -30,11 +30,11 @@ const AuthShell = ({ title, subtitle, icon, wide, children }: AuthShellProps) =>
   const { t } = useTranslation('auth');
 
   return (
-    <div className="min-h-[100vh] w-full flex flex-col lg:flex-row bg-canvas">
+    <div className="min-h-below-band w-full flex flex-col lg:flex-row bg-canvas">
       <aside
         className={classNames(
           wide ? 'lg:w-[34%]' : 'lg:w-[44%]',
-          'bg-navy text-white lg:min-h-[100vh] lg:sticky lg:top-0 shrink-0',
+          'bg-navy text-white lg:min-h-below-band lg:sticky lg:top-0 shrink-0',
         )}
       >
         <div className="h-full flex flex-col gap-10 px-4 py-4 sm:px-8 lg:px-12 lg:py-12">

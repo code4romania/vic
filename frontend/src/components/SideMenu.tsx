@@ -62,7 +62,7 @@ const SideMenu = () => {
     <nav
       className={classNames(
         isNarrow ? 'w-[4.75rem]' : 'w-64',
-        'transition-width duration-300 ease-out h-screen sticky top-0 flex flex-col bg-white select-none',
+        'transition-width duration-300 ease-out h-below-band sticky top-0 flex flex-col bg-white select-none',
       )}
       aria-label={t('aria')}
     >

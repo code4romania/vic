@@ -13,7 +13,7 @@ interface ErrorScreenProps {
 // A whole page outside the app shell (404, maintenance): the logo, then the message centered on the
 // gray canvas, in a white card.
 const ErrorScreen = ({ code, icon, title, description, actions }: ErrorScreenProps) => (
-  <div className="min-h-[100vh] w-full flex flex-col bg-canvas">
+  <div className="min-h-below-band w-full flex flex-col bg-canvas">
     <header className="w-full bg-white border-b border-cool-gray-200">
       <div className="max-w-6xl mx-auto px-4 sm:px-8 h-16 flex items-center">
         {/* A plain link: the maintenance screen renders outside the router */}
