@@ -39,6 +39,21 @@ describe('TextField in a sheet', () => {
     expect(screen.getByTestId('email').props.defaultValue).toBe('');
   });
 
+  it('ignores a late echo of an older text while typing fast (no remount, no lost focus)', async () => {
+    const field = (value: string) => (
+      <TextField label="E-mail" InputComponent={SheetInput} value={value} testID="email" />
+    );
+    const { rerender } = await render(field(''));
+    const input = screen.getByTestId('email');
+    await fireEvent.changeText(input, 'ma');
+    await fireEvent.changeText(input, 'mar');
+    await fireEvent.changeText(input, 'mari');
+    // the parent renders "ma" only after "mari" was typed: an echo, not a reset
+    await rerender(field('ma'));
+    await rerender(field('mari'));
+    expect(screen.getByTestId('email')).toBe(input);
+  });
+
   it('starts over with a text set from outside (a reset)', async () => {
     const { rerender } = await render(
       <TextField label="Caută" InputComponent={SheetInput} value="cruce" testID="search" />,

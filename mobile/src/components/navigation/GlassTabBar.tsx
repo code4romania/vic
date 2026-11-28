@@ -519,7 +519,7 @@ const styles = StyleSheet.create({
     marginHorizontal: -LABEL_OVERHANG,
     textAlign: 'center',
   },
-  labelCompact: { fontSize: 9.5, letterSpacing: 0 },
+  labelCompact: { fontSize: 9, letterSpacing: -0.15 },
   accessoryWrap: {
     position: 'absolute',
     left: -tabBar.side,
