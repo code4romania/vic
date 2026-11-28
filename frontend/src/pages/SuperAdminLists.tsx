@@ -250,7 +250,7 @@ const SuperAdminLists = () => {
       name: t('columns.organizations'),
       grow: 3,
       cell: (row) =>
-        row.organizations.length ? (
+        row.organizations?.length ? (
           <ul className="flex flex-wrap gap-1.5 py-3" aria-label={row.organizations.join(', ')}>
             {row.organizations.map((organization) => (
               <li
@@ -318,7 +318,10 @@ const SuperAdminLists = () => {
         <Card>
           <CardBody>
             {list === 'organizations' ? (
+              // a table per list (key): reusing one table for the other list rendered its old rows
+              // with the new columns for a moment, which crashed the page until a reload
               <DataTableComponent<IAdminOrganizationListItem>
+                key="organizations"
                 columns={organizationColumns}
                 data={organizations.data?.items}
                 loading={organizations.isLoading}
@@ -328,6 +331,7 @@ const SuperAdminLists = () => {
               />
             ) : (
               <DataTableComponent<IAdminVolunteerListItem>
+                key="volunteers"
                 columns={volunteerColumns}
                 data={volunteers.data?.items}
                 loading={volunteers.isLoading}

@@ -240,6 +240,19 @@ describe('Super admin lists (#511)', () => {
     expect(await screen.findByText(t('general:empty_table'))).toBeInTheDocument();
   });
 
+  it('switches from the volunteers tab to the organizations tab and back (Maria, 27 Nov)', async () => {
+    const user = userEvent.setup();
+    render('/admin/volunteers');
+    expect(await screen.findByText('Elena Pop')).toBeInTheDocument();
+    await user.click(screen.getByRole('tab', { name: t('super_admin:tabs.organizations') }));
+    expect(await screen.findByText('Crucea Verde')).toBeInTheDocument();
+    expect(screen.queryByText('Elena Pop')).not.toBeInTheDocument();
+    await user.click(screen.getByRole('tab', { name: t('super_admin:tabs.volunteers') }));
+    expect(await screen.findByText('Elena Pop')).toBeInTheDocument();
+    await user.click(screen.getByRole('tab', { name: t('super_admin:tabs.organizations') }));
+    expect(await screen.findByText('Crucea Verde')).toBeInTheDocument();
+  });
+
   it('is forbidden to a plain admin', () => {
     render('/admin/organizations', false);
     expect(screen.queryByText(t('super_admin:title'))).not.toBeInTheDocument();
