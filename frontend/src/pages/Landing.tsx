@@ -25,7 +25,7 @@ const Landing = () => {
   const playStore = import.meta.env.VITE_PLAY_STORE_URL;
 
   return (
-    <div className="min-h-[100vh] w-full bg-canvas flex flex-col">
+    <div className="min-h-below-band w-full bg-canvas flex flex-col">
       <header className="w-full bg-white border-b border-cool-gray-200">
         <div className="max-w-6xl mx-auto px-4 sm:px-8 h-16 flex items-center justify-between gap-4">
           <img src={logo} alt="VIC" className="h-9" />

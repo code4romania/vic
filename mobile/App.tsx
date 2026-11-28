@@ -38,6 +38,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import BrandBandFrame from './src/components/brand/BrandBand';
 
 // Keep the android navigation buttons dark on our light screens, regardless of the system theme
 if (Platform.OS === 'android') {
@@ -97,9 +98,11 @@ export default () => {
                     linking={linking}
                     navigationInChildEnabled
                   >
-                    <NotificationContextProvider navigation={navigationRef}>
-                      <Router />
-                    </NotificationContextProvider>
+                    <BrandBandFrame>
+                      <NotificationContextProvider navigation={navigationRef}>
+                        <Router />
+                      </NotificationContextProvider>
+                    </BrandBandFrame>
                   </NavigationContainer>
                 </AuthContextProvider>
               </BottomSheetModalProvider>

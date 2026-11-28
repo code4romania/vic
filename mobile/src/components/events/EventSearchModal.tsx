@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { WithWindowInsets } from '../brand/BrandBand';
 import { Modal, Pressable, ScrollView, TextInput, View } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import Animated, { FadeIn, LinearTransition, useReducedMotion } from 'react-native-reanimated';
@@ -43,7 +44,10 @@ export const EventSearchModal = ({ visible, onClose, ...props }: EventSearchModa
     transparent
     statusBarTranslucent
   >
-    <EventSearch {...props} onClose={onClose} />
+    {/* the modal covers the whole window, band included: the real status bar inset */}
+    <WithWindowInsets>
+      <EventSearch {...props} onClose={onClose} />
+    </WithWindowInsets>
   </Modal>
 );
 

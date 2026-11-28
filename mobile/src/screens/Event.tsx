@@ -172,7 +172,8 @@ const Event = ({ navigation, route }: any) => {
   const { fontScale } = useWindowDimensions();
   const stackedBar = fontScale >= 1.25;
   // light text over the navy hero
-  useFocusedStatusBarStyle('light');
+  // the white Code for Romania band sits under the status bar: dark icons
+  useFocusedStatusBarStyle('dark');
   const { userProfile } = useUserProfile();
   const { eventId } = route.params;
   const { event: storedEvent } = useEvent();

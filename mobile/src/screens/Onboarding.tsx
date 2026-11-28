@@ -153,7 +153,8 @@ const Onboarding = ({ navigation }: any) => {
 
   return (
     <View style={[styles.screen, { paddingTop: insets.top + 8 }]} testID="onboarding">
-      <StatusBar style="light" />
+      {/* iOS: a full-screen modal over the Code for Romania band; Android: under the white band */}
+      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'dark'} />
       <View style={styles.header}>
         <View style={styles.brand}>
           <VicLogo size={28} dark={palette.white} />

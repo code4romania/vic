@@ -47,7 +47,8 @@ type Banner = { tone: StatusTone; text: string };
 const OrganizationProfile = ({ navigation, route }: any) => {
   const { t } = useTranslation('organization_profile');
   const insets = useSafeAreaInsets();
-  useFocusedStatusBarStyle('light');
+  // the white Code for Romania band sits under the status bar: dark icons
+  useFocusedStatusBarStyle('dark');
   const { userProfile } = useUserProfile();
   const { organization } = useOrganization();
   const heroHeight = insets.top + 160;

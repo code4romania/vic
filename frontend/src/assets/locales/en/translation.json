@@ -69,6 +69,9 @@
     "sex": "Sex {{sex_type}}",
     "male": "Male",
     "female": "Female",
+    "brand_band": "A Code for Romania/Commit Global project",
+    "non_binary": "Non-binary",
+    "undisclosed": "Prefers not to say",
     "phone": "Phone",
     "email": "Contact email",
     "availability": "Validity",
@@ -1506,9 +1509,9 @@
         "subtitle": "planned events"
       },
       "contracts": {
-        "label": "Pending contracts",
+        "label": "Contracts expiring",
         "action": "See contracts",
-        "subtitle": "awaiting signature"
+        "subtitle": "in the next 30 days"
       },
       "hours": {
         "label": "Volunteering hours",
@@ -1688,7 +1691,6 @@
       },
       "status": {
         "SIGNED": "Signed",
-        "PENDING": "Pending",
         "EXPIRED": "Expired"
       },
       "period": "Contract period",
@@ -1806,10 +1808,6 @@
           "label": "Signed contracts",
           "info": "active"
         },
-        "PENDING": {
-          "label": "Pending",
-          "info": "waiting for the signed copy"
-        },
         "EXPIRED": {
           "label": "Expired",
           "info": "need renewal"
@@ -1854,7 +1852,6 @@
           "title": "Statuses",
           "items": [
             "Signed: the contract is active and within its period.",
-            "Pending: the signed copy is missing.",
             "Expiring soon: less than a month until the end.",
             "Expired: the period has ended; upload a new contract."
           ]

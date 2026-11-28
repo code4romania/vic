@@ -43,7 +43,8 @@ const Landing = ({ navigation }: any) => {
   const { width, height: windowHeight } = useWindowDimensions();
   // on 667pt phones (iPhone SE) a smaller headline keeps the buttons and the footer on screen
   const compact = windowHeight < 700;
-  useFocusedStatusBarStyle('light');
+  // the white Code for Romania band sits under the status bar: dark icons
+  useFocusedStatusBarStyle('dark');
   const sheetRef = useRef<BottomSheetModal>(null);
   const [email, setEmail] = useState('');
   // a function, read when the field is drawn: the message follows a change of language
