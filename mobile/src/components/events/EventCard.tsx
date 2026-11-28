@@ -146,7 +146,7 @@ export const EventCard = ({
             </AppText>
           </View>
           {!!event.location && (
-            <View style={styles.meta}>
+            <View style={[styles.meta, styles.nextMeta]}>
               <PinIcon size={14} color={palette.ink2} />
               <AppText variant="caption" color={palette.ink2} style={styles.metaText}>
                 {event.location}
@@ -154,7 +154,7 @@ export const EventCard = ({
             </View>
           )}
           {!!event.organizationName && (
-            <AppText variant="caption" color={palette.ink2}>
+            <AppText variant="caption" color={palette.ink2} style={styles.nextMeta}>
               {event.organizationName}
             </AppText>
           )}
@@ -188,7 +188,7 @@ const styles = StyleSheet.create((theme) => ({
   standalone: {
     backgroundColor: theme.colors.card,
     borderRadius: theme.radius.card,
-    padding: 10,
+    padding: 14,
   },
   // inside the legacy Group, which pads the sides
   row: { paddingVertical: 12 },
@@ -219,12 +219,13 @@ const styles = StyleSheet.create((theme) => ({
     includeFontPadding: false,
   },
   dateDayHero: { fontSize: 40, lineHeight: 40, letterSpacing: -1.6 },
-  // .et / .em: the first meta line sits 3pt under the title, the others follow without a gap
+  // spacing scale (handbook): title → first meta line 4, between meta lines 2, block → chips 10
   body: { flex: 1, minWidth: 0 },
   meta: { flexDirection: 'row', alignItems: 'center', gap: 5 },
-  firstMeta: { marginTop: 3 },
+  firstMeta: { marginTop: 4 },
+  nextMeta: { marginTop: 2 },
   metaText: { flex: 1, minWidth: 0 },
-  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 },
+  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 10 },
   // the plain chip on a white card: a hairline so it still reads as a chip
   plainChip: { borderWidth: 1, borderColor: theme.colors.line },
 }));
