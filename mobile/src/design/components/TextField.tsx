@@ -225,24 +225,29 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(
     // In a sheet (BottomSheetTextInput) a controlled `value` lags behind fast typing on Android:
     // each keystroke's re-render sends back an older text and the cursor jumps one letter back,
     // so the letters come out in the wrong order. There the field stays uncontrolled: it keeps
-    // what is typed, and only a change made from outside (a reset) remounts it with the new text.
+    // what is typed. A `value` the field itself emitted (even an older one, arriving late) is an
+    // echo and changes nothing; only a text it never emitted (a reset from outside) remounts it.
     const uncontrolled = !!InputComponent && value !== undefined;
-    const typed = useRef(value);
-    // the text the input mounted with: a later echo of what was typed is never sent back to it
+    const emitted = useRef<string[]>([]);
+    // the text the input mounted with: an echo is never sent back to it
     const mounted = useRef(value);
     const [generation, setGeneration] = useState(0);
     useEffect(() => {
-      if (uncontrolled && value !== typed.current) {
-        typed.current = value;
-        mounted.current = value;
-        setGeneration((current) => current + 1);
+      const untouched = emitted.current.length === 0 && value === mounted.current;
+      if (!uncontrolled || untouched || emitted.current.includes(value as string)) {
+        return;
       }
+      emitted.current = [];
+      mounted.current = value;
+      setGeneration((current) => current + 1);
     }, [uncontrolled, value]);
     const valueProps = uncontrolled
       ? {
           defaultValue: mounted.current,
           onChangeText: (text: string) => {
-            typed.current = text;
+            // the last few texts typed: a late echo of one of them is ignored, while a reset to
+            // an older text (typed more than 8 keystrokes ago) still goes through
+            emitted.current = [...emitted.current.slice(-7), text];
             onChangeText?.(text);
           },
         }

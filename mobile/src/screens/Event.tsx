@@ -31,7 +31,7 @@ import EventSkeleton from '../components/skeleton/event-skeleton';
 import MissingEntity from './MissingEntity';
 import { TAB_ROUTES } from '../routes/tab-routes';
 import { Sheet, StatusBarScrim } from '../components/ui';
-import { GlassSurface } from '../components/navigation/GlassTabBar';
+import { GlassSurface, useBarBottom } from '../components/navigation/GlassTabBar';
 import { DateBlock } from '../components/events/EventCard';
 import { fitTitleSize, TITLE_MAX_SIZE } from '../common/utils/title-fit';
 
@@ -54,7 +54,7 @@ import {
   PinIcon,
   UsersIcon,
 } from '../design/icons';
-import { elevation, fontScaleCap, palette, tabBar } from '../design/tokens';
+import { elevation, fontScaleCap, palette } from '../design/tokens';
 import { duration, enter, spring } from '../design/motion';
 import { haptics } from '../design/haptics';
 
@@ -322,8 +322,8 @@ const Event = ({ navigation, route }: any) => {
   const registration = event?.registrationStatus;
   const busy = isLoadingEvent || isResponding || isCancelingRsvp;
 
-  // the bar floats where the tab bar sits on the tab screens
-  const barBottom = insets.bottom > 0 ? tabBar.bottom : 16;
+  // the bar floats where the tab bar sits on the tab screens, above Android's navigation bar
+  const barBottom = useBarBottom();
   // the bar's own height (it grows with Dynamic Type and stacks at large sizes)
   const [barHeight, setBarHeight] = useState(64);
   const barSpace = event && !finished ? barBottom + barHeight + 24 : insets.bottom + 24;
@@ -376,36 +376,19 @@ const Event = ({ navigation, route }: any) => {
         testID="event-scroll"
       >
         <View style={[styles.hero, { paddingTop: insets.top + 8 }]}>
-          <Pressable
-            onPress={navigation.goBack}
-            accessibilityRole="button"
-            accessibilityLabel={`${t('general:back')}`}
-            hitSlop={4}
-            style={({ pressed }) => [styles.back, pressed ? styles.backPressed : null]}
-            testID="event-back"
-          >
-            <ChevronLeftIcon size={22} color={palette.white} strokeWidth={ICON_STROKE + 0.4} />
-          </Pressable>
-          {event && (
-            <>
-              <View style={styles.heroRow}>
-                <Animated.View entering={heroEnter(0, reduced)}>
-                  <DateBlock date={event.startDate} tone="yellow" size="hero" />
-                </Animated.View>
-                <Animated.View
-                  entering={heroEnter(60, reduced)}
-                  style={styles.heroTitle}
-                  onLayout={(layoutEvent) => setTitleWidth(layoutEvent.nativeEvent.layout.width)}
-                >
-                  <Text
-                    accessibilityRole="header"
-                    maxFontSizeMultiplier={fontScaleCap.display}
-                    style={[styles.title, titleSizeStyle(titleSize)]}
-                  >
-                    {event.name}
-                  </Text>
-                </Animated.View>
-              </View>
+          {/* the back button shares its row with the chips: no row of its own */}
+          <View style={styles.heroTop}>
+            <Pressable
+              onPress={navigation.goBack}
+              accessibilityRole="button"
+              accessibilityLabel={`${t('general:back')}`}
+              hitSlop={4}
+              style={({ pressed }) => [styles.back, pressed ? styles.backPressed : null]}
+              testID="event-back"
+            >
+              <ChevronLeftIcon size={22} color={palette.white} strokeWidth={ICON_STROKE + 0.4} />
+            </Pressable>
+            {event && (
               <Animated.View entering={heroEnter(110, reduced)} style={styles.heroChips}>
                 {event.isPublic ? (
                   <StatusChip
@@ -431,6 +414,28 @@ const Event = ({ navigation, route }: any) => {
                   <StatusChip kind="ok" label={`${t('events:card.going')}`} />
                 )}
               </Animated.View>
+            )}
+          </View>
+          {event && (
+            <>
+              <View style={styles.heroRow}>
+                <Animated.View entering={heroEnter(0, reduced)}>
+                  <DateBlock date={event.startDate} tone="yellow" size="hero" />
+                </Animated.View>
+                <Animated.View
+                  entering={heroEnter(60, reduced)}
+                  style={styles.heroTitle}
+                  onLayout={(layoutEvent) => setTitleWidth(layoutEvent.nativeEvent.layout.width)}
+                >
+                  <Text
+                    accessibilityRole="header"
+                    maxFontSizeMultiplier={fontScaleCap.display}
+                    style={[styles.title, titleSizeStyle(titleSize)]}
+                  >
+                    {event.name}
+                  </Text>
+                </Animated.View>
+              </View>
               {joined &&
                 registration === EventRegistrationStatus.REJECTED &&
                 !!event.rejectionReason && (
@@ -644,7 +649,8 @@ const styles = StyleSheet.create((theme) => ({
     justifyContent: 'center',
   },
   backPressed: { backgroundColor: 'rgba(255,255,255,0.24)' },
-  heroRow: { flexDirection: 'row', alignItems: 'flex-end', gap: 14, marginTop: 18 },
+  heroTop: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  heroRow: { flexDirection: 'row', alignItems: 'flex-end', gap: 14, marginTop: 14 },
   heroTitle: { flex: 1, minWidth: 0 },
   // handbook: Bricolage, line-height .96, -0.035em; the size comes from fitTitleSize (32 at most)
   title: {
@@ -655,7 +661,13 @@ const styles = StyleSheet.create((theme) => ({
     color: theme.colors.white,
     includeFontPadding: false,
   },
-  heroChips: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 14 },
+  heroChips: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-end',
+    gap: 6,
+  },
   reason: { marginTop: 8 },
   skeleton: { paddingHorizontal: theme.space.gutter, paddingTop: 16 },
   cards: { paddingHorizontal: theme.space.gutter, paddingTop: 14, gap: 10 },

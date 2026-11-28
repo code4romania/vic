@@ -294,6 +294,8 @@ const AccountData = ({ navigation }: any) => {
             error={errors.sex}
             placeholder={t('general:select')}
             options={getSexOptions()}
+            // four options: in the sheet, never unfolded under the sticky „Salvează” bar
+            inlineMax={2}
             disabled={isUpdatingProfile}
           />
         </View>

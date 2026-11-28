@@ -235,7 +235,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
           <>
             {/* two lines like the pending state: status on top, since when underneath */}
             <View style={styles.barText} testID="organization-member">
-              <VText variant="h3" style={styles.barTitle} color={colors.status.ok.fg}>
+              <VText variant="h3" style={styles.barTitle} color={colors.status.ok.bg}>
                 {t('bar.member')}
               </VText>
               <VText variant="cap">

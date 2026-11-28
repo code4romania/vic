@@ -54,8 +54,8 @@ export interface GlassTabBarProps extends BottomTabBarProps {
   items: Record<string, GlassTabBarItem>;
 }
 
-/** Distance of the bar from the bottom edge of the screen. */
-const useBarBottom = () => {
+/** Distance of a floating bar from the bottom edge of the screen (clear of Android's navigation bar). */
+export const useBarBottom = () => {
   const insets = useSafeAreaInsets();
   // Keep the gesture-nav spacing; three-button navigation needs room for its full inset.
   if (Platform.OS === 'android' && insets.bottom > tabBar.bottom) {
@@ -519,7 +519,7 @@ const styles = StyleSheet.create({
     marginHorizontal: -LABEL_OVERHANG,
     textAlign: 'center',
   },
-  labelCompact: { fontSize: 9.5, letterSpacing: 0 },
+  labelCompact: { fontSize: 9, letterSpacing: -0.15 },
   accessoryWrap: {
     position: 'absolute',
     left: -tabBar.side,

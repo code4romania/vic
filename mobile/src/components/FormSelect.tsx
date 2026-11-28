@@ -43,6 +43,11 @@ export interface FormSelectProps {
   disabled?: boolean;
   /** kept for older callers; the VIC 2.0 field has no leading icon */
   accessoryLeft?: unknown;
+  /**
+   * up to how many options unfold under the field (INLINE_MAX by default); more open the sheet.
+   * Low for a field near a sticky bottom bar, where an unfolded list would hide under the bar.
+   */
+  inlineMax?: number;
 }
 
 const Check = () => (
@@ -102,6 +107,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
   required,
   optional,
   disabled,
+  inlineMax = INLINE_MAX,
 }: FormSelectProps) => {
   const { t } = useTranslation('general');
   const insets = useSafeAreaInsets();
@@ -133,9 +139,10 @@ const FormSelect: React.FC<FormSelectProps> = ({
           testID={`select-${name}`}
           optionTestID={(key) => `select-${name}-option-${key}`}
           // up to INLINE_MAX options unfold under the field; longer lists open the sheet
+          inlineMax={inlineMax}
           onOpenSheet={() => sheet.current?.present()}
           renderSheet={() =>
-            options.length > INLINE_MAX ? (
+            options.length > inlineMax ? (
               <Sheet
                 ref={sheet}
                 title={label}

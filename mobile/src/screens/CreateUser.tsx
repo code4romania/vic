@@ -229,6 +229,8 @@ const CreateUser = ({ navigation }: any) => {
             disabled={isLoading}
             placeholder={t('general:select')}
             options={getSexOptions()}
+            // four options: in the sheet, never unfolded under the sticky „Salvează” bar
+            inlineMax={2}
           />
           <Controller
             control={control}
