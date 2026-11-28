@@ -183,10 +183,10 @@ const styles = StyleSheet.create((theme) => ({
     alignItems: 'center',
     gap: 12,
     borderRadius: theme.radius.row,
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 10,
-    paddingRight: 12,
+    // card padding 14 (handbook 14–16)
+    paddingVertical: 14,
+    paddingLeft: 14,
+    paddingRight: 14,
   },
   ring: {
     position: 'absolute',
@@ -210,6 +210,7 @@ const styles = StyleSheet.create((theme) => ({
   text: { flex: 1, minWidth: 0 },
   // `.hrow b` 800 15.5 and the 13pt 600 meta, both at line-height 1.35
   title: { fontSize: 15.5, lineHeight: 21 },
-  meta: { lineHeight: 17.5 },
-  stackedChip: { marginTop: 6 },
+  // title → subtitle 4, block → chip 10
+  meta: { lineHeight: 18, marginTop: 4 },
+  stackedChip: { marginTop: 10 },
 }));
