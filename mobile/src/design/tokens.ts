@@ -160,6 +160,13 @@ export type TypeVariant = keyof typeof type;
  * Segmented control labels stop at 1.15× and shrink to fit their equal-width segment, never
  * ellipsized or broken mid-word.
  */
+/**
+ * A short label (status chip, segment) on one line: its spaces become non-breaking. On Android
+ * (seen on a Samsung S24) „În așteptare” broke after „În” inside a box wide enough for the whole
+ * label, and the box, one line tall, showed only „În”.
+ */
+export const keepTogether = (label: string) => label.replace(/ /g, '\u00A0');
+
 export const fontScaleCap = { text: 1.35, display: 1.15, tabLabel: 1.1, segment: 1.15 } as const;
 
 export const glass = {

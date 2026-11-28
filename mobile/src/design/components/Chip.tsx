@@ -12,7 +12,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import Svg, { Path, Rect } from 'react-native-svg';
 import { StyleSheet } from 'react-native-unistyles';
-import { hit, palette, status, StatusKind } from '../tokens';
+import { hit, keepTogether, palette, status, StatusKind } from '../tokens';
 import { springTo } from '../motion';
 import { haptics } from '../haptics';
 import { CheckIcon, CloseIcon } from '../icons';
@@ -98,7 +98,7 @@ export const StatusChip = ({ label, kind = 'plain', icon, style, testID }: Statu
     >
       {mark}
       <AppText color={colors.fg} style={styles.statusLabel}>
-        {label}
+        {keepTogether(label)}
       </AppText>
     </View>
   );

@@ -7,7 +7,7 @@ import React, { ReactNode, useCallback, useState } from 'react';
 import { LayoutChangeEvent, Platform, Pressable, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useReducedMotion } from 'react-native-reanimated';
 import { StyleSheet } from 'react-native-unistyles';
-import { fontScaleCap, palette } from '../tokens';
+import { fontScaleCap, keepTogether, palette } from '../tokens';
 import { springTo } from '../motion';
 import { haptics } from '../haptics';
 
@@ -204,7 +204,7 @@ export function SegmentedControl<T extends string>({
               maxFontSizeMultiplier={fontScaleCap.text}
               style={[styles.label, { color: selected ? palette.navy : LABEL_OFF }]}
             >
-              {option.label}
+              {fit === 'stacked' ? option.label : keepTogether(option.label)}
             </Text>
             {hasCount && (
               <View style={[styles.count, selected ? styles.countOn : null]}>
